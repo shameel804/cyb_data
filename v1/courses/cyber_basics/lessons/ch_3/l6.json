@@ -1,0 +1,44 @@
+{
+  "id": "l6",
+  "chapterId": "ch_3",
+  "title": "Automation Intro 🤖",
+  "description": "Introduction to simple Bash scripting.",
+  "xpReward": 30,
+  "estimatedMinutes": 6,
+  "section": "Advanced Command Line",
+  "slides": [
+    {
+      "id": "s_l6_1",
+      "type": "text",
+      "title": "The Shebang 🤖",
+      "content": "### What is a Script?\n\nA script is just a list of commands saved in a file that the terminal runs in order. Every Bash script should start with the **Shebang**:\n\n`#! /bin/bash`"
+    },
+    {
+      "id": "s_l6_2",
+      "type": "code",
+      "title": "Your First Script 📄",
+      "content": "Save this as `myscript.sh`:\n\n```bash\n#! /bin/bash\necho 'Scanning network...'\nnmap 192.168.1.1\necho 'Scan complete!'\n```",
+      "codeSnippet": "chmod +x myscript.sh\n./myscript.sh",
+      "codeLanguage": "bash",
+      "canRunCode": true
+    },
+    {
+      "id": "s_l6_3",
+      "type": "quiz",
+      "title": "Scripting Quiz 🧠",
+      "content": "",
+      "quizData": {
+        "id": "q_l6_1",
+        "type": "multiple_choice",
+        "question": "After creating a script file, what must you do before you can run it using './scriptname.sh'?",
+        "options": [
+          {"id": "opt1", "text": "Rename it to .exe", "isCorrect": false},
+          {"id": "opt2", "text": "Give it 'Execute' permission using chmod", "isCorrect": true},
+          {"id": "opt3", "text": "Email it to yourself", "isCorrect": false}
+        ],
+        "explanation": "Linux requires files to have the 'x' (execute) permission before they can be run as programs.",
+        "xpReward": 10
+      }
+    }
+  ]
+}

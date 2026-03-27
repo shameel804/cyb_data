@@ -1,0 +1,50 @@
+{
+  "id": "l6",
+  "chapterId": "ch_2",
+  "title": "DNS: The Phonebook 📖",
+  "description": "How 'google.com' becomes an IP address.",
+  "xpReward": 25,
+  "estimatedMinutes": 5,
+  "section": "The Network Foundation",
+  "slides": [
+    {
+      "id": "s_l6_1",
+      "type": "text",
+      "title": "DNS 📖",
+      "content": "### Domain Name System\n\nComputers love numbers (IPs), but humans prefer names (URL). **DNS** is the translator.\n\n*   **You type**: `cybron.app` \n*   **DNS says**: \"Ah, that's `104.21.34.120`\""
+    },
+    {
+      "id": "s_l6_2",
+      "type": "text",
+      "title": "How it works? 🔍",
+      "content": "### The Lookup Process\n\nWhen you request a site, your computer asks a **DNS Resolver** (usually provided by your ISP or Google).\n\nIf the resolver doesn't know, it asks upstream until it finds the **Authoritative Nameserver** for that domain."
+    },
+    {
+      "id": "s_l6_3",
+      "type": "code",
+      "title": "Lookup a Site",
+      "content": "You can manually ask for a site's IP using the `nslookup` command:",
+      "codeSnippet": "nslookup google.com",
+      "codeLanguage": "bash",
+      "canRunCode": true
+    },
+    {
+      "id": "s_l6_4",
+      "type": "quiz",
+      "title": "DNS Check 🧠",
+      "content": "",
+      "quizData": {
+        "id": "q_l6_1",
+        "type": "multiple_choice",
+        "question": "Why is DNS called the 'Phonebook of the Internet'?",
+        "options": [
+          {"id": "opt1", "text": "It stores user phone numbers", "isCorrect": false},
+          {"id": "opt2", "text": "It maps human-readable names to IP addresses", "isCorrect": true},
+          {"id": "opt3", "text": "It handles all voice-over-IP calls", "isCorrect": false}
+        ],
+        "explanation": "Just as a phonebook maps names to numbers, DNS maps domain names to the IP addresses computers use to communicate.",
+        "xpReward": 10
+      }
+    }
+  ]
+}

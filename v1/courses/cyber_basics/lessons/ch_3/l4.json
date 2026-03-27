@@ -1,0 +1,56 @@
+{
+  "id": "l4",
+  "chapterId": "ch_3",
+  "title": "The Gatekeepers 🔐",
+  "description": "Understanding permissions: Read, Write, and Execute.",
+  "xpReward": 35,
+  "estimatedMinutes": 8,
+  "section": "Working with Files",
+  "slides": [
+    {
+      "id": "s_l4_1",
+      "type": "text",
+      "title": "Who's the Boss? 👑",
+      "content": "### Permissions\n\nUnlike Windows, where you often just double-click anything, Linux is very strict. Every file has permissions for three groups:\n\n1.  **Owner** (The user who created it)\n2.  **Group** (A set of users)\n3.  **Others** (The rest of the world)"
+    },
+    {
+      "id": "s_l4_2",
+      "type": "text",
+      "title": "The Code: rwx 📜",
+      "content": "### What can they do?\n\n*   **r** (Read): Can they see the content?\n*   **w** (Write): Can they change or delete it?\n*   **x** (Execute): Can they run it as a program?"
+    },
+    {
+      "id": "s_l4_3",
+      "type": "code",
+      "title": "Seeing Permissions 🔍",
+      "content": "Use `ls -l` to see the permission string of a file:",
+      "codeSnippet": "ls -l secret.txt",
+      "codeLanguage": "bash",
+      "canRunCode": true
+    },
+    {
+      "id": "s_l4_4",
+      "type": "text",
+      "title": "Changing Permissions ⚖️",
+      "content": "### The `chmod` command\n\nTo give someone permission to execute a file, use:\n`chmod +x myscript.sh` \n\nOr use numbers (777 is full access for everyone, 600 is only for you)!"
+    },
+    {
+      "id": "s_l4_5",
+      "type": "quiz",
+      "title": "Permission Check 🧠",
+      "content": "",
+      "quizData": {
+        "id": "q_l4_1",
+        "type": "multiple_choice",
+        "question": "What does the 'x' represent in a Linux permission string like 'rwx'?",
+        "options": [
+          {"id": "opt1", "text": "eXtra protection", "isCorrect": false},
+          {"id": "opt2", "text": "eXecute (run as a program)", "isCorrect": true},
+          {"id": "opt3", "text": "eXamine (view metadata)", "isCorrect": false}
+        ],
+        "explanation": "'x' stands for Execute. It allows a file to be run like a program or script.",
+        "xpReward": 10
+      }
+    }
+  ]
+}

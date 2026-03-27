@@ -1,0 +1,50 @@
+{
+  "id": "l4",
+  "chapterId": "ch_9",
+  "title": "Log Analysis 📜",
+  "description": "Reading the digital footprints left by an attacker.",
+  "xpReward": 30,
+  "estimatedMinutes": 6,
+  "section": "Forensics",
+  "slides": [
+    {
+      "id": "s_l4_1",
+      "type": "text",
+      "title": "The Digital Breadcrumbs 📜",
+      "content": "### What are Logs?\n\nAlmost every action on a computer (login, file access, network connection) is recorded in a **Log File**. \n\nLearning to read logs is like being a 'digital detective' who can reconstruct exactly how a hacker moved through the system."
+    },
+    {
+      "id": "s_l4_2",
+      "type": "code",
+      "title": "A Malicious Log ⌨️",
+      "content": "Look at this web server log entry. Can you see anything suspicious?",
+      "codeSnippet": "127.0.0.1 - - [27/Mar/2026] \"GET /login.php?user=' OR '1'='1 HTTP/1.1\"\n# Wait, that's a SQL Injection attempt!",
+      "codeLanguage": "text",
+      "canRunCode": false
+    },
+    {
+      "id": "s_l4_3",
+      "type": "text",
+      "title": "SIEM 📊",
+      "content": "### Scaling the Logs\n\nA large company produces billions of log lines every day. Humans can't read them all! \n\n**SIEM** (Security Information and Event Management) is software that collects all logs from every server and uses AI to find the 'needles in the haystack'."
+    },
+    {
+      "id": "s_l4_4",
+      "type": "quiz",
+      "title": "Log Quiz 🧠",
+      "content": "",
+      "quizData": {
+        "id": "q_l4_1",
+        "type": "multiple_choice",
+        "question": "Which tool is used to centralize and analyze log data from many different sources automatically?",
+        "options": [
+          {"id": "opt1", "text": "Excel", "isCorrect": false},
+          {"id": "opt2", "text": "SIEM", "isCorrect": true},
+          {"id": "opt3", "text": "Wireshark", "isCorrect": false}
+        ],
+        "explanation": "SIEM platforms (like Splunk or ELK) are the central nervous system of a security operations center.",
+        "xpReward": 10
+      }
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "id": "l1",
+  "chapterId": "ch_5",
+  "title": "Hashing vs. Encryption 🔐",
+  "description": "The one-way street vs. the two-way bridge.",
+  "xpReward": 30,
+  "estimatedMinutes": 6,
+  "section": "Fundamentals",
+  "slides": [
+    {
+      "id": "s_l1_1",
+      "type": "text",
+      "title": "What is it? 🔐",
+      "content": "### Hiding the Truth\n\nCryptography is the science of keeping secrets. But there are two very different ways to do it:\n\n1.  **Hashing**: A one-way process. (Like making a smoothie: you can't get the strawberries back!)\n2.  **Encryption**: A two-way process. (Like putting something in a locker: you can get it back if you have the key)."
+    },
+    {
+      "id": "s_l1_2",
+      "type": "text",
+      "title": "Hashing: The Fingerprint 🆔",
+      "content": "### One-Way Only\n\nA **Hash** takes a message and turns it into a fixed-length string of random-looking characters.\n\n*   **Example**: `hello` -> `2cf24dba...` (using SHA-256).\n*   **Goal**: Checking **Integrity**. If even ONE letter of the message changes, the whole hash becomes totally different."
+    },
+    {
+      "id": "s_l1_3",
+      "type": "quiz",
+      "title": "Hashing Quiz 🧠",
+      "content": "",
+      "quizData": {
+        "id": "q_l1_1",
+        "type": "multiple_choice",
+        "question": "If you want to store a user's password securely in a database, should you use Encryption or Hashing?",
+        "options": [
+          {"id": "opt1", "text": "Encryption (so I can read it later)", "isCorrect": false},
+          {"id": "opt2", "text": "Hashing (so no one can ever see the original password)", "isCorrect": true}
+        ],
+        "explanation": "Passwords should always be hashed. A good developer NEVER wants to know your actual password.",
+        "xpReward": 10
+      }
+    },
+    {
+      "id": "s_l1_4",
+      "type": "text",
+      "title": "Encryption: The Bridge 🌉",
+      "content": "### Two-Way Street\n\n**Encryption** is designed to scramble data so it can be **unscrambled** later by someone with the correct key.\n\n*   **Goal**: Keeping secrets (**Confidentiality**) that need to be read later (like an email or a bank transaction)."
+    }
+  ]
+}

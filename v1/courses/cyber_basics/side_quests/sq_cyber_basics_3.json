@@ -1,0 +1,130 @@
+{
+  "id": "sq_cyber_basics_3",
+  "title": "Snapshot Security 📸",
+  "triggerChapterIndex": 8,
+  "metadata": {
+    "type": "debug"
+  },
+  "questions": [
+    {
+      "id": "sq_3_q1",
+      "type": "multiple_choice",
+      "question": "A hacker is trying to maintain access to a Linux machine. Find the bug in their persistence script.",
+      "codeSnippet": "echo \"*/5 * * * * root /tmp/backdoor.sh\" >> /etc/crontab\n# Permission denied",
+      "bugLineIndex": 0,
+      "options": [
+        {"id": "o1", "text": "They used '>>' instead of '>'", "isCorrect": false},
+        {"id": "o2", "text": "They forgot to use 'sudo' to modify a system file", "isCorrect": true},
+        {"id": "o3", "text": "Crontab doesn't support '*' characters", "isCorrect": false}
+      ],
+      "explanation": "Modifying `/etc/crontab` is a system-level administrative task that requires root (sudo) privileges.",
+      "xpReward": 30,
+      "difficulty": 2
+    },
+    {
+      "id": "sq_3_q2",
+      "type": "multiple_choice",
+      "question": "An incident responder is trying to save a hash to verify integrity later. What's wrong with this process?",
+      "codeSnippet": "sha256sum sensitive_data.txt > verify.txt\nrm sensitive_data.txt\n# Wait, I still need the file!",
+      "bugLineIndex": 1,
+      "options": [
+        {"id": "o1", "text": "They deleted the original file after hashing it", "isCorrect": true},
+        {"id": "o2", "text": "They used the wrong hashing algorithm", "isCorrect": false},
+        {"id": "o3", "text": "They didn't encrypt the hash", "isCorrect": false}
+      ],
+      "explanation": "A hash is only useful for verification if you still have the original data to compare it against!",
+      "xpReward": 25,
+      "difficulty": 2
+    },
+    {
+      "id": "sq_3_q3",
+      "type": "multiple_choice",
+      "question": "A developer is trying to secure a login. Identify the security flaw in this code.",
+      "codeSnippet": "def login(user, pass):\n    hashed_pass = md5(pass).hexdigest()\n    # ... check database for user and hashed_pass",
+      "bugLineIndex": 1,
+      "options": [
+        {"id": "o1", "text": "MD5 is too fast and insecure for passwords", "isCorrect": true},
+        {"id": "o2", "text": "They should use asymmteric encryption instead", "isCorrect": false},
+        {"id": "o3", "text": "They forgot to capitalize MD5", "isCorrect": false}
+      ],
+      "explanation": "MD5 is old, broken, and susceptible to collision and rapid brute-force attacks. Use Bcrypt or Argon2 instead.",
+      "xpReward": 35,
+      "difficulty": 3
+    },
+    {
+      "id": "sq_3_q4",
+      "type": "multiple_choice",
+      "question": "Find the error in this iptables rule designed to block all incoming pings.",
+      "codeSnippet": "sudo iptables -A OUTPUT -p icmp -j DROP\n# Still getting pinged from outside!",
+      "bugLineIndex": 0,
+      "options": [
+        {"id": "o1", "text": "They used 'OUTPUT' instead of 'INPUT'", "isCorrect": true},
+        {"id": "o2", "text": "They should have used -j ALLOW", "isCorrect": false},
+        {"id": "o3", "text": "ICMP cannot be blocked by iptables", "isCorrect": false}
+      ],
+      "explanation": "To block traffic coming IN, you must use the INPUT chain. OUTPUT handles traffic leaving your machine.",
+      "xpReward": 25,
+      "difficulty": 2
+    },
+    {
+      "id": "sq_3_q5",
+      "type": "multiple_choice",
+      "question": "A social engineer is trying to 'Whale'. Find the mistake in who they targeted.",
+      "codeSnippet": "# Target List\n1. Intern Jim\n2. HR Assistant Sara\n3. IT Support Bob",
+      "bugLineIndex": 0,
+      "options": [
+        {"id": "o1", "text": "They are targeting low-level employees, not high-level executives", "isCorrect": true},
+        {"id": "o2", "text": "Interns don't have computers", "isCorrect": false},
+        {"id": "o3", "text": "They forgot to include the CEO", "isCorrect": false}
+      ],
+      "explanation": "Whaling specifically targets high-level executives (the 'whales') like the CEO or CFO.",
+      "xpReward": 20,
+      "difficulty": 2
+    },
+    {
+      "id": "sq_3_q6",
+      "type": "multiple_choice",
+      "question": "What's wrong with this 'Home Lab' setup?",
+      "codeSnippet": "Main OS: Windows 11\nVM 1: Kali Linux\nNetwork: Shared with my personal home WiFi",
+      "bugLineIndex": 2,
+      "options": [
+        {"id": "o1", "text": "The lab should NOT share a network with personal devices to prevent malware from escaping", "isCorrect": true},
+        {"id": "o2", "text": "Windows 11 is too slow for VMs", "isCorrect": false},
+        {"id": "o3", "text": "Kali Linux requires 2 monitors", "isCorrect": false}
+      ],
+      "explanation": "Isolation is crucial. A home lab should ideally use an isolated/internal network to keep experiments contained.",
+      "xpReward": 30,
+      "difficulty": 3
+    },
+    {
+      "id": "sq_3_q7",
+      "type": "multiple_choice",
+      "question": "Identify the bug in this SSL certificate verification command.",
+      "codeSnippet": "openssl s_client -connect google.com:22\n# Connection refused",
+      "bugLineIndex": 0,
+      "options": [
+        {"id": "o1", "text": "They tried to connect to port 22 (SSH) instead of 443 (HTTPS)", "isCorrect": true},
+        {"id": "o2", "text": "Google doesn't use SSL", "isCorrect": false},
+        {"id": "o3", "text": "They forgot to use 'sudo'", "isCorrect": false}
+      ],
+      "explanation": "Certificates for web servers are served on HTTPS (Port 443), not SSH (Port 22).",
+      "xpReward": 25,
+      "difficulty": 2
+    },
+    {
+      "id": "sq_3_q8",
+      "type": "multiple_choice",
+      "question": "A hacker wants to steal a cookie using XSS. Find the error in their Javascript.",
+      "codeSnippet": "<script>console.log(document.passwords);</script>",
+      "bugLineIndex": 0,
+      "options": [
+        {"id": "o1", "text": "Browsers don't store passwords in 'document.passwords'", "isCorrect": true},
+        {"id": "o2", "text": "They should use 'fetch' to send it to their server", "isCorrect": false},
+        {"id": "o3", "text": "They used single quotes instead of double quotes", "isCorrect": false}
+      ],
+      "explanation": "XSS usually targets 'document.cookie'. There is no 'document.passwords' property.",
+      "xpReward": 30,
+      "difficulty": 3
+    }
+  ]
+}

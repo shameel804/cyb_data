@@ -1,0 +1,29 @@
+{
+  "id": "p1",
+  "title": "Network Detective 🕵️",
+  "description": "Analyze a complex network scan and identify the primary attack vector.",
+  "xpReward": 500,
+  "difficulty": "Medium",
+  "estimatedMinutes": 30,
+  "tasks": [
+    {
+      "id": "p1_t1",
+      "title": "Analyze the Scan Result",
+      "description": "Look at the nmap output and find the most dangerous open port.",
+      "goal": "Identify the risk"
+    },
+    {
+      "id": "p1_t2",
+      "title": "Recommend a Fix",
+      "description": "Choose the best defensive action to take.",
+      "goal": "Remediate"
+    }
+  ],
+  "content": {
+    "problemStatement": "You are a Junior Security Analyst. You have just completed an internal nmap scan of a development server. The results are as follows:\n\n```text\nPORT     STATE SERVICE VERSION\n21/tcp   open  ftp     vsftpd 2.3.4\n22/tcp   open  ssh     OpenSSH 7.2p2\n80/tcp   open  http    Apache httpd 2.4.18\n3306/tcp open  mysql   MySQL 5.7.12\n```\n\n**History**: A quick search in the CVE database reveals that `vsftpd 2.3.4` contains a famous 'Backdoor' vulnerability that allows immediate command execution.\n\n**Your Mission**:\n1. Identify the most critical port to close/patch.\n2. Suggest the firewall command to block it for now.",
+    "solution": {
+      "port": "21",
+      "command": "sudo iptables -A INPUT -p tcp --dport 21 -j DROP"
+    }
+  }
+}

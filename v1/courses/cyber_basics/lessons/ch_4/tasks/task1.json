@@ -1,0 +1,15 @@
+{
+  "id": "task1",
+  "chapterId": "ch_4",
+  "title": "The Bouncer's Table 🕵️",
+  "description": "Create an iptables rule to block a specific malicious IP.",
+  "estimatedMinutes": 10,
+  "problemStatement": "You are under a DoS attack from the IP address `203.0.113.42`. You need to block all incoming traffic from this specific address immediately.\n\nUsing the `iptables` syntax you learned, write the command to **append** a rule to the **INPUT** chain to **DROP** packets from the **source** `203.0.113.42`.",
+  "hints": [
+    "Use `-A INPUT` to append to the input chain.",
+    "Use `-s` followed by the IP address.",
+    "Use `-j DROP` to specify the action."
+  ],
+  "expectedOutput": "sudo iptables -A INPUT -s 203.0.113.42 -j DROP",
+  "solutionCode": "sudo iptables -A INPUT -s 203.0.113.42 -j DROP"
+}

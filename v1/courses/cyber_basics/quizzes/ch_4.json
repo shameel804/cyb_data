@@ -1,0 +1,240 @@
+{
+  "id": "quiz_ch_4",
+  "chapterId": "ch_4",
+  "title": "Defensive Fortification Quiz",
+  "description": "Test your mastery of firewalls, IDS/IPS, and security principles.",
+  "passingScore": 75,
+  "xpReward": 130,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "question": "Which of the following acts as a barrier between a trusted internal network and an untrusted external network?",
+      "options": [
+        "A Router",
+        "A Switch",
+        "A Firewall",
+        "A Hub"
+      ],
+      "correctAnswer": 2,
+      "explanation": "Firewalls are the primary defense barrier in network security."
+    },
+    {
+      "id": "q2",
+      "type": "true_false",
+      "question": "A 'Stateless' firewall remembers if a connection was initiated by a trusted user.",
+      "correctAnswer": false,
+      "explanation": "False. That is a 'Stateful' firewall. Stateless firewalls treat every packet in isolation."
+    },
+    {
+      "id": "q3",
+      "type": "fill_blank",
+      "question": "In Linux, the standard command-line firewall tool is called ______.",
+      "options": [
+        "ipconfig",
+        "iptables",
+        "firewall-cmd",
+        "netstat"
+      ],
+      "correctAnswer": "iptables",
+      "explanation": "iptables is the classic Linux firewall utility."
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "question": "Which system is primarily designed to ALERT administrators to a breach without necessarily stopping it?",
+      "options": [
+        "IPS",
+        "IDS",
+        "Firewall",
+        "Antivirus"
+      ],
+      "correctAnswer": 1,
+      "explanation": "IDS (Intrusion Detection System) monitors and alerts but often stays passive otherwise."
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "question": "What does the 'Chain' named 'OUTPUT' do in iptables?",
+      "options": [
+        "Handles traffic coming into the machine",
+        "Handles traffic passing through the machine",
+        "Handles traffic leaving the machine for the internet",
+        "Displays the active rules on the screen"
+      ],
+      "correctAnswer": 2,
+      "explanation": "The OUTPUT chain governs packets generated locally and sent out."
+    },
+    {
+      "id": "q6",
+      "type": "true_false",
+      "question": "Signature-based detection can easily stop Zero-Day attacks.",
+      "correctAnswer": false,
+      "explanation": "False. Signature-based detection requires a known fingerprint, which Zero-Days don't have yet."
+    },
+    {
+      "id": "q7",
+      "type": "mcq",
+      "question": "Which major security principle suggests that a user should have only the minimum access needed for their job?",
+      "options": [
+        "The CIA Triad",
+        "The Principle of Least Privilege",
+        "The Rule of Multi-Factor Auth",
+        "The Hacking Lifecycle"
+      ],
+      "correctAnswer": 1,
+      "explanation": "PoLP (Principle of Least Privilege) limits potential damage from a compromised account."
+    },
+    {
+      "id": "q8",
+      "type": "fill_blank",
+      "question": "______ (EDR) provides behavioral analysis to detect suspicious activities on a local computer.",
+      "options": [
+        "Encryption Data Response",
+        "Endpoint Detection and Response",
+        "Electronic Defense Rule",
+        "Every Device Records"
+      ],
+      "correctAnswer": "Endpoint Detection and Response",
+      "explanation": "EDR is a modern evolution of Antivirus, focusing on behavioral monitoring."
+    },
+    {
+      "id": "q9",
+      "type": "mcq",
+      "question": "What is the result of using '-j DROP' in an iptables rule?",
+      "options": [
+        "The packet is allowed through with a warning",
+        "The packet is encrypted",
+        "The packet is discarded without sending any reply to the sender",
+        "The packet is returned to the user with an error message"
+      ],
+      "correctAnswer": 2,
+      "explanation": "'DROP' simply discards the packet, making the system look like it's offline to the attacker."
+    },
+    {
+      "id": "q10",
+      "type": "mcq",
+      "question": "Why is an 'Anomaly-Based' detection system prone to 'False Positives'?",
+      "options": [
+        "It doesn't have a database of viruses",
+        "It might flag unusual but legitimate user behavior as a threat",
+        "It only works on Windows",
+        "It is too slow to detect anything"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Because it looks for deviations from 'normal', a power user doing something rare might trigger an alarm."
+    },
+    {
+      "id": "q11",
+      "type": "true_false",
+      "question": "Firewalls function exclusively at Layer 7 of the OSI model.",
+      "correctAnswer": false,
+      "explanation": "False. Most standard firewalls function at Layer 3 (IP) and Layer 4 (Ports), though Next-Gen firewalls can reach Layer 7."
+    },
+    {
+      "id": "q12",
+      "type": "fill_blank",
+      "question": "An IPS is often referred to as an '______' device because it sits in the direct path of network traffic.",
+      "options": [
+        "Outline",
+        "Inline",
+        "Offline",
+        "Online"
+      ],
+      "correctAnswer": "Inline",
+      "explanation": "By being inline, the IPS can inspect and drop packets before they reach their destination."
+    },
+    {
+      "id": "q13",
+      "type": "mcq",
+      "question": "In the analogy of the building bouncer, what represents the 'Inbound Traffic'?",
+      "options": [
+        "People leaving the building",
+        "People trying to enter the building",
+        "The bouncer themselves",
+        "The building's electrical system"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Inbound traffic comes from external sources toward the internal system."
+    },
+    {
+      "id": "q14",
+      "type": "mcq",
+      "question": "Which command sequence would show precisely which IP addresses are being blocked by your current rules?",
+      "options": [
+        "sudo iptables -L",
+        "ls -l /etc/firewall",
+        "ping localhost",
+        "cat /var/log/messages"
+      ],
+      "correctAnswer": 0,
+      "explanation": "iptables -L lists the current chains and rules."
+    },
+    {
+      "id": "q15",
+      "type": "true_false",
+      "question": "Giving every employee 'Admin' access is a good way to improve efficiency and security.",
+      "correctAnswer": false,
+      "explanation": "False. It massively increases the attack surface and risks catastrophic failure if one account is breached."
+    },
+    {
+      "id": "q16",
+      "type": "mcq",
+      "question": "What is the main weakness of a basic Antivirus (AV) system?",
+      "options": [
+        "It is too expensive",
+        "It cannot detect threats that don't match its database of signatures",
+        "It only works on files larger than 1MB",
+        "It makes your internet slower"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Traditional AV is signature-dependent, meaning it's blind to brand-new (Zero-Day) malware."
+    },
+    {
+      "id": "q17",
+      "type": "fill_blank",
+      "question": "An IPS uses the '______' action to stop a connection, while an IDS simply 'Logs' it.",
+      "options": [
+        "Ignore",
+        "Prevent",
+        "Log",
+        "Copy"
+      ],
+      "correctAnswer": "Prevent",
+      "explanation": "The 'P' in IPS stands for Prevention."
+    },
+    {
+      "id": "q18",
+      "type": "mcq",
+      "question": "Which of these is NOT a standard chain in iptables?",
+      "options": [
+        "INPUT",
+        "OUTPUT",
+        "DELETE",
+        "FORWARD"
+      ],
+      "correctAnswer": 2,
+      "explanation": "INPUT, OUTPUT, and FORWARD are the three primary chains. DELETE is an action or flag, not a chain."
+    },
+    {
+      "id": "q19",
+      "type": "true_false",
+      "question": "The 'Anomaly-Based' detection method requires a 'Training Phase' to learn what normal behavior looks like.",
+      "correctAnswer": true,
+      "explanation": "Yes, it needs to establish a baseline before it can identify aberrations."
+    },
+    {
+      "id": "q20",
+      "type": "mcq",
+      "question": "A hacker tries to use a known vulnerability. The firewall sees the specific packet pattern and stops it. This is an example of ______ detection.",
+      "options": [
+        "Signature-Based",
+        "Anomaly-Based",
+        "Physical-Based",
+        "Random-Based"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Recognizing a known 'pattern' or 'fingerprint' is Signature-Based detection."
+    }
+  ]
+}

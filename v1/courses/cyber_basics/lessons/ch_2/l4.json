@@ -1,0 +1,50 @@
+{
+  "id": "l4",
+  "chapterId": "ch_2",
+  "title": "The Secret Life of Ports 🔌",
+  "description": "The doorways to services: 80, 443, 22.",
+  "xpReward": 30,
+  "estimatedMinutes": 6,
+  "section": "Protocols",
+  "slides": [
+    {
+      "id": "s_l4_1",
+      "type": "text",
+      "title": "The Service Door 🔌",
+      "content": "### What is a Port?\n\nIf the IP address is the **building**, a **Port** is the **specific door** leading to a specific room.\n\n*   One computer can do many things (Host a website, Receive email, Allow remote login).\n*   To keep these organized, we use **Port Numbers** (0 to 65,535)."
+    },
+    {
+      "id": "s_l4_2",
+      "type": "text",
+      "title": "The Heavy Hitters 🔨",
+      "content": "### Common Port Numbers\n\nYou need to memorize these! They are the first things a hacker looks for during a scan:\n\n*   **21**: FTP (File Transfer)\n*   **22**: SSH (Secure Remote Control)\n*   **80**: HTTP (Unsecured Web)\n*   **443**: HTTPS (Secured Web)\n*   **53**: DNS (Domain Names)"
+    },
+    {
+      "id": "s_l4_3",
+      "type": "quiz",
+      "title": "Port Check 🧠",
+      "content": "",
+      "quizData": {
+        "id": "q_l4_1",
+        "type": "multiple_choice",
+        "question": "If you are trying to visit a secure website (using HTTPS), which port is your browser likely connecting to?",
+        "options": [
+          {"id": "opt1", "text": "22", "isCorrect": false},
+          {"id": "opt2", "text": "80", "isCorrect": false},
+          {"id": "opt3", "text": "443", "isCorrect": true}
+        ],
+        "explanation": "Port 443 is the standard for encrypted web traffic (HTTPS). Port 80 is for unencrypted traffic.",
+        "xpReward": 10
+      }
+    },
+    {
+      "id": "s_l4_4",
+      "type": "code",
+      "title": "Scanning Ports",
+      "content": "Hackers use a tool called **Nmap** to see which 'doors' (ports) are open on a target:",
+      "codeSnippet": "nmap 192.168.1.1",
+      "codeLanguage": "bash",
+      "canRunCode": true
+    }
+  ]
+}

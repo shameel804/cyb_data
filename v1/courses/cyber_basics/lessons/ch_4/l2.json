@@ -1,0 +1,53 @@
+{
+  "id": "l2",
+  "chapterId": "ch_4",
+  "title": "Iptables Intro ⌨️",
+  "description": "Mastering the Linux firewall at the command line.",
+  "xpReward": 35,
+  "estimatedMinutes": 8,
+  "section": "Defensive Tools",
+  "slides": [
+    {
+      "id": "s_l2_1",
+      "type": "text",
+      "title": "iptables ⌨️",
+      "content": "### The Powerhouse\n\n**iptables** is the standard firewall tool for Linux. It uses **Chains** to manage data:\n\n*   **INPUT**: For traffic coming into your machine.\n*   **OUTPUT**: For traffic leaving your machine.\n*   **FORWARD**: For traffic passing through (only for routers)."
+    },
+    {
+      "id": "s_l2_2",
+      "type": "code",
+      "title": "Blocking an IP 🚫",
+      "content": "To block all traffic from a malicious IP (`1.2.3.4`), you would use:",
+      "codeSnippet": "sudo iptables -A INPUT -s 1.2.3.4 -j DROP",
+      "codeLanguage": "bash",
+      "canRunCode": true
+    },
+    {
+      "id": "s_l2_3",
+      "type": "quiz",
+      "title": "iptables Quiz 🧠",
+      "content": "",
+      "quizData": {
+        "id": "q_l2_1",
+        "type": "multiple_choice",
+        "question": "Which iptables chain would you use to prevent your computer from visiting a malicious website?",
+        "options": [
+          {"id": "opt1", "text": "INPUT", "isCorrect": false},
+          {"id": "opt2", "text": "OUTPUT", "isCorrect": true},
+          {"id": "opt3", "text": "FORWARD", "isCorrect": false}
+        ],
+        "explanation": "Traffic leaving your computer (like visiting a site) goes through the OUTPUT chain.",
+        "xpReward": 10
+      }
+    },
+    {
+      "id": "s_l2_4",
+      "type": "code",
+      "title": "See Your Rules 📜",
+      "content": "To see what firewall rules are currently active, use:",
+      "codeSnippet": "sudo iptables -L",
+      "codeLanguage": "bash",
+      "canRunCode": true
+    }
+  ]
+}

@@ -1,0 +1,240 @@
+{
+  "id": "quiz_ch_5",
+  "chapterId": "ch_5",
+  "title": "Secrets & Keys Quiz",
+  "description": "Test your mastery of encryption, hashing, and password security.",
+  "passingScore": 75,
+  "xpReward": 140,
+  "questions": [
+    {
+      "id": "q1",
+      "type": "mcq",
+      "question": "Which of these is a 'One-Way' process that cannot be reversed?",
+      "options": [
+        "Encryption",
+        "Hashing",
+        "Compression",
+        "SSL"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Hashing is designed to be irreversible. You can't get the original data back from a hash."
+    },
+    {
+      "id": "q2",
+      "type": "true_false",
+      "question": "In Symmetric Encryption, the same key is used to both lock and unlock the data.",
+      "correctAnswer": true,
+      "explanation": "Correct. This is why it's called 'Symmetric' (even/same)."
+    },
+    {
+      "id": "q3",
+      "type": "fill_blank",
+      "question": "The standard symmetric encryption algorithm used by governments and banks today is ______.",
+      "options": [
+        "DES",
+        "AES",
+        "RSA",
+        "MD5"
+      ],
+      "correctAnswer": "AES",
+      "explanation": "AES (Advanced Encryption Standard) is the industry standard for secure symmetric encryption."
+    },
+    {
+      "id": "q4",
+      "type": "mcq",
+      "question": "How many keys are used in Asymmetric Encryption?",
+      "options": [
+        "One secret key",
+        "One public key and one private key",
+        "Three keys for redundancy",
+        "No keys are needed"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Asymmetric (Public Key) encryption uses a pair of mathematically related keys."
+    },
+    {
+      "id": "q5",
+      "type": "mcq",
+      "question": "If you want to send someone an encrypted message that ONLY they can read, which of THEIR keys do you use?",
+      "options": [
+        "Their Private Key",
+        "Their Public Key",
+        "Your Private Key",
+        "A shared password"
+      ],
+      "correctAnswer": 1,
+      "explanation": "You use their Public Key to encrypt it. Only their Private Key can then unlock it."
+    },
+    {
+      "id": "q6",
+      "type": "true_false",
+      "question": "A hash is used primarily to ensure 'Confidentiality'.",
+      "correctAnswer": false,
+      "explanation": "False. Hashing is used to ensure 'Integrity' (checking if data has changed)."
+    },
+    {
+      "id": "q7",
+      "type": "mcq",
+      "question": "What is a 'Rainbow Table'?",
+      "options": [
+        "A colorful UI element",
+        "A database of pre-calculated hashes for common passwords",
+        "A table of IP addresses for routing",
+        "A list of all users on a server"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Rainbow tables allow attackers to quickly 'reverse' hashes by looking them up in a large list."
+    },
+    {
+      "id": "q8",
+      "type": "fill_blank",
+      "question": "Adding a random string to a password before hashing it is called '______'.",
+      "options": [
+        "Hashing",
+        "Salting",
+        "Peppering",
+        "Stretching"
+      ],
+      "correctAnswer": "Salting",
+      "explanation": "Salting makes every password hash unique, even if the password is common."
+    },
+    {
+      "id": "q9",
+      "type": "mcq",
+      "question": "Which protocol is used for securing web traffic in your browser?",
+      "options": [
+        "FTP",
+        "SSH",
+        "HTTPS (SSL/TLS)",
+        "DNS"
+      ],
+      "correctAnswer": 2,
+      "explanation": "HTTPS wraps web traffic in an encrypted tunnel using SSL/TLS."
+    },
+    {
+      "id": "q10",
+      "type": "mcq",
+      "question": "What happens if you lose your Private Key in Asymmetric encryption?",
+      "options": [
+        "Anyone can read your messages",
+        "You can never read messages encrypted with your Public Key again",
+        "The computer will automatically reset it",
+        "Nothing, you still have the Public Key"
+      ],
+      "correctAnswer": 1,
+      "explanation": "The Private Key is the ONLY thing that can unscramble the messages. Lose it, and the secrets are gone forever."
+    },
+    {
+      "id": "q11",
+      "type": "true_false",
+      "question": "Digital Signatures use a Private Key to sign and a Public Key to verify.",
+      "correctAnswer": true,
+      "explanation": "Yes, this proves the message came from the owner of the private key."
+    },
+    {
+      "id": "q12",
+      "type": "fill_blank",
+      "question": "______ (P-A-K-I) is the framework for managing digital certificates and keys.",
+      "options": [
+        "PKI (Public Key Infrastructure)",
+        "SKI",
+        "DKI",
+        "FKI"
+      ],
+      "correctAnswer": "PKI (Public Key Infrastructure)",
+      "explanation": "PKI manages everything from issuing certificates to revoking them."
+    },
+    {
+      "id": "q13",
+      "type": "mcq",
+      "question": "If you change a single bit in a 1GB file, what happens to its SHA-256 hash?",
+      "options": [
+        "Nothing happens",
+        "Only one character of the hash changes",
+        "The entire hash changes completely",
+        "The hash becomes shorter"
+      ],
+      "correctAnswer": 2,
+      "explanation": "This is known as the 'Avalanche Effect'. A tiny change in input makes a massive change in output."
+    },
+    {
+      "id": "q14",
+      "type": "mcq",
+      "question": "Why don't we use Asymmetric encryption for transferring large files?",
+      "options": [
+        "It is too secure",
+        "It is mathematically complex and way too slow",
+        "It doesn't support files larger than 1MB",
+        "It only works on text"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Asymmetric encryption is computationally expensive. We usually use it only to securely share a faster symmetric key."
+    },
+    {
+      "id": "q15",
+      "type": "true_false",
+      "question": "The 'Padlock' icon in a browser guarantees a website is 100% safe and and not a scam.",
+      "correctAnswer": false,
+      "explanation": "False. It only guarantees your CONNECTION is encrypted. Scammers can also have encrypted websites!"
+    },
+    {
+      "id": "q16",
+      "type": "mcq",
+      "question": "What is 'Non-repudiation'?",
+      "options": [
+        "The ability to fix a bug",
+        "Being unable to deny that you sent a message (because you signed it)",
+        "The act of deleting a hash",
+        "A type of network attack"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Digital signatures provide non-repudiation, as only the sender's private key could have created the signature."
+    },
+    {
+      "id": "q17",
+      "type": "fill_blank",
+      "question": "Modern password security recommends using slow hash algorithms like '______' to stop brute-force attacks.",
+      "options": [
+        "MD5",
+        "SHA1",
+        "Bcrypt",
+        "Hex"
+      ],
+      "correctAnswer": "Bcrypt",
+      "explanation": "Bcrypt is designed to be intentionally 'slow' and 'expensive' for attackers while being easy for the server."
+    },
+    {
+      "id": "q18",
+      "type": "mcq",
+      "question": "In the smoothy analogy, which process represents Hashing?",
+      "options": [
+        "Mixing the fruit (One-way)",
+        "Putting the fruit in a bowl (Two-way)",
+        "Buying the fruit",
+        "Eating the fruit"
+      ],
+      "correctAnswer": 0,
+      "explanation": "You can't un-mix a smoothy into strawberries, just like you can't un-hash data."
+    },
+    {
+      "id": "q19",
+      "type": "true_false",
+      "question": "A Digital Certificate binds a public key to the identity of a specific person or organization.",
+      "correctAnswer": true,
+      "explanation": "Yes, it acts as a digital proof of identity."
+    },
+    {
+      "id": "q20",
+      "type": "mcq",
+      "question": "What is the best way to determine if a file downloaded from the internet was corrupted during the download?",
+      "options": [
+        "Run the file and see if it crashes",
+        "Compare its hash to the hash provided on the official website",
+        "Look at the file size",
+        "Scan it for viruses"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Checking the hash (checksum) is the standard way to verify data integrity."
+    }
+  ]
+}

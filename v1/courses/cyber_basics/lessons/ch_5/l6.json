@@ -1,0 +1,47 @@
+{
+  "id": "l6",
+  "chapterId": "ch_5",
+  "title": "Salting & Stretching 🧂",
+  "description": "Making passwords impossible to crack.",
+  "xpReward": 25,
+  "estimatedMinutes": 5,
+  "section": "Best Practices",
+  "slides": [
+    {
+      "id": "s_l6_1",
+      "type": "text",
+      "title": "Weak Hashing 🧂",
+      "content": "### Cracking the Code\n\nIf multiple users have the same password, they will have the same hash. Hackers use **Rainbow Tables** (huge lists of pre-calculated hashes) to instanty crack these passwords."
+    },
+    {
+      "id": "s_l6_2",
+      "type": "text",
+      "title": "The Solution: Salt 🧂",
+      "content": "### Adding Flavor\n\n**Salting** is adding a unique, random string of characters to every password before hashing it.\n\n*   **Result**: Even if two users use the password `p@ssword`, their hashes will be completely different because their salts are different."
+    },
+    {
+      "id": "s_l6_3",
+      "type": "text",
+      "title": "Wait, don't rush! 🐢",
+      "content": "### Hashing Speed\n\nUsually, fast is good. But for passwords, **we want it slow!**\n\n**Stretching** (or Iteration) means running the hashing process thousands of times. It takes 1ms for you, which is fine, but it makes it impossible for a hacker to try billions of guesses per second."
+    },
+    {
+      "id": "s_l6_4",
+      "type": "quiz",
+      "title": "Salting Quiz 🧠",
+      "content": "",
+      "quizData": {
+        "id": "q_l6_1",
+        "type": "multiple_choice",
+        "question": "What is the primary purpose of 'Salting' a password hash?",
+        "options": [
+          {"id": "opt1", "text": "To make the hash shorter", "isCorrect": false},
+          {"id": "opt2", "text": "To ensure every user gets a unique hash, even with the same password", "isCorrect": true},
+          {"id": "opt3", "text": "To encrypt the salt with a public key", "isCorrect": false}
+        ],
+        "explanation": "Salting prevents attacks like Rainbow Tables by making every hash unique.",
+        "xpReward": 10
+      }
+    }
+  ]
+}

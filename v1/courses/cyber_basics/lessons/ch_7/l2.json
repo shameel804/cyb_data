@@ -1,0 +1,65 @@
+{
+  "id": "l2",
+  "chapterId": "ch_7",
+  "title": "Nmap: The Network Mapper 🗺️",
+  "description": "Discovering live hosts and open ports like a pro.",
+  "xpReward": 35,
+  "estimatedMinutes": 8,
+  "section": "Reconnaissance",
+  "slides": [
+    {
+      "id": "s_l2_1",
+      "type": "text",
+      "title": "The Swiss Army Knife 🗺️",
+      "content": "### What is Nmap?\n\n**Nmap** (Network Mapper) is the industry-standard tool for network discovery. It sends packets to a target and listens to the replies to figure out:\n\n*   Is the host **alive**?\n*   Which **ports** are open?\n*   What **OS** is it running?\n*   What software **versions** are active?"
+    },
+    {
+      "id": "s_l2_2",
+      "type": "code",
+      "title": "The Basic Scan 🔍",
+      "content": "To scan a single IP address for open ports:",
+      "codeSnippet": "nmap 192.168.1.1",
+      "codeLanguage": "bash",
+      "canRunCode": true
+    },
+    {
+      "id": "s_l2_3",
+      "type": "code",
+      "title": "The Pro Scan 🚀",
+      "content": "To detect versions (`-sV`) and the operating system (`-O`):",
+      "codeSnippet": "nmap -sV -O 192.168.1.1",
+      "codeLanguage": "bash",
+      "canRunCode": true
+    },
+    {
+      "id": "s_l2_4",
+      "type": "quiz",
+      "title": "Nmap Quiz 🧠",
+      "content": "",
+      "quizData": {
+        "id": "q_l2_1",
+        "type": "multiple_choice",
+        "question": "Which nmap flag is used to detect the version of services running on open ports?",
+        "options": [
+          {
+            "id": "opt1",
+            "text": "-v",
+            "isCorrect": false
+          },
+          {
+            "id": "opt2",
+            "text": "-sV",
+            "isCorrect": true
+          },
+          {
+            "id": "opt3",
+            "text": "-p",
+            "isCorrect": false
+          }
+        ],
+        "explanation": "'-sV' stands for Service Version detection.",
+        "xpReward": 10
+      }
+    }
+  ]
+}

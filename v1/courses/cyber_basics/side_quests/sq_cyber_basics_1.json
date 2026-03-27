@@ -1,0 +1,85 @@
+{
+  "id": "sq_cyber_basics_1",
+  "title": "The Terminal Ghost 👻",
+  "triggerChapterIndex": 2,
+  "metadata": {
+    "type": "debug"
+  },
+  "questions": [
+    {
+      "id": "sq_cyber_basics_1_q1",
+      "type": "multiple_choice",
+      "question": "An attacker is trying to run a script to steal data, but it keeps failing. Find the error in their process.",
+      "codeSnippet": "touch stealer.sh\necho '#! /bin/bash' > stealer.sh\necho 'cat /etc/shadow' >> stealer.sh\n./stealer.sh\n# Error: Permission denied",
+      "bugLineIndex": 3,
+      "options": [
+        {"id": "o1", "text": "They forgot to add the shebang", "isCorrect": false},
+        {"id": "o2", "text": "They didn't give the file execute permissions with chmod +x", "isCorrect": true},
+        {"id": "o3", "text": "They used 'touch' instead of 'mkdir'", "isCorrect": false}
+      ],
+      "explanation": "Even with a shebang, Linux requires the 'execute' bit (+x) to be set before a script can be run with './'.",
+      "xpReward": 20,
+      "difficulty": 2
+    },
+    {
+      "id": "sq_cyber_basics_1_q2",
+      "type": "multiple_choice",
+      "question": "A network scan shows a server is 'filtering' all traffic on Port 80. Which CIA pillar is the administrator trying to protect?",
+      "codeSnippet": "# Iptables configuration\niptables -A INPUT -p tcp --dport 80 -j DROP",
+      "bugLineIndex": 1,
+      "options": [
+        {"id": "o1", "text": "Confidentiality", "isCorrect": false},
+        {"id": "o2", "text": "Integrity", "isCorrect": false},
+        {"id": "o3", "text": "Availability", "isCorrect": true}
+      ],
+      "explanation": "By dropping all traffic to Port 80, the web service becomes unavailable to everyone. This is a measure to control Availability.",
+      "xpReward": 25,
+      "difficulty": 2
+    },
+    {
+      "id": "sq_cyber_basics_1_q3",
+      "type": "multiple_choice",
+      "question": "Find the bug in this command that is supposed to search all log files for the word 'root'.",
+      "codeSnippet": "ls /var/log | grep 'root'\n# This only searches filenames, not file content!\n# Intended: cat /var/log/* | grep 'root'",
+      "bugLineIndex": 0,
+      "options": [
+        {"id": "o1", "text": "They used pipes correctly", "isCorrect": false},
+        {"id": "o2", "text": "They are grepping filenames instead of file contents", "isCorrect": true},
+        {"id": "o3", "text": "They should have used sudo rm", "isCorrect": false}
+      ],
+      "explanation": "Piping 'ls' into 'grep' searches the list of filenames. To search inside the files, you need to 'cat' them first.",
+      "xpReward": 30,
+      "difficulty": 3
+    },
+    {
+      "id": "sq_cyber_basics_1_q4",
+      "type": "multiple_choice",
+      "question": "Which OSI layer is misconfigured if you can ping an IP address but cannot load the website (Port 80)?",
+      "codeSnippet": "ping 192.168.1.1 # Works\ncurl http://192.168.1.1 # Fails",
+      "bugLineIndex": 1,
+      "options": [
+        {"id": "o1", "text": "Layer 3 (Network)", "isCorrect": false},
+        {"id": "o2", "text": "Layer 4 (Transport)", "isCorrect": true},
+        {"id": "o3", "text": "Layer 1 (Physical)", "isCorrect": false}
+      ],
+      "explanation": "If ping works, Layer 3 (IP) is fine. If Port 80 fails, the issue is likely at Layer 4 (Transport/Ports) or above.",
+      "xpReward": 20,
+      "difficulty": 2
+    },
+    {
+      "id": "sq_cyber_basics_1_q5",
+      "type": "multiple_choice",
+      "question": "Identify the 'hat' of this hacker: They found a bug, didn't exploit it, but posted it publicly on Twitter without telling the company.",
+      "codeSnippet": "# Twitter Post\nCheck out this Zero-Day in Microsoft Word! No one knows about it yet. #Hacking",
+      "bugLineIndex": 1,
+      "options": [
+        {"id": "o1", "text": "White Hat", "isCorrect": false},
+        {"id": "o2", "text": "Black Hat", "isCorrect": false},
+        {"id": "o3", "text": "Gray Hat", "isCorrect": true}
+      ],
+      "explanation": "Exposing a bug without permission or following responsible disclosure is typical Gray Hat behavior (acting without malice but without permission).",
+      "xpReward": 25,
+      "difficulty": 2
+    }
+  ]
+}

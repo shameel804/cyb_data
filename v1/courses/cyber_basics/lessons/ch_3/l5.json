@@ -1,0 +1,50 @@
+{
+  "id": "l5",
+  "chapterId": "ch_3",
+  "title": "Power Moves 💪",
+  "description": "Using sudo, pipes, and grep like a pro.",
+  "xpReward": 30,
+  "estimatedMinutes": 7,
+  "section": "Advanced Command Line",
+  "slides": [
+    {
+      "id": "s_l5_1",
+      "type": "text",
+      "title": "The God Mode: sudo 👑",
+      "content": "### Superuser Do\n\nSome things (like installing software or reading someone else's files) require administrator power. In Linux, we call the admin **root**.\n\nTo act as an admin, prefix your command with `sudo`."
+    },
+    {
+      "id": "s_l5_2",
+      "type": "code",
+      "title": "Pipes: Connecting Dots 🔗",
+      "content": "The **Pipe** symbol `|` takes the output of one command and sends it as the input to another. It's incredibly powerful!",
+      "codeSnippet": "ls | grep secret",
+      "codeLanguage": "bash",
+      "canRunCode": true
+    },
+    {
+      "id": "s_l5_3",
+      "type": "text",
+      "title": "Grep: The Searcher 🔍",
+      "content": "### Finding the Needle\n\n`grep` searches for text inside files or outputs.\n\n*   **Example**: `cat logs.txt | grep ERROR` will only show lines in the log that contain the word 'ERROR'."
+    },
+    {
+      "id": "s_l5_4",
+      "type": "quiz",
+      "title": "Power Quiz 🧠",
+      "content": "",
+      "quizData": {
+        "id": "q_l5_1",
+        "type": "multiple_choice",
+        "question": "You want to find all processes running on your system that contain the word 'hacker'. Which command sequence would work?",
+        "options": [
+          {"id": "opt1", "text": "ps aux | grep hacker", "isCorrect": true},
+          {"id": "opt2", "text": "ls hacker", "isCorrect": false},
+          {"id": "opt3", "text": "sudo rm hacker", "isCorrect": false}
+        ],
+        "explanation": "'ps aux' lists all processes, and pipe '|' sends that list to 'grep' to search for 'hacker'.",
+        "xpReward": 10
+      }
+    }
+  ]
+}

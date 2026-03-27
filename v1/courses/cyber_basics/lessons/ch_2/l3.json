@@ -1,0 +1,64 @@
+{
+  "id": "l3",
+  "chapterId": "ch_2",
+  "title": "TCP vs UDP 🏎️",
+  "description": "Choosing between speed and reliability.",
+  "xpReward": 30,
+  "estimatedMinutes": 6,
+  "section": "Protocols",
+  "slides": [
+    {
+      "id": "s_l3_1",
+      "type": "text",
+      "title": "Transport Layer (4) 📦",
+      "content": "### How do we send the data?\n\nOnce we have an address, we need to decide **how** to deliver the packets. Imagine you are moving house:\n\n*   **TCP**: Sending boxes via a tracking service. You check if each box arrives.\n*   **UDP**: Throwing boxes out the window of a moving car. Fast, but some might break or get lost!"
+    },
+    {
+      "id": "s_l3_2",
+      "type": "text",
+      "title": "TCP: The Handshake 🤝",
+      "content": "### Reliability First\n\n**TCP (Transmission Control Protocol)** uses a **3-way handshake** before sending data:\n\n1.  **SYN**: \"Hey, you there?\"\n2.  **SYN-ACK**: \"Yeah, I'm here! You ready?\"\n3.  **ACK**: \"Ready! Sending data now.\"\n\n*   **Use-case**: Web browsing, Emails, File downloads."
+    },
+    {
+      "id": "s_l3_3",
+      "type": "quiz",
+      "title": "TCP Check 🧠",
+      "content": "",
+      "quizData": {
+        "id": "q_l3_1",
+        "type": "multiple_choice",
+        "question": "What is the primary benefit of using TCP?",
+        "options": [
+          {"id": "opt1", "text": "It is much faster than UDP", "isCorrect": false},
+          {"id": "opt2", "text": "It ensures all data arrives correctly and in order", "isCorrect": true},
+          {"id": "opt3", "text": "It doesn't need an IP address", "isCorrect": false}
+        ],
+        "explanation": "TCP is 'connection-oriented' and re-sends any data that gets lost.",
+        "xpReward": 10
+      }
+    },
+    {
+      "id": "s_l3_4",
+      "type": "text",
+      "title": "UDP: Fire and Forget 🔥",
+      "content": "### Speed First\n\n**UDP (User Datagram Protocol)** doesn't care if the data arrives. It just sends it as fast as possible!\n\n*   **Use-case**: Online gaming (lag is worse than a missing frame), Video calls, Live streaming.\n*   **Why?**: Because if a frame of video is lost, there's no point in sending it 2 seconds late; the live show has moved on!"
+    },
+    {
+      "id": "s_l3_5",
+      "type": "quiz",
+      "title": "UDP Check 🧠",
+      "content": "",
+      "quizData": {
+        "id": "q_l3_2",
+        "type": "multiple_choice",
+        "question": "Which protocol would a voice call app like WhatsApp likely use for the actual audio data?",
+        "options": [
+          {"id": "opt1", "text": "TCP", "isCorrect": false},
+          {"id": "opt2", "text": "UDP", "isCorrect": true}
+        ],
+        "explanation": "Real-time media like audio and video uses UDP because speed is more important than 100% accuracy.",
+        "xpReward": 10
+      }
+    }
+  ]
+}
