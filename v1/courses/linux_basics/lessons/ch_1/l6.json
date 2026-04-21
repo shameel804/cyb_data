@@ -1,0 +1,71 @@
+{
+    "id": "l6",
+    "chapterId": "ch_1",
+    "title": "Getting Help: The `man` Command",
+    "description": "The most important skill: reading the documentation.",
+    "xpReward": 30,
+    "estimatedMinutes": 6,
+    "section": "Mastery",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "RTFM: Read The Friendly Manual 📖",
+            "content": "# You Are Not Expected to Memorize\n\nIn the hacking world, there is a phrase: **RTFM**.\n\nIt stands for **R**ead **T**he **F**riendly **M**anual. (Sometimes 'F' stands for something else, but we'll be polite 😉).\n\nIf you don't know what an option does, **look it up**. The manual is built right into the terminal.\n\n### The `man` Command\n`man` is short for **manual**.\n\n**Usage:**\n```bash\nman [command_name]\n```\n\n**Example:**\n```bash\nman ls\n```\n\nThis opens the manual page for the `ls` (list) command. It shows you EVERY SINGLE option available."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "Navigating the Manual",
+            "content": "# How to Survive Inside `man`\n\nWhen you run `man ls`, the terminal changes. You are now in a **pager** (usually a program called `less`).\n\nYour mouse won't work here. Use the **keyboard**!\n\n*   **Arrow Keys**: Move up and down line by line.\n*   **Spacebar**: Jump down one full page.\n*   **b**: Jump **Back** one full page.\n*   **/**: Search! Type `/color` and press Enter to find the word 'color' in the manual.\n*   **q**: **Quit**. This is the most important key! It gets you back to the normal prompt."
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "You are stuck inside a `man` page and want to return to the command prompt. What do you press?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "ESC",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "q",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Ctrl + C",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Press `q` to quit the `man` page viewer and return to the shell.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "Synopsis: Decoding the Magic 🔮",
+            "content": "# Understanding the Syntax Summary\n\nAt the top of every man page, you'll see a **SYNOPSIS** section. It looks like alien language, but it's actually a cheat sheet.\n\n`ls [OPTION]... [FILE]...`\n\n*   `ls`: The command.\n*   `[OPTION]...`: Brackets `[]` mean **optional**. The `...` means you can have **multiple** options.\n*   `[FILE]...`: Optional arguments (usually file or directory names).\n\n### Example Decoded:\n`cp [OPTION]... SOURCE DEST`\n*   `SOURCE`: Not in brackets. **Required**. The file you want to copy.\n*   `DEST`: Not in brackets. **Required**. Where to paste it."
+        },
+        {
+            "id": "s_l6_5",
+            "type": "exercise",
+            "title": "Practice: Read the Manual 🏋️",
+            "content": "Open your terminal and run `man echo`.\n1.  Find the option that prevents `echo` from adding a newline at the end. (Hint: Look for `-n`).\n2.  Press `q` to exit."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "tip",
+            "title": "Cheat Sheet Alternative",
+            "content": "## `command --help`\n\nIf `man` is too detailed, try running the command followed by `--help`.\n\n`ls --help`\n\nThis usually gives you a quick summary of the most common options without opening the full manual pager."
+        }
+    ]
+}

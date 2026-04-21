@@ -1,0 +1,89 @@
+{
+    "id": "l4",
+    "chapterId": "ch_1",
+    "title": "Syntax Matters: Spaces, Case, and Arguments",
+    "description": "Computers are painfully literal. One wrong space and your day is ruined.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Syntax",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "warning",
+            "title": "⚠️ Case Sensitivity",
+            "content": "# 'A' is NOT 'a'\n\nThis is the #1 mistake beginners make. Linux is **case-sensitive**.\n\n*   `Desktop` is a folder.\n*   `desktop` does not exist (unless you created one separately).\n*   `LS` is not a command.\n*   `ls` is a command.\n\nTreat every letter as sacred. If you get a `command not found` error, check your capitalization **first**."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Spacing: The Invisible Grammar 👻",
+            "content": "# Spaces Define Separate Things\n\nThe shell uses **spaces** to know where the command ends and the options start.\n\n**Correct:**\n`ls -l /home`\n(Command: `ls`, Option: `-l`, Argument: `/home`)\n\n**Incorrect (No space):**\n`ls-l /home`\n(The shell thinks there is a program named `ls-l` installed. It will fail.)\n\n### Important: Spaces in File Names\nIf a file name has a space in it (e.g., `My Documents`), you must 'escape' it or quote it!\n*   `cd My Documents` -> **FAIL** (Thinks 'My' and 'Documents' are two different places).\n*   `cd My\\ Documents` -> **SUCCESS** (Backslash escapes the space).\n*   `cd \"My Documents\"` -> **SUCCESS** (Quotes group the words)."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Error Detection 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Why does `CD /home` fail?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "CD is not installed.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The command is lowercase `cd`, not uppercase `CD`.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The slash is backwards.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Linux commands are case-sensitive. `CD` is not the same program as `cd`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Tab Completion\n\nStop typing long folder names! Start typing `cd /ho` and then press the **TAB** key. The shell will auto-complete it to `/home` for you. It saves time and prevents typos."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "quiz",
+            "title": "Path Prediction 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "You have a folder named 'Project Files'. How do you enter it?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "cd Project Files",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "cd Project\\ Files",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "cd Project-Files",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The backslash `\\` tells the shell that the following space is part of the name, not a separator between arguments.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

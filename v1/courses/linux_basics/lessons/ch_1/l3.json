@@ -1,0 +1,82 @@
+{
+    "id": "l3",
+    "chapterId": "ch_1",
+    "title": "The Shell: Your Digital Interpreter",
+    "description": "What exactly is 'bash' and why does it matter?",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Basics",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Kernel is the King 👑",
+            "content": "# ...But You Can't Talk to the King Directly\n\nAt the core of Linux is the **Kernel**. It's the absolute boss. It talks directly to the hardware (CPU, RAM, hard drive).\n\nYou cannot speak the Kernel's language. It speaks in 0s and 1s and memory addresses.\n\nYou need a **translator**. A **Shell**.\n\n### Analogy: The United Nations 🇺🇳\n*   **Kernel**: The President of a country.\n*   **You**: A foreign diplomat who doesn't speak the President's native language.\n*   **Shell**: The interpreter standing between you. You say \"Print this file,\" the interpreter tells the Kernel \"Allocate memory buffer 0x87F...\""
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Bash: The Most Common Shell",
+            "content": "There are many shells (Zsh, Fish, Sh), but **Bash** (Bourne Again SHell) is the default on almost every Linux system. When you open the terminal, you are almost certainly talking to **Bash**.\n\nTo check which shell you're using, type this command and press Enter:\n",
+            "codeSnippet": "echo $SHELL",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "fill_blank",
+                "question": "The shell acts as a _____ between the user and the Kernel.",
+                "options": [
+                    "translator",
+                    "barrier",
+                    "firewall",
+                    "window manager"
+                ],
+                "correctAnswer": "translator",
+                "explanation": "The Shell interprets human-readable commands and translates them into system calls that the Kernel understands.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Command Structure: Anatomy of a Command 🧬",
+            "content": "# `command -options arguments`\n\nEvery command in Linux follows this simple pattern.\n\n1.  **Command**: The program you want to run (e.g., `echo`, `ls`, `date`).\n2.  **Option (or Flag)**: Modifies *how* the command runs. Usually starts with a dash `-`.\n3.  **Argument**: The *target* of the command. Usually a file or text.\n\n### Real World Example:\n```bash\nls -l /home/user\n```\n*   **Command**: `ls` (List files)\n*   **Option**: `-l` (Long format - show details like size and permissions)\n*   **Argument**: `/home/user` (The folder to list)"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "quiz",
+            "title": "Spot the Parts 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "In the command `echo 'Hello World'`, what is `'Hello World'` considered?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The Command",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The Option",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The Argument",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "`'Hello World'` is the data (argument) we are passing to the `echo` command for it to process.",
+                "xpReward": 10
+            }
+        }
+    ]
+}
