@@ -1,0 +1,105 @@
+{
+    "id": "l3",
+    "chapterId": "ch_2",
+    "title": "Layer 3: The Network Layer (IP)",
+    "description": "Routing, IP addresses, and how data finds its way across the planet.",
+    "xpReward": 30,
+    "estimatedMinutes": 10,
+    "section": "Lower Layers",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Internet's Postal Service 📮",
+            "content": "# Layer 3: The Network Layer\n\nLayer 2 (MAC) is great for talking to the computer next to you. But what if you want to talk to a server in Japan? You can't send a MAC address frame across the ocean. MAC addresses don't scale globally.\n\n**Enter Layer 3: The Network Layer.**\n\n**Function:** **Routing** and **Logical Addressing**.\n\n**The Key Technology: IP (Internet Protocol)**\n- Provides a **logical** address that is independent of the hardware (MAC).\n- Format (IPv4): `192.168.1.10`\n- **Routers** use the **IP address** to forward **Packets** from one network to another until they reach the destination network.\n\n**Analogy:**\n- **MAC Address = Your Name** (It's on your passport/birth certificate, unique to you).\n- **IP Address = Your Mailing Address** (It can change when you move houses).\n\nThe postal service (Internet) uses the Mailing Address (IP) to get the package to the right city, then the local mail carrier (Switch) uses the Name (MAC) to put it in the right mailbox."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "MAC vs IP 🏷️",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "If you move your laptop from your Home WiFi to a Coffee Shop WiFi, which address changes?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "MAC Address",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "IP Address",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Both change",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Neither changes",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Your MAC address is burned into the hardware. Your IP address is assigned by the local network (DHCP), so it changes with location.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "The Router: The Internet's Traffic Cop 🚦",
+            "content": "# Layer 3 Devices: Routers\n\nA **Router** connects **different networks** together.\n\n- Your home network (`192.168.1.0`) is one network.\n- The Internet is a collection of millions of other networks.\n\n**How does a Router know where to send a packet?**\nIt uses a **Routing Table**. Think of it as a giant list of road signs.\n\n```text\nRouting Table (Simplified)\nDestination Network      Next Hop (Where to go)\n192.168.1.0/24          Directly Connected (Local)\n10.0.0.0/8              Send to Router at 192.168.1.254\n0.0.0.0/0 (Default)     Send to ISP Router at 142.250.185.1\n```\n\n**Packet Lifecycle:**\n1. Your computer sees the destination IP is outside the local network.\n2. It sends the frame to the **Default Gateway** (your home router's MAC address).\n3. The router strips off the Layer 2 frame, reads the Layer 3 IP Packet, and looks in its routing table.\n4. It wraps the packet in a *new* Layer 2 frame and sends it out the correct interface toward the next router.\n5. This repeats (**Hop by Hop**) until the packet reaches the destination network."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "The IP Packet Header 📦",
+            "content": "The Layer 3 data unit is called a **Packet** (or Datagram). It contains crucial information:\n\n```text\nIP Packet Header (Simplified)\n- Version: IPv4 or IPv6\n- Source IP Address: 192.168.1.10\n- Destination IP Address: 8.8.8.8 (Google DNS)\n- TTL (Time To Live): 64 (Decrements at each router. Prevents infinite loops!)\n- Protocol: TCP (6) or UDP (17) -> Points to Layer 4\n```\n\n**Cybersecurity Relevance: TTL**\nIf a hacker modifies the TTL, they can make packets loop forever (DoS) or use TTL analysis to detect if a packet is coming from a fake source (Spoofed)."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "warning",
+            "title": "IP is 'Best Effort' 📉",
+            "content": "## Unreliable Delivery\n\nCrucial fact: **IP does NOT guarantee delivery.**\n\nIt's like the Postal Service during a blizzard. They *try* to deliver the mail, but if the truck gets stuck, the package gets lost. There is no built-in mechanism for IP to ask for a resend.\n\n- **No error recovery** (that's Layer 4's job).\n- **No flow control.**\n\nThis is why we need **Layer 4 (TCP)** to add reliability on top of IP."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Routing Logic 🧭",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "A router receives a packet destined for a network NOT in its routing table. What does it do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Drop the packet.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Send it to the 'Default Gateway' (Default Route).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Broadcast it out all ports.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Send it back to the sender.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! The 'Default Route' (0.0.0.0/0) is the 'catch-all' path, usually pointing to the ISP.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

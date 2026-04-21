@@ -1,0 +1,74 @@
+{
+    "id": "l4",
+    "chapterId": "ch_1",
+    "title": "Threat Actors & Attack Vectors",
+    "description": "Who is attacking us and how do they get in?",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Core Concepts",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Know Your Enemy 👾",
+            "content": "# Threat Actors\n\nIn cybersecurity, we classify attackers based on their **resources, skill level, and motivation**. Not all hackers are geniuses; not all are criminals.\n\n1.  **Script Kiddies:** Low skill. Use tools downloaded from the internet (scripts) without understanding how they work. They're like kids with a can of spray paint—annoying, but usually not targeting *you* specifically.\n2.  **Hacktivists:** Politically or socially motivated. They deface websites (change the homepage) or leak data to push an agenda. (e.g., Anonymous).\n3.  **Organized Crime:** **Follow the money.** These are professional groups running ransomware and stealing credit cards. They operate like businesses.\n4.  **Nation-State Actors (APTs):** **Advanced Persistent Threats**. The most sophisticated. Funded by governments. They have unlimited time and resources. They want to steal intellectual property (Coca-Cola recipe, F-35 jet plans) or disrupt critical infrastructure (Power Grids).\n5.  **Insider Threats:** The **most dangerous** and hardest to stop. A disgruntled employee or a careless contractor who accidentally clicks a bad link."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Classify the Actor 🎭",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "A group hacks a hospital and encrypts all the patient files, demanding $5 million in Bitcoin to unlock them. What type of actor is this?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Script Kiddie",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Organized Crime",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Hacktivist",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. This is Ransomware. The motive is pure financial gain, which is the hallmark of Organized Cybercrime.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Attack Vectors: The Entry Point 🚪",
+            "content": "# How do they actually get in?\n\nAn **Attack Vector** is the specific path or means by which a hacker gains access.\n\n*   **Phishing:** The #1 vector. Emails pretending to be your boss or Amazon asking for your password. **Human vulnerability.**\n*   **Weak Credentials:** Using `password123` or reusing the same password on multiple sites. If Site A gets hacked, your password for Site B is now known.\n*   **Unpatched Software:** Security flaws (bugs) in Windows, Adobe, Chrome. When the vendor releases a **Patch** (fix), hackers reverse-engineer the patch to find the flaw and attack everyone who *didn't* update yet. **Update your stuff!**\n*   **Misconfiguration:** Setting up a database server with no password. Leaving default admin/admin credentials on a router.\n*   **Malvertising:** Hiding malicious code inside online ads. You don't even need to click; just loading the webpage can infect you (Drive-by Download)."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "The Phishing Example 🎣",
+            "content": "Phishing relies on deception. Look at this 'urgent' email subject:",
+            "codeSnippet": "From: IT-Support <it-support@secure-login.xyz>\nSubject: URGENT: Your Password Expires in 2 Hours!\n\nClick here to keep your current password: \nhttp://fake-login-page.com/update",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "warning",
+            "title": "Red Flags 🚩",
+            "content": "## Spotting a Phish\n\n- **Urgency:** \"Act now or else!\"\n- **Suspicious Sender:** The email address isn't `@yourcompany.com`, it's `@gmail.com` or a misspelling (`@microsfot.com`).\n- **Grammar/Spelling Errors:** Professional companies proofread.\n- **Hover over links:** The text says `https://bank.com` but the actual link goes to `https://steal-your-info.ru`."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "The Human Firewall 🧠",
+            "content": "## You are the Strongest Defense\n\nNo matter how expensive the firewall is, a user clicking 'Allow' on a pop-up can bypass it. **Security Awareness** is the single most effective control in this chapter."
+        }
+    ]
+}

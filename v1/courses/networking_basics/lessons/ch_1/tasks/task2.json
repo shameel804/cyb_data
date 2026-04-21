@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_1",
+    "title": "Phishing Email Forensics",
+    "description": "Examine a raw email header and identify red flags of a phishing attempt.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## The Email\n\nYou are a Security Analyst at CyberCorp. An employee, Sarah, forwarded you this email she received. She almost clicked the link but thought it looked 'weird'.\n\n```text\nFrom: \"IT Service Desk\" <it-helpdesk@cybercorp-support.xyz>\nReply-To: hacker123@gmail.com\nSubject: URGENT: Mailbox Quota Exceeded - Final Warning!\n\nDear user,\n\nYour password will expire in 2 hours and your email access will be blocked.\nTo prevent this, please verify your account immediately by visiting:\n\nhXXp://cybercorp.password-reset.tk/verify [URL DEFANGED]\n\nSincerely,\nMicrosoft Outlook Team\n```\n\n## Your Task\n\nWrite a short forensic report identifying **FIVE (5) distinct red flags** in this email that indicate it is a Phishing attempt. \n\nFor each red flag, explain:\n1. What the specific issue is (e.g., The sender address is suspicious).\n2. Why that issue is a sign of phishing (e.g., It doesn't match the company domain).\n\nYou can use bullet points for your report.",
+    "hints": [
+        "Check the sender's domain (@cybercorp-support.xyz). What is the real company name?",
+        "Look at the 'Reply-To' header. Where do replies actually go?",
+        "Examine the tone and language of the body.",
+        "Inspect the URL carefully. Is the domain familiar? What is '.tk'?"
+    ],
+    "expectedOutput": "1. Sender Domain Mismatch: Email is from '@cybercorp-support.xyz' but the company is CyberCorp. Legitimate emails come from '@cybercorp.com'.\n2. Suspicious Reply-To: Replying would send the email to a Gmail account instead of the official IT mailbox.\n3. Sense of Urgency: 'Final Warning', '2 hours' creates panic to force a mistake.\n4. Generic Greeting: 'Dear user' instead of the employee's specific name.\n5. Malicious URL Domain: The link uses '.tk' (a free domain often abused by scammers) and the subdomain 'cybercorp.password-reset' is designed to trick the eye.",
+    "solutionCode": "// No code required. Written analysis based on provided text.\n// Expected Key Points: Domain analysis, Reply-To header inspection, Psychological tactics (urgency), Impersonal greeting, URL Obfuscation/Strange TLD."
+}

@@ -1,0 +1,76 @@
+{
+    "id": "l5",
+    "chapterId": "ch_2",
+    "title": "Layers 5-7: Session, Presentation, Application",
+    "description": "The layers users actually see – HTTP, encryption, and managing conversations.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Upper Layers",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Upper Layers: Where Users Live 🧑‍💻",
+            "content": "# Layers 5, 6, and 7\n\nIn the modern internet, the distinction between these three layers is often **blurred** or combined into a single \"Application Layer\" in the **TCP/IP Model** (which we will cover later).\n\nHowever, for security and understanding the original OSI intent, it's valuable to know what they represent.\n\n**Layer 7 (Application):** The actual application/protocol (HTTP, FTP, SMTP).\n**Layer 6 (Presentation):** Data formatting, encryption (SSL/TLS), compression.\n**Layer 5 (Session):** Managing the dialogue between two applications (keeping track of whose turn it is to talk)."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Layer 7: Application Layer 🖥️",
+            "content": "# The Interface You Touch\n\n**Layer 7 - Application:** This is **NOT** the app itself (Chrome is not Layer 7). This is the **protocol** the app uses to communicate.\n\n**Common Layer 7 Protocols:**\n- **HTTP/HTTPS:** Web browsing.\n- **SMTP/POP3/IMAP:** Email.\n- **FTP:** File Transfer.\n- **DNS:** Translates names to IPs.\n- **DHCP:** Gets you an IP address.\n\n**Data Unit:** Data / Message.\n\n**Cybersecurity Relevance:** This is where **Web Application Firewalls (WAF)** operate. A WAF inspects the HTTP requests (e.g., looking for `' OR 1=1 --` SQL Injection strings) and blocks malicious Layer 7 traffic."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Layer 7 ID 📱",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Which of these is considered a Layer 7 protocol?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "TCP",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "IP",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "HTTP",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Ethernet",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "HTTP (Hypertext Transfer Protocol) operates at the Application Layer.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Layer 6: Presentation Layer 🎨",
+            "content": "# The Translator and the Vault\n\n**Layer 6 - Presentation:** Ensures that data is in a usable format and manages **encryption/decryption**.\n\n**Analogy:** The **Interpreter** at the United Nations. \n- One speaker talks in French. \n- Layer 6 translates it to English for the listener.\n\n**Functions:**\n1.  **Character Encoding:** Is it ASCII? Unicode (UTF-8)? \n    - *Example:* Sending an emoji `😊` requires the receiver to know it's Unicode, not just a byte value.\n2.  **Encryption:** **TLS/SSL lives here!**\n    - When you see the padlock in your browser, Layer 6 on the server encrypted the data, and Layer 6 on your browser decrypts it.\n    - This provides **Confidentiality** for the entire upper stack.\n3.  **Compression:** ZIP, JPEG, GIF.\n\n**Security Note:** Since encryption happens here, this is a **critical security boundary**. A compromised certificate (man-in-the-middle) breaks this layer."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Layer 5: Session Layer 🎤",
+            "content": "# Managing the Conversation\n\n**Layer 5 - Session:** Controls the **dialogue** between computers. It establishes, manages, and terminates the connections between the local and remote application.\n\n**Analogy:** The **Chairperson** of a meeting.\n- \"Alice has the floor for 5 minutes.\"\n- \"Bob, please hold your questions until the end.\"\n- \"Meeting adjourned.\"\n\n**Functions:**\n- **Checkpoints:** When downloading a 4GB file over FTP, if the connection drops, Layer 5 can resume from the last **checkpoint** instead of starting over.\n- **Synchronization:** Adding markers to a video stream so audio and video stay in sync.\n\n**Common Protocols:** NetBIOS, RPC, PPTP.\n\n**Modern Reality:** In the **TCP/IP Model**, Session and Presentation are often **merged into the Application Layer**. Why? Because application developers (like browser makers) just build session management (cookies) and presentation logic (JPEG decoding) directly into the app."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "tip",
+            "title": "OSI Model in a Firewall 🔥",
+            "content": "## What Layer is the Firewall?\n\nFirewalls operate at different layers:\n- **Packet Filtering Firewall:** Layer 3 & 4 (Looks at IPs and Ports).\n- **Stateful Firewall:** Layer 4 (Tracks TCP connection state).\n- **Next-Gen Firewall (NGFW) / WAF:** Layer 7 (Inspects the actual content of HTTP requests).\n\nTo be a great defender, you must know **which layer** the attack is targeting."
+        }
+    ]
+}

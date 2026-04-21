@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_2",
+    "title": "Encapsulation Walkthrough",
+    "description": "Trace a web request from a browser down to the wire and back.",
+    "estimatedMinutes": 10,
+    "problemStatement": "## Scenario: Browsing to a Secure Site\n\nYou open your Chrome browser and type `https://cybron.io` into the address bar.\n\n## Your Task\n\nUsing the OSI Model layers, list the **specific headers or processes** that are added/removed as the data travels from your browser **DOWN** to the network cable (Encapsulation) and then **UP** on the web server side (De-encapsulation).\n\nFill in the blanks in the following sequence:\n\n**Client (Sending Request):**\n1. Layer 7 (Application): Data = `GET / HTTP/1.1` (HTTP Request)\n2. Layer 6 (Presentation): ________ (What happens here? Think about HTTPS).\n3. Layer 5 (Session): ________ (Management of the connection state).\n4. Layer 4 (Transport): Adds ________ Header (Which protocol? What port number is used?).\n5. Layer 3 (Network): Adds ________ Header (Contains source and destination _______).\n6. Layer 2 (Data Link): Adds ________ Header and ________ Trailer (Address type? Error checking?).\n7. Layer 1 (Physical): Transmits as ________ (Light/Voltage).\n\n**Server (Receiving Request):**\n8. What happens at Layer 2 on the server NIC? \n9. What happens at Layer 3? \n10. What happens at Layer 4?",
+    "hints": [
+        "Layer 6 handles encryption (TLS/SSL).",
+        "HTTPS uses TCP port 443.",
+        "Layer 2 uses MAC addresses.",
+        "De-encapsulation is just reverse order."
+    ],
+    "expectedOutput": "2. Data is encrypted using TLS (SSL/TLS handshake establishes session keys).\n3. Session ID/Cookie management (maintains state for HTTP).\n4. Adds TCP Header (Source Port: Random high port, Destination Port: 443).\n5. Adds IP Header (Source IP: Client IP, Destination IP: Server IP).\n6. Adds Ethernet Frame Header (Source MAC: Client NIC, Destination MAC: Default Gateway MAC) and FCS Trailer.\n7. Transmits as electrical/optical bits.\n8. Server NIC strips Ethernet Frame Header/Trailer (checks FCS) and passes Payload to Layer 3.\n9. Server strips IP Header (verifies destination IP is its own).\n10. Server strips TCP Header (verifies Port 443, reassembles segments).\n11. Layer 6 decrypts the data. Layer 7 passes HTTP GET to web server.",
+    "solutionCode": "// No executable code required. Conceptual mapping.\n// See expectedOutput for detailed answer."
+}

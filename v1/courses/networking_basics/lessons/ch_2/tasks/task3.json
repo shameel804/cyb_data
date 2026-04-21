@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_2",
+    "title": "TCP vs UDP Scenario Builder",
+    "description": "Recommend the correct transport protocol for various application scenarios.",
+    "estimatedMinutes": 8,
+    "problemStatement": "## Scenario Analysis\n\nFor each of the following scenarios, select **TCP** or **UDP** and justify your choice in one sentence focusing on **Reliability vs. Speed/Latency**.\n\n1. **Streaming a 4K movie on Netflix.**\n2. **Downloading a 50GB game installer from Steam.**\n3. **Sending a text message in WhatsApp.**\n4. **Playing a competitive first-person shooter game (e.g., Valorant).**\n5. **Looking up the IP address for `google.com` (DNS Query).**",
+    "hints": [
+        "Netflix uses adaptive bitrate streaming. If a packet is lost, you see a slight blur for a second, but it doesn't pause to resend.",
+        "Game installers must be bit-for-bit perfect. A single wrong byte could crash the game.",
+        "DNS can use either, but the default is connectionless for speed."
+    ],
+    "expectedOutput": "1. UDP (Likely QUIC or UDP-based streaming). Reason: Tolerates minor packet loss for smooth playback without buffering delays.\n2. TCP. Reason: Requires 100% reliable delivery of every byte; integrity is critical for executable files.\n3. TCP (WhatsApp uses a custom protocol over TCP). Reason: Messages must be delivered reliably and in order.\n4. UDP. Reason: Real-time game state updates prioritize lowest possible latency; a missed position update is irrelevant compared to lag.\n5. UDP (Default DNS). Reason: Simple query/response; if lost, the client times out and retransmits quickly without connection overhead.",
+    "solutionCode": "// No code required. Justification exercise."
+}

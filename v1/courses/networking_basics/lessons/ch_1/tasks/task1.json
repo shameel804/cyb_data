@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_1",
+    "title": "CIA Triad in the Wild",
+    "description": "Analyze a real-world news article scenario and map it to the CIA Triad.",
+    "estimatedMinutes": 10,
+    "problemStatement": "## Scenario: The Hospital Ransomware Attack\n\nA major hospital in the city was hit by a ransomware attack last night.\n\n- **What Happened:** A nurse opened an email attachment that looked like an invoice. Malware encrypted all patient medical records, lab results, and appointment schedules. \n- **Impact:** Doctors cannot access patient histories. Surgeries have been cancelled. The ambulance bay has been diverted to other hospitals across town.\n- **Demand:** The hackers are demanding $1 million in Bitcoin to provide the decryption key.\n\n## Your Task\n\nIdentify **which pillar(s) of the CIA Triad have been violated or impacted** in this scenario. \n\nProvide a short paragraph (3-5 sentences) explaining:\n1. Which pillar is **MOST OBVIOUSLY** impacted (explain why).\n2. Is there a **SECONDARY** pillar impacted? (Hint: Think about the integrity of the patient records before encryption vs. after).\n3. Is there a **Confidentiality** impact mentioned explicitly in the text? If not, is it still a risk?",
+    "hints": [
+        "Recall: Availability means 'Can authorized users access the data when needed?'",
+        "Recall: Integrity means 'Is the data accurate and trustworthy?'",
+        "Ransomware doesn't always *steal* data to sell it, but sometimes it does ('Double Extortion'). Consider if the data *could* have been viewed."
+    ],
+    "expectedOutput": "Availability is clearly violated because data is encrypted and inaccessible, cancelling surgeries. Integrity is also violated because the patient records are no longer in their original, usable state; they have been modified/corrupted by encryption. Confidentiality is a potential secondary impact (risk) even if not stated, as attackers may have exfiltrated the data before encrypting it.",
+    "solutionCode": "// This is a written analysis task. No code required.\n// Expected Answer Structure:\n// 1. Availability: Surgeries cancelled, access denied.\n// 2. Integrity: Data altered (encrypted) and no longer reliable.\n// 3. Confidentiality: Potential risk of data theft (HIPAA violation)."
+}

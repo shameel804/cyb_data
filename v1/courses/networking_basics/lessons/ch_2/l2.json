@@ -1,0 +1,114 @@
+{
+    "id": "l2",
+    "chapterId": "ch_2",
+    "title": "Layers 1-2: Physical & Data Link",
+    "description": "Cables, voltages, MAC addresses, and the local network neighborhood.",
+    "xpReward": 30,
+    "estimatedMinutes": 10,
+    "section": "Lower Layers",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Layer 1: The Physical Layer ⚡",
+            "content": "# It's All About the Medium\n\n**Layer 1 - Physical:** Deals with the transmission and reception of **raw bit streams** over a physical medium.\n\nThis is the **hardware**. The actual cable, the fiber optic glass, the radio waves.\n\n**What does it define?**\n- **Voltage levels:** Is a '1' bit 5 volts or 3.3 volts?\n- **Data Rates:** How fast can we pulse the light or electricity? (10 Mbps, 1 Gbps).\n- **Connectors:** The shape of the plug (RJ45 Ethernet jack).\n- **Cable specs:** Cat5e, Cat6, Fiber Optic.\n\n**Cybersecurity Note:** This is where **taps** happen. A physical tap is a device spliced directly into the fiber optic line to copy all the light pulses (data) passing through. This is a *physical* security risk. **Layer 1 security = Locks on doors and guarded manholes.**"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Physical Layer Issues 📡",
+            "content": "Layer 1 doesn't understand IP addresses or email. It only understands **bits**.\n\nProblems at Layer 1 include:\n- Cut cable (Backhoe fade).\n- Interference from a microwave oven (affecting WiFi).\n- Bad crimp on the RJ45 connector.",
+            "codeSnippet": "Layer 1 Data Unit: Bit\nRepresentation: 10110010101010...",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Layer 1 Check 🪛",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which of these is strictly a Layer 1 (Physical) concern?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "MAC Address Filtering",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Signal strength and cable type",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "IP Routing",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "TCP Port Number",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Layer 1 deals with the physical transmission medium and signals.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Layer 2: The Data Link Layer 🔗",
+            "content": "# The Local Network Traffic Controller\n\n**Layer 2 - Data Link:** Provides **node-to-node** data transfer—a link between two *directly connected* nodes. It also detects and possibly corrects errors that may occur in the Physical Layer.\n\n**Analogy:** This is the **Mailroom** inside a specific building. It cares about the physical slot number in the mailroom wall, not the street address.\n\n**The Key Technology: MAC Addresses**\n- **MAC = Media Access Control**\n- A **48-bit** hardware address burned into every Network Interface Card (NIC).\n- Format: `00:1A:2B:3C:4D:5E`\n- **Globally Unique** (theoretically).\n\n**How it works:**\nWithin a single network segment (like your home WiFi), devices talk directly to each other's **MAC addresses** using a protocol called **Ethernet**."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Switches and Frames 🖼️",
+            "content": "# Layer 2 Devices: The Switch\n\nA **Switch** is a Layer 2 device. It looks at the **destination MAC address** of an incoming **Frame** and forwards it only to the specific port where that device is connected.\n\n- **Hub (Old/Terrible):** Broadcasts every frame to *every* port. (Security nightmare).\n- **Switch (Modern/Good):** Learns which MAC addresses are on which ports and builds a **MAC Address Table**.\n\n**The Layer 2 Data Unit: Frame**\nA Frame includes:\n- Destination MAC\n- Source MAC\n- **Payload (The IP Packet from Layer 3)**\n- **FCS (Frame Check Sequence):** A mathematical checksum to verify the frame wasn't corrupted (Integrity!).\n\n**Cybersecurity Relevance:**\n- **MAC Spoofing:** Changing your computer's MAC address to impersonate another device (e.g., bypassing a MAC filter on a WiFi network).\n- **ARP Poisoning:** Tricking devices on the local network into sending data to the attacker's MAC address instead of the router. (We will cover ARP in depth later)."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "warning",
+            "title": "The Collision Domain 💥",
+            "content": "## Legacy Issue: Collisions\n\nIn the old days of **Hubs**, if two computers talked at the exact same time, their signals collided and data was lost. This was a **Collision Domain**.\n\n**Switches solved this.** A switch creates a **separate collision domain for each port**. \n\n**Broadcast Domain:** Still, if a device sends a message to `FF:FF:FF:FF:FF:FF` (the Broadcast MAC address), the switch *must* flood that out to all ports. This is a **Broadcast Domain**. We limit the size of these with **Routers (Layer 3)**."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "Layer 2 Detective 🕵️",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "What does a Switch use to decide where to forward a frame?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "IP Address",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "MAC Address",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Port Number",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "URL",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! Switches operate at Layer 2 and forward traffic based on the Destination MAC Address.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

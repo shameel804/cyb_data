@@ -1,0 +1,111 @@
+{
+    "id": "l4",
+    "chapterId": "ch_2",
+    "title": "Layer 4: The Transport Layer (TCP/UDP)",
+    "description": "Reliable delivery, port numbers, and the handshake that starts every connection.",
+    "xpReward": 30,
+    "estimatedMinutes": 12,
+    "section": "Middle Layers",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Quality Control & Sorting 📬",
+            "content": "# Layer 4: Transport Layer\n\nRemember how Layer 3 (IP) is unreliable and just 'Best Effort'? Layer 4 fixes that.\n\n**Function:** Provides **end-to-end** communication services for applications. It ensures data arrives **complete**, **in order**, and **without errors**.\n\n**Analogy: The Shipping Department**\nLayer 3 put the address on the box. Layer 4 is the **FedEx vs. USPS** choice.\n\n- **Do you need a signature?** (Reliable connection - TCP)\n- **Do you want tracking and insurance?** (Guaranteed delivery - TCP)\n- **Just throw it on the porch and hope for the best?** (Fire and forget - UDP)\n\nThere are two main protocols at Layer 4:\n1.  **TCP (Transmission Control Protocol):** Reliable, connection-oriented.\n2.  **UDP (User Datagram Protocol):** Unreliable, connectionless, fast."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Ports: The Apartment Number 🚪",
+            "content": "# How does your computer know which app gets the data?\n\nAn IP address gets the packet to the **right computer**. But what if you have 20 browser tabs open, a Zoom call running, and Spotify playing? How does Spotify know not to play the raw data from your Zoom call?\n\n**Answer: Port Numbers.**\n\nA **Port** is a 16-bit number (0-65535) that identifies a **specific process or application** on a host.\n\n**Analogy:**\n- **IP Address = Street Address of the Apartment Building**\n- **Port Number = Apartment Number**\n\n**Common Well-Known Ports (Memorize These!):**\n- `80`: HTTP (Web Traffic)\n- `443`: HTTPS (Secure Web Traffic)\n- `22`: SSH (Secure Remote Admin)\n- `53`: DNS (Domain Name Resolution)\n- `25`: SMTP (Email Sending)\n\n**Cybersecurity Relevance:** Firewalls block or allow traffic based on **Port Numbers**. If you close port `22`, no one can SSH into your server."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Port Check 🧑‍💻",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "You type 'https://google.com' in your browser. Which destination port is the packet targeting?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "80",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "443",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "53",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "22",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! HTTPS (Secure HTTP) uses port 443 by default.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "TCP: The Perfectionist 🤝",
+            "content": "# Transmission Control Protocol (TCP)\n\nTCP is **connection-oriented**. Before any data is sent, a **three-way handshake** establishes a virtual circuit.\n\n**The TCP Three-Way Handshake:**\n1.  **Client -> Server:** `SYN` (Synchronize). \"Hey, I want to talk. Here is my starting sequence number.\"\n2.  **Server -> Client:** `SYN-ACK` (Synchronize-Acknowledge). \"Okay, I heard you. Here's *my* sequence number, and I acknowledge yours.\"\n3.  **Client -> Server:** `ACK` (Acknowledge). \"Got it. Connection established.\"\n\n**Features of TCP:**\n- **Reliable:** If a packet is lost, TCP detects it and **retransmits** it.\n- **Ordered:** Packets arriving out of order (due to different routes) are **reassembled** correctly using Sequence Numbers.\n- **Flow Control:** Prevents a fast sender from overwhelming a slow receiver (Windowing).\n\n**Use Cases:** Web browsing (HTTP), Email (SMTP), File Transfers (FTP)."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "UDP: The Speed Demon 🏎️",
+            "content": "# User Datagram Protocol (UDP)\n\nUDP is **connectionless**. It just fires packets off and doesn't care if they arrive.\n\n**Analogy:** A mailman throwing letters out the window of a speeding car. Most will land on the lawn. Some will blow into the sewer.\n\n**Features of UDP:**\n- **No Handshake:** Just start sending.\n- **No Retransmission:** Lost packet? Too bad.\n- **No Ordering:** First packet sent might arrive last.\n- **Fast & Low Overhead:** No waiting for ACKs.\n\n**Why use UDP if it's unreliable?**\n**Real-time applications.**\nIf a packet drops in a Zoom call, you **do not** want TCP to pause the video and wait for that packet to be resent. You'd rather have a 0.1 second glitch and keep moving. **Speed > Perfect Accuracy.**\n\n**Use Cases:** Video Streaming, VoIP (Voice calls), Online Gaming, **DNS Queries** (most DNS uses UDP! If the response is lost, the client just asks again)."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "TCP vs UDP 🆚",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "You are streaming a live concert on Twitch. Which protocol is the video stream MOST LIKELY using?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "TCP (Reliable)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "UDP (Fast)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "ICMP",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "ARP",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! Live video uses UDP (or similar real-time protocols) to prioritize low latency over perfect reliability.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "warning",
+            "title": "SYN Flood Attack 🌊",
+            "content": "## Cybersecurity Connection\n\nThe **TCP Three-Way Handshake** is a major attack vector.\n\n**SYN Flood Attack:**\nAn attacker sends thousands of `SYN` packets to a server with a **spoofed** (fake) source IP address.\n- The server responds with `SYN-ACK` to the fake address.\n- The server waits for the final `ACK` that never comes.\n- The server's memory fills up with **half-open connections** until it crashes or refuses legitimate users.\n\nThis is a **Denial of Service (DoS)** attack targeting the **Availability** of the system."
+        }
+    ]
+}

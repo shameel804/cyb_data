@@ -1,0 +1,68 @@
+{
+    "id": "l2",
+    "chapterId": "ch_1",
+    "title": "Networking: The Universal Attack Surface",
+    "description": "Why every cyber attack starts or ends with a network packet.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Attack Surface 🎯",
+            "content": "# What is an Attack Surface?\n\nIn cybersecurity, the **Attack Surface** is the sum of all the points where an unauthorized user (the \"attacker\") can try to enter data into or extract data from an environment.\n\nThink of a **Castle**:\n- The **Physical Walls** are one attack surface (can they climb it?).\n- The **Front Gate** is one (can they ram it down?).\n- The **Secret Tunnel** is one (does anyone know about it?).\n- The **Pigeon Roost** is one (can they send a fake message?).\n\nIn the digital world, **Networking is the front gate, the secret tunnel, and the pigeon roost all rolled into one.**"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Why is the Network the Weakest Link? 🔗",
+            "content": "# Inherent Trust\n\nHere is a hard truth about how the internet was built: **It was built on trust.**\n\nWhen the early internet protocols (TCP/IP) were designed in the 70s and 80s, it was a small club of researchers and military personnel. They trusted each other. They didn't need encryption or authentication baked into every packet.\n\n**Analogy:** It's like a small town where everyone leaves their doors unlocked and keys in the car ignition. Suddenly, that town becomes New York City. The **infrastructure** (roads/network protocols) hasn't changed, but the **threats** have multiplied.\n\nBecause of this legacy design, network traffic can be:\n- **Eavesdropped** (Sniffed)\n- **Impersonated** (Spoofed)\n- **Intercepted** (Man-in-the-Middle)"
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Comprehension Check 📡",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Why is the network considered a 'universal attack surface'?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Because it is made of physical cables.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Because every attack involves network traffic at some point.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Because firewalls don't work.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Exactly. Even if malware is delivered by USB (physical), it usually needs to 'phone home' over the network to exfiltrate data.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Visualizing a Packet 📦",
+            "content": "Everything on a network is sent in **Packets**. Think of a packet like a postcard. Everyone handling it can read it unless you put it in an envelope (Encryption).\n\nHere is a representation of what a packet looks like in transit:",
+            "codeSnippet": "--- IP Packet ---\n| Source IP:     192.168.1.10 |\n| Destination IP: 8.8.8.8       |\n| Data:          'Request: google.com' |\n--- End ---",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "warning",
+            "title": "The Postcard Problem 📬",
+            "content": "## Visibility\n\nIn the early days of networking (using **Hubs**), when Computer A sent a packet to Computer B, **EVERY** other computer on the network also received that postcard. It was up to the computer's network card to say, \"Oh, that's not for me,\" and throw it away.\n\nA hacker with a **Packet Sniffer** (like Wireshark) simply tells their computer: *\"Don't throw away those postcards. Read them all to me.\"*\n\nThis is why we use **Switches** (which direct traffic specifically) and **Encryption** (which puts the postcard in an opaque envelope)."
+        }
+    ]
+}

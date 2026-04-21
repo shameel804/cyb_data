@@ -1,0 +1,101 @@
+{
+    "id": "l3",
+    "chapterId": "ch_1",
+    "title": "The CIA Triad",
+    "description": "Confidentiality, Integrity, Availability. The three pillars of security.",
+    "xpReward": 30,
+    "estimatedMinutes": 10,
+    "section": "Core Concepts",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Holy Trinity of Security ✝️",
+            "content": "# CIA Triad\n\nNo, not the *Central Intelligence Agency*. This is better.\n\nThe **CIA Triad** is the foundational model used to guide information security policies within an organization.\n\nEvery security control you ever implement—every firewall rule, every password policy, every backup script—maps back to one of these three letters.\n\nLet's break them down one by one with a real-world example: **Your Online Banking App.**"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Confidentiality 🤫",
+            "content": "# C: Confidentiality\n\n**Definition:** Ensuring that information is not disclosed to unauthorized individuals, entities, or processes.\n\n**The Banking Analogy:** You don't want your neighbor seeing your bank balance. You don't want a stranger seeing your transaction history.\n\n**How do we enforce it?**\n- **Encryption:** Scrambling the data so only you and the bank can read it. (HTTPS padlock in your browser).\n- **Access Controls:** Logging in with a Username and **Password**.\n- **Multi-Factor Authentication (MFA):** That text message code sent to your phone.\n\n**The Threat to C:** **Disclosure**. A data breach where passwords are leaked."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Check C 🕵️",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which of these is PRIMARILY about Confidentiality?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Backing up the server every night.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Using a VPN to hide your web browsing from your ISP.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Having a generator for power outages.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! A VPN (Virtual Private Network) encrypts your traffic so your Internet Service Provider can't see *what* you are doing.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Integrity 📏",
+            "content": "# I: Integrity\n\n**Definition:** Guarding against improper information modification or destruction, and includes ensuring information non-repudiation and authenticity.\n\n**The Banking Analogy:** You want to ensure that when you transfer $100, the number doesn't get changed to **$10,000** in transit. Or that someone doesn't change the recipient account number mid-flight.\n\n**How do we enforce it?**\n- **Hashing:** A mathematical fingerprint of the data. If the data changes, the fingerprint changes. (We'll cover this in crypto).\n- **Checksums:** Verifying the packet didn't get corrupted.\n- **Version Control:** Tracking who changed what and when.\n\n**The Threat to I:** **Alteration**. A hacker modifying a transaction or a virus changing a system file."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Availability 📡",
+            "content": "# A: Availability\n\n**Definition:** Ensuring timely and reliable access to and use of information.\n\n**The Banking Analogy:** You want to be able to log in and check your balance **anytime**, 24/7. You don't want to see \"Website Down for Maintenance\" when you're about to pay for dinner.\n\n**How do we enforce it?**\n- **Redundancy:** Having multiple servers. If one fails, another takes over.\n- **Backups:** If data is destroyed by ransomware, you can restore it.\n- **Fire Suppression & UPS (Battery Backup):** Keeping the physical hardware running.\n- **DDoS Protection:** Defending against attacks that try to flood the site with fake traffic to make it crash.\n\n**The Threat to A:** **Destruction / Denial of Service**. A power outage or a hacker taking the site offline."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "The Balance ⚖️",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "You add a super long, 25-character random password that changes every day. This is GREAT for Confidentiality. What is the risk to the 'A' (Availability)?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "There is no risk.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Users might write it down on a sticky note, or forget it and be locked out of work.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The password might get corrupted.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Exactly. Security is a **trade-off**. If you make a system too hard to access (too secure), you hinder legitimate business function (Availability).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "tip",
+            "title": "Non-Repudiation ✍️",
+            "content": "## Bonus 'N'?\n\nSometimes you see **CIAN** or **Parkerian Hexad**.\n\n**Non-Repudiation** means: You can't deny you did it.\n\n*Example:* In banking, a digital signature ensures you can't say, \"I didn't authorize that transfer!\" The cryptographic proof says otherwise."
+        }
+    ]
+}

@@ -1,0 +1,95 @@
+{
+    "id": "l1",
+    "chapterId": "ch_2",
+    "title": "Why Layers? The Burrito Analogy",
+    "description": "Discover why networking is split into 7 distinct layers and how this simplifies everything.",
+    "xpReward": 20,
+    "estimatedMinutes": 6,
+    "section": "OSI Model",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Problem of Complexity 🧩",
+            "content": "# Sending a Cat Video is Hard\n\nImagine you want to send a funny cat video to your friend across the country.\n\nSeems simple, right? Click send.\n\nBut what **actually** happens?\n\n- The video file has to be broken into tiny pieces.\n- Each piece needs an address label.\n- The pieces must find a path through dozens of routers.\n- The electrical signals (or light pulses) have to survive interference.\n- Your friend's computer must reassemble the pieces in the *correct order*.\n- Their screen must display the video correctly.\n\nThat's **hundreds** of complex processes. If we had to write one giant program that did *all* of this at once, the internet would break constantly. Any tiny change (new WiFi chip, new video format) would break the whole system.\n\n**The Solution? Divide and Conquer.**"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the main benefit of splitting networking into 'layers'?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It makes the internet faster.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It reduces complexity by separating concerns.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It is required by law.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Exactly! Modularity (layers) allows engineers to change one part (e.g., switch from WiFi to Cellular) without rewriting the entire application.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "The OSI Model 🌯",
+            "content": "# Open Systems Interconnection (OSI)\n\nIn 1984, the International Organization for Standardization (ISO) created a **reference model** for how network communication should work.\n\nIt's called the **OSI Model** and it has **7 Layers**.\n\n**The Burrito Analogy:**\n\nThink of sending data like **making a burrito**. You don't just throw ingredients in the air and hope they land wrapped. You follow a process.\n\n1.  **Layer 7 (Application):** The **Hunger** / The Meal Idea. \"I want a steak burrito.\"\n2.  **Layer 6 (Presentation):** The **Translation**. Converting 'steak' spelling to the correct 'steak' order format.\n3.  **Layer 5 (Session):** The **Conversation**. \"Hi, I'd like to place an order for pickup.\"\n4.  **Layer 4 (Transport):** The **Bag**. Does it need to be sealed tight? Is it fragile? (Reliability).\n5.  **Layer 3 (Network):** The **Delivery Address**. 123 Main St.\n6.  **Layer 2 (Data Link):** The **Car**. The specific vehicle on your street.\n7.  **Layer 1 (Physical):** The **Road**. The actual asphalt.\n\nWe'll unpack each of these in the coming lessons."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Encapsulation: The Russian Doll 🪆",
+            "content": "# Data Travels Down the Stack\n\nHere's the most critical concept of the entire chapter:\n\n**Encapsulation**\n\nWhen you send a cat video, the data **starts at Layer 7 and goes DOWN** to Layer 1.\n\nAt **each layer**, a **Header** (and sometimes a Trailer) is **wrapped around** the data.\n\n```text\nLayer 7 Data:          [ Cat Video Bytes ]\nLayer 4 adds:       [ TCP Header | Cat Video Bytes ]\nLayer 3 adds:    [ IP Header | TCP Header | Cat Video Bytes ]\nLayer 2 adds: [ Frame Header | IP Header | TCP Header | Cat Video Bytes | Trailer ]\n```\n\nThis is like putting a letter inside an envelope (Layer 4), then putting that envelope inside a FedEx Box (Layer 3), then putting that box on a specific Truck (Layer 2).\n\nWhen the data **arrives** at the destination, it goes **UP** the stack. Each layer **strips off** its corresponding header until only the original Cat Video is left for the application.\n\n**This is called De-encapsulation.**"
+        },
+        {
+            "id": "s_l1_5",
+            "type": "quiz",
+            "title": "Direction Check ⬆️⬇️",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "When you SEND an email, does the data move UP or DOWN the OSI model layers?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "UP (Layer 1 -> Layer 7)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "DOWN (Layer 7 -> Layer 1)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It stays at Layer 3.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! Sending data involves adding headers (encapsulation) as it moves down the stack toward the physical wire.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Please Do Not Throw Sausage Pizza Away 🍕",
+            "content": "## Mnemonic to Remember the 7 Layers\n\nFrom Top (7) to Bottom (1):\n\n- **P**lease - **P**hysical (Layer 1)\n- **D**o - **D**ata Link (Layer 2)\n- **N**ot - **N**etwork (Layer 3)\n- **T**hrow - **T**ransport (Layer 4)\n- **S**ausage - **S**ession (Layer 5)\n- **P**izza - **P**resentation (Layer 6)\n- **A**way - **A**pplication (Layer 7)\n\n*Wait, that's from bottom to top!*\n\n**Top to Bottom (7->1):**\n**A**ll **P**eople **S**eem **T**o **N**eed **D**ata **P**rocessing\n\n- **A**pplication\n- **P**resentation\n- **S**ession\n- **T**ransport\n- **N**etwork\n- **D**ata Link\n- **P**hysical"
+        }
+    ]
+}
