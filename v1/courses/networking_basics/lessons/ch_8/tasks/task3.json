@@ -1,0 +1,17 @@
+{
+    "id": "task3",
+    "chapterId": "ch_8",
+    "title": "AAA and Cryptography Configuration Design",
+    "description": "Design an authentication and encryption strategy for a remote access VPN.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario: Secure Remote Access VPN\n\nYour company is deploying a new VPN solution for remote employees to securely access the internal corporate network.\n\n**Requirements:**\n- **Strong Authentication:** Must use **Multi-Factor Authentication (MFA)**.\n- **Centralized User Management:** User accounts and permissions should be managed in Active Directory.\n- **Data Confidentiality:** All traffic between the remote laptop and the corporate network must be encrypted.\n- **Device Posture Check:** The VPN should verify that the connecting laptop has **up-to-date antivirus** and **operating system patches** before granting access.\n\n## Questions\n\n1.  Which **AAA protocol** (RADIUS or TACACS+) would you recommend for authenticating VPN users against Active Directory? Why?\n2.  Describe a suitable **MFA** solution that integrates with the VPN. (e.g., What second factor would you use?)\n3.  What **encryption protocol** should the VPN tunnel use to ensure data confidentiality? (Name a specific modern protocol, not just 'SSL').\n4.  The 'Device Posture Check' is an example of which **Access Control model**? (Hint: It checks attributes of the device).\n5.  To ensure that the VPN server's identity is trusted and not being impersonated, what cryptographic component must the VPN server present to the client?\n\nProvide concise, technically accurate answers.",
+    "hints": [
+        "RADIUS is the standard for network access authentication (Wi-Fi, VPN).",
+        "MFA examples: Push notification to mobile app, hardware token, SMS (less secure).",
+        "Modern VPN protocols: IKEv2/IPsec, WireGuard, OpenVPN.",
+        "Attribute-Based Access Control (ABAC) considers device posture.",
+        "Digital Certificate signed by a trusted CA."
+    ],
+    "expectedOutput": "1. **RADIUS**. It integrates seamlessly with Active Directory (via NPS or similar) and is the standard for VPN authentication.\n2. **Push notification via Microsoft Authenticator or Duo Mobile**. After entering password, user approves login on their smartphone. (Alternative: Time-based One-Time Password - TOTP).\n3. **IKEv2/IPsec** with AES-256 encryption, or **WireGuard** with ChaCha20-Poly1305.\n4. **Attribute-Based Access Control (ABAC)** or **Network Access Control (NAC)**. Access depends on device attributes (patch level, AV status).\n5. A valid **Digital Certificate** (X.509 certificate) issued by a trusted Certificate Authority (CA).",
+    "solutionCode": "// No code required. Design response."
+}

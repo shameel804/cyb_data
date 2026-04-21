@@ -1,0 +1,70 @@
+{
+    "id": "l5",
+    "chapterId": "ch_3",
+    "title": "VLSM: Variable Length Subnet Masking",
+    "description": "Stop wasting IP addresses. Fit the subnet size exactly to the need.",
+    "xpReward": 35,
+    "estimatedMinutes": 12,
+    "section": "Advanced",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Problem with FLSM 📦",
+            "content": "# Fixed Length Subnet Masking (FLSM)\n\nIn the previous lesson, we borrowed the **same number of bits** for **all** subnets. This is FLSM.\n\n**Example:** You have `192.168.1.0/24` and you create **4 subnets** using `/26`.\n- Each subnet gets **62 hosts**.\n- Total capacity: 4 x 62 = 248 hosts.\n\n**The Inefficiency:**\nWhat if one of those subnets is for a **Point-to-Point Link** between two routers?\n- A P2P link needs **only 2 IP addresses**.\n- But with FLSM, you just wasted **60 addresses** on that link!\n\n**The Solution:** **VLSM** (Variable Length Subnet Masking). Subnet a subnet."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "VLSM: Subnetting a Subnet 🔁",
+            "content": "# The Russian Doll of IP Addresses\n\nWith VLSM, you start with the **largest requirement** and carve out pieces, then take one of those pieces and carve it further.\n\n**Analogy:** You have a 16-slice pizza.\n- Dept A needs 8 slices. (Give them half the pizza).\n- Dept B needs 4 slices. (Give them a quarter).\n- Dept C needs 2 slices.\n- Link 1 needs 2 slices (but wait, they just need a tiny appetizer, not a whole slice).\n\nWith VLSM, we take the 2-slice portion for Link 1 and **cut it into 4 tiny pieces** (/30) so it uses only what it needs.\n\n**The Golden Rule of VLSM:**\n> **Start with the largest required subnet, then go to the next largest.**\n\nIf you don't follow this order, you will end up with overlapping addresses and a broken network."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "VLSM Order 🗂️",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "You need subnets for: 50 hosts, 20 hosts, 10 hosts, and 2 hosts. Which subnet do you create FIRST?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "2 hosts",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "50 hosts",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "10 hosts",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "20 hosts",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Always start with the largest requirement to ensure you allocate contiguous space efficiently.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "VLSM Walkthrough 🚶",
+            "content": "# Step-by-Step Example\n\n**Given:** Network `192.168.1.0/24`\n**Requirements:**\n1.  **LAN A:** 100 Hosts\n2.  **LAN B:** 50 Hosts\n3.  **LAN C:** 25 Hosts\n4.  **WAN Link 1 (R1-R2):** 2 Hosts\n5.  **WAN Link 2 (R2-R3):** 2 Hosts\n\n---\n\n**Step 1: LAN A (100 Hosts)**\n- Needs 100. `2^h - 2 >= 100` -> `h = 7` (126 usable).\n- Prefix: `32 - 7 = /25`.\n- Subnet: `192.168.1.0/25` (Range: .1 - .126). *Leaves .128 - .255 free.*\n\n**Step 2: LAN B (50 Hosts)**\n- Needs 50. `2^h - 2 >= 50` -> `h = 6` (62 usable).\n- Prefix: `/26`.\n- **Next Available Block:** Start at `.128`.\n- Subnet: `192.168.1.128/26` (Range: .129 - .190). *Leaves .192 - .255 free.*\n\n**Step 3: LAN C (25 Hosts)**\n- Needs 25. `2^h - 2 >= 25` -> `h = 5` (30 usable).\n- Prefix: `/27`.\n- **Next Available Block:** Start at `.192`.\n- Subnet: `192.168.1.192/27` (Range: .193 - .222). *Leaves .224 - .255 free.*\n\n**Step 4: WAN Links (2 Hosts each)**\n- Needs 2. `2^h - 2 >= 2` -> `h = 2` (2 usable).\n- Prefix: `/30`.\n- **Next Available Block:** Start at `.224`. Use `/30` subnets.\n- WAN 1: `192.168.1.224/30` (Usable .225 & .226)\n- WAN 2: `192.168.1.228/30` (Usable .229 & .230)\n\n**Result:** We saved **over 100 addresses** compared to FLSM!"
+        },
+        {
+            "id": "s_l5_5",
+            "type": "tip",
+            "title": "Cybersecurity & VLSM 🛡️",
+            "content": "## Routing Protocol Requirements\n\n**Classful Routing Protocols** (RIPv1, IGRP) **DO NOT support VLSM**. They only look at the Class A/B/C boundary and assume the mask.\n\n**Classless Routing Protocols** (RIPv2, EIGRP, OSPF, BGP) **DO support VLSM**. They include the **Subnet Mask** in their routing updates.\n\n**Security Note:** If you misconfigure a router with the wrong classless protocol, you will have **routing black holes** where some subnets are unreachable."
+        }
+    ]
+}

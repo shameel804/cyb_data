@@ -1,0 +1,146 @@
+{
+    "id": "l2",
+    "chapterId": "ch_9",
+    "title": "Types of Firewalls: Packet Filtering, Stateful, and Next-Gen",
+    "description": "Explore the evolution of firewalls from simple packet filters to intelligent application-aware systems.",
+    "xpReward": 35,
+    "estimatedMinutes": 15,
+    "section": "Firewall Technology",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Firewall Evolution 🦖➡️🤖",
+            "content": "# From Static Guards to AI Sentinels\n\nFirewalls have evolved significantly over the decades. Understanding each generation helps you choose the right tool for the job.\n\n| Generation | Name | OSI Layer | Key Feature |\n|------------|------|-----------|-------------|\n| 1st | Packet Filter | 3 & 4 | Checks IPs, Ports, Protocols |\n| 2nd | Stateful Inspection | 3 & 4 | Tracks connection state |\n| 3rd | Application / Proxy | 7 | Inspects application data |\n| 4th | Next-Gen Firewall (NGFW) | 3-7 | Combines all + IPS, App-ID |\n\nLet's dive into each type."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Packet Filtering Firewall (Stateless) 📦",
+            "content": "# The Old-School Bouncer\n\n**Operation:** Inspects **each packet individually** based on header information.\n- Source IP Address\n- Destination IP Address\n- Source Port\n- Destination Port\n- Protocol (TCP/UDP/ICMP)\n\n**Analogy:** A security guard who checks **only your ID card**. They don't remember if you've been in the building before, or if you're currently inside. Every time you walk past, they check the card again.\n\n**Pros:**\n- **Fast and efficient.** Minimal processing overhead.\n- Works at wire speed on simple routers.\n\n**Cons:**\n- **No memory.** Doesn't know if a packet is part of an established connection.\n- **Vulnerable to spoofing.** An attacker can craft packets that look like replies (ACK flag set) and bypass the filter.\n- **Cannot inspect application data.** An attack hidden inside an HTTP payload sails right through.\n\n**Example Rule (Cisco ACL):**\n```cisco\naccess-list 100 permit tcp 192.168.1.0 0.0.0.255 any eq 80\n```\n*This allows any TCP packet from the internal subnet to any web server on port 80. It does not check if it's a valid HTTP request.*"
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Packet Filtering ⚙️",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What is the main limitation of a Stateless Packet Filtering Firewall?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It is too slow.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It cannot track the state of a connection.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It encrypts all traffic.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It only works on Windows.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Stateless firewalls lack memory of connection state, making them susceptible to certain attacks.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Stateful Inspection Firewall 📋",
+            "content": "# The Bouncer with a Clipboard\n\n**Operation:** Maintains a **State Table** that tracks the status of every active connection passing through it.\n\n**The State Table records:**\n- Source/Destination IP and Port\n- Protocol\n- **Connection State:** (NEW, ESTABLISHED, RELATED, INVALID)\n- Sequence numbers, timeout timers.\n\n**Analogy:** The security guard now keeps a **clipboard log**. When you enter, they log your name. When you come back from lunch, they see you're already in the system and just wave you through. If a stranger tries to walk out claiming they were inside, the guard checks the log and stops them.\n\n**How it Works:**\n1.  Client sends **SYN** to Web Server.\n2.  Firewall sees NEW connection. Checks rule: \"Allow OUTBOUND web traffic?\" Yes.\n3.  Firewall adds entry to State Table: `192.168.1.10:54321 -> 93.184.216.34:80 [SYN_SENT]`.\n4.  Server replies with **SYN-ACK**.\n5.  Firewall checks State Table: \"Is this a reply to an existing connection?\" Yes. **Automatically allowed.** No explicit inbound rule needed!\n6.  Connection becomes ESTABLISHED.\n\n**Pros:**\n- **More Secure:** Blocks unsolicited inbound traffic effectively.\n- **Faster Processing:** Once a connection is in the table, the firewall doesn't need to re-evaluate the full rule set for every packet.\n\n**Cons:**\n- Still **cannot inspect the application payload** (Layer 7). A stateful firewall sees a connection to Port 443 and allows it. It has **no idea** if the data inside is a legitimate web page or a malware download."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "Stateful Inspection 🔍",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "A Stateful Firewall allows return traffic from a web server without an explicit inbound rule because:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It trusts all web servers.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It sees the traffic is part of an established session in its state table.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It decrypts HTTPS traffic.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It only blocks UDP traffic.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Stateful inspection tracks connections, so replies to allowed outbound requests are permitted dynamically.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Next-Generation Firewall (NGFW) 🚀",
+            "content": "# The AI-Powered Security Guard\n\n**NGFW** combines the features of a Stateful Firewall with **deep packet inspection (DPI)** and **intrusion prevention (IPS)**.\n\n**Key NGFW Capabilities (Beyond Stateful):**\n\n1.  **Application Visibility and Control (App-ID):**\n    - Identifies traffic based on **application signatures**, not just ports.\n    - Example: It knows the difference between `facebook.com` (Social Media) and `facebook.com/messenger` (Chat). It can **block Facebook Chat** while allowing Facebook browsing.\n\n2.  **User Identity Awareness (User-ID):**\n    - Integrates with Active Directory/LDAP.\n    - Creates rules based on **who** the user is, not just their IP address.\n    - Example: *\"Allow members of the 'Finance' group to access the accounting server, but deny everyone else.\"*\n\n3.  **Intrusion Prevention System (IPS):**\n    - Inspects the **payload** of packets for known attack patterns (signatures) and anomalies.\n    - Blocks exploits like SQL Injection, Buffer Overflows, and malware downloads.\n\n4.  **SSL/TLS Decryption:**\n    - Decrypts HTTPS traffic to inspect the encrypted payload for threats.\n    - Re-encrypts it before sending it to the destination. (Privacy concerns; requires careful policy).\n\n**Analogy:** The NGFW is a **TSA Security Checkpoint**. It doesn't just check your boarding pass (IP/Port); it **X-rays your bag** (DPI) and checks your ID against a **terrorist watchlist** (IPS)."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Web Application Firewall (WAF) 🌐",
+            "content": "# Specialized Protection for Web Apps\n\nA **WAF** is a specialized firewall that protects **web applications** (HTTP/HTTPS traffic) from attacks that target Layer 7.\n\n**Analogy:** A WAF is a **specialized bodyguard for a specific VIP** (the web server). The general firewall protects the whole building, but the WAF stands right next to the web server and blocks specific threats aimed directly at it.\n\n**Attacks Blocked by WAF:**\n- **SQL Injection (SQLi):** `' OR '1'='1`\n- **Cross-Site Scripting (XSS):** `<script>alert('hack')</script>`\n- **Cross-Site Request Forgery (CSRF)**\n- **File Inclusion / Path Traversal:** `../../etc/passwd`\n\n**Deployment Options:**\n- **Cloud-Based WAF:** e.g., Cloudflare, AWS WAF, Azure WAF. Traffic is routed through the provider's scrubbing center.\n- **On-Premise WAF:** Dedicated appliance (e.g., F5 BIG-IP ASM).\n\n**Crucial Note:** A **Network Firewall** (even NGFW) does **not** replace a WAF. NGFW provides broad Layer 7 visibility; WAF provides deep, specialized HTTP/HTML parsing and protection."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "quiz",
+            "title": "NGFW vs WAF 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "multiple_choice",
+                "question": "Which device is specifically designed to block SQL Injection attacks against a web server?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Packet Filtering Firewall",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Stateful Firewall",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Web Application Firewall (WAF)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Layer 2 Switch",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "WAFs understand HTTP/HTML and can detect malicious payloads in web requests.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

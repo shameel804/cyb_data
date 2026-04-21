@@ -1,0 +1,82 @@
+{
+    "id": "sq_csnb_2",
+    "title": "Packet Prophecy",
+    "triggerChapterIndex": 5,
+    "metadata": {
+        "type": "prediction"
+    },
+    "questions": [
+        {
+            "id": "sq_csnb_2_q1",
+            "type": "code_output",
+            "question": "What is the output of the following Python code that simulates a simple subnet calculation?",
+            "codeSnippet": "import ipaddress\nnet = ipaddress.ip_network('192.168.1.0/28', strict=False)\nprint(net.broadcast_address)",
+            "correctOutput": "192.168.1.15",
+            "correctAnswer": "192.168.1.15",
+            "options": [],
+            "explanation": "/28 means the last octet block size is 16 (2^(32-28)=16). Broadcast address is network + 15 = 192.168.1.15.",
+            "xpReward": 25,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_csnb_2_q2",
+            "type": "code_output",
+            "question": "Given the TCP flags captured in a packet: SYN=1, ACK=0. What does this packet represent? (Choose one word)",
+            "codeSnippet": "flags = {'SYN': 1, 'ACK': 0, 'FIN': 0, 'RST': 0}\nif flags['SYN'] and not flags['ACK']:\n    print('Initiation')\nelif flags['SYN'] and flags['ACK']:\n    print('Response')\nelse:\n    print('Other')",
+            "correctOutput": "Initiation",
+            "correctAnswer": "Initiation",
+            "options": [],
+            "explanation": "A packet with SYN=1 and ACK=0 is the first step of the TCP three-way handshake (SYN).",
+            "xpReward": 25,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_csnb_2_q3",
+            "type": "code_output",
+            "question": "What will be printed when this code runs?",
+            "codeSnippet": "def dns_lookup(domain):\n    records = {'example.com': '93.184.216.34', 'google.com': '142.250.185.46'}\n    return records.get(domain, 'NXDOMAIN')\nprint(dns_lookup('cybron.io'))",
+            "correctOutput": "NXDOMAIN",
+            "correctAnswer": "NXDOMAIN",
+            "options": [],
+            "explanation": "The domain 'cybron.io' is not in the records dictionary, so the get method returns the default 'NXDOMAIN'.",
+            "xpReward": 25,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_csnb_2_q4",
+            "type": "code_output",
+            "question": "This function simulates a router forwarding decision. What is the output for destination IP 8.8.8.8?",
+            "codeSnippet": "def route(dest_ip):\n    table = {\n        '192.168.1.0/24': 'eth0',\n        '10.0.0.0/8': 'eth1',\n        '0.0.0.0/0': 'eth2'\n    }\n    for net, intf in table.items():\n        if dest_ip in ipaddress.ip_network(net):\n            return intf\n    return 'drop'\nprint(route('8.8.8.8'))",
+            "correctOutput": "eth2",
+            "correctAnswer": "eth2",
+            "options": [],
+            "explanation": "The destination 8.8.8.8 does not match the first two entries, but matches the default route 0.0.0.0/0.",
+            "xpReward": 25,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_csnb_2_q5",
+            "type": "code_output",
+            "question": "What does this ARP cache simulation print?",
+            "codeSnippet": "arp_cache = {'192.168.1.1': '00:11:22:33:44:55', '192.168.1.100': 'aa:bb:cc:dd:ee:ff'}\ndef resolve(ip):\n    return arp_cache.get(ip, 'Request timed out')\nprint(resolve('192.168.1.200'))",
+            "correctOutput": "Request timed out",
+            "correctAnswer": "Request timed out",
+            "options": [],
+            "explanation": "The IP 192.168.1.200 is not in the cache, so the default timeout message is returned.",
+            "xpReward": 25,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_csnb_2_q6",
+            "type": "code_output",
+            "question": "This code calculates the number of subnets when borrowing bits. What is the output for borrowing 3 bits?",
+            "codeSnippet": "borrowed_bits = 3\nsubnets = 2 ** borrowed_bits\nprint(f'Subnets: {subnets}')",
+            "correctOutput": "Subnets: 8",
+            "correctAnswer": "Subnets: 8",
+            "options": [],
+            "explanation": "2^3 = 8 subnets.",
+            "xpReward": 25,
+            "difficulty": 1
+        }
+    ]
+}

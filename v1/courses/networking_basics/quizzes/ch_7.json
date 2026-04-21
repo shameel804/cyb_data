@@ -1,0 +1,323 @@
+{
+    "id": "quiz_ch_7",
+    "chapterId": "ch_7",
+    "title": "Chapter 7 Quiz: DHCP, ARP, and LAN Security",
+    "description": "Test your knowledge of automatic addressing, address resolution, and Layer 2 attacks and defenses!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What does DHCP stand for?",
+            "options": [
+                "Domain Host Configuration Protocol",
+                "Dynamic Host Configuration Protocol",
+                "Digital Host Control Protocol",
+                "Dynamic Host Control Program"
+            ],
+            "correctAnswer": 1,
+            "explanation": "DHCP is Dynamic Host Configuration Protocol, used to automatically assign IP addresses."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What is the correct order of the DHCP DORA process?",
+            "options": [
+                "Discover, Offer, Request, Acknowledgment",
+                "Discover, Request, Offer, Acknowledgment",
+                "Offer, Discover, Request, Acknowledgment",
+                "Request, Offer, Discover, Acknowledgment"
+            ],
+            "correctAnswer": 0,
+            "explanation": "DORA: Discover, Offer, Request, Acknowledgment."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Why is the DHCP Request message sent as a broadcast?",
+            "options": [
+                "Because the client doesn't have an IP address yet",
+                "To inform other DHCP servers that their offers were declined",
+                "To find the default gateway",
+                "To update the ARP cache"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The broadcast Request notifies all DHCP servers, allowing the non-selected servers to reclaim their offered IP addresses."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "DHCP Option ______ is used to provide the Default Gateway address to clients.",
+            "options": [
+                "1",
+                "3",
+                "6",
+                "15"
+            ],
+            "correctAnswer": "3",
+            "explanation": "Option 3 specifies the Router (Default Gateway)."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What is the purpose of a DHCP Relay Agent?",
+            "options": [
+                "To assign static IP addresses",
+                "To forward DHCP broadcasts across routers to a central server",
+                "To block rogue DHCP servers",
+                "To speed up DHCP requests"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Relay agents convert DHCP broadcasts to unicasts so they can traverse IP routers."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What field does a DHCP Relay Agent insert into the packet to identify the client's subnet?",
+            "options": [
+                "GIADDR (Gateway IP Address)",
+                "CHADDR (Client Hardware Address)",
+                "SIADDR (Server IP Address)",
+                "YIADDR (Your IP Address)"
+            ],
+            "correctAnswer": 0,
+            "explanation": "GIADDR (Gateway IP Address) tells the DHCP server which subnet the request originated from."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What is the primary function of ARP?",
+            "options": [
+                "Resolve an IP address to a MAC address",
+                "Resolve a MAC address to an IP address",
+                "Assign IP addresses automatically",
+                "Route packets between networks"
+            ],
+            "correctAnswer": 0,
+            "explanation": "ARP (Address Resolution Protocol) maps IP addresses to MAC addresses on a local subnet."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What is the destination MAC address of an ARP Request frame?",
+            "options": [
+                "The target's specific MAC",
+                "FF:FF:FF:FF:FF:FF (Broadcast)",
+                "The default gateway's MAC",
+                "00:00:00:00:00:00"
+            ],
+            "correctAnswer": 1,
+            "explanation": "ARP Requests are sent to the broadcast MAC address so all devices on the subnet receive them."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What is a Gratuitous ARP?",
+            "options": [
+                "An ARP Request for the default gateway",
+                "An unsolicited ARP Reply used to update other devices' caches",
+                "An ARP packet sent over IPv6",
+                "A corrupted ARP packet"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Gratuitous ARP is an announcement of a device's own IP-to-MAC mapping, often used during failover."
+        },
+        {
+            "id": "q10",
+            "type": "true_false",
+            "question": "Proxy ARP is a secure feature that should always be enabled on router interfaces.",
+            "correctAnswer": false,
+            "explanation": "False. Proxy ARP can be abused in spoofing attacks and should be disabled unless specifically needed."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What is the goal of a DHCP Starvation attack?",
+            "options": [
+                "To steal user credentials",
+                "To exhaust the pool of available IP addresses",
+                "To poison the ARP cache",
+                "To flood the switch CAM table"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Starvation attacks consume all DHCP leases, causing a denial of service for legitimate clients."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "In a DHCP Spoofing attack, what malicious information does the rogue server typically provide?",
+            "options": [
+                "Incorrect subnet mask only",
+                "Malicious Default Gateway and DNS server addresses",
+                "Duplicate IP addresses",
+                "Expired lease times"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The attacker redirects traffic by providing their own IP as the gateway and DNS server."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What is the primary mechanism used in an ARP Poisoning attack?",
+            "options": [
+                "Flooding the switch with MAC addresses",
+                "Sending unsolicited ARP Replies (Gratuitous ARP) mapping a legitimate IP to the attacker's MAC",
+                "Sending malformed DHCP Discover packets",
+                "Exploiting a buffer overflow in the router"
+            ],
+            "correctAnswer": 1,
+            "explanation": "ARP Poisoning relies on sending forged ARP messages to corrupt the ARP cache of victims."
+        },
+        {
+            "id": "q14",
+            "type": "fill_blank",
+            "question": "The Cisco switch feature that prevents rogue DHCP servers by filtering DHCP messages on untrusted ports is called ______.",
+            "options": [
+                "Port Security",
+                "DHCP Snooping",
+                "Dynamic ARP Inspection",
+                "IP Source Guard"
+            ],
+            "correctAnswer": "DHCP Snooping",
+            "explanation": "DHCP Snooping builds a trusted binding database and blocks unauthorized DHCP server responses."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "In DHCP Snooping, which ports should be configured as 'Trusted'?",
+            "options": [
+                "Ports connected to end-user PCs",
+                "Ports connected to legitimate DHCP servers",
+                "All access ports",
+                "Unused ports"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Only ports facing the real DHCP server(s) should be trusted."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What does Dynamic ARP Inspection (DAI) use to validate ARP packets?",
+            "options": [
+                "The routing table",
+                "The MAC address table",
+                "The DHCP Snooping Binding Database",
+                "The ARP cache of the router"
+            ],
+            "correctAnswer": 2,
+            "explanation": "DAI checks ARP packets against the trusted IP-to-MAC mappings in the DHCP Snooping database."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What is the purpose of Port Security on a switch?",
+            "options": [
+                "To prevent ARP Poisoning",
+                "To limit the number of MAC addresses allowed on a port",
+                "To block rogue DHCP servers",
+                "To encrypt traffic on the port"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Port Security mitigates MAC flooding and restricts which devices can connect."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "IP Source Guard (IPSG) uses the DHCP Snooping binding table to filter IP traffic.",
+            "correctAnswer": true,
+            "explanation": "True. IPSG prevents IP spoofing by allowing only source IPs that match the binding table."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "Which protocol replaces ARP in IPv6 networks?",
+            "options": [
+                "DHCPv6",
+                "ICMPv6 Neighbor Discovery Protocol",
+                "SLAAC",
+                "NDP Inspection"
+            ],
+            "correctAnswer": 1,
+            "explanation": "IPv6 uses ICMPv6 Neighbor Solicitation and Advertisement messages."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is the IPv6 equivalent of a rogue DHCP server attack?",
+            "options": [
+                "Neighbor Spoofing",
+                "Rogue Router Advertisement (RA)",
+                "SLAAC Poisoning",
+                "DHCPv6 Starvation"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Rogue RA messages can redirect traffic or cause DoS in IPv6 networks. RA Guard mitigates this."
+        },
+        {
+            "id": "q21",
+            "type": "fill_blank",
+            "question": "The IP address range 169.254.0.0/16 is known as ______ and indicates DHCP failure.",
+            "options": [
+                "Private Range",
+                "APIPA",
+                "Loopback",
+                "Multicast"
+            ],
+            "correctAnswer": "APIPA",
+            "explanation": "APIPA (Automatic Private IP Addressing) is used when a DHCP server is unreachable."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "At what percentage of the lease time does a DHCP client attempt to renew its lease (T1 timer)?",
+            "options": [
+                "25%",
+                "50%",
+                "75%",
+                "87.5%"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Renewal (T1) occurs at 50% of the lease duration."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "What happens if a DHCP client fails to renew its lease before it expires?",
+            "options": [
+                "It keeps the IP indefinitely",
+                "It must stop using the IP and start the DORA process from scratch",
+                "The IP is automatically renewed by the server",
+                "It broadcasts a DHCPNAK"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Upon lease expiration, the client must release the address and begin a new DHCP discovery."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "Which of the following is NOT a mitigation for ARP Poisoning?",
+            "options": [
+                "Dynamic ARP Inspection (DAI)",
+                "Static ARP entries",
+                "DHCP Snooping",
+                "Disabling STP"
+            ],
+            "correctAnswer": 3,
+            "explanation": "STP (Spanning Tree Protocol) prevents loops; it does not mitigate ARP attacks."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "What is the primary difference between ARP and Proxy ARP?",
+            "options": [
+                "ARP is for IPv4; Proxy ARP is for IPv6",
+                "Proxy ARP has a router respond on behalf of a device on a different subnet",
+                "ARP uses broadcasts; Proxy ARP uses multicasts",
+                "There is no difference"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Proxy ARP allows a router to answer ARP requests for remote hosts, making them appear local."
+        }
+    ]
+}

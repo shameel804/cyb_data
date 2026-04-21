@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_10",
+    "title": "Design a Secure Remote Access Architecture",
+    "description": "Design a remote access solution incorporating MFA, device posture checks, and least privilege.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario: Secure Access for Contractors\n\nYour company, FinCorp, needs to provide secure access to a sensitive financial application (`finance.fincorp.com`) for **external auditors** who will be working remotely for 3 months.\n\n**Requirements:**\n- Auditors use their **own laptops** (unmanaged devices).\n- Auditors should **only** be able to access the `finance.fincorp.com` web application. They **must not** have access to any other internal servers or network resources.\n- Strong authentication is required (MFA).\n- The company wants to **avoid** installing a traditional VPN client on the auditors' laptops if possible.\n\n## Task\n\n1.  Propose a **technology solution** (e.g., VPN type, proxy, ZTNA) that meets these requirements.\n2.  Describe **how authentication** should be handled (what factors?).\n3.  Explain **how you would restrict access** to only the specific application (Principle of Least Privilege).\n4.  What **additional security control** could you implement to check the auditors' laptops before granting access (even though they are unmanaged)?\n\n**Write your response in clear paragraphs.**",
+    "hints": [
+        "Consider a Clientless SSL VPN Portal or a ZTNA solution.",
+        "MFA should use something the auditor has (e.g., mobile app).",
+        "Application-level access control vs. network-level.",
+        "Device Posture / Endpoint Compliance check (e.g., browser isolation, agentless scan)."
+    ],
+    "expectedOutput": "1. **Technology Solution:** A **Clientless SSL VPN Portal** or a **ZTNA solution** (e.g., Azure AD Application Proxy, Cloudflare Access). This requires no client installation; auditors access the app via a standard web browser.\n2. **Authentication:** Require **Multi-Factor Authentication (MFA)**. After entering a password, the auditor must approve a push notification or enter a TOTP code from an authenticator app. Integration with an Identity Provider (IdP) like Azure AD or Okta.\n3. **Access Restriction:** Configure the SSL VPN / ZTNA policy to **exclusively permit** access to the URL `finance.fincorp.com` on port 443. Deny all other destinations. This limits the auditor to a single application tunnel.\n4. **Additional Control:** Implement a **Browser Isolation** solution or perform a **clientless endpoint compliance check**. For unmanaged devices, you cannot install an agent. However, you can redirect the session through a remote browser isolation (RBI) service that renders the application as pixels, preventing data leakage or malware transfer.",
+    "solutionCode": "// Design response. No code required."
+}

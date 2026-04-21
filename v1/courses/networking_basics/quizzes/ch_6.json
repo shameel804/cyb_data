@@ -1,0 +1,323 @@
+{
+    "id": "quiz_ch_6",
+    "chapterId": "ch_6",
+    "title": "Chapter 6 Quiz: DNS - The Internet's Phonebook",
+    "description": "Test your mastery of DNS hierarchy, record types, resolution, and security!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary function of DNS?",
+            "options": [
+                "To assign IP addresses to devices",
+                "To translate domain names to IP addresses",
+                "To encrypt web traffic",
+                "To route packets across networks"
+            ],
+            "correctAnswer": 1,
+            "explanation": "DNS (Domain Name System) maps human-friendly names to machine-readable IP addresses."
+        },
+        {
+            "id": "q2",
+            "type": "fill_blank",
+            "question": "The top of the DNS hierarchy, represented by a trailing dot, is called the ______.",
+            "options": [
+                "Apex",
+                "Root",
+                "TLD",
+                "Origin"
+            ],
+            "correctAnswer": "Root",
+            "explanation": "The root zone is the highest level of the DNS hierarchy, served by the root name servers."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "What information do the DNS Root Servers provide?",
+            "options": [
+                "The IP address of the requested website",
+                "The addresses of the Top-Level Domain (TLD) name servers",
+                "The MX records for the domain",
+                "The contact information for the domain owner"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Root servers delegate queries to the appropriate TLD servers (e.g., .com, .org, .uk)."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which type of DNS query expects the resolver to do all the work and return the final answer?",
+            "options": [
+                "Iterative Query",
+                "Recursive Query",
+                "Authoritative Query",
+                "Reverse Query"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Recursive queries shift the burden of resolution to the DNS server."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What does 'TTL' stand for in a DNS record?",
+            "options": [
+                "Total Time Limit",
+                "Time To Live",
+                "Transmission Time Length",
+                "Top Tier Latency"
+            ],
+            "correctAnswer": 1,
+            "explanation": "TTL (Time To Live) specifies how long a resolver should cache the record before querying again."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which DNS record type maps a hostname to an IPv4 address?",
+            "options": [
+                "AAAA",
+                "CNAME",
+                "MX",
+                "A"
+            ],
+            "correctAnswer": 3,
+            "explanation": "A records hold 32-bit IPv4 addresses."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Which DNS record type maps a hostname to an IPv6 address?",
+            "options": [
+                "A",
+                "AAAA",
+                "CNAME",
+                "PTR"
+            ],
+            "correctAnswer": 1,
+            "explanation": "AAAA records hold 128-bit IPv6 addresses. 'Quad-A' because 4x4=16 bytes."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What is a CNAME record used for?",
+            "options": [
+                "Specifying the mail server",
+                "Creating an alias that points to another domain name",
+                "Storing arbitrary text data",
+                "Mapping an IP to a hostname"
+            ],
+            "correctAnswer": 1,
+            "explanation": "CNAME (Canonical Name) records point one domain name to another."
+        },
+        {
+            "id": "q9",
+            "type": "true_false",
+            "question": "The root domain (e.g., example.com) can be a CNAME record pointing to www.example.com.",
+            "correctAnswer": false,
+            "explanation": "False. The apex domain cannot be a CNAME because it requires SOA and NS records, which conflict with CNAME."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is the purpose of an MX record?",
+            "options": [
+                "To verify domain ownership",
+                "To identify the mail server responsible for the domain",
+                "To prevent cache poisoning",
+                "To provide a text description of the domain"
+            ],
+            "correctAnswer": 1,
+            "explanation": "MX (Mail Exchanger) records route email to the correct mail servers."
+        },
+        {
+            "id": "q11",
+            "type": "fill_blank",
+            "question": "The DNS record type used for Reverse DNS (IP to Name) is called ______.",
+            "options": [
+                "A",
+                "CNAME",
+                "PTR",
+                "NS"
+            ],
+            "correctAnswer": "PTR",
+            "explanation": "PTR (Pointer) records are used in the in-addr.arpa domain for reverse lookups."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which DNS record type is commonly used for email authentication protocols like SPF and DKIM?",
+            "options": [
+                "A",
+                "MX",
+                "TXT",
+                "SRV"
+            ],
+            "correctAnswer": 2,
+            "explanation": "TXT records store text data, including SPF, DKIM, and DMARC policies."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What is the primary vulnerability exploited in DNS Cache Poisoning?",
+            "options": [
+                "Weak encryption of DNS packets",
+                "Lack of authentication for DNS responses",
+                "Slow TTL expiration",
+                "Using TCP instead of UDP"
+            ],
+            "correctAnswer": 1,
+            "explanation": "DNS responses are not inherently trusted; spoofed responses can be accepted if they match the transaction ID and arrive first."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is the purpose of Source Port Randomization in DNS resolvers?",
+            "options": [
+                "To encrypt the query",
+                "To make cache poisoning attacks harder by increasing entropy",
+                "To load balance traffic",
+                "To speed up resolution"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Randomizing the source port drastically increases the number of guesses an attacker must make to spoof a response."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "How does a DNS Amplification DDoS attack work?",
+            "options": [
+                "Flooding the target with ICMP Echo Requests",
+                "Spoofing the victim's IP to send small queries that generate large responses from open resolvers",
+                "Hijacking the target's DNS registrar account",
+                "Modifying the hosts file on the target's computer"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The attacker uses misconfigured DNS servers to reflect and amplify traffic toward the victim."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What is an 'Open Resolver' in the context of DNS?",
+            "options": [
+                "A DNS server that answers queries for anyone on the internet",
+                "A resolver that uses DNSSEC",
+                "A resolver that supports DoH",
+                "A resolver with an expired cache"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Open resolvers accept recursive queries from any IP, making them tools for amplification attacks."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What does DNSSEC primarily provide?",
+            "options": [
+                "Encryption of DNS queries",
+                "Authentication and integrity of DNS data",
+                "Faster query resolution",
+                "Compression of DNS packets"
+            ],
+            "correctAnswer": 1,
+            "explanation": "DNSSEC uses digital signatures to ensure DNS records have not been tampered with."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "What is the primary difference between DoT (DNS over TLS) and DoH (DNS over HTTPS)?",
+            "options": [
+                "DoT uses TCP; DoH uses UDP",
+                "DoT uses a dedicated port (853); DoH uses port 443 and looks like web traffic",
+                "DoT encrypts the query; DoH does not",
+                "DoT is for IPv4; DoH is for IPv6"
+            ],
+            "correctAnswer": 1,
+            "explanation": "DoH tunnels DNS inside HTTPS, making it indistinguishable from normal web browsing."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "If a website uses DNSSEC, it does not need to use DoH/DoT for confidentiality.",
+            "correctAnswer": true,
+            "explanation": "True. DNSSEC provides integrity, not confidentiality. DoH/DoT provides encryption (confidentiality). They complement each other."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "You run `dig +trace example.com`. What does the '+trace' option do?",
+            "options": [
+                "It shows the time taken for each query",
+                "It displays the full delegation path from the root down",
+                "It uses TCP instead of UDP",
+                "It queries only the authoritative server"
+            ],
+            "correctAnswer": 1,
+            "explanation": "+trace performs iterative resolution and displays every step in the hierarchy."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "What is the purpose of a low TTL (e.g., 300 seconds) for a DNS record?",
+            "options": [
+                "To reduce query load on authoritative servers",
+                "To allow for faster propagation of changes",
+                "To increase security against cache poisoning",
+                "To save bandwidth"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Low TTL ensures that changes to the record are picked up quickly by resolvers worldwide."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "What is the function of the 'hosts' file on a computer?",
+            "options": [
+                "To store a local cache of DNS records",
+                "To override DNS resolution with static entries",
+                "To configure the DNS server address",
+                "To log all DNS queries"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The hosts file provides a local static mapping of hostnames to IP addresses, bypassing DNS."
+        },
+        {
+            "id": "q23",
+            "type": "fill_blank",
+            "question": "The DNS record that specifies which name servers are authoritative for a domain is the ______ record.",
+            "options": [
+                "A",
+                "MX",
+                "NS",
+                "SOA"
+            ],
+            "correctAnswer": "NS",
+            "explanation": "NS (Name Server) records delegate authority for a domain to specific servers."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "Which of the following is NOT a valid Top-Level Domain (TLD) type?",
+            "options": [
+                "gTLD (Generic)",
+                "ccTLD (Country Code)",
+                "sTLD (Sponsored)",
+                "pTLD (Private)"
+            ],
+            "correctAnswer": 3,
+            "explanation": "There is no 'pTLD' category. TLDs include gTLD, ccTLD, sTLD, and infrastructure TLD (.arpa)."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "What is the primary reason network administrators might block DoH (DNS over HTTPS) on corporate networks?",
+            "options": [
+                "It is slower than traditional DNS",
+                "It bypasses corporate DNS filtering and monitoring policies",
+                "It is incompatible with Windows",
+                "It requires IPv6"
+            ],
+            "correctAnswer": 1,
+            "explanation": "DoH encrypts DNS traffic, preventing the organization from inspecting or blocking malicious domains."
+        }
+    ]
+}

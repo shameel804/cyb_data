@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_8",
+    "title": "CIA Triad Scenario Analysis",
+    "description": "Analyze a data breach scenario and map impacts to Confidentiality, Integrity, and Availability.",
+    "estimatedMinutes": 10,
+    "problemStatement": "## Scenario: The Healthcare Data Breach\n\nA regional hospital experienced a security incident last week. \n\n**Incident Summary:**\n- An attacker gained access to the Electronic Health Record (EHR) system using a stolen employee credential obtained through a phishing email.\n- The attacker **viewed and downloaded** patient records for 5,000 individuals, including names, addresses, Social Security numbers, and medical diagnoses.\n- The attacker did **not** modify or delete any records.\n- The hospital IT department detected the unusual download activity within 4 hours and **immediately disabled the compromised account**, stopping further access. The EHR system remained online and accessible to doctors and nurses throughout the incident.\n\n## Questions\n\n1.  Which pillar of the CIA Triad was **most directly and severely violated** in this incident? Justify your answer with evidence from the scenario.\n2.  Was **Integrity** violated? Explain why or why not.\n3.  Was **Availability** impacted? Explain.\n4.  If the attacker had instead deployed ransomware that encrypted the patient records, which **two** pillars would have been impacted? Explain the change.\n\nProvide clear, structured answers.",
+    "hints": [
+        "Confidentiality is about unauthorized disclosure.",
+        "Integrity is about unauthorized modification.",
+        "Availability is about system accessibility.",
+        "Consider what the attacker *did* vs. what they *did not* do."
+    ],
+    "expectedOutput": "1. **Confidentiality** was most severely violated. The attacker viewed and downloaded private patient data, an unauthorized disclosure.\n2. **Integrity** was likely **NOT** violated. The scenario states no records were modified or deleted. The data remained accurate.\n3. **Availability** was **NOT** significantly impacted. The system remained online and accessible; only the compromised account was disabled as a containment measure.\n4. Ransomware would impact **Availability** (data inaccessible) and **Integrity** (data modified/encrypted into unusable form). It might also impact **Confidentiality** if data was exfiltrated before encryption (double extortion).",
+    "solutionCode": "// No code required. Written analysis."
+}

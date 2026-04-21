@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_4",
+    "title": "Port Scanner Logic",
+    "description": "Write pseudocode for a simple TCP connect() port scanner and explain its limitations.",
+    "estimatedMinutes": 10,
+    "problemStatement": "## Scenario: Building a Simple Port Scanner\n\nYou want to understand how a basic TCP port scanner works. Write **pseudocode** (not actual code) for a function that scans a target IP address for open ports in the range 1-1024.\n\n## Requirements\n\n1. The scanner should use the **TCP Connect()** method (completing the full 3-way handshake).\n2. Include logic to handle **timeouts** (if no response is received within 2 seconds).\n3. After writing the pseudocode, answer the following:\n   - **What is one major disadvantage of this scanning method?**\n   - **Why might an attacker prefer a SYN scan (half-open) over a connect scan?**",
+    "hints": [
+        "For each port, attempt to create a connection (SYN). If successful (SYN-ACK received), mark port as open and close connection (RST).",
+        "Connect scans are logged by the target application.",
+        "SYN scans do not complete the handshake, so they are less likely to be logged by the application."
+    ],
+    "expectedOutput": "Pseudocode:\n```\nfor port in 1..1024:\n    sock = create_socket()\n    set_timeout(2 seconds)\n    result = sock.connect(target_ip, port)\n    if result == success:\n        print(\"Port \" + port + \" is open\")\n        sock.close()\n    else if result == timeout:\n        print(\"Port \" + port + \" is filtered or closed\")\n    else:\n        // Connection refused (RST) means port is closed\n```\nDisadvantages: Connect scan is **loud**; it completes the handshake and will be logged by the application (e.g., web server logs).\nSYN scan advantage: It does not complete the handshake, so the application never sees the connection attempt, making it stealthier.",
+    "solutionCode": "// Pseudocode provided. No executable code required."
+}

@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_5",
+    "title": "Firewall Rule Audit",
+    "description": "Analyze a set of firewall rules and identify security gaps and misconfigurations.",
+    "estimatedMinutes": 12,
+    "problemStatement": "## Scenario: Firewall Configuration Review\n\nYou are auditing the firewall configuration for a small company. The following rules are applied on the **Internet-facing** interface (Outside-In). Traffic direction: **Inbound to DMZ/Inside**.\n\n```text\nRule 1: Permit TCP any -> 203.0.113.10 port 80 (Web Server in DMZ)\nRule 2: Permit TCP any -> 203.0.113.10 port 443 (Web Server in DMZ)\nRule 3: Permit TCP any -> 203.0.113.15 port 22 (SSH Admin Jump Box in DMZ)\nRule 4: Permit ICMP any -> any (Allows Ping from Internet)\nRule 5: Permit TCP any -> 192.168.1.0/24 port 3389 (RDP to Internal LAN - *Leftover from contractor access*)\nRule 6: Deny IP any any (Implicit at end)\n```\n\n## Questions\n\n1.  Identify **two critical security risks** in this rule set.\n2.  Which rule should be **removed immediately** and why?\n3.  Rule 3 allows SSH from **any** IP. What is a better practice for restricting SSH access?\n4.  Why is allowing ICMP (Ping) from the entire internet generally discouraged?\n5.  Suggest an improvement for Rule 2 (HTTPS) beyond just allowing the port.",
+    "hints": [
+        "RDP (3389) is a frequent target for ransomware.",
+        "SSH from ANY is a brute-force magnet.",
+        "ICMP can be used for reconnaissance (Ping Sweeps).",
+        "WAF or IPS inspection for HTTPS traffic."
+    ],
+    "expectedOutput": "1. RDP open to Internal LAN (huge risk); SSH open to DMZ from Any (brute force risk).\n2. Rule 5 must be removed immediately. RDP should never be exposed to the internet; use VPN instead.\n3. Restrict source IP to specific admin public IP addresses (e.g., office static IP) or use VPN.\n4. ICMP allows attackers to map live hosts (ping sweep) and potentially DoS with ICMP floods.\n5. Enable IPS/IDS inspection on HTTPS traffic to detect web attacks (SQLi, XSS) passing through port 443.",
+    "solutionCode": "// Analysis task. No code required."
+}

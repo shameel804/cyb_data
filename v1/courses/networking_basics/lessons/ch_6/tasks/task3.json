@@ -1,0 +1,16 @@
+{
+    "id": "task3",
+    "chapterId": "ch_6",
+    "title": "DNS Security Audit Scenario",
+    "description": "Analyze a DNS configuration for security weaknesses and recommend improvements.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario: Security Audit of `oldcorp.com`\n\nYou are a security consultant auditing the DNS configuration for a legacy company, `oldcorp.com`. You run the following tests and observe the results:\n\n**Test 1:** Check DNSSEC status.\n```bash\ndig oldcorp.com DNSKEY +dnssec\n```\nResult: No `ad` (Authenticated Data) flag. No `RRSIG` records returned.\n\n**Test 2:** Check for Open Resolver on their DNS server `ns1.oldcorp.com`.\n```bash\ndig @ns1.oldcorp.com google.com A\n```\nResult: Query succeeds and returns an answer. (This server responds to recursive queries from any IP).\n\n**Test 3:** Check email security records.\n```bash\ndig oldcorp.com TXT\n```\nResult: Only returns a generic `v=spf1 mx -all` record. No DKIM or DMARC records found.\n\n**Test 4:** TTL values.\n```bash\ndig oldcorp.com A\n```\nResult: The `A` record has a TTL of **86400** (24 hours).\n\n## Questions\n\n1.  Identify **three specific security vulnerabilities or weaknesses** based on the test results above.\n2.  For each vulnerability, explain the **risk** it poses to the organization.\n3.  Provide a **specific remediation recommendation** for each issue.\n\n**Write your answer in a clear, bulleted format.**",
+    "hints": [
+        "DNSSEC prevents cache poisoning.",
+        "Open resolvers are used in amplification attacks.",
+        "SPF/DKIM/DMARC prevent email spoofing.",
+        "High TTL makes it hard to recover from a DNS hijack."
+    ],
+    "expectedOutput": "Vulnerability 1: DNSSEC not enabled.\nRisk: Domain is vulnerable to DNS Cache Poisoning attacks, potentially redirecting customers to malicious sites.\nRemediation: Enable DNSSEC at the registrar and sign the zone at the DNS provider.\n\nVulnerability 2: Open Recursive Resolver (`ns1.oldcorp.com`).\nRisk: The server can be abused in DNS Amplification DDoS attacks against third parties. It also exposes internal query data.\nRemediation: Restrict recursion to internal IP ranges only (e.g., `allow-recursion { 192.168.0.0/16; };` in BIND).\n\nVulnerability 3: Weak Email Authentication (No DKIM/DMARC, weak SPF).\nRisk: Attackers can easily spoof emails from @oldcorp.com (phishing, BEC scams). Customers are more likely to trust fake invoices.\nRemediation: Implement DKIM signing on the mail server. Publish a DMARC policy starting with `p=none` to monitor, then move to `p=quarantine` or `p=reject`.\n\nVulnerability 4 (Bonus): High TTL (24h).\nRisk: If the web server IP needs to change due to an outage or compromise, customers will be redirected to the old (possibly down or malicious) IP for up to 24 hours.\nRemediation: Lower TTL to 300-600 seconds (5-10 mins) for critical records to allow faster failover.",
+    "solutionCode": "// No code. Analysis and recommendation task."
+}

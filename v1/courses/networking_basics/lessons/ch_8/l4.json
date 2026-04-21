@@ -1,0 +1,160 @@
+{
+    "id": "l4",
+    "chapterId": "ch_8",
+    "title": "Introduction to Cryptography",
+    "description": "Encryption, hashing, and digital signatures – the math that protects data in transit and at rest.",
+    "xpReward": 40,
+    "estimatedMinutes": 18,
+    "section": "Cryptography",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Cryptography: The Art of Secret Writing 🔐",
+            "content": "# Why Crypto Matters for Network Security\n\nCryptography is the **mathematical science** of securing communication and data.\n\nIn networking, crypto provides:\n- **Confidentiality:** No one can read your data in transit (Encryption).\n- **Integrity:** No one can alter your data without detection (Hashing).\n- **Authentication:** You can verify the identity of the sender (Digital Signatures).\n- **Non-Repudiation:** The sender cannot deny sending the message.\n\n**Analogy: The Postal System**\n- **Plaintext:** The letter written in English.\n- **Encryption:** Putting the letter in a **locked, indestructible safe**.\n- **Key:** The **combination** to the safe. Only you and the recipient know it.\n- **Ciphertext:** The safe itself (looks like gibberish to anyone else).\n- **Hashing:** A **wax seal** on the envelope. If the seal is broken, you know the letter was tampered with (Integrity)."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Crypto Basics 🔑",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which security goal does Encryption primarily address?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Availability",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Integrity",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Confidentiality",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Non-repudiation",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Encryption scrambles data to keep it secret from unauthorized eyes.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Symmetric Encryption 🔑🔑",
+            "content": "# One Key to Rule Them All\n\n**Symmetric Encryption** uses the **same key** for both encryption and decryption.\n\n**Analogy:** A **physical padlock**. You use the same key to lock the shed and to unlock it.\n\n**How it Works:**\n1.  Alice encrypts the message using **Key K**.\n2.  Alice sends the **ciphertext** to Bob.\n3.  Bob uses the **same Key K** to decrypt the message.\n\n**Pros:**\n- **Fast and efficient.** Ideal for encrypting large amounts of data (bulk encryption).\n\n**Cons:**\n- **The Key Distribution Problem:** How do you securely get **Key K** to Bob in the first place? If you send it over the same network, an eavesdropper can steal it.\n\n**Common Algorithms:**\n- **AES (Advanced Encryption Standard):** The gold standard. Used in Wi-Fi (WPA2/WPA3), HTTPS, VPNs. Key sizes: 128, 192, or 256 bits.\n- **ChaCha20:** Modern, fast, used in HTTPS (TLS 1.3) and WireGuard VPN.\n- **DES / 3DES:** **Legacy / Deprecated.** Weak and slow. Do not use."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Asymmetric Encryption (Public Key) 🔓🔒",
+            "content": "# Two Keys: One Public, One Private\n\n**Asymmetric Encryption** uses a **key pair**: a **Public Key** (shared with everyone) and a **Private Key** (kept secret).\n\n**Analogy:** A **mailbox** on the street.\n- **Public Key = The Mail Slot.** Anyone can drop a letter in (encrypt).\n- **Private Key = The Key to the Mailbox Door.** Only the owner can open it and read the letters (decrypt).\n\n**How it Works (Confidentiality):**\n1.  Bob generates a key pair and gives Alice his **Public Key**.\n2.  Alice encrypts the message using **Bob's Public Key**.\n3.  Alice sends the ciphertext.\n4.  **Only Bob's Private Key** can decrypt it.\n\n**Pros:**\n- **Solves the Key Distribution Problem.** You can safely share your public key anywhere.\n\n**Cons:**\n- **Slow.** 1000x slower than symmetric encryption. Not suitable for bulk data.\n\n**Common Algorithms:**\n- **RSA (Rivest-Shamir-Adleman):** Based on factoring large prime numbers.\n- **ECC (Elliptic Curve Cryptography):** Provides equivalent security with **smaller key sizes**. Faster, ideal for mobile devices and IoT.\n\n**The Hybrid Approach (How HTTPS Works):**\n1.  Use **Asymmetric Encryption** (RSA/ECC) just to securely exchange a temporary **Symmetric Session Key**.\n2.  Use the **Symmetric Key** (AES) to encrypt the rest of the web page data (fast!)."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "quiz",
+            "title": "Symmetric vs Asymmetric ⚖️",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "Why do we use a hybrid approach (Asymmetric + Symmetric) for HTTPS?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Because symmetric encryption is too slow for bulk data.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Because asymmetric encryption is fast but insecure.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To combine the secure key exchange of asymmetric with the speed of symmetric.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It's required by law.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Asymmetric solves the key exchange; symmetric handles the bulk data efficiently.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Hashing: The Digital Fingerprint 🖐️",
+            "content": "# One-Way Functions\n\n**Hashing** takes an input (message, file) of any size and produces a **fixed-size string** of characters (the **hash** or **digest**).\n\n**Crucial Properties:**\n1.  **Deterministic:** Same input always produces the exact same hash.\n2.  **One-Way (Pre-image Resistance):** You **cannot** reverse the hash to get the original input.\n3.  **Avalanche Effect:** Changing **one single bit** of the input changes the **entire hash** completely.\n4.  **Collision Resistance:** It should be infeasible to find two different inputs that produce the same hash.\n\n**Analogy:** A **meat grinder** that turns a cow into a unique pattern of ground beef. You cannot reconstruct the cow from the ground beef.\n\n**Common Hash Algorithms:**\n- **MD5:** **Broken.** Do not use. Collisions can be generated in seconds.\n- **SHA-1:** **Broken.** Do not use.\n- **SHA-256 / SHA-384 / SHA-512 (SHA-2 Family):** **Secure.** Industry standard.\n- **SHA-3:** Newer standard, different internal design.\n\n**Use Case 1: Password Storage**\nWebsites **NEVER** store your password. They store the **hash** of your password. When you log in, they hash what you typed and compare it to the stored hash.\n- **Salting:** Adding a random string to the password before hashing. Prevents **Rainbow Table** attacks (pre-computed tables of hashes)."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "code",
+            "title": "Hashing Example 🧪",
+            "content": "Let's hash the word 'cybersecurity' using SHA-256.\n\n```bash\necho -n \"cybersecurity\" | sha256sum\n```\n\nOutput:\n```\n2d7f1a1c8c9d9a4e1b5f5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f\n```\n\nNow let's change ONE letter: 'cybersecuritY' (capital Y).\n\n```bash\necho -n \"cybersecuritY\" | sha256sum\n```\n\nOutput:\n```\n9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b\n```\n\n**Completely different!** This is the Avalanche Effect.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_8",
+            "type": "text",
+            "title": "Digital Signatures ✍️",
+            "content": "# Proving Authenticity and Integrity\n\nA **Digital Signature** combines **Hashing** and **Asymmetric Encryption** (but in reverse!).\n\n**How it Works (Signing):**\n1.  Alice wants to send a signed document to Bob.\n2.  Alice generates a **hash** of the document.\n3.  Alice encrypts the hash using her **Private Key**. This encrypted hash is the **Digital Signature**.\n4.  Alice sends the document + the signature to Bob.\n\n**How it Works (Verification):**\n1.  Bob receives the document and signature.\n2.  Bob generates a **hash** of the received document.\n3.  Bob decrypts the signature using **Alice's Public Key**. This gives him the **original hash** that Alice computed.\n4.  Bob compares the two hashes.\n    - **If they match:** The document is **unaltered** (Integrity) AND it definitely came from Alice (Authentication / Non-Repudiation).\n\n**Analogy:** Signing a letter with a **wax seal using your unique ring** (Private Key). Anyone can verify the seal is yours by looking at the imprint (Public Key). If the seal is broken (hash mismatch), the letter was tampered with.\n\n**Key Usage Note:**\n- **Encrypt with Public Key** -> Provides **Confidentiality**.\n- **Encrypt with Private Key** -> Provides **Authentication / Non-Repudiation** (Digital Signature)."
+        },
+        {
+            "id": "s_l4_9",
+            "type": "text",
+            "title": "PKI: Public Key Infrastructure 🏛️",
+            "content": "# Trusting Public Keys\n\n**Problem:** How does Bob know that the 'Alice's Public Key' he downloaded from the internet **really** belongs to Alice, and not to an attacker (Mallory) pretending to be Alice?\n\n**Solution: PKI and Digital Certificates.**\n\nA **Certificate Authority (CA)** is a trusted third party (e.g., DigiCert, Let's Encrypt) that **vouches** for the ownership of a public key.\n\n**The Digital Certificate:**\n- Contains: Owner's Name, Owner's Public Key, Validity Dates, Issuer (CA) Name.\n- The CA **digitally signs** the certificate using the **CA's Private Key**.\n\n**The Chain of Trust:**\n1.  Your browser has a built-in list of **Trusted Root CAs** (and their public keys).\n2.  When you visit `https://google.com`, the server sends its certificate.\n3.  Your browser verifies the CA's signature on the certificate using the CA's public key.\n4.  If valid, the browser trusts that the public key in the certificate belongs to `google.com`.\n\n**Analogy:** A **Passport Office** (CA).\n- You bring your ID (Proof of Ownership).\n- They issue a **Passport** (Certificate) with your photo and name stamped by the government (CA Signature).\n- A border guard (Browser) trusts the passport because they trust the government that issued it."
+        },
+        {
+            "id": "s_l4_10",
+            "type": "quiz",
+            "title": "Certificate Authority 🎓",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "multiple_choice",
+                "question": "What is the primary role of a Certificate Authority (CA) in PKI?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To encrypt all internet traffic.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To issue and digitally sign certificates that bind a public key to an identity.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To generate private keys for users.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To perform hashing algorithms.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "CAs are the trust anchors that verify identity and sign certificates.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

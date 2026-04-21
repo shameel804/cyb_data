@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_10",
+    "title": "Proxy Configuration Analysis",
+    "description": "Analyze a proxy configuration scenario and identify security gaps and optimization opportunities.",
+    "estimatedMinutes": 10,
+    "problemStatement": "## Scenario: Troubleshooting a Slow and Leaky Web Proxy\n\nA small business uses a **Forward HTTP Proxy** (Squid) to filter employee web browsing and save bandwidth. Employees report that:\n- Web pages sometimes load slowly, especially images.\n- They can still access blocked social media sites by using `https://` instead of `http://`.\n- Some remote employees are bypassing the proxy entirely by not configuring it in their browser.\n\n## Questions\n\n1.  Why does **caching** sometimes fail to speed up page loads? (Hint: Think about dynamic content and HTTPS).\n2.  Why are employees able to bypass content filtering by using `https://`? \n3.  What can the administrator do to **enforce** filtering for HTTPS traffic? (Name the technique and its prerequisite).\n4.  How can the administrator prevent remote employees from **bypassing the proxy configuration** altogether? (Name a specific technology).\n\n**Provide concise answers.**",
+    "hints": [
+        "HTTPS traffic is encrypted; the proxy sees only the destination IP and port, not the full URL.",
+        "To filter HTTPS, you need SSL Interception / SSL Bump.",
+        "To force proxy usage, use a Transparent Proxy or enforce PAC files via Group Policy."
+    ],
+    "expectedOutput": "1. **Caching Failure:** Modern websites use **dynamic content** (AJAX, personalized feeds) and **HTTPS**. HTTPS traffic is encrypted, so a standard forward proxy **cannot cache** it without decryption.\n2. **HTTPS Bypass:** The proxy can see the user is connecting to `facebook.com:443`, but it **cannot see the specific URL path** (e.g., `/messages`). If the filter rule blocks `http://facebook.com` but not the HTTPS version, users bypass the block.\n3. **Enforcing HTTPS Filtering:** The administrator must implement **SSL Interception (SSL Bump)**. This requires installing a **trusted internal CA certificate** on all employee devices so the proxy can decrypt, inspect, and re-encrypt the traffic.\n4. **Preventing Bypass:** Implement a **Transparent Proxy** (using WCCP or policy-based routing on the firewall) that intercepts all outbound web traffic (Port 80/443) **regardless** of client configuration. Or, enforce a **PAC file** via Group Policy/Endpoint Management.",
+    "solutionCode": "// Analysis task. No code required."
+}

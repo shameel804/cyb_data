@@ -1,0 +1,117 @@
+{
+    "id": "l4",
+    "chapterId": "ch_10",
+    "title": "Proxies: The Middlemen of the Internet",
+    "description": "Forward, reverse, and transparent proxies – how they enhance security, privacy, and performance.",
+    "xpReward": 30,
+    "estimatedMinutes": 12,
+    "section": "Proxy Servers",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "What is a Proxy Server? 🎭",
+            "content": "# The Intermediary\n\nA **Proxy Server** acts as an **intermediary** between a client and a destination server. The client sends requests to the proxy, and the proxy forwards them (possibly modifying them) to the destination.\n\n**Analogy: A Personal Assistant**\n- You (Client) want to book a table at a fancy restaurant (Server).\n- You call your **Assistant (Proxy)** and say, \"Book me a table at Chez Fancy.\"\n- The Assistant calls the restaurant, makes the reservation, and tells you the confirmation.\n- **The restaurant never knows your name or phone number.** They only interacted with the Assistant.\n\n**Proxy vs. VPN:**\n| Feature | Proxy | VPN |\n|---------|-------|-----|\n| **Encryption** | Usually None (HTTP) / Sometimes (SOCKS5, HTTPS) | **Always Encrypted** |\n| **Scope** | **Application Specific** (e.g., just your browser) | **System-Wide** (All traffic) |\n| **Protocol** | HTTP, SOCKS | IPsec, WireGuard, OpenVPN |\n| **Primary Use** | Content Filtering, Caching, Geo-Spoofing | Privacy, Security, Remote Access |"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Proxy vs VPN ⚖️",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What is the key difference between a typical HTTP proxy and a VPN?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Proxies are always faster",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Proxies work application by application; VPNs work system-wide",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Proxies are always encrypted",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "There is no difference",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A proxy is configured per application; a VPN routes all network traffic through the tunnel.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Forward Proxy (Outbound) 📤",
+            "content": "# Protecting the Client\n\nA **Forward Proxy** sits between **internal clients** and the **public internet**. It makes requests on behalf of clients.\n\n**Common Use Cases:**\n1.  **Content Filtering:** Schools and businesses use forward proxies to block access to social media, adult content, or malware sites. (e.g., Squid, Cisco Umbrella).\n2.  **Bandwidth Savings (Caching):** The proxy stores copies of frequently accessed web pages. When User B requests the same page, the proxy serves it from cache instead of downloading it again.\n3.  **Anonymity:** Hides the client's real IP address. The destination server sees only the proxy's IP address.\n4.  **Bypassing Geo-Restrictions:** Connect to a proxy in the US to access US-only streaming services.\n\n**How Clients Use a Forward Proxy:**\n- **Manual Configuration:** User types proxy IP and port into browser settings.\n- **PAC File (Proxy Auto-Configuration):** Browser downloads a script that tells it which proxy to use for which URLs.\n- **Transparent Proxy:** Client doesn't even know it's using a proxy (see next slide).\n\n**Cybersecurity Note:** Attackers often use **open forward proxies** to hide their origin when launching attacks."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Reverse Proxy (Inbound) 📥",
+            "content": "# Protecting the Server\n\nA **Reverse Proxy** sits in front of **web servers** and handles incoming requests from the internet. It's the \"public face\" of the website.\n\n**Analogy:** A **Receptionist** at a corporate office.\n- Visitors (Internet users) only see the receptionist.\n- The receptionist routes requests to the correct employee (Web Server) in the back.\n- The visitors never know the layout of the back office or which employee helped them.\n\n**Key Functions of a Reverse Proxy:**\n1.  **Load Balancing:** Distributes incoming traffic across multiple backend web servers.\n2.  **SSL Termination:** The reverse proxy handles the heavy TLS encryption/decryption, offloading CPU from the web servers.\n3.  **Web Application Firewall (WAF):** Inspects incoming requests and blocks malicious ones (SQLi, XSS).\n4.  **Caching:** Serves static content (images, CSS) directly from cache, reducing load on backend servers.\n5.  **Security Obfuscation:** Hides the internal IP addresses and software versions of the backend servers.\n\n**Popular Reverse Proxy Software:**\n- **Nginx**, **HAProxy**, **Apache (mod_proxy)**, **Cloudflare**, **AWS Application Load Balancer**."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "quiz",
+            "title": "Forward vs Reverse 🔄",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "Which type of proxy is placed in front of web servers to handle incoming requests from the internet?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Forward Proxy",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Reverse Proxy",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Transparent Proxy",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "SOCKS Proxy",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Reverse proxies sit in front of servers to load balance, cache, and protect them.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Transparent Proxy 👻",
+            "content": "# The Invisible Middleman\n\nA **Transparent Proxy** intercepts network traffic **without requiring any client-side configuration**. The client is unaware of its existence.\n\n**How it Works:**\n- The network firewall or router redirects all outbound web traffic (Port 80/443) to the proxy server.\n- The proxy processes the request and forwards it.\n\n**Common Use Cases:**\n- **ISP Caching:** Your ISP uses a transparent proxy to cache popular YouTube videos, saving them bandwidth costs.\n- **Corporate Content Filtering:** Enforce web filtering policies on employee laptops without having to configure browser settings on every device.\n- **Malicious Use (Wi-Fi Pineapple):** Attackers set up a rogue access point with a transparent proxy to **intercept and modify** traffic (SSL Stripping).\n\n**Limitation with HTTPS:**\nBecause the traffic is encrypted, a transparent proxy cannot see the URL path or content unless it performs **SSL Interception** (which requires installing a trusted root CA certificate on the client device – common in corporate environments)."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "SOCKS Proxy 🧦",
+            "content": "# The Universal Application Proxy\n\n**SOCKS (Socket Secure)** is a protocol that proxies **any** TCP or UDP traffic, not just web traffic (HTTP).\n\n**SOCKS5 Features:**\n- **Protocol Agnostic:** Can proxy web browsing (HTTP), email (SMTP), torrents (BitTorrent), SSH, and even online gaming.\n- **UDP Support:** Unlike HTTP proxies, SOCKS5 supports UDP, making it suitable for VoIP and streaming.\n- **Authentication:** SOCKS5 supports username/password authentication.\n\n**Comparison with HTTP Proxy:**\n| Feature | HTTP Proxy | SOCKS5 Proxy |\n|---------|------------|--------------|\n| **Protocols** | HTTP/HTTPS only | **Any TCP/UDP** |\n| **Speed** | Fast (caching) | Slightly more overhead |\n| **Encryption** | No (unless HTTPS) | No (but can be combined with SSH tunnel) |\n| **Use Case** | Web Filtering, Geo-Spoofing | **Torrenting, Bypassing Firewalls, Gaming** |\n\n**Important Security Note:** **SOCKS5 alone does NOT encrypt traffic.** It only relays it. To make a SOCKS proxy secure, you must combine it with an **SSH Tunnel** (`ssh -D`) or use a VPN over SOCKS.\n\n**SSH Dynamic Port Forwarding (SOCKS Proxy):**\n```bash\nssh -D 1080 user@your-server.com\n```\nThis creates a SOCKS proxy on localhost port 1080. Traffic is encrypted via SSH to the server, then forwarded."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "warning",
+            "title": "Free Proxy Dangers ☠️",
+            "content": "## Beware of 'Free' Proxy Lists\n\nUsing a random free HTTP proxy from the internet is **extremely dangerous**.\n\n**Risks:**\n- **Traffic Logging:** The proxy operator can see **everything** you do (all URLs, unencrypted passwords).\n- **Malware Injection:** The proxy can inject malicious ads or scripts into web pages you visit.\n- **Credential Theft:** They can steal session cookies and passwords.\n- **Honeypots:** Many 'free proxies' are operated by law enforcement or criminals to collect data.\n\n**Rule of Thumb:** **Never use a free HTTP proxy for anything sensitive.** If you need a proxy for privacy, either:\n- Use a **reputable VPN service** (which is essentially an encrypted proxy).\n- Set up your **own private proxy** on a VPS (Virtual Private Server)."
+        }
+    ]
+}

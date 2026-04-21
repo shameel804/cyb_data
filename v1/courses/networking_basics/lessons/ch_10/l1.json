@@ -1,0 +1,113 @@
+{
+    "id": "l1",
+    "chapterId": "ch_10",
+    "title": "Encryption for Network Security",
+    "description": "Symmetric vs asymmetric encryption, TLS/SSL, IPsec fundamentals – the building blocks of secure tunnels.",
+    "xpReward": 30,
+    "estimatedMinutes": 12,
+    "section": "Cryptographic Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Why Encryption Matters for VPNs and Proxies 🔐",
+            "content": "# The Foundation of Secure Tunnels\n\nVPNs and secure proxies rely on **encryption** to create confidential, tamper-proof tunnels across untrusted networks (like the Internet).\n\n**Quick Recap from Chapter 8:**\n- **Symmetric Encryption (AES, ChaCha20):** Same key for encrypt/decrypt. Fast, used for bulk data.\n- **Asymmetric Encryption (RSA, ECC):** Public/Private key pair. Slow, used for key exchange and authentication.\n- **Hashing (SHA-256):** Integrity verification.\n- **Digital Signatures:** Authentication + Non-repudiation.\n\n**In a VPN Tunnel:**\n1.  **Asymmetric Crypto** authenticates the endpoints and securely exchanges a **temporary symmetric session key**.\n2.  **Symmetric Crypto** encrypts all the actual data flowing through the tunnel at high speed.\n3.  **Hashing / HMAC** ensures each packet hasn't been altered in transit.\n\n**Analogy:** Sending a **diplomatic courier** with a locked briefcase.\n- **Asymmetric =** The courier verifies your ID and hands you a **one-time key** to open the case (Key Exchange).\n- **Symmetric =** The briefcase lock itself (Bulk Encryption)."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Crypto Recall 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Why do VPNs typically use a hybrid approach (Asymmetric + Symmetric)?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Because symmetric encryption is too weak",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To combine secure key exchange with fast bulk encryption",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It's required by government regulation",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Asymmetric is faster for large files",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Asymmetric handles the secure handshake; symmetric handles the fast data transfer.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "TLS/SSL: The Backbone of Secure Web and SSL VPNs 🌐",
+            "content": "# Transport Layer Security (TLS)\n\n**TLS** (successor to SSL) is the cryptographic protocol that secures HTTPS websites and forms the basis of **SSL VPNs**.\n\n**How TLS Works (Simplified Handshake):**\n1.  **Client Hello:** Client sends supported cipher suites and a random number.\n2.  **Server Hello:** Server picks a cipher suite, sends its **Digital Certificate** (containing public key), and a random number.\n3.  **Authentication:** Client verifies the certificate (Chain of Trust to a Root CA).\n4.  **Key Exchange:** Client generates a **Pre-Master Secret**, encrypts it with the server's public key, and sends it.\n5.  **Session Keys Derived:** Both sides use the random numbers + Pre-Master Secret to compute the **Symmetric Session Keys** (for AES).\n6.  **Finished:** All subsequent data is encrypted with the symmetric keys.\n\n**TLS Versions:**\n- **SSL 2.0 / 3.0:** **Deprecated. Insecure.**\n- **TLS 1.0 / 1.1:** **Deprecated.** Vulnerable to BEAST, POODLE attacks.\n- **TLS 1.2:** **Widely used.** Supports strong cipher suites (AES-GCM).\n- **TLS 1.3:** **Latest standard.** Faster handshake (1-RTT), removes weak ciphers, mandates **Perfect Forward Secrecy (PFS)**.\n\n**Perfect Forward Secrecy (PFS):**\nIf the server's private key is compromised **in the future**, past sessions **cannot** be decrypted. This is critical for long-term confidentiality."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "TLS Versions 📜",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "Which TLS version provides a faster handshake and mandates Perfect Forward Secrecy?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "TLS 1.0",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "TLS 1.1",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "TLS 1.2",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "TLS 1.3",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "TLS 1.3 simplifies the handshake and removes non-PFS key exchange methods.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "IPsec: Securing the Network Layer 📡",
+            "content": "# Internet Protocol Security (IPsec)\n\n**IPsec** is a suite of protocols that secures **IP communications** by authenticating and encrypting each IP packet. It operates at **Layer 3** (Network Layer).\n\n**Unlike TLS (which secures a specific application like a web browser), IPsec secures *all* traffic between two endpoints, regardless of application.**\n\n**Core IPsec Protocols:**\n1.  **Authentication Header (AH):** Provides **Integrity** and **Authentication** for the entire IP packet (including headers). Does **NOT** provide encryption. (Rarely used alone).\n2.  **Encapsulating Security Payload (ESP):** Provides **Confidentiality** (encryption) + optional Integrity/Authentication. **The primary protocol used in VPNs.**\n\n**IPsec Modes:**\n- **Transport Mode:** Encrypts only the **payload** (data) of the IP packet. Used for host-to-host communication.\n- **Tunnel Mode:** Encrypts the **entire original IP packet** and encapsulates it inside a **new IP packet** with new headers. **Used for VPN gateways.**\n\n**Analogy:**\n- **Transport Mode:** Putting your letter in a security envelope, but leaving the address visible.\n- **Tunnel Mode:** Putting your letter (with original envelope) inside a **locked courier pouch** that has a *new* shipping label. The original address is hidden."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "IKE: The IPsec Key Exchange 🤝",
+            "content": "# Internet Key Exchange (IKE)\n\nIPsec itself doesn't handle key exchange. That's the job of **IKE**. IKE establishes a secure channel (Security Association - SA) over which IPsec can operate.\n\n**IKE Phases:**\n- **IKE Phase 1 (IKE SA):** Establishes a secure, authenticated **control channel** between the two VPN peers. (Uses Diffie-Hellman key exchange).\n- **IKE Phase 2 (IPsec SA / Child SA):** Negotiates the **actual IPsec SAs** for encrypting user data (ESP keys, lifetimes).\n\n**IKE Versions:**\n- **IKEv1:** Older, complex, slower, vulnerable to some DoS attacks.\n- **IKEv2:** **Modern standard.** Supports **Mobility and Multihoming (MOBIKE)** – allows a VPN to survive IP address changes (e.g., switching from Wi-Fi to Cellular). More resilient, simpler.\n\n**IPsec Security Associations (SA):**\nAn SA is a **unidirectional** agreement on security parameters. A typical VPN tunnel has **two SAs** (Inbound and Outbound).\n\n**Perfect Forward Secrecy in IPsec:**\nIPsec uses **Diffie-Hellman (DH)** groups to achieve PFS. If PFS is enabled, a new DH key exchange happens for each Phase 2 SA."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "code",
+            "title": "IPsec vs TLS Comparison 🆚",
+            "content": "| Feature | IPsec (IKEv2) | TLS (SSL VPN) |\n|---------|---------------|---------------|\n| **OSI Layer** | Layer 3 (Network) | Layer 4-7 (Transport/App) |\n| **Client Software** | Requires dedicated VPN client | Works via Web Browser (Clientless or thin client) |\n| **Ports** | UDP 500/4500, ESP (IP Protocol 50) | TCP 443 (HTTPS) |\n| **Firewall Traversal** | Can be tricky (NAT-T required) | Excellent (Looks like web traffic) |\n| **Granularity** | Secures entire network path | Can secure specific applications |\n| **Use Case** | Site-to-Site, Always-On Remote Access | Remote Access (especially from restricted networks) |",
+            "codeLanguage": "text",
+            "canRunCode": false
+        }
+    ]
+}

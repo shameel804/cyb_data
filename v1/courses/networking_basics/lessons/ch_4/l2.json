@@ -1,0 +1,117 @@
+{
+    "id": "l2",
+    "chapterId": "ch_4",
+    "title": "TCP Under the Microscope",
+    "description": "Flags, sequence numbers, windowing, and the graceful (or abrupt) connection teardown.",
+    "xpReward": 35,
+    "estimatedMinutes": 15,
+    "section": "Transport Layer",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "TCP Header: The Instruction Manual 📋",
+            "content": "# Anatomy of a TCP Segment\n\nA TCP header is usually **20 bytes** (without options). Here's what's inside:\n\n| Field | Size (bits) | Purpose |\n|-------|-------------|---------|\n| Source Port | 16 | Sender's application port |\n| Destination Port | 16 | Receiver's application port |\n| **Sequence Number** | 32 | Tracks bytes sent (ordering) |\n| **Acknowledgment Number** | 32 | Next expected byte (confirms receipt) |\n| Data Offset | 4 | Header length |\n| Reserved | 3 | Not used |\n| **Flags** | 9 | Control bits (SYN, ACK, FIN, RST, PSH, URG) |\n| **Window Size** | 16 | Flow control (how much data can I send before waiting for ACK?) |\n| Checksum | 16 | Error detection for header + data |\n| Urgent Pointer | 16 | Points to urgent data (rarely used) |\n\n**Analogy:** The TCP header is the **packing slip** on a pallet of boxes. It tells you what box this is (# of total) and confirms you received the previous one."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Header Fields 🏷️",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which two fields in the TCP header are critical for ensuring data arrives in the correct order?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Source and Destination Port",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Sequence Number and Acknowledgment Number",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Checksum and Window Size",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Flags and Urgent Pointer",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Exactly. Sequence numbers order the data; acknowledgment numbers confirm receipt and indicate the next expected byte.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "TCP Flags: The Control Panel 🎛️",
+            "content": "# The Nine Bits That Drive the State Machine\n\nThese single-bit flags (set to 1 or 0) control the connection.\n\n| Flag | Name | Meaning |\n|------|------|---------|\n| **SYN** | Synchronize | Initiate connection (3-way handshake) |\n| **ACK** | Acknowledgment | Acknowledges receipt of data |\n| **FIN** | Finish | Gracefully terminate connection |\n| **RST** | Reset | Abruptly abort connection (something went wrong!) |\n| **PSH** | Push | Send data immediately, don't buffer |\n| **URG** | Urgent | Data is urgent (pointer field valid) |\n\n**Common Combinations (Wireshark filters):**\n- `tcp.flags.syn == 1 and tcp.flags.ack == 0` -> First packet of handshake.\n- `tcp.flags.syn == 1 and tcp.flags.ack == 1` -> Second packet of handshake (SYN-ACK).\n- `tcp.flags.reset == 1` -> Connection refused or aborted."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "The 3-Way Handshake (Revisited) 🤝",
+            "content": "# Step-by-Step with Sequence Numbers\n\nLet's see the actual numbers exchanged.\n\n1.  **Client -> Server: SYN**\n    - Flag: `SYN=1`\n    - Seq = `X` (Random starting number, e.g., 1000)\n    - Ack = `0` (Ignored)\n\n2.  **Server -> Client: SYN-ACK**\n    - Flags: `SYN=1, ACK=1`\n    - Seq = `Y` (Server's random start, e.g., 5000)\n    - Ack = `X + 1` (e.g., 1001) **\"I received your SYN, next I expect byte 1001.\"**\n\n3.  **Client -> Server: ACK**\n    - Flag: `ACK=1`\n    - Seq = `X + 1` (1001)\n    - Ack = `Y + 1` (5001) **\"I received your SYN, next I expect byte 5001.\"**\n\n**Connection is now ESTABLISHED.**\n\n**Cybersecurity Note:** The initial sequence numbers (`X` and `Y`) must be **cryptographically random**. If an attacker can **predict** the next sequence number, they can **hijack** a TCP session (spoof packets that appear to come from the legitimate client). Modern OSes use strong random number generators to prevent this."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "Sequence Numbers 🔢",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "In the SYN-ACK packet, the Acknowledgment Number is set to:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The server's initial sequence number.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The client's initial sequence number + 1.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "0",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A random number.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. The ACK number acknowledges the receipt of the client's SYN by incrementing it by one.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Flow Control: Sliding Window 🪟",
+            "content": "# Preventing a Flood\n\nTCP is **reliable** but the network is **congested**. What if the sender is on a 10Gbps connection and the receiver is on a slow 10Mbps link?\n\n**Solution: The Window Size field (16 bits).**\n\nThe **Window** advertises how much data (in bytes) the receiver is willing to accept *right now* before sending an ACK.\n\n**Analogy:** You are unloading a moving truck (Sender) into a garage (Receiver Buffer).\n- **Window = 0:** \"Stop! Garage is full! Don't send anything else!\"\n- **Window = 4096:** \"Okay, I have space for 4 more boxes.\"\n\n**Sliding Window Protocol:**\nAs the receiver processes data and frees up buffer space, it sends an ACK with a **new Window Size**, allowing the sender to slide the window forward and send more data.\n\n**Cybersecurity Relevance:** A **DoS attack** can involve spoofing ACK packets with **Window = 0**, tricking the sender into pausing transmission indefinitely."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Connection Termination: The Graceful Goodbye 👋",
+            "content": "# The 4-Way Handshake (FIN)\n\nTCP connections are **full-duplex** (both sides can send data independently). Closing a connection requires **both sides** to close their half of the conversation.\n\n1.  **Client -> Server: FIN**\n    - Flag: `FIN=1, ACK=1`\n    - \"I'm done sending data.\"\n\n2.  **Server -> Client: ACK**\n    - Flag: `ACK=1`\n    - \"Okay, I heard you. I'll let you know when I'm done.\"\n    - *Client side is now closed. Server can still send remaining data.*\n\n3.  **Server -> Client: FIN**\n    - Flag: `FIN=1, ACK=1`\n    - \"I'm done sending data too.\"\n\n4.  **Client -> Server: ACK**\n    - Flag: `ACK=1`\n    - \"Okay, bye.\"\n    - Client enters **TIME_WAIT** state (waits 2 * Maximum Segment Lifetime) to ensure the server received the final ACK.\n\n**Abrupt Termination: RST Flag**\nIf a packet arrives for a port that isn't listening, the receiver sends a **RST (Reset)** packet. This immediately tears down the connection without the 4-way dance. Firewalls often use RST packets to block connections."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "warning",
+            "title": "TIME_WAIT and Port Exhaustion ⏳",
+            "content": "## A Common Server Issue\n\nThe `TIME_WAIT` state lasts for **2 * MSL** (usually 60-120 seconds total). During this time, the **tuple** (Source IP, Source Port, Dest IP, Dest Port) is locked and cannot be reused.\n\nIf you are a busy web server handling thousands of connections per second, you can run out of **ephemeral ports** because all the closed connections are stuck in `TIME_WAIT`.\n\n**Mitigation:** Tune the OS kernel parameters (`tcp_tw_reuse`, `tcp_fin_timeout`)."
+        }
+    ]
+}

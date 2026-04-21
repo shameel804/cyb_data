@@ -1,0 +1,107 @@
+{
+    "id": "l4",
+    "chapterId": "ch_3",
+    "title": "Subnetting Practice & Shortcuts",
+    "description": "Master the 'Magic Number' method to calculate subnets in seconds.",
+    "xpReward": 40,
+    "estimatedMinutes": 15,
+    "section": "Subnetting",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Subnetting Cheat Sheet 🗺️",
+            "content": "# Memorize This Table\n\nIf you memorize this table, you can solve 99% of subnetting questions in 10 seconds.\n\n| CIDR | Subnet Mask | Wildcard | Magic Number | Hosts (/24) | Hosts (Total) |\n|------|-------------|----------|--------------|-------------|---------------|\n| /25  | 128         | 127      | 128          | 126         | 126           |\n| /26  | 192         | 63       | 64           | 62          | 62            |\n| /27  | 224         | 31       | 32           | 30          | 30            |\n| /28  | 240         | 15       | 16           | 14          | 14            |\n| /29  | 248         | 7        | 8            | 6           | 6             |\n| /30  | 252         | 3        | 4            | 2           | 2             |\n\n*Note: Hosts (/24) assumes you are subnetting a Class C /24 network. If you are subnetting a larger network like /16, the number of hosts per subnet scales up exponentially.*"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Cheat Sheet Check 📋",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What is the Magic Number for a /27 subnet mask?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "16",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "32",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "64",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "128",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "/27 mask is 224. 256 - 224 = 32. Magic Number is 32!",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Scenario 1: Small Office 🏢",
+            "content": "# Problem: You need a subnet for 28 computers.\n\n**Step 1: Find Required Host Bits**\n- Need 28 usable IPs.\n- Formula: `2^h - 2 >= 28`\n- `2^5 - 2 = 30`. (5 host bits is enough).\n\n**Step 2: Find Prefix Length**\n- Total Bits (32) - Host Bits (5) = **/27**\n\n**Step 3: Find Subnet Mask**\n- /27 -> `255.255.255.224` (from cheat sheet)\n\n**Step 4: Magic Number**\n- 32\n\n**Step 5: First Subnet Range (if starting from 192.168.1.0)**\n- Network: `192.168.1.0`\n- First Usable: `192.168.1.1`\n- Last Usable: `192.168.1.30`\n- Broadcast: `192.168.1.31`\n\n**This subnet wastes only 2 addresses (30 provided, 28 needed). Perfect fit!**"
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "Reverse Engineering an IP 🕵️",
+            "content": "**Problem:** Given IP `172.16.68.45 / 255.255.240.0`, find the Network Address.\n\n**Step 1: Find Interesting Octet**\n- Mask is `255.255.240.0`. Interesting Octet is the **3rd** (240).\n\n**Step 2: Magic Number**\n- `256 - 240 = 16`\n\n**Step 3: Find Subnet Multiple**\n- Take the IP's Interesting Octet value: `68`\n- What is the closest multiple of 16 **below or equal to** 68?\n- 16 x 4 = 64. (16 x 5 = 80, which is too high).\n\n**Step 4: Network Address**\n- Keep the first 2 octets: `172.16`\n- Set 3rd octet to the multiple: `64`\n- Set 4th octet to `0` (because the mask there is 0).\n- **Network Address = `172.16.64.0`**",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "quiz",
+            "title": "Find the Network 🔍",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "Host IP: 10.55.12.118 / 255.255.255.248. What is the Network Address?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "10.55.12.112",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "10.55.12.116",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "10.55.12.120",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "10.55.12.0",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Mask 248 -> Magic Number = 8. 118 is between 112 (8x14) and 120 (8x15). So network is .112.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_6",
+            "type": "warning",
+            "title": "Common Pitfall: Subnet Zero ⚠️",
+            "content": "## The 'All Zero' and 'All One' Subnet\n\nIn **old** Cisco IOS (pre-12.0), you could not use the **first** subnet (Subnet Zero) or the **last** subnet (All Ones Subnet).\n\n**Example:** If you borrowed 2 bits (4 subnets), you could only use the middle 2 subnets.\n\n**Modern Practice:** **'ip subnet-zero'** is enabled by default on all modern equipment. **You can use ALL subnets.**\n\n*Unless you are taking a very old certification exam, assume all subnets are usable.*"
+        }
+    ]
+}

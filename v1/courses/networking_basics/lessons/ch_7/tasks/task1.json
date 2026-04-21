@@ -1,0 +1,17 @@
+{
+    "id": "task1",
+    "chapterId": "ch_7",
+    "title": "DHCP Packet Analysis",
+    "description": "Analyze a Wireshark capture of a DHCP transaction and identify the DORA messages.",
+    "estimatedMinutes": 12,
+    "problemStatement": "## Scenario: Wireshark DHCP Trace\n\nYou are troubleshooting a user who says they cannot get an IP address. You run Wireshark on their machine and capture the following filtered output:\n\n```text\nNo. Time    Source          Destination     Protocol Info\n1   0.000   0.0.0.0         255.255.255.255 DHCP    DHCP Discover - Transaction ID 0x3a4b5c\n2   0.015   192.168.1.1     192.168.1.100   DHCP    DHCP Offer    - Transaction ID 0x3a4b5c (IP: 192.168.1.100)\n3   0.016   0.0.0.0         255.255.255.255 DHCP    DHCP Request  - Transaction ID 0x3a4b5c\n4   0.020   192.168.1.1     192.168.1.100   DHCP    DHCP ACK      - Transaction ID 0x3a4b5c\n5   86400   ... (renewal traffic later)\n```\n\n## Questions\n\n1.  Identify the **four DORA messages** by packet number.\n2.  Why is the **source IP** of packet #1 `0.0.0.0`?\n3.  Why is the **destination IP** of packet #3 `255.255.255.255` instead of the DHCP server's IP?\n4.  What can you infer about the DHCP server's IP address from this capture?\n5.  The user says they cannot access the internet despite this successful DHCP transaction. What **DHCP Option** might be missing or misconfigured? (Hint: It's the exit path).\n\nProvide clear, concise answers.",
+    "hints": [
+        "Packet #1 is Discover (D), #2 is Offer (O), #3 is Request (R), #4 is ACK (A).",
+        "Client doesn't have an IP yet, so uses 0.0.0.0 as source.",
+        "Request is broadcast to inform other servers.",
+        "Check the source IP of the Offer/ACK.",
+        "Option 3 (Default Gateway) might be wrong or missing."
+    ],
+    "expectedOutput": "1. DORA: Packet 1 (Discover), Packet 2 (Offer), Packet 3 (Request), Packet 4 (ACK).\n2. The client does not yet have a valid IP address; 0.0.0.0 is used as a placeholder.\n3. The Request is broadcast to inform any other DHCP servers that their offers were not accepted.\n4. The DHCP server's IP address is 192.168.1.1.\n5. DHCP Option 3 (Default Gateway) might be missing or incorrect, preventing traffic from leaving the subnet.",
+    "solutionCode": "// No code required. Packet analysis."
+}

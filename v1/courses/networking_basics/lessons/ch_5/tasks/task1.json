@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_5",
+    "title": "Topology Design Challenge",
+    "description": "Design a redundant campus network topology given a set of requirements.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario: Branch Office Network Design\n\nYou are tasked with designing the network for a new two-story branch office.\n\n**Requirements:**\n- **High Availability:** No single switch failure should take down the entire floor.\n- **Segmentation:** The Sales department and Engineering department should be on separate broadcast domains (VLANs).\n- **Wireless:** Both floors need Wi-Fi coverage with seamless roaming.\n- **Security:** Public Wi-Fi (Guest) must be completely isolated from internal resources.\n\n**Your Task:**\n1.  **Draw or describe** the physical topology you would implement. (e.g., How many switches? How are they connected?)\n2.  What **type of switch** would you use for the Access Layer? (Managed or Unmanaged? Why?)\n3.  How would you handle **Wireless**? Would you use standalone APs or a controller-based solution? Why?\n4.  How would you logically separate the Guest Wi-Fi from the Internal Wi-Fi? (Hint: Think about how traffic gets back to the router).\n\nProvide your answers in a clear, structured format.",
+    "hints": [
+        "Consider a 'Collapsed Core' design with two core switches stacked or linked.",
+        "Use VLANs for department separation.",
+        "Guest Wi-Fi usually uses a separate VLAN and firewall rules to block access to internal subnets."
+    ],
+    "expectedOutput": "1. Physical: Two switches per floor (stacked or LACP link). Each floor switch uplinks to two Core switches in the server room. Wireless APs connect to floor switches.\n2. Managed Switches. Required for VLAN configuration, port security, and link aggregation.\n3. Controller-based (WLC) for seamless roaming, central RF management, and easier security policy enforcement.\n4. Guest Wi-Fi mapped to a specific VLAN (e.g., VLAN 99). Firewall rule blocks traffic from VLAN 99 to Internal VLANs (10, 20). Only allows DHCP/DNS and internet access.",
+    "solutionCode": "// No code required. Design response."
+}

@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_6",
+    "title": "DNS Resolution Walkthrough",
+    "description": "Manually trace the delegation path for a domain using command-line tools.",
+    "estimatedMinutes": 10,
+    "problemStatement": "## Scenario: Tracing DNS\n\nYou suspect that a website `portal.cybron.io` is not resolving correctly from your location. You need to manually trace the DNS delegation path to see where the failure occurs.\n\n## Task\n\nUsing the command-line tool `dig` (or `nslookup`), describe the steps and specific commands you would use to:\n\n1.  Find the **Root Servers**.\n2.  Query a **Root Server** for the `.io` TLD servers.\n3.  Query a **.io TLD Server** for the authoritative name servers of `cybron.io`.\n4.  Finally, query the **Authoritative Name Server** for the `A` record of `portal.cybron.io`.\n\n**Expected Output:**\nProvide the exact `dig` commands with options to perform this **iterative** lookup (hint: use `+trace` or do it manually with `+norecurse`).\n\nExplain what each step reveals.",
+    "hints": [
+        "Use `dig . NS` to get root servers.",
+        "Use `dig +norecurse @[root-server] io. NS` to query TLD servers.",
+        "Use `dig +trace portal.cybron.io` to do it all in one command.",
+        "If you don't have dig, `nslookup -type=NS io. [root-server]` works similarly."
+    ],
+    "expectedOutput": "1. `dig . NS` - Lists the 13 root server names.\n2. `dig +norecurse @a.root-servers.net io. NS` - Returns the .io TLD name servers.\n3. `dig +norecurse @a0.nic.io cybron.io NS` - Returns the authoritative servers for cybron.io.\n4. `dig +norecurse @ns1.cybron.io portal.cybron.io A` - Returns the IP address if it exists.\n\nAlternatively, a single command: `dig +trace portal.cybron.io` shows the entire path.",
+    "solutionCode": "// No code required. Command-line explanation task."
+}

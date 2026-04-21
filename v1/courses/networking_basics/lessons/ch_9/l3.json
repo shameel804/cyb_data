@@ -1,0 +1,119 @@
+{
+    "id": "l3",
+    "chapterId": "ch_9",
+    "title": "Access Control Lists (ACLs): The Rulebook",
+    "description": "Learn the syntax and logic of ACLs – the fundamental building blocks of firewall rules.",
+    "xpReward": 40,
+    "estimatedMinutes": 18,
+    "section": "ACL Deep Dive",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "What is an Access Control List (ACL)? 📜",
+            "content": "# The Firewall's Instruction Manual\n\nAn **ACL** is a sequential list of **permit** or **deny** statements that apply to network traffic.\n\n**Analogy:** The **Guest List** that the bouncer uses. It's a piece of paper with lines that say:\n1.  Let in VIPs.\n2.  Deny entry to anyone under 21.\n3.  Let in anyone else.\n\nThe **order** of the list matters critically. The bouncer checks the first rule, then the second, then the third.\n\n**ACL Logic:**\n- Rules are processed **Top-Down, First-Match Wins**.\n- Once a packet matches a rule, the action (Permit or Deny) is applied, and **no further rules are checked**.\n- At the end of every ACL is an **Implicit Deny All**. (If it makes it to the end without matching, it's blocked).\n\n**Types of ACLs (Cisco Terminology):**\n- **Standard ACL:** Filters based **only** on **Source IP Address**. (Legacy, limited).\n- **Extended ACL:** Filters based on **Source/Destination IP, Port, Protocol**. (Modern, granular)."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "ACL Processing 🧮",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "How are ACL rules processed by a firewall or router?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "All rules are evaluated simultaneously",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Top-down, first match wins",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Random order",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Bottom-up",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "ACLs are sequential; the first matching rule determines the action.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Standard ACLs (Legacy) 📝",
+            "content": "# Filtering by Source Only\n\nA **Standard ACL** (numbered 1-99 or 1300-1999) only looks at the **Source IP Address**.\n\n**Syntax (Cisco):**\n```cisco\naccess-list [number] [permit|deny] [source_ip] [wildcard_mask]\n```\n\n**Example:**\n```cisco\naccess-list 10 deny 192.168.1.100 0.0.0.0\naccess-list 10 permit any\n```\n\n**What this does:**\n- Rule 1: Block traffic from the specific host `192.168.1.100`.\n- Rule 2: Allow traffic from everyone else.\n\n**The Problem:**\n- You cannot specify a **destination** or a **port**. This ACL would block `192.168.1.100` from accessing **everything** (web, email, internal servers). \n- **Placement Matters:** Because it only cares about source, a Standard ACL should be placed **as close to the destination as possible**. If placed near the source, it might inadvertently block the user from accessing legitimate resources elsewhere.\n\n**Status:** Rarely used for modern firewalling. Extended ACLs are the standard."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Extended ACLs: Granular Control 🔬",
+            "content": "# Filtering by Source, Destination, and Port\n\nAn **Extended ACL** (numbered 100-199 or 2000-2699) provides fine-grained control over traffic.\n\n**Syntax (Cisco):**\n```cisco\naccess-list [number] [permit|deny] [protocol] [src_ip] [src_wildcard] [operator] [src_port] [dst_ip] [dst_wildcard] [operator] [dst_port] [options]\n```\n\n**Example 1: Allow Web Browsing from Internal Network**\n```cisco\naccess-list 100 permit tcp 192.168.1.0 0.0.0.255 any eq 80\naccess-list 100 permit tcp 192.168.1.0 0.0.0.255 any eq 443\n```\n*Allows TCP traffic from the `192.168.1.0/24` subnet to **any** destination on ports 80 and 443.*\n\n**Example 2: Allow Specific Host to Access SSH Server**\n```cisco\naccess-list 101 permit tcp host 10.0.0.5 host 172.16.1.100 eq 22\n```\n*Allows TCP port 22 (SSH) only from the specific host `10.0.0.5` to the specific server `172.16.1.100`.*\n\n**Example 3: Block Ping (ICMP) from Outside**\n```cisco\naccess-list 102 deny icmp any any echo\n```\n*Blocks ICMP Echo Requests (pings) from any source to any destination.*\n\n**Placement Rule for Extended ACLs:**\nBecause they are specific, Extended ACLs should be placed **as close to the source as possible** to prevent unwanted traffic from traversing the network."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "quiz",
+            "title": "Extended ACL Syntax 📐",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "What does the following ACL rule do? `access-list 110 deny tcp any host 10.0.0.10 eq 23`",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Deny all traffic to 10.0.0.10",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Deny Telnet traffic to 10.0.0.10 from anywhere",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Allow Telnet from 10.0.0.10",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Deny SSH to 10.0.0.10",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Port 23 is Telnet. The rule blocks any TCP traffic to port 23 on host 10.0.0.10.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Wildcard Masks: The Inverse of Subnet Masks 🔄",
+            "content": "# A Unique Cisco Quirk\n\nIn Cisco IOS ACLs, you define networks using **Wildcard Masks**, not Subnet Masks.\n\n**Rule:** Wildcard Mask = `255.255.255.255 - Subnet Mask`\n\n| Subnet Mask | CIDR | Wildcard Mask |\n|-------------|------|---------------|\n| 255.255.255.0 | /24 | 0.0.0.255 |\n| 255.255.255.240 | /28 | 0.0.0.15 |\n| 255.255.0.0 | /16 | 0.0.255.255 |\n\n**Logic:**\n- A `0` in the wildcard mask means **\"Must Match Exactly\"**.\n- A `1` in the wildcard mask means **\"Ignore / Don't Care\"**.\n\n**Examples:**\n- `192.168.1.0 0.0.0.255` matches `192.168.1.0` through `192.168.1.255`.\n- `10.0.0.0 0.255.255.255` matches `10.0.0.0` through `10.255.255.255` (the entire 10.0.0.0/8 network).\n- `host 10.0.0.5` is shorthand for `10.0.0.5 0.0.0.0` (match exactly this one host).\n- `any` is shorthand for `0.0.0.0 255.255.255.255` (match any address).\n\n**Modern Note:** Most modern firewalls (Palo Alto, Fortinet) use **CIDR notation** (`192.168.1.0/24`) instead of wildcard masks. Cisco IOS is the primary holdout."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "code",
+            "title": "Wildcard Mask Calculation 🧮",
+            "content": "**Problem:** You want to match the subnet `172.16.32.0/27`.\n\n1.  Find Subnet Mask for /27: `255.255.255.224`\n2.  Calculate Wildcard: `255.255.255.255 - 255.255.255.224 = 0.0.0.31`\n3.  ACL Entry: `172.16.32.0 0.0.0.31`\n\n**Alternative Trick:**\n- `/24` leaves 8 host bits. Wildcard = `2^8 - 1 = 255` -> `0.0.0.255`\n- `/27` leaves 5 host bits. Wildcard = `2^5 - 1 = 31` -> `0.0.0.31`",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_8",
+            "type": "warning",
+            "title": "ACLs vs. Firewall Policies 🚨",
+            "content": "## Not All Rules Are Created Equal\n\nWhile the concept of ACLs (permitting/denying based on tuples) is universal, different vendors implement them differently.\n\n| Feature | Cisco IOS ACL | Modern NGFW Policy (Palo Alto) |\n|---------|---------------|-------------------------------|\n| **Ordering** | Top-Down, First Match | Top-Down, First Match |\n| **Naming** | Numbered or Named | Friendly Name + Tags |\n| **Network Notation** | Wildcard Mask | CIDR (/24) |\n| **Application** | Port-based only | App-ID (Facebook, YouTube) |\n| **User** | No | User-ID (Domain User) |\n| **Logging** | Basic (`log` keyword) | Extensive session logs, threat logs |\n\n**Key Takeaway:** Understanding the logic of ACLs (Source, Destination, Port, Action) is the foundation for configuring **any** firewall on the planet."
+        }
+    ]
+}

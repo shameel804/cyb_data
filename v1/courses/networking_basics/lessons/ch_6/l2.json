@@ -1,0 +1,113 @@
+{
+    "id": "l2",
+    "chapterId": "ch_6",
+    "title": "The Resolution Journey",
+    "description": "Follow a DNS query from your browser to the root servers and back – iterative vs recursive.",
+    "xpReward": 30,
+    "estimatedMinutes": 12,
+    "section": "How DNS Works",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Two Types of DNS Queries 🧭",
+            "content": "# Recursive vs. Iterative\n\nWhen you type `www.example.com` into your browser, your computer asks a **DNS Resolver** (usually your ISP's server or a public one like Google's `8.8.8.8`). The resolver then does the heavy lifting.\n\n**Recursive Query:**\n- You ask the resolver: *\"Get me the answer. I'm not doing any work.\"*\n- The resolver **must** return the final answer or an error.\n- **Analogy:** Asking a personal assistant to book a flight. They figure out all the connections; you just get the ticket.\n\n**Iterative Query:**\n- The resolver asks a server: *\"Do you know the answer? If not, give me a referral to someone who might.\"*\n- The resolver follows the chain of referrals itself.\n- **Analogy:** Calling a receptionist who says *\"I don't know, call extension 402\"*. You call 402, they say *\"Call 512\"*. You do the work.\n\n**In standard DNS:**\n- **Client to Local Resolver = Recursive** (Give me the answer!).\n- **Resolver to Internet Servers = Iterative** (I'll walk the tree myself)."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Query Types 🔍",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Your laptop sends a DNS query to `8.8.8.8`. What type of query is this typically?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Iterative",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Recursive",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Authoritative",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Reverse",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Clients almost always send recursive queries to their configured DNS server, expecting the server to do all the work.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Step-by-Step Resolution (Walkthrough) 👣",
+            "content": "# The Full Journey of `www.example.com`\n\nLet's trace a query with an **empty cache**.\n\n**Step 1: Local Cache Check**\n- Your OS checks its **DNS Cache**. If found, answer immediately.\n- `ipconfig /displaydns` (Windows) or `sudo systemd-resolve --statistics` (Linux).\n\n**Step 2: Hosts File**\n- Your OS checks the `hosts` file (`C:\\Windows\\System32\\drivers\\etc\\hosts`).\n- **Security Note:** Malware often modifies this file to redirect bank websites to fake IPs.\n\n**Step 3: Local Resolver**\n- Your computer sends a **Recursive Query** to the DNS server configured in your network settings (e.g., `8.8.8.8` or your ISP).\n\n**Step 4: Resolver's Cache**\n- The resolver checks its **own massive cache**. If the record is fresh (TTL not expired), it returns it.\n\n**Step 5: Iterative Walk (Resolver does this)**\n1.  **Ask Root Server:** *\"Where is www.example.com?\"* -> Response: *\"Ask the .COM servers at `192.5.6.30`.\"*\n2.  **Ask .COM TLD Server:** *\"Where is www.example.com?\"* -> Response: *\"Ask the Authoritative servers for example.com, `ns1.iana.org`.\"*\n3.  **Ask Authoritative Server:** *\"Where is www.example.com?\"* -> Response: *\"Here is the A record: `93.184.216.34`.\"*\n\n**Step 6: Return to Client**\n- Resolver caches the answer for the **TTL** duration and sends it to your browser.\n- **Total time:** Usually < 100 milliseconds."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Tracing DNS with `dig` 🕵️",
+            "content": "You can watch this exact process using the `dig` command with the `+trace` option.\n\n```bash\ndig +trace www.example.com\n```\n\n**Output Explanation:**\n1.  First section shows the **Root Servers**.\n2.  Second section shows the **.COM TLD Servers**.\n3.  Third section shows the **Authoritative Servers** for `example.com`.\n4.  Final section shows the **Answer** (the IP address).",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "Resolution Steps 🪜",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "If your local DNS cache already has the IP address for a website, what happens?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The query still goes out to the root servers.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The browser uses the cached IP immediately without network traffic.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The query fails.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The resolver ignores the cache.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! Caching reduces latency and load on the DNS infrastructure.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Caching and TTL (Time To Live) ⏳",
+            "content": "# The Secret to DNS Speed and Scalability\n\n**Caching** is the reason the internet doesn't melt under DNS queries. \n\nEvery DNS record has a **TTL (Time To Live)** value, set by the domain owner (in seconds).\n\n**How Caching Works:**\n- Your local resolver asks for `example.com`.\n- The authoritative server responds with `A 93.184.216.34` and `TTL 86400` (24 hours).\n- The resolver stores this mapping for **24 hours**.\n- Any subsequent query for `example.com` within 24 hours is answered **instantly** from the cache.\n\n**The Trade-off:**\n- **Low TTL (e.g., 300 seconds / 5 mins):** Changes propagate quickly. Good for **failover** or **load balancing**. But increases query load on authoritative servers.\n- **High TTL (e.g., 86400 seconds / 24 hours):** Reduces query load and latency. But if you need to change the IP address urgently, **users will be stuck with the old IP** until the TTL expires.\n\n**Cybersecurity Relevance:** Attackers performing **DNS Hijacking** love high TTLs because the malicious mapping persists in caches worldwide for a long time."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Reverse DNS (rDNS) 🔄",
+            "content": "# From IP Back to Name\n\nDNS normally maps a **Name** to an **IP** (Forward Lookup). \n**Reverse DNS (rDNS)** maps an **IP** to a **Name**.\n\n**Why is this useful?**\n- **Email Spam Filtering:** When a mail server receives an email from `203.0.113.25`, it can do a Reverse DNS lookup. If the IP doesn't resolve to a valid mail server name (`mail.example.com`), it's likely **spam** and gets rejected.\n- **Network Troubleshooting:** `ping -a 8.8.8.8` reveals `dns.google`.\n\n**How it works:**\nIt uses a special domain: `in-addr.arpa`.\n- To look up `8.8.8.8`, the query is for `8.8.8.8.in-addr.arpa`. (Note the reversed IP!).\n- The response is a **PTR Record** pointing to the hostname."
+        }
+    ]
+}

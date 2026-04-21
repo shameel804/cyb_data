@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_3",
+    "title": "Troubleshoot the Mask",
+    "description": "Analyze a network diagram and identify misconfigured subnet masks causing communication failures.",
+    "estimatedMinutes": 10,
+    "problemStatement": "## Scenario: The Silent Printer\n\nA user, Alice, reports she cannot print to the new network printer. You investigate and find the following configuration:\n\n- **Alice's Computer:** IP: `192.168.1.100`, Mask: `255.255.255.240` (`/28`)\n- **Network Printer:** IP: `192.168.1.65`, Mask: `255.255.255.0` (`/24`)\n- **File Server:** IP: `192.168.1.10`, Mask: `255.255.255.240` (`/28`)\n\n## Questions\n\n1.  What is the **Network Address** of Alice's computer based on her mask?\n2.  What is the **Network Address** of the Printer based on *Alice's* mask? (Hint: Does the printer fall inside Alice's subnet range?)\n3.  What is the **Network Address** of the Printer based on the *Printer's own* mask?\n4.  Why can Alice print to the Printer? Or why can't she?\n5.  Alice *can* access the File Server just fine. Why?",
+    "hints": [
+        "Calculate Alice's Subnet ID: Mask /28 -> Magic Number = 16. 192.168.1.100 is in subnet 192.168.1.96.",
+        "Check if Printer IP (192.168.1.65) falls inside Alice's range (192.168.1.96 - 192.168.1.111).",
+        "Check Printer's own mask: /24 means it thinks *everyone* in 192.168.1.0/24 is local."
+    ],
+    "expectedOutput": "1. Alice's Network: 192.168.1.96/28 (Range .97 - .110).\n2. From Alice's perspective: Printer IP .65 is NOT in her subnet. It appears remote.\n3. Printer's perspective: It thinks its network is 192.168.1.0/24, so Alice (.100) is local.\n4. Alice CANNOT print. Alice sends the packet to her Default Gateway (Router) because she thinks the Printer is remote. The Printer receives the packet (because the router forwards it or they are on same switch), but when the Printer replies, it thinks Alice is LOCAL and sends an ARP request directly for Alice's MAC address. Alice might receive it, but the communication is 'asymmetric' and often fails due to firewall rules or ARP issues. In strict subnetting terms, the printer is on a different logical subnet.\n5. File Server works because BOTH Alice and the File Server have the correct /28 mask and share the same network address (192.168.1.96/28). They agree on what 'local' means.",
+    "solutionCode": "// Troubleshooting Logic\n// Alice: 192.168.1.100 /28 (255.255.255.240)\n// Magic Num: 16. Subnet IDs: 0, 16, 32, 48, 64, 80, 96, 112...\n// Alice is in subnet 192.168.1.96 (Range .97 - .110, Broadcast .111)\n// Printer: 192.168.1.65. This is in subnet 192.168.1.64.\n// Misconfiguration! They are on different subnets."
+}

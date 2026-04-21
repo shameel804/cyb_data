@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_10",
+    "title": "VPN Protocol Selection Scenario",
+    "description": "Choose the appropriate VPN protocol for different business use cases and justify your selection.",
+    "estimatedMinutes": 12,
+    "problemStatement": "## Scenario: VPN Architecture Recommendations\n\nYou are a security consultant advising three different clients on their remote access strategy.\n\n**Client A: Global Sales Team**\n- Uses company-issued Windows laptops.\n- Frequently travels internationally and connects from hotels, airports, and coffee shops.\n- Needs access to internal web apps, file shares, and email.\n- Corporate policy mandates **always-on VPN** with strong security.\n\n**Client B: Legacy Manufacturing Plant**\n- Connects a remote warehouse to the main headquarters via a permanent tunnel.\n- The warehouse has a Cisco router and a private MPLS link that is being replaced with a broadband internet connection.\n- Needs to route traffic between the two sites (`10.1.0.0/24` and `10.2.0.0/24`) as if they were one network.\n\n**Client C: Privacy-Conscious Development Team**\n- Uses a mix of Linux, macOS, and Windows laptops (BYOD).\n- Needs to secure traffic on untrusted networks and bypass geo-restrictions for testing.\n- Wants the **fastest possible speeds** and **modern cryptography**.\n- Technical team is comfortable with configuration files.\n\n## Task\n\nFor each client, recommend:\n1.  **VPN Type** (Remote Access or Site-to-Site).\n2.  **Specific Protocol** (IKEv2/IPsec, OpenVPN, WireGuard, etc.).\n3.  **One-sentence justification** based on the client's requirements.\n\n**Format:**\n- Client A: Type / Protocol / Justification\n- Client B: Type / Protocol / Justification\n- Client C: Type / Protocol / Justification",
+    "hints": [
+        "Client A needs firewall traversal and mobility.",
+        "Client B needs a permanent gateway-to-gateway tunnel.",
+        "Client C needs speed and cross-platform support."
+    ],
+    "expectedOutput": "- Client A: Remote Access / **IKEv2/IPsec** (or **OpenVPN TCP 443**). Justification: IKEv2 provides MOBIKE for seamless network switching and is native to Windows. OpenVPN TCP 443 is a good alternative for strict firewalls.\n- Client B: Site-to-Site / **IPsec Tunnel Mode**. Justification: IPsec is the industry standard for secure, always-on connectivity between network gateways.\n- Client C: Remote Access / **WireGuard**. Justification: WireGuard offers exceptional speed, a minimal codebase for security, and excellent cross-platform support.",
+    "solutionCode": "// No code required. Selection and justification."
+}

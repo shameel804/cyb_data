@@ -1,0 +1,70 @@
+{
+    "id": "sq_csnb_1",
+    "title": "Bits and Layers Bug Hunt",
+    "triggerChapterIndex": 2,
+    "metadata": {
+        "type": "debug"
+    },
+    "questions": [
+        {
+            "id": "sq_csnb_1_q1",
+            "type": "multiple_choice",
+            "question": "The following code is supposed to calculate the number of usable hosts in a /26 subnet. What is the bug?",
+            "codeSnippet": "prefix_length = 26\nhost_bits = 32 - prefix_length\ntotal_hosts = 2 ** host_bits\nusable_hosts = total_hosts - 1\nprint(usable_hosts)",
+            "bugLineIndex": 3,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The formula for usable hosts is `2^host_bits - 2` (subtract network and broadcast addresses). The code subtracts only 1.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_csnb_1_q2",
+            "type": "multiple_choice",
+            "question": "This function aims to return the layer name of the OSI model given a number (1-7). Find the bug.",
+            "codeSnippet": "def get_osi_layer(num):\n    layers = ['Physical', 'Data Link', 'Network', \n              'Transport', 'Session', 'Presentation', 'Application']\n    return layers[num]\nprint(get_osi_layer(7))",
+            "bugLineIndex": 3,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "List indices start at 0. Layer 7 corresponds to index 6, not 7. The code will raise an IndexError for input 7.",
+            "xpReward": 20,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_csnb_1_q3",
+            "type": "multiple_choice",
+            "question": "This script is meant to convert a binary octet string to decimal. Identify the error.",
+            "codeSnippet": "binary = '11000000'\ndecimal = 0\nfor i in range(len(binary)):\n    decimal += int(binary[i]) * (2 ** i)\nprint(decimal)",
+            "bugLineIndex": 3,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The loop iterates from left to right, but the most significant bit should be multiplied by 2^7, not 2^0. The power should be `7 - i`.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_csnb_1_q4",
+            "type": "multiple_choice",
+            "question": "This function attempts to check if an IP address is in a given subnet. What's wrong?",
+            "codeSnippet": "import ipaddress\ndef is_in_subnet(ip, subnet):\n    return ipaddress.ip_address(ip) in ipaddress.ip_network(subnet)\n# Test\nprint(is_in_subnet('192.168.1.100', '192.168.1.0/255.255.255.0'))",
+            "bugLineIndex": 1,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "`ip_network` expects CIDR notation (e.g., '192.168.1.0/24'), not a subnet mask string. The code will raise a ValueError.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_csnb_1_q5",
+            "type": "multiple_choice",
+            "question": "This function attempts to calculate the network address from an IP and CIDR. Find the bug.",
+            "codeSnippet": "def get_network(ip, cidr):\n    parts = ip.split('.')\n    mask = (0xffffffff << (32 - cidr)) & 0xffffffff\n    ip_int = (parts[0] << 24) + (parts[1] << 16) + (parts[2] << 8) + parts[3]\n    net_int = ip_int & mask\n    return f\"{net_int >> 24}.{(net_int >> 16) & 0xff}.{(net_int >> 8) & 0xff}.{net_int & 0xff}\"\nprint(get_network('10.0.0.15', 28))",
+            "bugLineIndex": 3,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The octets are strings; they must be converted to integers before bitwise operations. The code will raise a TypeError.",
+            "xpReward": 20,
+            "difficulty": 2
+        }
+    ]
+}

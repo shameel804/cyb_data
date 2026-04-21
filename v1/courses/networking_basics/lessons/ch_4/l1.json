@@ -1,0 +1,78 @@
+{
+    "id": "l1",
+    "chapterId": "ch_4",
+    "title": "TCP/IP Model: The Four-Layer Reality",
+    "description": "Compare the OSI reference model with the actual TCP/IP stack that runs the internet.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Models",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "OSI vs. TCP/IP: Theory vs. Reality 📚",
+            "content": "# The OSI Model is Beautiful, but TCP/IP Rules the World\n\nIn Chapter 2, we learned the **OSI 7-Layer Model**. It's the perfect theoretical framework.\n\nBut the actual **Internet Protocol Suite** (commonly called **TCP/IP**) was developed by the **Department of Defense (DoD)** *before* the OSI model was finalized.\n\n**Key Difference:**\n- **OSI:** 7 Layers (Application, Presentation, Session, Transport, Network, Data Link, Physical).\n- **TCP/IP:** 4 Layers (Application, Transport, Internet, Network Access).\n\n**Analogy:** OSI is like the detailed **blueprint** of a car engine (every gasket and bolt). TCP/IP is the **actual car** you drive to work. Some of the blueprint details are just welded together into bigger components in the real thing."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "The TCP/IP Four-Layer Stack 🥞",
+            "content": "# Mapping the Models\n\n| TCP/IP Layer | Corresponding OSI Layers | Key Protocols |\n|--------------|--------------------------|---------------|\n| **Application** | Application, Presentation, Session (5-7) | HTTP, FTP, SMTP, DNS, DHCP |\n| **Transport** | Transport (4) | **TCP**, **UDP** |\n| **Internet** | Network (3) | **IP**, **ICMP**, **ARP** (sort of) |\n| **Network Access** | Data Link, Physical (1-2) | Ethernet, Wi-Fi, PPP |\n\n**The Big Shift:** TCP/IP doesn't have separate Session and Presentation layers. Those functions (encryption, formatting, session management) are **baked into the Application layer protocols themselves**.\n\n**Example:** HTTPS handles encryption (Presentation) and cookie management (Session) directly within the application protocol, without relying on separate OSI layers."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Layer Count 🔢",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "How many layers are in the TCP/IP model?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "5",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "7",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "4",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "3",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! The TCP/IP model has 4 layers: Application, Transport, Internet, and Network Access.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Encapsulation in TCP/IP 📦",
+            "content": "# Same Concept, Different Names\n\nData still gets wrapped in headers as it goes down the stack.\n\n**TCP/IP Terminology:**\n\n| Layer | Data Unit Name |\n|-------|----------------|\n| Application | **Message / Data** |\n| Transport (TCP/UDP) | **Segment** (TCP) or **Datagram** (UDP) |\n| Internet (IP) | **Packet** |\n| Network Access (Ethernet) | **Frame** |\n\n**Remember:** At the Transport layer, a **TCP Segment** is encapsulated inside an **IP Packet**, which is encapsulated inside an **Ethernet Frame**."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "tip",
+            "title": "The 'Hourglass' Shape ⌛",
+            "content": "## The Narrow Waist of the Internet\n\nThe TCP/IP protocol stack is often drawn as an **hourglass**.\n\n- **Top (Application):** Wide variety of apps (Web, Email, Gaming).\n- **Middle (IP):** **NARROW WAIST**. **Every single application** must use **IP** to get anywhere. There is no alternative. This universal adoption of IP is the single greatest reason the internet scales globally.\n- **Bottom (Network Access):** Wide variety of physical links (Fiber, 5G, Ethernet).\n\n**Cybersecurity Implication:** Because **IP** is the universal language, attackers can craft malicious IP packets that work over *any* physical connection. An attack designed in the 90s still works today over Wi-Fi because the IP layer hasn't changed fundamentally."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "code",
+            "title": "Visualizing the Stack 🖼️",
+            "content": "Data flow down the TCP/IP stack:\n\n```\nApplication:  \"GET /index.html HTTP/1.1\"\n   |\nTransport:    [TCP Header | HTTP Request Data]\n   |\nInternet:     [IP Header | TCP Header | HTTP Request Data]\n   |\nNetwork Acc:  [Ethernet Header | IP Header | TCP Header | HTTP Data | FCS]\n```",
+            "codeLanguage": "text",
+            "canRunCode": false
+        }
+    ]
+}

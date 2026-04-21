@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_3",
+    "title": "Subnetting a Small Office",
+    "description": "Given a /24 network, carve out specific subnets for different departments using FLSM.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario: CyberCorp Branch Office\n\nYou are the network administrator for a new branch office. The ISP has assigned you the public network `203.0.113.0/24`.\n\nYou need to create **4 separate subnets** (one for each department) with **equal size**. The departments are:\n- Engineering\n- Sales\n- HR\n- IT Management\n\n## Your Task\n\n1.  What subnet mask will you use for these 4 subnets? (Provide CIDR notation and dotted decimal).\n2.  List the **Network Address** and **Broadcast Address** for each of the 4 subnets.\n3.  What is the **usable IP range** for the **Engineering** subnet?\n4.  How many **usable host addresses** does each subnet have?",
+    "hints": [
+        "You need 4 subnets. How many bits do you need to borrow? 2^s >= 4.",
+        "Original mask is /24. New mask = /24 + s.",
+        "Use the Magic Number method (256 - interesting_octet).",
+        "Remember: First usable = Network + 1. Last usable = Broadcast - 1."
+    ],
+    "expectedOutput": "1. /26 or 255.255.255.192\n2. Subnets: 203.0.113.0/26 (Broadcast .63), 203.0.113.64/26 (Broadcast .127), 203.0.113.128/26 (Broadcast .191), 203.0.113.192/26 (Broadcast .255)\n3. Engineering (assuming first subnet): 203.0.113.1 - 203.0.113.62\n4. 62 usable hosts per subnet.",
+    "solutionCode": "// No code required. Calculation task.\n// Mask: 255.255.255.192 (/26)\n// Magic Number: 64\n// Subnet IDs: 0, 64, 128, 192\n// Usable Hosts: 2^(32-26) - 2 = 62"
+}

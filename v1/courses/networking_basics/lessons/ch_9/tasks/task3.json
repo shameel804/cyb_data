@@ -1,0 +1,17 @@
+{
+    "id": "task3",
+    "chapterId": "ch_9",
+    "title": "DMZ Network Design",
+    "description": "Design a secure DMZ architecture for a small e-commerce company.",
+    "estimatedMinutes": 12,
+    "problemStatement": "## Scenario: E-Commerce Startup Security\n\nYou are the security architect for 'CyberShop', a small online store. They have the following servers:\n- **Web Server (Public):** Hosts the online storefront. Needs to be accessible from the Internet on **HTTPS (TCP/443)**.\n- **Database Server (Internal):** Stores customer orders and payment info. **Must NOT be accessible from the Internet.** Only the Web Server needs to connect to it on **TCP/3306 (MySQL)**.\n- **Admin Workstation (Internal):** Used by the owner to manage the website and check orders.\n\n**Task:**\n1.  Propose a **zone-based firewall architecture** (e.g., Internet Zone, DMZ Zone, Internal Zone).\n2.  List **three specific firewall rules** (Source Zone, Destination Zone, Service, Action) required to implement the security policy described.\n3.  Justify **why** you would place the Database Server in the Internal Zone rather than the DMZ.\n\n**Format:**\n- Rule 1: ...\n- Rule 2: ...\n- Rule 3: ...\n- Justification: ...",
+    "hints": [
+        "Zones: Untrust (Internet), DMZ (Public Servers), Trust (Internal LAN).",
+        "Rule 1: Internet -> DMZ (Web Server) HTTPS Allow.",
+        "Rule 2: DMZ (Web Server) -> Trust (DB Server) MySQL Allow.",
+        "Rule 3: Trust -> Internet HTTP/HTTPS Allow (for Admin browsing/admin).",
+        "Database contains sensitive data; compromise of Web Server should not directly expose DB."
+    ],
+    "expectedOutput": "**Architecture:** Three zones: **Internet (Untrust)**, **DMZ**, **Internal (Trust)**.\n\n**Firewall Rules:**\n- Rule 1: Source Zone `Internet`, Dest Zone `DMZ`, Dest IP `Web_Server`, Service `HTTPS`, Action `Allow`.\n- Rule 2: Source Zone `DMZ`, Source IP `Web_Server`, Dest Zone `Internal`, Dest IP `DB_Server`, Service `MySQL`, Action `Allow`.\n- Rule 3: Source Zone `Internal`, Dest Zone `Internet`, Service `HTTP/HTTPS`, Action `Allow`.\n- (Implicit Deny: All other cross-zone traffic blocked).\n\n**Justification for DB Server in Internal Zone:**\nThe database contains sensitive customer and payment information. Placing it in the Internal Zone adds a layer of defense. If the Web Server (in DMZ) is compromised, the attacker must still traverse a firewall rule (Rule 2) to reach the database. They cannot directly access the DB from the Internet. This is **Defense in Depth**.",
+    "solutionCode": "// Design response. No code."
+}

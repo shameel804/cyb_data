@@ -1,0 +1,111 @@
+{
+    "id": "l1",
+    "chapterId": "ch_6",
+    "title": "Why Names? The DNS Problem",
+    "description": "Understand why we need a phonebook for the internet and the hierarchical structure of DNS.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "DNS Fundamentals",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Problem with Numbers 🔢",
+            "content": "# Humans vs. Routers\n\nImagine if to visit Google you had to type `142.250.185.46` into your browser. Now imagine remembering the IP address for **every single website** you visit daily.\n\n**Impossible, right?**\n\n- **Routers need IP addresses** to deliver packets.\n- **Humans need names** to remember things.\n\n**DNS (Domain Name System)** is the bridge between these two worlds. It is the **phonebook of the internet**.\n\n**Analogy:** \n- You know your friend's name is **\"Bob Smith\"**.\n- You don't know his phone number.\n- You open the **Phonebook (DNS)** and look up **\"Bob Smith\"** to find **\"555-1234\"** (IP Address).\n\nWithout DNS, the internet as we know it—with easy URLs like `amazon.com` or `netflix.com`—would not exist."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the primary purpose of DNS?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To encrypt web traffic",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To translate human-readable names to IP addresses",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To assign IP addresses to devices",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To route packets across the internet",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! DNS maps domain names (like google.com) to IP addresses (like 142.250.185.46).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "DNS Hierarchy: The Inverted Tree 🌳",
+            "content": "# A Distributed Database\n\nDNS is **not** one giant computer somewhere that knows every name. It is a **distributed, hierarchical database**.\n\n**Analogy:** Think of a **Global Company Directory**.\n- You don't have one giant book with every employee on Earth.\n- You have a **Root** (The Corporate Switchboard).\n- The Root points you to the **Continent Office** (Top-Level Domain).\n- That office points you to the **Country Office** (Second-Level Domain).\n- That office points you to the **Local Office** (Subdomain).\n- Finally, the local HR person gives you the **specific desk phone** (IP Address).\n\n**The Hierarchy (Reading Right to Left):**\n```text\nwww.mail.google.com.\n  ^    ^    ^     ^\n  |    |    |     |__ Top-Level Domain (TLD) - .com\n  |    |    |________ Second-Level Domain (SLD) - google\n  |    |_____________ Subdomain - mail\n  |__________________ Hostname - www\n\nThe final dot (.) represents the ROOT. It's usually invisible.\n```"
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Root Servers: The Directory's Spine 🦴",
+            "content": "# 13 Logical Servers That Run the Internet\n\nAt the very top of the DNS hierarchy are the **Root Name Servers**. \n\n- There are **13 logical root servers** named `a.root-servers.net` through `m.root-servers.net`.\n- They are operated by 12 independent organizations (ICANN, Verisign, NASA, US Military, etc.).\n- **Important:** There are only 13 **IP addresses** for the root, but there are **hundreds of physical servers** distributed globally using **Anycast** routing.\n\n**What do the Root Servers do?**\nThey **DO NOT** know the IP address of `google.com`. \nThey **ONLY** know the addresses of the **TLD Name Servers** (the servers for `.com`, `.org`, `.net`, `.uk`, `.jp`, etc.).\n\n**Example Query:**\n- Client: \"Where is `www.google.com`?\"\n- Root Server: \"I don't know, but here is the address of the **.COM** name server. Go ask them.\""
+        },
+        {
+            "id": "s_l1_5",
+            "type": "quiz",
+            "title": "Root Knowledge 📚",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "What information do the DNS Root Servers actually store?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The IP address of every website on the internet.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The addresses of the Top-Level Domain (TLD) name servers.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The MAC addresses of local routers.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Nothing; they are just for show.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Root servers delegate queries to the appropriate TLD servers (e.g., .com, .org).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "TLDs and Authoritative Servers 🏢",
+            "content": "# The Chain of Delegation\n\n1.  **Top-Level Domains (TLDs):** \n    - **gTLDs (Generic):** `.com`, `.org`, `.net`, `.info`\n    - **ccTLDs (Country Code):** `.uk`, `.ca`, `.jp`, `.de`\n    - **sTLDs (Sponsored):** `.gov`, `.edu`, `.mil`\n    - **New gTLDs:** `.google`, `.amazon`, `.ninja`\n\n2.  **Authoritative Name Servers:** \n    - These are the **final source of truth** for a specific domain.\n    - When you buy `mycoolbusiness.com` from GoDaddy or Namecheap, you configure the **Authoritative Name Servers** (e.g., `ns1.digitalocean.com`).\n    - These servers hold the actual **DNS Records** (A, MX, CNAME) for your domain.\n\n**The Flow:**\n`Root` -> `.COM TLD` -> `google.com Authoritative Server` -> `IP Address`"
+        },
+        {
+            "id": "s_l1_7",
+            "type": "tip",
+            "title": "FQDN (Fully Qualified Domain Name) 🏷️",
+            "content": "## The Absolute Path\n\nAn **FQDN** specifies the exact location in the tree hierarchy, ending with a dot.\n\n- Relative: `www`\n- Fully Qualified: `www.example.com.` (Note the trailing dot).\n\nIn most browsers and tools, the trailing dot is implied."
+        }
+    ]
+}

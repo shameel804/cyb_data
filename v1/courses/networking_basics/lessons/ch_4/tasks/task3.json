@@ -1,0 +1,16 @@
+{
+    "id": "task3",
+    "chapterId": "ch_4",
+    "title": "ARP Cache Investigation",
+    "description": "Use command-line tools to examine and manipulate the ARP cache on your own machine.",
+    "estimatedMinutes": 10,
+    "problemStatement": "## Scenario: Exploring the ARP Cache\n\nYou suspect that an ARP Poisoning attack might be happening on your local network. You need to inspect your machine's ARP cache.\n\n## Task\n\n1. What command would you use on **Windows** to view the ARP cache? What about **Linux/Mac**?\n2. Interpret the following (fictional) output from `arp -a`:\n   ```\n   Internet Address      Physical Address      Type\n   192.168.1.1           00-11-22-33-44-55     dynamic\n   192.168.1.105         11-22-33-44-55-66     dynamic\n   192.168.1.200         11-22-33-44-55-66     dynamic\n   ```\n   What is suspicious about this output? What attack might be occurring?\n3. How would you add a **static ARP entry** for `192.168.1.1` with MAC `00-11-22-33-44-55` on Windows to prevent poisoning? (Provide the command).\n4. Why is static ARP not a scalable solution for large networks?",
+    "hints": [
+        "The command is `arp -a` on both Windows and Linux/Mac (though Linux uses `ip neigh` now).",
+        "If two different IPs have the same MAC address, it could be ARP spoofing or a legitimate proxy ARP.",
+        "Static ARP entry: `arp -s [IP] [MAC]` on Windows.",
+        "Static ARP requires manual configuration on every host; impossible to manage in large environments."
+    ],
+    "expectedOutput": "1. Windows: `arp -a`. Linux/Mac: `arp -a` or `ip neigh`.\n2. Suspicious: `192.168.1.105` and `192.168.1.200` share the same MAC address (`11-22-33-44-55-66`). This could indicate **ARP Spoofing/Poisoning**, where an attacker is responding to ARP requests for both IPs.\n3. `arp -s 192.168.1.1 00-11-22-33-44-55` (Requires administrator privileges).\n4. Static ARP requires manually updating entries on every device whenever a NIC is replaced or a DHCP address changes. Not feasible for networks with hundreds of hosts.",
+    "solutionCode": "// No code required. Command-line exercise."
+}

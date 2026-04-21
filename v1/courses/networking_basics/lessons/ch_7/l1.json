@@ -1,0 +1,70 @@
+{
+    "id": "l1",
+    "chapterId": "ch_7",
+    "title": "Life on the LAN: The Neighborhood",
+    "description": "Understand local area network dynamics: how devices find each other and why DHCP and ARP exist.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "LAN Fundamentals",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Welcome to the Local Area Network 🏘️",
+            "content": "# The LAN Party Begins\n\nA **Local Area Network (LAN)** is a group of devices connected together within a limited area—your home, an office floor, a coffee shop. \n\nIn a LAN, devices can communicate directly at **Layer 2** using **MAC addresses**. But to make things work smoothly, two critical protocols operate behind the scenes:\n\n1.  **DHCP (Dynamic Host Configuration Protocol):** The **friendly concierge** who hands out IP addresses when you walk in the door.\n2.  **ARP (Address Resolution Protocol):** The **nosy neighbor** who helps you find out what MAC address belongs to a given IP.\n\n**Analogy: A New Neighbor Moving In**\n- You just moved into a new house (Connected to Wi-Fi).\n- You need a **Street Address** (IP Address) so people can find you. You ask the **HOA Office (DHCP Server)** for one.\n- You want to visit your neighbor at `192.168.1.25`, but you don't know their exact **House Color/Door** (MAC Address). You shout down the street: *\"Who has 192.168.1.25?\"* That's **ARP**."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "LAN Necessities 📋",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What two critical protocols are essential for devices to get an IP address and find MAC addresses on a LAN?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "TCP and UDP",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "DNS and HTTP",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "DHCP and ARP",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "ICMP and SSH",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Exactly! DHCP provides IP addresses; ARP resolves IPs to MAC addresses on the local segment.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "The Need for Automatic Addressing 🔄",
+            "content": "# Imagine Manually Configuring Every Device\n\nIn the early days of networking (1980s), network administrators had to **manually** assign an IP address, Subnet Mask, Default Gateway, and DNS server to **every single computer**.\n\n**This was a nightmare:**\n- **Human Error:** Typing `192.168.1.11` as `192.168.1.111` caused IP conflicts.\n- **Mobility:** If you unplugged your laptop and went to a conference room, you had to **reconfigure** it for that new subnet.\n- **Scalability:** Adding 500 new workstations? Good luck.\n\n**DHCP was created to solve this.** It allows devices to shout into the void: *\"I'm new here! Someone give me an address!\"* and a server automatically responds with a valid configuration.\n\n**Security Note:** The fact that devices can just *ask* for an address is also a **security vulnerability**. We'll cover **DHCP Attacks** in Lesson 4."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Need for Address Resolution (ARP) 📫",
+            "content": "# Why Can't We Just Use IP Addresses Locally?\n\nYou know your neighbor's IP is `192.168.1.25`. Why can't you just send a packet to `192.168.1.25`?\n\n**Remember Layer 2:** Communication on a local network happens via **MAC addresses** in **Ethernet Frames**. \n\n- A switch only understands **MAC addresses**.\n- Your computer builds an Ethernet Frame. It needs to fill in the **Destination MAC Address** field.\n\n**The Gap:**\n- **Application Layer:** You know the IP (`192.168.1.25`).\n- **Data Link Layer:** You need the MAC (`a1:b2:c3:d4:e5:f6`).\n\n**ARP bridges this gap.** It's the mechanism that asks the local network: *\"Who has IP 192.168.1.25? Tell me your MAC address.\"*"
+        },
+        {
+            "id": "s_l1_5",
+            "type": "tip",
+            "title": "Broadcast Domain Reminder 📢",
+            "content": "## The Stage for DHCP and ARP\n\nBoth DHCP and ARP operate primarily using **Broadcasts**.\n\n- A **Broadcast Domain** is the set of all devices that receive a Layer 2 broadcast frame (Destination MAC `FF:FF:FF:FF:FF:FF`).\n- By default, all ports on a switch are in the **same** Broadcast Domain (VLAN 1).\n- **Routers stop broadcasts.** They do not forward broadcasts to other networks.\n\n**Why this matters:**\n- DHCP Discover messages are broadcasts. If you have 10,000 devices in one VLAN, that's a lot of broadcast noise.\n- ARP Requests are broadcasts. A large flat network leads to **Broadcast Storms** and performance degradation.\n\n**Best Practice:** Use **VLANs** to segment LANs into smaller, manageable broadcast domains."
+        }
+    ]
+}

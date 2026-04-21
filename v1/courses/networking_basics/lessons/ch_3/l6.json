@@ -1,0 +1,84 @@
+{
+    "id": "l6",
+    "chapterId": "ch_3",
+    "title": "Private, Public, and NAT",
+    "description": "How billions of devices share a limited pool of public addresses and stay hidden.",
+    "xpReward": 30,
+    "estimatedMinutes": 10,
+    "section": "Real World",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "The IPv4 Exhaustion Crisis 🌍",
+            "content": "# We Ran Out of Numbers\n\nThere are **4.29 Billion** possible IPv4 addresses (`2^32`). \n- In 1981, that seemed like infinity.\n- In 2011, **IANA ran out of new /8 blocks to give out.**\n\n**How does the internet still work?**\nTwo reasons:\n1.  **Private IP Addresses + NAT**\n2.  **IPv6** (The long-term solution)\n\nToday, we focus on the **stopgap that saved the internet: Private Addressing and NAT.**"
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "RFC 1918: The Private Ranges 🔒",
+            "content": "# Addresses That Can't Go on the Internet\n\nThe IETF reserved specific blocks of IP addresses for **private, internal use only**. These addresses are **non-routable** on the public internet. If a router sees a packet destined for a Private IP on the public internet, it **drops it**.\n\n**The Three Private Ranges:**\n\n| Class | CIDR Block | Range | Total Addresses | Typical Home Use |\n|-------|------------|-------|-----------------|------------------|\n| A | 10.0.0.0/8 | 10.0.0.0 - 10.255.255.255 | 16.7 Million | Large Enterprise |\n| B | 172.16.0.0/12 | 172.16.0.0 - 172.31.255.255 | 1 Million | Mid-size |\n| C | 192.168.0.0/16 | 192.168.0.0 - 192.168.255.255 | 65,536 | **Your Home WiFi!** |\n\n**Analogy:** These are like **Internal Office Phone Extensions** (Dial 4-digit number). You can't dial that 4-digit number from outside the building. To call out, you have to go through the **Receptionist** (NAT)."
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Private Eye 🕵️",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "Which of these IP addresses is a valid Private address (RFC 1918)?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "8.8.8.8",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "192.168.1.100",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "172.32.0.1",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "11.0.0.1",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! 192.168.x.x is the classic home/office private range.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "NAT: Network Address Translation 🔄",
+            "content": "# The Magic Trick\n\n**NAT** allows multiple devices with **Private IPs** to share a single **Public IP** when accessing the internet.\n\n**How it Works (The Receptionist Analogy):**\n1.  You (192.168.1.10) hand a letter (Web Request) to the Receptionist (Router).\n2.  The Receptionist puts it in a **new envelope** with the **Company's Public Address** (e.g., 203.0.113.5) and a **specific Return Cubby Number** (Port 45000).\n3.  The Reply comes back to the Company Address + Cubby 45000.\n4.  The Receptionist looks up the Cubby Number in their **NAT Table**: \"Ah, Cubby 45000 belongs to 192.168.1.10.\"\n5.  The Receptionist hands the letter back to you.\n\n**This process is called PAT (Port Address Translation) or NAT Overload.** It's what your home router does every second.\n\n**Cybersecurity Benefit:** **Hide NAT**. The outside world only sees the Router's IP. They **cannot initiate** a connection to your laptop (192.168.1.10) directly. This acts as a crude, but effective, **Inbound Firewall**."
+        },
+        {
+            "id": "s_l6_4",
+            "type": "code",
+            "title": "NAT Table Example 📋",
+            "content": "Inside the router's memory, a table is maintained:\n\n```text\nInside Local (Private) | Inside Global (Public)  | Outside Global\n192.168.1.10:54321     | 203.0.113.5:45000       | 8.8.8.8:53\n192.168.1.20:12345     | 203.0.113.5:45001       | 142.250.185.46:443\n```\n\nWhen the reply comes back to port 45001, the router knows to forward it to 192.168.1.20.",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_5",
+            "type": "warning",
+            "title": "NAT Breaks End-to-End Principle 💔",
+            "content": "## The Downside\n\nThe internet was designed so any device could talk directly to any other device.\n\nNAT **breaks** this.\n\n- **Peer-to-Peer Apps (VoIP, Gaming, Torrents):** Struggle because you are 'hidden' behind NAT.\n- **Troubleshooting:** The public server logs show `203.0.113.5`, but you have 50 users behind that IP. Who did the bad thing? (This is why we need **Logging** and **IPv6**).\n- **Port Forwarding:** You have to manually tell the router: \"If traffic comes to port 443, send it to my Web Server at 192.168.1.50.\""
+        },
+        {
+            "id": "s_l6_6",
+            "type": "text",
+            "title": "APIPA: The 169.254.x.x Failure 🆘",
+            "content": "# When DHCP Fails\n\nOne more special address range to know: **APIPA (Automatic Private IP Addressing)**.\n\n- Range: `169.254.0.0/16`\n- **When do you see it?** When your computer is set to \"Obtain IP automatically\" but **cannot find a DHCP server**.\n- Windows/Linux/Mac will assign themselves a random IP in this range.\n- **Diagnostic Clue:** If you see `169.254.x.x`, you have **NO INTERNET**. The problem is either the cable, the switch, or the DHCP server.\n\n**Cybersecurity Note:** Malware on an isolated network segment sometimes uses APIPA addresses to create an ad-hoc network to spread (worm behavior)."
+        }
+    ]
+}

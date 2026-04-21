@@ -1,0 +1,382 @@
+{
+    "id": "quiz_ch_10",
+    "chapterId": "ch_10",
+    "title": "Chapter 10 Quiz: VPNs, Proxies, and Encryption",
+    "description": "Test your knowledge of VPN protocols, proxy types, TLS/IPsec, and Zero Trust principles!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What are the three core functions of a VPN?",
+            "options": [
+                "Speed, Compression, Caching",
+                "Confidentiality, Authentication, Integrity",
+                "Routing, Switching, Filtering",
+                "Encryption, Tunneling, Broadcast"
+            ],
+            "correctAnswer": 1,
+            "explanation": "VPNs provide confidentiality (encryption), authentication (identity verification), and integrity (tamper detection)."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which VPN type connects two entire networks (e.g., Headquarters and Branch Office) over the Internet?",
+            "options": [
+                "Remote Access VPN",
+                "Site-to-Site VPN",
+                "SSL VPN",
+                "Clientless VPN"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Site-to-Site VPNs connect network gateways to link entire subnets."
+        },
+        {
+            "id": "q3",
+            "type": "fill_blank",
+            "question": "The VPN mode where only traffic destined for corporate subnets goes through the tunnel, while internet traffic goes directly out, is called ______.",
+            "options": [
+                "Full Tunnel",
+                "Split Tunneling",
+                "Hairpinning",
+                "NAT Traversal"
+            ],
+            "correctAnswer": "Split Tunneling",
+            "explanation": "Split tunneling optimizes bandwidth and performance for non-corporate traffic."
+        },
+        {
+            "id": "q4",
+            "type": "true_false",
+            "question": "PPTP is a secure VPN protocol recommended for modern deployments.",
+            "correctAnswer": false,
+            "explanation": "False. PPTP is cryptographically broken and should never be used."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which modern VPN protocol is known for its minimal codebase (~4000 lines), high speed, and use of ChaCha20 encryption?",
+            "options": [
+                "OpenVPN",
+                "IKEv2/IPsec",
+                "WireGuard",
+                "L2TP/IPsec"
+            ],
+            "correctAnswer": 2,
+            "explanation": "WireGuard is designed for simplicity, auditability, and performance."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What unique feature of IKEv2 allows a VPN connection to survive switching from Wi-Fi to Cellular?",
+            "options": [
+                "Perfect Forward Secrecy",
+                "MOBIKE (Mobility and Multihoming)",
+                "NAT Traversal",
+                "Split Tunneling"
+            ],
+            "correctAnswer": 1,
+            "explanation": "MOBIKE updates the VPN endpoint IP address without re-establishing the IKE security association."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Which VPN protocol is most likely to work from a restrictive hotel Wi-Fi that only allows TCP ports 80 and 443?",
+            "options": [
+                "IPsec IKEv2",
+                "WireGuard (UDP)",
+                "OpenVPN (TCP 443)",
+                "L2TP/IPsec"
+            ],
+            "correctAnswer": 2,
+            "explanation": "OpenVPN over TCP 443 masquerades as normal HTTPS traffic, making it difficult to block."
+        },
+        {
+            "id": "q8",
+            "type": "fill_blank",
+            "question": "In IPsec, the protocol that provides confidentiality, integrity, and authentication for the payload is ______.",
+            "options": [
+                "AH (Authentication Header)",
+                "ESP (Encapsulating Security Payload)",
+                "IKE (Internet Key Exchange)",
+                "GRE (Generic Routing Encapsulation)"
+            ],
+            "correctAnswer": "ESP",
+            "explanation": "ESP encrypts the payload and can optionally provide integrity/authentication. AH only provides integrity."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What is Perfect Forward Secrecy (PFS)?",
+            "options": [
+                "The ability to hide your IP address perfectly",
+                "Compromise of long-term keys does not compromise past session keys",
+                "The VPN never drops connection",
+                "Traffic is invisible to Deep Packet Inspection"
+            ],
+            "correctAnswer": 1,
+            "explanation": "PFS ensures that even if the server's private key is stolen, previously recorded encrypted sessions cannot be decrypted."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which TLS version mandates Perfect Forward Secrecy and provides a faster handshake?",
+            "options": [
+                "TLS 1.0",
+                "TLS 1.1",
+                "TLS 1.2",
+                "TLS 1.3"
+            ],
+            "correctAnswer": 3,
+            "explanation": "TLS 1.3 removes non-PFS key exchange methods and streamlines the handshake."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What is the primary purpose of a Reverse Proxy?",
+            "options": [
+                "To hide the client's IP address from the internet",
+                "To sit in front of web servers to handle incoming requests, load balance, and provide security",
+                "To filter outbound web traffic for employees",
+                "To encrypt all traffic leaving a network"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Reverse proxies protect and optimize backend web servers."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which type of proxy intercepts network traffic without requiring any client-side configuration?",
+            "options": [
+                "Forward Proxy",
+                "Reverse Proxy",
+                "Transparent Proxy",
+                "SOCKS Proxy"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Transparent proxies are invisible to the client; the network redirects traffic to them."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What is a key advantage of a SOCKS5 proxy over an HTTP proxy?",
+            "options": [
+                "It is always encrypted",
+                "It can proxy any TCP or UDP protocol, not just web traffic",
+                "It is faster than HTTP",
+                "It caches web pages"
+            ],
+            "correctAnswer": 1,
+            "explanation": "SOCKS5 is protocol-agnostic and supports UDP, making it suitable for torrents, gaming, and VoIP."
+        },
+        {
+            "id": "q14",
+            "type": "true_false",
+            "question": "Using a free public HTTP proxy from an untrusted source is generally safe for logging into your bank account.",
+            "correctAnswer": false,
+            "explanation": "False. Free proxies can log credentials, inject malware, or steal session cookies."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What is the primary security drawback of traditional VPNs that Zero Trust Network Access (ZTNA) aims to solve?",
+            "options": [
+                "VPNs are too slow",
+                "VPNs grant broad network access, enabling lateral movement",
+                "VPNs do not support MFA",
+                "VPNs are too expensive"
+            ],
+            "correctAnswer": 1,
+            "explanation": "ZTNA limits access to specific applications, hiding the network from the user."
+        },
+        {
+            "id": "q16",
+            "type": "fill_blank",
+            "question": "The security model that assumes the network is already compromised and verifies every request is called ______.",
+            "options": [
+                "Defense in Depth",
+                "Zero Trust",
+                "Least Privilege",
+                "Perimeter Security"
+            ],
+            "correctAnswer": "Zero Trust",
+            "explanation": "Zero Trust's mantra is 'Never Trust, Always Verify'."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What does SASE (Secure Access Service Edge) combine?",
+            "options": [
+                "Firewall and Antivirus",
+                "WAN capabilities (SD-WAN) and network security functions (SWG, ZTNA, FWaaS)",
+                "VPN and Proxy",
+                "IDS and IPS"
+            ],
+            "correctAnswer": 1,
+            "explanation": "SASE converges networking and security into a unified cloud service."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "What is a 'Kill Switch' in the context of a VPN client?",
+            "options": [
+                "A button to disconnect the VPN",
+                "A feature that blocks all internet traffic if the VPN connection drops",
+                "A feature that increases VPN speed",
+                "A hardware button on the router"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The Kill Switch prevents data leaks by ensuring no traffic bypasses the VPN tunnel."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "Which of the following is a best practice for securing remote access?",
+            "options": [
+                "Allow access from any device without checks",
+                "Require Multi-Factor Authentication (MFA)",
+                "Disable all logging to improve performance",
+                "Use PPTP for maximum compatibility"
+            ],
+            "correctAnswer": 1,
+            "explanation": "MFA is a critical control to prevent account takeover attacks on VPNs."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is the function of SSL/TLS termination on a reverse proxy?",
+            "options": [
+                "To block malicious websites",
+                "To handle the encryption/decryption of HTTPS traffic, offloading CPU from backend servers",
+                "To terminate inactive user sessions",
+                "To translate HTTP to HTTPS"
+            ],
+            "correctAnswer": 1,
+            "explanation": "SSL termination moves the computational burden of TLS to the proxy."
+        },
+        {
+            "id": "q21",
+            "type": "fill_blank",
+            "question": "The process of routing all user internet traffic through the corporate VPN and out the corporate firewall is known as ______.",
+            "options": [
+                "Split Tunneling",
+                "Full Tunnel",
+                "Hairpinning",
+                "Backhauling"
+            ],
+            "correctAnswer": "Full Tunnel",
+            "explanation": "Full tunnel routes all traffic through the VPN, enforcing corporate security policies."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "Which IPsec mode encrypts the entire original IP packet and encapsulates it in a new IP header?",
+            "options": [
+                "Transport Mode",
+                "Tunnel Mode",
+                "Quick Mode",
+                "Main Mode"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Tunnel mode is used for VPN gateways, hiding the original source/destination IPs."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "What is a common attack that transparent proxies can help defend against?",
+            "options": [
+                "SQL Injection",
+                "Buffer Overflow",
+                "Phishing / Malware download (via content filtering)",
+                "DDoS attacks"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Transparent proxies can filter web requests to block known malicious domains and file downloads."
+        },
+        {
+            "id": "q24",
+            "type": "true_false",
+            "question": "WireGuard uses cipher suite negotiation to allow flexibility in choosing encryption algorithms.",
+            "correctAnswer": false,
+            "explanation": "False. WireGuard intentionally lacks cipher agility, using a fixed set of modern algorithms to prevent downgrade attacks."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "What is the primary purpose of a Content Delivery Network (CDN) in relation to reverse proxies?",
+            "options": [
+                "To encrypt database traffic",
+                "To cache and serve static content from edge locations closer to users",
+                "To block all incoming traffic",
+                "To act as a VPN server"
+            ],
+            "correctAnswer": 1,
+            "explanation": "CDNs like Cloudflare use reverse proxies to cache content globally, improving load times and reducing origin server load."
+        },
+        {
+            "id": "q26",
+            "type": "mcq",
+            "question": "Which protocol is the foundation for both HTTPS and SSL VPNs?",
+            "options": [
+                "IPsec",
+                "PPTP",
+                "TLS",
+                "GRE"
+            ],
+            "correctAnswer": 2,
+            "explanation": "TLS (Transport Layer Security) secures HTTPS and provides the encryption for SSL VPNs."
+        },
+        {
+            "id": "q27",
+            "type": "fill_blank",
+            "question": "In the context of VPNs, the device that terminates VPN tunnels and provides access to the internal network is called the VPN ______.",
+            "options": [
+                "Client",
+                "Gateway / Concentrator",
+                "Router",
+                "Switch"
+            ],
+            "correctAnswer": "Gateway / Concentrator",
+            "explanation": "The VPN gateway or concentrator is the server-side endpoint that manages multiple tunnels."
+        },
+        {
+            "id": "q28",
+            "type": "mcq",
+            "question": "What is the main advantage of using a reverse proxy for a web application?",
+            "options": [
+                "It makes the website load slower",
+                "It hides the internal structure of the backend servers and can provide load balancing",
+                "It allows users to bypass geo-restrictions",
+                "It replaces the need for a firewall"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Reverse proxies abstract the backend, improving security and scalability."
+        },
+        {
+            "id": "q29",
+            "type": "mcq",
+            "question": "What is a recommended practice for managing temporary firewall or VPN rules?",
+            "options": [
+                "Set them and forget them",
+                "Add an expiration date and review them periodically",
+                "Never document them",
+                "Place them at the very top of the rule base"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Temporary rules should have expiration dates to prevent rule base bloat and security gaps."
+        },
+        {
+            "id": "q30",
+            "type": "mcq",
+            "question": "Which of the following is NOT a typical component of a SASE architecture?",
+            "options": [
+                "SD-WAN",
+                "CASB (Cloud Access Security Broker)",
+                "ZTNA",
+                "On-Premise Hardware Firewall"
+            ],
+            "correctAnswer": 3,
+            "explanation": "SASE is a cloud-delivered model; it replaces on-premise appliances with cloud-native services."
+        }
+    ]
+}

@@ -1,0 +1,111 @@
+{
+    "id": "l2",
+    "chapterId": "ch_7",
+    "title": "DHCP: Your Automatic Address Butler",
+    "description": "Master the DORA process, lease times, DHCP options, and relay agents.",
+    "xpReward": 35,
+    "estimatedMinutes": 15,
+    "section": "Address Assignment",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "DHCP: The DORA Process 🚪",
+            "content": "# Four Steps to an IP Address\n\nDHCP uses a four-step process to assign an IP address. The mnemonic is **DORA**.\n\n| Step | Message | Direction | Purpose |\n|------|---------|-----------|---------|\n| **D** | **Discover** | Client -> Broadcast | *\"Are there any DHCP servers out there?\"* |\n| **O** | **Offer** | Server -> Client | *\"I have an IP for you! Here's 192.168.1.100.\"* |\n| **R** | **Request** | Client -> Broadcast | *\"Okay, I'll take that IP from Server 1!\"* |\n| **A** | **Acknowledgment** | Server -> Client | *\"Confirmed. You now own 192.168.1.100 for 24 hours.\"* |\n\n**Analogy: Checking into a Hotel**\n1.  **Discover:** You walk up to the front desk and ask, *\"Do you have any rooms?\"*\n2.  **Offer:** The clerk says, *\"Yes, Room 405 is available for $100/night.\"*\n3.  **Request:** You say, *\"Great, I'll take Room 405.\"*\n4.  **Acknowledgment:** The clerk hands you the key card and says, *\"Enjoy your stay until 11 AM tomorrow.\"*"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "DORA Order 📝",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What is the correct order of DHCP messages when a client first connects to a network?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Request, Offer, Discover, ACK",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Discover, Offer, Request, ACK",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Offer, Discover, ACK, Request",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "SYN, SYN-ACK, ACK",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "DORA: Discover, Offer, Request, Acknowledgment.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Why 'Request' is a Broadcast 📢",
+            "content": "# Handling Multiple DHCP Servers\n\nYou might notice that the **Offer** is unicast to the client, but the **Request** is **broadcast** again. Why?\n\n**Scenario:** There are **two DHCP servers** on the network (maybe a primary and a backup, or a misconfiguration).\n- Client sends **Discover** (Broadcast).\n- **Server 1** sends Offer (IP: `192.168.1.100`).\n- **Server 2** sends Offer (IP: `192.168.1.200`).\n- Client decides to accept **Server 1's** offer.\n- Client sends **Request** (Broadcast) for `192.168.1.100`.\n\n**Purpose:** The broadcast lets **Server 2** know that its offer (`192.168.1.200`) was **declined**, so Server 2 can put that IP address back into its available pool.\n\nThis ensures efficient use of the IP address pool."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Lease Time and Renewal ⏳",
+            "content": "# You Don't Own the IP Forever\n\nDHCP addresses are **leased**, not owned permanently. The **Lease Time** defines how long the client can use the address before it must renew.\n\n**The Renewal Process (T1 and T2 Timers):**\n\n1.  **Renewal (T1):** At **50% of the lease time**, the client attempts to **Renew** the lease by sending a **Unicast Request** directly to the DHCP server that gave it the address.\n    - *Analogy:* Guest asks the front desk, *\"Can I extend my stay for another night?\"*\n    - If successful, the lease timer resets.\n\n2.  **Rebinding (T2):** At **87.5% of the lease time**, if the original server hasn't responded, the client gives up on unicast and sends a **Broadcast Request** to **any** DHCP server.\n    - *Analogy:* Guest goes to the lobby and shouts, *\"Can ANY hotel staff help me extend my stay?\"*\n\n3.  **Lease Expiration:** If no server responds by the end of the lease, the client **must stop using the IP address** and start the DORA process from scratch.\n\n**Security Note:** Attackers can exploit the renewal process to **hijack leases** or cause denial of service."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "DHCP Options: More Than Just an IP 🛠️",
+            "content": "DHCP provides much more than just an IP address. It pushes configuration **Options** to the client.\n\n**Common DHCP Options (Memorize these!):**\n```text\nOption 1:  Subnet Mask (e.g., 255.255.255.0)\nOption 3:  Default Gateway / Router (e.g., 192.168.1.1)\nOption 6:  DNS Server(s) (e.g., 8.8.8.8, 1.1.1.1)\nOption 15: Domain Name (e.g., company.local)\nOption 42: NTP Server (Time synchronization)\nOption 66: TFTP Server (For IP Phones/PXE boot)\nOption 67: Bootfile Name\n```\n\n**Cybersecurity Relevance:** If an attacker controls the DHCP server, they can hand out **malicious DNS servers** (Option 6) that redirect all web traffic to fake sites. This is **DHCP Spoofing**."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "DHCP Relay Agent (IP Helper) 📡",
+            "content": "# Extending DHCP Across Routers\n\n**Problem:** DHCP Discover messages are **Broadcasts**. Routers **do not forward broadcasts**.\n- If the DHCP server is in a different subnet (e.g., Data Center VLAN), how do clients in the Sales VLAN get an IP address?\n\n**Solution: DHCP Relay Agent (Cisco: `ip helper-address`)**\n\n1.  The router interface in the Sales VLAN receives the **DHCP Discover Broadcast**.\n2.  The router (acting as Relay Agent) **converts** the broadcast into a **Unicast** packet.\n3.  It forwards the unicast packet directly to the **DHCP Server's IP address** (configured via `ip helper-address 192.168.10.5`).\n4.  The DHCP server sees the request came from the Relay Agent, knows which subnet the client is in (based on the GIADDR field), and offers an IP from the correct pool.\n5.  The Relay Agent receives the Offer and broadcasts it back out on the Sales VLAN.\n\n**Key Field: GIADDR (Gateway IP Address)**\nThe Relay Agent inserts its own IP address (the interface facing the client) into the DHCP packet. This tells the server which subnet the request came from."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "DHCP Relay 🚀",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "What is the purpose of a DHCP Relay Agent?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To block malicious DHCP servers",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To forward DHCP broadcasts across routers to a central server",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To assign static IP addresses",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To cache ARP responses",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The Relay Agent converts DHCP broadcasts to unicasts so they can traverse routers.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

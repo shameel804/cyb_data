@@ -1,0 +1,118 @@
+{
+    "id": "l1",
+    "chapterId": "ch_5",
+    "title": "Network Topologies: The Blueprint",
+    "description": "Explore physical and logical layouts: Bus, Star, Ring, Mesh, and Hybrid designs.",
+    "xpReward": 25,
+    "estimatedMinutes": 10,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "What is a Network Topology? 🗺️",
+            "content": "# The Layout of the Digital City\n\nA **network topology** defines how devices are physically or logically connected. It's the **blueprint** that dictates data flow, redundancy, and scalability.\n\nThere are two views:\n- **Physical Topology:** The actual cable paths, switch placements, and device locations. (Where the wires go).\n- **Logical Topology:** The path data actually takes through the network. (How the signals flow).\n\n**Analogy:** Think of a city map.\n- **Physical Topology** = The physical roads and intersections.\n- **Logical Topology** = The one-way streets and traffic light patterns.\n\nUnderstanding topologies is critical for **network design** and **troubleshooting**. A broken cable in a Bus topology takes down the whole network. A broken cable in a Star topology only affects one device."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the difference between physical and logical topology?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Physical is for wired; logical is for wireless.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Physical is the actual layout; logical is how data flows.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "They are the same thing.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! Physical topology is the hardware layout; logical topology defines the data path.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Bus Topology 🚌",
+            "content": "# The Original Shared Highway\n\n**Description:** All devices connect to a single central cable (the **bus** or **backbone**).\n\n**How it works:**\n- A device sends a signal down the cable.\n- **All devices** receive the signal, but only the intended recipient processes it.\n- **Terminators** at each end absorb the signal to prevent reflection (echo).\n\n**Pros:**\n- Cheap and simple (minimum cable length).\n- Easy to add new nodes.\n\n**Cons (And Why We Don't Use It Anymore):**\n- **Single Point of Failure:** Cut the cable anywhere, and the **entire network goes down**.\n- **Performance:** Only one device can transmit at a time (Collision Domain). High traffic = high collisions = slow network.\n- **Security:** Every device sees every packet (sniffing paradise).\n\n**Legacy Tech:** 10BASE2 (Thinnet) and 10BASE5 (Thicknet) Ethernet."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Ring Topology 💍",
+            "content": "# The Token Passing Circle\n\n**Description:** Each device connects to exactly two other devices, forming a **closed loop**.\n\n**How it works:**\n- Data travels in one direction around the ring.\n- A special frame called a **Token** circulates. Only the device holding the Token is allowed to transmit.\n\n**Pros:**\n- **No collisions** (Token prevents them).\n- Predictable performance under heavy load.\n\n**Cons:**\n- **Single Point of Failure:** One device or cable break breaks the ring. (Dual Ring / FDDI fixes this with a counter-rotating ring for redundancy).\n- **Latency:** Each device adds a tiny delay as it regenerates the signal.\n\n**Modern Usage:** **SONET/SDH** (fiber optic carrier networks) and **Industrial Control Systems** (Token Ring is still used in some factory floors for deterministic timing)."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Star Topology ⭐",
+            "content": "# The Modern Standard (Ethernet)\n\n**Description:** All devices connect to a **central device** (Switch or Hub).\n\n**How it works:**\n- Device A wants to talk to Device B.\n- It sends the frame to the **central switch**.\n- The switch looks at the Destination MAC and forwards it **only** to the port where Device B is connected.\n\n**Pros:**\n- **Fault Isolation:** A broken cable only affects the attached device, not the whole network.\n- **Easy Troubleshooting:** Just check the link light on the switch port.\n- **Scalability:** Add more switches to expand.\n\n**Cons:**\n- **Central Point of Failure:** If the **Switch** fails, everything connected to it goes down. (Mitigated by redundant power supplies and stacking).\n- **Cable Cost:** Requires a dedicated cable run from each device to the switch closet.\n\n**This is the topology of almost every office LAN in the world.**"
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Topology Match 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "Which topology provides the BEST fault isolation (a cut cable only affects one device)?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Bus",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Ring",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Star",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Mesh",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "In a Star topology, each device has its own dedicated connection to the central switch, so a cable break is isolated.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "Mesh Topology 🕸️",
+            "content": "# The Ultimate Redundancy\n\n**Description:** Every device connects to **every other device** (Full Mesh) or multiple other devices (Partial Mesh).\n\n**How it works:**\n- Multiple redundant paths exist between any two points.\n- If one link fails, data automatically reroutes through another path.\n\n**Pros:**\n- **Extreme Fault Tolerance:** Survives multiple link failures.\n- **High Bandwidth:** Traffic can be load-balanced across multiple paths.\n\n**Cons:**\n- **Cost:** `n(n-1)/2` connections for a full mesh. 10 devices = 45 cables and 45 ports per device! **Insanely expensive.**\n- **Complexity:** Requires routing protocols (OSPF, BGP) to manage the multiple paths.\n\n**Where is it used?**\n- **WAN Backbones:** The Internet core is a **partial mesh** of routers.\n- **Data Center Spine-Leaf:** A structured partial mesh for high throughput.\n- **Wireless Mesh:** Wi-Fi nodes relaying data to each other to extend coverage."
+        },
+        {
+            "id": "s_l1_8",
+            "type": "text",
+            "title": "Hybrid Topology 🧬",
+            "content": "# The Real World is a Mix\n\nMost enterprise networks are **Hybrid Topologies** combining Star, Mesh, and sometimes Ring.\n\n**Example: A Corporate Campus**\n- **Access Layer:** **Star** (End devices connect to Access Switches).\n- **Distribution Layer:** **Partial Mesh** (Access switches connect redundantly to Core Switches).\n- **Core Layer:** **Full Mesh** (Core routers connect to each other for maximum speed and redundancy).\n- **WAN Edge:** **Ring** (Connecting remote branch offices via MPLS).\n\n**Cybersecurity Insight:** Understanding topology helps in **threat modeling**. An attacker with physical access to a Bus network can sniff everything. An attacker with access to a Star switchport can only sniff traffic on their VLAN (unless they perform VLAN Hopping)."
+        },
+        {
+            "id": "s_l1_9",
+            "type": "tip",
+            "title": "Logical Topology: VLANs 🏷️",
+            "content": "## The Invisible Overlay\n\nEven though the **physical topology** might be a Star (everyone plugged into the same switch), the **logical topology** can be completely different using **VLANs (Virtual LANs)**.\n\nA VLAN can make devices on different floors behave as if they are on the same cable (logical Bus), or segment a single switch into multiple isolated virtual switches."
+        }
+    ]
+}

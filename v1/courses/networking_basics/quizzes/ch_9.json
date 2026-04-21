@@ -1,0 +1,376 @@
+{
+    "id": "quiz_ch_9",
+    "chapterId": "ch_9",
+    "title": "Chapter 9 Quiz: Firewalls & Access Control Lists",
+    "description": "Test your mastery of firewall types, ACL syntax, rule design, and secure architectures!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary function of a network firewall?",
+            "options": [
+                "To route packets between networks",
+                "To monitor and control network traffic based on security rules",
+                "To assign IP addresses to clients",
+                "To resolve domain names to IP addresses"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Firewalls enforce security policy by allowing or denying traffic flows."
+        },
+        {
+            "id": "q2",
+            "type": "fill_blank",
+            "question": "The invisible rule at the end of every ACL that blocks all unmatched traffic is called the ______.",
+            "options": [
+                "Explicit Allow",
+                "Implicit Deny",
+                "Default Permit",
+                "Catch-All Rule"
+            ],
+            "correctAnswer": "Implicit Deny",
+            "explanation": "The Implicit Deny ensures that only explicitly permitted traffic is allowed."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which type of firewall tracks the state of active connections and uses a state table?",
+            "options": [
+                "Packet Filtering Firewall",
+                "Stateful Inspection Firewall",
+                "Application Proxy Firewall",
+                "Web Application Firewall"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Stateful firewalls maintain a state table to track connection status and dynamically allow return traffic."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What is a key advantage of a Next-Generation Firewall (NGFW) over a traditional Stateful Firewall?",
+            "options": [
+                "It is cheaper",
+                "It can identify applications regardless of port number (App-ID)",
+                "It does not require configuration",
+                "It only inspects Layer 3 headers"
+            ],
+            "correctAnswer": 1,
+            "explanation": "NGFWs provide application visibility and control, allowing policies based on specific applications, not just ports."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which device is specifically designed to protect web applications from attacks like SQL Injection and Cross-Site Scripting?",
+            "options": [
+                "Packet Filtering Firewall",
+                "Stateful Firewall",
+                "Web Application Firewall (WAF)",
+                "Network Intrusion Detection System (NIDS)"
+            ],
+            "correctAnswer": 2,
+            "explanation": "WAFs inspect HTTP/HTTPS traffic at Layer 7 to block web-based attacks."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "How are Access Control List (ACL) rules typically processed?",
+            "options": [
+                "Randomly",
+                "Bottom-up, last match wins",
+                "Top-down, first match wins",
+                "All rules are evaluated simultaneously"
+            ],
+            "correctAnswer": 2,
+            "explanation": "ACLs are sequential; the first rule that matches the traffic determines the action."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What does the Cisco wildcard mask `0.0.0.255` correspond to in CIDR notation?",
+            "options": [
+                "/32",
+                "/24",
+                "/16",
+                "/8"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Wildcard mask is the inverse of subnet mask. `255.255.255.255 - 255.255.255.0 = 0.0.0.255`. The subnet mask `255.255.255.0` is /24."
+        },
+        {
+            "id": "q8",
+            "type": "fill_blank",
+            "question": "In Cisco ACL syntax, the keyword 'any' represents the source/destination ______.",
+            "options": [
+                "0.0.0.0 255.255.255.255",
+                "255.255.255.255 0.0.0.0",
+                "0.0.0.0 0.0.0.0",
+                "host 0.0.0.0"
+            ],
+            "correctAnswer": "0.0.0.0 255.255.255.255",
+            "explanation": "'any' is shorthand for source/destination `0.0.0.0` with wildcard `255.255.255.255` (match anything)."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "You want to block a specific internal host `192.168.1.50` from accessing the internet, but allow all other internal hosts. Where should you place the deny rule?",
+            "options": [
+                "After the permit rule for internal web browsing",
+                "Before the permit rule for internal web browsing",
+                "It doesn't matter",
+                "On the outside interface only"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The specific deny rule must come **before** the more general permit rule, due to top-down processing."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is the primary security benefit of implementing Egress Filtering on outbound traffic?",
+            "options": [
+                "Stopping inbound DDoS attacks",
+                "Preventing compromised hosts from communicating with external C2 servers",
+                "Increasing download speeds",
+                "Hiding internal IP addresses"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Egress filtering limits the ability of malware inside the network to phone home or exfiltrate data."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "Rule shadowing occurs when a subsequent rule is never evaluated because a preceding broader rule already matches the traffic.",
+            "correctAnswer": true,
+            "explanation": "True. Shadowed rules create a false sense of security and should be identified and removed."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is the purpose of a Demilitarized Zone (DMZ)?",
+            "options": [
+                "To provide a backup internet link",
+                "To isolate public-facing servers from the internal trusted network",
+                "To encrypt all internal traffic",
+                "To manage VPN connections"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The DMZ acts as a buffer network, limiting the blast radius if a public server is compromised."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which DMZ architecture uses two separate physical firewalls?",
+            "options": [
+                "Single Firewall (Three-Legged)",
+                "Dual Firewall (Screened Subnet)",
+                "Virtual Firewall Context",
+                "Transparent Firewall"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The dual firewall architecture places one firewall between Internet and DMZ, and a second between DMZ and Internal LAN."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "In an Active/Passive Firewall High Availability pair, what is synchronized to ensure existing connections survive a failover?",
+            "options": [
+                "Only the configuration file",
+                "The state table",
+                "The ARP cache",
+                "The routing table"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Stateful failover synchronizes the connection state table so the passive unit can take over existing sessions."
+        },
+        {
+            "id": "q15",
+            "type": "fill_blank",
+            "question": "The security principle that states users should be granted only the minimum permissions necessary to perform their job is called ______.",
+            "options": [
+                "Defense in Depth",
+                "Least Privilege",
+                "Separation of Duties",
+                "Need to Know"
+            ],
+            "correctAnswer": "Least Privilege",
+            "explanation": "Principle of Least Privilege applies to user access and firewall rules (avoid 'any' rules)."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What is a best practice for managing temporary firewall rules?",
+            "options": [
+                "Add them permanently and forget them",
+                "Add a comment with an expiration date and schedule a review",
+                "Never document them",
+                "Place them at the very top of the rule base"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Temporary rules should have expiration dates to prevent rule base bloat and security gaps."
+        },
+        {
+            "id": "q17",
+            "type": "true_false",
+            "question": "A Next-Generation Firewall can decrypt and inspect HTTPS traffic.",
+            "correctAnswer": true,
+            "explanation": "True. NGFWs support SSL/TLS decryption to inspect encrypted payloads for threats."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which of the following is NOT a recommended firewall hardening practice?",
+            "options": [
+                "Disable unused services",
+                "Allow management access from 'any' IP address",
+                "Use strong authentication (TACACS+/RADIUS)",
+                "Regularly apply security patches"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Management access should be restricted to specific trusted IPs, never left open to 'any'."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What does 'Micro-Segmentation' refer to in modern firewall architectures?",
+            "options": [
+                "Using smaller hardware firewalls",
+                "Applying firewall policy at the individual workload or container level",
+                "Segmenting the network into exactly two zones",
+                "Disabling segmentation entirely"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Micro-segmentation restricts lateral movement by applying policy between individual VMs or containers."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "A firewall administrator notices that a deny rule intended to block a specific IP address is never triggering. This is likely an example of:",
+            "options": [
+                "Rule Redundancy",
+                "Rule Shadowing",
+                "Stateful Inspection",
+                "Implicit Deny"
+            ],
+            "correctAnswer": 1,
+            "explanation": "If a broader permit rule precedes it, the deny rule is shadowed and never evaluated."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "Which protocol and port are typically used for secure remote administration of a firewall?",
+            "options": [
+                "Telnet (23)",
+                "HTTP (80)",
+                "SSH (22)",
+                "FTP (21)"
+            ],
+            "correctAnswer": 2,
+            "explanation": "SSH (Secure Shell) provides encrypted command-line access for secure administration."
+        },
+        {
+            "id": "q22",
+            "type": "fill_blank",
+            "question": "In a Cisco Extended ACL, the keyword 'eq' is used to specify a ______ number.",
+            "options": [
+                "Protocol",
+                "Port",
+                "Interface",
+                "Network"
+            ],
+            "correctAnswer": "Port",
+            "explanation": "`eq` stands for 'equal' and is followed by a port number (e.g., `eq 80`)."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "Which of the following is an example of a well-known port used for HTTPS traffic?",
+            "options": [
+                "80",
+                "443",
+                "22",
+                "53"
+            ],
+            "correctAnswer": 1,
+            "explanation": "HTTPS uses TCP port 443."
+        },
+        {
+            "id": "q24",
+            "type": "true_false",
+            "question": "A Standard ACL can filter traffic based on destination IP address and port number.",
+            "correctAnswer": false,
+            "explanation": "False. Standard ACLs only filter based on source IP address. Extended ACLs are required for destination and port filtering."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "Why is logging the Implicit Deny rule considered a best practice?",
+            "options": [
+                "To increase firewall performance",
+                "To identify misconfigured applications or reconnaissance scans",
+                "To reduce log volume",
+                "To satisfy compliance auditors only"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Logging implicit denies helps troubleshoot connectivity issues and detect scanning activity."
+        },
+        {
+            "id": "q26",
+            "type": "mcq",
+            "question": "What is the primary difference between an Intrusion Detection System (IDS) and an Intrusion Prevention System (IPS) as it relates to firewalls?",
+            "options": [
+                "IDS is inline; IPS is passive",
+                "IPS can block traffic; IDS only alerts",
+                "IDS works at Layer 7; IPS works at Layer 3",
+                "There is no difference"
+            ],
+            "correctAnswer": 1,
+            "explanation": "IPS operates inline and can drop malicious packets; IDS monitors a copy of traffic and generates alerts."
+        },
+        {
+            "id": "q27",
+            "type": "fill_blank",
+            "question": "The process of restricting administrative access to a firewall to specific trusted IP addresses is an example of ______.",
+            "options": [
+                "Hardening",
+                "Virtualization",
+                "NAT",
+                "Routing"
+            ],
+            "correctAnswer": "Hardening",
+            "explanation": "Hardening involves reducing the attack surface of the firewall itself."
+        },
+        {
+            "id": "q28",
+            "type": "mcq",
+            "question": "Which type of firewall is also known as a 'Layer 4 Firewall'?",
+            "options": [
+                "Packet Filtering Firewall",
+                "Stateful Inspection Firewall",
+                "Web Application Firewall",
+                "Proxy Firewall"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Stateful firewalls operate primarily at Layer 4 (TCP/UDP), though modern ones also look at Layer 7."
+        },
+        {
+            "id": "q29",
+            "type": "true_false",
+            "question": "An Access Control List (ACL) can be applied to a router interface in either the inbound or outbound direction.",
+            "correctAnswer": true,
+            "explanation": "True. ACLs can filter traffic entering an interface (in) or leaving an interface (out)."
+        },
+        {
+            "id": "q30",
+            "type": "mcq",
+            "question": "What is the main drawback of SSL/TLS encryption from a firewall administrator's perspective?",
+            "options": [
+                "It slows down the network",
+                "It hides the application payload from inspection",
+                "It is incompatible with NGFWs",
+                "It uses too many ports"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Encrypted traffic prevents deep packet inspection, allowing threats to hide. SSL decryption is used to address this."
+        }
+    ]
+}

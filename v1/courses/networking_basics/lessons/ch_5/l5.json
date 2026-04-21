@@ -1,0 +1,111 @@
+{
+    "id": "l5",
+    "chapterId": "ch_5",
+    "title": "Wireless Access Points and Controllers",
+    "description": "Wi-Fi fundamentals, SSIDs, security standards, and enterprise wireless management.",
+    "xpReward": 30,
+    "estimatedMinutes": 12,
+    "section": "Wireless",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Wireless Access Point (WAP) 📡",
+            "content": "# Bridging the Air Gap\n\nA **Wireless Access Point (AP)** connects wireless devices (clients) to a **wired network**.\n\n**Analogy:** The AP is like a **Translator** at the United Nations.\n- Speaks **802.11 (Wi-Fi)** on one side (radio waves).\n- Speaks **802.3 (Ethernet)** on the other side (copper cable).\n\n**How it Works:**\n- The AP broadcasts a **Beacon Frame** every ~100ms advertising its **SSID** (Network Name).\n- Clients hear the beacon and send an **Association Request**.\n- The AP authenticates the client (Open, WPA2-Personal, WPA2-Enterprise).\n- Once associated, the AP acts as a **Layer 2 Bridge**. It forwards frames between the wireless client and the wired switch.\n\n**Important:** A **Home Router** is actually **three devices in one box**:\n1.  Router (Layer 3)\n2.  Switch (Layer 2)\n3.  Access Point (Wireless Bridge)\n\nIn enterprise networks, these functions are **separate hardware** for scalability and performance."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "AP Function 📻",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is the primary function of an Access Point?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Route IP packets between networks.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Bridge wireless clients to a wired network.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Filter malicious traffic.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Assign IP addresses via DHCP.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "APs are Layer 2 bridges connecting 802.11 Wi-Fi to 802.3 Ethernet.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Wi-Fi Frequencies and Standards 📶",
+            "content": "# 2.4 GHz vs. 5 GHz vs. 6 GHz\n\n| Band | Channels | Speed | Range | Interference |\n|------|----------|-------|-------|--------------|\n| **2.4 GHz** | 11 (Only 3 non-overlapping) | Slower | **Longer** (penetrates walls) | **High** (Microwaves, Bluetooth, neighbors) |\n| **5 GHz** | Many (DFS) | Faster | Shorter (weaker through walls) | **Low** |\n| **6 GHz (Wi-Fi 6E/7)** | Massive | Fastest | Shortest | **Very Low** |\n\n**Wi-Fi Generations:**\n- **Wi-Fi 4 (802.11n):** MIMO introduced.\n- **Wi-Fi 5 (802.11ac):** 5 GHz only, MU-MIMO downlink.\n- **Wi-Fi 6 (802.11ax):** OFDMA (efficiency in crowded spaces), 2.4 & 5 GHz.\n- **Wi-Fi 7 (802.11be):** 320 MHz channels, insane speeds.\n\n**Cybersecurity Note:** **2.4 GHz is a nightmare for security.** Because it penetrates walls so well, your office Wi-Fi leaks into the parking lot. Attackers can sit in a car and **sniff traffic** or attempt **Deauthentication Attacks** from outside the building."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Wireless Security: WEP, WPA, WPA2, WPA3 🔐",
+            "content": "# The Evolution of Wi-Fi Encryption\n\n**NEVER use these (Broken):**\n- **WEP (Wired Equivalent Privacy):** Cracked in minutes. Uses weak RC4 encryption.\n- **WPA (Wi-Fi Protected Access):** Uses TKIP. Also deprecated.\n\n**Acceptable (Home Use):**\n- **WPA2-Personal (PSK):** Uses **AES** encryption with a **Pre-Shared Key (Password)**.\n- **Weakness:** Everyone uses the same password. If an attacker captures the **4-Way Handshake**, they can run a **dictionary attack** offline to crack the password.\n\n**Best (Enterprise Use):**\n- **WPA2-Enterprise / WPA3-Enterprise:** Uses **802.1X** authentication.\n- Each user has a **unique username and password** verified against a **RADIUS server** (Active Directory).\n- **Advantage:** If Bob leaves the company, you disable his account. You don't have to change the Wi-Fi password for everyone.\n\n**WPA3 Improvements:**\n- **SAE (Simultaneous Authentication of Equals):** Replaces PSK with a secure handshake that is resistant to offline dictionary attacks (Dragonfly).\n- **Forward Secrecy:** Even if the password is cracked later, past traffic cannot be decrypted."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "warning",
+            "title": "Deauthentication Attack 🥷",
+            "content": "## Kicking Users Off Wi-Fi\n\nA **Deauthentication Attack** exploits a flaw in the 802.11 management frames.\n\n- Management frames are **NOT encrypted** (even on WPA2).\n- An attacker can **spoof** a Deauth frame that appears to come from the AP.\n- The client is forced to disconnect and **reconnect**.\n- The attacker captures the **new 4-Way Handshake** and cracks the password offline.\n\n**Defense:** **802.11w (Protected Management Frames)** . This encrypts management frames, preventing spoofed deauth packets. Enabled by default in WPA3."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Wireless Controllers and CAPWAP 🕹️",
+            "content": "# Managing Many APs\n\nIn an office with 50 APs, logging into each one individually is impossible.\n\n**Solution: Wireless LAN Controller (WLC)**\n\n- The WLC is a central brain that manages all **Lightweight Access Points (LWAPs)**.\n- APs find the WLC automatically and download their configuration.\n- The WLC handles **Roaming** (moving from AP1 to AP2 without dropping the call).\n- The WLC enforces **RF Management** (adjusting power levels to reduce interference).\n\n**Protocol:** **CAPWAP (Control and Provisioning of Wireless Access Points)**\n- **Control Channel:** Encrypted DTLS tunnel for configuration. (Like SSH for APs).\n- **Data Channel:** Optional tunnel for client traffic (can be split at the AP or centralized at the WLC).\n\n**Analogy:** The WLC is the **Conductor** of an orchestra. The APs are the musicians. Without the conductor, you just have noise. With the conductor, you have beautiful, coordinated Wi-Fi coverage."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "WLC Function 🎛️",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "What is the primary benefit of a Wireless LAN Controller (WLC) in an enterprise?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It provides internet access.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It centralizes management and configuration of multiple APs.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It replaces the need for switches.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It encrypts all wireless traffic.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The WLC provides a single pane of glass for managing hundreds of APs, including RF settings and security policies.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

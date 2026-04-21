@@ -1,0 +1,113 @@
+{
+    "id": "l3",
+    "chapterId": "ch_8",
+    "title": "AAA: Authentication, Authorization, Accounting",
+    "description": "The framework for controlling who accesses what and tracking their actions.",
+    "xpReward": 30,
+    "estimatedMinutes": 12,
+    "section": "Access Control",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "AAA: The Gatekeeper Trio 🚪",
+            "content": "# Authentication, Authorization, and Accounting\n\n**AAA** (pronounced \"Triple A\") is the foundational framework for controlling access to network resources.\n\n**Analogy: Checking into a Hotel**\n1.  **Authentication:** You show your ID at the front desk. *\"Who are you? Prove it.\"*\n2.  **Authorization:** The clerk gives you a key card that opens **your room door** (Room 405), but **not** the Presidential Suite or the Maintenance Closet. *\"What are you allowed to do?\"*\n3.  **Accounting:** The hotel logs when you entered your room, when you used the minibar, and when you checked out. *\"What did you do while you were here?\"*\n\nAAA is implemented using protocols like **RADIUS** and **TACACS+**, which centralize these functions on a dedicated server."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "AAA Order 🎟️",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "In the AAA framework, which step determines what resources a user can access?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Authentication",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Authorization",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Accounting",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Auditing",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Authorization defines permissions and privileges after identity is confirmed.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Authentication: Proving Who You Are 🆔",
+            "content": "# The Three Factors of Authentication\n\nAuthentication relies on one or more of these factors:\n\n1.  **Something You KNOW:**\n    - Password, PIN, Security Question Answer.\n    - **Weakness:** Easily stolen (phishing), forgotten, reused.\n\n2.  **Something You HAVE:**\n    - Smart Card, Hardware Token (YubiKey), Mobile Phone (SMS/App).\n    - **Weakness:** Can be lost or stolen.\n\n3.  **Something You ARE (Biometrics):**\n    - Fingerprint, Face ID, Retina Scan, Voice Pattern.\n    - **Weakness:** Cannot be changed if compromised (you can't get a new fingerprint). Privacy concerns.\n\n**Multi-Factor Authentication (MFA):**\nUsing **two or more** different factors.\n- **Example:** Password (Know) + Google Authenticator Code (Have).\n- **Impact:** Even if a hacker steals your password, they still need your phone to log in. **MFA stops 99.9% of account takeover attacks.**\n\n**Single Sign-On (SSO):**\nAuthenticate **once** to a central Identity Provider (IdP) and gain access to multiple applications (e.g., \"Log in with Google/Facebook\"). \n- **Pro:** Convenience.\n- **Con:** If the IdP account is compromised, the attacker gets the keys to the kingdom."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Authorization: Defining Permissions 📋",
+            "content": "# Who Can Do What?\n\nOnce authenticated, the system must decide what the user is allowed to do.\n\n**Common Authorization Models:**\n\n1.  **DAC (Discretionary Access Control):** The **owner** of the resource decides who gets access. (e.g., I share a Google Doc with you).\n    - **Pro:** Flexible.\n    - **Con:** Difficult to manage at scale; security depends on user discretion.\n\n2.  **MAC (Mandatory Access Control):** The **system** enforces access based on **labels/clearances**. (e.g., Military: Top Secret document cannot be read by someone with Secret clearance).\n    - **Pro:** Very strict, high security.\n    - **Con:** Rigid, complex to administer.\n\n3.  **RBAC (Role-Based Access Control):** Access is based on **job function** (Role).\n    - *\"All members of the 'HR' role can access the payroll system.\"*\n    - **Pro:** Scalable, easy to audit. **Industry standard for enterprises.**\n\n4.  **ABAC (Attribute-Based Access Control):** Access is based on **attributes** (User Dept, Time of Day, Device Type, Location).\n    - *\"Allow access to financial data ONLY IF user is in Finance Dept AND it's between 9am-5pm AND they are on a corporate laptop.\"*\n    - **Pro:** Granular, dynamic.\n\n**Principle of Least Privilege:** A user should be granted **only the minimum permissions necessary** to perform their job. (Don't give every employee Domain Admin rights!)."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "quiz",
+            "title": "Access Control Models 🗂️",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "Which access control model is based on assigning permissions to job functions (e.g., 'Manager', 'Teller')?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "DAC (Discretionary)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "MAC (Mandatory)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "RBAC (Role-Based)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "ABAC (Attribute-Based)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "RBAC simplifies administration by grouping permissions into roles.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Accounting: The Audit Trail 📝",
+            "content": "# Logging Everything That Matters\n\n**Accounting** tracks the consumption of resources and user activities.\n\n**What gets logged?**\n- **Login/Logout events:** Timestamp, Source IP, Success/Failure.\n- **Commands executed:** (e.g., On a router, `show running-config` or `configure terminal`).\n- **Data Accessed:** Which files were opened? Which database records were queried?\n- **Duration of session.**\n\n**Why is Accounting Critical?**\n1.  **Auditing & Compliance:** Regulations like HIPAA, PCI-DSS, and SOX **require** detailed audit logs.\n2.  **Incident Response:** When a breach occurs, logs answer: *\"Who did it? When? From where? What data did they touch?\"*\n3.  **Billing:** ISPs use accounting data (RADIUS Accounting) to bill customers for data usage.\n4.  **Non-Repudiation:** Provides evidence that a specific user performed a specific action.\n\n**AAA Protocols:**\n- **RADIUS (Remote Authentication Dial-In User Service):** Uses UDP. Encrypts **only the password** in the packet. Widely used for network access (Wi-Fi, VPN).\n- **TACACS+ (Terminal Access Controller Access-Control System Plus):** Uses TCP. Encrypts the **entire packet payload**. Provides granular command-level authorization. Preferred for **device administration** (Cisco routers/switches)."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "code",
+            "title": "AAA Configuration Snippet (Cisco) 📄",
+            "content": "Configuring AAA on a Cisco router to use a TACACS+ server:\n\n```cisco\naaa new-model\naaa authentication login default group tacacs+ local\naaa authorization exec default group tacacs+ local\naaa accounting exec default start-stop group tacacs+\n\ntacacs-server host 192.168.1.100 key MySecretKey123\n```\n\nThis tells the router: \"Check with the TACACS+ server first. If it's down, use the local username/password.\"",
+            "codeLanguage": "cisco",
+            "canRunCode": false
+        }
+    ]
+}

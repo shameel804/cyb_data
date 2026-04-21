@@ -1,0 +1,111 @@
+{
+    "id": "l4",
+    "chapterId": "ch_7",
+    "title": "LAN Attacks: Starvation, Spoofing, Poisoning",
+    "description": "Deep dive into DHCP and ARP attacks that can compromise the entire local network.",
+    "xpReward": 40,
+    "estimatedMinutes": 18,
+    "section": "Security",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The LAN is a Trusting Place 🚨",
+            "content": "# Why Local Network Attacks Are So Effective\n\n**DHCP and ARP were designed with zero security.** They assume everyone on the LAN is trustworthy.\n\n- **DHCP:** Any device can claim to be a DHCP server and hand out addresses.\n- **ARP:** Any device can claim to have any IP address.\n\n**Analogy:** It's like a neighborhood where everyone leaves their doors unlocked and accepts packages for anyone who asks. A thief can just walk up and say, *\"I'm the mailman, give me all the mail for 123 Main St,\"* and people do it.\n\n**Goal of These Attacks:**\n- **Denial of Service (DoS):** Prevent legitimate users from accessing the network.\n- **Man-in-the-Middle (MitM):** Intercept and modify traffic.\n- **Reconnaissance:** Map the network and identify targets.\n\nLet's explore the most common LAN attacks."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "DHCP Starvation Attack 🍽️",
+            "content": "# Eating All the IP Addresses\n\n**Goal:** Exhaust the DHCP server's pool of available IP addresses so legitimate clients cannot obtain an IP.\n\n**How it Works:**\n1.  The attacker uses a tool (like **Yersinia** or **DHCPig**) to send **thousands of DHCP Discover messages**.\n2.  Each message uses a **spoofed, random MAC address**.\n3.  The DHCP server, thinking each is a unique client, issues an **Offer** and reserves an IP address from the pool.\n4.  The attacker never completes the handshake (or completes it and then releases the address).\n5.  Eventually, the DHCP scope is **exhausted**.\n6.  When a legitimate employee plugs in their laptop, the DHCP server has **no addresses left** to give out. The employee gets an **APIPA (169.254.x.x)** address and has **no network access**.\n\n**Impact:** Complete network outage for new or renewing devices.\n\n**Detection:** Monitor DHCP server logs for a **high rate of DHCPDISCOVER messages** from many different MAC addresses in a short time."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Starvation Impact 🌊",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What is the primary goal of a DHCP Starvation attack?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To steal user passwords",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To exhaust the pool of available IP addresses",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To redirect web traffic",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To crash the router",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Starvation attacks consume all available DHCP leases, causing DoS for legitimate clients.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "DHCP Spoofing (Rogue DHCP Server) 🦹",
+            "content": "# The Evil Concierge\n\n**Goal:** Become the authoritative DHCP server on the network to hand out **malicious network configuration**.\n\n**How it Works:**\n1.  Attacker sets up a **Rogue DHCP Server** on the local network (laptop, Raspberry Pi, compromised IoT device).\n2.  When a client sends a **DHCP Discover** broadcast, **both** the legitimate server and the rogue server receive it.\n3.  Both send **DHCP Offers**. The client typically accepts the **first offer it receives** (or the attacker can optimize to win the race).\n4.  The rogue server provides a **malicious configuration**:\n    - **IP Address:** Valid (so the client thinks it's working).\n    - **Default Gateway:** **Attacker's IP address**. (All traffic leaving the subnet goes through the attacker).\n    - **DNS Server:** **Attacker's DNS server**. (All domain lookups go to the attacker).\n\n**The Result: Total Compromise**\n- The attacker is now the **Man-in-the-Middle** for **all internet traffic** from the victim.\n- The attacker can redirect `bank.com` to a phishing site.\n- The attacker can intercept and modify unencrypted traffic (HTTP, FTP, Telnet).\n\n**Analogy:** A fake hotel concierge sets up a desk in the lobby, hands out room keys (IPs), and tells guests that the real restaurant (Google) is actually down the dark alley (Phishing site)."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "ARP Poisoning / Spoofing ☠️",
+            "content": "# The Classic Layer 2 MitM\n\n**Goal:** Associate the attacker's **MAC address** with the **IP address of another host** (typically the Default Gateway).\n\n**How it Works:**\n1.  Attacker sends **unsolicited ARP Replies (Gratuitous ARP)** to the victim.\n2.  Message to Victim (`192.168.1.100`): *\"I am `192.168.1.1` (Gateway) and my MAC is `AA:BB:CC:DD:EE:FF` (Attacker's MAC).\"*\n3.  Message to Gateway (`192.168.1.1`): *\"I am `192.168.1.100` (Victim) and my MAC is `AA:BB:CC:DD:EE:FF` (Attacker's MAC).\"*\n4.  The Victim updates its ARP cache. Now, when it wants to send traffic to the internet, it sends it to the **Attacker's MAC**.\n5.  The Gateway updates its ARP cache. When it wants to send return traffic to the Victim, it sends it to the **Attacker's MAC**.\n6.  The Attacker **forwards** the traffic to the correct destination (to keep the connection alive) but **sniffs/copies/modifies** all the data in transit.\n\n**Tools of the Trade:** `Ettercap`, `BetterCAP`, `arpspoof`.\n\n**Impact:**\n- Steal passwords from HTTP, FTP, Telnet sessions.\n- Hijack sessions (steal cookies).\n- Perform **SSL Stripping** (downgrade HTTPS to HTTP).\n- **Denial of Service** (by poisoning with a non-existent MAC, traffic is blackholed)."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "ARP Poisoning Mechanics ⚙️",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "In an ARP Poisoning attack against the default gateway, what does the attacker's Gratuitous ARP message claim?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The gateway's IP address is associated with the attacker's MAC address",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The victim's IP address is invalid",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The DHCP server is offline",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The switch needs to reboot",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The attacker claims to be the gateway by sending ARP replies mapping the gateway's IP to the attacker's MAC.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "warning",
+            "title": "Double Tagging and VLAN Hopping 🏷️",
+            "content": "## Advanced LAN Attacks\n\nWhile not strictly DHCP/ARP, these attacks exploit VLAN trunking misconfigurations:\n\n- **VLAN Hopping (Switch Spoofing):** Attacker pretends to be a switch and forms a trunk with the real switch, gaining access to all VLANs.\n- **Double Tagging:** Attacker sends a frame with two 802.1Q tags. The first switch strips the outer tag and forwards the frame to the native VLAN, potentially reaching a different VLAN.\n\n**Mitigation:** Disable **Dynamic Trunking Protocol (DTP)** on access ports. Set unused ports to **Access Mode** and assign them to an **unused/blackhole VLAN**."
+        }
+    ]
+}

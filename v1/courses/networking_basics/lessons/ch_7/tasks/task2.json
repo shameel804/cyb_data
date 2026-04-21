@@ -1,0 +1,17 @@
+{
+    "id": "task2",
+    "chapterId": "ch_7",
+    "title": "ARP Cache Investigation and Poisoning Simulation",
+    "description": "Examine the ARP cache and simulate a simple ARP poisoning scenario in a lab.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario: Investigating ARP Activity\n\nYou are performing a security assessment on a small office network. You have access to a Linux machine (Attacker) and a Windows machine (Victim).\n\n**Task Part A: Baseline ARP Cache**\nOn the **Victim** machine, run the command to view the ARP cache. You see the following (simplified):\n```\nInternet Address      Physical Address      Type\n192.168.1.1           00-11-22-33-44-55     dynamic\n192.168.1.105         11-22-33-44-55-66     dynamic\n```\n1.  What command did you use to view this?\n2.  What does 'dynamic' mean in this context?\n\n**Task Part B: Simulating ARP Poisoning**\nYou want to test if the network is vulnerable to ARP poisoning. You use `arpspoof` (part of dsniff) on the **Attacker** machine with IP `192.168.1.50` and MAC `aa:bb:cc:dd:ee:ff`.\n\nCommand run on Attacker:\n```bash\nsudo arpspoof -i eth0 -t 192.168.1.105 192.168.1.1\n```\n\n3.  What is this command doing? Explain the roles of `-t`, `192.168.1.105`, and `192.168.1.1`.\n4.  After running this command, you check the ARP cache on the **Victim** again. What do you expect the entry for `192.168.1.1` to look like now?\n5.  How could you **permanently** protect the `192.168.1.1` entry from this attack on the Victim machine (without using switch features)?\n\nProvide your answers clearly.",
+    "hints": [
+        "Command is `arp -a`.",
+        "Dynamic means learned via ARP and will expire.",
+        "`arpspoof` sends fake ARP replies.",
+        "The gateway MAC will change to the attacker's MAC.",
+        "Use a static ARP entry."
+    ],
+    "expectedOutput": "1. `arp -a` (Windows) or `arp -n` / `ip neigh` (Linux).\n2. Dynamic means the entry was learned through ARP broadcasts and has a limited lifetime.\n3. The command tells the Victim (192.168.1.105) that the Gateway (192.168.1.1) is at the Attacker's MAC address. `-t` specifies the target (Victim), first IP is target, second IP is the host being impersonated.\n4. The entry for 192.168.1.1 will show the Attacker's MAC address (aa:bb:cc:dd:ee:ff).\n5. Add a static ARP entry: `arp -s 192.168.1.1 00-11-22-33-44-55` (requires admin).",
+    "solutionCode": "// No code required. Command explanation and analysis."
+}

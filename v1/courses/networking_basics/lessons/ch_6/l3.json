@@ -1,0 +1,108 @@
+{
+    "id": "l3",
+    "chapterId": "ch_6",
+    "title": "DNS Record Types Deep Dive",
+    "description": "Master A, AAAA, CNAME, MX, NS, TXT, and more – the building blocks of DNS data.",
+    "xpReward": 35,
+    "estimatedMinutes": 15,
+    "section": "DNS Data",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The A Record (Address Record) 🏠",
+            "content": "# The Core Mapping\n\n**A Record:** Maps a **hostname** to an **IPv4 address**.\n\n**Example:**\n```text\nwww.example.com.  IN  A  93.184.216.34\n```\n\n- `IN`: Internet Class (almost always this).\n- `A`: Record Type.\n- `93.184.216.34`: The 32-bit IPv4 address.\n\n**Multiple A Records (Round Robin):**\nYou can have multiple A records for the same name. This is a simple form of **load balancing**.\n```text\nwww.example.com.  IN  A  93.184.216.34\nwww.example.com.  IN  A  93.184.216.35\n```\nThe DNS server rotates the order of responses. Clients usually pick the first one, distributing load across the IPs.\n\n**Limitation:** DNS Round Robin doesn't know if Server 1 is down; it just blindly hands out its IP. Modern load balancers use **health checks** and dynamic DNS updates."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "A Record Check 📋",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What does an 'A' record in DNS do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Maps a name to an IPv6 address",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Maps a name to an IPv4 address",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Maps a name to another name",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Specifies the mail server",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A records hold IPv4 addresses.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "The AAAA Record (Quad-A) 📡",
+            "content": "# IPv6 Addressing\n\n**AAAA Record:** Maps a hostname to an **IPv6 address** (128 bits).\n\n**Example:**\n```text\nwww.example.com.  IN  AAAA  2606:2800:220:1:248:1893:25c8:1946\n```\n\n**Why 'AAAA'?**\n- IPv4 address is **32 bits** (4 bytes).\n- IPv6 address is **128 bits** (16 bytes).\n- `4 * 4 = 16` -> Hence, **A** x 4 = **AAAA**.\n\n**Modern Dual-Stack:** Most websites publish both `A` and `AAAA` records. Browsers use **Happy Eyeballs** algorithm to try both IPv4 and IPv6 simultaneously and use whichever connects fastest."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "The CNAME Record (Canonical Name) 🔗",
+            "content": "# The Alias\n\n**CNAME Record:** Maps an **alias** name to the **true (canonical)** name.\n\n**Example:**\n```text\nblog.example.com.  IN  CNAME  www.example.com.\nwww.example.com.   IN  A      93.184.216.34\n```\n\n**Use Case:** \n- You host your blog on a subdomain, but you want it to point to the same server as your main website.\n- You only change the **A record** for `www.example.com`, and `blog.example.com` automatically follows.\n\n**Crucial Rule:**\n**A CNAME record CANNOT coexist with any other record type for the same name.**\n- You cannot have both a CNAME and an MX record for `example.com`. (This is why you use `www` for web and root `@` for email).\n- **Apex Domain Problem:** The root domain (`example.com`) cannot be a CNAME. It must have A/AAAA records. This is why many services ask you to use `www` instead of the naked domain."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "quiz",
+            "title": "CNAME Constraints ⛓️",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "True or False: You can have a CNAME record for the root domain `example.com` pointing to `www.example.com`.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "correctAnswer": false,
+                "explanation": "False. The apex (root) domain cannot be a CNAME according to RFC. It must have SOA and NS records, which conflict with CNAME.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "The MX Record (Mail Exchanger) 📧",
+            "content": "# Routing Email\n\n**MX Record:** Specifies the **mail server** responsible for accepting email messages on behalf of a domain.\n\n**Example:**\n```text\nexample.com.  IN  MX  10  mail1.example.com.\nexample.com.  IN  MX  20  mail2.example.com.\n```\n\n- **Priority (10, 20):** **Lower number = Higher priority**. \n- Sending mail servers try to deliver to `mail1` first. If it's down, they try `mail2`.\n\n**How Email Uses MX:**\n1.  You send an email to `user@example.com`.\n2.  Your mail server queries DNS for the **MX record** of `example.com`.\n3.  It connects to `mail1.example.com` and delivers the email using **SMTP**.\n\n**Security Note:** Attackers often check for misconfigured MX records or try to spoof them to intercept email."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "NS, TXT, and PTR Records 📝",
+            "content": "# The Supporting Cast\n\n**NS Record (Name Server):** \n- Delegates a subdomain to a set of name servers.\n- `example.com.  IN  NS  ns1.digitalocean.com.`\n- These are the **Authoritative Servers** for the domain.\n\n**TXT Record (Text):** \n- Originally for human-readable notes. Now critical for **security and verification**.\n- **SPF (Sender Policy Framework):** `\"v=spf1 include:_spf.google.com ~all\"` -> Prevents email spoofing.\n- **DKIM (DomainKeys Identified Mail):** Cryptographic signature for email.\n- **DMARC:** Policy for handling failed SPF/DKIM checks.\n- **Domain Verification:** Google, Microsoft, etc. ask you to add a specific TXT record to prove you own the domain.\n\n**PTR Record (Pointer):** \n- Used for **Reverse DNS** (IP -> Name). Stored in `in-addr.arpa` domain.\n- `34.216.184.93.in-addr.arpa.  IN  PTR  www.example.com.`\n\n**SRV Record (Service):** \n- Specifies a **host and port** for specific services (e.g., VoIP, LDAP, XMPP). \n- `_sip._tcp.example.com.  IN  SRV  10 60 5060 sipserver.example.com.`"
+        },
+        {
+            "id": "s_l3_8",
+            "type": "tip",
+            "title": "SOA Record (Start of Authority) 🏛️",
+            "content": "## The Zone's Meta-Data\n\nEvery DNS zone has one **SOA Record**. It contains administrative information:\n- **Primary Name Server:** The master server for the zone.\n- **Admin Email:** `admin.example.com` (written as `admin.example.com.` in the record).\n- **Serial Number:** Incremented with every change. **Crucial for Zone Transfers** (synchronizing slaves).\n- **Refresh/Retry/Expire:** Timers for secondary servers.\n- **Negative Caching TTL:** How long to cache a 'Not Found' response."
+        }
+    ]
+}

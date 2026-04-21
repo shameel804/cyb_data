@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_8",
+    "title": "Quantitative Risk Calculation",
+    "description": "Calculate SLE, ARO, and ALE for a given asset and recommend a risk response.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario: E-Commerce Web Server\n\nYou are the security analyst for a small e-commerce company. You are assessing the risk of a **DDoS attack** taking down the primary web server.\n\n**Assumptions:**\n- **Asset Value (AV):** The web server hardware and software replacement cost is **$25,000**.\n- **Exposure Factor (EF):** If a DDoS attack succeeds, the server is completely unavailable for 4 hours. The estimated lost revenue and recovery cost equals **20%** of the server's value. (EF = 0.20).\n- **Annualized Rate of Occurrence (ARO):** Based on industry reports, similar companies experience a successful DDoS attack approximately **once every two years**. (ARO = 0.5).\n\n**Part 1: Calculation**\n1.  Calculate the **Single Loss Expectancy (SLE)**.\n2.  Calculate the **Annualized Loss Expectancy (ALE)**.\n\n**Part 2: Decision Making**\nA cloud-based DDoS mitigation service (like Cloudflare) costs **$4,000 per year** and would reduce the ARO to **0.1** (once every ten years).\n\n3.  Calculate the **new ALE** with the mitigation in place.\n4.  Should the company purchase the mitigation service? Justify your answer financially.\n\n**Part 3: Risk Response**\n5.  If the company **purchases** the service, which risk response strategy are they employing? (Avoid, Mitigate, Transfer, Accept).",
+    "hints": [
+        "SLE = Asset Value x Exposure Factor",
+        "ALE = SLE x ARO",
+        "Compare the cost of the control to the *reduction* in ALE (ALE before - ALE after)."
+    ],
+    "expectedOutput": "1. SLE = $25,000 * 0.20 = $5,000\n2. ALE (Before) = $5,000 * 0.5 = $2,500 per year\n3. ALE (After) = $5,000 * 0.1 = $500 per year\n4. **Recommendation:** **YES**, purchase the service.\n   - Cost of control: $4,000/year.\n   - Reduction in ALE (Risk Reduction): $2,500 - $500 = $2,000.\n   - **Wait, the cost ($4k) is GREATER than the risk reduction ($2k)?** Actually, wait. The cost is $4k, the current ALE is $2.5k. So the cost of control exceeds the total current risk. Financially, it's **not justified** purely on ALE numbers. *(In reality, companies also factor in intangible costs like reputation damage, which isn't in the ALE).* \n   - *Corrected Answer:* Strictly by the numbers, the control costs more than the annualized loss, so management might **Accept** the risk. However, if reputation damage is considered, they might still buy it. For the purpose of this exercise, the financial ROI is negative.\n5. **Mitigation**. They are implementing a control to reduce the likelihood (ARO) of the threat.",
+    "solutionCode": "// Calculation results as shown above."
+}

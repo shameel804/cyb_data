@@ -1,0 +1,78 @@
+{
+    "id": "l4",
+    "chapterId": "ch_5",
+    "title": "Firewalls, IDS, and IPS",
+    "description": "The bouncers of the network – filtering, detecting, and preventing intrusions.",
+    "xpReward": 35,
+    "estimatedMinutes": 15,
+    "section": "Security Devices",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Firewall: The Perimeter Guard 🛡️",
+            "content": "# Layer 3/4 and Layer 7 Filtering\n\nA **Firewall** is a security device that monitors and controls incoming and outgoing network traffic based on predetermined **security rules**.\n\n**Analogy:** The Firewall is the **Bouncer** at a club. It has a **Guest List** (ACL).\n- \"Your name is on the list? Come in.\"\n- \"Your name is not on the list? Go away.\"\n- \"You're on the banned list? Absolutely not.\"\n\n**Types of Firewalls (Evolution):**\n1.  **Packet Filtering Firewall (Stateless):** Oldest type. Looks at individual packet headers (IP, Port) only. No memory of connections. Fast but easily bypassed.\n2.  **Stateful Inspection Firewall:** Tracks the **state** of TCP connections. If a SYN went out, it expects a SYN-ACK back. It won't let unsolicited packets in. **Most common type for basic perimeter defense.**\n3.  **Next-Generation Firewall (NGFW):** Includes **Application Visibility (Layer 7)**. Can distinguish Facebook browsing from Facebook Chat. Can block specific malware signatures and URLs.\n4.  **Web Application Firewall (WAF):** Specialized firewall that protects **web servers** from attacks like SQL Injection and Cross-Site Scripting (XSS)."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Firewall Types 🔥",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which type of firewall can inspect the actual content of an HTTP request to block SQL injection?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Packet Filtering Firewall",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Stateful Firewall",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Web Application Firewall (WAF)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Layer 3 Switch",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A WAF operates at Layer 7 and understands HTTP/HTTPS protocols.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "IDS vs IPS: Alarm vs. Bouncer 🚨",
+            "content": "# Intrusion Detection and Prevention\n\n**IDS (Intrusion Detection System):**\n- **Passive monitoring.** Watches a copy of traffic (SPAN port or Network Tap).\n- Alerts the admin: *\"Hey! I saw something suspicious!\"*\n- **Does NOT block traffic.**\n- **Analogy:** A **Security Camera** and a **Motion Alarm**. It records and screams, but doesn't stop the thief.\n\n**IPS (Intrusion Prevention System):**\n- **Inline monitoring.** Traffic flows **through** the IPS.\n- Detects and **drops/blocks** malicious traffic **immediately**.\n- **Analogy:** A **Bouncer with a taser**. If the bad guy tries to enter, the IPS tackles them before they get in.\n\n**Deployment Modes:**\n- **Signature-Based:** Compares traffic against a database of known attack patterns (like antivirus). Good for known threats, bad for zero-days.\n- **Anomaly-Based:** Establishes a 'baseline' of normal network behavior. Alerts on deviations (e.g., \"User X usually sends 10 emails a day, now they sent 5000 - Ransomware alert!\"). Prone to false positives.\n- **Behavioral (Heuristic):** Looks for specific suspicious actions (e.g., Port Scanning, SQL Injection attempts)."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "DMZ and Network Segmentation 🏢",
+            "content": "# The Layered Defense\n\nFirewalls are used to create **security zones**.\n\n**Standard Three-Zone Model:**\n1.  **Inside (Trusted):** Internal employee network. High security, low monitoring.\n2.  **DMZ (Demilitarized Zone):** Public-facing servers (Web, Email). **Partially trusted.**\n3.  **Outside (Untrusted):** The Internet. Zero trust.\n\n**Firewall Rules Example:**\n- Allow: Inside -> Outside (HTTP/HTTPS) *[Employees browse web]*\n- Allow: Outside -> DMZ (Port 443 to Web Server IP) *[Customers access website]*\n- **DENY:** Outside -> Inside *[Internet cannot initiate connections to HR database]*\n- **DENY:** DMZ -> Inside *[If the Web Server gets hacked, it cannot pivot to Internal network]*\n\n**Cybersecurity Principle: Least Privilege.** Firewalls enforce this by default **DENY ALL** policy, with specific **ALLOW** exceptions."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Example Firewall Rule (ACL) 📋",
+            "content": "A basic Cisco ACL allowing web traffic out and blocking everything else inbound:\n\n```cisco\n! Allow established TCP connections back in (replies)\naccess-list 100 permit tcp any any established\n\n! Allow internal hosts out to web\naccess-list 100 permit tcp 192.168.1.0 0.0.0.255 any eq 80\naccess-list 100 permit tcp 192.168.1.0 0.0.0.255 any eq 443\n\n! Implicit Deny All at the end (invisible)\n! access-list 100 deny ip any any\n```",
+            "codeLanguage": "cisco",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_6",
+            "type": "warning",
+            "title": "The Human Firewall Fallacy 🧑‍💻",
+            "content": "## Firewalls are NOT Magic\n\nA common misconception: *\"We have a firewall, so we're safe.\"*\n\n**Reality:** Firewalls only block what they are **configured to block**.\n- If port 443 (HTTPS) is open, malware can **tunnel out** over 443.\n- If a user clicks a phishing link and downloads a Trojan, the firewall sees it as \"Web Traffic (Port 443)\" and lets it through.\n- **Application-layer attacks** (SQLi, XSS) pass right through a simple Stateful Firewall.\n\n**Defense in Depth:** Firewalls are **Layer 1**. You also need **Endpoint Protection (AV)**, **Email Filtering**, and **User Training**."
+        }
+    ]
+}

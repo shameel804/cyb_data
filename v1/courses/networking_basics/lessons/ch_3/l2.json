@@ -1,0 +1,101 @@
+{
+    "id": "l2",
+    "chapterId": "ch_3",
+    "title": "Network Masks & CIDR",
+    "description": "Learn how a subnet mask tells a device which part is the 'network' and which is the 'host'.",
+    "xpReward": 30,
+    "estimatedMinutes": 10,
+    "section": "Addressing",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Subnet Mask: The Divider 🔪",
+            "content": "# How does my computer know if you are local or remote?\n\nLook at this address: `192.168.1.10`\n\nIs `192.168.1.25` on the **same local network**? Or does it need to go through the **Router (Default Gateway)**?\n\nThis decision is made by the **Subnet Mask**.\n\n**The Subnet Mask is a 32-bit number that uses `1`s to represent the 'Network' part and `0`s to represent the 'Host' part.**\n\n**Analogy:** Imagine a glass wall separating the kitchen (Network) from the dining room (Host).\n- The **Subnet Mask** is the **glass wall**. \n- Bits that are `1` = Kitchen (Shared Network ID).\n- Bits that are `0` = Specific Seat (Unique Host ID)."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Logical AND Operation 🤖",
+            "content": "Computers don't 'look' at the mask. They perform a mathematical **Logical AND** between the **IP Address** and the **Subnet Mask** to find the **Network Address**.\n\n```text\nIP Address:   192.168.1.10  -> 11000000.10101000.00000001.00001010\nSubnet Mask:  255.255.255.0 -> 11111111.11111111.11111111.00000000\n--------------------------------------------------- (AND Operation)\nNetwork Addr: 192.168.1.0   -> 11000000.10101000.00000001.00000000\n```\n\n**AND Logic Rule:** 1 AND 1 = 1. **Everything else = 0.**\n\nIf the **Network Address** of the destination IP matches the **Network Address** of your own IP, the device knows it's **LOCAL** (Use ARP).\nIf it's **DIFFERENT**, it sends the packet to the **Default Gateway** (Router)."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Mask Logic 🎭",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Your IP is 10.0.0.5 with Mask 255.255.255.0. Destination is 10.0.0.50. Is the destination local or remote?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Local (Same Network)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Remote (Different Network)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Network Address for both is 10.0.0.0. Therefore, they are on the same local subnet.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "CIDR Notation (The Slash) /",
+            "content": "# Writing Masks Efficiently\n\nWriting `255.255.255.0` takes up space. CIDR notation uses a **slash** followed by the **number of '1' bits** in the mask.\n\n**Count the '1's:**\n- `255.0.0.0` = `11111111.00000000.00000000.00000000` = **/8**\n- `255.255.0.0` = `11111111.11111111.00000000.00000000` = **/16**\n- `255.255.255.0` = `11111111.11111111.11111111.00000000` = **/24**\n- `255.255.255.128` = `11111111.11111111.11111111.10000000` = **/25**\n- `255.255.255.192` = `11111111.11111111.11111111.11000000` = **/26**\n\n**Terminology:**\n- `192.168.1.10/24` means \"IP 192.168.1.10 with a 24-bit subnet mask.\"\n- The `/24` is called the **Prefix Length**."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Key Formula: Hosts per Subnet 🧮",
+            "content": "# How many devices can fit in a subnet?\n\nEvery subnet has **two reserved addresses**:\n1.  **Network Address:** The first address (all host bits are `0`). Identifies the subnet itself.\n2.  **Broadcast Address:** The last address (all host bits are `1`). Sends a message to **everyone** on the subnet.\n\n**Formula:**\n- `h` = Number of **Host Bits** (32 - Prefix Length).\n- Total Addresses = `2^h`\n- **Usable Host Addresses = `2^h - 2`**\n\n**Examples:**\n- `/24` -> 32 - 24 = 8 host bits. `2^8 - 2` = 256 - 2 = **254 usable addresses**.\n- `/25` -> 32 - 25 = 7 host bits. `2^7 - 2` = 128 - 2 = **126 usable addresses**.\n- `/30` -> 32 - 30 = 2 host bits. `2^2 - 2` = 4 - 2 = **2 usable addresses** (Perfect for a point-to-point link between two routers!)."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Host Math 📊",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "How many USABLE host addresses are in a /26 network?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "64",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "62",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "32",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "30",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "32 - 26 = 6 host bits. 2^6 = 64 total. 64 - 2 (network/broadcast) = 62 usable!",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "tip",
+            "title": "Cybersecurity Insight 🔒",
+            "content": "## Why Subnetting Matters for Security\n\n- **Limiting Broadcast Storms:** A misconfigured device can flood the network with broadcasts. Subnetting contains the damage.\n- **Segmentation:** Put **Finance** in Subnet A and **Guest WiFi** in Subnet B. Use **ACLs (Access Control Lists)** on the router to **prevent** Guest WiFi from ever talking to Finance.\n- **ARP Poisoning Containment:** ARP attacks only work within the **local subnet (Broadcast Domain)**. If you split a large office into smaller subnets, an attacker can only poison the segment they are plugged into, not the entire building."
+        }
+    ]
+}

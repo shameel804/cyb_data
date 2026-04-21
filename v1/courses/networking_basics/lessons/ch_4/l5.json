@@ -1,0 +1,113 @@
+{
+    "id": "l5",
+    "chapterId": "ch_4",
+    "title": "Ports, Sockets, and Connections",
+    "description": "How applications multiplex network access and how the OS tracks every conversation.",
+    "xpReward": 25,
+    "estimatedMinutes": 10,
+    "section": "Practical",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Socket: A Unique Connection ID 🧩",
+            "content": "# What is a Socket?\n\nA **Socket** is an **endpoint** for communication. It's the programming interface (API) that applications use to send and receive network data.\n\nA **connection** is uniquely identified by a **5-Tuple**:\n1.  Source IP Address\n2.  Source Port\n3.  Destination IP Address\n4.  Destination Port\n5.  Protocol (TCP or UDP)\n\n**Analogy:** \n- The **IP Address** is the building's **street address**.\n- The **Port** is the **apartment number**.\n- The **Socket** is the **specific door** to that apartment.\n- The **5-Tuple** is the full shipping label that ensures the package goes to the right door of the right building in the right city.\n\n**Operating System View:**\nRun `netstat -an` on your computer. You'll see hundreds of lines like:\n```\nTCP    192.168.1.100:54321    142.250.185.46:443    ESTABLISHED\n```\nThat's a **socket pair**."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "5-Tuple 🎫",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Which of the following is NOT part of the 5-tuple that uniquely identifies a connection?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Source IP Address",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Destination MAC Address",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Source Port",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Protocol (TCP/UDP)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "MAC address is Layer 2 and not part of the connection tuple used at Layer 4. The tuple is SrcIP, SrcPort, DstIP, DstPort, Protocol.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Port Ranges: Well-Known, Registered, Ephemeral 🏷️",
+            "content": "# IANA Port Assignments\n\nThe Internet Assigned Numbers Authority (IANA) divides ports into three ranges:\n\n| Range | Name | Purpose | Example |\n|-------|------|---------|---------|\n| **0 - 1023** | **Well-Known Ports** | System services (Requires root/admin to bind) | 22 (SSH), 80 (HTTP), 443 (HTTPS) |\n| **1024 - 49151** | **Registered Ports** | User applications/vendors | 3306 (MySQL), 5432 (PostgreSQL), 8080 (HTTP Alt) |\n| **49152 - 65535** | **Dynamic / Ephemeral Ports** | **Client-side source ports** | Your browser uses these temporarily |\n\n**The Client-Server Dance:**\n- **Server** listens on a **Well-Known Port** (e.g., 443).\n- **Client** chooses a random **Ephemeral Port** (e.g., 54321) as its **source port**.\n- This is how the server can distinguish between **your** connection and **another** connection from the same client IP.\n\n**Example: Two browser tabs to `google.com`:**\n- Tab 1: `192.168.1.100:54321` -> `142.250.185.46:443`\n- Tab 2: `192.168.1.100:54322` -> `142.250.185.46:443`\n\nSame IPs, same destination port, **different source port** -> Different connection!"
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "Viewing Open Ports (Linux/Windows) 🖥️",
+            "content": "You can see which ports your machine is listening on using these commands:\n\n**Windows (CMD as Admin):**\n```cmd\nnetstat -anob\n```\n\n**Linux/Mac:**\n```bash\nss -tulnp\n# or\nnetstat -tulpn\n```\n\nLook for `LISTENING` state. If you see `0.0.0.0:445` (SMB) listening and you don't need file sharing, **disable it**. Open ports are attack vectors.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_5",
+            "type": "warning",
+            "title": "Port Scanning 🔍",
+            "content": "## The Attacker's Reconnaissance\n\nAttackers use tools like **Nmap** to scan for open ports on a target.\n\n**Common Scans:**\n- **TCP SYN Scan:** Send SYN, if SYN-ACK received -> Port is **OPEN**.\n- **TCP Connect Scan:** Complete full 3-way handshake (noisier).\n- **UDP Scan:** Send UDP packet, if **ICMP Port Unreachable** returned -> Port is **CLOSED**. No response? Maybe **OPEN** or filtered.\n\n**Defense:**\n- Use a **Host-Based Firewall** (Windows Firewall, iptables) to restrict inbound connections.\n- **Default Deny Policy:** Block everything. Only allow specific ports needed for your role (e.g., 443 outbound)."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Common Services and Their Ports (Memorize!) 📚",
+            "content": "# Security Professionals Must Know These\n\n| Port | Protocol | Service | Security Note |\n|------|----------|---------|---------------|\n| 20/21 | TCP | FTP | Cleartext passwords! Use SFTP/FTPS. |\n| 22 | TCP | SSH | Secure remote administration. |\n| 23 | TCP | Telnet | **NEVER USE** (Cleartext). |\n| 25 | TCP | SMTP | Email sending (often blocked outbound for clients). |\n| 53 | UDP/TCP | DNS | Critical for name resolution. |\n| 80 | TCP | HTTP | Cleartext web. Redirect to 443. |\n| 443 | TCP | HTTPS | Encrypted web. |\n| 3389 | TCP | RDP | Remote Desktop. Often targeted by ransomware. |\n| 445 | TCP | SMB | Windows File Sharing. **WannaCry** exploited this. |\n| 1433 | TCP | MS-SQL | Database. Default creds are common. |"
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Port Identification 🎓",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "Which port is typically used for encrypted web traffic (HTTPS)?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "80",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "443",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "22",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "3389",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "HTTPS uses TCP port 443.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

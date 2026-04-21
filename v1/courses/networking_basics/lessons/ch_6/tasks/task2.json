@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_6",
+    "title": "Record Type Identification",
+    "description": "Given a set of requirements, determine the correct DNS records to configure.",
+    "estimatedMinutes": 12,
+    "problemStatement": "## Scenario: Configuring a New Domain\n\nYou have registered the domain `cyber-store.net` and need to configure DNS for the following services:\n\n1.  The main website should be accessible via `cyber-store.net` and `www.cyber-store.net`. Both should point to the server at IPv4 `203.0.113.50` and IPv6 `2001:db8::50`.\n2.  Email for the domain should be handled by Google Workspace. Google's provided servers are `aspmx.l.google.com` (priority 1) and `alt1.aspmx.l.google.com` (priority 5).\n3.  You need to verify domain ownership for Google Search Console by adding a TXT record with the value `google-site-verification=abc123xyz`.\n4.  The subdomain `shop.cyber-store.net` should point to a Shopify store at `cyberstore.myshopify.com`.\n5.  You want to delegate the subdomain `internal.cyber-store.net` to a separate DNS server at `ns1.internal.cyber-store.net`.\n\n## Task\n\nFor each requirement, list the **DNS Record Type** (e.g., A, CNAME, MX, TXT, NS) and provide the **record name** and **value** (use `@` for the root domain).\n\n**Format:**\n```\nName | Type | Value\n```\n\n**Example:**\n`@ | A | 203.0.113.50`",
+    "hints": [
+        "Root domain can't be a CNAME. Use A and AAAA records for the apex.",
+        "MX records require a priority number before the server hostname.",
+        "For delegation, use NS records pointing to the child name servers."
+    ],
+    "expectedOutput": "1. Website:\n   @  | A     | 203.0.113.50\n   @  | AAAA  | 2001:db8::50\n   www | CNAME | cyber-store.net.\n2. Email:\n   @  | MX | 1 aspmx.l.google.com.\n   @  | MX | 5 alt1.aspmx.l.google.com.\n3. Verification:\n   @  | TXT | \"google-site-verification=abc123xyz\"\n4. Shop:\n   shop | CNAME | cyberstore.myshopify.com.\n5. Delegation:\n   internal | NS | ns1.internal.cyber-store.net.",
+    "solutionCode": "// No code. DNS configuration task."
+}

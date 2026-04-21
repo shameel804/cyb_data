@@ -1,0 +1,16 @@
+{
+    "id": "task3",
+    "chapterId": "ch_5",
+    "title": "Wireless Security Recommendation",
+    "description": "Evaluate a Wi-Fi deployment scenario and recommend security improvements.",
+    "estimatedMinutes": 10,
+    "problemStatement": "## Scenario: Coffee Shop Wi-Fi Audit\n\nYou are helping a local coffee shop secure their customer Wi-Fi.\n\n**Current Setup:**\n- **SSID:** `CoffeeShop_Free`\n- **Security:** Open (No Password)\n- **AP:** Single consumer-grade router in the back office.\n- **Network:** All customers get IPs in `192.168.1.0/24`, same as the Point-of-Sale (POS) terminal.\n\n## Questions\n\n1.  What is the **most significant security risk** with the current setup regarding the POS terminal?\n2.  What are the risks to customers using an **Open** network?\n3.  Recommend a **better wireless security configuration** for the Customer SSID that balances ease of use and security.\n4.  How should the network be **segmented** to protect the POS terminal and the office computer?\n\nProvide specific technical recommendations.",
+    "hints": [
+        "Open Wi-Fi means no encryption at the link layer.",
+        "Shared subnet means customers can ARP poison the POS terminal.",
+        "Consider WPA2-PSK with a posted password, or a captive portal.",
+        "Use VLANs to separate POS, Office, and Guest traffic."
+    ],
+    "expectedOutput": "1. Customers are on the same broadcast domain as the POS terminal. They can sniff traffic, perform ARP poisoning, or directly attack the POS system (PCI DSS violation).\n2. No encryption (eavesdropping on web traffic), Evil Twin attacks easy to perform.\n3. Use WPA2-PSK with a simple password written on the board. Or a Captive Portal with a daily code. At least provide Layer 2 encryption.\n4. Implement VLANs: VLAN 10 (POS - isolated, no internet?), VLAN 20 (Office), VLAN 99 (Guest Wi-Fi). Firewall rules: Guest -> POS = Deny; Guest -> Office = Deny; Guest -> Internet = Allow.",
+    "solutionCode": "// No code required. Design recommendation."
+}

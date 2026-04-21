@@ -1,0 +1,111 @@
+{
+    "id": "l2",
+    "chapterId": "ch_5",
+    "title": "Hubs and Switches: Layer 1 vs Layer 2",
+    "description": "Understand why hubs are obsolete and how switches intelligently forward frames.",
+    "xpReward": 30,
+    "estimatedMinutes": 12,
+    "section": "LAN Devices",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Hub: A Dumb Repeater 📢",
+            "content": "# Layer 1 Device (Physical Layer)\n\nA **Hub** is a simple device that connects multiple Ethernet devices together. It has no intelligence. It doesn't read MAC addresses.\n\n**Operation:**\n1.  Receives an electrical signal (bits) on one port.\n2.  **Regenerates** (amplifies) the signal.\n3.  **Floods** the signal out **all other ports** (except the one it came in on).\n\n**Analogy:** A Hub is like a **loudspeaker in a crowded room**. When one person talks, **everyone** hears it. It's up to each person to decide if the message was for them.\n\n**The Problem: Collision Domain**\n- Since everyone shares the same electrical 'wire' inside the hub, only one device can transmit at a time.\n- If two devices talk simultaneously, the signals **collide** and data is corrupted.\n- This is **Half-Duplex** communication (cannot send and receive simultaneously).\n\n**Cybersecurity Nightmare:** A device connected to a hub can see **ALL traffic** for the entire segment. Using a packet sniffer (Wireshark) on a hub network reveals everyone's passwords, emails, and web browsing.\n\n**Status:** **OBSOLETE.** Do not use hubs in modern networks. If you find one, replace it immediately with a switch."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Hub Behavior 📡",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "At which OSI layer does a Hub operate?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Layer 1 (Physical)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Layer 2 (Data Link)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Layer 3 (Network)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Layer 4 (Transport)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Hubs just repeat electrical signals; they don't understand frames or addresses.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "The Switch: The Intelligent Forwarder 🧠",
+            "content": "# Layer 2 Device (Data Link Layer)\n\nA **Switch** is a multi-port **bridge**. It learns the **MAC addresses** of connected devices and makes forwarding decisions based on the **Destination MAC** address.\n\n**Operation:**\n1.  Receives a **Frame**.\n2.  Reads the **Source MAC** address and records which port it came from in the **MAC Address Table (CAM Table)**.\n3.  Reads the **Destination MAC** address.\n4.  **Looks up** the Destination MAC in the CAM Table.\n    - **Known Unicast:** Forward frame **only** out the specific port where the destination resides.\n    - **Unknown Unicast:** Flood frame out all ports except the receiving port (similar to a hub, but only for the first packet).\n    - **Broadcast (FF:FF:FF:FF:FF:FF):** Flood frame out all ports.\n\n**Analogy:** A Switch is like a **smart mailroom clerk**. They look at the name on the envelope (MAC address) and put it in the correct employee's mailbox slot, instead of shouting the letter's contents to the whole office."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Switches: Breaking Up Collision Domains ✂️",
+            "content": "# Full-Duplex and Microsegmentation\n\n**Key Benefit 1: Microsegmentation**\n- Each switch port is its own **Collision Domain**.\n- Device A and Device B can transmit **simultaneously** without collisions.\n\n**Key Benefit 2: Full-Duplex**\n- Because there are no collisions, devices can send **and** receive at the exact same time.\n- A 1 Gbps Full-Duplex link effectively provides **2 Gbps** of aggregate throughput (1 Gbps up + 1 Gbps down).\n\n**Key Benefit 3: Security**\n- A switch only forwards traffic to the intended recipient (for known unicast).\n- **Sniffing is much harder.** An attacker plugged into a switch port will only see:\n  - Broadcast traffic (ARP requests).\n  - Traffic specifically destined for their MAC address.\n  - Traffic flooded due to unknown MAC addresses.\n\n**Attackers bypass this using:**\n- **MAC Flooding:** Overwhelm the CAM table, forcing the switch to fail-open (act like a hub).\n- **ARP Spoofing:** Trick devices into sending traffic to the attacker's MAC."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "Switch Forwarding 🔄",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "A switch receives a frame destined for a MAC address that is NOT in its CAM table. What does it do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Drop the frame.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Flood the frame out all ports except the receiving port.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Send an ARP request.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Ask the router for help.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "This is 'Unknown Unicast Flooding'. The switch hopes the destination will respond and populate the CAM table.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Managed vs. Unmanaged Switches ⚙️",
+            "content": "# Control and Visibility\n\n**Unmanaged Switch:**\n- Plug and play. No configuration interface.\n- Fixed settings (usually auto-negotiation).\n- **Security Risk:** No way to monitor traffic, enforce port security, or create VLANs. **Not suitable for business networks.**\n\n**Managed Switch:**\n- Has an IP address and a management interface (Web, CLI, SNMP).\n- Supports **VLANs** (segmenting broadcast domains).\n- Supports **Port Security** (limit MAC addresses allowed on a port, prevent MAC flooding).\n- Supports **Spanning Tree Protocol (STP)** (prevents Layer 2 loops).\n- Supports **Port Mirroring (SPAN)** (copy traffic from one port to another for analysis by an IDS).\n\n**Cybersecurity Essential:** Every switch in an enterprise environment should be **managed** and hardened (disable unused ports, set strong admin passwords)."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "warning",
+            "title": "VLANs and Broadcast Domains 📢",
+            "content": "## Switches Do NOT Break Broadcasts\n\nBy default, a switch is a **single Broadcast Domain**. A broadcast sent by Device A will be flooded out **all ports** on the switch.\n\nTo break up broadcast domains at Layer 2, we use **VLANs**. Each VLAN is a separate logical switch. A broadcast in VLAN 10 will **not** be forwarded to ports in VLAN 20.\n\nTo route traffic *between* VLANs, you need a **Router** or a **Layer 3 Switch**."
+        }
+    ]
+}

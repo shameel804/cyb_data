@@ -1,0 +1,105 @@
+{
+    "id": "l3",
+    "chapterId": "ch_4",
+    "title": "UDP: Fire and Forget",
+    "description": "When speed trumps reliability. UDP header, checksums, and real-world use cases.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Transport Layer",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "UDP: The Minimalist's Protocol 🪶",
+            "content": "# User Datagram Protocol\n\nUDP is the **anti-TCP**. It does almost **nothing** except provide Ports and a Checksum.\n\n**UDP Header (8 bytes total):**\n| Field | Size (bits) | Purpose |\n|-------|-------------|---------|\n| Source Port | 16 | Sender's port (optional, can be 0) |\n| Destination Port | 16 | Receiver's port |\n| Length | 16 | Length of UDP header + data |\n| Checksum | 16 | Error detection (optional in IPv4, mandatory in IPv6) |\n\n**That's it.**\n- No handshake.\n- No sequence numbers.\n- No acknowledgments.\n- No flow control.\n- No retransmission.\n\n**Analogy:** UDP is like sending a **text message (SMS)**. You hit send and hope it arrives. You don't get a 'Read Receipt' unless the application itself builds one on top of UDP."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "UDP Header Size 📏",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "How many bytes is a standard UDP header (without options)?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "4 bytes",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "8 bytes",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "20 bytes (like TCP)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "16 bytes",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. UDP is lightweight: 8 bytes (2 for Src Port, 2 for Dst Port, 2 for Length, 2 for Checksum).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Why Use UDP? The Speed Argument 🏎️",
+            "content": "# When 'Good Enough' is Better than 'Perfect'\n\nTCP adds **overhead**: Handshake latency, ACK packets, retransmission delays, head-of-line blocking.\n\n**UDP shines when:**\n1.  **Real-time is critical:** A delayed packet in a voice call is a **dropped packet**. You'd rather have a 0.1s silence than a 2-second pause waiting for a retransmission.\n2.  **Multicast/Broadcast:** Sending one packet to **thousands** of receivers. TCP can't do this; it requires a 1:1 connection. UDP can just blast it out.\n3.  **Simple Query/Response:** DNS. If you don't get a reply in 2 seconds, just **ask again**. The overhead of a TCP handshake for a 50-byte query is overkill.\n4.  **Tunneling:** VPNs encapsulate IP packets. If you use TCP inside TCP, retransmissions cascade and cause massive performance degradation. UDP avoids this 'TCP Meltdown'.\n\n**Common UDP Applications:**\n- DNS (Port 53)\n- DHCP (Port 67/68)\n- VoIP / Video Conferencing (SIP/RTP)\n- Online Gaming (Position updates)\n- Streaming (QUIC protocol - HTTP/3 uses UDP!)"
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "UDP and Reliability: Building on Top 🧱",
+            "content": "# Application-Layer Reliability\n\nJust because UDP doesn't provide reliability doesn't mean the application can't. **QUIC** (Quick UDP Internet Connections) is a modern protocol designed by Google that runs **on top of UDP** and provides:\n- Encryption (TLS 1.3 integrated)\n- Multiplexing (multiple streams without head-of-line blocking)\n- Congestion Control\n- Reliability (ACKs for lost packets)\n\n**Why not just use TCP?** Because QUIC is implemented in **user space** (the browser), not the OS kernel. This allows Google to update and improve the protocol much faster than waiting for Windows/Linux kernel updates.\n\n**HTTP/3** is HTTP running over QUIC instead of TCP. This is the future of web browsing."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "quiz",
+            "title": "QUIC Check 🚄",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "What transport layer protocol does HTTP/3 use?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "TCP",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "UDP",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "SCTP",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Raw IP",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "HTTP/3 uses QUIC, which is built on top of UDP.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_6",
+            "type": "warning",
+            "title": "UDP Amplification Attacks 💣",
+            "content": "## Cybersecurity: The Dark Side of UDP\n\nBecause UDP is **connectionless** and **spoofable**, it's the weapon of choice for **Reflection/Amplification DDoS attacks**.\n\n**How it works:**\n1.  Attacker spoofs the **Victim's IP address** as the source.\n2.  Attacker sends a small UDP query (e.g., 50 bytes) to an open **DNS Resolver**, **NTP Server**, or **Memcached Server**.\n3.  The server replies with a **massive response** (e.g., 4,000 bytes) to the **Victim's IP**.\n4.  **Amplification Factor:** 80x or more!\n\n**Result:** The Victim's link is saturated with unsolicited UDP traffic from thousands of innocent servers. The victim cannot even receive the reply because the source is spoofed.\n\n**Mitigation:** Ingress filtering (prevent spoofed packets from leaving your network)."
+        }
+    ]
+}

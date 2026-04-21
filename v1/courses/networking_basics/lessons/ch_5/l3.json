@@ -1,0 +1,113 @@
+{
+    "id": "l3",
+    "chapterId": "ch_5",
+    "title": "Routers and Layer 3 Switches",
+    "description": "How routers connect different networks and make internetworking possible.",
+    "xpReward": 35,
+    "estimatedMinutes": 15,
+    "section": "LAN/WAN Devices",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Router: The Internet's Traffic Director 🚦",
+            "content": "# Layer 3 Device (Network Layer)\n\nA **Router** connects **different IP networks**. Its primary job is to examine the **Destination IP address** of a packet and determine the **best path** to forward it.\n\n**Analogy:** A Router is like a **Postal Sorting Facility**.\n- Switches sort mail within a **single zip code** (Local Network).\n- Routers sort mail between **different zip codes** (Internetworking).\n\n**Router Functions:**\n1.  **Path Selection:** Uses a **Routing Table** and **Routing Protocols** (OSPF, BGP) to know where to send packets.\n2.  **Packet Forwarding:** De-encapsulates the Layer 2 Frame, examines the Layer 3 IP Packet, consults the routing table, re-encapsulates with a new Layer 2 header, and sends it out the correct interface.\n3.  **NAT/PAT:** Translates private IPs to public IPs.\n4.  **Access Control:** Filters traffic using **Access Control Lists (ACLs)**."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Router Layer 🎚️",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "A router makes forwarding decisions based on which address?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "MAC Address",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "IP Address",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Port Number",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Process ID",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Routers operate at Layer 3 and use the Destination IP address.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "The Routing Table: The GPS of the Network 🗺️",
+            "content": "# How Routers Know Where to Go\n\nA router maintains a **Routing Table** with entries like:\n\n```text\nDestination Network   | Subnet Mask     | Next Hop        | Interface\n192.168.1.0          | 255.255.255.0   | Directly Connected | Gi0/1\n10.0.0.0             | 255.0.0.0       | 192.168.1.254    | Gi0/0\n0.0.0.0 (Default)    | 0.0.0.0         | 203.0.113.1      | Gi0/2\n```\n\n**Where do routes come from?**\n1.  **Directly Connected:** Networks on the router's own interfaces.\n2.  **Static Routes:** Manually configured by an admin. `ip route 10.0.0.0 255.0.0.0 192.168.1.254`\n3.  **Dynamic Routing Protocols:** Automatically learned from neighboring routers.\n    - **IGP (Interior Gateway Protocol):** Inside an organization (OSPF, EIGRP).\n    - **EGP (Exterior Gateway Protocol):** Between organizations on the Internet (BGP).\n\n**Longest Prefix Match:** If multiple routes match a destination IP, the router chooses the one with the **longest subnet mask** (most specific)."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Layer 3 Switch: The Multilayer Hybrid 🧬",
+            "content": "# Routing at Switch Speeds\n\nA **Layer 3 Switch** (or **Multilayer Switch**) is a switch that can also perform **IP routing** in **hardware** (ASICs).\n\n**Traditional Setup (Router-on-a-Stick):**\n- VLAN 10 -> Switch -> Router (processes packet in software) -> Switch -> VLAN 20.\n- **Slow.** Router CPU is a bottleneck.\n\n**Layer 3 Switch Setup:**\n- VLAN 10 -> Switch ASIC (routes packet in hardware at wire speed) -> VLAN 20.\n- **Fast.** No separate router needed for inter-VLAN routing.\n\n**Analogy:** A Layer 3 Switch is like a **Hybrid Car**. It acts like a switch (Layer 2) most of the time, but can switch to routing mode (Layer 3) when packets need to cross subnets.\n\n**Use Case:** Core/Distribution layer in campus networks. Fast internal routing.\n**Limitations:** Usually does **not** support NAT, advanced firewall features, or WAN interfaces. That's still the domain of traditional Routers and Firewalls."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "quiz",
+            "title": "Routing Table Lookup 🔍",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "A packet arrives for IP 10.1.1.5. The routing table has a route for 10.0.0.0/8 and a route for 10.1.1.0/24. Which route is chosen?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "10.0.0.0/8",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "10.1.1.0/24",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Default Route",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Neither, packet dropped",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Routers use Longest Prefix Match. /24 is more specific than /8.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Default Gateway and Gateway of Last Resort 🚪",
+            "content": "# The Exit to the Internet\n\n- **Default Gateway (Host Perspective):** The IP address of the local router interface that a host uses to reach other networks. Configured via DHCP or manually.\n\n- **Default Route / Gateway of Last Resort (Router Perspective):** `0.0.0.0/0`. The route used when no other route matches the destination IP.\n\n**Analogy:** The Default Gateway is the **Front Door** of your house (leads to the street). The Default Route is the **'To the Highway'** sign for cars leaving a neighborhood.\n\n**Cybersecurity Note:** If an attacker compromises the **Default Gateway** (via ARP poisoning or DHCP spoofing), they become the **Man-in-the-Middle** for **all internet traffic** leaving the subnet."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "code",
+            "title": "Traceroute and Routing 🛤️",
+            "content": "You can see the routers along the path to a destination using `traceroute` (or `tracert` on Windows).\n\n```bash\ntraceroute 8.8.8.8\n```\n\nOutput:\n```text\n 1  _gateway (192.168.1.1)  2.123 ms\n 2  10.10.10.1  10.456 ms\n 3  172.16.0.1  15.789 ms\n ...\n```\n\nEach line is a **Router (Hop)**. The times show latency. A `* * *` indicates a router that is configured not to respond to ICMP (common with firewalls).",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        }
+    ]
+}

@@ -1,0 +1,388 @@
+{
+    "id": "quiz_ch_4",
+    "chapterId": "ch_4",
+    "title": "Chapter 4 Quiz: The TCP/IP Protocol Suite",
+    "description": "Test your knowledge of TCP/UDP headers, handshakes, ICMP, ARP, and essential ports!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "How many layers are in the TCP/IP model?",
+            "options": [
+                "7",
+                "5",
+                "4",
+                "3"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The TCP/IP model has 4 layers: Application, Transport, Internet, and Network Access."
+        },
+        {
+            "id": "q2",
+            "type": "fill_blank",
+            "question": "In the TCP/IP model, which layer corresponds to the OSI Network layer?",
+            "options": [
+                "Application",
+                "Transport",
+                "Internet",
+                "Network Access"
+            ],
+            "correctAnswer": "Internet",
+            "explanation": "The Internet layer handles IP addressing and routing, similar to OSI Layer 3."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "What is the size of a standard TCP header (without options)?",
+            "options": [
+                "8 bytes",
+                "20 bytes",
+                "32 bytes",
+                "64 bytes"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A standard TCP header is 20 bytes (5 32-bit words). Options can increase it up to 60 bytes."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which TCP flag initiates a connection?",
+            "options": [
+                "ACK",
+                "SYN",
+                "FIN",
+                "RST"
+            ],
+            "correctAnswer": 1,
+            "explanation": "SYN (Synchronize) flag is used in the 3-way handshake to start a connection."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What is the correct order of the TCP 3-Way Handshake?",
+            "options": [
+                "ACK, SYN-ACK, SYN",
+                "SYN, ACK, FIN",
+                "SYN, SYN-ACK, ACK",
+                "HELLO, ACK, DATA"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Client sends SYN, Server replies with SYN-ACK, Client sends ACK."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which field in the TCP header is used for flow control?",
+            "options": [
+                "Sequence Number",
+                "Acknowledgment Number",
+                "Window Size",
+                "Checksum"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The Window Size field advertises how much data the receiver can accept."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What is the size of a UDP header?",
+            "options": [
+                "8 bytes",
+                "20 bytes",
+                "12 bytes",
+                "16 bytes"
+            ],
+            "correctAnswer": 0,
+            "explanation": "UDP header is only 8 bytes: Source Port, Destination Port, Length, Checksum."
+        },
+        {
+            "id": "q8",
+            "type": "true_false",
+            "question": "UDP provides reliable, in-order delivery of data.",
+            "correctAnswer": false,
+            "explanation": "False. UDP is connectionless and unreliable; it does not guarantee delivery or order."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Which of the following applications is MOST likely to use UDP?",
+            "options": [
+                "Web browsing (HTTP)",
+                "Email (SMTP)",
+                "Live Voice Call (VoIP)",
+                "File Transfer (FTP)"
+            ],
+            "correctAnswer": 2,
+            "explanation": "VoIP prioritizes low latency over reliability; occasional packet loss is acceptable."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What ICMP Type/Code is used for an Echo Request (ping)?",
+            "options": [
+                "Type 0, Code 0",
+                "Type 8, Code 0",
+                "Type 3, Code 1",
+                "Type 11, Code 0"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Echo Request is Type 8; Echo Reply is Type 0."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What protocol is used to resolve an IP address to a MAC address on a local network?",
+            "options": [
+                "DNS",
+                "DHCP",
+                "ARP",
+                "ICMP"
+            ],
+            "correctAnswer": 2,
+            "explanation": "ARP (Address Resolution Protocol) maps IP addresses to MAC addresses."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is the destination MAC address of an ARP Request?",
+            "options": [
+                "The target host's MAC",
+                "FF:FF:FF:FF:FF:FF",
+                "The default gateway's MAC",
+                "00:00:00:00:00:00"
+            ],
+            "correctAnswer": 1,
+            "explanation": "ARP Requests are broadcast to all hosts using the broadcast MAC address."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What is the primary purpose of the 'TTL' field in an IP packet?",
+            "options": [
+                "To encrypt the packet",
+                "To prevent routing loops",
+                "To identify the application",
+                "To specify the window size"
+            ],
+            "correctAnswer": 1,
+            "explanation": "TTL (Time To Live) limits the number of hops a packet can traverse, preventing infinite loops."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Which TCP flag is used to abruptly terminate a connection?",
+            "options": [
+                "FIN",
+                "RST",
+                "PSH",
+                "URG"
+            ],
+            "correctAnswer": 1,
+            "explanation": "RST (Reset) flag immediately aborts the connection without the 4-way handshake."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What is the '5-Tuple' that uniquely identifies a connection?",
+            "options": [
+                "Src IP, Dst IP, Src MAC, Dst MAC, Protocol",
+                "Src IP, Dst IP, Src Port, Dst Port, Protocol",
+                "Src Port, Dst Port, Sequence, Ack, Window",
+                "Src MAC, Dst MAC, IP, Port, TTL"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The 5-tuple is: Source IP, Source Port, Destination IP, Destination Port, Protocol."
+        },
+        {
+            "id": "q16",
+            "type": "fill_blank",
+            "question": "Ports 0-1023 are known as ______ ports.",
+            "options": [
+                "Ephemeral",
+                "Registered",
+                "Well-Known",
+                "Dynamic"
+            ],
+            "correctAnswer": "Well-Known",
+            "explanation": "Ports 0-1023 are assigned to well-known system services by IANA."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which port is used for secure shell (SSH) remote administration?",
+            "options": [
+                "21",
+                "22",
+                "23",
+                "80"
+            ],
+            "correctAnswer": 1,
+            "explanation": "SSH uses TCP port 22."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which protocol is HTTP/3 built upon?",
+            "options": [
+                "TCP",
+                "UDP (QUIC)",
+                "SCTP",
+                "IPsec"
+            ],
+            "correctAnswer": 1,
+            "explanation": "HTTP/3 uses QUIC, which runs over UDP."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is an ARP Poisoning attack?",
+            "options": [
+                "Flooding a switch with MAC addresses",
+                "Sending false ARP replies to associate the attacker's MAC with a legitimate IP",
+                "Sending ICMP redirects",
+                "Overflowing the IP buffer"
+            ],
+            "correctAnswer": 1,
+            "explanation": "ARP Poisoning (spoofing) redirects traffic by falsifying IP-to-MAC mappings."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which TCP state occurs after a client sends the final ACK in connection termination?",
+            "options": [
+                "CLOSED",
+                "FIN_WAIT_1",
+                "TIME_WAIT",
+                "LAST_ACK"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The client enters TIME_WAIT to ensure the server received the final ACK."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "What is a UDP Amplification Attack?",
+            "options": [
+                "Sending large UDP packets directly to the victim",
+                "Spoofing the victim's IP to send small requests that generate large responses from servers",
+                "Flooding a UDP port with SYN packets",
+                "Intercepting UDP packets in transit"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Amplification attacks leverage spoofed requests to cause servers to flood the victim with large replies."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "What does the TCP Window Size value of '0' indicate?",
+            "options": [
+                "The sender should increase speed",
+                "The receiver's buffer is full; stop sending",
+                "The connection should be reset",
+                "The packet is corrupted"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A window of 0 pauses transmission until the receiver advertises a non-zero window."
+        },
+        {
+            "id": "q23",
+            "type": "true_false",
+            "question": "ICMP messages are encapsulated directly within Ethernet frames without an IP header.",
+            "correctAnswer": false,
+            "explanation": "False. ICMP is encapsulated within an IP packet (it's a Layer 3 protocol)."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "Which port is associated with DNS?",
+            "options": [
+                "53",
+                "80",
+                "443",
+                "25"
+            ],
+            "correctAnswer": 0,
+            "explanation": "DNS primarily uses UDP port 53 (and TCP 53 for large responses)."
+        },
+        {
+            "id": "q25",
+            "type": "fill_blank",
+            "question": "The ______ flag in TCP is used to acknowledge receipt of data.",
+            "options": [
+                "SYN",
+                "ACK",
+                "FIN",
+                "RST"
+            ],
+            "correctAnswer": "ACK",
+            "explanation": "The ACK flag confirms receipt of data and indicates the acknowledgment number field is valid."
+        },
+        {
+            "id": "q26",
+            "type": "mcq",
+            "question": "What is the main difference between TCP and UDP?",
+            "options": [
+                "TCP is faster; UDP is slower",
+                "TCP is connection-oriented and reliable; UDP is connectionless and unreliable",
+                "TCP uses IP addresses; UDP uses MAC addresses",
+                "TCP uses ports; UDP does not use ports"
+            ],
+            "correctAnswer": 1,
+            "explanation": "TCP provides reliability, ordering, and flow control; UDP does not."
+        },
+        {
+            "id": "q27",
+            "type": "mcq",
+            "question": "What does the 'traceroute' utility primarily rely on?",
+            "options": [
+                "ARP requests",
+                "Manipulating the TTL field and interpreting ICMP Time Exceeded messages",
+                "Sending ICMP Echo Requests with increasing sequence numbers",
+                "Querying DNS for router names"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Traceroute sends packets with incrementing TTL values to elicit ICMP Time Exceeded from intermediate routers."
+        },
+        {
+            "id": "q28",
+            "type": "mcq",
+            "question": "Which of these is a valid ephemeral port range as defined by IANA?",
+            "options": [
+                "0-1023",
+                "1024-49151",
+                "49152-65535",
+                "0-65535"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Ephemeral (dynamic) ports are 49152-65535, used for client-side source ports."
+        },
+        {
+            "id": "q29",
+            "type": "mcq",
+            "question": "An attacker sends a SYN packet with a spoofed source IP. The server responds with a SYN-ACK to the victim. What attack is this?",
+            "options": [
+                "SYN Flood",
+                "Reflected SYN Attack (or SYN Spoofing)",
+                "Ping of Death",
+                "ARP Spoofing"
+            ],
+            "correctAnswer": 1,
+            "explanation": "This is a reflected SYN attack, where the attacker uses the server to send unwanted SYN-ACK packets to the victim."
+        },
+        {
+            "id": "q30",
+            "type": "mcq",
+            "question": "What is the function of the TCP Checksum?",
+            "options": [
+                "Encrypt the data",
+                "Detect errors in the TCP segment",
+                "Authenticate the sender",
+                "Compress the header"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The checksum provides basic error detection for the header and data."
+        }
+    ]
+}

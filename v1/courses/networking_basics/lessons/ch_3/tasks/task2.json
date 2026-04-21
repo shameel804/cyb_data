@@ -1,0 +1,18 @@
+{
+    "id": "task2",
+    "chapterId": "ch_3",
+    "title": "VLSM Campus Design",
+    "description": "Design an efficient addressing scheme for a multi-site campus using VLSM.",
+    "estimatedMinutes": 20,
+    "problemStatement": "## Scenario: University Campus Network\n\nYou have been allocated the private address block `10.10.0.0/16`. Design an IP addressing scheme using **VLSM** for the following requirements.\n\n| Location | Required Hosts |\n|----------|----------------|\n| Main Building (LAN A) | 500 |\n| Library (LAN B) | 200 |\n| Dormitory (LAN C) | 100 |\n| Admin Office (LAN D) | 50 |\n| WAN Link Router1-Router2 | 2 |\n| WAN Link Router2-Router3 | 2 |\n\n## Your Task\n\nProvide the **Network Address** and **Subnet Mask (CIDR)** for each of the 6 segments. \n\n**Important:** Allocate them in the correct **VLSM order** (Largest to Smallest) to maximize address space conservation. List them in the order you would assign them.\n\n1. Main Building\n2. Library\n3. Dormitory\n4. Admin Office\n5. WAN Link 1\n6. WAN Link 2",
+    "hints": [
+        "For 500 hosts: 2^h - 2 >= 500. h=9 (512 hosts). /23.",
+        "For 200 hosts: 2^h - 2 >= 200. h=8 (256 hosts). /24.",
+        "For 100 hosts: 2^h - 2 >= 100. h=7 (128 hosts). /25.",
+        "For 50 hosts: 2^h - 2 >= 50. h=6 (64 hosts). /26.",
+        "WAN links: /30.",
+        "Start allocating from 10.10.0.0. Be careful with boundaries."
+    ],
+    "expectedOutput": "1. Main Building: 10.10.0.0/23 (Usable .0.1 - .1.254)\n2. Library: 10.10.2.0/24 (Usable .2.1 - .2.254)\n3. Dormitory: 10.10.3.0/25 (Usable .3.1 - .3.126)\n4. Admin Office: 10.10.3.128/26 (Usable .3.129 - .3.190)\n5. WAN Link 1: 10.10.3.192/30 (Usable .3.193 - .3.194)\n6. WAN Link 2: 10.10.3.196/30 (Usable .3.197 - .3.198)",
+    "solutionCode": "// VLSM Allocation Logic\n// 1. /23 (512 hosts): 10.10.0.0 - 10.10.1.255 (Next free: 10.10.2.0)\n// 2. /24 (256 hosts): 10.10.2.0 - 10.10.2.255 (Next free: 10.10.3.0)\n// 3. /25 (128 hosts): 10.10.3.0 - 10.10.3.127 (Next free: 10.10.3.128)\n// 4. /26 (64 hosts): 10.10.3.128 - 10.10.3.191 (Next free: 10.10.3.192)\n// 5. /30 (4 hosts): 10.10.3.192 - 10.10.3.195 (Next free: 10.10.3.196)\n// 6. /30 (4 hosts): 10.10.3.196 - 10.10.3.199"
+}

@@ -1,0 +1,105 @@
+{
+    "id": "l3",
+    "chapterId": "ch_3",
+    "title": "Subnetting: The Great Divide",
+    "description": "Borrow bits to create smaller, more secure network segments.",
+    "xpReward": 40,
+    "estimatedMinutes": 15,
+    "section": "Subnetting",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Borrowing Bits 🏦",
+            "content": "# The Core Concept\n\nSubnetting is the act of **stealing bits from the Host portion** of the address to create **more Network bits**.\n\n**Analogy: Building a Duplex on a Single-Family Lot**\n- You own a huge piece of land (`/16` network). \n- You want to build **4 separate houses** (subnets) instead of one mansion.\n- You need to add **fences** (more Network bits) to separate the land.\n- You do this by **extending the subnet mask**.\n\n**The Rule:**\n- Borrowed Bits = `s`\n- Number of **Subnets Created** = `2^s`\n- Remaining Host Bits = `h - s`\n- **New Prefix Length** = Original Prefix + `s`"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Example: Splitting a /24",
+            "content": "**Scenario:** We have `192.168.1.0/24` (254 hosts). We want **4 smaller subnets**.\n\n**Step 1: How many bits to borrow?**\nWe need `2^s >= 4`. So `s = 2` (2 bits borrowed).\n\n**Step 2: New Mask?**\nOriginal Mask: `/24` (255.255.255.0)\nNew Mask: `/26` (24 + 2).\nIn dotted decimal: `11111111.11111111.11111111.11000000` = **255.255.255.192**\n\n**Step 3: What are the Subnet Addresses?**\nThis is where the 'Magic Number' comes in."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Borrowing Bits 🎲",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "You have a /24 network. You borrow 3 bits for subnetting. How many subnets do you create?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "3",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "6",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "8",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "16",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "2^3 = 8 subnets. Correct!",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "The Magic Number Method ✨",
+            "content": "# Finding Subnet Boundaries Fast\n\nForget binary conversion on the fly. Use the **Magic Number**.\n\n**Step 1: Identify the 'Interesting Octet'**\n- Look at the Subnet Mask in decimal.\n- The Interesting Octet is the one that is **NOT 255 or 0**.\n- Example: Mask `255.255.255.192` -> Interesting Octet is the **4th** (192).\n\n**Step 2: Calculate the Magic Number**\n- `Magic Number = 256 - Interesting_Octet_Value`\n- Example: `256 - 192 = 64`\n\n**Step 3: Count by the Magic Number**\n- Start at **0** and add the Magic Number.\n- 0, 64, 128, 192.\n\n**These are your Subnet IDs (Network Addresses)!**\n- Subnet 1: `192.168.1.0/26`\n- Subnet 2: `192.168.1.64/26`\n- Subnet 3: `192.168.1.128/26`\n- Subnet 4: `192.168.1.192/26`"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Finding Broadcast and Range 📡",
+            "content": "# Completing the Subnet Picture\n\nOnce you have the Subnet IDs (using Magic Number), everything else falls into place.\n\n**For Subnet `192.168.1.64/26`:**\n\n1.  **Network Address:** `192.168.1.64` (This is the ID).\n2.  **First Usable IP:** Network Address + 1 = `192.168.1.65`\n3.  **Broadcast Address:** (Next Subnet ID) - 1.\n    - Next Subnet ID is `192.168.1.128`.\n    - `128 - 1 = 127`. \n    - Broadcast = `192.168.1.127`\n4.  **Last Usable IP:** Broadcast Address - 1 = `192.168.1.126`\n\n**Range:** `192.168.1.65` **to** `192.168.1.126`\n\n**Total Hosts:** `126 - 65 + 1 = 62` (Matches our `2^6 - 2` formula!)"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Find the Broadcast 📢",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "Given network 10.0.0.0/27, what is the Broadcast address of the FIRST subnet? (Magic Number hint: /27 mask = 255.255.255.224. Interesting Octet 224. Magic Num = 32).",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "10.0.0.31",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "10.0.0.32",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "10.0.0.63",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "10.0.0.255",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Subnet IDs: 0, 32, 64... First subnet is 0, next is 32. Broadcast is 32 - 1 = 31.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

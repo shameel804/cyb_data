@@ -1,0 +1,17 @@
+{
+    "id": "task1",
+    "chapterId": "ch_9",
+    "title": "Extended ACL Syntax Practice",
+    "description": "Write Cisco Extended ACL rules to meet specific traffic filtering requirements.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario: Securing the Branch Router\n\nYou are configuring ACL 101 on the edge router of a branch office. The internal network is `10.10.10.0/24`. The router's outside interface connects to the internet.\n\n**Requirements:**\n1.  Allow all internal hosts to browse the web (HTTP and HTTPS) to any destination on the internet.\n2.  Allow the specific internal host `10.10.10.50` (the Admin PC) to **SSH (Port 22)** to a remote management server at `203.0.113.100`.\n3.  Block **all** other traffic originating from the internal network to the internet (Egress Filtering).\n4.  Block **all** inbound ICMP Echo Requests (pings) from the internet.\n\n**Task:**\nWrite the **Cisco IOS Extended ACL commands** (access-list 101 ...) to implement these requirements. \n\n**Assume:**\n- Apply ACL outbound on the outside interface (this is a common practice, but for this task, just write the ACL statements).\n- Order the rules correctly (specific before general).\n- Remember the **Implicit Deny** at the end.\n\n**Provide the full ACL configuration lines.**",
+    "hints": [
+        "Use `tcp` protocol for web and SSH.",
+        "Use `icmp` protocol for ping blocking.",
+        "Source internal network is `10.10.10.0 0.0.0.255`.",
+        "Keyword `any` can be used for internet destinations.",
+        "Rule for Admin PC SSH must come before any broader deny."
+    ],
+    "expectedOutput": "```\naccess-list 101 permit tcp host 10.10.10.50 host 203.0.113.100 eq 22\naccess-list 101 permit tcp 10.10.10.0 0.0.0.255 any eq 80\naccess-list 101 permit tcp 10.10.10.0 0.0.0.255 any eq 443\naccess-list 101 deny icmp any any echo\n! Implicit deny ip any any applies automatically\n```\n*Note: The order ensures the specific SSH rule is matched before the general web rules.*",
+    "solutionCode": "// ACL commands as shown in expected output."
+}

@@ -1,0 +1,111 @@
+{
+    "id": "l2",
+    "chapterId": "ch_10",
+    "title": "VPN Fundamentals and Types",
+    "description": "Remote Access vs Site-to-Site VPNs, SSL VPN vs IPsec VPN, and use cases for each.",
+    "xpReward": 35,
+    "estimatedMinutes": 15,
+    "section": "VPN Essentials",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "What is a VPN? 🕵️",
+            "content": "# Virtual Private Network\n\nA **VPN** extends a **private network** across a **public network** (the Internet). It enables users to send and receive data as if their devices were directly connected to the private network.\n\n**Three Core Functions of a VPN:**\n1.  **Confidentiality (Encryption):** Data is scrambled so eavesdroppers see gibberish.\n2.  **Authentication:** Verifies the identity of the connecting user and the VPN server.\n3.  **Integrity:** Ensures data hasn't been tampered with in transit.\n\n**Analogy: A Secret Tunnel**\n- The Internet is a dangerous, crowded highway where bandits can see your car.\n- A VPN is a **private, opaque tunnel** that runs *under* that highway. You enter the tunnel at your house and exit directly inside your office building. Outsiders can't see you, and you are safe from the highway bandits.\n\n**Common VPN Use Cases:**\n- **Remote Work:** Securely access corporate file shares, applications, and intranet.\n- **Privacy:** Hide browsing activity from ISP, government, or coffee shop Wi-Fi snoops.\n- **Geo-Spoofing:** Appear to be in a different country to access region-locked content.\n- **Bypass Censorship:** Circumvent government firewalls."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "VPN Purpose 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What is the primary function of a VPN tunnel?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To increase internet speed",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To create a secure, encrypted connection over an untrusted network",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To assign IP addresses",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To filter spam emails",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "VPNs provide confidentiality, integrity, and authentication over public networks.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Remote Access VPN 🏠➡️🏢",
+            "content": "# Connecting Individuals to the Corporate Network\n\nA **Remote Access VPN** connects **individual users** (laptops, phones) to a corporate network.\n\n**How it Works:**\n1.  User installs a **VPN Client** (software) on their device.\n2.  User authenticates to the **VPN Gateway / Concentrator** at the office (using credentials + MFA).\n3.  A secure **tunnel** is established between the device and the office network.\n4.  The device receives a **virtual IP address** on the internal network.\n5.  All traffic destined for the office network flows through the tunnel.\n\n**Two Main Flavors of Remote Access VPN:**\n\n| Feature | **IPsec VPN (IKEv2)** | **SSL VPN (TLS)** |\n|---------|----------------------|-------------------|\n| **Client** | Thick Client (Cisco AnyConnect, Windows Native) | Thin Client (Browser plugin) or Clientless (Web Portal) |\n| **Port** | UDP 500/4500, ESP | **TCP 443** |\n| **Firewall Friendly** | Moderate (requires NAT-T) | **Excellent** (Looks like HTTPS) |\n| **Performance** | Slightly faster (less overhead) | Slightly more overhead |\n| **Control** | Full network access | Granular per-application access |\n\n**Which to Choose?**\n- **IPsec:** For managed corporate devices that need always-on, full network access.\n- **SSL VPN:** For BYOD, contractors, or users connecting from restrictive networks (hotels, airports) where only TCP 443 is allowed outbound."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "VPN Type Selection 🎛️",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "Which VPN type is easiest to use from a hotel room where only web browsing ports (80/443) are allowed?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "IPsec VPN",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "SSL VPN",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "L2TP/IPsec",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "PPTP",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "SSL VPN uses TCP 443, the same port as HTTPS, so it's rarely blocked by firewalls.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Site-to-Site VPN 🏢🔗🏢",
+            "content": "# Connecting Entire Networks Together\n\nA **Site-to-Site VPN** connects **two entire networks** (e.g., Headquarters LAN and Branch Office LAN) over the Internet, making them appear as one seamless private network.\n\n**How it Works:**\n- Both sites have a **VPN Gateway** (firewall or router) that maintains a **permanent, always-on tunnel**.\n- Computers at Site A can reach computers at Site B using their **private IP addresses**.\n- No client software is needed on individual workstations; the gateways handle everything transparently.\n\n**Analogy:** Building a **private bridge** between two office buildings that are separated by a public street. Employees just walk across the bridge; they don't need a special key card to use the bridge (the gateways do the work).\n\n**Common Technologies:**\n- **IPsec Tunnel Mode** (Industry Standard).\n- **GRE over IPsec** (Generic Routing Encapsulation – allows routing protocols like OSPF to run over the tunnel).\n- **DMVPN (Dynamic Multipoint VPN):** Cisco technology for building scalable hub-and-spoke VPNs.\n- **SD-WAN:** Modern evolution, using multiple links and intelligent path selection.\n\n**Use Case:** Connecting a main office to a remote warehouse. The warehouse staff can access the central inventory database as if they were in the same building."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Split Tunneling vs. Full Tunnel 🛣️",
+            "content": "# Deciding What Goes Through the VPN\n\n**Full Tunnel (Default Route):**\n- **All** internet traffic from the client is routed through the VPN tunnel and exits through the corporate firewall.\n- **Pros:** Corporate security policies (web filtering, IPS) are enforced on **all** user traffic. Protects against malware on the local network.\n- **Cons:** **Hairpinning.** All traffic goes to the office and back out, increasing latency and consuming corporate bandwidth. (e.g., You're streaming Netflix at home; it goes through the office VPN, causing lag).\n\n**Split Tunneling:**\n- Only traffic destined for **corporate subnets** goes through the VPN tunnel.\n- General internet traffic (Netflix, Google) goes directly out the user's local internet connection.\n- **Pros:** **Reduces bandwidth** on the corporate VPN concentrator. Improves user experience for non-work traffic.\n- **Cons:** **Security Risk.** The user's laptop is exposed to the local network (coffee shop Wi-Fi) for internet traffic. Malware on the local network could attack the laptop, and then pivot into the VPN tunnel.\n\n**Best Practice:**\n- Use **Full Tunnel** for high-security environments or unmanaged networks.\n- Use **Split Tunnel** with **Endpoint Protection** (host firewall, EDR) and **DNS Filtering** to mitigate the risks."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "warning",
+            "title": "The VPN 'Kill Switch' ⚡",
+            "content": "## Preventing Data Leaks\n\nWhat happens if your VPN connection **drops** unexpectedly?\n\n- Without a Kill Switch, your device will **fail open** and start sending traffic directly over the insecure internet connection, potentially exposing your real IP and data.\n\n- **VPN Kill Switch (Network Lock):** A feature that **blocks all internet traffic** if the VPN tunnel goes down. It only restores connectivity when the VPN is re-established.\n\n**Essential for Privacy:** If you are using a VPN for anonymity or security, **always enable the Kill Switch.**"
+        }
+    ]
+}

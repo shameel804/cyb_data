@@ -1,0 +1,117 @@
+{
+    "id": "l4",
+    "chapterId": "ch_6",
+    "title": "DNS Security: Poison, Spoof, Defend",
+    "description": "Explore cache poisoning, DDoS amplification, DNSSEC, and modern encrypted DNS.",
+    "xpReward": 35,
+    "estimatedMinutes": 15,
+    "section": "Security",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Why Attack DNS? 🎯",
+            "content": "# The Achilles' Heel of the Internet\n\nDNS was designed in 1983 with **zero security in mind**. It runs primarily over **UDP** (connectionless), has **no built-in authentication**, and responses are **not encrypted**.\n\n**Attacking DNS gives an attacker the ability to:**\n1.  **Redirect Traffic:** Send users to fake bank websites to steal passwords (**Pharming**).\n2.  **Intercept Email:** Redirect email to a server they control.\n3.  **Cause Mass Outages:** Take down a DNS provider and **millions of websites become unreachable**.\n4.  **Amplify DDoS Attacks:** Use DNS servers as weapons to flood victims.\n\n**Analogy:** Attacking DNS is like **changing all the road signs in a city**. You don't have to blow up the bank; you just point the highway exit sign toward a fake bank you built in a warehouse."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "DNS Cache Poisoning ☠️",
+            "content": "# The Classic Attack\n\n**Cache Poisoning** tricks a DNS resolver into storing a **false IP address** for a legitimate domain name.\n\n**The Old (Kaminsky) Method:**\n1.  Attacker sends a request to the resolver for `www.bank.com`.\n2.  The resolver starts the iterative process.\n3.  While the resolver waits for the legitimate response from the authoritative server, the attacker **floods** the resolver with **spoofed responses** pretending to be from the authoritative server.\n4.  **The Race:** If the attacker's spoofed packet arrives **before** the real one, and if they guess the **16-bit Transaction ID** (only 65,536 possibilities!), the resolver accepts the fake response and caches `www.bank.com -> Attacker's IP`.\n5.  Now, everyone using that resolver is silently redirected to the attacker's fake bank site.\n\n**Mitigations:**\n- **Source Port Randomization:** The resolver uses a **random source port** for each outgoing query. The attacker now has to guess the Transaction ID **AND** the Source Port (increases entropy from 16 bits to ~32 bits). **This is why source port randomization was a critical fix.**\n- **DNSSEC:** Cryptographically signs records so spoofed responses are rejected."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Poison Mitigation 🧪",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What is the primary defense against classic DNS Cache Poisoning (besides DNSSEC)?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Using TCP instead of UDP",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Source Port Randomization",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Blocking port 53",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Using longer domain names",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "By randomizing the source port, the attacker's difficulty in guessing the correct combination increases exponentially.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "DNS Amplification DDoS 💣",
+            "content": "# Using DNS as a Weapon\n\nRemember **UDP Amplification** from Chapter 4? DNS is the most abused protocol for this.\n\n**How it Works:**\n1.  Attacker controls a **botnet**.\n2.  Attacker sends a **small DNS query** (e.g., 60 bytes) for `ANY example.com` to **open DNS resolvers**.\n3.  **Crucial Step:** The attacker **spoofs** the **Source IP** of the query to be the **Victim's IP address**.\n4.  The open resolver processes the query and sends a **massive response** (e.g., 4,000 bytes of DNS records) to the **Victim**.\n5.  **Amplification Factor:** 4000 / 60 = **66x amplification**.\n6.  Thousands of open resolvers flood the victim with unsolicited DNS responses, saturating their internet link.\n\n**Why are there 'Open Resolvers'?**\nA DNS server that answers recursive queries for **anyone** on the internet is an Open Resolver. They are **misconfigured** and a menace to the internet.\n\n**Mitigation:**\n- Network admins must **restrict recursion** to internal IPs only.\n- ISPs should implement **BCP 38 (Ingress Filtering)** to block spoofed packets from leaving their network."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "warning",
+            "title": "DNS Hijacking (Local) 🖥️",
+            "content": "## Malware on Your Machine\n\nNot all DNS attacks are global.\n\n- **Hosts File Hijacking:** Malware modifies `C:\\Windows\\System32\\drivers\\etc\\hosts` and adds:\n  ```\n  5.5.5.5   www.bankofamerica.com\n  ```\n  No matter what the real DNS says, your computer will use this local entry.\n\n- **Router DNS Hijacking:** Malware logs into your home router (using default admin/admin credentials) and changes the **DHCP DNS Server** setting to point to a **malicious DNS server** controlled by criminals.\n\n**Defense:** Change default router passwords! Use a reputable DNS provider like Quad9 (`9.9.9.9`) which blocks known malicious domains."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "DNSSEC: Cryptographic Trust 🔐",
+            "content": "# The Long-Term Solution\n\n**DNSSEC (Domain Name System Security Extensions)** adds **digital signatures** to DNS records.\n\n**How it works:**\n- It does **NOT encrypt** the data (that's DoH/DoT).\n- It provides **Authentication** and **Integrity**.\n- It uses **public-key cryptography**.\n- The zone owner signs all records with a **Private Key**.\n- Resolvers use the corresponding **Public Key** (published in DNS) to verify the signature.\n- If a cache poisoner spoofs a response, the signature will **fail validation**, and the resolver will **discard** the poisoned data.\n\n**The Chain of Trust:**\n- Root Zone is signed (Root KSK managed in a secure ceremony).\n- TLDs are signed by the Root.\n- Your domain is signed by the TLD.\n\n**Adoption Challenge:** DNSSEC is **complex** to set up and manage (key rollovers). Misconfiguration can break your entire domain. Despite this, it is the **only effective defense against cache poisoning**."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "DoH and DoT: Encrypted DNS 🔒",
+            "content": "# Hiding the Query from Eavesdroppers\n\nTraditional DNS (Port 53) is **cleartext**. Your ISP, coffee shop owner, or government can see **every website you visit** just by sniffing your DNS traffic.\n\n**Modern Solutions:**\n\n1.  **DoT (DNS over TLS):** \n    - DNS queries wrapped in **TLS encryption**.\n    - Uses **Port 853**.\n    - Network admins can still see you're connecting to a DNS server (Port 853), but can't see the queries inside.\n\n2.  **DoH (DNS over HTTPS):** \n    - DNS queries wrapped in **HTTPS** (looks exactly like normal web traffic).\n    - Uses **Port 443**.\n    - **Stealth:** It's impossible to distinguish DNS queries from regular web browsing to `https://cloudflare-dns.com`.\n    - **Controversy:** Bypasses enterprise DNS filtering/monitoring. Some security teams dislike it because malware can use DoH to bypass corporate DNS blocks (Command & Control hiding).\n\n**Major Providers:**\n- Cloudflare: `1.1.1.1` (DoT/DoH)\n- Google: `8.8.8.8` (DoT/DoH)\n- Quad9: `9.9.9.9` (Blocks malicious domains)"
+        },
+        {
+            "id": "s_l4_8",
+            "type": "quiz",
+            "title": "DNS Security Trio 🛡️",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "What is the main difference between DNSSEC and DoH?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "DNSSEC encrypts data; DoH authenticates it.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "DNSSEC provides authentication/integrity; DoH provides encryption/confidentiality.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "They are the same thing.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "DNSSEC is for IPv4, DoH for IPv6.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Exactly! DNSSEC signs records to prevent tampering; DoH encrypts the query to prevent eavesdropping.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

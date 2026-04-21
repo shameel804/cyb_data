@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_4",
+    "title": "Wireshark TCP Handshake Analysis",
+    "description": "Analyze a provided TCP stream and identify flags, sequence numbers, and the handshake.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario: Analyzing a TCP Stream\n\nBelow is a simplified Wireshark capture of a TCP connection between a client (`192.168.1.100`) and a web server (`93.184.216.34`).\n\n```text\nNo. Time    Source          Destination     Protocol Info\n1   0.000   192.168.1.100   93.184.216.34   TCP      52134 > 80 [SYN] Seq=0 Win=65535 Len=0\n2   0.015   93.184.216.34   192.168.1.100   TCP      80 > 52134 [SYN, ACK] Seq=0 Ack=1 Win=8192 Len=0\n3   0.016   192.168.1.100   93.184.216.34   TCP      52134 > 80 [ACK] Seq=1 Ack=1 Win=65535 Len=0\n4   0.020   192.168.1.100   93.184.216.34   HTTP     GET /index.html HTTP/1.1\n5   0.035   93.184.216.34   192.168.1.100   TCP      80 > 52134 [ACK] Seq=1 Ack=140 Win=8192 Len=0\n6   0.040   93.184.216.34   192.168.1.100   HTTP     HTTP/1.1 200 OK (text/html)\n7   0.041   192.168.1.100   93.184.216.34   TCP      52134 > 80 [ACK] Seq=140 Ack=450 Win=65535 Len=0\n8   1.000   192.168.1.100   93.184.216.34   TCP      52134 > 80 [FIN, ACK] Seq=140 Ack=450 Win=65535 Len=0\n9   1.015   93.184.216.34   192.168.1.100   TCP      80 > 52134 [ACK] Seq=450 Ack=141 Win=8192 Len=0\n10  1.020   93.184.216.34   192.168.1.100   TCP      80 > 52134 [FIN, ACK] Seq=450 Ack=141 Win=8192 Len=0\n11  1.021   192.168.1.100   93.184.216.34   TCP      52134 > 80 [ACK] Seq=141 Ack=451 Win=65535 Len=0\n```\n\n## Questions\n\n1. Which packets constitute the **3-Way Handshake**? (Provide packet numbers).\n2. What is the initial **Sequence Number** chosen by the client? What about the server?\n3. In packet #5, what does the `Ack=140` signify? (Hint: Look at the length of packet #4).\n4. Which packets constitute the **4-Way Termination Handshake**?\n5. After packet #11, what TCP state will the client enter? What state will the server enter?",
+    "hints": [
+        "The handshake is SYN, SYN-ACK, ACK.",
+        "Sequence numbers are relative in Wireshark, starting at 0.",
+        "The HTTP GET request in packet #4 contains data. Count the bytes of that request (shown in Info or you can assume 139 bytes of payload).",
+        "Termination uses FIN from both sides."
+    ],
+    "expectedOutput": "1. Packets 1, 2, 3.\n2. Client: 0 (relative). Server: 0 (relative).\n3. Ack=140 acknowledges the receipt of 139 bytes of data from the client's HTTP GET request (Seq=1 + 139 = 140).\n4. Packets 8, 9, 10, 11.\n5. Client enters TIME_WAIT. Server enters CLOSED after receiving the final ACK.",
+    "solutionCode": "// No code required. Analysis task.\n// See expected output."
+}

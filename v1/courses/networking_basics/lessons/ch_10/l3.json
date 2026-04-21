@@ -1,0 +1,125 @@
+{
+    "id": "l3",
+    "chapterId": "ch_10",
+    "title": "VPN Protocols Deep Dive",
+    "description": "IPsec IKEv1/v2, SSL/TLS VPN, WireGuard, and legacy protocols – strengths and weaknesses.",
+    "xpReward": 40,
+    "estimatedMinutes": 18,
+    "section": "VPN Technology",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Protocol Landscape 🗺️",
+            "content": "# Choosing the Right Tunnel Technology\n\nNot all VPN protocols are created equal. Some are ancient and broken (PPTP), some are industry workhorses (IPsec), and some are modern marvels (WireGuard).\n\n| Protocol | Speed | Security | Firewall Traversal | Use Case |\n|----------|-------|----------|-------------------|----------|\n| **PPTP** | Fast | **BROKEN** | Good | **NEVER USE** |\n| **L2TP/IPsec** | Medium | Medium | Poor | Legacy Windows compatibility |\n| **IKEv2/IPsec** | Fast | Strong | Good (with NAT-T) | Mobile, Always-On VPN |\n| **OpenVPN** | Medium | Strong | **Excellent** (TCP 443) | General Purpose, Privacy |\n| **WireGuard** | **Very Fast** | **Very Strong** | Good | Modern, High-Performance |\n\nLet's dive into each."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "PPTP and L2TP: The Legacy Graveyard ⚰️",
+            "content": "# Protocols You Should NOT Use\n\n**PPTP (Point-to-Point Tunneling Protocol):**\n- Developed by Microsoft in the 1990s.\n- Uses **MS-CHAP v2** authentication, which is **cryptographically broken**.\n- Passwords can be cracked in **minutes** using tools like `asleap`.\n- **Status:** **DO NOT USE.** Even Microsoft recommends against it.\n\n**L2TP/IPsec (Layer 2 Tunneling Protocol over IPsec):**\n- Combines L2TP (tunneling) with IPsec (encryption).\n- **Better than PPTP**, but has issues:\n  - Uses **UDP 500, 4500, and ESP**. Often blocked by strict firewalls.\n  - Slower than modern protocols due to double encapsulation.\n  - **NSA allegedly compromised the standard** (controversial, but trust is low).\n- **Status:** **Legacy.** Use IKEv2 or WireGuard instead."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Legacy Protocols 🧟",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Why should PPTP never be used for a VPN today?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It is too slow",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Its authentication (MS-CHAPv2) is cryptographically broken",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It doesn't support Windows",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It uses too much bandwidth",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "PPTP encryption and authentication are fundamentally broken and can be cracked easily.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "OpenVPN: The Open-Source Workhorse 🐴",
+            "content": "# Flexibility and Firewall Evasion\n\n**OpenVPN** is an open-source protocol that uses **TLS/SSL** for key exchange and custom protocol for data tunneling.\n\n**Key Features:**\n- **Extremely Flexible:** Can run over **UDP** (faster) or **TCP** (more reliable, better firewall evasion).\n- **Port Agility:** Can be configured to listen on **any port**, most commonly **TCP 443** to masquerade as HTTPS traffic. This makes it **very difficult to block**.\n- **Strong Security:** Uses OpenSSL library, supports AES-256 encryption, Perfect Forward Secrecy.\n\n**Pros:**\n- **Gold Standard for Privacy VPNs:** Almost every commercial VPN provider (NordVPN, ExpressVPN) relies heavily on OpenVPN.\n- **Cross-Platform:** Works on Windows, Mac, Linux, iOS, Android, routers.\n\n**Cons:**\n- **Complex Configuration:** Requires managing certificates and configuration files.\n- **Performance:** Runs in **user space** (not kernel space), which adds some CPU overhead compared to IPsec or WireGuard.\n\n**Best For:** Users who need maximum compatibility and firewall circumvention."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "IKEv2/IPsec: The Mobile Champion 📱",
+            "content": "# Always-On, Seamless Roaming\n\n**IKEv2** combined with **IPsec** is the modern standard for corporate remote access, especially on mobile devices.\n\n**Key Feature: MOBIKE (Mobility and Multihoming)**\n- Allows the VPN connection to **survive network changes** seamlessly.\n- You can switch from Wi-Fi to Cellular (LTE/5G) **without dropping the VPN tunnel**.\n- The client simply updates the server with its new IP address.\n\n**Why it's Great for Mobile:**\n- **Battery Efficient:** IKEv2 has a built-in keep-alive mechanism that is less chatty than OpenVPN's ping-restart.\n- **Fast Reconnection:** If connection drops briefly, IKEv2 reconnects almost instantly.\n\n**Pros:**\n- Native support in **Windows, macOS, iOS, and Android** (no third-party app needed for basic functionality).\n- Very fast and stable.\n\n**Cons:**\n- **Port Blocking:** Uses UDP 500/4500. Some restrictive public Wi-Fi networks block these ports. (Though NAT-T usually helps).\n- **Complexity:** Setting up the server-side (StrongSwan) is non-trivial.\n\n**Best For:** Corporate mobile workforce using managed devices."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "IKEv2 Feature 🚀",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "What unique feature of IKEv2 allows a VPN connection to survive switching from Wi-Fi to Cellular?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Split Tunneling",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "MOBIKE (Mobility and Multihoming)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Perfect Forward Secrecy",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "NAT Traversal",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "MOBIKE updates the VPN endpoint IP address without re-establishing the IKE security association.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "WireGuard: The Next Generation ⚡",
+            "content": "# Simplicity, Speed, and State-of-the-Art Crypto\n\n**WireGuard** is a revolutionary VPN protocol designed to be **extremely simple, fast, and secure**.\n\n**Why is WireGuard Different?**\n- **Minimal Codebase:** ~4,000 lines of code (vs. ~100,000+ for OpenVPN/IPsec). This makes it **easy to audit** and **less prone to bugs**.\n- **Kernel Space:** Runs inside the Linux kernel (and Windows kernel via WireGuardNT), resulting in **blazing fast speeds** and low CPU usage.\n- **Cryptokey Routing:** Associates public keys with allowed IP addresses. It's like a built-in ACL.\n- **No Handshake Overhead:** Uses **silence is consent**. If no data is being sent, WireGuard sends **zero keep-alive packets**, saving battery on mobile.\n\n**Cryptography (Modern & Opinionated):**\n- **No Cipher Agility (Cipher Suite Negotiation).** WireGuard supports **only one** set of algorithms: **ChaCha20** for encryption, **Poly1305** for authentication, **Curve25519** for key exchange.\n- **Pros:** No downgrade attacks. If any of these algorithms are broken, the protocol version is simply incremented.\n- **Cons:** If a flaw is found in ChaCha20, WireGuard cannot switch to AES.\n\n**Status:**\n- Integrated into the **Linux Kernel** (since v5.6).\n- Native support in **Windows, macOS, iOS, Android**.\n- **WireGuard is the future of VPNs.**"
+        },
+        {
+            "id": "s_l3_8",
+            "type": "code",
+            "title": "WireGuard Config Example 📄",
+            "content": "A WireGuard config is incredibly simple (INI format):\n\n```ini\n[Interface]\nPrivateKey = <Client Private Key>\nAddress = 10.0.0.2/32\nDNS = 1.1.1.1\n\n[Peer]\nPublicKey = <Server Public Key>\nAllowedIPs = 0.0.0.0/0, ::/0\nEndpoint = vpn.example.com:51820\n```\n\n**Cryptokey Routing:** The `AllowedIPs` line tells the client: \"Traffic to these IPs should be encrypted with this peer's public key.\"",
+            "codeLanguage": "ini",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_9",
+            "type": "tip",
+            "title": "Protocol Selection Guide 📋",
+            "content": "## Which Protocol Should You Choose?\n\n- **Corporate Mobile Devices:** **IKEv2** (MOBIKE, native support).\n- **Personal Privacy / Bypassing Censorship:** **OpenVPN (TCP 443)** or **WireGuard**.\n- **High Performance / Gaming / Streaming:** **WireGuard**.\n- **Maximum Security & Auditability:** **WireGuard**.\n- **Legacy Hardware Compatibility:** **OpenVPN**.\n- **Never:** **PPTP** or **L2TP/IPsec**."
+        }
+    ]
+}

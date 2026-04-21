@@ -1,0 +1,111 @@
+{
+    "id": "l3",
+    "chapterId": "ch_7",
+    "title": "ARP: The Local Directory Assistance",
+    "description": "How IP addresses get resolved to MAC addresses in real-time, plus caching and Gratuitous ARP.",
+    "xpReward": 35,
+    "estimatedMinutes": 15,
+    "section": "Address Resolution",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "ARP: The Shout Across the Room 📢",
+            "content": "# How ARP Works (Step-by-Step)\n\nRecall from Chapter 4: **ARP (Address Resolution Protocol)** resolves an **IP address** to a **MAC address** on a local subnet.\n\n**The Process (Host A wants to talk to Host B at `192.168.1.20`):**\n\n1.  **Check ARP Cache:** Host A looks in its **ARP Table** (`arp -a`). If `192.168.1.20` has a valid entry, use that MAC and skip to step 5.\n\n2.  **Send ARP Request:** Host A sends a **Layer 2 Broadcast** frame:\n    - **Destination MAC:** `FF:FF:FF:FF:FF:FF` (Everyone receives this).\n    - **ARP Payload:** \"Who has `192.168.1.20`? Tell `192.168.1.10` (MAC `aa:bb:cc:dd:ee:ff`).\"\n\n3.  **Hosts Receive Request:** All devices on the subnet process the broadcast. \n    - **Host C (`192.168.1.30`):** \"Not me,\" discards silently.\n    - **Host B (`192.168.1.20`):** \"That's me!\"\n\n4.  **Send ARP Reply:** Host B sends a **Unicast** reply directly to Host A's MAC address:\n    - **Payload:** \"I have `192.168.1.20` and my MAC is `11:22:33:44:55:66`.\"\n\n5.  **Update Cache:** Host A adds the mapping to its ARP Cache (usually with a timeout of a few minutes). Host B **also** adds Host A's mapping to its cache (since it saw the request).\n\n6.  **Send Original Data:** Host A now encapsulates the IP packet in an Ethernet frame with Destination MAC `11:22:33:44:55:66` and sends it."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "ARP Operation 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What is the destination MAC address of an ARP Request frame?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The target's specific MAC",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "FF:FF:FF:FF:FF:FF (Broadcast)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The default gateway's MAC",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "00:00:00:00:00:00",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "ARP Requests are broadcast to all devices on the local subnet.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "The ARP Cache and Timers ⏱️",
+            "content": "# Temporary Memory\n\nThe **ARP Cache** stores IP-to-MAC mappings to avoid flooding the network with ARP Requests for every single packet.\n\n**Viewing the ARP Cache:**\n- **Windows:** `arp -a`\n- **Linux/Mac:** `arp -a` or `ip neigh`\n\n**Cache Entries Have States:**\n- **REACHABLE:** Confirmed recently. Can be used.\n- **STALE:** Still in cache, but timer expired. Next use will trigger a **unicast ARP Probe** to verify it's still valid.\n- **DELAY:** Waiting for probe response.\n- **PROBE:** Sending unicast ARP Requests to verify.\n- **INCOMPLETE:** ARP Request sent, waiting for reply.\n\n**Typical Timeouts:**\n- **Windows:** 15-45 seconds for dynamic entries.\n- **Linux:** Base reachable time ~30 seconds, but varies.\n\n**Static ARP Entry:** You can manually add a permanent entry (`arp -s 192.168.1.1 aa-bb-cc-dd-ee-ff`). This prevents ARP poisoning for critical devices like the Default Gateway, but is **unscalable** for large networks."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "Gratuitous ARP (GARP) 🎁",
+            "content": "# Announcing Yourself to the Network\n\nA **Gratuitous ARP** is an **unsolicited ARP Reply** (or Request for one's own IP) sent when a device wants to update other devices' ARP caches without being asked.\n\n**When does it happen?**\n- **Interface comes up:** *\"Hey everyone, I'm 192.168.1.10 at MAC aa:bb:cc:dd:ee:ff!\"*\n- **IP Address changes:** *\"I used to be .10, now I'm .20.\"*\n- **Failover (VRRP/HSRP):** *\"The old router is dead. I am now the Active Gateway at 192.168.1.1. My MAC is xx:xx:xx:xx:xx:xx.\"*\n\n**Why is it useful?**\n- **Duplicate Address Detection:** The device checks if anyone else responds to the GARP. If someone does, there's an IP conflict!\n- **Updating Switch CAM Tables:** The switch sees the source MAC in the GARP and updates its MAC address table immediately, preventing traffic blackholing during failover.\n\n**Security Risk:** Attackers use **Gratuitous ARP** to perform **ARP Poisoning**. They send fake GARPs saying, *\"I am the router! Send me all your traffic!\"*"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "quiz",
+            "title": "Gratuitous ARP 🎭",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "What is the purpose of a Gratuitous ARP?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To request the MAC of a specific IP",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To proactively update other devices' ARP caches with its own mapping",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To find the default gateway",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To release a DHCP lease",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "GARP is an unsolicited announcement used for failover and duplicate address detection.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Proxy ARP: Lying Politely 🎭",
+            "content": "# When a Router Answers on Behalf of Someone Else\n\n**Proxy ARP** is a technique where a **router** responds to an ARP Request for an IP address that is **not on the local subnet**.\n\n**Why would you use it?**\n- **Legacy Hosts:** Some old devices didn't understand subnet masks and assumed everything was local. They would ARP for *every* destination, even remote ones. The router answers with its **own MAC address** and then forwards the packet.\n- **Misconfigured Masks:** A host has a mask of `/16` when the network is actually `/24`. It thinks a device on a different subnet is local and ARPs for it. Proxy ARP lets it work (but hides the misconfiguration).\n\n**How it works:**\n1.  Host A (`10.1.1.10/24`) ARPs for `10.2.2.20` (which is on a different subnet).\n2.  The router sees the ARP Request, realizes it has a route to `10.2.2.0/24`.\n3.  The router replies: *\"I have `10.2.2.20`. Send traffic to MY MAC address.\"*\n4.  Host A sends the frame to the router's MAC, and the router forwards the packet.\n\n**Security Warning:** Proxy ARP is **enabled by default** on many routers (Cisco IOS). It can be abused in **ARP Poisoning** attacks to trick hosts into sending traffic to the attacker. In secure environments, **Proxy ARP should be disabled** on interfaces where it's not needed (`no ip proxy-arp`)."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "tip",
+            "title": "ARP for Default Gateway 🚪",
+            "content": "## The Most Important ARP Entry\n\nWhen your computer wants to send a packet to the internet (e.g., `8.8.8.8`), it checks its routing table and sees it needs to go through the **Default Gateway** (e.g., `192.168.1.1`).\n\n- It needs the **MAC address** of `192.168.1.1`.\n- It sends an **ARP Request** for `192.168.1.1`.\n- The router replies with its MAC.\n- This ARP entry is the **holy grail** for attackers. If they can poison this entry, they become the **Man-in-the-Middle** for **all internet traffic** leaving your device."
+        }
+    ]
+}

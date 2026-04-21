@@ -1,0 +1,152 @@
+{
+    "id": "l1",
+    "chapterId": "ch_8",
+    "title": "The CIA Triad: Deep Dive",
+    "description": "Beyond the definitions – real-world trade-offs, non-repudiation, and how to measure security.",
+    "xpReward": 30,
+    "estimatedMinutes": 12,
+    "section": "Core Principles",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "CIA Triad: The Three Pillars 🏛️",
+            "content": "# A Quick Refresh\n\nIn Chapter 1, we introduced the **CIA Triad** as the foundation of information security:\n\n- **Confidentiality:** Keeping secrets secret. Preventing unauthorized disclosure.\n- **Integrity:** Ensuring data is accurate and unaltered. Preventing unauthorized modification.\n- **Availability:** Ensuring systems and data are accessible when needed. Preventing denial of service.\n\n**But security is never absolute.** Every control you implement to strengthen one pillar often **weakens another**. Understanding these trade-offs is what separates a junior admin from a security architect.\n\n**Analogy: The Fort Knox Vault**\n- **Confidentiality:** Thick steel walls, armed guards, combination locks. (Hard to peek inside).\n- **Integrity:** Tamper-evident seals, dual-control locks, audit logs. (You can tell if someone messed with the gold).\n- **Availability:** Multiple entrances, backup power, quick access for authorized personnel. (You can get to the gold when you need it).\n\nBut if you weld the door shut for **maximum confidentiality**, you destroy **availability**. Trade-offs."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "CIA Recall 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "A company stores customer data in an encrypted database with strict access controls. This primarily addresses which pillar?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Availability",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Integrity",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Confidentiality",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Non-repudiation",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Encryption and access controls are classic confidentiality measures to prevent unauthorized viewing.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Confidentiality: More Than Encryption 🤫",
+            "content": "# Layers of Secrecy\n\nConfidentiality ensures that information is not disclosed to unauthorized individuals, entities, or processes.\n\n**Mechanisms to achieve Confidentiality:**\n1.  **Encryption (At Rest & In Transit):** AES-256 for files, TLS for web traffic, VPN tunnels.\n2.  **Access Control Lists (ACLs):** File system permissions, firewall rules.\n3.  **Steganography:** Hiding data *within* other data (e.g., secret message hidden in an image file).\n4.  **Physical Security:** Locked server rooms, shredding documents, privacy screens.\n\n**The Weakest Link: Human Factors**\n- Shoulder surfing (someone looking at your screen).\n- Social engineering (tricking someone into revealing a password).\n- Misconfigured cloud storage buckets (\"Oh, I set the S3 bucket to public-read by accident\").\n\n**Cybersecurity Reality:** Most data breaches involving confidentiality are **not** due to broken encryption. They are due to **misconfigurations** or **stolen credentials**."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Integrity: Trust but Verify 📏",
+            "content": "# Ensuring Data Hasn't Been Tampered With\n\nIntegrity ensures that data remains **accurate, complete, and unaltered** (except by authorized means).\n\n**Mechanisms to achieve Integrity:**\n1.  **Hashing:** A mathematical fingerprint (SHA-256). If the file changes by even one bit, the hash changes completely.\n2.  **Digital Signatures:** Combines hashing with public-key cryptography. Proves the data came from a specific sender and hasn't been altered.\n3.  **Checksums (CRC):** Simple error detection for accidental corruption (network noise), not malicious attacks.\n4.  **Version Control Systems:** Git tracks every change and who made it.\n5.  **Write-Once-Read-Many (WORM) Storage:** Used for compliance (financial records). Data can be written once and never modified or deleted.\n\n**Real-World Example:**\nYou download a Linux ISO. The website provides a **SHA256 checksum**. You run `sha256sum ubuntu.iso` and compare it to the published value. If they match, you have **integrity** assurance that the file wasn't corrupted during download or replaced with malware."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "quiz",
+            "title": "Integrity Check 🧮",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "Which cryptographic tool provides the strongest assurance of both data integrity AND origin authenticity?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A simple checksum (CRC32)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A hash function (SHA256) alone",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A Digital Signature",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Compression (ZIP)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A digital signature uses the sender's private key to sign a hash, proving who sent it and that it hasn't changed.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "Availability: Always On, Always Ready 📡",
+            "content": "# The Business Continuity Pillar\n\nAvailability ensures that systems and data are accessible to authorized users **whenever they are needed**.\n\n**Mechanisms to achieve Availability:**\n1.  **Redundancy:** Multiple power supplies, RAID disk arrays, clustered servers, multiple internet links.\n2.  **Backups & Disaster Recovery:** Off-site backups, hot/warm/cold sites.\n3.  **Fault Tolerance:** Systems designed to continue operating even if a component fails.\n4.  **DDoS Mitigation:** Scrubbing centers, rate limiting, web application firewalls.\n5.  **Patching & Maintenance:** Ironically, taking a system offline for 5 minutes to patch a critical vulnerability **protects** long-term availability (prevents a ransomware attack that takes it down for weeks).\n\n**The Ransomware Dilemma:**\nRansomware attacks **destroy Availability** (by encrypting your files) but often **violate Confidentiality** as well (attackers steal data before encrypting it). This dual impact is why ransomware is so devastating."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "The CIA Trade-Off Triangle 🔺",
+            "content": "# You Can't Have It All (At the Same Time)\n\nHere is the harsh reality of security architecture: **Security is a balancing act.**\n\n**Scenario 1: Maximum Confidentiality**\n- **Action:** You store the nuclear launch codes on an air-gapped computer in a vault that requires three biometric scans and takes 45 minutes to access.\n- **Result:** **Confidentiality is amazing.** Integrity is good. **Availability is terrible.** (You can't launch a counter-strike quickly).\n\n**Scenario 2: Maximum Availability**\n- **Action:** You put the company financial database on a public cloud server with a simple username/password and no firewall so the CEO can access it from anywhere on any device.\n- **Result:** **Availability is great.** Confidentiality and Integrity are **non-existent**.\n\n**The Security Professional's Job:** Find the **sweet spot** where the risk is **acceptable** to the business.\n- *\"How much downtime can we afford?\"* (Availability)\n- *\"What happens if this data leaks?\"* (Confidentiality)\n- *\"What if someone changes this transaction record?\"* (Integrity)"
+        },
+        {
+            "id": "s_l1_8",
+            "type": "text",
+            "title": "Beyond CIA: The Parkerian Hexad 🧩",
+            "content": "# Additional Security Attributes\n\nDonn B. Parker proposed extending the triad to a **Hexad** (six elements) to cover modern attacks more accurately.\n\n1.  **Confidentiality**\n2.  **Integrity**\n3.  **Availability**\n4.  **Authenticity / Possession:** Proving you are who you say you are, and you actually possess the token/device. (Prevents **Impersonation**).\n5.  **Utility / Usability:** The data is actually useful. (An encrypted backup tape is confidential and has integrity, but if you lose the decryption key, its **utility** is zero).\n6.  **Non-Repudiation:** You cannot deny having performed an action. (Digital signatures provide this. \"I didn't send that email!\" -> Yes, you did. Here's the cryptographic proof).\n\n**Cybersecurity Focus:** **Non-Repudiation** is critical for financial transactions, legal contracts, and audit trails."
+        },
+        {
+            "id": "s_l1_9",
+            "type": "quiz",
+            "title": "Trade-Off Scenario ⚖️",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_3",
+                "type": "multiple_choice",
+                "question": "Enabling full-disk encryption (BitLocker/FileVault) on all employee laptops is GREAT for Confidentiality. What is the potential negative impact on Availability?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "No impact.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Users might forget their password/recovery key and be locked out of their data.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The laptop runs faster.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Data might be corrupted.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Exactly. Strong encryption increases the risk of data loss due to forgotten keys, impacting availability.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,119 @@
+{
+    "id": "l2",
+    "chapterId": "ch_8",
+    "title": "Threats, Vulnerabilities, and Risk",
+    "description": "Understand the difference, calculate risk, and learn common vulnerability types.",
+    "xpReward": 35,
+    "estimatedMinutes": 15,
+    "section": "Risk Management",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Security Lexicon 📖",
+            "content": "# Three Words That Define Everything\n\nIn cybersecurity, these three terms are often confused. Let's define them clearly.\n\n- **Asset:** Anything of value to the organization. (Data, Servers, Reputation, People).\n- **Threat:** Any circumstance or event with the potential to **adversely impact** an asset. (Hacker, Flood, Disgruntled Employee).\n- **Vulnerability:** A **weakness** in an asset or control that could be exploited by a threat. (Unpatched software, Weak password, Open port).\n- **Risk:** The **potential for loss, damage, or destruction** of an asset as a result of a threat exploiting a vulnerability.\n\n**Analogy: A House (Asset)**\n- **Threat:** A burglar.\n- **Vulnerability:** An unlocked window.\n- **Risk:** The likelihood that the burglar will notice the unlocked window and steal your TV.\n\n**The Equation:**\n> **Risk = Threat x Vulnerability x Impact**\n\nYou can't eliminate threats (burglars will always exist). But you can **reduce vulnerabilities** (lock the window) to **reduce risk**."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Define the Term 🏷️",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "A missing security patch on a web server is an example of a:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Threat",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Vulnerability",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Risk",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Asset",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A missing patch is a weakness (vulnerability) that a threat could exploit.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Threat Actors: Who Wants to Hurt You? 👾",
+            "content": "# The Cast of Characters\n\nWe briefly covered this in Chapter 1. Let's add more depth.\n\n| Actor | Motivation | Skill Level | Target |\n|-------|------------|-------------|--------|\n| **Script Kiddie** | Ego, Fun | Low | Low-hanging fruit, unpatched systems |\n| **Hacktivist** | Political/Social Change | Medium | Websites, government portals |\n| **Organized Crime** | **Money** (Ransomware, Fraud) | Medium-High | Hospitals, Businesses, Any victim with money |\n| **Nation-State (APT)** | Espionage, Sabotage, Geopolitical Advantage | **Very High** | Critical Infrastructure, Intellectual Property, Government Secrets |\n| **Insider (Malicious)** | Revenge, Financial Gain | Varies (Often knows the systems) | Internal Data, Sabotage |\n| **Insider (Accidental)** | Carelessness | N/A | Everything (Clicking phishing links) |\n\n**The Most Dangerous?**\n- **Insiders** are the hardest to detect because they already have legitimate access.\n- **Nation-States** have unlimited resources and patience. They will find a way in."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Common Vulnerabilities and Exposures (CVE) 🐛",
+            "content": "# The Dictionary of Flaws\n\nThe **CVE** system provides a standardized identifier for known vulnerabilities.\n\n**Format:** `CVE-YEAR-ID`\n- Example: `CVE-2017-0144` (EternalBlue / WannaCry SMB vulnerability).\n\n**Why CVEs Matter:**\n- Vendors and security researchers reference them.\n- Vulnerability scanners (Nessus, Qualys) report findings using CVE IDs.\n- Patches are released to fix specific CVEs.\n\n**Common Vulnerability Types:**\n1.  **Buffer Overflow:** Sending more data than a program expects, overwriting memory and potentially executing malicious code.\n2.  **SQL Injection (SQLi):** Inserting malicious SQL code into a web form to manipulate the database.\n3.  **Cross-Site Scripting (XSS):** Injecting malicious scripts into a trusted website to run in a victim's browser.\n4.  **Cross-Site Request Forgery (CSRF):** Tricking a victim into submitting a malicious request on a site they are already authenticated to.\n5.  **Misconfiguration:** Default passwords, unnecessary services running, open ports.\n\n**Zero-Day:** A vulnerability that is **unknown** to the vendor. There is **no patch** available. These are extremely valuable and used by nation-states and sophisticated criminals."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "CVE Knowledge 📚",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "What is a 'Zero-Day' vulnerability?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A vulnerability that has been known for less than 24 hours.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A vulnerability for which no patch or fix is publicly available.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A vulnerability that only affects Windows 0-day.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A vulnerability with a CVSS score of 0.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Zero-days are flaws unknown to the vendor, leaving systems defenseless until a patch is developed.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Risk Assessment: Qualitative vs. Quantitative 📊",
+            "content": "# How to Measure Risk\n\n**Qualitative Risk Assessment:**\n- Uses **relative terms**: High, Medium, Low.\n- **Pros:** Fast, easy to communicate to management.\n- **Cons:** Subjective, prone to bias.\n- **Method:** Likelihood x Impact Matrix.\n  - *High Likelihood + High Impact = Critical Risk*\n\n**Quantitative Risk Assessment:**\n- Uses **dollar values** and **probabilities**.\n- **Pros:** Objective, supports business cases (ROI of security).\n- **Cons:** Difficult to get accurate numbers (What is the *exact* cost of a data breach?).\n\n**Key Metrics:**\n- **SLE (Single Loss Expectancy):** How much money you lose if it happens **once**. `SLE = Asset Value x Exposure Factor`\n  - Example: Server worth $10,000. Ransomware encrypts it, requiring 50% replacement cost (Exposure Factor). `SLE = $10,000 x 0.5 = $5,000`.\n- **ARO (Annualized Rate of Occurrence):** How many times per year do you expect this to happen? (e.g., 0.5 = once every two years).\n- **ALE (Annualized Loss Expectancy):** `ALE = SLE x ARO`\n  - Example: `$5,000 x 0.5 = $2,500`.\n\n**Decision Making:** If a security control costs **less than the ALE**, it is **financially justified**. If it costs more, management might choose to **accept the risk**."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "code",
+            "title": "Risk Calculation Example 🧮",
+            "content": "**Scenario:** A data center is in a flood zone.\n- Asset Value (Data Center Hardware): $500,000\n- Exposure Factor (Flood damage estimate): 80% (0.8)\n- Likelihood of a major flood per year: 5% (0.05)\n\n**Calculate:**\n```text\nSLE = $500,000 * 0.8 = $400,000\nARO = 0.05\nALE = $400,000 * 0.05 = $20,000\n```\n\n**Interpretation:** You should be willing to spend up to **$20,000 per year** on flood mitigation (e.g., better drainage, raised floors, insurance) to break even.",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_8",
+            "type": "text",
+            "title": "Risk Response Strategies 🛡️",
+            "content": "# The Four Options\n\nOnce you've identified and assessed risk, you must respond.\n\n| Strategy | Action | Example |\n|----------|--------|---------|\n| **Avoid** | Stop doing the risky activity. | *\"We will not allow employees to use personal email for work.\"* |\n| **Mitigate** | Implement controls to reduce likelihood or impact. | *\"We will install a firewall and antivirus.\"* |\n| **Transfer** | Shift the financial impact to a third party. | *\"We will buy cyber insurance.\"* |\n| **Accept** | Acknowledge the risk and do nothing (because cost of mitigation > ALE). | *\"We accept the risk of a meteor strike.\"* |\n\n**Cybersecurity Reality:** Most risks are **Mitigated** (controls) or **Transferred** (insurance). Some are **Accepted** (low probability, low impact). **Avoidance** is rare in business; you can't just 'stop using computers' to avoid cyber risk."
+        }
+    ]
+}

@@ -1,0 +1,111 @@
+{
+    "id": "l5",
+    "chapterId": "ch_8",
+    "title": "Defense in Depth and Security Policies",
+    "description": "Layered security strategies, the principle of least privilege, and building a security culture.",
+    "xpReward": 30,
+    "estimatedMinutes": 12,
+    "section": "Security Management",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Defense in Depth 🧅",
+            "content": "# The Onion Model of Security\n\n**Defense in Depth** is the strategy of implementing **multiple, overlapping layers of security controls**. If one layer fails, the next layer is there to stop the attack.\n\n**Analogy: A Medieval Castle**\n1.  **Moat** (Perimeter Firewall)\n2.  **Outer Wall** (Network Segmentation)\n3.  **Inner Wall** (Host-Based Firewall)\n4.  **Guards at the Door** (Authentication)\n5.  **Locks on Individual Rooms** (File Permissions)\n6.  **Guards patrolling the halls** (IDS/IPS)\n\nAn attacker might cross the moat, but they still have to scale the wall. They might breach the wall, but they still need to get past the guards.\n\n**Why is this necessary?**\n- **No single control is 100% effective.** Firewalls can be misconfigured. Antivirus can miss zero-day malware. Users can be tricked.\n- **Redundancy increases cost and complexity for the attacker.**\n\n**The Layers (Physical to Data):**\n1.  **Physical Security:** Locks, cameras, guards.\n2.  **Perimeter Security:** Firewalls, DMZ.\n3.  **Network Security:** VLANs, ACLs, NAC.\n4.  **Host Security:** Antivirus, EDR, Hardening.\n5.  **Application Security:** Secure coding, WAF.\n6.  **Data Security:** Encryption, Backups, DLP."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "Layered Defense 🛡️",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is the core principle of Defense in Depth?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Using a single, very strong firewall.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Implementing multiple, overlapping security controls.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Encrypting everything.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Focusing only on physical security.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Defense in Depth assumes breaches will happen and provides layered obstacles.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "The Principle of Least Privilege (PoLP) 🚫👑",
+            "content": "# Give Only What Is Needed\n\n**PoLP:** Users, applications, and systems should be granted **only the minimum permissions necessary** to perform their required functions.\n\n**Examples:**\n- **Users:** A marketing intern does **not** need access to the financial audit folder. A developer does **not** need Domain Admin rights on their daily laptop.\n- **Services:** A web server process should run under a dedicated user account that only has read access to the web files, **not** write access to the whole server.\n- **Network:** Firewall rules should allow `192.168.1.100` to access `192.168.10.50` on Port `443` **only**. Not \"Allow All from Sales to Finance.\"\n\n**Why is this critical?**\n- **Blast Radius Reduction:** If an attacker compromises a low-level user account, they **cannot** immediately pivot to the Domain Controller or encrypt the entire file share.\n- **Accidental Damage Prevention:** An employee can't accidentally delete the main production database because they never had access to it.\n\n**Implementation Challenges:**\n- **Privilege Creep:** Over years, employees change roles and accumulate permissions. They rarely have old permissions removed.\n- **Solution:** Regular **Access Reviews** (User Access Recertification)."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Security Policies: The Rules of the Road 📜",
+            "content": "# Formalizing Security Expectations\n\nA **Security Policy** is a high-level document that outlines management's expectations for security.\n\n**Hierarchy of Security Documentation:**\n- **Policy (Mandatory):** Broad statement of intent. *\"All company devices must use encryption.\"* Approved by executive leadership.\n- **Standard (Mandatory):** Specific technical requirements. *\"Encryption must be AES-256 or better.\"*\n- **Guideline (Recommended):** Best practices. *\"Consider using a password manager.\"*\n- **Procedure (Mandatory Step-by-Step):** *\"How to enable BitLocker on a Windows 11 laptop.\"*\n\n**Common Security Policies:**\n- **AUP (Acceptable Use Policy):** What employees can and cannot do with company computers. (No illegal downloads, no harassment).\n- **Password Policy:** Minimum length, complexity, expiration.\n- **Data Classification Policy:** Labels data as Public, Internal, Confidential, Restricted.\n- **Incident Response Policy:** Defines what constitutes a security incident and who to call.\n\n**The Human Element:** A policy is useless if employees don't know about it. **Security Awareness Training** is the process of educating users about threats (phishing, tailgating) and their responsibilities."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Security Frameworks and Compliance 📋",
+            "content": "# A Common Language for Security\n\nOrganizations don't build security programs from scratch. They adopt **Frameworks**.\n\n**NIST Cybersecurity Framework (CSF):**\n- Developed by US National Institute of Standards and Technology.\n- **Five Core Functions:** Identify, Protect, Detect, Respond, Recover.\n- Used by US Federal agencies and private sector.\n\n**ISO/IEC 27001:**\n- International standard for an Information Security Management System (ISMS).\n- Requires formal certification and regular audits.\n\n**CIS Controls (Center for Internet Security):**\n- A prioritized list of **18 Critical Security Controls**.\n- Very practical and actionable. (e.g., Control 1: Inventory and Control of Hardware Assets).\n\n**Compliance vs. Security:**\n- **Compliance** = Following a specific set of rules (PCI-DSS for credit cards, HIPAA for healthcare).\n- **Security** = Actually protecting the organization.\n- **Reality:** You can be **compliant** but still **insecure** (just ticking boxes). You can be **secure** but **non-compliant** (missing specific paperwork). **The goal is to achieve both.**"
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Policy vs. Standard 📑",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "Which document is mandatory and states the broad organizational requirement 'All remote access must use multi-factor authentication'?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Guideline",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Procedure",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Policy",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Standard",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Policies are high-level mandatory statements approved by management.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "tip",
+            "title": "Building a Security Culture 🧑‍🤝‍🧑",
+            "content": "## Security is Everyone's Job\n\n- **Empower users to report:** Make it easy and blame-free to report phishing emails or suspicious activity.\n- **Reward good behavior:** Publicly thank employees who spot phishing tests.\n- **Lead by example:** Executives must follow the same security policies (including MFA and password rules).\n\n**The Weakest Link is still the Human. But with training and a positive culture, the Human can become the Strongest Sensor.**"
+        }
+    ]
+}

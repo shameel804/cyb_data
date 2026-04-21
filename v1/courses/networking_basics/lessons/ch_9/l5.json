@@ -1,0 +1,117 @@
+{
+    "id": "l5",
+    "chapterId": "ch_9",
+    "title": "Firewall Architectures and Best Practices",
+    "description": "DMZ designs, high availability, segmentation, and modern firewall deployment strategies.",
+    "xpReward": 30,
+    "estimatedMinutes": 12,
+    "section": "Architecture",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The DMZ: The Neutral Zone 🏢",
+            "content": "# Demilitarized Zone (DMZ)\n\nA **DMZ** is a physical or logical subnetwork that contains and exposes an organization's **external-facing services** to an untrusted network (usually the Internet).\n\n**Analogy:** The **Lobby** of a corporate office.\n- The public can enter the lobby (DMZ) to pick up brochures or meet a receptionist.\n- The public **cannot** walk into the back offices (Internal LAN) where the financial records are kept.\n\n**Typical DMZ Servers:**\n- Web Servers (Public website)\n- Email Gateways (SMTP relays)\n- DNS Servers (Public authoritative DNS)\n- Reverse Proxies\n\n**The Security Goal:**\nIf a web server in the DMZ gets hacked, the attacker **does not automatically get access to the internal network**. The firewall still has rules blocking traffic from the DMZ to the Internal LAN."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "DMZ Purpose 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is the primary security purpose of a DMZ?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To provide a backup internet connection",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To isolate public-facing servers from the internal trusted network",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To increase internal network speed",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To store user passwords",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The DMZ acts as a buffer zone, limiting the impact of a compromise of public-facing services.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "DMZ Architectures: Single Firewall vs. Dual Firewall 🏗️",
+            "content": "# Two Ways to Build the Buffer\n\n**1. Single Firewall (Three-Legged / Multi-Homed) Architecture:**\n- One physical firewall with **three or more interfaces**.\n- Interface 1: Outside (Internet) - Security Level: 0 (Lowest trust)\n- Interface 2: DMZ - Security Level: 50 (Medium trust)\n- Interface 3: Inside - Security Level: 100 (Highest trust)\n- **Pros:** Cost-effective, simpler to manage.\n- **Cons:** **Single point of failure.** If the firewall is compromised or fails, everything is exposed.\n\n**2. Dual Firewall Architecture (Screened Subnet):**\n- **External Firewall:** Between Internet and DMZ. Allows only specific traffic to DMZ servers.\n- **Internal Firewall:** Between DMZ and Internal LAN. Allows only specific traffic from DMZ to Internal (ideally, very little).\n- **Pros:** **Defense in Depth.** An attacker must breach **two separate firewalls** (often from different vendors) to reach the internal network.\n- **Cons:** More expensive, complex to manage.\n\n**Analogy:**\n- **Single Firewall:** A single security guard at the entrance to a hallway with three doors (Outside, Lobby, Office).\n- **Dual Firewall:** A guard at the street entrance (External FW) and a **second guard** at the door to the office suite (Internal FW)."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "High Availability (HA): Active/Passive Clusters 🔄",
+            "content": "# Eliminating the Single Point of Failure\n\nFirewalls are critical infrastructure. If the firewall goes down, the business goes offline. **High Availability (HA)** pairs two firewalls together.\n\n**Active/Passive Configuration:**\n- **Active Firewall:** Processes **all** traffic. Has the primary IP addresses.\n- **Passive (Standby) Firewall:** Sits idle, synchronizing **state table** and **configuration** with the Active unit.\n- **Heartbeat Link:** Dedicated connection between the two firewalls to monitor each other.\n- **Failover:** If the Passive unit stops hearing heartbeats from the Active unit, it **takes over** the IP addresses and becomes Active. This happens in **milliseconds**.\n\n**Stateful Failover:**\nBecause the **state table is synchronized**, existing TCP connections **do not drop** during failover. Users browsing the web might experience a tiny lag spike, but their download continues seamlessly.\n\n**Active/Active (Rare for Firewalls):**\nBoth firewalls process traffic simultaneously, load balancing connections. More complex to manage and troubleshoot."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "quiz",
+            "title": "HA Failover 🔁",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "In an Active/Passive firewall HA pair, what ensures that existing connections survive a failover?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The backup firewall has a copy of the configuration",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The state table is continuously synchronized to the passive unit",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The client automatically reconnects",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The router reroutes traffic",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Stateful failover syncs the connection table, so the passive unit knows about existing sessions.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Internal Segmentation Firewalls (ISFW) 🧱",
+            "content": "# Protecting East-West Traffic\n\nTraditionally, firewalls were placed only at the **perimeter** (North-South traffic). Modern attacks assume perimeter breach and focus on **lateral movement** (East-West traffic) inside the network.\n\n**ISFW (Internal Segmentation Firewall):**\n- A firewall placed **inside** the data center or campus network to segment critical assets.\n\n**Use Case:**\n- Segment the **PCI Cardholder Data Environment** from the rest of the corporate network.\n- Prevent a compromised workstation in **Marketing** from connecting to the **HR Database** server.\n\n**Micro-Segmentation:**\n- Taking segmentation to the extreme. Applying firewall policy at the **individual workload level** (virtual machine or container).\n- Technologies: **VMware NSX**, **Cisco ACI**, cloud-native Security Groups.\n\n**Analogy:** \n- **Perimeter Firewall:** The fence around the whole military base.\n- **ISFW:** The locked doors and security checkpoints **inside the base** between different buildings (Barracks vs. Armory).\n- **Micro-Segmentation:** The locked lockers **inside** the armory building."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Firewall Hardening Best Practices 🛡️",
+            "content": "# Securing the Firewall Itself\n\nA firewall is a computer. It must be **hardened** just like any other server.\n\n1.  **Change Default Credentials:** Immediately change the default admin password. Use a strong, unique passphrase stored in a password manager.\n2.  **Restrict Management Access:** Limit administrative access (SSH, HTTPS GUI) to **specific trusted IP addresses** (e.g., Jump Hosts, Management VLAN). Never allow management from `any`.\n3.  **Use Strong Protocols:** Disable Telnet and HTTP. Use **SSHv2** and **HTTPS** for management.\n4.  **Enable Centralized Authentication:** Integrate with **TACACS+**, **RADIUS**, or **LDAP**. **Do not use local user accounts** except for emergency break-glass access.\n5.  **Enable Logging:** Send firewall logs to a **centralized SIEM** (Security Information and Event Management) system. Logs on the local device are useless if the device is compromised.\n6.  **Disable Unused Services:** Turn off features you aren't using (e.g., DHCP server, NTP server on the firewall).\n7.  **Keep Software Updated:** Apply security patches regularly. Subscribe to vendor security advisories.\n8.  **Backup Configuration:** Automate nightly backups of the firewall configuration."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "warning",
+            "title": "The 'Any' Rule Trap 🚫",
+            "content": "## Avoid Using 'Any' in Production Rules\n\n**Bad Rule:**\n```\nSource: Any | Destination: Any | Service: HTTPS | Action: Allow\n```\n\n**Why it's bad:** This allows **anyone on the internet** to connect to **any internal server** on port 443 if they can reach it.\n\n**Better Rule:**\n```\nSource: Internal_Subnets | Destination: Internet_Zone | Service: HTTPS | Action: Allow\n```\n\n**Best Rule:**\n```\nSource: HR_Dept_IPs | Destination: Payroll_Server_IP | Service: HTTPS | Action: Allow\n```\n\nAlways strive to replace `any` with specific network objects or zones. This is the **Principle of Least Privilege** applied to firewall rules."
+        }
+    ]
+}

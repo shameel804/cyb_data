@@ -1,0 +1,113 @@
+{
+    "id": "l4",
+    "chapterId": "ch_4",
+    "title": "Supporting Cast: ICMP and ARP",
+    "description": "Essential network utilities that make IP work – pings, errors, and MAC address discovery.",
+    "xpReward": 30,
+    "estimatedMinutes": 12,
+    "section": "Internet Layer",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "ICMP: The Internet's Error Messenger 📢",
+            "content": "# Internet Control Message Protocol\n\nIP is unreliable. So what happens when a router can't deliver a packet? It doesn't just drop it silently (well, sometimes it does, but ideally it sends an error).\n\n**ICMP** is the protocol used to send **error messages** and **operational information**.\n\n**Analogy:** ICMP is the **'Return to Sender'** stamp on a letter. When the postal service (Router) can't deliver the mail, they put it back in the mailbox with a note explaining why.\n\n**ICMP is NOT a transport protocol.** It doesn't have ports. It is a **supporting protocol for IP** (technically Layer 3).\n\n**Common ICMP Types:**\n| Type | Code | Name | Description |\n|------|------|------|-------------|\n| 0 | 0 | Echo Reply | Response to a **Ping** |\n| 8 | 0 | Echo Request | **Ping** command |\n| 3 | 1 | Destination Unreachable (Host) | Router can't find the host |\n| 3 | 3 | Destination Unreachable (Port) | Host received packet but no app is listening |\n| 11 | 0 | Time Exceeded | **TTL expired** (Used by Traceroute) |\n| 5 | 1 | Redirect | Router suggests a better gateway |"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "ICMP Types 📨",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What ICMP Type/Code combination is used by the 'ping' utility?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Type 3, Code 1",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Type 8, Code 0 (Echo Request)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Type 11, Code 0",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Type 0, Code 0",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Ping sends an Echo Request (Type 8) and expects an Echo Reply (Type 0).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Traceroute: Mapping the Path 🗺️",
+            "content": "# How Traceroute Uses ICMP (or UDP)\n\n**Traceroute** discovers every router (hop) between you and a destination.\n\n**The Trick: TTL (Time To Live)**\n- Traceroute sends a packet with **TTL=1**.\n- The first router decrements TTL to 0, drops the packet, and sends an **ICMP Time Exceeded (Type 11)** message back.\n- Traceroute records the **source IP** of that ICMP message (the router's address).\n- Next, Traceroute sends a packet with **TTL=2**. The second router generates the ICMP error.\n- Repeat until the destination is reached.\n\n**Implementation Variations:**\n- **Windows (`tracert`):** Uses **ICMP Echo Requests**.\n- **Linux/Mac (`traceroute`):** Uses **UDP** packets to high, unused ports. The final host replies with **ICMP Port Unreachable (Type 3, Code 3)**.\n\n**Cybersecurity Relevance:** Traceroute reveals the **network topology**. Attackers use it to map out internal networks and identify routers that might be vulnerable."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "Ping of Death (Historical) 💀",
+            "content": "**Security Note:** Older systems were vulnerable to an **oversized ICMP packet** (Ping of Death). A packet larger than 65,535 bytes would crash the target's TCP/IP stack.\n\n```cmd\nping -l 65500 [target]  // This is just a large ping, modern systems handle it fine.\n```",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "ARP: Address Resolution Protocol 📇",
+            "content": "# Finding the MAC Address for an IP\n\nRemember: On a local network, communication happens via **MAC addresses** (Layer 2). But applications use **IP addresses** (Layer 3). How does a host know what MAC address to put in the Ethernet frame?\n\n**ARP to the rescue!**\n\n**ARP** operates at the boundary of Layer 2 and Layer 3. It **resolves an IP address to a MAC address**.\n\n**The Process:**\n1.  Host A wants to send a packet to Host B (`192.168.1.20`).\n2.  Host A checks its **ARP Cache** (a temporary table of IP-to-MAC mappings). If the entry exists, use it.\n3.  If **not found**, Host A sends an **ARP Request** broadcast:\n    - Destination MAC: `FF:FF:FF:FF:FF:FF` (Broadcast - Everyone receives this).\n    - Question: *\"Who has IP 192.168.1.20? Tell 192.168.1.10 (MAC aa:bb:cc:dd:ee:ff)\"*\n4.  Host B receives the broadcast, sees its own IP, and sends a **Unicast ARP Reply**:\n    - *\"I am 192.168.1.20 and my MAC is 11:22:33:44:55:66.\"*\n5.  Host A updates its ARP Cache and sends the original packet."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "ARP Operation 📡",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "What destination MAC address is used in an ARP Request?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The target's specific MAC address.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "FF:FF:FF:FF:FF:FF (Broadcast)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "00:00:00:00:00:00",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The default gateway's MAC.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "ARP Requests are sent to the broadcast address so all devices on the subnet process the request.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "warning",
+            "title": "ARP Poisoning (Spoofing) ☠️",
+            "content": "## The Classic Man-in-the-Middle Attack\n\n**ARP has no authentication.** It blindly trusts any ARP Reply it receives.\n\n**The Attack:**\n1.  Attacker sends **unsolicited ARP Replies** (Gratuitous ARP) to the network.\n2.  To the **Victim**, they say: *\"I am the Router! My MAC is [Attacker's MAC].\"*\n3.  To the **Router**, they say: *\"I am the Victim! My MAC is [Attacker's MAC].\"*\n4.  The Victim's traffic is now sent to the Attacker's machine (Layer 2 redirection).\n5.  The Attacker forwards the traffic to the real destination (to avoid detection) while **sniffing all passwords and data**.\n\n**Defenses:**\n- **Static ARP Entries:** Manually hardcode the router's MAC address (unscalable).\n- **Dynamic ARP Inspection (DAI):** A switch feature that validates ARP packets against a trusted database (DHCP Snooping)."
+        }
+    ]
+}

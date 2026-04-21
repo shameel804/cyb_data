@@ -1,0 +1,16 @@
+{
+    "id": "task3",
+    "chapterId": "ch_7",
+    "title": "Switch Security Configuration Design",
+    "description": "Design a secure access layer switch configuration using DHCP Snooping, DAI, and Port Security.",
+    "estimatedMinutes": 18,
+    "problemStatement": "## Scenario: Securing the Access Layer\n\nYou are the network security engineer for a small branch office. The switch model is a Cisco Catalyst 2960-X. The network uses VLAN 10 for data and VLAN 20 for voice.\n\n**Requirements:**\n- Prevent **Rogue DHCP Servers** from operating on access ports.\n- Prevent **DHCP Starvation** attacks by limiting DHCP packets to 15 per second.\n- Prevent **ARP Poisoning** attacks from access ports.\n- Prevent **MAC Flooding** by limiting each access port to a maximum of **2 MAC addresses** (one for PC, one for IP Phone).\n- **Trusted Ports:** Uplink ports Gi0/1 and Gi0/2 (connected to the Distribution switches) should be trusted for DHCP and ARP. The DHCP server is at `10.1.10.5` reachable via the uplinks.\n\n## Your Task\n\nWrite the **Cisco IOS configuration commands** (global config and interface config) to implement these security features. Assume all interfaces except uplinks are access ports.\n\n**Provide the configuration in a structured format.**\n\n**Hints:**\n- Enable DHCP Snooping globally and for VLANs 10,20.\n- On uplinks: `ip dhcp snooping trust`, `ip arp inspection trust`.\n- On access ports: `ip dhcp snooping limit rate 15`, `switchport port-security maximum 2`.\n- Enable DAI for VLANs 10,20.\n- Remember `ip arp inspection vlan 10,20`.\n\n**Example format:**\n```\n! Global Commands\nip dhcp snooping\n...\n! Interface Uplinks\ninterface Gi0/1\n ...\n```",
+    "hints": [
+        "Start with global commands: `ip dhcp snooping`, `ip dhcp snooping vlan 10,20`.",
+        "Enable DAI: `ip arp inspection vlan 10,20`.",
+        "Configure trusted interfaces first (uplinks).",
+        "Configure access interfaces with rate limiting and port-security."
+    ],
+    "expectedOutput": "```\n! Global Configuration\nip dhcp snooping\nip dhcp snooping vlan 10,20\nno ip dhcp snooping information option\nip arp inspection vlan 10,20\n\n! Uplink Interfaces (Trusted)\ninterface range GigabitEthernet0/1-2\n description UPLINK_TO_DISTRIBUTION\n ip dhcp snooping trust\n ip arp inspection trust\n\n! Access Interfaces (Untrusted)\ninterface range GigabitEthernet0/3-24\n description ACCESS_PORT\n switchport mode access\n switchport port-security\n switchport port-security maximum 2\n switchport port-security violation restrict\n switchport port-security mac-address sticky\n ip dhcp snooping limit rate 15\n spanning-tree portfast\n spanning-tree bpduguard enable\n```",
+    "solutionCode": "// Expected configuration as shown above."
+}

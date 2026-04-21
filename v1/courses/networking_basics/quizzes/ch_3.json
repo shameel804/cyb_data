@@ -1,0 +1,388 @@
+{
+    "id": "quiz_ch_3",
+    "chapterId": "ch_3",
+    "title": "Chapter 3 Quiz: IPv4 Addressing & Subnetting",
+    "description": "Test your mastery of binary, subnet masks, VLSM, and NAT!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the binary representation of the decimal number 192?",
+            "options": [
+                "10101010",
+                "11000000",
+                "11110000",
+                "10000000"
+            ],
+            "correctAnswer": 1,
+            "explanation": "128 + 64 = 192. So binary is 11000000."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "How many bits are in an IPv4 address?",
+            "options": [
+                "16",
+                "32",
+                "48",
+                "128"
+            ],
+            "correctAnswer": 1,
+            "explanation": "IPv4 is a 32-bit address space."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "What is the default subnet mask for a Class C network (in dotted decimal)?",
+            "options": [
+                "255.0.0.0",
+                "255.255.0.0",
+                "255.255.255.0",
+                "255.255.255.255"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Class C uses a /24 prefix, which is 255.255.255.0."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What does CIDR stand for?",
+            "options": [
+                "Classful Internet Domain Routing",
+                "Classless Inter-Domain Routing",
+                "Centralized IP Distribution Registry",
+                "Common Interface Data Rate"
+            ],
+            "correctAnswer": 1,
+            "explanation": "CIDR (Classless Inter-Domain Routing) replaced the rigid classful system."
+        },
+        {
+            "id": "q5",
+            "type": "fill_blank",
+            "question": "The subnet mask 255.255.255.224 is equivalent to which CIDR notation?",
+            "options": [
+                "/25",
+                "/26",
+                "/27",
+                "/28"
+            ],
+            "correctAnswer": "/27",
+            "explanation": "224 in binary is 11100000 (3 bits). 24 + 3 = /27."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "How many usable host addresses are in a /29 network?",
+            "options": [
+                "8",
+                "6",
+                "4",
+                "2"
+            ],
+            "correctAnswer": 1,
+            "explanation": "/29 leaves 3 host bits (32-29=3). 2^3 = 8 total. 8 - 2 = 6 usable."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What is the Magic Number for a subnet mask of 255.255.255.240?",
+            "options": [
+                "8",
+                "16",
+                "32",
+                "64"
+            ],
+            "correctAnswer": 1,
+            "explanation": "256 - 240 = 16. The Magic Number is 16."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "You need a subnet that can support 50 hosts. What is the SMALLEST subnet mask you can use?",
+            "options": [
+                "/25",
+                "/26",
+                "/27",
+                "/28"
+            ],
+            "correctAnswer": 1,
+            "explanation": "/26 gives 6 host bits (64 total, 62 usable). /27 gives only 30 usable (not enough)."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What is the Network Address for host 172.16.68.45 with mask 255.255.240.0?",
+            "options": [
+                "172.16.0.0",
+                "172.16.64.0",
+                "172.16.68.0",
+                "172.16.80.0"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Magic Number = 16. Multiples of 16: 0, 16, 32, 48, 64, 80. 68 falls between 64 and 80. Network is 172.16.64.0."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is the Broadcast Address for the subnet 192.168.1.128/26?",
+            "options": [
+                "192.168.1.191",
+                "192.168.1.192",
+                "192.168.1.255",
+                "192.168.1.127"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Magic Number = 64. Subnet IDs: 0, 64, 128, 192. Next Subnet is 192. 192 - 1 = 191."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which of the following is a valid Private IP address (RFC 1918)?",
+            "options": [
+                "8.8.8.8",
+                "172.15.1.1",
+                "172.31.255.254",
+                "192.169.1.1"
+            ],
+            "correctAnswer": 2,
+            "explanation": "172.16.0.0 - 172.31.255.255 is the Class B private range."
+        },
+        {
+            "id": "q12",
+            "type": "true_false",
+            "question": "Routers on the public Internet will forward packets destined for 10.0.0.5.",
+            "correctAnswer": false,
+            "explanation": "False. 10.0.0.5 is a Private address (RFC 1918). It is non-routable on the public internet."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What is the primary purpose of NAT (Network Address Translation)?",
+            "options": [
+                "To encrypt web traffic.",
+                "To allow multiple private IPs to share a single public IP.",
+                "To speed up the internet connection.",
+                "To assign MAC addresses."
+            ],
+            "correctAnswer": 1,
+            "explanation": "NAT conserves public IPv4 addresses by hiding a private network behind one (or a few) public IPs."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "In VLSM, what is the correct order to allocate subnets?",
+            "options": [
+                "Smallest to Largest",
+                "Largest to Smallest",
+                "Alphabetical by name",
+                "Random order"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Start with the largest requirement to avoid overlapping and wasting space."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Which subnet mask is most appropriate for a Point-to-Point link between two routers?",
+            "options": [
+                "/24",
+                "/28",
+                "/30",
+                "/32"
+            ],
+            "correctAnswer": 2,
+            "explanation": "/30 provides exactly 2 usable host addresses, perfect for a P2P link."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "If you borrow 4 bits from a /24 network for subnetting, how many subnets are created?",
+            "options": [
+                "4",
+                "8",
+                "16",
+                "32"
+            ],
+            "correctAnswer": 2,
+            "explanation": "2^4 = 16 subnets."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What does the IP address 169.254.12.34 usually indicate?",
+            "options": [
+                "A public web server.",
+                "A VPN connection.",
+                "APIPA - Failed to get DHCP address.",
+                "A multicast stream."
+            ],
+            "correctAnswer": 2,
+            "explanation": "169.254.x.x is the APIPA range, used when DHCP fails."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which part of an IP address does a router use to make a forwarding decision?",
+            "options": [
+                "Host portion",
+                "Network portion",
+                "Broadcast portion",
+                "Checksum portion"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Routers look at the Network ID (derived from IP + Mask) to find the route in their routing table."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is the decimal equivalent of the binary octet 10101100?",
+            "options": [
+                "168",
+                "172",
+                "180",
+                "192"
+            ],
+            "correctAnswer": 1,
+            "explanation": "128 + 32 + 8 + 4 = 172."
+        },
+        {
+            "id": "q20",
+            "type": "fill_blank",
+            "question": "The address that represents 'all hosts on this local network' is the ______ address.",
+            "options": [
+                "Network",
+                "Broadcast",
+                "Multicast",
+                "Loopback"
+            ],
+            "correctAnswer": "Broadcast",
+            "explanation": "The Broadcast address (all host bits set to 1) sends a packet to every device on the subnet."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "Which IPv4 address class is reserved for Multicast?",
+            "options": [
+                "Class A",
+                "Class B",
+                "Class C",
+                "Class D"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Class D (224.0.0.0 - 239.255.255.255) is used for multicast groups."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "What is the main advantage of VLSM over FLSM?",
+            "options": [
+                "It is easier to calculate.",
+                "It reduces IP address waste.",
+                "It works with older routing protocols.",
+                "It requires no subnet mask."
+            ],
+            "correctAnswer": 1,
+            "explanation": "VLSM allows subnets of different sizes, minimizing unused addresses."
+        },
+        {
+            "id": "q23",
+            "type": "true_false",
+            "question": "The 'ip subnet-zero' command is required on modern routers to use the first and last subnets created by subnetting.",
+            "correctAnswer": false,
+            "explanation": "False. 'ip subnet-zero' is enabled by default on all modern equipment; the command is historical legacy."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "What is the Wildcard Mask associated with 255.255.255.192?",
+            "options": [
+                "0.0.0.63",
+                "0.0.0.192",
+                "0.0.0.255",
+                "0.0.0.31"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Wildcard mask is the inverse of subnet mask: 255.255.255.255 - 255.255.255.192 = 0.0.0.63."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "In the context of NAT, what does 'PAT' (Port Address Translation) uniquely use to differentiate internal hosts?",
+            "options": [
+                "MAC Addresses",
+                "IP Precedence bits",
+                "TCP/UDP Source Ports",
+                "TTL Values"
+            ],
+            "correctAnswer": 2,
+            "explanation": "PAT (NAT Overload) uses unique source port numbers to map multiple internal IPs to a single public IP."
+        },
+        {
+            "id": "q26",
+            "type": "mcq",
+            "question": "Your computer has IP 192.168.1.100 and Mask 255.255.255.0. What is the Network Address of your subnet?",
+            "options": [
+                "192.168.1.0",
+                "192.168.1.255",
+                "192.168.0.0",
+                "192.0.0.0"
+            ],
+            "correctAnswer": 0,
+            "explanation": "With a /24 mask, the first three octets are the network portion. So 192.168.1.0."
+        },
+        {
+            "id": "q27",
+            "type": "mcq",
+            "question": "Which of the following is a loopback address used for testing the local TCP/IP stack?",
+            "options": [
+                "0.0.0.0",
+                "255.255.255.255",
+                "127.0.0.1",
+                "192.168.1.1"
+            ],
+            "correctAnswer": 2,
+            "explanation": "127.0.0.1 is the loopback address, pointing back to the local machine."
+        },
+        {
+            "id": "q28",
+            "type": "fill_blank",
+            "question": "The process of taking a larger network block and dividing it into smaller, variable-sized subnets is known as ______.",
+            "options": [
+                "FLSM",
+                "VLSM",
+                "CIDR",
+                "NAT"
+            ],
+            "correctAnswer": "VLSM",
+            "explanation": "Variable Length Subnet Masking (VLSM) allows for efficient use of address space."
+        },
+        {
+            "id": "q29",
+            "type": "mcq",
+            "question": "If a router receives a packet destined for a network not in its routing table, where does it send it (assuming one is configured)?",
+            "options": [
+                "Loopback",
+                "Broadcast",
+                "Default Route (0.0.0.0/0)",
+                "To the switch CPU"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The Default Route is the 'gateway of last resort' for unknown destinations."
+        },
+        {
+            "id": "q30",
+            "type": "mcq",
+            "question": "What is the main cybersecurity benefit of 'Hide NAT' (Source NAT with Overload)?",
+            "options": [
+                "It encrypts the data.",
+                "It prevents unsolicited inbound connections from the internet to internal hosts.",
+                "It speeds up the firewall.",
+                "It logs all traffic."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Because internal IPs are hidden, an attacker on the internet cannot directly target a specific internal PC without a port forward or established connection."
+        }
+    ]
+}

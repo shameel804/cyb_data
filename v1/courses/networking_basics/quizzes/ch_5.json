@@ -1,0 +1,317 @@
+{
+    "id": "quiz_ch_5",
+    "chapterId": "ch_5",
+    "title": "Chapter 5 Quiz: Network Devices & Topologies",
+    "description": "Test your knowledge of hubs, switches, routers, firewalls, and Wi-Fi fundamentals!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary disadvantage of a Bus topology?",
+            "options": [
+                "High cable cost",
+                "Single point of failure (break in cable takes down network)",
+                "Difficult to add new nodes",
+                "Requires a token to transmit"
+            ],
+            "correctAnswer": 1,
+            "explanation": "In a Bus topology, a break anywhere in the backbone cable disrupts the entire segment."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which topology provides the highest level of redundancy and fault tolerance?",
+            "options": [
+                "Star",
+                "Ring",
+                "Bus",
+                "Mesh"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Mesh topology provides multiple redundant paths, ensuring network availability even if several links fail."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "At which OSI layer does a standard Ethernet Switch operate?",
+            "options": [
+                "Layer 1 (Physical)",
+                "Layer 2 (Data Link)",
+                "Layer 3 (Network)",
+                "Layer 4 (Transport)"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Switches make forwarding decisions based on MAC addresses, which are Layer 2 addresses."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What does a Hub do when it receives a signal on one port?",
+            "options": [
+                "Forwards it only to the destination port",
+                "Floods it out all other ports",
+                "Drops it if the MAC address is unknown",
+                "Routes it to the default gateway"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Hubs are repeaters; they regenerate and forward the signal to all ports except the incoming one."
+        },
+        {
+            "id": "q5",
+            "type": "true_false",
+            "question": "A switch breaks up a Collision Domain but does NOT break up a Broadcast Domain by default.",
+            "correctAnswer": true,
+            "explanation": "True. Each switch port is its own collision domain, but all ports are in the same broadcast domain (VLAN 1 by default)."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the name of the table a switch uses to map MAC addresses to ports?",
+            "options": [
+                "Routing Table",
+                "ARP Table",
+                "CAM Table (MAC Address Table)",
+                "NAT Table"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The Content Addressable Memory (CAM) table stores MAC-to-port mappings."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "A switch receives a frame destined for a MAC address not in its CAM table. What action does it take?",
+            "options": [
+                "Drop the frame",
+                "Flood the frame out all ports except the receiving port",
+                "Send an ARP request to find the MAC",
+                "Send an ICMP redirect"
+            ],
+            "correctAnswer": 1,
+            "explanation": "This is 'Unknown Unicast Flooding'. The switch hopes the destination will respond."
+        },
+        {
+            "id": "q8",
+            "type": "fill_blank",
+            "question": "The process of a switch learning MAC addresses by examining the source MAC of incoming frames is called ______.",
+            "options": [
+                "Routing",
+                "ARP",
+                "MAC Learning",
+                "Flooding"
+            ],
+            "correctAnswer": "MAC Learning",
+            "explanation": "Switches dynamically build their CAM table by inspecting source MAC addresses."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "At which OSI layer does a Router operate?",
+            "options": [
+                "Layer 1",
+                "Layer 2",
+                "Layer 3",
+                "Layer 4"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Routers operate at Layer 3 (Network Layer) and forward packets based on IP addresses."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is the function of the 'Default Gateway' on a host?",
+            "options": [
+                "The DNS server address",
+                "The MAC address of the local switch",
+                "The IP address of the router used to reach other networks",
+                "The IP address of the DHCP server"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The Default Gateway is the exit point for traffic destined for a different IP subnet."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which routing table entry will a router choose if multiple entries match a destination IP?",
+            "options": [
+                "The one with the shortest prefix length",
+                "The one with the longest prefix length (most specific)",
+                "The one with the lowest metric",
+                "The first one in the list"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Routers use Longest Prefix Match to select the most specific route."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is a Layer 3 Switch?",
+            "options": [
+                "A switch that only handles VLANs",
+                "A switch capable of routing IP packets in hardware",
+                "A router with more ports",
+                "A firewall appliance"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Layer 3 switches can perform IP routing at wire speed using ASICs, ideal for inter-VLAN routing."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which type of firewall tracks the state of TCP connections (e.g., SYN, SYN-ACK, ESTABLISHED)?",
+            "options": [
+                "Packet Filtering Firewall",
+                "Stateful Inspection Firewall",
+                "Proxy Firewall",
+                "Web Application Firewall"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Stateful firewalls maintain a state table and allow return traffic only for established connections."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is the primary difference between an IDS and an IPS?",
+            "options": [
+                "IDS is hardware, IPS is software",
+                "IDS detects and alerts; IPS detects and blocks",
+                "IDS works at Layer 3, IPS works at Layer 7",
+                "There is no difference"
+            ],
+            "correctAnswer": 1,
+            "explanation": "IDS is passive (alarm). IPS is inline (prevention)."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What does 'DMZ' stand for in network security?",
+            "options": [
+                "Digital Media Zone",
+                "Demilitarized Zone",
+                "Data Management Zone",
+                "Dynamic Multiplexing Zone"
+            ],
+            "correctAnswer": 1,
+            "explanation": "DMZ is a neutral network segment where public-facing servers are placed, isolated from the internal LAN."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "A Web Application Firewall (WAF) is designed to protect against attacks like SQL Injection and Cross-Site Scripting.",
+            "correctAnswer": true,
+            "explanation": "True. WAFs operate at Layer 7 and understand HTTP/HTTPS to block application-layer attacks."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which Wi-Fi frequency band offers better penetration through walls but suffers from more interference?",
+            "options": [
+                "2.4 GHz",
+                "5 GHz",
+                "6 GHz",
+                "60 GHz"
+            ],
+            "correctAnswer": 0,
+            "explanation": "2.4 GHz has longer wavelengths that penetrate obstacles better, but it's crowded with microwaves, Bluetooth, etc."
+        },
+        {
+            "id": "q18",
+            "type": "fill_blank",
+            "question": "The name of a wireless network as seen by clients is called the ______.",
+            "options": [
+                "BSSID",
+                "SSID",
+                "MAC Address",
+                "VLAN ID"
+            ],
+            "correctAnswer": "SSID",
+            "explanation": "SSID (Service Set Identifier) is the human-readable network name."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "Which wireless security standard is considered broken and should NEVER be used?",
+            "options": [
+                "WPA2-PSK",
+                "WPA3",
+                "WEP",
+                "WPA2-Enterprise"
+            ],
+            "correctAnswer": 2,
+            "explanation": "WEP is cryptographically broken and can be cracked in minutes."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is the primary advantage of WPA2-Enterprise over WPA2-Personal?",
+            "options": [
+                "It is faster",
+                "It uses AES encryption",
+                "It provides unique credentials per user (via RADIUS)",
+                "It works on older devices"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Enterprise mode uses 802.1X authentication, eliminating the shared password vulnerability of PSK."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "What is a Deauthentication Attack?",
+            "options": [
+                "Cracking the WPA2 password",
+                "Spoofing management frames to disconnect a client",
+                "Flooding the AP with traffic",
+                "Installing a rogue AP"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Deauth attacks exploit unencrypted management frames to force clients to disconnect."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "What protocol is used between a Wireless LAN Controller (WLC) and Lightweight Access Points (LWAPs)?",
+            "options": [
+                "SNMP",
+                "CAPWAP",
+                "HTTP",
+                "SSH"
+            ],
+            "correctAnswer": 1,
+            "explanation": "CAPWAP (Control and Provisioning of Wireless Access Points) manages and configures APs."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "What is the function of Spanning Tree Protocol (STP) on a switch?",
+            "options": [
+                "VLAN trunking",
+                "Preventing Layer 2 loops",
+                "Load balancing",
+                "Port security"
+            ],
+            "correctAnswer": 1,
+            "explanation": "STP detects and disables redundant paths to prevent broadcast storms and MAC table instability."
+        },
+        {
+            "id": "q24",
+            "type": "true_false",
+            "question": "An unmanaged switch is suitable for enterprise network core deployments.",
+            "correctAnswer": false,
+            "explanation": "False. Unmanaged switches lack security features, VLAN support, and monitoring capabilities."
+        },
+        {
+            "id": "q25",
+            "type": "fill_blank",
+            "question": "The route `0.0.0.0/0` in a routing table is known as the ______ route.",
+            "options": [
+                "Default",
+                "Static",
+                "Dynamic",
+                "Host"
+            ],
+            "correctAnswer": "Default",
+            "explanation": "The default route matches all destinations and is used when no more specific route exists."
+        }
+    ]
+}

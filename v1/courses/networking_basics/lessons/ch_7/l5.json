@@ -1,0 +1,117 @@
+{
+    "id": "l5",
+    "chapterId": "ch_7",
+    "title": "Defending the LAN: Snooping, Inspection, and IPv6",
+    "description": "Mitigation techniques like DHCP Snooping, Dynamic ARP Inspection, and Neighbor Discovery.",
+    "xpReward": 35,
+    "estimatedMinutes": 15,
+    "section": "Security & Advanced",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Defense in Depth for Layer 2 🛡️",
+            "content": "# Building a Secure Switching Infrastructure\n\nWe cannot change the fact that DHCP and ARP are inherently trusting protocols. Instead, we must add **intelligent controls on the switch** to enforce security policy.\n\n**Cisco's Layer 2 Security Toolkit:**\n| Attack | Mitigation Feature |\n|--------|-------------------|\n| DHCP Starvation / Spoofing | **DHCP Snooping** |\n| ARP Poisoning | **Dynamic ARP Inspection (DAI)** |\n| MAC Flooding | **Port Security** |\n| VLAN Hopping | **Disable DTP, Set Native VLAN** |\n| General Spoofing | **IP Source Guard** |\n\nThese features work **together**. DHCP Snooping builds a trusted database that DAI and IP Source Guard rely on."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "DHCP Snooping 🕵️",
+            "content": "# The Trusted Database Builder\n\n**DHCP Snooping** is a switch feature that filters DHCP messages and builds a **binding database** of legitimate IP-to-MAC-to-Port mappings.\n\n**Configuration:**\n- **Trusted Ports:** Ports connected to **legitimate DHCP servers** (Uplinks to core/distribution).\n- **Untrusted Ports:** Ports connected to **end users/clients** (Access ports).\n\n**How it Protects:**\n1.  **Prevents Rogue DHCP Servers:** The switch drops **DHCP Offer** and **DHCP ACK** messages if they arrive on an **Untrusted** port. (Only the real server on a Trusted port can respond).\n2.  **Rate Limiting:** Limits the number of DHCP Discover messages per second on an untrusted port, mitigating **DHCP Starvation**.\n3.  **Builds the Binding Table:** The switch listens to successful DHCP transactions and records:\n    - `MAC Address`, `IP Address`, `Lease Time`, `VLAN`, `Port`\n\n**Command (Cisco):**\n```cisco\nip dhcp snooping\nip dhcp snooping vlan 10,20\ninterface GigabitEthernet0/1\n ip dhcp snooping trust\ninterface range GigabitEthernet0/2-24\n ip dhcp snooping limit rate 10\n```"
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "DHCP Snooping Ports 🔌",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "In DHCP Snooping, which ports should be configured as 'Trusted'?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Ports connected to end-user PCs",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Ports connected to legitimate DHCP servers",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "All ports by default",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Ports that are shut down",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Only ports facing the real DHCP server(s) should be trusted to send DHCP Offers and ACKs.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Dynamic ARP Inspection (DAI) 🛂",
+            "content": "# Validating ARP Packets\n\n**DAI** prevents **ARP Poisoning** by intercepting all ARP packets on untrusted ports and verifying them against the **DHCP Snooping Binding Table**.\n\n**How it Works:**\n1.  A user on an untrusted port sends an **ARP Reply** claiming *\"I am 192.168.1.1 with MAC xyz\"*.\n2.  The switch intercepts the ARP packet.\n3.  It checks the **DHCP Snooping Binding Table**:\n    - *\"Does the database show that MAC `xyz` was legitimately assigned IP `192.168.1.1` via DHCP?\"*\n4.  If **YES** -> Forward the ARP packet.\n5.  If **NO** -> **Drop the ARP packet** and optionally log/errdisable the port.\n\n**What about Static IPs?**\nDAI can also use **Static ARP ACLs** for critical devices that don't use DHCP (e.g., the Default Gateway router interface, servers with static IPs). You manually configure an ARP ACL and apply it.\n\n**Configuration:**\n```cisco\nip arp inspection vlan 10,20\ninterface GigabitEthernet0/1\n ip arp inspection trust   // Uplink ports are trusted\n```\n\n**Result:** ARP Poisoning attacks from untrusted ports are **blocked**. The attacker can send all the Gratuitous ARPs they want; the switch will drop them."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "IP Source Guard and Port Security 🔒",
+            "content": "# Completing the Layer 2 Fortress\n\n**IP Source Guard (IPSG):**\n- Uses the **DHCP Snooping Binding Table** to filter **IP traffic** (Layer 3).\n- Prevents a host from using an **IP address** that was **not assigned** to it via DHCP.\n- Mitigates **IP Spoofing** attacks.\n\n**Port Security:**\n- Limits the **number of MAC addresses** allowed on a switch port.\n- Prevents **MAC Flooding** attacks (which can overflow the CAM table and force the switch to fail open like a hub).\n- Can be configured to **shutdown** the port or restrict traffic if a violation occurs.\n\n**Configuration (Port Security):**\n```cisco\ninterface GigabitEthernet0/2\n switchport port-security\n switchport port-security maximum 2\n switchport port-security violation shutdown\n switchport port-security mac-address sticky\n```\n\n**Analogy:** \n- **DHCP Snooping:** The Hotel Guest Registry.\n- **DAI:** The Security Guard checking IDs at the elevator.\n- **IPSG:** The Key Card system that only lets you into the room you paid for.\n- **Port Security:** Limiting how many people can crowd into one hotel room."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "IPv6 Neighbor Discovery (ND) 🔮",
+            "content": "# The Future of LAN Addressing\n\nIn **IPv6**, there is **no broadcast** and **no ARP** as we know it. Instead, **ICMPv6 Neighbor Discovery Protocol (NDP)** handles these functions.\n\n**IPv6 Equivalents:**\n| IPv4 Function | IPv6 Equivalent |\n|---------------|-----------------|\n| ARP | **Neighbor Solicitation (NS)** and **Neighbor Advertisement (NA)** |\n| DHCP (Basic) | **Stateless Address Autoconfiguration (SLAAC)** (Router Advertisements) |\n| DHCP (Full Options) | **DHCPv6** |\n\n**How IPv6 Resolves MAC Addresses:**\n1.  Host A wants to talk to Host B (`2001:db8::2`).\n2.  Host A sends a **Neighbor Solicitation (NS)** message to the **Solicited-Node Multicast Address** of Host B (a special multicast derived from the IPv6 address).\n3.  Host B responds with a **Neighbor Advertisement (NA)** containing its MAC address.\n\n**Security Concerns:**\nNDP is **still vulnerable** to spoofing attacks (similar to ARP poisoning). \n**Mitigation:** **RA Guard** (blocks rogue Router Advertisements) and **SEND (Secure Neighbor Discovery)**—though SEND is rarely implemented due to complexity.\n\n**Key Takeaway:** The security principles of DHCP Snooping and ARP Inspection translate directly to **IPv6 First-Hop Security** features like **RA Guard**, **DHCPv6 Guard**, and **ND Inspection**."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "IPv6 LAN Resolution 📡",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "What protocol replaces ARP in IPv6 networks?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "DHCPv6",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "ICMPv6 Neighbor Discovery",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "SLAAC",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "RARP",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "IPv6 uses ICMPv6 Neighbor Solicitation and Advertisement messages for address resolution.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_8",
+            "type": "tip",
+            "title": "Audit Your LAN 🛠️",
+            "content": "## Practical Defense Checklist\n\n- [ ] **Disable unused switch ports** and assign them to a 'dead' VLAN.\n- [ ] Enable **DHCP Snooping** on all access VLANs.\n- [ ] Enable **Dynamic ARP Inspection** on all access VLANs.\n- [ ] Configure **Port Security** with a maximum of 1-2 MAC addresses.\n- [ ] Disable **Proxy ARP** on router interfaces facing users (`no ip proxy-arp`).\n- [ ] Use **Static ARP entries** for critical infrastructure (Default Gateway, Core Servers) as a last line of defense.\n- [ ] Monitor logs for **Port Security violations** and **DAI drops**—they are early indicators of an attack."
+        }
+    ]
+}

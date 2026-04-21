@@ -1,0 +1,114 @@
+{
+    "id": "l1",
+    "chapterId": "ch_3",
+    "title": "IPv4 Basics: Bits and Dots",
+    "description": "Understand the 32-bit structure of an IP address and why we write it like 192.168.1.1.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Addressing",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "What is an IP Address? 🏷️",
+            "content": "# The Internet's Mailing Address\n\nIn Chapter 2, we learned that **Layer 3** uses **IP Addresses** to route packets across the world.\n\nAn **IPv4 address** is a **32-bit** number. That's it.\n\n- Computers read it as binary: `11000000 10101000 00000001 00001010`\n- Humans read it as **Dotted Decimal**: `192.168.1.10`\n\n**Analogy:** Think of an IP address like a **phone number**.\n- The **Country Code + Area Code** tells the phone system which *city/region* to route the call to. (Network Portion)\n- The **Local Number** tells the switchboard which *specific house* to ring. (Host Portion)\n\nIn the next lesson, we'll learn exactly how to draw the line between the 'Area Code' and the 'Local Number' using **Subnet Masks**."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "How many bits long is a standard IPv4 address?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "16 bits",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "32 bits",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "48 bits (like a MAC address)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "128 bits",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! IPv4 uses 32 bits (4 bytes). IPv6 uses 128 bits.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Binary to Decimal Conversion 🔢",
+            "content": "# How does 11000000 become 192?\n\nEach of the four numbers (called an **Octet**) is an **8-bit binary number**.\n\n**The Place Values (Powers of 2):**\n| 2⁷ | 2⁶ | 2⁵ | 2⁴ | 2³ | 2² | 2¹ | 2⁰ |\n|----|----|----|----|----|----|----|----|\n| 128| 64 | 32 | 16 | 8  | 4  | 2  | 1  |\n\nTo convert binary to decimal, just **add up the place values where there is a `1`**.\n\n**Example: `11000000`**\n- 128 (1) + 64 (1) + 0 + 0 + 0 + 0 + 0 + 0 = **192**\n\n**Example: `10101000`**\n- 128 (1) + 0 + 32 (1) + 0 + 8 (1) + 0 + 0 + 0 = **168**\n\n**Example: `00000001`**\n- Just the last bit = **1**"
+        },
+        {
+            "id": "s_l1_4",
+            "type": "code",
+            "title": "Binary Cheat Sheet 📝",
+            "content": "You don't need to be a binary calculator wizard, but you should memorize these common octet values:",
+            "codeSnippet": "10000000 = 128\n11000000 = 192\n11100000 = 224\n11110000 = 240\n11111000 = 248\n11111100 = 252\n11111110 = 254\n11111111 = 255\n\n00000000 = 0\n10000000 = 128\n11000000 = 192\n11100000 = 224\n11110000 = 240\n11111000 = 248\n11111100 = 252\n11111110 = 254\n11111111 = 255",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_5",
+            "type": "quiz",
+            "title": "Binary Brain Buster 🧮",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "What decimal number does the binary octet `11110000` represent?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "224",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "240",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "248",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "255",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "128 + 64 + 32 + 16 = 240. Nice work!",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "Classful Addressing (History Lesson) 📜",
+            "content": "# The Old Way: Class A, B, C\n\nIn the 1980s, IP addresses were divided into fixed 'Classes' based on the **first few bits** of the address.\n\n- **Class A:** First bit is `0`. Range: `0.0.0.0` to `127.255.255.255`. (Very large networks, like IBM). Default Mask: `255.0.0.0`\n- **Class B:** First bits are `10`. Range: `128.0.0.0` to `191.255.255.255`. (Medium networks). Default Mask: `255.255.0.0`\n- **Class C:** First bits are `110`. Range: `192.0.0.0` to `223.255.255.255`. (Small networks). Default Mask: `255.255.255.0`\n- **Class D (Multicast):** First bits `1110`. `224.0.0.0` - `239.255.255.255`\n- **Class E (Experimental):** `240.0.0.0` - `255.255.255.255`\n\n**The Problem:** It was **wasteful**. Giving a company a Class B network (`/16`) gave them **65,536 addresses** even if they only had 100 computers.\n\n**The Solution:** **CIDR** (Classless Inter-Domain Routing) - which we will learn next. We threw away the rigid Class boundaries!"
+        },
+        {
+            "id": "s_l1_7",
+            "type": "warning",
+            "title": "Important 🚨",
+            "content": "## Legacy vs. Modern\n\nYou will still hear people say \"That's a Class C address.\" What they usually *mean* is: \"That has a `/24` subnet mask (255.255.255.0).\"\n\nFor the rest of this course, we focus on **CIDR** and **VLSM**, which are the actual standards used on the internet today."
+        }
+    ]
+}
