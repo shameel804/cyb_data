@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_1",
+    "title": "Build the Lab",
+    "description": "Set up your virtual hacking range with VirtualBox, Kali Linux, and Metasploitable.",
+    "estimatedMinutes": 45,
+    "problemStatement": "# Objective\nCreate a functional virtual hacking lab on your personal computer.\n\n## Requirements\n1.  Install Oracle VirtualBox (or VMWare Player if you prefer).\n2.  Download the Kali Linux VirtualBox image (.ova) and import it.\n3.  Boot Kali Linux successfully and log in.\n4.  Download Metasploitable 2 and create a new VM using the existing `.vmdk` disk.\n5.  **Network Configuration**: Ensure both VMs are set to `NAT Network` or `Host-Only Adapter` so they can communicate with each other but NOT with the wider internet.\n6.  From the Kali terminal, ping the Metasploitable VM to verify connectivity.\n\n**Goal**: You should be able to see `64 bytes from ...` responses in the terminal.",
+    "hints": [
+        "If ping doesn't work, check that both VMs are on the same VirtualBox network adapter (e.g., both are `Host-Only` or both are `NAT Network`).",
+        "Metasploitable login: `msfadmin` / `msfadmin`",
+        "Kali login: `kali` / `kali`"
+    ],
+    "expectedOutput": "Terminal output showing successful ping replies from the Metasploitable IP address (e.g., `Reply from 192.168.56.101: bytes=32 time<1ms TTL=64`).",
+    "solutionCode": "# Step 1: Find Metasploitable IP (Run on Metasploitable VM)\nifconfig\n# Note the IP address (likely 192.168.56.101 or 10.0.2.15)\n\n# Step 2: Ping from Kali\nping -c 4 [IP_ADDRESS_FROM_STEP_1]"
+}

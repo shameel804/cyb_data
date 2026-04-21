@@ -1,0 +1,117 @@
+{
+    "id": "l3",
+    "chapterId": "ch_1",
+    "title": "Hacking Phases & Methodologies 🗺️",
+    "description": "Understand the step-by-step roadmap of a cyber attack.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Attack Lifecycle 🔄",
+            "content": "# The 5 Phases of Hacking\n\nMost hacks aren't a single click of a button. They follow a structured methodology, much like a military operation. Understanding this roadmap helps you defend against it—or, as an ethical hacker, replicate it safely.\n\n1.  **Reconnaissance** 👣 (Information Gathering)\n2.  **Scanning** 🔦 (Probing the Perimeter)\n3.  **Gaining Access** 🚪 (Exploitation)\n4.  **Maintaining Access** ⏳ (Persistence)\n5.  **Covering Tracks** 🧹 (Clearing Logs)"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Phase 1: Reconnaissance (Passive) 👣",
+            "content": "## Goal: Gather as much public info as possible without touching the target.\n\n**Analogy**: Staking out a bank before robbing it. You watch from across the street. You note the guard shift changes, the camera positions, and what uniforms the employees wear. **You never step foot on the property.**\n\n**Techniques**:\n- **Google Dorking**: Using advanced search operators (`site:target.com filetype:pdf \"confidential\"`).\n- **WHOIS Lookup**: Finding who registered the domain (email, phone, address).\n- **Social Media**: Scraping LinkedIn for employee tech stacks.\n- **Shodan**: Searching for internet-connected devices (webcams, industrial systems)."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Passive Recon Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which action is considered **Passive Reconnaissance**?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Running a port scan with Nmap on the target IP.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Looking up the target company's recent press releases and job postings.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Sending a phishing email to the HR department.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Trying to log in to the admin panel with 'admin/password'.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! Reading public websites or documents does not interact directly with the target's servers. It's passive intelligence gathering.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Phase 2: Scanning (Active) 🔦",
+            "content": "## Goal: Interact with the target to find live systems and open doors.\n\n**Analogy**: Now you walk up to the bank door and **rattle the handle**. You check if the side window is locked. You knock on the back door. **You are making contact.**\n\n**Techniques**:\n- **Ping Sweeps**: Finding which IP addresses are \"alive\".\n- **Port Scanning**: Finding which \"doors\" (services) are open. (Is port 80 for web open? Port 22 for SSH?)\n- **OS Fingerprinting**: Determining if the server is running Windows, Linux, or macOS based on how it responds to packets.\n\n**Tool of Choice**: **Nmap**."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "warning",
+            "title": "Active Means Risky ⚠️",
+            "content": "## The 'Knocking' Can Be Heard\n\nPassive recon is virtually undetectable. **Active Scanning is usually detected and logged.** If you scan a server without permission, you've just left your IP address in their firewall logs with a timestamp. This is how hackers get caught."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Phase 3: Gaining Access 🚪",
+            "content": "## Goal: Exploit a vulnerability to get inside the system.\n\n**Analogy**: You found a cracked window (vulnerability) during your scanning. Now you pry it open and climb in.\n\n**This is the \"Hack\" moment.**\n- **Exploiting Software Bugs**: Sending malformed data to crash a service and inject code.\n- **Password Attacks**: Guessing, Brute-forcing, or using stolen credentials.\n- **Social Engineering**: Tricking someone into opening the door for you (e.g., \"Hi, this is IT, I need your password to fix your email\")."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Access Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "You found an open port 22 (SSH). You try username 'root' and password 'root'. It works. Which phase are you in?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Reconnaissance",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Scanning (you discovered the port earlier)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Gaining Access",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Maintaining Access",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Exactly! Scanning found the door (port 22). Using the credentials to log in is **Gaining Access**.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_8",
+            "type": "text",
+            "title": "Phase 4 & 5: Persistence & Cleanup 🧹",
+            "content": "## Phase 4: Maintaining Access ⏳\nYou don't want to break in every single day. You want to install a backdoor.\n- **Creating New Users**: `useradd backdooruser`\n- **Scheduling Tasks**: Making the backdoor restart if the computer reboots.\n- **Rootkits**: Hiding your presence from system monitoring tools.\n\n## Phase 5: Covering Tracks 🧹\nProfessional thieves wear gloves. Hackers clear logs.\n- **Deleting Log Files**: Removing entries in `/var/log` that show you logged in.\n- **Timestomping**: Changing the 'last modified' date of files you touched."
+        }
+    ]
+}

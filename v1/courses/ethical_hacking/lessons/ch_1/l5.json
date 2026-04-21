@@ -1,0 +1,85 @@
+{
+    "id": "l5",
+    "chapterId": "ch_1",
+    "title": "Setting Up Your Lab 🧪",
+    "description": "Build a safe, virtual environment to practice hacking without breaking the law.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Setup",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Virtual Sandbox 🏖️",
+            "content": "# Why You NEED a Lab\n\nYou wouldn't learn to drive by taking a Ferrari onto a busy highway. You start in an empty parking lot.\n\nA **Virtual Lab** is your empty parking lot. It isolates your hacking tools from your personal files and the internet.\n\n**The Tools:**\n1.  **VirtualBox** (Free): Software that creates fake computers inside your real computer.\n2.  **Kali Linux**: The attacker machine. Pre-loaded with 600+ hacking tools.\n3.  **Metasploitable / DVWA**: The victim machine. **Intentionally vulnerable** software designed for you to break."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "Lab Safety 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "You want to practice a port scan. Which target is safest and legal?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Your friend's home Wi-Fi router IP address.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "google.com",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A Virtual Machine running 'Metasploitable' on your own laptop.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The public Wi-Fi at the coffee shop.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Yes! VMs on your own machine are 100% legal and safe. Everything else is either illegal or against terms of service.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Step-by-Step: Installing VirtualBox 📦",
+            "content": "## 1. Download VirtualBox\n- Go to [virtualbox.org](https://www.virtualbox.org) and download the installer for your OS (Windows, Mac, Linux).\n- Install it like any other program (Next -> Next -> Finish).\n\n**Analogy**: This is like buying an empty computer case. It has no operating system yet."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Step-by-Step: Getting Kali Linux 🐉",
+            "content": "## 2. Download Kali Linux VM Image\nKali is the standard operating system for ethical hackers. Instead of installing it from scratch, we use a **Pre-built Virtual Machine**.\n\n1.  Go to [kali.org/get-kali/](https://www.kali.org/get-kali/#kali-virtual-machines).\n2.  Choose **VirtualBox** image (64-bit).\n3.  Download the `.ova` file (it's large, ~3-4GB, grab a coffee).\n4.  **Import it**: Open VirtualBox -> Click **File -> Import Appliance** -> Select the `.ova` file.\n5.  **Default Credentials**: Username `kali`, Password `kali`."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "tip",
+            "title": "Network Setting: Bridged vs NAT 🌉",
+            "content": "## Crucial Configuration\n\nBy default, VirtualBox uses **NAT** mode. This puts your VMs behind a fake router. For hacking practice, this is **perfect and safe**. Your Victim VM and Attacker VM can talk to each other, but they can't accidentally scan your home network."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "code",
+            "title": "First Commands in Kali 💻",
+            "content": "Once Kali boots up, open a terminal (black screen icon). Let's test connectivity to our (future) victim.\n\nWe'll use the `ping` command. It's the digital equivalent of yelling 'Marco!' and waiting for 'Polo!'.",
+            "codeSnippet": "ping 192.168.56.101",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Your First Victim: Metasploitable 🤖",
+            "content": "## 3. Download Metasploitable 2\n\nThis is an **intentionally broken** Linux server. It's full of security holes from 2010 for you to find.\n\n1.  Search Google for *\"Metasploitable 2 Download\"* (Sourceforge link).\n2.  Download the `.zip` file.\n3.  Unzip it. You'll find a `.vmdk` (hard drive file).\n4.  **Create New VM** in VirtualBox:\n    - Name: Metasploitable\n    - Type: Linux, Version: Ubuntu 64-bit\n    - Memory: 512 MB (it's old, needs little).\n    - **Hard Disk: Use an existing virtual hard disk file** -> Browse to the `.vmdk` you unzipped.\n5.  Start the VM. Login: `msfadmin` Password: `msfadmin`.\n\n**Congrats! You now have a legal hacking range!**"
+        }
+    ]
+}
