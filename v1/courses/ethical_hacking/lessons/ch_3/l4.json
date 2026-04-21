@@ -1,0 +1,120 @@
+{
+    "id": "l4",
+    "chapterId": "ch_3",
+    "title": "Users, Groups & Permissions 🔐",
+    "description": "Master Linux access control and security.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Security",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Root User 👑",
+            "content": "# The Superuser\n\nIn Linux, the **root** user has unrestricted access to **everything**. They can read any file, kill any process, and install any software.\n\n**You should NOT log in as root directly.** It's too easy to accidentally break the system. Instead, we use **`sudo`** (Super User DO).\n\n**Analogy**: Root is the nuclear launch button. `sudo` is the key you insert temporarily to turn the button on for just one specific action.\n\n**Becoming Root Temporarily:**\n```bash\nsudo command_here\n# Example: sudo apt update\n```\n\n**Becoming Root for a Session:**\n```bash\nsudo su -\n# Notice the prompt changes from $ to #\n```"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Root Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "You try to run `nmap -sS 192.168.1.1` but get 'Permission denied'. What is the likely fix?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Reboot the computer.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Use `sudo nmap -sS 192.168.1.1`.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Change directory to /root.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Log out and log in again.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "SYN scans require raw packet privileges, which only root has. Prefix with `sudo`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Users and Groups 👥",
+            "content": "# Who Are You?\n\n**`whoami`** : Prints your current username.\n```bash\nwhoami\n# Output: kali\n```\n\n**`id`** : Shows your user ID (UID), group ID (GID), and all groups you belong to.\n```bash\nid\n# Output: uid=1000(kali) gid=1000(kali) groups=1000(kali),27(sudo)\n```\n\n**User Database**: The file `/etc/passwd` lists all users on the system. (Despite the name, the actual password hashes are in `/etc/shadow`)."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "File Permissions (The String of Letters) 🔤",
+            "content": "# Decoding `ls -l` Output\n\nWhen you run `ls -l`, you see something like:\n`-rwxr-xr-- 1 kali kali 4096 Oct 26 10:30 script.sh`\n\nBreakdown of `-rwxr-xr--`:\n- **Character 1**: File type.\n    - `-` = Regular file\n    - `d` = Directory\n    - `l` = Symbolic link\n- **Chars 2-4 (`rwx`)**: **Owner** permissions (kali).\n- **Chars 5-7 (`r-x`)**: **Group** permissions (kali group).\n- **Chars 8-10 (`r--`)**: **Others** (everyone else) permissions.\n\n**Permission Meanings:**\n- **`r`** (Read): View the contents of the file / List directory contents.\n- **`w`** (Write): Modify the file / Create/delete files in directory.\n- **`x`** (Execute): Run the file as a program / Enter the directory (`cd`)."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "tip",
+            "title": "Numeric (Octal) Permissions 🔢",
+            "content": "## The Shorthand Hackers Use\n\nWe rarely spell out `rwxr-xr--`. We use **numbers**:\n- **Read (r)** = 4\n- **Write (w)** = 2\n- **Execute (x)** = 1\n\nAdd them up for each set (Owner, Group, Others).\n- `rwx` = 4+2+1 = **7**\n- `r-x` = 4+0+1 = **5**\n- `r--` = 4+0+0 = **4**\n\nSo `rwxr-xr--` becomes **754**.\n\n**Common Combinations:**\n- `777`: Everyone can do everything. **Bad practice. Wide open.**\n- `755`: Owner can write; everyone else can read/execute. (Standard for programs).\n- `600`: Only Owner can read/write. (Secure for SSH keys)."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "code",
+            "title": "chmod: Change Mode 🛠️",
+            "content": "Use `chmod` to change permissions.",
+            "codeSnippet": "# Make a script executable for everyone\nchmod +x myscript.sh\n\n# Set exact permissions with numbers\nchmod 755 myscript.sh\n\n# Recursively change permissions in a folder\nchmod -R 750 /var/www/html",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "chown: Change Ownership 👑",
+            "content": "Use `chown` to change who owns a file.\n\n```bash\n# Change owner to root\nsudo chown root secret.txt\n\n# Change owner and group to root\nsudo chown root:root secret.txt\n```"
+        },
+        {
+            "id": "s_l4_8",
+            "type": "quiz",
+            "title": "Permission Decode 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "What is the numeric (octal) equivalent of `rw-r-----`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "640",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "750",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "604",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "600",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Owner: rw- = 4+2+0 = 6. Group: r-- = 4+0+0 = 4. Others: --- = 0. Result: 640.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

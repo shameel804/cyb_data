@@ -1,0 +1,79 @@
+{
+    "id": "l5",
+    "chapterId": "ch_2",
+    "title": "HTTP/HTTPS: The Web's Language 🌍",
+    "description": "Understanding the conversation between your browser and the server.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Services",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "HyperText Transfer Protocol 📄",
+            "content": "# The Foundation of the Web\n\nEvery time you load a webpage, your browser sends an **HTTP Request** to a server, and the server sends back an **HTTP Response**.\n\n**It's a Stateless Protocol**: The server doesn't remember you from one request to the next. (This is why we have Cookies and Sessions).\n\n**Structure of a Request:**\n- **Method**: What do you want to do? (GET, POST, PUT, DELETE).\n- **Path**: The file or resource location (`/images/logo.png`).\n- **Headers**: Metadata about you (Browser type, Cookies, Accepted language).\n- **Body**: Data you are sending (usually in POST requests)."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "HTTP Methods 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "You are logging into a website with a username and password. Which HTTP method is almost certainly being used?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "GET",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "POST",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "HEAD",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "OPTIONS",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "POST is used to send data securely in the request body. GET would put the password in the URL (bad!).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Status Codes: The Server's Reply 🚦",
+            "content": "# Memorize These Ranges\n\nEvery response comes with a 3-digit code.\n\n- **2xx (Success)**: Everything worked. `200 OK`.\n- **3xx (Redirection)**: Go somewhere else. `301 Moved Permanently`, `302 Found`.\n- **4xx (Client Error)**: **You** messed up. \n    - `400 Bad Request`\n    - `403 Forbidden` (You aren't allowed to see this).\n    - `404 Not Found` (The classic broken link).\n- **5xx (Server Error)**: **They** messed up. `500 Internal Server Error`.\n\n**Hacker Insight**: A `403 Forbidden` is a challenge! It means there's a restricted area. Try changing the User-Agent header or accessing it from a different IP."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "HTTPS: The 'S' is for Security 🔒",
+            "content": "# HTTP + SSL/TLS Encryption\n\nHTTP sends data in **plain text**. Anyone on the same Wi-Fi network can read your passwords and credit card numbers using a tool like **Wireshark**.\n\n**HTTPS** wraps HTTP inside an encrypted tunnel using **SSL/TLS**.\n- **Port**: 443 (instead of 80).\n- **How it Works**: The server provides a **Certificate** proving its identity.\n\n**Warning**: If you see a warning about an 'Invalid Certificate', **stop**. Someone might be intercepting your traffic (MITM attack)."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Seeing HTTP with curl 📡",
+            "content": "Use `curl` to see the raw HTTP headers and response. This is essential for web hacking.",
+            "codeSnippet": "# Basic GET request showing headers\ncurl -I https://example.com\n\n# See full verbose output\ncurl -v https://example.com",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_6",
+            "type": "tip",
+            "title": "Pro Tip: User-Agent Spoofing 🚀",
+            "content": "The **User-Agent** header tells the server what browser you are using. Some servers block certain tools or mobile browsers.\n\nYou can change it with curl:\n```bash\ncurl -A \"Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X)\" https://example.com\n```\nThis makes your request look like it's coming from an iPhone."
+        }
+    ]
+}

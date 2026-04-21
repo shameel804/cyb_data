@@ -1,0 +1,73 @@
+{
+    "id": "l4",
+    "chapterId": "ch_2",
+    "title": "DNS: The Internet's Phonebook 📖",
+    "description": "How `google.com` becomes `142.250.185.46`.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Services",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Why We Need DNS 📞",
+            "content": "# Humans Use Words, Computers Use Numbers\n\nWould you rather type `142.250.185.46` or `google.com`?\n\n**DNS (Domain Name System)** is a hierarchical, distributed database that maps domain names to IP addresses.\n\n**Analogy**: You want to call 'Pizza Hut'. You open the **Phonebook (DNS)** and look up 'Pizza Hut' to find their number `555-1234` (IP Address). Then you dial the number."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "DNS Flow 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "When you type `cybrary.it` into your browser, what is the **first** place your computer checks for the IP address?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The Root DNS Servers",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Google's Public DNS (8.8.8.8)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The Local Hosts File (/etc/hosts)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The .IT Top-Level Domain Server",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The local hosts file is checked BEFORE any external DNS query is sent. This is a key persistence/redirection mechanism for malware.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "The DNS Hierarchy 🌳",
+            "content": "## How the Query Actually Travels (Recursive Resolution)\n\n1.  **Local Cache/Hosts File**: Your computer checks its own memory.\n2.  **Recursive Resolver**: Usually your ISP or a public DNS like `8.8.8.8` (Google).\n3.  **Root Server**: \"I don't know `cybrary.it`, but ask the **.IT** server.\"\n4.  **TLD Server (.IT)**: \"I don't know `cybrary`, but ask the **Authoritative Name Server** for that domain.\"\n5.  **Authoritative Server**: \"Ah yes, `cybrary.it` is at `104.18.20.121`.\"\n6.  **Answer Returns** to your browser."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "tip",
+            "title": "Hacking DNS: Common Attacks 🚀",
+            "content": "## Why Hackers Love DNS\n\n1.  **DNS Spoofing/Poisoning**: Tricking your computer into caching a fake IP address for a real website. (e.g., you type `bank.com` but it sends you to a hacker's fake site).\n2.  **DNS Tunneling**: Hiding data inside DNS queries to bypass firewalls. (Stealthy exfiltration).\n3.  **DDoS Amplification**: Sending a tiny query to a DNS server that results in a HUGE response sent to the victim."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Manual DNS Lookup: nslookup & dig 🛠️",
+            "content": "Forget the browser. Ask DNS directly from the terminal.",
+            "codeSnippet": "# Using nslookup (Simple)\nnslookup google.com\n\n# Using dig (Powerful Hacker Tool)\ndig google.com ANY\n\n# Specify a different DNS server (e.g., Cloudflare 1.1.1.1)\ndig @1.1.1.1 google.com",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        }
+    ]
+}

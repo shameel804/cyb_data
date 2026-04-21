@@ -1,0 +1,114 @@
+{
+    "id": "l2",
+    "chapterId": "ch_5",
+    "title": "Nmap: The Swiss Army Knife 🔪",
+    "description": "Master the essential flags and options of the industry-standard scanner.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Tools",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Why Nmap is King 👑",
+            "content": "# The Network Mapper\n\n**Nmap** (Network Mapper) is the de facto standard for network discovery and security auditing. It's been in development since 1997 and is included in **every** penetration testing distribution.\n\n**Core Capabilities:**\n- Host Discovery\n- Port Scanning\n- Version Detection\n- OS Fingerprinting\n- Scriptable Interaction (NSE)\n\n**Basic Syntax:**\n```bash\nnmap [scan type] [options] [target]\n```"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Target Specification 🎯",
+            "content": "# Telling Nmap What to Scan\n\nYou can specify targets in many flexible ways:\n\n- **Single IP**: `nmap 192.168.1.1`\n- **CIDR Notation**: `nmap 192.168.1.0/24` (entire class C)\n- **Range**: `nmap 192.168.1.1-50`\n- **List**: `nmap 192.168.1.1,15,20`\n- **Domain**: `nmap scanme.nmap.org`\n- **Exclude**: `nmap 192.168.1.0/24 --exclude 192.168.1.1`\n- **From File**: `nmap -iL targets.txt`"
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Target Syntax 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which Nmap command scans only the IP addresses 192.168.1.10, 192.168.1.11, and 192.168.1.12?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "nmap 192.168.1.10-12",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "nmap 192.168.1.10/12",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "nmap 192.168.1.10-12.0/24",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "nmap 192.168.1.10..12",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! The dash indicates a range of octets or full addresses.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Essential Nmap Flags (Cheat Sheet) 📋",
+            "content": "# Must-Know Options\n\n| Flag | Long Option | Purpose |\n| :--- | :--- | :--- |\n| `-sS` | (default) | TCP SYN Scan (Stealth) |\n| `-sT` | | TCP Connect Scan |\n| `-sU` | | UDP Scan |\n| `-sV` | `--version-intensity` | Service Version Detection |\n| `-O` | `--osscan-guess` | OS Fingerprinting |\n| `-A` | | Aggressive Scan (OS, Version, Scripts, Traceroute) |\n| `-p` | `--port` | Specify ports (e.g., `-p 22,80,443` or `-p-` for all) |\n| `-T` | `--timing-template` | Timing template (0-5) |\n| `-oN` / `-oG` | `--output` | Save results to file |\n| `-Pn` | | Skip host discovery (treat all hosts as up) |\n| `-n` | | Never do DNS resolution (faster) |"
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Timing Templates ⏱️",
+            "content": "# Speed vs. Stealth\n\nNmap provides **six timing templates** (0 to 5) that control how aggressively it scans.\n\n| Level | Name | Use Case |\n| :--- | :--- | :--- |\n| `-T0` | Paranoid | Extremely slow, evades IDS. (One probe every 5 minutes) |\n| `-T1` | Sneaky | Very slow, for IDS evasion. |\n| `-T2` | Polite | Slower, less bandwidth. |\n| `-T3` | **Normal** | **Default.** Good balance. |\n| `-T4` | Aggressive | Fast, assumes good network. |\n| `-T5` | Insane | Super fast, sacrifices accuracy. |\n\n**Hacker Tip**: Use `-T4` on internal networks. Use `-T2` or `-T1` on external engagements to avoid detection."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "code",
+            "title": "Output Formats 📄",
+            "content": "Always save your scan results! Nmap supports multiple output formats for different purposes.",
+            "codeSnippet": "# Normal output (human readable)\nnmap -oN scan_results.txt 192.168.56.101\n\n# Grepable output (easy parsing)\nnmap -oG scan_results.gnmap 192.168.56.101\n\n# XML output (for tools like Metasploit)\nnmap -oX scan_results.xml 192.168.56.101\n\n# All formats at once\nnmap -oA scan_results 192.168.56.101",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "Flag Recall 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "You need to scan all 65535 ports on a target as quickly as possible, without caring about detection. Which command is best?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "nmap -p- -T5 10.0.0.1",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "nmap -sV -T0 10.0.0.1",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "nmap -p 1-1000 10.0.0.1",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "nmap -O 10.0.0.1",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-p-` scans all ports, and `-T5` is the fastest timing template.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

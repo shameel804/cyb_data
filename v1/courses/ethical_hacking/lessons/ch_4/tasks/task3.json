@@ -1,0 +1,13 @@
+{
+    "id": "task3",
+    "chapterId": "ch_4",
+    "title": "Subdomain Discovery",
+    "description": "Find hidden subdomains using passive sources.",
+    "estimatedMinutes": 20,
+    "problemStatement": "# Objective\nUse **crt.sh** to passively discover subdomains for `tesla.com`.\n\n## Background\nCertificate Transparency logs record every SSL/TLS certificate issued. By querying these logs, we can see all subdomains that have had HTTPS enabled.\n\n## Steps\n1.  Open a web browser and navigate to `https://crt.sh`.\n2.  In the search bar, enter `%.tesla.com` (The `%` is a wildcard).\n3.  Review the results. \n4.  Identify at least **five** interesting subdomains that might not be obviously linked from the main website (e.g., `dev.tesla.com`, `vpn.tesla.com`, `shop.tesla.com`).\n\n## Deliverable\nA list of 5 discovered subdomains.",
+    "hints": [
+        "Look for subdomains containing words like: dev, stage, test, admin, portal, vpn, internal."
+    ],
+    "expectedOutput": "Example: `shop.tesla.com`, `auth.tesla.com`, `energysupport.tesla.com`, `fleet-api.tesla.com`, `ir.tesla.com`.",
+    "solutionCode": "1. Visit crt.sh\n2. Search for: %.tesla.com\n3. Scroll through the 'Common Name' column.\n4. (Optional) Use the 'Advanced' tab to download as JSON for parsing."
+}

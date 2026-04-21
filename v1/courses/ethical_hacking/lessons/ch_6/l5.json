@@ -1,0 +1,79 @@
+{
+    "id": "l5",
+    "chapterId": "ch_6",
+    "title": "Manual Verification & False Positives ✅",
+    "description": "Learn to validate scanner findings and avoid wasting time.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Validation",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Trust, But Verify 🤨",
+            "content": "# The Plague of False Positives\n\nA scanner might flag **CVE-2014-0160 (Heartbleed)** on port 443. You try the exploit... and nothing happens. Why?\n\n- **Backported Patches**: Linux vendors (RedHat, Ubuntu) often fix security bugs but **keep the old version number** (e.g., `OpenSSL 1.0.1e` but actually patched). The scanner only checks the banner, not the actual behavior.\n- **Firewall Interference**: A WAF might block the exploit payload but still return a normal banner.\n- **Scanner Error**: The regex pattern simply matched wrong.\n\n**Your Job**: Before writing a report saying 'Critical Vulnerability Found', **verify it**."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Manual Verification Techniques 🔧",
+            "content": "# How to Confirm a Vulnerability\n\n**1. Version Check via Exploit-DB**\nRead the exploit code comments. What are the **exact** vulnerable versions? Does your target match exactly? (`vsftpd 2.3.4` is vulnerable; `vsftpd 3.0.3` is not).\n\n**2. The 'Safe' Check**\nMany exploits have a **check mode** or you can modify the script to just test the condition without firing the payload.\n- Example: For SQL Injection, just add a single quote `'` and see if the page errors.\n- Example: For Heartbleed, use `nmap --script ssl-heartbleed` which safely checks without dumping memory.\n\n**3. Nmap NSE Scripts**\nNmap has hundreds of `vuln` scripts that are safer than running raw exploits.\n```bash\nnmap --script vuln 192.168.56.101\n```"
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Verification Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "A scanner reports 'Apache 2.4.49 - Path Traversal (CVE-2021-41773)'. You try the public exploit and get a 404 error. What is the most likely reason?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The scanner is always wrong.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The server is using a different operating system.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The version might be a backported patch (false positive) or the exploit path is different.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "You need to use a Windows exploit.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Backported patches are a common source of false positives in version-based scanning.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "Using Nmap Vuln Scripts 🛡️",
+            "content": "Nmap's `vuln` category scripts are designed to safely test for specific CVEs.",
+            "codeSnippet": "# Scan for common vulnerabilities (safe checks)\nnmap --script vuln 192.168.56.101\n\n# Check specifically for vsftpd backdoor\nnmap --script ftp-vsftpd-backdoor -p 21 192.168.56.101\n\n# Check for SMB vulnerabilities (EternalBlue)\nnmap --script smb-vuln-ms17-010 -p 445 192.168.56.101",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Writing the Finding 📝",
+            "content": "# From Analysis to Report\n\nIf you **verify** the vulnerability, document it.\n\n**What to Include in Notes:**\n- **CVE ID** (e.g., CVE-2011-2523)\n- **Affected Service** (e.g., FTP on Port 21)\n- **CVSS Score** (e.g., 10.0 Critical)\n- **Description**: One sentence on impact.\n- **Evidence**: Screenshot of Nmap version output OR successful check script output.\n- **Remediation**: Upgrade to version X or disable service.\n\n**Example:**\n> *Critical: vsftpd 2.3.4 Backdoor (CVE-2011-2523)*\n> *The target is running vsftpd 2.3.4, which contains a known backdoor allowing remote code execution. Verified via `nmap --script ftp-vsftpd-backdoor`.*"
+        },
+        {
+            "id": "s_l5_6",
+            "type": "tip",
+            "title": "Pro Tip: The 'Probably Not' List 🚀",
+            "content": "## Don't Waste Time on These\n\nSome findings are almost always false positives or unexploitable:\n- **SSL/TLS Weak Ciphers**: Yes, it's 'Medium' risk, but it rarely leads to a shell. Deprioritize.\n- **Self-Signed Certificates**: Informational only. Every internal server uses them.\n- **HTTP TRACE Method Enabled**: Old XST attacks are dead in modern browsers.\n\nFocus on **Remote Code Execution (RCE)**, **SQL Injection**, and **Default Credentials**."
+        }
+    ]
+}

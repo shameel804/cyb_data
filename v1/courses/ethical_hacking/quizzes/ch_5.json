@@ -1,0 +1,252 @@
+{
+    "id": "quiz_ch_5",
+    "chapterId": "ch_5",
+    "title": "Chapter 5 Quiz",
+    "description": "Test your knowledge of scanning and enumeration techniques.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which TCP flag is sent by a client to initiate a connection?",
+            "options": [
+                "ACK",
+                "RST",
+                "SYN",
+                "FIN"
+            ],
+            "correctAnswer": 2,
+            "explanation": "SYN (Synchronize) initiates a TCP connection as part of the three-way handshake."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What is the primary advantage of a TCP SYN Scan (-sS) over a TCP Connect Scan (-sT)?",
+            "options": [
+                "It works on all operating systems.",
+                "It does not require root privileges.",
+                "It is stealthier and often not logged by applications.",
+                "It is faster on UDP ports."
+            ],
+            "correctAnswer": 2,
+            "explanation": "SYN scan never completes the handshake, so applications don't log the connection."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "A FIN scan (-sF) reliably identifies open ports on Windows systems.",
+            "correctAnswer": false,
+            "explanation": "False. Windows does not follow RFC 793 strictly and replies with RST regardless of port state."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "In Nmap output, a port state of 'filtered' typically indicates that a ______ is blocking the probe.",
+            "options": [
+                "service",
+                "firewall",
+                "router",
+                "switch"
+            ],
+            "correctAnswer": "firewall",
+            "explanation": "A firewall or packet filter is dropping the packets, preventing Nmap from determining port state."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which Nmap flag is used to perform service and application version detection?",
+            "options": [
+                "-O",
+                "-sS",
+                "-sV",
+                "-A"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`-sV` enables version detection to identify service names and version numbers."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "You want to scan all 65535 TCP ports on a target as quickly as possible. Which command is appropriate?",
+            "options": [
+                "nmap -p 1-1000 -T5 target",
+                "nmap -p- -T4 target",
+                "nmap -sU -T0 target",
+                "nmap -O target"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-p-` specifies all ports, and `-T4` provides aggressive timing for speed."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "The `-Pn` flag tells Nmap to skip the host discovery phase and treat all specified hosts as online.",
+            "correctAnswer": true,
+            "explanation": "True. `-Pn` disables host discovery (no ping) and proceeds directly to port scanning."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which tool is specifically designed for comprehensive SMB enumeration, including user and share listing?",
+            "options": [
+                "snmpwalk",
+                "enum4linux",
+                "ssh-audit",
+                "netcat"
+            ],
+            "correctAnswer": 1,
+            "explanation": "enum4linux is a Perl script that automates SMB enumeration techniques."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What is a 'NULL session' in the context of SMB?",
+            "options": [
+                "An encrypted connection.",
+                "A crashed service.",
+                "A connection attempt with empty username and password.",
+                "A specific file share name."
+            ],
+            "correctAnswer": 2,
+            "explanation": "A NULL session uses no credentials and can reveal sensitive information on misconfigured systems."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "The default community string for read-only SNMP access is commonly:",
+            "options": [
+                "admin",
+                "private",
+                "public",
+                "secret"
+            ],
+            "correctAnswer": 2,
+            "explanation": "'public' is the well-known default read-only community string."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which Nmap NSE script category is safe and non-intrusive?",
+            "options": [
+                "vuln",
+                "exploit",
+                "safe",
+                "intrusive"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The 'safe' category contains scripts that won't crash services or alter data."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "You run `nmap -sU 10.0.0.1` and get many ports as `open|filtered`. What does this indicate?",
+            "options": [
+                "All ports are open.",
+                "Nmap cannot distinguish between an open port and a filtered one, common with UDP scans.",
+                "The target is a Windows machine.",
+                "The scan completed successfully."
+            ],
+            "correctAnswer": 1,
+            "explanation": "UDP scanning is unreliable; lack of response means Nmap can't tell if it's open or blocked."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What is the purpose of the `--badsum` flag in Nmap?",
+            "options": [
+                "To crash the target.",
+                "To send packets with invalid checksums to test firewall inspection.",
+                "To correct packet corruption.",
+                "To encrypt the scan traffic."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Bad checksums help determine if a firewall is inspecting packets or just statelessly filtering."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Which command would you use to perform a stealth SYN scan on the top 100 most common ports?",
+            "options": [
+                "nmap -sS --top-ports 100 target",
+                "nmap -sT -p 1-100 target",
+                "nmap -sU --top-ports 100 target",
+                "nmap -O target"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`-sS` is SYN scan, `--top-ports 100` limits to the 100 most common ports."
+        },
+        {
+            "id": "q15",
+            "type": "true_false",
+            "question": "The TTL value in a ping reply is a definitive indicator of the remote operating system.",
+            "correctAnswer": false,
+            "explanation": "False. TTL is a hint but can be affected by network hops and is not reliable for OS identification."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which Nmap flag saves output in all three formats (Normal, Grepable, XML) at once?",
+            "options": [
+                "-oA",
+                "-oN",
+                "-oX",
+                "-oG"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`-oA` (Output All) generates .nmap, .gnmap, and .xml files with the specified basename."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "You want to enumerate FTP anonymous login capability. Which Nmap script would you use?",
+            "options": [
+                "ftp-brute",
+                "ftp-anon",
+                "ftp-vsftpd-backdoor",
+                "ftp-proftpd-backdoor"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`ftp-anon` checks if the FTP server allows anonymous access."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which evasion technique involves sending scans from multiple fake IP addresses alongside your real IP?",
+            "options": [
+                "Fragmentation",
+                "Timing slowdown",
+                "Decoys (-D)",
+                "Source port manipulation"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Decoys flood the target logs with multiple source IPs, obscuring the real attacker."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is the purpose of the Nmap Scripting Engine (NSE)?",
+            "options": [
+                "To compile custom exploits.",
+                "To automate advanced discovery, vulnerability detection, and exploitation tasks.",
+                "To create graphical reports.",
+                "To encrypt Nmap traffic."
+            ],
+            "correctAnswer": 1,
+            "explanation": "NSE extends Nmap's functionality with scripts for enumeration, brute force, and vulnerability checks."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which command is used to perform a manual banner grab on port 22 using netcat?",
+            "options": [
+                "nc 192.168.1.1 22",
+                "nc -l 22",
+                "nc -v 192.168.1.1 80",
+                "nc -u 192.168.1.1 22"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`nc <IP> <port>` initiates a TCP connection, allowing you to read the banner."
+        }
+    ]
+}

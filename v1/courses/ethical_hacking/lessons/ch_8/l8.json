@@ -1,0 +1,79 @@
+{
+    "id": "l8",
+    "chapterId": "ch_8",
+    "title": "Web Enumeration & Burp Suite Basics 🛠️",
+    "description": "Master the essential tools for mapping and intercepting web traffic.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Tools",
+    "slides": [
+        {
+            "id": "s_l8_1",
+            "type": "text",
+            "title": "Web Enumeration: Finding Hidden Content 🕵️",
+            "content": "# Beyond the Surface\n\nBefore attacking a web app, you need to map its **attack surface**—all accessible files and directories.\n\n**Tools of the Trade:**\n- **Gobuster / Dirb**: Directory and file brute-forcing.\n- **ffuf**: Fast web fuzzer.\n- **Feroxbuster**: Recursive content discovery.\n\n**Command Example (Gobuster):**\n```bash\ngobuster dir -u http://192.168.56.101 -w /usr/share/wordlists/dirb/common.txt -x php,txt,html\n```\n- `-u` : Target URL.\n- `-w` : Wordlist.\n- `-x` : Extensions to append.\n\n**Key Wordlists:**\n- `/usr/share/wordlists/dirb/common.txt` (Common dirs)\n- `/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt` (Larger)\n- `/usr/share/seclists/Discovery/Web_Content/` (SecLists)"
+        },
+        {
+            "id": "s_l8_2",
+            "type": "text",
+            "title": "Burp Suite: The Web Hacker's Best Friend 🎒",
+            "content": "# Intercept, Modify, Repeat\n\n**Burp Suite** is an integrated platform for performing security testing of web applications. The **Community Edition** (free) is included in Kali.\n\n**Core Components:**\n- **Proxy**: Intercepts HTTP traffic between browser and server. (The heart of Burp).\n- **Repeater**: Manually modify and resend individual requests.\n- **Intruder**: Automate customized attacks (fuzzing, brute force).\n- **Decoder**: Encode/decode data (URL, Base64, Hex).\n- **Comparer**: Diff two requests/responses.\n\n**Setting Up Proxy:**\n1.  Open Burp Suite -> Proxy -> Options -> Check `127.0.0.1:8080` is running.\n2.  Configure browser to use `127.0.0.1:8080` proxy.\n3.  Visit `http://burpsuite` and install the CA Certificate to avoid SSL warnings."
+        },
+        {
+            "id": "s_l8_3",
+            "type": "quiz",
+            "title": "Burp Suite Function 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l8_1",
+                "type": "multiple_choice",
+                "question": "Which Burp Suite tool is used to manually craft and resend HTTP requests to test parameter variations?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Proxy",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Repeater",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Intruder",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Scanner",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Repeater allows for manual modification and resending of requests.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l8_4",
+            "type": "text",
+            "title": "Using Burp Repeater Effectively 🔁",
+            "content": "# Manual Testing Workflow\n\n1.  **Proxy -> Intercept**: Turn on interception, browse the target.\n2.  **Find an interesting request** (login, search, file upload).\n3.  **Right-click -> Send to Repeater**.\n4.  **In Repeater tab**: Modify parameters (e.g., change `id=1` to `id=2'`).\n5.  **Click 'Send'** and analyze the **Response**.\n\n**Why Repeater is Better than Browser:**\n- You can edit **any header** (Host, User-Agent, Referer).\n- You can send **malformed** requests that a browser would normalize.\n- You can easily switch between `GET` and `POST`."
+        },
+        {
+            "id": "s_l8_5",
+            "type": "code",
+            "title": "Gobuster Example 🧪",
+            "content": "Find hidden directories on Metasploitable's web server.",
+            "codeSnippet": "# Scan for common directories and PHP files\ngobuster dir -u http://192.168.56.101 -w /usr/share/wordlists/dirb/common.txt -x php,txt,html -o gobuster_scan.txt\n\n# Expected findings:\n# /dvwa (Damn Vulnerable Web App)\n# /mutillidae (Mutillidae)\n# /phpmyadmin (Database Admin)\n# /tikiwiki (TikiWiki CMS)",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l8_6",
+            "type": "tip",
+            "title": "Pro Tip: Burp Extensions 🚀",
+            "content": "## Enhancing Burp Community Edition\n\nEven without the Pro version, you can add powerful features via the **BApp Store**:\n- **Autorize**: Automates authorization testing (IDOR).\n- **Logger++**: Advanced logging of all traffic.\n- **Retire.js**: Detect outdated JavaScript libraries.\n- **Wsdler**: Parse WSDL files for SOAP API testing."
+        }
+    ]
+}

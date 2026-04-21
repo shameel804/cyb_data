@@ -1,0 +1,76 @@
+{
+    "id": "l1",
+    "chapterId": "ch_5",
+    "title": "Scanning Fundamentals & TCP Flags 🚦",
+    "description": "Learn the TCP three-way handshake and how scan types manipulate flags.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "What is Scanning? 📡",
+            "content": "# The Second Phase of Hacking\n\nAfter **Reconnaissance**, we move to **Scanning**. This is where we **actively interact** with the target to identify:\n\n- **Live Hosts**: Which IP addresses are alive?\n- **Open Ports**: Which services are listening?\n- **Service Versions**: What software is running?\n- **Operating System**: Is it Windows, Linux, or something else?\n\n**Analogy**: If Recon was watching the bank from across the street, Scanning is walking up to the building and **rattling every door and window handle** to see which ones are unlocked."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "TCP Three-Way Handshake 🤝",
+            "content": "# The Foundation of TCP Connections\n\nBefore any data is sent over TCP, a **three-way handshake** establishes a reliable connection.\n\n**Step 1: SYN**\nClient: *\"Hey, I'd like to talk. Here's a random sequence number (SYN).\"*\n\n**Step 2: SYN-ACK**\nServer: *\"Sure, I'm listening. I acknowledge your number (ACK) and here's mine (SYN).\"*\n\n**Step 3: ACK**\nClient: *\"Got it. Let's chat.\"*\n\n**Why This Matters**: Every port scanning technique is just a clever **variation** of this handshake."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Handshake Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the correct order of packets in a TCP three-way handshake?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "ACK -> SYN -> SYN-ACK",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "SYN -> SYN-ACK -> ACK",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "SYN -> ACK -> RST",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "RST -> SYN -> ACK",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! SYN, then SYN-ACK, then ACK completes the connection.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "TCP Flags: The Control Bits 🎛️",
+            "content": "# Understanding the Header\n\nTCP packets have **flags** that control the state of the connection. Hackers manipulate these to probe for open ports without fully connecting.\n\n| Flag | Name | Purpose |\n| :--- | :--- | :--- |\n| **SYN** | Synchronize | Initiate a connection. |\n| **ACK** | Acknowledgment | Confirm receipt of data. |\n| **RST** | Reset | Abruptly close a connection. |\n| **FIN** | Finish | Gracefully close a connection. |\n| **PSH** | Push | Send data immediately. |\n| **URG** | Urgent | Prioritize data. |\n\n**Hacker Insight**: Sending a **SYN** and receiving a **RST** means the port is **closed**. Sending a **SYN** and receiving a **SYN-ACK** means the port is **open**."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Port States in Nmap 📊",
+            "content": "# What the Results Mean\n\nWhen you scan a port, Nmap classifies it into one of six states:\n\n- **open**: A service is actively listening. **This is your target.**\n- **closed**: Port is reachable, but nothing is listening.\n- **filtered**: A firewall, filter, or other network obstacle is blocking the probe.\n- **unfiltered**: Port is accessible, but Nmap cannot determine open/closed (rare).\n- **open|filtered**: Nmap can't distinguish between open and filtered (common in UDP scans).\n- **closed|filtered**: Nmap can't distinguish between closed and filtered."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Pro Tip: The 'Filtered' Puzzle 🚀",
+            "content": "## What Does 'Filtered' Mean for an Attacker?\n\nIf you see `filtered`, it doesn't mean *'give up'*. It means:\n- There might be a **firewall** dropping your packets.\n- You might need to change **scan type** (e.g., SYN scan to FIN scan).\n- You might be **blocked by IP**. Try a different source IP or use **decoys**.\n\nAlways investigate `filtered` ports. They often hide the juiciest services."
+        }
+    ]
+}

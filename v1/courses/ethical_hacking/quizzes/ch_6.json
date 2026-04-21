@@ -1,0 +1,246 @@
+{
+    "id": "quiz_ch_6",
+    "chapterId": "ch_6",
+    "title": "Chapter 6 Quiz",
+    "description": "Test your knowledge of vulnerability analysis concepts and tools.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary purpose of the Vulnerability Analysis phase?",
+            "options": [
+                "To find open ports",
+                "To map discovered services to known weaknesses and assess exploitability",
+                "To gain unauthorized access",
+                "To cover tracks"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Vulnerability analysis bridges scanning and exploitation by identifying known issues with discovered software versions."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which organization maintains the National Vulnerability Database (NVD)?",
+            "options": [
+                "Offensive Security",
+                "MITRE",
+                "NIST",
+                "ISO"
+            ],
+            "correctAnswer": 2,
+            "explanation": "NIST (National Institute of Standards and Technology) manages the NVD."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "CVSS scores range from 1 to 10.",
+            "correctAnswer": false,
+            "explanation": "False. CVSS scores range from 0.0 to 10.0."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "A CVSS score of 9.2 is classified as ______ severity.",
+            "options": [
+                "Low",
+                "Medium",
+                "High",
+                "Critical"
+            ],
+            "correctAnswer": "Critical",
+            "explanation": "Scores 9.0-10.0 are Critical."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What does 'CVE' stand for?",
+            "options": [
+                "Critical Vulnerability Evaluation",
+                "Common Vulnerabilities and Exposures",
+                "Computer Virus Encyclopedia",
+                "Certified Vulnerability Expert"
+            ],
+            "correctAnswer": 1,
+            "explanation": "CVE is a dictionary of publicly known information security vulnerabilities and exposures."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which resource is best for finding ready-to-use exploit code for a known CVE?",
+            "options": [
+                "NVD",
+                "CVSS Calculator",
+                "Exploit-DB",
+                "Shodan"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Exploit-DB archives working proof-of-concept exploits."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "SearchSploit is an online website requiring an internet connection.",
+            "correctAnswer": false,
+            "explanation": "False. SearchSploit is a command-line tool that searches an offline copy of Exploit-DB on Kali Linux."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which of the following is a metric in the CVSS v3.1 Base Score Exploitability group?",
+            "options": [
+                "Confidentiality Impact",
+                "Attack Vector",
+                "Report Confidence",
+                "Collateral Damage Potential"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Attack Vector (Network, Adjacent, Local, Physical) is an Exploitability metric."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What is a 'False Positive' in vulnerability scanning?",
+            "options": [
+                "A vulnerability that is correctly identified.",
+                "A finding reported by the scanner that does not actually exist.",
+                "A missed vulnerability.",
+                "A critical vulnerability."
+            ],
+            "correctAnswer": 1,
+            "explanation": "A false positive is an incorrect alert indicating a vulnerability where none exists."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Why might a scanner flag a patched system as vulnerable (False Positive)?",
+            "options": [
+                "The scanner is malicious.",
+                "The vendor backported the security fix but kept the same version number.",
+                "The CVSS score was miscalculated.",
+                "The target is offline."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Backporting patches without incrementing the version number is a common cause of false positives."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which tool is a dedicated open-source web server vulnerability scanner?",
+            "options": [
+                "OpenVAS",
+                "Nessus",
+                "Nikto",
+                "Nmap"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Nikto specializes in web server checks (CGIs, outdated software, dangerous files)."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What command would you use to search the Exploit-DB offline archive for 'apache 2.4.49'?",
+            "options": [
+                "searchsploit apache 2.4.49",
+                "grep apache /usr/share/exploitdb/",
+                "exploit-db --search apache",
+                "find / -name apache"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`searchsploit` is the correct Kali command-line tool."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "OpenVAS is a commercial, closed-source vulnerability scanner.",
+            "correctAnswer": false,
+            "explanation": "False. OpenVAS is the open-source fork of Nessus."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is the main disadvantage of running Nikto against a production web server?",
+            "options": [
+                "It requires a Windows license.",
+                "It is very slow.",
+                "It generates a high volume of HTTP requests and is easily detected.",
+                "It only works on Apache."
+            ],
+            "correctAnswer": 2,
+            "explanation": "Nikto is extremely 'noisy' and will fill server logs and trigger IDS alerts."
+        },
+        {
+            "id": "q15",
+            "type": "fill_blank",
+            "question": "The CVE ID format consists of 'CVE-' followed by a four-digit year and a sequence number of at least ______ digits.",
+            "options": [
+                "2",
+                "3",
+                "4",
+                "5"
+            ],
+            "correctAnswer": "4",
+            "explanation": "CVE IDs use a minimum of 4 digits for the sequence number (e.g., CVE-2021-44228)."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which Nmap script category is best suited for safely testing known vulnerabilities?",
+            "options": [
+                "discovery",
+                "vuln",
+                "exploit",
+                "brute"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The `vuln` category contains scripts that check for specific vulnerabilities, often without causing harm."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "You want to verify if a target is vulnerable to EternalBlue (MS17-010). Which Nmap script would you use?",
+            "options": [
+                "smb-enum-shares",
+                "smb-os-discovery",
+                "smb-vuln-ms17-010",
+                "ssl-heartbleed"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`smb-vuln-ms17-010` specifically checks for the EternalBlue SMB vulnerability."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which of the following is NOT a typical step in the vulnerability analysis workflow?",
+            "options": [
+                "Consolidate service version findings",
+                "Research CVEs for each version",
+                "Exploit the vulnerability to gain a shell",
+                "Validate findings to eliminate false positives"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Exploitation is the *next* phase. Vulnerability analysis is research and verification, not exploitation."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "A 'Zero-Day' vulnerability refers to a flaw that is publicly known but has no available patch.",
+            "correctAnswer": false,
+            "explanation": "False. A Zero-Day is a vulnerability unknown to the vendor or public. Once known, it's no longer 'Zero-Day'."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "In a professional penetration test report, what should be included for a verified critical vulnerability finding?",
+            "options": [
+                "Only the CVE number.",
+                "CVE ID, CVSS score, description, evidence, and remediation advice.",
+                "Only the exploit code used.",
+                "The name of the scanner used."
+            ],
+            "correctAnswer": 1,
+            "explanation": "A complete finding includes identification, risk rating, proof of concept (evidence), and fix recommendations."
+        }
+    ]
+}

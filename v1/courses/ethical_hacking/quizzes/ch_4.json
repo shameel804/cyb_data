@@ -1,0 +1,246 @@
+{
+    "id": "quiz_ch_4",
+    "chapterId": "ch_4",
+    "title": "Chapter 4 Quiz",
+    "description": "Test your knowledge of Footprinting and Reconnaissance techniques.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary difference between passive and active reconnaissance?",
+            "options": [
+                "Passive uses tools, active uses manual methods.",
+                "Passive does not interact directly with the target's systems; active does.",
+                "Passive is illegal; active is legal.",
+                "Passive is faster than active."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Passive recon uses third-party data sources; active recon involves touching the target's network."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which Google search operator would you use to find PDF files on `example.com`?",
+            "options": [
+                "site:example.com type:pdf",
+                "site:example.com filetype:pdf",
+                "domain:example.com file:pdf",
+                "inurl:example.com pdf"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The correct syntax is `site:example.com filetype:pdf`."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "Shodan is a search engine that indexes the content of web pages like Google does.",
+            "correctAnswer": false,
+            "explanation": "False. Shodan indexes service banners and metadata from open ports, not web page content."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which DNS record type reveals the servers responsible for handling email for a domain?",
+            "options": [
+                "A",
+                "MX",
+                "CNAME",
+                "NS"
+            ],
+            "correctAnswer": 1,
+            "explanation": "MX (Mail Exchanger) records specify the mail servers."
+        },
+        {
+            "id": "q5",
+            "type": "fill_blank",
+            "question": "A successful DNS Zone Transfer (AXFR) allows an attacker to retrieve a full list of ______ for a domain.",
+            "options": [
+                "Usernames",
+                "Passwords",
+                "Subdomains and IP addresses",
+                "Email content"
+            ],
+            "correctAnswer": "Subdomains and IP addresses",
+            "explanation": "A zone transfer provides a complete copy of the DNS zone file."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What information can be found in a WHOIS lookup?",
+            "options": [
+                "The current website content",
+                "The domain registrar and creation date",
+                "The server's operating system",
+                "Open ports on the server"
+            ],
+            "correctAnswer": 1,
+            "explanation": "WHOIS provides registration data, not technical server details."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "Reverse DNS (PTR) lookups map an IP address back to a domain name.",
+            "correctAnswer": true,
+            "explanation": "True. A PTR record provides the hostname associated with an IP."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which tool is specifically designed for finding email addresses associated with a domain?",
+            "options": [
+                "Nmap",
+                "theHarvester",
+                "Gobuster",
+                "WhatWeb"
+            ],
+            "correctAnswer": 1,
+            "explanation": "theHarvester scrapes public sources for emails and subdomains."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What is an ASN (Autonomous System Number) used for?",
+            "options": [
+                "Identifying a specific server on a network",
+                "Identifying a group of IP networks managed by one entity",
+                "Encrypting DNS queries",
+                "Assigning MAC addresses"
+            ],
+            "correctAnswer": 1,
+            "explanation": "ASNs are used for routing and identifying all IP blocks owned by an organization."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "You run the command `whatweb example.com`. What type of information does it provide?",
+            "options": [
+                "Open ports",
+                "Technology stack (CMS, web server, JS libraries)",
+                "Email addresses",
+                "DNS zone transfers"
+            ],
+            "correctAnswer": 1,
+            "explanation": "WhatWeb fingerprints the technology running a website."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "The file `robots.txt` is a secure location to store sensitive directories because search engines will not index them.",
+            "correctAnswer": false,
+            "explanation": "False. `robots.txt` is publicly accessible and is the first place an attacker looks for hidden directories."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which tool is used to extract hidden metadata from documents and images?",
+            "options": [
+                "exiftool",
+                "curl",
+                "whois",
+                "dirb"
+            ],
+            "correctAnswer": 0,
+            "explanation": "exiftool reads and writes metadata in files."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What is the purpose of the `-I` flag in the `curl -I https://example.com` command?",
+            "options": [
+                "Ignore SSL errors",
+                "Fetch only the HTTP headers",
+                "Include the response body",
+                "Specify an IP address"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-I` or `--head` fetches the headers only, which is great for server fingerprinting."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Which of the following is a risk associated with Directory Bruteforcing (Gobuster/Dirb)?",
+            "options": [
+                "It provides incomplete results.",
+                "It generates a high volume of requests and can trigger IDS/WAF blocks.",
+                "It requires physical access to the server.",
+                "It only works on Windows servers."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Bruteforcing is noisy and easily detected."
+        },
+        {
+            "id": "q15",
+            "type": "fill_blank",
+            "question": "The Internet Archive's service that stores historical snapshots of websites is called the ______ Machine.",
+            "options": [
+                "Wayback",
+                "Time",
+                "Archive",
+                "History"
+            ],
+            "correctAnswer": "Wayback",
+            "explanation": "The Wayback Machine (archive.org) is essential for finding old, forgotten content."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which header often reveals the specific version of PHP running on a server?",
+            "options": [
+                "Server",
+                "X-Powered-By",
+                "Content-Type",
+                "Cache-Control"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`X-Powered-By` is a non-standard header often left enabled in PHP configurations."
+        },
+        {
+            "id": "q17",
+            "type": "true_false",
+            "question": "Using `theHarvester` to find email addresses on LinkedIn is an example of active reconnaissance.",
+            "correctAnswer": false,
+            "explanation": "False. Scraping public social media profiles is passive; you are not touching the target's network."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "A file named `.env` accidentally uploaded to a public website likely contains:",
+            "options": [
+                "CSS stylesheets",
+                "Environment variables and secret keys (Database passwords)",
+                "JavaScript code",
+                "Server logs"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`.env` files store configuration secrets and are a critical finding."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "You discover a subdomain `dev.example.com` that requires authentication. What is a logical next step in reconnaissance?",
+            "options": [
+                "Give up, it's locked down.",
+                "Search for credentials leaked on GitHub using the domain name.",
+                "Launch a DDoS attack to take it offline.",
+                "Run `nmap -A` against the main website."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Checking public repositories for accidental leaks is a passive and effective next step."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is the primary danger of publishing a JPG photo without stripping metadata?",
+            "options": [
+                "The image quality is reduced.",
+                "The file size is larger.",
+                "It may contain GPS coordinates revealing the photographer's exact location.",
+                "The photo can be viewed by anyone."
+            ],
+            "correctAnswer": 2,
+            "explanation": "EXIF data in photos often includes precise GPS coordinates, posing a privacy and security risk."
+        }
+    ]
+}

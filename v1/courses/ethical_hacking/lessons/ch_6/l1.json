@@ -1,0 +1,70 @@
+{
+    "id": "l1",
+    "chapterId": "ch_6",
+    "title": "What is Vulnerability Analysis? 🧐",
+    "description": "The bridge between scanning and exploitation.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Phase 3: Vulnerability Analysis 🔬",
+            "content": "# From Ports to Problems\n\nYou've scanned the target. You know port 80 is open and running Apache 2.4.49. Now what?\n\n**Vulnerability Analysis** is the process of determining whether those discovered services have **known weaknesses** that can be exploited.\n\n**Analogy**: Scanning told you the house has a window. Vulnerability Analysis tells you *that specific window model has a faulty latch that can be opened with a credit card.*\n\n**This Phase Answers Three Questions:**\n1. Is this software version **vulnerable**? (Research)\n2. How **severe** is the vulnerability? (Scoring)\n3. Is there a **working exploit** available? (Feasibility)"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Analysis Purpose 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the primary goal of Vulnerability Analysis?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To find open ports on a target.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To map discovered services to known weaknesses and assess exploitability.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To gain unauthorized access to the system.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To enumerate usernames.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! It's the research phase connecting 'what's running' to 'what's broken'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Types of Vulnerabilities 🧩",
+            "content": "# Common Weakness Categories\n\nVulnerabilities come in many flavors. Knowing the category helps you understand the impact.\n\n- **Misconfigurations**: Default passwords, unnecessary services, weak permissions.\n- **Unpatched Software**: Running outdated versions with known bugs (e.g., Apache 2.4.49).\n- **Zero-Days**: Vulnerabilities unknown to the vendor/public. (Rare, expensive, outside scope of this course).\n- **Insecure Design**: Flaws in the logic of the application (e.g., missing authentication checks).\n- **Information Disclosure**: Leaking sensitive data like version numbers, internal IPs, or credentials."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Analysis Workflow 🔄",
+            "content": "# From Scan to Strategy\n\n1.  **Consolidate Findings**: Gather service/version info from Nmap, enum4linux, etc.\n2.  **Research**: Search CVE databases for each software version.\n3.  **Prioritize**: Rank findings by **severity** and **exploit availability**.\n4.  **Validate**: Confirm the vulnerability actually exists (avoid false positives).\n5.  **Exploit (Next Chapter)**: Use the vulnerability to gain access.\n\n**Warning**: Skipping the validation step leads to **false positives**—wasting time trying to exploit something that isn't actually there."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "tip",
+            "title": "Pro Tip: The 'Low-Hanging Fruit' 🚀",
+            "content": "## Start with the Easiest Wins\n\nAs a penetration tester, time is limited. Start with:\n- **Default credentials** (admin/admin, root/toor).\n- **Anonymous access** (FTP, SMB).\n- **Critical CVEs with public exploits** (EternalBlue, Shellshock).\n\nIf these work, you might not need to dig into complex application logic bugs."
+        }
+    ]
+}

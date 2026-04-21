@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_4",
+    "title": "DNS Enumeration Lab",
+    "description": "Use dig and nslookup on `zonetransfer.me`.",
+    "estimatedMinutes": 25,
+    "problemStatement": "# Objective\nPractice DNS interrogation techniques on the legal test domain `zonetransfer.me`.\n\n## Steps\n1.  Find the **Name Servers (NS)** for `zonetransfer.me`.\n2.  Find the **Mail Exchanger (MX)** records.\n3.  Find the **TXT/SPF** records. Look for any IP addresses in the record.\n4.  Attempt a **Zone Transfer** using the primary name server found in step 1.\n5.  Count how many unique subdomains/A records were returned in the transfer.\n\n## Deliverable\nA screenshot or text log showing the successful AXFR output.",
+    "hints": [
+        "Use `dig zonetransfer.me NS` to find name servers.",
+        "Use `dig axfr @[NAMESERVER] zonetransfer.me` for the transfer."
+    ],
+    "expectedOutput": "Successful zone transfer returning dozens of records like 'office.zonetransfer.me'.",
+    "solutionCode": "# Step 1: Find NS\ndig zonetransfer.me NS\n# Output: nsztm1.digi.ninja, nsztm2.digi.ninja\n\n# Step 2: MX\ndig zonetransfer.me MX\n\n# Step 3: TXT\ndig zonetransfer.me TXT\n\n# Step 4: Zone Transfer\ndig axfr @nsztm1.digi.ninja zonetransfer.me"
+}

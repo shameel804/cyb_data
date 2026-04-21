@@ -1,0 +1,79 @@
+{
+    "id": "l3",
+    "chapterId": "ch_9",
+    "title": "Setting Up a Wireless Lab & Monitor Mode 📻",
+    "description": "Configure your wireless adapter for packet injection and monitoring.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Setup",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "You Need the Right Hardware 🛠️",
+            "content": "# Not All Wi-Fi Cards Are Created Equal\n\nYour built-in laptop Wi-Fi card is **useless** for hacking. It can only connect to networks, not **inject** packets or **monitor** all traffic.\n\n**Required Capabilities:**\n- **Monitor Mode**: Listen to all wireless traffic in the air, not just traffic destined for you.\n- **Packet Injection**: Send custom forged packets (e.g., deauthentication frames).\n\n**Recommended Chipsets (Kali Linux Compatible):**\n- **Atheros AR9271** (e.g., Alfa AWUS036NHA) - The gold standard. Works out of the box.\n- **Ralink RT3070** (e.g., Alfa AWUS036NH) - Older, reliable.\n- **Realtek RTL8812AU** (e.g., Alfa AWUS036ACH) - Supports 5 GHz and 802.11ac.\n\n**Analogy**: A normal Wi-Fi card is like a car radio—you can only listen to one station at a time. A monitor mode card is like a police scanner—you hear **all** frequencies simultaneously."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Hardware Requirements 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Why can't you use your laptop's built-in Wi-Fi card for packet injection attacks?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It doesn't support 5 GHz.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The drivers and firmware typically do not support monitor mode or packet injection.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It consumes too much power.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It is permanently locked to a specific country code.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Consumer Wi-Fi firmware is stripped of low-level frame injection capabilities.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Setting Up Your USB Wi-Fi Adapter in Kali 🔌",
+            "content": "# Step-by-Step\n\n**1. Connect the Adapter to Your VM**\n- In VirtualBox: Devices -> USB -> Select your Alfa adapter.\n- You may need to install the **VirtualBox Extension Pack** for USB 3.0 support.\n\n**2. Verify Detection**\n```bash\nlsusb\n# Look for 'Atheros Communications' or 'Realtek'\n```\n\n**3. Check Wireless Interface Name**\n```bash\niwconfig\n# Look for interface like 'wlan0' or 'wlan1'\n```\n\n**4. Enable Monitor Mode**\n```bash\nsudo airmon-ng start wlan0\n```\n\nThis creates a new virtual interface, usually `wlan0mon`. **You will use `wlan0mon` for all attacks.**"
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "Monitor Mode Commands 💻",
+            "content": "Essential commands for managing monitor mode.",
+            "codeSnippet": "# Check interface status\niwconfig\n\n# Start monitor mode (kills interfering processes)\nsudo airmon-ng check kill\nsudo airmon-ng start wlan0\n\n# Verify monitor mode is active\niwconfig wlan0mon\n# Look for: Mode:Monitor\n\n# Stop monitor mode and return to managed mode\nsudo airmon-ng stop wlan0mon\nsudo systemctl restart NetworkManager",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "warning",
+            "title": "Troubleshooting: 'No Such Device' ⚠️",
+            "content": "## USB Passthrough Issues\n\nIf Kali doesn't see your adapter:\n1.  **VirtualBox**: Ensure the VM has focus, then Devices -> USB -> [Your Adapter].\n2.  **VMware**: VM -> Removable Devices -> [Your Adapter] -> Connect.\n3.  **Driver Issues**: Some Realtek chipsets require driver installation. Use Google: `apt install realtek-rtl88xxau-dkms`."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Pro Tip: Test Injection Capability 🚀",
+            "content": "## Is My Card Ready?\n\nRun the injection test:\n```bash\nsudo aireplay-ng -9 wlan0mon\n```\nIf you see `Injection is working!`, you're good to go."
+        }
+    ]
+}

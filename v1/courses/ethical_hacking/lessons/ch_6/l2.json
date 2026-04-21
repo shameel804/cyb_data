@@ -1,0 +1,79 @@
+{
+    "id": "l2",
+    "chapterId": "ch_6",
+    "title": "CVSS: Scoring the Danger ⚖️",
+    "description": "Learn to quantify risk using the industry standard scoring system.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Risk",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Why Do We Need Scores? 📊",
+            "content": "# Prioritizing the Patch Pile\n\nImagine you find 50 vulnerabilities in a report. Which one do you fix first? Which one does the hacker try first?\n\n**CVSS (Common Vulnerability Scoring System)** provides a standardized way to capture the principal characteristics of a vulnerability and produce a numerical score (0.0 to 10.0) reflecting its severity.\n\n**Analogy**: It's like a Richter scale for security bugs.\n\n**Score Ranges:**\n| Severity | Score Range |\n| :--- | :--- |\n| **None** | 0.0 |\n| **Low** | 0.1 - 3.9 |\n| **Medium** | 4.0 - 6.9 |\n| **High** | 7.0 - 8.9 |\n| **Critical** | 9.0 - 10.0 |"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "CVSS Ranges 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "A vulnerability with a CVSS score of 9.8 is classified as:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Medium",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "High",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Critical",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Low",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "9.0 - 10.0 is Critical severity. This is a 'drop everything and patch' scenario.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "CVSS Metric Groups 📐",
+            "content": "# The Anatomy of a Score\n\nCVSS v3.1 consists of three metric groups:\n\n**1. Base Score (Mandatory)**\n- **Exploitability Metrics**: How hard is it to exploit?\n    - **Attack Vector (AV)**: Network, Adjacent, Local, Physical.\n    - **Attack Complexity (AC)**: Low or High.\n    - **Privileges Required (PR)**: None, Low, High.\n    - **User Interaction (UI)**: None or Required.\n- **Impact Metrics**: What happens if it's exploited?\n    - **Confidentiality (C)**: None, Low, High.\n    - **Integrity (I)**: None, Low, High.\n    - **Availability (A)**: None, Low, High.\n\n**2. Temporal Score (Optional)**\nChanges over time: Exploit Code Maturity, Remediation Level, Report Confidence.\n\n**3. Environmental Score (Optional)**\nCustomized to your specific environment (e.g., \"This server is isolated, so impact is lower\")."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "The 'Perfect Storm' Vulnerability 💥",
+            "content": "# Why CVSS 10.0 is Rare\n\nA **Critical (9.0-10.0)** vulnerability usually has this combination:\n- **Attack Vector: Network** (Can be done remotely over the internet).\n- **Attack Complexity: Low** (Easy to repeat, no special conditions).\n- **Privileges Required: None** (Attacker needs no login).\n- **User Interaction: None** (Victim doesn't need to click anything).\n- **Impact: High for C, I, A** (Total system compromise).\n\n**Example**: **EternalBlue (MS17-010)** fits this profile. Remote, unauthenticated code execution with SYSTEM privileges. That's why WannaCry spread so fast."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Calculating CVSS (Conceptual) 🧮",
+            "content": "While you usually look up the score, understanding the vector string helps you read a vulnerability report.",
+            "codeSnippet": "# Example Vector String for a Critical Remote Code Execution\nCVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H\n\n# Breakdown:\n# AV:N = Network Access\n# AC:L = Low Complexity\n# PR:N = No Privileges Required\n# UI:N = No User Interaction\n# C:H/I:H/A:H = High Impact on all pillars",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_6",
+            "type": "tip",
+            "title": "Pro Tip: CVSS is Not Everything 🚀",
+            "content": "## Context is King\n\nA **Medium** severity vulnerability on your public-facing web server is **more important** than a **Critical** vulnerability on a printer in a locked room with no network cable.\n\nAlways apply **Environmental Scoring** or just use common sense. The hacker's priority is: **Can I get in from outside?**"
+        }
+    ]
+}

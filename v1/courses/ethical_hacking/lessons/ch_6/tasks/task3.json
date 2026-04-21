@@ -1,0 +1,14 @@
+{
+    "id": "task3",
+    "chapterId": "ch_6",
+    "title": "Manual Verification with Nmap Scripts",
+    "description": "Use NSE scripts to confirm vulnerabilities safely.",
+    "estimatedMinutes": 20,
+    "problemStatement": "# Objective\nUse Nmap's scripting engine to verify the presence of specific vulnerabilities on Metasploitable.\n\n## Tasks\nRun the following Nmap scripts against Metasploitable and record the output:\n1.  `ftp-vsftpd-backdoor` on port 21.\n2.  `smb-vuln-ms17-010` on port 445.\n3.  `http-vuln-cve2010-2861` (ColdFusion directory traversal) on port 80. (This should be a negative test).\n\n## Deliverable\nFor each script, state whether the target is **Vulnerable** or **Not Vulnerable**, and provide the key output line confirming the status.\n\n**Example:**\n- vsftpd-backdoor: **Vulnerable** -> Output: 'State: VULNERABLE'",
+    "hints": [
+        "Use `nmap --script [script-name] -p [port] [IP]`.",
+        "For multiple scripts: `nmap --script ftp-vsftpd-backdoor,smb-vuln-ms17-010 -p 21,445 [IP]`"
+    ],
+    "expectedOutput": "vsftpd: VULNERABLE; MS17-010: NOT VULNERABLE (Metasploitable is Linux); ColdFusion: NOT VULNERABLE.",
+    "solutionCode": "# 1. vsftpd backdoor\nnmap --script ftp-vsftpd-backdoor -p 21 192.168.56.101\n# Output: State: VULNERABLE\n\n# 2. EternalBlue (SMB on Linux - likely not vulnerable)\nnmap --script smb-vuln-ms17-010 -p 445 192.168.56.101\n# Output: State: NOT VULNERABLE\n\n# 3. ColdFusion test (not installed)\nnmap --script http-vuln-cve2010-2861 -p 80 192.168.56.101\n# Output: No result or not vulnerable"
+}

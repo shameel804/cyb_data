@@ -1,0 +1,14 @@
+{
+    "id": "task1",
+    "chapterId": "ch_9",
+    "title": "Set Up Monitor Mode",
+    "description": "Configure your USB wireless adapter for monitor mode and test injection.",
+    "estimatedMinutes": 20,
+    "problemStatement": "# Objective\nPrepare your wireless adapter for Wi-Fi hacking by enabling monitor mode and verifying packet injection.\n\n## Prerequisites\n- A compatible USB Wi-Fi adapter (e.g., Alfa AWUS036NHA).\n- Kali Linux VM with USB passthrough enabled.\n\n## Steps\n1.  Connect the USB adapter and ensure it's passed through to the VM.\n2.  Verify detection: `lsusb` and `iwconfig`.\n3.  Kill interfering processes: `sudo airmon-ng check kill`.\n4.  Start monitor mode: `sudo airmon-ng start wlan0`.\n5.  Confirm monitor mode is active: `iwconfig wlan0mon` (look for Mode:Monitor).\n6.  Test packet injection: `sudo aireplay-ng -9 wlan0mon`.\n7.  Stop monitor mode when done: `sudo airmon-ng stop wlan0mon` and restart NetworkManager: `sudo systemctl restart NetworkManager`.\n\n## Deliverable\nScreenshot showing the output of `aireplay-ng -9` with 'Injection is working!'.",
+    "hints": [
+        "If `wlan0` doesn't exist, your interface might be named `wlan1`. Check with `iwconfig`.",
+        "If injection fails, ensure you are using a compatible chipset (Atheros AR9271 recommended)."
+    ],
+    "expectedOutput": "`Injection is working!` message.",
+    "solutionCode": "# Verify adapter\nlsusb\niwconfig\n\n# Enable monitor mode\nsudo airmon-ng check kill\nsudo airmon-ng start wlan0\n\n# Test injection\nsudo aireplay-ng -9 wlan0mon\n\n# Cleanup\nsudo airmon-ng stop wlan0mon\nsudo systemctl restart NetworkManager"
+}

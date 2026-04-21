@@ -1,0 +1,79 @@
+{
+    "id": "l3",
+    "chapterId": "ch_2",
+    "title": "Ports & Protocols: The Doors 🚪",
+    "description": "How services listen and how hackers knock.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Transport",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Ports: The Apartment Numbers 🚪",
+            "content": "# Beyond the IP Address\n\nYou know the IP address gets you to the right **building** (server). But which **door** (service) do you use?\n\nThat's what **Ports** are for. They are 16-bit numbers (0-65535) that identify specific applications or services running on a host.\n\n**Analogy**:\n- **IP Address**: 123 Main Street (The Office Building).\n- **Port**: Suite 80 (Web Server), Suite 22 (SSH Admin), Suite 25 (Mail Room).\n\n**Crucial for Hackers**: Scanning for **open ports** tells us exactly what software is running and potentially vulnerable."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Port Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "If a server has IP `10.0.0.1`, and it's running a website AND an email server, how does the computer know which traffic goes where?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It uses different IP addresses for each service.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It reads the MAC address.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It checks the **Port Number** in the TCP/UDP header.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It guesses based on the file type.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! The combination of IP Address + Port creates a unique **Socket**.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "The 'Well-Known' Ports (0-1023) 🔢",
+            "content": "# Memorize These! (The Hacker's Cheat Sheet)\n\nThese are standard ports reserved for core system services. **If you see these open, you know exactly what you are dealing with.**\n\n| Port | Protocol | Service | Hacker Relevance |\n| :--- | :--- | :--- | :--- |\n| **21** | TCP | FTP | File transfer. Often allows **Anonymous** login. |\n| **22** | TCP | SSH | Secure Shell. **The Holy Grail**. If you get creds, you own the box. |\n| **23** | TCP | Telnet | Insecure remote access. **NEVER use in prod. Plaintext passwords!** |\n| **25** | TCP | SMTP | Email sending. |\n| **53** | UDP/TCP | DNS | Translates names to IPs. |\n| **80** | TCP | HTTP | Standard Website. |\n| **443** | TCP | HTTPS | Secure Website. |\n| **445** | TCP | SMB | Windows File Sharing. **EternalBlue (WannaCry) target.** |\n| **3389** | TCP | RDP | Remote Desktop (Windows). Brute-force magnet. |"
+        },
+        {
+            "id": "s_l3_4",
+            "type": "warning",
+            "title": "Port 23 Alert ⚠️",
+            "content": "## Telnet = Bad News\n\nIf you see Port 23 open on a modern network, it's a massive red flag. Telnet sends your username and password in **clear text** across the network. Anyone sniffing the traffic can read it. **Always use SSH (Port 22).**"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "TCP vs. UDP: Reliability vs. Speed 🐢 vs. 🐇",
+            "content": "## Transmission Control Protocol (TCP)\n- **Connection-Oriented**: 3-Way Handshake (SYN, SYN-ACK, ACK). *\"Are you there?\" \"Yes, I'm here.\" \"Okay, let's talk.\"*\n- **Reliable**: If a packet gets lost, it asks for it again.\n- **Use Case**: Web browsing, Email, File transfers.\n\n## User Datagram Protocol (UDP)\n- **Connectionless**: Fire and forget. *\"Here's the data, bye!\"*\n- **Unreliable**: No guarantee it arrives or arrives in order.\n- **Use Case**: Video streaming, Voice over IP (VoIP), Online gaming, DNS queries.\n\n**Hacker Note**: UDP scanning is **slow and unreliable** because there is no handshake to confirm the port is open. You often get no response."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "code",
+            "title": "Checking Open Ports Locally 🖥️",
+            "content": "Use `netstat` to see what doors are open on YOUR machine.",
+            "codeSnippet": "# Linux (Kali) - Show listening TCP ports\nnetstat -tulpn\n\n# Windows\nnetstat -an",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        }
+    ]
+}

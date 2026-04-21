@@ -1,0 +1,79 @@
+{
+    "id": "l4",
+    "chapterId": "ch_9",
+    "title": "Discovering & Targeting Wi-Fi Networks 🎯",
+    "description": "Use airodump-ng to scan for networks and select vulnerable targets.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Attacks",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "airodump-ng: Your Wireless Eyes 👀",
+            "content": "# Sniffing the Airwaves\n\n`airodump-ng` is the primary tool for capturing raw 802.11 frames and displaying discovered networks and clients.\n\n**Basic Scan:**\n```bash\nsudo airodump-ng wlan0mon\n```\n\n**What You See:**\n| Column | Meaning |\n| :--- | :--- |\n| **BSSID** | MAC address of the AP. |\n| **PWR** | Signal strength (higher negative number = weaker). |\n| **Beacons** | Number of beacon frames sent. |\n| **#Data** | Number of data packets captured. |\n| **CH** | Channel number. |\n| **ENC** | Encryption: OPN (Open), WEP, WPA, WPA2, WPA3. |\n| **AUTH** | Authentication: PSK (password), MGT (Enterprise). |\n| **ESSID** | Network name. |\n\n**Target Selection**: Look for networks with **ENC: WPA2**, **AUTH: PSK**, and a **strong signal (PWR > -60)** ."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "airodump-ng Output 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "You see a network with BSSID `00:11:22:33:44:55`, ENC `WPA2`, AUTH `PSK`, and ESSID `HomeWiFi`. What type of network is this?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "An open network with no password.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A WPA2-Personal network using a Pre-Shared Key (password).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A WPA2-Enterprise network using a RADIUS server.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A WEP network.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "AUTH: PSK indicates a standard home/small business password-protected network.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Targeted Capture: Focusing on One Network 🎯",
+            "content": "# Saving Data for Cracking\n\nTo capture the 4-Way Handshake, you need to focus on a **specific AP** and **save the data to a file**.\n\n**Command:**\n```bash\nsudo airodump-ng -c [channel] --bssid [BSSID] -w [output_filename] wlan0mon\n```\n\n**Example:**\n```bash\nsudo airodump-ng -c 6 --bssid 00:11:22:33:44:55 -w capture wlan0mon\n```\n- `-c 6` : Locks the card to channel 6 (prevents channel hopping).\n- `--bssid` : Only captures traffic for this specific AP.\n- `-w capture` : Saves packets to `capture-01.cap`.\n\n**Now wait.** The bottom section of `airodump-ng` shows **connected clients** (STATION). You need a client to connect (or reconnect) to capture the handshake."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "The Waiting Game... or Force It 🕒",
+            "content": "# How to Get the Handshake\n\n**Option 1: Wait Patiently**\nA new client will eventually connect, or an existing client will re-authenticate. This could take **hours**.\n\n**Option 2: Deauthentication Attack (Force It)**\nSend a **deauthentication frame** to a connected client, kicking them off the network. When their device automatically reconnects, you capture the handshake!\n\n**Command:**\n```bash\nsudo aireplay-ng -0 [count] -a [BSSID] -c [Client_MAC] wlan0mon\n```\n\n- `-0 5` : Send 5 deauth packets.\n- `-a` : BSSID of the AP.\n- `-c` : MAC address of the connected client (from airodump-ng bottom panel).\n\n**Example:**\n```bash\nsudo aireplay-ng -0 5 -a 00:11:22:33:44:55 -c AA:BB:CC:DD:EE:FF wlan0mon\n```\n\n**Result**: In the `airodump-ng` window, you'll see `WPA handshake: 00:11:22:33:44:55` appear in the top right. **Success!**"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Complete Handshake Capture Workflow 💻",
+            "content": "Step-by-step commands for capturing a WPA2 handshake.",
+            "codeSnippet": "# Terminal 1: Start targeted capture\nsudo airodump-ng -c 6 --bssid 00:11:22:33:44:55 -w capture wlan0mon\n\n# Terminal 2: Send deauth packets (wait until client appears in Terminal 1)\nsudo aireplay-ng -0 5 -a 00:11:22:33:44:55 -c AA:BB:CC:DD:EE:FF wlan0mon\n\n# Check Terminal 1 for \"WPA handshake\" confirmation.\n# Press Ctrl+C to stop capture. File is capture-01.cap.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_6",
+            "type": "warning",
+            "title": "Deauth Attacks Are Noisy 📢",
+            "content": "## You Will Cause a Disruption\n\nSending deauthentication packets **will disconnect the user** from the internet. They will experience a brief drop. In a real penetration test, get **explicit permission** for active deauth attacks. For lab practice, use a **test device you own** (e.g., an old phone connected to your lab router)."
+        }
+    ]
+}

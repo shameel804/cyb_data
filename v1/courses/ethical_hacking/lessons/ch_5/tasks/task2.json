@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_5",
+    "title": "SMB Share Enumeration",
+    "description": "Enumerate Windows file shares on Metasploitable.",
+    "estimatedMinutes": 20,
+    "problemStatement": "# Objective\nUse enumeration tools to discover SMB shares and access them anonymously.\n\n## Steps\n1.  Confirm SMB ports (139/445) are open using Nmap.\n2.  Use `enum4linux` to perform a full enumeration of the SMB service. Save the output to a file.\n3.  Use `smbclient` to list all available shares without providing a password.\n4.  Connect to the `tmp` share (or any accessible share) and list its contents.\n5.  (Bonus) Check if you can download any files.\n\n## Deliverable\nA list of the share names discovered and one file name found within an accessible share.",
+    "hints": [
+        "`enum4linux -a 192.168.56.101` does comprehensive enumeration.",
+        "`smbclient -L //192.168.56.101 -N` lists shares.",
+        "`smbclient //192.168.56.101/tmp -N` connects."
+    ],
+    "expectedOutput": "Shares: `tmp`, `opt`, `www`. Inside `tmp` share: file `X` or empty.",
+    "solutionCode": "# Confirm SMB ports\nnmap -p 139,445 192.168.56.101\n\n# Full enum4linux\nenum4linux -a 192.168.56.101 > enum4linux_output.txt\n\n# List shares\nsmbclient -L //192.168.56.101 -N\n\n# Connect to tmp share\nsmbclient //192.168.56.101/tmp -N\n# Inside smbclient: ls, cd, get filename"
+}

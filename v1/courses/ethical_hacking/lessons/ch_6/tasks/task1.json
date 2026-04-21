@@ -1,0 +1,14 @@
+{
+    "id": "task1",
+    "chapterId": "ch_6",
+    "title": "CVE Research Challenge",
+    "description": "Research vulnerabilities for Metasploitable services.",
+    "estimatedMinutes": 20,
+    "problemStatement": "# Objective\nPractice using vulnerability databases to research the services discovered on Metasploitable.\n\n## Background\nYou have previously identified these services on Metasploitable:\n- FTP: vsftpd 2.3.4\n- SSH: OpenSSH 4.7p1\n- Web: Apache httpd 2.2.8\n- SMB: Samba 3.x\n\n## Tasks\nFor **each service**, use the internet (NVD, Google, Exploit-DB) to find:\n1.  The most famous CVE ID associated with it.\n2.  Its CVSS Base Score.\n3.  Whether an exploit exists in Exploit-DB (Yes/No).\n\n## Deliverable\nA table or list with the information above.\n\n**Example Format:**\n- vsftpd 2.3.4: CVE-2011-2523, CVSS 10.0, Exploit: Yes",
+    "hints": [
+        "Use `searchsploit` to quickly check Exploit-DB locally.",
+        "Search Google for 'OpenSSH 4.7p1 CVE'."
+    ],
+    "expectedOutput": "vsftpd: CVE-2011-2523 (10.0), OpenSSH: CVE-2008-5161 (5.0) or similar, Apache: CVE-2010-0425 (5.0), Samba: CVE-2007-2447 (10.0 - 'Username map script').",
+    "solutionCode": "# Research Summary\n# vsftpd 2.3.4 -> CVE-2011-2523 (Backdoor) -> 10.0 Critical -> Exploit Yes\n# OpenSSH 4.7p1 -> CVE-2008-5161 (Plaintext Recovery) -> 5.0 Medium -> Exploit Limited\n# Apache 2.2.8 -> CVE-2010-0425 (mod_isapi) -> 5.0 Medium -> Exploit Yes\n# Samba 3.0.20 -> CVE-2007-2447 (Username Map Script RCE) -> 10.0 Critical -> Exploit Yes"
+}

@@ -1,0 +1,82 @@
+{
+    "id": "l7",
+    "chapterId": "ch_5",
+    "title": "Firewall & IDS Evasion 🥷",
+    "description": "Techniques to avoid detection and bypass filtering during scanning.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Advanced",
+    "slides": [
+        {
+            "id": "s_l7_1",
+            "type": "text",
+            "title": "Why Evasion Matters 🕵️",
+            "content": "# Don't Get Caught (or Blocked)\n\nA modern network will have firewalls and Intrusion Detection Systems (IDS). If you scan too loudly, your IP will be **blocked** or an **alert** will be sent to the SOC.\n\n**Evasion Goals:**\n- Avoid detection entirely.\n- If detected, obfuscate the source.\n- Bypass firewall rules to see 'filtered' ports."
+        },
+        {
+            "id": "s_l7_2",
+            "type": "text",
+            "title": "Timing & Fragmentation ⏱️",
+            "content": "# Slow and Steady\n\n**1. Slow Timing (`-T0`, `-T1`)**\nSpreading probes over a long period makes the traffic look like background noise, not a concentrated attack.\n```bash\nnmap -sS -T1 192.168.56.101\n```\n\n**2. Fragment Packets (`-f`)**\nSplits the TCP header across multiple tiny IP fragments. Some old firewalls cannot reassemble them and just pass them through.\n```bash\nnmap -sS -f 192.168.56.101\n```"
+        },
+        {
+            "id": "s_l7_3",
+            "type": "text",
+            "title": "Decoys & Spoofing 🎭",
+            "content": "# Hiding Your Real IP\n\n**1. Decoys (`-D`)**\nNmap sends scans from multiple **spoofed IP addresses** alongside your real IP. The target's logs will show connections from multiple IPs, making it harder to identify the true source.\n\n```bash\nnmap -sS -D 10.0.0.1,10.0.0.2,ME 192.168.56.101\n```\n*Note: You must be able to route spoofed packets (usually requires being on same subnet).*\n\n**2. Source Port Manipulation (`--source-port`)**\nSome firewalls allow traffic from specific source ports (e.g., DNS port 53). Spoof your source port to bypass rules.\n```bash\nnmap -sS --source-port 53 192.168.56.101\n```"
+        },
+        {
+            "id": "s_l7_4",
+            "type": "quiz",
+            "title": "Evasion Technique 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l7_1",
+                "type": "multiple_choice",
+                "question": "You suspect a firewall is blocking your SYN scan because it's dropping packets with a certain size. Which flag might help bypass this?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "-sV",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "-O",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "-f (fragment)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "-sT",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Fragmenting packets can bypass firewalls that don't properly reassemble fragments.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l7_5",
+            "type": "text",
+            "title": "Data Length & Randomization 🎲",
+            "content": "# Confusing Signatures\n\n**1. Append Random Data (`--data-length`)**\nIDS signatures often look for specific packet sizes. Adding random garbage changes the packet size and payload, evading simple signature matching.\n```bash\nnmap -sS --data-length 50 192.168.56.101\n```\n\n**2. Randomize Host Order (`--randomize-hosts`)**\nIf scanning a range, don't scan `192.168.1.1, .2, .3...` sequentially. Randomize the order to avoid sequential scan detection.\n```bash\nnmap -sS --randomize-hosts 192.168.56.0/24\n```"
+        },
+        {
+            "id": "s_l7_6",
+            "type": "warning",
+            "title": "Ethical Note on Evasion ⚠️",
+            "content": "## These Techniques Are Within Scope Only\n\nEvasion techniques are **advanced** and should **only** be used on engagements where the **Rules of Engagement (RoE)** explicitly permit testing of firewall/IDS evasion. \n\nUsing these against a production network without permission is a serious offense. **Stick to your lab for practice.**"
+        },
+        {
+            "id": "s_l7_7",
+            "type": "tip",
+            "title": "Pro Tip: The 'Badsum' Check 🚀",
+            "content": "## Testing Detection\n\nIf you want to know if your scan is being **actively blocked** vs. just filtered, use the `--badsum` flag. This sends packets with an **invalid checksum**.\n\n**How it works:**\n- If the target (or a firewall) replies, it means something is actively inspecting packets.\n- If it's silent, filtering might be stateless.\n\n```bash\nnmap --badsum 192.168.56.101\n```"
+        }
+    ]
+}

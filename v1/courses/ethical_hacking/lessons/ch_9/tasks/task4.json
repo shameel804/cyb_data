@@ -1,0 +1,14 @@
+{
+    "id": "task4",
+    "chapterId": "ch_9",
+    "title": "Evil Twin Simulation",
+    "description": "Use Airgeddon to create a rogue AP and capture credentials (lab only).",
+    "estimatedMinutes": 40,
+    "problemStatement": "# Objective\nSet up an Evil Twin attack against your **own lab network** using Airgeddon to understand the mechanics.\n\n## Important Legal & Ethical Warning\n**Only perform this attack on a network you own and with a device you own.** Do not run this in a public space or against neighbors. The radio signals may leak outside your home.\n\n## Steps\n1.  Install Airgeddon:\n    ```bash\n    git clone https://github.com/v1s1t0r1sh3r3/airgeddon.git\n    cd airgeddon\n    sudo bash airgeddon.sh\n    ```\n2.  Follow the on-screen menu:\n    - Select your wireless interface (wlan0mon).\n    - **Option 5: Evil Twin attacks menu**.\n    - **Option 9: Evil Twin AP attack with captive portal**.\n    - Select target network from scan.\n    - Choose a captive portal template (e.g., \"Google Login\" or \"WPA2 Password Request\").\n    - Launch the attack.\n3.  On your **test device** (e.g., old phone), connect to the rogue AP. You should see the captive portal.\n4.  Enter fake credentials. Verify that Airgeddon captures and displays them.\n5.  Stop the attack and allow Airgeddon to clean up.\n\n## Deliverable\nScreenshot of Airgeddon showing captured credentials from the captive portal.",
+    "hints": [
+        "Airgeddon requires `hostapd`, `dnsmasq`, and `php` installed. It will check dependencies.",
+        "If the rogue AP doesn't appear, ensure your Wi-Fi card supports AP mode (`iw list | grep 'AP'`)."
+    ],
+    "expectedOutput": "Airgeddon log showing `[Captured password: testuser:testpass]`.",
+    "solutionCode": "# Install and run Airgeddon\ngit clone https://github.com/v1s1t0r1sh3r3/airgeddon.git\ncd airgeddon\nsudo bash airgeddon.sh\n\n# Follow menu:\n# 5 (Evil Twin attacks)\n# 9 (Evil Twin AP with captive portal)\n# Select target, portal template, launch.\n# Connect from test device, enter fake credentials."
+}

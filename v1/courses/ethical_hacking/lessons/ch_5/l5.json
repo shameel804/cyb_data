@@ -1,0 +1,82 @@
+{
+    "id": "l5",
+    "chapterId": "ch_5",
+    "title": "Banner Grabbing & OS Fingerprinting 🖥️",
+    "description": "Manually connect to services and identify operating systems.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Enumeration",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Manual Banner Grabbing 🤲",
+            "content": "# Why Do It Manually?\n\nNmap `-sV` is great, but sometimes firewalls block Nmap's specific probes. Or, you might not have Nmap installed on the compromised machine.\n\n**Banner Grabbing** is the act of connecting to a service and reading the initial welcome message. This can be done with simple tools like **Netcat (`nc`)**, **Telnet**, or even `/dev/tcp` in Bash.\n\n**Analogy**: Nmap `-sV` is using a detailed questionnaire. Manual banner grabbing is just saying *\"Hello\"* and seeing how the person introduces themselves."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Netcat for Banner Grabbing 🐱",
+            "content": "Netcat is the TCP/IP Swiss Army knife. Use it to connect to a port and see the response.",
+            "codeSnippet": "# Connect to a web server on port 80\nnc 192.168.56.101 80\n# Then type (you won't see what you type):\nHEAD / HTTP/1.0\n# Press Enter twice\n\n# Connect to SSH port\nnc 192.168.56.101 22\n# Output: SSH-2.0-OpenSSH_4.7p1 Debian-8ubuntu1",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Banner Grabbing 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "You connect to port 25 with netcat and see `220 metasploitable.localdomain ESMTP Postfix`. What service is running?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Web server",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "FTP server",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Mail server (SMTP)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "SSH server",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Port 25 with SMTP banner indicates an email server.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "OS Fingerprinting (-O) 🖥️",
+            "content": "# What OS is That?\n\nDifferent operating systems implement the TCP/IP stack **slightly differently**. Nmap's OS detection sends a series of TCP and UDP probes and analyzes the subtle differences in responses (e.g., initial sequence numbers, TCP options, ICMP error messages).\n\n**Command:**\n```bash\nsudo nmap -O 192.168.56.101\n```\n\n**Accuracy**: Nmap provides a confidence percentage. A good match will be >90%.\n\n**Aggressive OS Guess:**\n```bash\nsudo nmap -O --osscan-guess 192.168.56.101\n```"
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "TTL Analysis (Quick & Dirty) ⏳",
+            "content": "Every IP packet has a **Time To Live (TTL)** value. It decrements by 1 for each router hop. The initial TTL value is often a fingerprint of the OS.\n\n- **64**: Linux / macOS / Android\n- **128**: Windows\n- **255**: Network Devices (Cisco)\n\nUse `ping` to see the TTL in the reply.",
+            "codeSnippet": "ping -c 1 192.168.56.101\n# Output: 64 bytes from 192.168.56.101: icmp_seq=1 ttl=64 time=0.5 ms\n# ttl=64 -> Likely Linux!",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_6",
+            "type": "warning",
+            "title": "TTL Limitation ⚠️",
+            "content": "TTL is **not reliable** for definitive identification. The value you see is the **remaining** TTL after hops. If the target is 10 hops away, a Windows box might show a TTL of 118 (128 - 10). It's a useful **heuristic**, but always verify with `-O` or banner grabbing."
+        }
+    ]
+}

@@ -1,0 +1,246 @@
+{
+    "id": "quiz_ch_3",
+    "chapterId": "ch_3",
+    "title": "Chapter 3 Quiz",
+    "description": "Test your mastery of Linux fundamentals for ethical hacking.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What does the tilde `~` represent in the Linux terminal?",
+            "options": [
+                "The root directory `/`",
+                "The current user's home directory",
+                "The previous working directory",
+                "The system temp folder"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`~` is a shortcut for `/home/username`."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which command is used to display the full path of the current working directory?",
+            "options": [
+                "ls",
+                "cd",
+                "pwd",
+                "whoami"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`pwd` stands for Print Working Directory."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "The `sudo` command allows a permitted user to execute a command as the superuser (root).",
+            "correctAnswer": true,
+            "explanation": "True. `sudo` elevates privileges temporarily."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "To list all files, including hidden files, in a long format, you would use `ls _____`.",
+            "options": [
+                "-a",
+                "-l",
+                "-la",
+                "-h"
+            ],
+            "correctAnswer": "-la",
+            "explanation": "`-l` for long format, `-a` for all (including hidden). Combine as `-la`."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "You are in `/home/user/Downloads`. What command moves you to `/home/user/Documents`?",
+            "options": [
+                "cd Documents",
+                "cd /Documents",
+                "cd ../Documents",
+                "cd ~/Documents"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`..` goes up one level, then `Documents` enters the target."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which of the following numeric permissions is equivalent to `rwxr-xr--`?",
+            "options": [
+                "750",
+                "754",
+                "744",
+                "700"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Owner: rwx=7, Group: r-x=5, Others: r--=4. Result: 754."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What is the purpose of the `chmod +x script.sh` command?",
+            "options": [
+                "To change the owner of the file",
+                "To make the file readable",
+                "To make the file executable",
+                "To delete the file"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`+x` adds the execute permission, allowing the file to be run as a program."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which command is used to view the contents of a file page by page?",
+            "options": [
+                "cat",
+                "head",
+                "less",
+                "echo"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`less` is a pager; `cat` dumps the whole file at once."
+        },
+        {
+            "id": "q9",
+            "type": "true_false",
+            "question": "In Linux, the file `/etc/shadow` stores user password hashes and can be read by any user.",
+            "correctAnswer": false,
+            "explanation": "False. `/etc/shadow` is readable only by root and the shadow group for security reasons."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "You want to find all files on the system with the SUID bit set. Which command would you use?",
+            "options": [
+                "find / -name suid",
+                "find / -perm -4000",
+                "ls -l | grep suid",
+                "locate suid"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The SUID bit corresponds to 4000 in octal. `find / -perm -4000` searches for files with this bit."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What signal does `kill -9` send to a process?",
+            "options": [
+                "SIGTERM (Graceful shutdown)",
+                "SIGKILL (Force quit)",
+                "SIGINT (Interrupt)",
+                "SIGHUP (Hangup)"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-9` corresponds to SIGKILL, which immediately terminates the process."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which command displays a real-time, updating list of processes sorted by CPU usage?",
+            "options": [
+                "ps aux",
+                "top",
+                "netstat",
+                "jobs"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`top` provides an interactive, real-time process view."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What is the purpose of the `grep` command?",
+            "options": [
+                "To download files from the internet",
+                "To search for patterns in text",
+                "To change file permissions",
+                "To display network connections"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`grep` filters text based on patterns (regex)."
+        },
+        {
+            "id": "q14",
+            "type": "fill_blank",
+            "question": "The combination of `ps aux | grep firefox` pipes the output of `ps` into `grep` to filter for lines containing the word ______.",
+            "options": [
+                "ps",
+                "aux",
+                "firefox",
+                "grep"
+            ],
+            "correctAnswer": "firefox",
+            "explanation": "The pipe `|` sends output from left command to right command for filtering."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Which command is the modern replacement for `ifconfig` on Linux?",
+            "options": [
+                "iwconfig",
+                "ip addr",
+                "netstat",
+                "route"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The `ip` command from the `iproute2` suite replaces `ifconfig`, `route`, etc."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "The `curl` command can be used to send HTTP POST requests with custom data payloads.",
+            "correctAnswer": true,
+            "explanation": "True. `curl -X POST -d \"key=value\"` is a common way to test web forms and APIs."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "In a Bash script, what does the special variable `$1` represent?",
+            "options": [
+                "The name of the script",
+                "The first command-line argument passed to the script",
+                "The process ID of the script",
+                "The number of arguments"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`$1` is the first argument; `$0` is script name; `$#` is count."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "What is the correct syntax for a `for` loop in Bash that iterates from 1 to 5?",
+            "options": [
+                "for (i=1; i<=5; i++)",
+                "for i in {1..5}",
+                "foreach i (1 2 3 4 5)",
+                "loop i=1 to 5"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Bash uses `for i in {1..5}` or `for ((i=1;i<=5;i++))`."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "You need to download a tool called 'linpeas.sh' from a remote server to your current directory. Which command is most appropriate?",
+            "options": [
+                "curl https://server.com/linpeas.sh > linpeas.sh",
+                "wget https://server.com/linpeas.sh",
+                "ping https://server.com/linpeas.sh",
+                "scp https://server.com/linpeas.sh ."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Both `wget` and `curl -O` work. `wget` is simplest for just downloading."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "Running `sudo rm -rf /` is a safe way to clean up temporary files.",
+            "correctAnswer": false,
+            "explanation": "False. This is a catastrophic command that deletes the entire operating system."
+        }
+    ]
+}

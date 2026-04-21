@@ -1,0 +1,14 @@
+{
+    "id": "task1",
+    "chapterId": "ch_3",
+    "title": "File System Treasure Hunt",
+    "description": "Practice navigation commands to find a hidden file.",
+    "estimatedMinutes": 20,
+    "problemStatement": "# Objective\nNavigate the Linux file system and use `find` or `locate` to locate a specific file.\n\n## Scenario\nA secret file named `flag.txt` has been hidden somewhere in the `/var` directory. Your mission is to find it using the command line.\n\n## Steps\n1.  Use `cd` to move to the root directory `/`.\n2.  Navigate to `/var`.\n3.  Use the `find` command to search for any file named `flag.txt` recursively from `/var`.\n4.  Once found, use `cat` to read its contents.\n\n**Bonus Challenge**: Find all files in `/etc` that have been modified in the last 24 hours.",
+    "hints": [
+        "Use `find /var -name flag.txt 2>/dev/null` to ignore permission errors.",
+        "For the bonus: `find /etc -mtime -1`"
+    ],
+    "expectedOutput": "Path to `flag.txt` and its content (e.g., 'Congratulations! You found the flag!').",
+    "solutionCode": "# Task 1 Solution\ncd /\nfind /var -name flag.txt 2>/dev/null\n# Suppose output is /var/log/flag.txt\ncat /var/log/flag.txt\n\n# Bonus\nfind /etc -mtime -1 2>/dev/null"
+}

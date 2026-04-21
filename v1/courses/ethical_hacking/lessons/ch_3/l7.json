@@ -1,0 +1,126 @@
+{
+    "id": "l7",
+    "chapterId": "ch_3",
+    "title": "Bash Scripting Fundamentals 📜",
+    "description": "Automate tasks and create simple hacking tools.",
+    "xpReward": 40,
+    "estimatedMinutes": 12,
+    "section": "Scripting",
+    "slides": [
+        {
+            "id": "s_l7_1",
+            "type": "text",
+            "title": "Why Script? 🤖",
+            "content": "# Stop Typing the Same Commands Over and Over\n\nAs a hacker, you'll run the same sequence of commands frequently (e.g., a basic reconnaissance sweep). Instead of typing 5 commands every time, write a **Bash script**.\n\n**What is Bash?**\nBash is the default shell on most Linux distros. A Bash script is just a text file with a list of commands that Bash will execute sequentially.\n\n**Analogy**: A script is like a cooking recipe. You write down the steps once, and then you can follow them anytime to get the same result."
+        },
+        {
+            "id": "s_l7_2",
+            "type": "text",
+            "title": "Your First Script 👶",
+            "content": "# Hello, World!\n\n**Step 1: Create the file**\n```bash\ntouch myscript.sh\n```\n\n**Step 2: Edit the file** (Use `nano` or `vim`)\n```bash\nnano myscript.sh\n```\n\n**Step 3: Write the content**\n```bash\n#!/bin/bash\n# This is a comment. The line above is the 'Shebang'.\necho \"Hello, $(whoami)!\"\necho \"Today is $(date)\"\n```\n\n**Step 4: Make it executable**\n```bash\nchmod +x myscript.sh\n```\n\n**Step 5: Run it**\n```bash\n./myscript.sh\n```"
+        },
+        {
+            "id": "s_l7_3",
+            "type": "quiz",
+            "title": "Shebang Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l7_1",
+                "type": "multiple_choice",
+                "question": "What is the purpose of the `#!/bin/bash` line at the top of a script?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It's a comment describing the script.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It tells the system which interpreter to use to run the script.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It makes the script executable.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It imports external libraries.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The shebang `#!` defines the path to the interpreter.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l7_4",
+            "type": "text",
+            "title": "Variables 📦",
+            "content": "# Storing Data\n\nVariables are placeholders for values.\n\n**Assigning Variables (No spaces around `=`!):**\n```bash\nname=\"Hacker\"\nage=25\n```\n\n**Using Variables (Prefix with `$`):**\n```bash\necho \"My name is $name\"\n```\n\n**Command Substitution:**\nStore the output of a command in a variable.\n```bash\ncurrent_user=$(whoami)\nfiles_count=$(ls | wc -l)\necho \"User $current_user has $files_count files here.\"\n```"
+        },
+        {
+            "id": "s_l7_5",
+            "type": "text",
+            "title": "User Input & Arguments ⌨️",
+            "content": "# Making Scripts Interactive\n\n**Read Input:**\n```bash\necho \"Enter target IP:\"\nread ip_address\necho \"Scanning $ip_address...\"\n```\n\n**Command Line Arguments:**\n- `$0` : Name of the script.\n- `$1` : First argument.\n- `$2` : Second argument.\n- `$#` : Number of arguments.\n- `$@` : All arguments.\n\n```bash\n#!/bin/bash\n# Usage: ./ping_sweep.sh 192.168.1\necho \"Scanning subnet: $1.0/24\"\nnmap -sn $1.0/24\n```"
+        },
+        {
+            "id": "s_l7_6",
+            "type": "text",
+            "title": "Conditionals (if/else) 🚦",
+            "content": "# Making Decisions\n\n```bash\n#!/bin/bash\nread -p \"Enter a number: \" num\n\nif [ $num -gt 10 ]; then\n    echo \"Number is greater than 10.\"\nelif [ $num -eq 10 ]; then\n    echo \"Number is exactly 10.\"\nelse\n    echo \"Number is less than 10.\"\nfi\n```\n\n**Comparison Operators:**\n- Numbers: `-eq` (equal), `-ne` (not equal), `-gt` (greater), `-lt` (less).\n- Strings: `=` (equal), `!=` (not equal).\n- Files: `-f` (is file?), `-d` (is directory?), `-x` (is executable?)."
+        },
+        {
+            "id": "s_l7_7",
+            "type": "code",
+            "title": "Practical Hacker Script: Port Checker 🔌",
+            "content": "Let's put it together. A script that checks if a specific port is open using `/dev/tcp` (a built-in Bash feature).",
+            "codeSnippet": "#!/bin/bash\n# port_check.sh <IP> <PORT>\n\nhost=$1\nport=$2\n\necho \"Checking $host:$port...\"\ntimeout 1 bash -c \"echo >/dev/tcp/$host/$port\" 2>/dev/null\n\nif [ $? -eq 0 ]; then\n    echo \"Port $port is OPEN\"\nelse\n    echo \"Port $port is CLOSED or FILTERED\"\nfi",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l7_8",
+            "type": "text",
+            "title": "Loops: Doing Things Repeatedly 🔁",
+            "content": "# For and While\n\n**For Loop (Iterate over a list):**\n```bash\nfor ip in 192.168.1.{1..10}; do\n    ping -c 1 $ip > /dev/null && echo \"$ip is up\"\ndone\n```\n\n**While Loop (Run while condition is true):**\n```bash\ncount=1\nwhile [ $count -le 5 ]; do\n    echo \"Loop number $count\"\n    ((count++))\ndone\n```\n\n**Reading a Wordlist (Password Spraying):**\n```bash\nwhile read password; do\n    echo \"Trying $password...\"\n    # curl command here...\ndone < passwords.txt\n```"
+        },
+        {
+            "id": "s_l7_9",
+            "type": "quiz",
+            "title": "Loop Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l7_2",
+                "type": "multiple_choice",
+                "question": "What will this loop do? `for i in {1..3}; do echo $i; done`",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Print '1 2 3' on one line.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Print '1', then '2', then '3' on separate lines.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Print '1..3' once.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Nothing, syntax error.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The loop iterates three times, printing the value of `i` each time.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

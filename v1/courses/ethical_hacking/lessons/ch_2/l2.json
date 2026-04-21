@@ -1,0 +1,114 @@
+{
+    "id": "l2",
+    "chapterId": "ch_2",
+    "title": "IP Addresses & Subnetting 🗺️",
+    "description": "Understanding the street addresses of the internet.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Addressing",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "What is an IP Address? 🏠",
+            "content": "# The Digital Address\n\nEvery device on a network needs a unique identifier to send and receive data. That's an **IP (Internet Protocol) Address**.\n\n**Two Versions You Must Know:**\n1.  **IPv4**: 32-bit address. Looks like `192.168.1.1`. (Most common currently).\n2.  **IPv6**: 128-bit address. Looks like `2001:0db8:85a3::8a2e:0370:7334`. (The future).\n\n**Analogy**: If the MAC address is your physical DNA, the IP Address is your mailing address. It tells the post office (routers) where you live."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "IP Range Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which of these is a valid **private** IPv4 address?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "8.8.8.8",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "192.168.1.100",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "172.32.0.1",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "300.1.1.1",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "192.168.x.x is a classic private range. 8.8.8.8 is Google's public DNS. 172.32.x.x is public (private is 172.16-172.31).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Public vs. Private IPs 🏢 vs. 🏠",
+            "content": "## The Great Shortage\n\nThere aren't enough IPv4 addresses for every device in the world. We solve this with **NAT (Network Address Translation)**.\n\n**Private IP Ranges (Free for anyone to use inside their home/business):**\n- `10.0.0.0` - `10.255.255.255` (Class A)\n- `172.16.0.0` - `172.31.255.255` (Class B)\n- `192.168.0.0` - `192.168.255.255` (Class C - Most Home Routers)\n\n**Public IP**: The address your router has on the internet. The whole world sees this one address.\n\n**Why This Matters to Hackers**: If you are attacking a target, you are almost always targeting their **Public IP**. If you get a shell on a machine, it's likely a **Private IP** (so you need to pivot)."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Subnet Masks: Dividing the City 🏘️",
+            "content": "# What is a Subnet Mask?\n\nAn IP address has two parts: **Network** and **Host**. The Subnet Mask tells us where the split happens.\n\n**Example**: `192.168.1.100 / 255.255.255.0`\n- **Network Portion**: `192.168.1`\n- **Host Portion**: `100`\n\n**Analogy**: Think of a street address. \n- **Network**: \"Main Street\" (All houses on Main Street share this).\n- **Host**: \"123\" (Your specific house number).\n\n**CIDR Notation**: Writing `192.168.1.100/24` means \"The first 24 bits are the network portion.\" `255.255.255.0` = 24 bits of 1s in binary."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "tip",
+            "title": "Hacker Math: Quick Subnetting 🚀",
+            "content": "## Identifying the Network Address\n\nYou don't need to be a binary math wizard, but you need to know **how many hosts are on a subnet**.\n\n**Formula**: `2^(32 - CIDR) - 2` = Usable Hosts.\n- `/24` (255.255.255.0): `2^(32-24) - 2` = `256 - 2` = **254 hosts**.\n- `/30` (255.255.255.252): `2^(32-30) - 2` = `4 - 2` = **2 hosts** (Perfect for point-to-point links).\n\n*Why subtract 2? One address is the **Network ID** (the street name), one is the **Broadcast** (shouting to everyone on the street).*"
+        },
+        {
+            "id": "s_l2_6",
+            "type": "code",
+            "title": "Finding Your IP (ifconfig / ipconfig) 💻",
+            "content": "Use these commands to see your own IP configuration.",
+            "codeSnippet": "# Linux / macOS (Kali)\nifconfig\n# OR newer systems\nip addr show\n\n# Windows\nipconfig",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "Subnet Math 🧮",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "How many usable IP addresses are available in a `/27` subnet?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "32",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "30",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "14",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "62",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "32 total bits - 27 network bits = 5 host bits. 2^5 = 32. Minus network and broadcast = **30 usable hosts**.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

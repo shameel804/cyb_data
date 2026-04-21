@@ -1,0 +1,70 @@
+{
+    "id": "l4",
+    "chapterId": "ch_10",
+    "title": "Vishing & Smishing 📱",
+    "description": "Exploit trust over the phone and via SMS to extract credentials and MFA codes.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Attacks",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Vishing (Voice Phishing) 📞",
+            "content": "# The Personal Touch\n\n**Vishing** uses the telephone to deceive targets. It's highly effective because people trust a human voice more than an email.\n\n**Why Vishing Works:**\n- **Less Suspicion**: People are conditioned to be suspicious of email links, but less so of phone calls.\n- **Real-Time Manipulation**: The attacker can adapt to the victim's responses on the fly.\n- **Spoofed Caller ID**: Tools and VoIP services allow attackers to display **any number** (e.g., the real IT Helpdesk number).\n\n**Common Vishing Goals:**\n- Extract **MFA codes** or **password reset links**.\n- Get the user to **install remote desktop software** (AnyDesk, TeamViewer).\n- Get the user to **read out a password**."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "The MFA Bypass Call 🔐",
+            "content": "# \"I Need Your Code\"\n\n**Scenario**: You have a user's **username and password** from a previous data breach or OSINT. The only thing stopping you is **Multi-Factor Authentication (MFA)** .\n\n**The Vishing Script:**\n1.  **Caller ID Spoof**: Show the company's main IT number.\n2.  **Pretext**: *\"Hi Sarah, this is Mike from Security Operations. We're seeing an active attack on our systems, specifically targeting your account. We've temporarily locked it down.\"*\n3.  **The Verification**: *\"To verify I'm speaking with Sarah and not the attacker, I just triggered an MFA prompt to your device. Can you read me the 6-digit code?\"*\n4.  **Result**: The user reads the code. The attacker uses it to log in on their end. **Account Compromised.**\n\n**Defense**: Never read MFA codes over the phone. No legitimate IT team will ever ask for this."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Vishing Tactic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "An attacker calls claiming to be from the bank's fraud department and says they've sent a 'verification code' to your phone. What is the attacker trying to do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Verify the phone number works.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Bypass Multi-Factor Authentication by having the victim relay the real code.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Install malware on the phone.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Get the victim to change their password.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The 'verification code' is the MFA token needed to complete the attacker's login.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Smishing (SMS Phishing) 📱",
+            "content": "# Text Message Traps\n\n**Smishing** uses SMS text messages. The limited screen space on phones makes it harder to verify links.\n\n**Classic Smishing Bait:**\n- *\"Your package is delayed. Update delivery preferences: bit.ly/3xAmPle\"*\n- *\"[Bank Name] Alert: Unusual login attempt detected. Verify here: bank-secure-verify.com\"*\n- *\"CEO: I'm in a meeting. Can you buy 5 $100 Apple Gift Cards and send me the codes?\"*\n\n**Why Smishing is Dangerous:**\n- **URL Shorteners**: Hide the true destination (`bit.ly`, `tinyurl.com`).\n- **No Hover**: On a desktop, you hover over a link to see the URL. You can't do that on a phone.\n- **Trusted Channel**: People get legitimate texts from banks (alerts, 2FA codes).\n\n**Defense**: Never click links in unexpected texts. Navigate to the website manually or call the official number."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "tip",
+            "title": "Pro Tip: Call Back Verification 🚀",
+            "content": "## Defeating Vishing as a User\n\nIf you receive a suspicious call from 'IT' or 'Your Bank':\n1.  **Hang up**.\n2.  **Find the official number** from the back of your card or company intranet.\n3.  **Call that number yourself**.\n\nCaller ID is easily faked. **Never trust it.**"
+        }
+    ]
+}

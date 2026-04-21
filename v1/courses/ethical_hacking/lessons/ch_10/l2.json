@@ -1,0 +1,85 @@
+{
+    "id": "l2",
+    "chapterId": "ch_10",
+    "title": "Pretexting & Information Gathering 📞",
+    "description": "Build believable personas and gather intel to impersonate trusted insiders.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Techniques",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "What is a Pretext? 🎭",
+            "content": "# The Backstory\n\nA **pretext** is a fabricated scenario or identity used to engage a target and extract information. It's the **script** the social engineer follows.\n\n**Analogy**: An actor playing a doctor on a TV show wears a white coat and a stethoscope. They look the part. A social engineer does the same thing—just not on a set.\n\n**Components of a Strong Pretext:**\n1.  **Identity**: Name, Job Title, Department.\n2.  **Backstory**: Why are you calling/emailing? (Plausible reason).\n3.  **Tone**: Urgency, Authority, or Friendliness.\n4.  **Knowledge**: Specific jargon, project names, or manager names (acquired via OSINT)."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Classic Pretext Examples 📋",
+            "content": "# Who Are You Today?\n\n**1. The IT Helpdesk** 💻\n- **Identity**: \"Hi, this is Alex from Corporate IT.\"\n- **Goal**: Get username/password or remote access.\n- **Lever**: Authority + Helpfulness.\n- **Script**: *\"We're seeing some failed login attempts from your machine. To prevent a lockout, I need to verify your credentials and run a quick scan.\"*\n\n**2. The New Employee** 🌱\n- **Identity**: \"I'm Sarah, I just started in Marketing yesterday.\"\n- **Goal**: Obtain internal phone lists, Wi-Fi passwords, or access to shared drives.\n- **Lever**: Sympathy (people want to help the new person).\n- **Script**: *\"Hi, I'm so sorry to bother you. I'm new and my manager is in meetings all day. I can't find the link to the Employee Handbook portal. Could you send it to me?\"*\n\n**3. The Executive Assistant** 👔\n- **Identity**: \"I'm calling on behalf of Mr. Johnson, the CFO.\"\n- **Goal**: Urgent wire transfer or sensitive document.\n- **Lever**: Authority + Urgency.\n- **Script**: *\"Mr. Johnson is about to board a flight and just realized he can't access the Q3 financials. He needs you to forward the PDF to his personal email right now.\"*\n\n**4. The Vendor/Auditor** 📋\n- **Identity**: \"I'm with Microsoft Support / External Audit Team.\"\n- **Goal**: System access or configuration details.\n- **Lever**: Legitimacy (people trust big brands)."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Pretext Selection 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "You need to obtain a copy of the company's internal phone directory. Which pretext is most likely to succeed with minimal suspicion?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Calling as the FBI.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Pretending to be a new employee who needs to find a colleague's extension.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Claiming to be a hacker who will delete all files if not given the directory.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Sending a phishing email with a fake login page.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The 'new employee' pretext leverages helpfulness and is a low-stakes request that doesn't trigger security alarms.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Information Gathering for Pretexting 🕵️",
+            "content": "# Becoming a Believable Insider\n\nA pretext fails if you don't know the internal lingo. You need **ammunition**.\n\n**Sources for Intel:**\n- **LinkedIn**: Find real employee names, job titles, and project descriptions.\n- **Company Website**: Press releases reveal client names, office locations, and tech stack.\n- **Job Postings**: *\"Seeking Senior SysAdmin with experience in Palo Alto Firewalls and Active Directory.\"*\n- **Social Media**: Employees posting pictures of their desks (badges visible!), office layouts.\n- **Elicitation Calls**: Call the main line anonymously first.\n    - *\"Hi, I'm trying to send a package to someone in IT Support. What's the name of the manager there?\"*\n    - *\"What's the format of email addresses? Is it firstname.lastname@company.com?\"*\n\n**Crucial Detail**: The **Out-of-Office (OOO) reply** is a goldmine. It tells you who is away, who their backup is, and sometimes personal cell numbers."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Automated OSINT for Pretexting 🛠️",
+            "content": "Use tools like `theHarvester` to quickly gather employee names and email formats.",
+            "codeSnippet": "# Gather emails and names from public sources\ntheHarvester -d company.com -b linkedin,google\n\n# Use LinkedIn scraping tools (within Terms of Service)\n# Cross-reference with common email formats:\n# first.last@company.com, first_initiallast@company.com",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "The Vishing Call Flow 📞",
+            "content": "# Mastering the Phone\n\n**1. The Opener (First 10 seconds)**\n- State your name clearly.\n- State the pretext purpose.\n- *\"Hi Pat, this is Jamie from IT Support. How's your Monday going?\"*\n\n**2. The Rope (Building Rapport)**\n- Mirror their tone and pace.\n- *\"Oh, busy week? I hear you. We're swamped with these system upgrades.\"*\n\n**3. The Ask (The Pivot)**\n- Frame the request as helping **them**.\n- *\"To save you a trip to the helpdesk later, let's just verify your token now while I have you on the line.\"*\n\n**4. The Close (Exit Gracefully)**\n- Provide a follow-up (fake ticket number).\n- *\"You're all set. If you have any issues, reference ticket #4422. Have a great day!\"*\n\n**Dealing with Pushback:**\n- **\"I need to verify who you are.\"** -> *\"Absolutely. I appreciate your security awareness. Let me give you the helpdesk extension and you can call me back at x1234.\"* (Spoof caller ID or have a burner number)."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "warning",
+            "title": "Voice Stress ⚠️",
+            "content": "## You Sound Nervous\n\nIf you are lying, your voice pitch rises, you talk faster, and you stutter. **Practice** the script until it's second nature. Record yourself. The best social engineers are calm, confident, and sound slightly bored—like they do this every day (because they do)."
+        }
+    ]
+}

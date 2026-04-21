@@ -1,0 +1,76 @@
+{
+    "id": "l1",
+    "chapterId": "ch_9",
+    "title": "Wireless Networking Fundamentals 📡",
+    "description": "Understand how Wi-Fi works: frequencies, channels, and frames.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Invisible Battlefield 📡",
+            "content": "# Hacking Without Wires\n\nWi-Fi is everywhere—homes, offices, coffee shops, airports. Unlike wired networks that require physical access, wireless signals travel through walls and can be intercepted from hundreds of feet away.\n\n**Analogy**: A wired network is like a private conversation in a soundproof room. Wi-Fi is like shouting across a crowded restaurant. Anyone in range can hear you.\n\n**What We'll Learn:**\n- How Wi-Fi signals work (frequencies, channels).\n- How encryption protects (or fails to protect) data.\n- How to capture and crack Wi-Fi passwords.\n- How to trick users into connecting to fake access points.\n\n**Legal Warning**: **Never** attack a Wi-Fi network you do not own or have explicit written permission to test. This chapter uses a **personal lab** with a router you control."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Wi-Fi Security 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the primary reason Wi-Fi networks are more vulnerable to eavesdropping than wired networks?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Wi-Fi uses weaker encryption algorithms.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Radio signals travel through the air and can be intercepted by anyone in range.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Wi-Fi passwords are easier to guess.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Wi-Fi routers have no firewall.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! Wireless signals broadcast over the air, making passive sniffing possible from a distance.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Wi-Fi Frequencies & Channels 📻",
+            "content": "# The Radio Spectrum\n\nWi-Fi operates on two primary frequency bands:\n\n**1. 2.4 GHz Band**\n- **Pros**: Longer range, better penetration through walls.\n- **Cons**: Crowded (microwaves, Bluetooth, cordless phones). Only **3 non-overlapping channels** (1, 6, 11 in US).\n- **Channels**: 1 through 14 (varies by country).\n\n**2. 5 GHz Band**\n- **Pros**: Faster speeds, less interference, **many more non-overlapping channels**.\n- **Cons**: Shorter range, struggles with walls.\n- **Channels**: 36, 40, 44, 48, 149, 153, 157, 161, etc.\n\n**3. 6 GHz Band (Wi-Fi 6E / Wi-Fi 7)**\n- **Pros**: Huge bandwidth, minimal congestion.\n- **Hacker Impact**: Many older wireless cards cannot monitor 6 GHz. New hardware required.\n\n**Analogy**: 2.4 GHz is like AM radio (long range, fuzzy). 5 GHz is like FM radio (shorter range, clearer)."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Wi-Fi Frames: The Language of Wireless 📨",
+            "content": "# Three Types of Packets\n\nWi-Fi devices communicate using **802.11 frames**. There are three main types you must know:\n\n| Type | Purpose | Hacker Relevance |\n| :--- | :--- | :--- |\n| **Management Frames** | Establish and maintain connections. | **Beacon frames**: APs announce their existence (SSID). **Probe requests**: Clients ask 'Is CoffeeShop Wi-Fi here?' |\n| **Control Frames** | Coordinate access to the medium. | **RTS/CTS**: Can be used for DoS attacks. |\n| **Data Frames** | Carry the actual data (web pages, emails). | **Encrypted** if WPA/WPA2 is used. |\n\n**Key Insight**: Management frames (like Beacons and Probe Requests) are **not encrypted**. Even on a password-protected network, you can see the **SSID name** and the **MAC addresses** of all devices."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "MAC Addresses & BSSID 🏷️",
+            "content": "# Identifying Devices\n\n- **MAC Address**: 48-bit hardware address (e.g., `00:11:22:AA:BB:CC`). Unique (in theory) to each network interface.\n- **BSSID (Basic Service Set Identifier)** : The **MAC address of the Access Point's radio**. This is how you uniquely identify a specific Wi-Fi network.\n- **SSID (Service Set Identifier)** : The **human-readable name** of the network (e.g., \"SmithFamilyWiFi\").\n\n**Hacker Insight**: The BSSID never lies. An attacker can create a fake AP with the same SSID, but the BSSID will be different. This is how you detect **Evil Twin** attacks."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Pro Tip: Hidden SSIDs Are Not Hidden 🚀",
+            "content": "## A False Sense of Security\n\nSome networks 'hide' their SSID by not broadcasting it in Beacon frames. This does **nothing** for security. When a legitimate client connects, it sends a **Probe Request** shouting: *\"Hey, is HiddenNetwork here?\"* The SSID is transmitted in **plain text**. An attacker can simply wait and capture it."
+        }
+    ]
+}

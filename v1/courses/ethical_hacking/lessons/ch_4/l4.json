@@ -1,0 +1,79 @@
+{
+    "id": "l4",
+    "chapterId": "ch_4",
+    "title": "Network & WHOIS Footprinting 🌐",
+    "description": "Map IP ranges and identify the owners of a domain.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Passive",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "WHOIS: Who Owns This? 📋",
+            "content": "# Domain Registration Data\n\n**WHOIS** is a protocol used to query databases that store registered users or assignees of an internet resource, such as a domain name or IP address block.\n\n**What You Can Find:**\n- **Registrant Name & Organization** (Often privacy protected now).\n- **Registrant Email & Phone** (If privacy is off, this is a goldmine for social engineering).\n- **Name Servers** (Confirms DNS provider).\n- **Creation & Expiration Dates** (Old domains are less likely to be phishing).\n\n**How to Query:**\n```bash\nwhois example.com\n```"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "tip",
+            "title": "WHOIS Privacy & History 🚀",
+            "content": "## Getting Around Redacted Data\n\nMost big companies use **WHOIS Privacy Protection**, so you'll see `REDACTED FOR PRIVACY`. \n\n**Hacker Workaround:** Use **Historical WHOIS** services like:\n- **Whoisology**\n- **DomainTools**\n\nThese sites archive old WHOIS records from **before** the privacy guard was enabled. You can often find the original owner's email."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "IP Ranges & ASN Lookup 📡",
+            "content": "# Finding the Network Perimeter\n\nIf you find one IP address (e.g., `104.18.20.121`), how do you find the **entire block** of IPs owned by that company?\n\n**1. ARIN / RIPE / APNIC (Regional Internet Registries)**\nYou can search the WHOIS database for the **ASN (Autonomous System Number)** or the organization name.\n\n**2. Using `whois` on the IP:**\n```bash\nwhois 104.18.20.121\n# Look for 'NetRange' or 'CIDR'\n```\n\n**3. Using BGP Tools:**\n- **BGPView.io** or **Hurricane Electric BGP Toolkit**. Search the company name to see all announced IP prefixes.\n\n**Why This Matters**: If you are pen testing `Acme Corp`, you need to know **ALL** their IP addresses, not just `www.acme.com`. They might have a forgotten server at `198.51.100.200` that is vulnerable."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "quiz",
+            "title": "IP Recon 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What is an Autonomous System Number (ASN)?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A unique ID for a computer's network card.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A globally unique identifier for a group of IP networks managed by a single organization.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The password for a router.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A subnet mask.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! ASNs are used for routing on the internet backbone. Knowing the ASN lets you find all IP blocks owned by a company.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Reverse DNS (PTR) Lookups 🔄",
+            "content": "# What's Behind the IP?\n\nSometimes you have an IP but no domain name. A **Reverse DNS Lookup** asks: *\"What domain name points to this IP?\"*\n\n**Command:**\n```bash\ndig -x 8.8.8.8\n# Output: dns.google.\n```\n\n**Usefulness**: If you are scanning a range and find a web server on `192.0.2.5` with no hostname, a PTR record might reveal it's `mail.company.com`, instantly telling you the service purpose."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "code",
+            "title": "Automating Network Info Gathering 🛠️",
+            "content": "Use `whois` and `dig` together to build a target profile.",
+            "codeSnippet": "#!/bin/bash\n# Simple Network Recon Script\n\ndomain=$1\necho \"=== Gathering Info for $domain ===\"\necho \"[+] WHOIS Info:\"\nwhois $domain | grep -E 'Registrant|Name Server|Creation'\n\necho \"[+] IP Address:\"\nhost $domain | grep \"has address\"\n\necho \"[+] ASN Info:\"\nwhois $(host $domain | grep \"has address\" | head -1 | awk '{print $4}') | grep -E 'NetRange|OrgName'",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        }
+    ]
+}

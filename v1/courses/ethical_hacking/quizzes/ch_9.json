@@ -1,0 +1,240 @@
+{
+    "id": "quiz_ch_9",
+    "chapterId": "ch_9",
+    "title": "Chapter 9 Quiz",
+    "description": "Test your knowledge of Wi-Fi security, encryption protocols, and wireless attacks.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which Wi-Fi encryption protocol is considered completely broken and crackable in minutes?",
+            "options": [
+                "WPA",
+                "WPA2",
+                "WEP",
+                "WPA3"
+            ],
+            "correctAnswer": 2,
+            "explanation": "WEP uses a weak 24-bit IV that repeats, allowing statistical key recovery."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What is required to perform an offline dictionary attack against a WPA2 network?",
+            "options": [
+                "The router's admin password.",
+                "A captured 4-Way Handshake and a wordlist.",
+                "Physical access to the router.",
+                "The WPS PIN."
+            ],
+            "correctAnswer": 1,
+            "explanation": "The handshake contains the nonces and MIC needed to test password guesses offline."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "Monitor mode allows a wireless card to capture all traffic in the air, not just traffic destined for its MAC address.",
+            "correctAnswer": true,
+            "explanation": "True. Monitor mode is the passive sniffing mode required for wireless attacks."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "The command `airmon-ng start wlan0` creates a new virtual interface typically named ______.",
+            "options": [
+                "wlan0mon",
+                "mon0",
+                "eth0",
+                "wifi0"
+            ],
+            "correctAnswer": "wlan0mon",
+            "explanation": "`airmon-ng` creates a monitor mode interface named `wlan0mon` (or similar)."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What is the purpose of a deauthentication attack in the context of WPA2 cracking?",
+            "options": [
+                "To permanently disconnect a user from the network.",
+                "To force a client to reconnect, capturing the 4-Way Handshake in the process.",
+                "To change the Wi-Fi password.",
+                "To crash the router."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Deauth packets force reconnection, generating the handshake needed for cracking."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "WPA3 is immune to offline dictionary attacks because of the SAE (Simultaneous Authentication of Equals) handshake.",
+            "correctAnswer": true,
+            "explanation": "True. SAE uses a Diffie-Hellman variant that does not transmit a crackable hash."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What is the primary advantage of the PMKID attack over the traditional 4-Way Handshake capture?",
+            "options": [
+                "It works on WPA3 networks.",
+                "It does not require a connected client or deauthentication packets.",
+                "It cracks the password faster.",
+                "It works from a longer distance."
+            ],
+            "correctAnswer": 1,
+            "explanation": "The PMKID is often included in the AP's first EAPOL frame, making it a passive, clientless attack."
+        },
+        {
+            "id": "q8",
+            "type": "fill_blank",
+            "question": "The tool used to convert a `.cap` file to Hashcat format is called ______.",
+            "options": [
+                "aircrack-ng",
+                "hcxpcapngtool",
+                "airodump-ng",
+                "aireplay-ng"
+            ],
+            "correctAnswer": "hcxpcapngtool",
+            "explanation": "`hcxpcapngtool` from the hcxtools suite converts captures for Hashcat."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Which Hashcat mode number is used for WPA/WPA2 handshakes?",
+            "options": [
+                "0",
+                "1000",
+                "22000",
+                "1800"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Mode 22000 is for WPA-PBKDF2-PMKID+EAPOL."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "In an Evil Twin attack, what is the purpose of the deauthentication packets?",
+            "options": [
+                "To crack the WPA2 password.",
+                "To force clients off the legitimate AP so they connect to the fake AP.",
+                "To install malware on the client.",
+                "To steal the router's admin password."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Deauths disrupt the connection to the real AP, encouraging clients to roam to the rogue AP."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "A hidden SSID (non-broadcast) provides strong security against attackers.",
+            "correctAnswer": false,
+            "explanation": "False. The SSID is sent in plaintext in Probe Requests and Responses, making hiding ineffective."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which frequency band typically has more non-overlapping channels and less interference?",
+            "options": [
+                "2.4 GHz",
+                "5 GHz",
+                "900 MHz",
+                "60 GHz"
+            ],
+            "correctAnswer": 1,
+            "explanation": "5 GHz offers many more non-overlapping channels and is less congested than 2.4 GHz."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What is the BSSID of a Wi-Fi network?",
+            "options": [
+                "The human-readable name of the network.",
+                "The MAC address of the Access Point's radio.",
+                "The IP address of the router.",
+                "The encryption key."
+            ],
+            "correctAnswer": 1,
+            "explanation": "BSSID is the MAC address of the AP, uniquely identifying the network hardware."
+        },
+        {
+            "id": "q14",
+            "type": "true_false",
+            "question": "`airgeddon` and `Fluxion` are automated tools that can perform Evil Twin attacks including captive portals.",
+            "correctAnswer": true,
+            "explanation": "True. These frameworks automate the entire Evil Twin workflow."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What is the primary defense against Evil Twin attacks for an end user?",
+            "options": [
+                "Using WPA3 encryption.",
+                "Being suspicious of unexpected captive portal pages asking for credentials.",
+                "Hiding the SSID.",
+                "Using a longer password."
+            ],
+            "correctAnswer": 1,
+            "explanation": "User awareness is key. Legitimate networks rarely ask for passwords again via captive portal."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which command tests if your wireless card supports packet injection?",
+            "options": [
+                "airmon-ng start wlan0",
+                "airodump-ng wlan0mon",
+                "aireplay-ng -9 wlan0mon",
+                "aircrack-ng -t wlan0mon"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`aireplay-ng -9` performs an injection test."
+        },
+        {
+            "id": "q17",
+            "type": "fill_blank",
+            "question": "The `airodump-ng` flag to lock scanning to a specific channel is ______.",
+            "options": [
+                "-c",
+                "-b",
+                "-w",
+                "-e"
+            ],
+            "correctAnswer": "-c",
+            "explanation": "`-c [channel]` locks the card to a single channel."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "WPS (Wi-Fi Protected Setup) is vulnerable to:",
+            "options": [
+                "Man-in-the-Middle attacks.",
+                "Brute force attacks on the 8-digit PIN.",
+                "Packet injection.",
+                "Rainbow table attacks."
+            ],
+            "correctAnswer": 1,
+            "explanation": "The WPS PIN can be brute-forced in hours due to poor design (only 11,000 guesses)."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "Using Hashcat with a GPU is significantly slower than using aircrack-ng on a CPU.",
+            "correctAnswer": false,
+            "explanation": "False. GPU acceleration in Hashcat is orders of magnitude faster than CPU-based aircrack-ng."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "You are performing a wireless pentest. You capture a WPA2 handshake but `rockyou.txt` fails. What is the most ethical next step?",
+            "options": [
+                "Use a larger, illegally obtained wordlist.",
+                "Report that the password was not found in common wordlists and recommend a stronger password policy.",
+                "Run a brute force attack for weeks.",
+                "Deauth the client until they change their password."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Ethical testers document the finding: the network is vulnerable to offline cracking, but the specific password was not recovered with standard dictionaries."
+        }
+    ]
+}

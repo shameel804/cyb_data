@@ -1,0 +1,114 @@
+{
+    "id": "l3",
+    "chapterId": "ch_4",
+    "title": "DNS Interrogation & Subdomain Discovery 📖",
+    "description": "Extract network infrastructure details from the Domain Name System.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Passive/Active",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "DNS: The Blueprint of the Network 🗺️",
+            "content": "# Why DNS is Critical for Recon\n\nDNS doesn't just translate names to IPs. It contains a treasure trove of **infrastructure information**.\n\n**Key Record Types for Hackers:**\n- **A Record**: IPv4 address of a domain.\n- **AAAA Record**: IPv6 address.\n- **MX Record**: Mail Exchange server (tells you where email is hosted).\n- **NS Record**: Name Server (tells you who manages the DNS).\n- **TXT Record**: Text notes. Often contains **SPF** (email security) records which **leak IP addresses**!\n- **CNAME Record**: Alias (can reveal internal server naming conventions)."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "DNS Record Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which DNS record type would you query to find out who handles email for `example.com`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "NS",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "MX",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "CNAME",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "MX (Mail Exchanger) records specify the mail servers responsible for accepting email.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "code",
+            "title": "Using dig and nslookup 🛠️",
+            "content": "Let's actively query DNS for information. (Remember: Use on `scanme.nmap.org` or `zonetransfer.me` for practice).",
+            "codeSnippet": "# Basic A record lookup\ndig example.com A\n\n# Lookup Mail Servers\ndig example.com MX\n\n# Lookup TXT (SPF) records - Check for IP leaks!\ndig example.com TXT\n\n# Specify a different DNS server (e.g., Google's 8.8.8.8)\ndig @8.8.8.8 example.com",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "DNS Zone Transfers (AXFR) 🔓",
+            "content": "# The Holy Grail of DNS Misconfiguration\n\nA **Zone Transfer** allows a secondary DNS server to pull a full copy of the zone file from the primary server.\n\n**If misconfigured to allow anyone**, an attacker can request this transfer and get a **complete list of ALL subdomains and internal IP addresses** for the domain.\n\n**How to Test:**\n1.  Find the Name Servers: `dig ns example.com`\n2.  Attempt the transfer: `dig axfr @ns1.example.com example.com`\n\n**Practice Target**: `zonetransfer.me` is set up specifically to allow this so you can learn.\n```bash\ndig axfr @nsztm1.digi.ninja zonetransfer.me\n```"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "warning",
+            "title": "Zone Transfer Warning ⚠️",
+            "content": "**This is ACTIVE reconnaissance.** Attempting this on a real company without permission is an illegal network intrusion attempt. In the real world, this is almost always logged and blocked. If it works, you've hit a major vulnerability goldmine."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Subdomain Discovery (Passive Methods) 🕵️",
+            "content": "# Finding Hidden Attack Surfaces\n\nCompanies often set up subdomains like `dev.company.com` or `vpn.company.com` and forget to secure them. Finding these is critical.\n\n**Passive Tools (No direct contact):**\n- **crt.sh** : Certificate Transparency Logs. Whenever an SSL certificate is issued, it's logged publicly. Search for `%.example.com` to see all subdomains that have ever had HTTPS.\n- **Sublist3r** (Tool): Automates scraping of search engines and Virustotal.\n- **SecurityTrails** / **AlienVault OTX** : Threat intelligence platforms that keep historical DNS data.\n\n**Active Tools (Direct probing):**\n- **Gobuster** / **Ffuf** : Bruteforce subdomains using a wordlist.\n```bash\ngobuster dns -d example.com -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt\n```"
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Subdomain Recon 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "You discover the subdomain `uat.internal.example.com` resolves to `10.0.1.50`. What does this likely indicate?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A public web server.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "An internal server that has been accidentally exposed to the public internet or DNS leak.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A misconfigured email server.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A standard cloud service.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Private IPs (10.x.x.x) should never be in public DNS. This is a major information disclosure.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

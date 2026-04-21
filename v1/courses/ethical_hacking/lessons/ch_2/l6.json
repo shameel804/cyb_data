@@ -1,0 +1,123 @@
+{
+    "id": "l6",
+    "chapterId": "ch_2",
+    "title": "Network Scanning with Nmap (Intro) 🔍",
+    "description": "Your first active reconnaissance tool.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Tools",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "Meet Nmap 🗺️",
+            "content": "# The Network Mapper\n\n**Nmap** is the industry standard for network discovery and security auditing. It's the first tool you run when you get an IP address to hack.\n\n**What It Does:**\n- **Host Discovery**: Is the machine alive? (Ping Sweep)\n- **Port Scanning**: Which doors are open? (TCP/UDP)\n- **Service Detection**: What software is running? (Apache 2.4.7? OpenSSH 7.2?)\n- **OS Fingerprinting**: Is it Windows, Linux, or a network printer?\n\n**Legality Reminder**: **NEVER run Nmap against a target you do not own or have written permission to scan.** In this lab, we scan our **Metasploitable VM**."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "quiz",
+            "title": "Nmap Legality 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "What is the primary legal risk of running an aggressive Nmap scan against a random website on the internet?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It will crash the website immediately.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It violates the Computer Fraud and Abuse Act (CFAA) or similar laws regarding unauthorized network access/interference.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It uses too much of your own bandwidth.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It's impossible to hide your IP address.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Port scanning without permission is considered an unauthorized probe/intrusion in most jurisdictions.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_3",
+            "type": "text",
+            "title": "The Three-Way Handshake & Scanning 🤝",
+            "content": "## How Nmap Knows a Port is Open\n\nNmap relies on the TCP handshake rules:\n\n1.  Nmap sends a **SYN** packet to Port 80.\n2.  **Open Port**: Server replies **SYN-ACK**. (Nmap notes 'Open', then sends **RST** to close the conversation politely).\n3.  **Closed Port**: Server replies **RST** (Reset).\n4.  **Filtered**: No response. Firewall likely dropped it.\n\n**Scan Type**: This is called a **SYN Scan** or **Stealth Scan** (`-sS`). It's the default and fastest because it never completes the full connection."
+        },
+        {
+            "id": "s_l6_4",
+            "type": "code",
+            "title": "Basic Nmap Commands 💻",
+            "content": "Open your Kali terminal and target your Metasploitable VM.",
+            "codeSnippet": "# 1. Ping Sweep (Find live hosts on a subnet)\nnmap -sn 192.168.56.0/24\n\n# 2. Fast Scan (Top 1000 common ports)\nnmap 192.168.56.101\n\n# 3. Specific Port Scan\nnmap -p 21,22,80,443 192.168.56.101\n\n# 4. Service Version Detection\nnmap -sV 192.168.56.101",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_5",
+            "type": "tip",
+            "title": "Nmap Output Flags 🚀",
+            "content": "## Understanding the Results\n\n| State | Meaning |\n| :--- | :--- |\n| **open** | A service is listening. **This is your target.** |\n| **closed** | Port is accessible but no service is listening. |\n| **filtered** | A firewall is blocking the probe. Nmap doesn't know if it's open or closed. |\n| **unfiltered** | Port is accessible, but Nmap can't determine state (rare). |"
+        },
+        {
+            "id": "s_l6_6",
+            "type": "code",
+            "title": "OS Detection & Aggressive Scan 🧬",
+            "content": "Want to know the exact operating system? Use `-O` and `-A`.",
+            "codeSnippet": "# OS Fingerprinting (Requires root/sudo)\nsudo nmap -O 192.168.56.101\n\n# Aggressive Scan (OS, Version, Scripts, Traceroute)\nsudo nmap -A 192.168.56.101",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_7",
+            "type": "warning",
+            "title": "The '-A' Warning ⚠️",
+            "content": "The `-A` flag is **extremely loud**. It sends a ton of probes and runs dozens of scripts. In a real penetration test, you rarely use `-A` on a whole network until you know it's safe. It's a great way to get your IP banned or trigger an Intrusion Detection System (IDS) alert."
+        },
+        {
+            "id": "s_l6_8",
+            "type": "quiz",
+            "title": "Nmap Output Quiz 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "multiple_choice",
+                "question": "You run `nmap -p 80 10.0.0.1` and get 'filtered'. What is the most likely explanation?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "There is definitely a web server running.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The port is closed.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A firewall is dropping or rejecting your probe packets.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Nmap is broken.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "'Filtered' means Nmap received no response (or an ICMP unreachable) and assumes a firewall is in the way.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

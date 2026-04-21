@@ -1,0 +1,70 @@
+{
+    "id": "l8",
+    "chapterId": "ch_7",
+    "title": "Exploitation Best Practices & Evasion 🥷",
+    "description": "Stay stealthy and avoid crashing services.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Advanced",
+    "slides": [
+        {
+            "id": "s_l8_1",
+            "type": "text",
+            "title": "The Golden Rules of Exploitation 🥇",
+            "content": "# Do No Harm\n\nAs an ethical hacker, your job is to demonstrate risk, not cause outages.\n\n**1. Check the Exploit Rank**\nNever run an exploit ranked `Low` or `Manual` on a production system without explicit, written, and specific permission.\n\n**2. Test in a Lab First**\nIf possible, replicate the target environment in your own lab. Ensure the exploit doesn't crash the service.\n\n**3. Have a Rollback Plan**\nKnow how to restart the service or revert a VM snapshot if something goes wrong.\n\n**4. Document Everything**\nNote the exact time, command, and result of every exploitation attempt."
+        },
+        {
+            "id": "s_l8_2",
+            "type": "text",
+            "title": "Stealth Techniques 🥷",
+            "content": "# Reducing Your Footprint\n\n**1. Use Reverse HTTPS Payloads**\nPayloads like `windows/meterpreter/reverse_https` look like normal encrypted web traffic, blending in with legitimate browsing.\n\n**2. Migrate Processes**\nImmediately after getting a Meterpreter shell, migrate to a stable, trusted process like `explorer.exe` or `svchost.exe`.\n```bash\nmeterpreter > ps\nmeterpreter > migrate 1234\n```\n\n**3. Use Smaller Payloads**\nStaged payloads are smaller and less likely to be caught by network anomaly detection.\n\n**4. Clean Up**\nDelete any files you uploaded or logs you created (covered in Post-Exploitation)."
+        },
+        {
+            "id": "s_l8_3",
+            "type": "quiz",
+            "title": "Exploit Safety 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l8_1",
+                "type": "multiple_choice",
+                "question": "You find a critical RCE vulnerability in a production server. The only public exploit is rated 'Normal' and has comments saying it sometimes causes the service to crash. What is the most appropriate action?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Run it immediately; the risk is acceptable.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Run it at 3 AM when no one is watching.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Inform the client of the risk, provide the vulnerability details, and advise testing in a maintenance window or staging environment.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Ignore the vulnerability.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Ethical hackers communicate risk and avoid causing damage. The client decides whether to accept the risk of crashing the service.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l8_4",
+            "type": "text",
+            "title": "Handling Failed Exploits ❌",
+            "content": "# When the Exploit Doesn't Work\n\nDon't just move on. A failed exploit attempt can leave the service unstable or trigger alerts.\n\n**Checklist:**\n1.  **Verify Vulnerability**: Is the target *actually* running that vulnerable version? (False Positive?)\n2.  **Check Target Architecture**: Did you use a 32-bit payload on a 64-bit OS?\n3.  **Check Payload Compatibility**: Is the payload compatible with the exploit? (e.g., some exploits only support `cmd/unix/interact`, not Meterpreter).\n4.  **Firewall Issues**: Is the reverse connection being blocked? Try a bind shell or different port (443, 53).\n5.  **AV/EDR Blocking**: Did the target's antivirus kill the payload? (Try migration or obfuscation)."
+        },
+        {
+            "id": "s_l8_5",
+            "type": "tip",
+            "title": "Pro Tip: The 'check' Command 🚀",
+            "content": "## Safe Verification\n\nMany Metasploit modules have a **`check`** command. This runs a non-intrusive test to see if the target is **likely** vulnerable, without actually exploiting it.\n\n```bash\nmsf6 exploit(unix/ftp/vsftpd_234_backdoor) > check\n[*] 192.168.56.101:21 - The target is vulnerable.\n```\n\n**Always** run `check` before `exploit`."
+        }
+    ]
+}

@@ -1,0 +1,85 @@
+{
+    "id": "l3",
+    "chapterId": "ch_3",
+    "title": "File Operations: Create, Copy, Move 📄",
+    "description": "Manage files and directories from the command line.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Basics",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Creating Files and Folders 📂",
+            "content": "# Making Stuff\n\n**`touch`** : Create an empty file or update the timestamp of an existing file.\n```bash\ntouch mynotes.txt\n```\n\n**`mkdir`** : Make a directory (folder).\n```bash\nmkdir Projects\n```\n\n**`mkdir -p`** : Create parent directories as needed.\n```bash\nmkdir -p Projects/Hacking/Recon\n# Creates all three if they don't exist.\n```"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Reading Files 📖",
+            "content": "# Viewing Content\n\n**`cat`** (Concatenate): Dump the entire file to the screen. Great for small files.\n```bash\ncat /etc/passwd\n```\n\n**`less`** : View a file page by page. Essential for large log files.\n```bash\nless /var/log/syslog\n# Press Space to go down, b to go up, q to quit.\n```\n\n**`head` & `tail`** : View the first/last 10 lines of a file.\n```bash\nhead -n 5 file.txt  # First 5 lines\ntail -f log.txt     # Follow the file as it grows (Live monitoring!)\n```"
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "File Reading 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "You want to monitor a web server's access log in real-time as new requests come in. Which command is best?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "cat access.log",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "head access.log",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "tail -f access.log",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "less access.log",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The `-f` flag for `tail` stands for 'follow'. It prints new lines as they are appended.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Copying and Moving (cp & mv) 🚚",
+            "content": "# Manipulating Files\n\n**`cp`** : Copy a file or directory.\n```bash\ncp source.txt destination.txt\n\n# Copy a directory and its contents (recursive)\ncp -r /source/folder /destination/folder\n```\n\n**`mv`** : Move or rename a file.\n```bash\nmv oldname.txt newname.txt   # Rename\nmv file.txt /tmp/            # Move to /tmp\n```\n\n**`rm`** : Remove (Delete). **WARNING: There is no Recycle Bin in the terminal!**\n```bash\nrm file.txt\nrm -r folder_name            # Delete folder and all contents\nrm -rf folder_name           # Force delete, never prompt. DANGER ZONE.\n```"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "warning",
+            "title": "The `rm -rf /` Meme 💀",
+            "content": "## NEVER RUN THIS\n\n`sudo rm -rf / --no-preserve-root`\n\nThis command tells the system to **forcefully delete every single file on your hard drive**, starting from the root. It will brick your operating system instantly. \n\nAlways double-check your paths before using `rm`."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Finding Files: locate & find 🔍",
+            "content": "# Where Did I Put That?\n\n**`locate`** : Searches a database of all files. Super fast but may not be up-to-date.\n```bash\nlocate nc.exe\n# Update the database manually if needed: sudo updatedb\n```\n\n**`find`** : Searches the live file system. Slower but precise and powerful.\n```bash\n# Find all .txt files in /home\nfind /home -name \"*.txt\"\n\n# Find files modified in the last 7 days\nfind /var/log -mtime -7\n\n# Find files with SUID bit set (Security Auditing)\nfind / -perm -4000 2>/dev/null\n```\n*(Ignore `2>/dev/null` for now, it just hides error messages about permission denied.)*"
+        },
+        {
+            "id": "s_l3_7",
+            "type": "code",
+            "title": "Finding SUID Binaries (Privilege Escalation) ⬆️",
+            "content": "This command is a critical part of Linux privilege escalation enumeration. It finds programs that run with the owner's permissions instead of the user's.",
+            "codeSnippet": "find / -perm -u=s -type f 2>/dev/null",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        }
+    ]
+}

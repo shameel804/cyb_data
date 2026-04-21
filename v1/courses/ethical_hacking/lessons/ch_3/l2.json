@@ -1,0 +1,108 @@
+{
+    "id": "l2",
+    "chapterId": "ch_3",
+    "title": "File System Navigation 🗺️",
+    "description": "Learn to traverse the Linux directory structure.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Basics",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Linux Directory Tree 🌳",
+            "content": "# Everything is a File\n\nIn Linux, **everything** is represented as a file in a single, inverted tree structure. There are no `C:\\` or `D:\\` drives. Everything starts at **root** (`/`).\n\n**Analogy**: The root (`/`) is the trunk of the tree. Folders are branches. Files are leaves.\n\n**Key Directories a Hacker MUST Know:**\n- `/` : The root of the entire file system.\n- `/home` : User personal folders (like `C:\\Users`).\n- `/root` : The home folder for the **root** superuser.\n- `/etc` : Configuration files. **Goldmine for passwords and settings.**\n- `/var` : Variable data. **Log files live here** (`/var/log`).\n- `/tmp` : Temporary files. World-writable. **Great for dropping payloads.**\n- `/bin` & `/usr/bin` : Essential user command binaries (ls, cat, echo).\n- `/sbin` & `/usr/sbin` : System admin binaries (requires root)."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Directory Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "You want to find log files to see who has logged into the system recently. Which directory should you check first?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "/home",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "/etc",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "/var/log",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "/bin",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! `/var/log` contains system logs like `auth.log` and `syslog`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "pwd & ls: Where Am I? 👀",
+            "content": "# Navigation 101\n\n**`pwd`** (Print Working Directory): Shows you exactly where you are in the tree.\n```bash\npwd\n# Output: /home/kali\n```\n\n**`ls`** (List): Shows the contents of the current directory.\n```bash\nls\n# Output: Desktop Documents Downloads\n```\n\n**Useful `ls` Flags:**\n- `ls -l` : **Long** listing (permissions, size, owner, date). **Hacker staple.**\n- `ls -a` : Show **All** files, including hidden ones (files starting with `.`).\n- `ls -la` : Combine them! Show long listing of all files."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Hidden Files 🕵️",
+            "content": "Files and folders that start with a dot (`.`) are hidden by default. This is a common place for malware and backdoors to hide.",
+            "codeSnippet": "ls -la /home/kali\n# Look for .bashrc, .ssh/, .config/",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "cd: Change Directory 🚶",
+            "content": "# Moving Around\n\n**`cd`** (Change Directory): The steering wheel.\n\n**Absolute Path**: Starts from root `/`.\n```bash\ncd /etc/ssh\n```\n\n**Relative Path**: Starts from current location.\n```bash\ncd Downloads\n```\n\n**Special Shortcuts:**\n- `cd ..` : Go **up** one level (parent directory).\n- `cd .` : Stay here (current directory).\n- `cd ~` : Go **home**.\n- `cd -` : Go back to the **previous** directory you were in (Super useful!)."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Path Mastery 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "You are in `/home/kali/Downloads`. What command takes you to `/home/kali/Documents`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "cd /Documents",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "cd ../Documents",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "cd Documents",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "cd ../../Documents",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`..` goes up one level (to `/home/kali`), then `/Documents` enters the target.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,79 @@
+{
+    "id": "l5",
+    "chapterId": "ch_3",
+    "title": "Process Management 🧠",
+    "description": "Monitor and control running programs.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Administration",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "What is a Process? 🏃",
+            "content": "# Running Code\n\nEvery time you run a command or open an application, the kernel creates a **process**. Each process has a unique **Process ID (PID)**.\n\n**Analogy**: The application (like Firefox) is the recipe book. The **process** is the chef actively cooking the recipe. Multiple chefs can cook from the same book (multiple processes)."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Viewing Processes: ps & top 👀",
+            "content": "# Who's Running What?\n\n**`ps`** (Process Status): Snapshot of current processes.\n```bash\nps          # Show processes in current shell\nps aux      # Show EVERY process running on the system (Hacker favorite).\n```\n- `a` = all users\n- `u` = user-oriented format\n- `x` = processes not attached to a terminal\n\n**`top`** : Interactive, real-time view of processes (like Task Manager).\n- Press `q` to quit.\n- Press `k` then type PID to kill a process.\n\n**`htop`** : A prettier, more user-friendly `top`. (Install with `sudo apt install htop`)."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Process Viewing 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "You suspect a backdoor is running on the system. Which command gives you the most comprehensive list of all running processes?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "ps",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "ps aux",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "ls -la /proc",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "pwd",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`ps aux` shows processes from all users, including those without a terminal.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Killing Processes ☠️",
+            "content": "# Sending Signals\n\nSometimes a program freezes or you need to stop a malicious process. We use **`kill`** (sends a signal).\n\n**Find the PID first:**\n```bash\nps aux | grep firefox\n# Output: kali  1234 ... firefox\n```\n\n**Terminate Gracefully (SIGTERM - 15):**\n```bash\nkill 1234\n# Asks politely to close.\n```\n\n**Force Kill (SIGKILL - 9):**\n```bash\nkill -9 1234\n# Nukes it from orbit. No saving data.\n```\n\n**Kill by Name:**\n```bash\npkill firefox\nkillall firefox\n```"
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Background & Foreground Jobs 🔄",
+            "content": "# Multitasking in One Terminal\n\nYou can run a command in the **background** so you can keep using the terminal.\n\n**Start in Background:**\n```bash\nnmap -p- 192.168.1.1 &\n# The '&' sends it to the background.\n```\n\n**Suspend Current Job:**\nPress `Ctrl+Z` while a job is running. It pauses and gives you the prompt back.\n\n**Manage Jobs:**\n- `jobs` : List background/suspended jobs.\n- `fg` : Bring the last job to the **foreground**.\n- `bg` : Resume a suspended job in the **background**.\n\n**Detach Completely (nohup):**\n```bash\nnohup long_running_scan.sh &\n# Keeps running even if you close the terminal window.\n```"
+        },
+        {
+            "id": "s_l5_6",
+            "type": "code",
+            "title": "Find Processes by Port 🔌",
+            "content": "This is an essential hacker trick. You see an open port, but what program is listening on it?",
+            "codeSnippet": "# Linux (using netstat)\nsudo netstat -tulpn | grep :80\n\n# Or using ss (newer tool)\nsudo ss -tulpn | grep :80",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        }
+    ]
+}

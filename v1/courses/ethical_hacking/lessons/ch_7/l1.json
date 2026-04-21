@@ -1,0 +1,70 @@
+{
+    "id": "l1",
+    "chapterId": "ch_7",
+    "title": "Introduction to Exploitation 💥",
+    "description": "The moment of truth: turning a vulnerability into access.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "What is Exploitation? 🎯",
+            "content": "# Phase 4: Gaining Access\n\n**Exploitation** is the process of using a discovered vulnerability to execute arbitrary code or commands on a target system.\n\n**Analogy**: You found a cracked window (vulnerability) during scanning. Exploitation is **prying it open and climbing inside**.\n\n**The Goal**: Establish a foothold—some form of control over the target. This could be:\n- A **shell** (command line access)\n- A **GUI** session (RDP/VNC)\n- Execution of a **single command** (e.g., creating a user)\n\n**The Result**: From this point forward, you are **inside** the network."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Exploitation Purpose 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the primary objective of the exploitation phase?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To scan for open ports.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To gain initial access or execute code on the target.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To cover your tracks.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To write the final report.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! Exploitation is about breaching the perimeter and gaining a foothold.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Types of Exploits 🧩",
+            "content": "# Many Ways to Break In\n\n**1. Remote Exploits**\n- **Target**: Network services (HTTP, SMB, FTP, SSH).\n- **Requirement**: No prior access needed; just an IP address.\n- **Example**: Exploiting a buffer overflow in a web server to get a reverse shell.\n\n**2. Local Exploits (Privilege Escalation)**\n- **Target**: The operating system kernel or misconfigured services.\n- **Requirement**: You already have a low-privilege shell.\n- **Example**: Exploiting a SUID binary to become root.\n\n**3. Client-Side Exploits**\n- **Target**: User applications (browsers, PDF readers, Office).\n- **Requirement**: User interaction (opening a file or link).\n- **Example**: Sending a malicious Word document with a macro.\n\n**4. Web Application Exploits**\n- **Target**: Logic flaws in websites (SQLi, XSS, File Upload).\n- **Example**: Uploading a web shell via an unrestricted file upload."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Reliability Factor 📊",
+            "content": "# Not All Exploits Are Created Equal\n\nWhen choosing an exploit, consider its reliability:\n\n| Rating | Meaning |\n| :--- | :--- |\n| **Excellent** | Works 99% of the time, never crashes service. |\n| **Great** | Works most of the time, rarely crashes. |\n| **Good** | Works often, but may fail due to environment differences. |\n| **Normal** | Reliable, but may crash the service (requires restart). |\n| **Low** | Unreliable; may work 1/10 times or crash the OS. |\n| **Manual** | Exploit requires manual adjustment; not fully automated. |\n\n**Hacker Wisdom**: In a real penetration test, **never run an exploit rated 'Low' or 'Normal' on a production server without explicit client permission.** Crashing a critical service is a resume-generating event."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "warning",
+            "title": "The Crash Warning ⚠️",
+            "content": "## Exploits Are Weapons\n\nExploit code is often written quickly by researchers to prove a point. It's **not production-grade software**. Running an exploit can:\n- Cause the service to hang or crash.\n- Cause the entire system to Blue Screen (BSOD) or Kernel Panic.\n- Leave the system in an unstable state.\n\n**Always** have a rollback plan, and **always** test exploits in a lab environment identical to the target first."
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "id": "task4",
+    "chapterId": "ch_4",
+    "title": "Metadata Extraction",
+    "description": "Analyze a document for hidden information.",
+    "estimatedMinutes": 15,
+    "problemStatement": "# Objective\nPractice using `exiftool` to extract metadata from a file.\n\n## Setup\nSince you need a file to analyze, we'll download a sample PDF from a public source.\n\n## Steps\n1.  Open Kali terminal.\n2.  Download a sample PDF: `wget https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf`\n3.  Run `exiftool dummy.pdf`.\n4.  Identify the **Creator Tool** and **Producer** software.\n5.  (Bonus) Use `wget` to download an image from `https://picsum.photos/200` and check if it has GPS data. (It won't, but practice the command).\n\n## Deliverable\nWhat software created the dummy PDF?",
+    "hints": [
+        "`exiftool` is pre-installed on Kali.",
+        "Look for the 'Creator' or 'Producer' fields."
+    ],
+    "expectedOutput": "The PDF was likely created by a tool like 'Adobe Acrobat' or 'Microsoft Word'. The exact string from `Producer` field.",
+    "solutionCode": "wget https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf\nexiftool dummy.pdf | grep -E 'Creator|Producer'"
+}

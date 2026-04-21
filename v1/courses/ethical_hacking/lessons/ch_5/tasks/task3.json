@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_5",
+    "title": "Service Enumeration Challenge",
+    "description": "Enumerate FTP, SNMP, and SSH services.",
+    "estimatedMinutes": 25,
+    "problemStatement": "# Objective\nPractice enumerating multiple services on Metasploitable.\n\n## Tasks\n1.  **FTP Enumeration**: Check if anonymous login is allowed. If yes, log in and list files. What file(s) do you see?\n2.  **SNMP Enumeration**: Scan UDP port 161. Use `snmpwalk` with community string `public` to enumerate the system. Find the **system contact** or **system name**.\n3.  **SSH Enumeration**: Use `nc` to grab the SSH banner. What version does it report? Then run `ssh-audit` against the target and note one **weak algorithm** it reports.\n\n## Deliverable\n- FTP Anonymous: Yes/No and file list.\n- SNMP System Contact string.\n- SSH Version and one weak algorithm.",
+    "hints": [
+        "FTP: `ftp 192.168.56.101`, user `anonymous`, password blank.",
+        "SNMP: `snmpwalk -v1 -c public 192.168.56.101`",
+        "SSH: `nc 192.168.56.101 22`, then `ssh-audit 192.168.56.101`."
+    ],
+    "expectedOutput": "FTP: Yes, contains file 'note' or empty. SNMP: Contact 'msfadmin'. SSH: OpenSSH 4.7p1, weak algo e.g., 'arcfour'.",
+    "solutionCode": "# FTP\nftp 192.168.56.101\n# Name: anonymous\n# Password: [Enter]\n# Commands: ls, pwd\n\n# SNMP (install snmp if needed: sudo apt install snmp)\nsnmpwalk -v1 -c public 192.168.56.101 1.3.6.1.2.1.1.4  # system contact\n\n# SSH\nnc 192.168.56.101 22\n# Or: ssh -v 192.168.56.101 2>&1 | grep \"Remote protocol\"\nssh-audit 192.168.56.101"
+}

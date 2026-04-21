@@ -1,0 +1,14 @@
+{
+    "id": "task3",
+    "chapterId": "ch_3",
+    "title": "Process Investigation",
+    "description": "Find and terminate a suspicious process.",
+    "estimatedMinutes": 15,
+    "problemStatement": "# Objective\nUse process management commands to investigate and stop a rogue application.\n\n## Scenario\nYou suspect a program called `evil_daemon` is running in the background consuming CPU. You need to find its Process ID (PID) and kill it.\n\n## Steps\n1.  List all running processes using `ps aux`.\n2.  Filter the list to only show processes containing 'evil' using `grep`.\n3.  Note the PID.\n4.  Attempt a graceful termination with `kill [PID]`.\n5.  If it doesn't work, force kill it with `kill -9 [PID]`.\n6.  Verify it is gone by running the `ps aux | grep` command again.\n\n**Simulation**: Since 'evil_daemon' isn't real, open a second terminal and run `sleep 1000 &` to simulate a background job. Then kill it.",
+    "hints": [
+        "Use `ps aux | grep sleep` to find the PID.",
+        "The PID is the number in the second column."
+    ],
+    "expectedOutput": "Confirmation that the process is no longer listed.",
+    "solutionCode": "# In Terminal 1 (simulate rogue process)\nsleep 1000 &\n# Output: [1] 12345 (PID)\n\n# In Terminal 2 (or same terminal)\nps aux | grep sleep\n# Output shows PID 12345\nkill 12345\n# If it doesn't die: kill -9 12345\nps aux | grep sleep  # Should be gone"
+}

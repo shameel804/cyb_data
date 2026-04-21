@@ -1,0 +1,252 @@
+{
+    "id": "quiz_ch_2",
+    "chapterId": "ch_2",
+    "title": "Chapter 2 Quiz",
+    "description": "Test your knowledge of networking fundamentals, protocols, and Nmap.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which OSI layer is responsible for logical addressing (IP addresses) and routing?",
+            "options": [
+                "Layer 2 (Data Link)",
+                "Layer 3 (Network)",
+                "Layer 4 (Transport)",
+                "Layer 7 (Application)"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Layer 3 (Network) handles IP addressing and path selection."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "At which layer of the OSI model do MAC addresses operate?",
+            "options": [
+                "Physical (Layer 1)",
+                "Data Link (Layer 2)",
+                "Network (Layer 3)",
+                "Transport (Layer 4)"
+            ],
+            "correctAnswer": 1,
+            "explanation": "MAC addresses are used at the Data Link layer for local network delivery."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "TCP is a connectionless protocol, while UDP is connection-oriented.",
+            "correctAnswer": false,
+            "explanation": "False. TCP is connection-oriented (3-way handshake). UDP is connectionless (fire and forget)."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which of the following is a valid private IP address?",
+            "options": [
+                "8.8.8.8",
+                "172.15.1.1",
+                "192.168.1.1",
+                "127.0.0.1"
+            ],
+            "correctAnswer": 2,
+            "explanation": "192.168.0.0/16 is a private range. 8.8.8.8 is public. 172.15.x.x is public (private is 172.16-172.31). 127.0.0.1 is loopback."
+        },
+        {
+            "id": "q5",
+            "type": "fill_blank",
+            "question": "The CIDR notation for a subnet mask of 255.255.255.0 is /_____.",
+            "options": [
+                "8",
+                "16",
+                "24",
+                "32"
+            ],
+            "correctAnswer": "24",
+            "explanation": "255.255.255.0 has 24 bits set to 1 in binary."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the default port for HTTPS?",
+            "options": [
+                "80",
+                "22",
+                "443",
+                "8080"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Port 443 is the standard port for HTTP over SSL/TLS (HTTPS)."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Which port is commonly associated with the insecure remote access protocol Telnet?",
+            "options": [
+                "21",
+                "22",
+                "23",
+                "25"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Telnet uses port 23 and sends data in cleartext."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What protocol is used to translate domain names like 'google.com' into IP addresses?",
+            "options": [
+                "HTTP",
+                "DHCP",
+                "DNS",
+                "ARP"
+            ],
+            "correctAnswer": 2,
+            "explanation": "DNS (Domain Name System) is the phonebook of the internet."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "An HTTP response code of '404' indicates:",
+            "options": [
+                "Success",
+                "Server Error",
+                "Redirection",
+                "Client Error (Not Found)"
+            ],
+            "correctAnswer": 3,
+            "explanation": "4xx codes indicate client errors; 404 specifically means the requested resource was not found."
+        },
+        {
+            "id": "q10",
+            "type": "true_false",
+            "question": "HTTPS encrypts the URL path and query parameters, not just the page content.",
+            "correctAnswer": true,
+            "explanation": "True. With HTTPS, the entire HTTP conversation (headers, path, body) is encrypted inside the TLS tunnel."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which Nmap scan type is known as the 'Stealth Scan' and never completes the full TCP handshake?",
+            "options": [
+                "TCP Connect Scan (-sT)",
+                "SYN Scan (-sS)",
+                "UDP Scan (-sU)",
+                "Ping Scan (-sn)"
+            ],
+            "correctAnswer": 1,
+            "explanation": "SYN Scan sends a SYN, receives SYN-ACK, then sends RST. It doesn't complete the 3-way handshake."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "You run `nmap -sV 10.0.0.1`. What additional information does this provide?",
+            "options": [
+                "Operating System guess",
+                "Open TCP ports only",
+                "Service/Application version numbers",
+                "UDP ports"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The `-sV` flag enables version detection, revealing software like 'Apache httpd 2.4.7'."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "In Nmap output, what does the state 'filtered' mean?",
+            "options": [
+                "The port is open.",
+                "The port is closed.",
+                "A firewall is likely blocking the probe.",
+                "Nmap is still scanning."
+            ],
+            "correctAnswer": 2,
+            "explanation": "Filtered means Nmap cannot determine the port state because a firewall is dropping or rejecting packets."
+        },
+        {
+            "id": "q14",
+            "type": "true_false",
+            "question": "The 'Hosts' file (e.g., /etc/hosts) is checked AFTER external DNS servers.",
+            "correctAnswer": false,
+            "explanation": "False. The local hosts file is checked FIRST, before any DNS query is made."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What is the primary purpose of ARP (Address Resolution Protocol)?",
+            "options": [
+                "To resolve domain names to IP addresses",
+                "To resolve IP addresses to MAC addresses",
+                "To assign IP addresses automatically",
+                "To test network connectivity"
+            ],
+            "correctAnswer": 1,
+            "explanation": "ARP maps a known IP address to an unknown MAC address on the local network segment."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which command is used in Linux to display current TCP/IP network connections and listening ports?",
+            "options": [
+                "ifconfig",
+                "ping",
+                "netstat",
+                "nslookup"
+            ],
+            "correctAnswer": 2,
+            "explanation": "netstat (network statistics) shows active connections and listening ports."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "How many usable host addresses are available in a `/30` subnet?",
+            "options": [
+                "2",
+                "4",
+                "6",
+                "8"
+            ],
+            "correctAnswer": 0,
+            "explanation": "32 - 30 = 2 host bits. 2^2 = 4 total addresses. Subtract 2 for network and broadcast = 2 usable hosts."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "An HTTP GET request is typically used to:",
+            "options": [
+                "Send login credentials securely",
+                "Retrieve data from a server",
+                "Delete a resource",
+                "Update a profile picture"
+            ],
+            "correctAnswer": 1,
+            "explanation": "GET is used to request data from a specified resource."
+        },
+        {
+            "id": "q19",
+            "type": "fill_blank",
+            "question": "The loopback IP address used for local testing is ______.",
+            "options": [
+                "0.0.0.0",
+                "255.255.255.255",
+                "127.0.0.1",
+                "192.168.0.1"
+            ],
+            "correctAnswer": "127.0.0.1",
+            "explanation": "127.0.0.1 is the standard IPv4 loopback address, also known as 'localhost'."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Port 445 is associated with which Windows service, notoriously targeted by EternalBlue?",
+            "options": [
+                "RDP",
+                "NetBIOS",
+                "SMB",
+                "WinRM"
+            ],
+            "correctAnswer": 2,
+            "explanation": "SMB (Server Message Block) operates on port 445 and was the target of the WannaCry ransomware exploit."
+        }
+    ]
+}

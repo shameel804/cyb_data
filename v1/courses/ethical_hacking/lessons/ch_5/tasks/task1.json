@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_5",
+    "title": "Comprehensive Nmap Scan",
+    "description": "Perform a detailed scan of the Metasploitable VM.",
+    "estimatedMinutes": 25,
+    "problemStatement": "# Objective\nConduct a thorough port scan and version detection against your Metasploitable VM.\n\n## Steps\n1.  Perform a **SYN scan** on the **top 1000 ports** and save output in all formats with base name `metasploitable_scan`.\n2.  Perform a scan on **all 65535 ports** using `-T4` timing.\n3.  Run a **version detection scan** (`-sV`) on the open ports you found.\n4.  Run an **OS detection scan** (`-O`).\n\n## Deliverable\nSubmit the version information for the following services: FTP (port 21), SSH (port 22), Web (port 80).\n\n**Example Answer Format:**\n- Port 21: vsftpd 2.3.4\n- Port 22: OpenSSH 4.7p1\n- Port 80: Apache httpd 2.2.8",
+    "hints": [
+        "Use `-oA` to save all output formats at once.",
+        "`-p-` scans all ports.",
+        "Combine flags: `nmap -sV -O -p 21,22,80 192.168.56.101` for final check."
+    ],
+    "expectedOutput": "vsftpd 2.3.4 on port 21, OpenSSH 4.7p1 on port 22, Apache httpd 2.2.8 on port 80.",
+    "solutionCode": "# Step 1: Top 1000 ports with output\nnmap -sS -oA metasploitable_scan 192.168.56.101\n\n# Step 2: All ports (takes a while)\nnmap -p- -T4 192.168.56.101\n\n# Step 3 & 4: Version and OS detection\nsudo nmap -sV -O 192.168.56.101\n\n# Check specific services\nnmap -sV -p 21,22,80 192.168.56.101"
+}

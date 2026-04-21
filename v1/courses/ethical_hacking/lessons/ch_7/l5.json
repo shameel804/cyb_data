@@ -1,0 +1,79 @@
+{
+    "id": "l5",
+    "chapterId": "ch_7",
+    "title": "Manual Exploitation Techniques 🔧",
+    "description": "When Metasploit fails: compiling and running standalone exploits.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Exploitation",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Why Go Manual? 🛠️",
+            "content": "# When Metasploit Isn't Enough\n\nMetasploit is amazing, but sometimes you need to do things yourself:\n- **No Module Exists**: The vulnerability is new or obscure.\n- **Module is Broken**: The Metasploit module fails due to target customizations.\n- **Understanding**: Running a manual exploit teaches you **why** it works, not just *that* it works.\n- **Customization**: You need to tweak the shellcode or bypass a specific AV.\n\n**Manual Exploit Sources:**\n- **Exploit-DB**: Download the raw Python, Ruby, C, or Perl script.\n- **GitHub**: Security researchers often publish PoCs.\n- **Packet Storm**: Another vulnerability archive."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Compiling Exploits (C/C++) 🔨",
+            "content": "# Turning Code into a Weapon\n\nMany exploits are written in C. You need to compile them for the target architecture.\n\n**1. Local Compilation (On Kali for Linux Targets)**\n```bash\ngcc -o exploit exploit.c\n./exploit 192.168.56.101\n```\n\n**2. Cross-Compilation (On Kali for Windows Targets)**\n```bash\n# Install MinGW compiler\nsudo apt install mingw-w64\n\n# Compile 32-bit Windows executable\ni686-w64-mingw32-gcc exploit.c -o exploit.exe -lws2_32\n\n# Compile 64-bit Windows executable\nx86_64-w64-mingw32-gcc exploit.c -o exploit64.exe -lws2_32\n```\n\n**Common Issues**: Missing libraries (`-lws2_32` for Windows sockets), architecture mismatches."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Compilation 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "You have a C exploit that uses Windows socket functions (WSAStartup). Which flag is required when cross-compiling with MinGW?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "-lpthread",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "-lws2_32",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "-lcrypto",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "-static",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-lws2_32` links the Winsock 2 library required for Windows socket programming.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "Example: Manual Samba Exploit 🐍",
+            "content": "Metasploitable's Samba 3.0.20 is vulnerable to **CVE-2007-2447** (Username Map Script RCE). Let's run a manual Python exploit from Exploit-DB.",
+            "codeSnippet": "# 1. Find the exploit\nsearchsploit samba 3.0.20\n# Returns: 16320.rb (Metasploit), also a Python PoC.\n\n# 2. Copy Python exploit (assuming it exists)\nsearchsploit -m 16320\n\n# 3. Run it\npython 16320.py 192.168.56.101 139\n# If successful, you get a root shell.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Troubleshooting Manual Exploits 🔧",
+            "content": "# It's Not Working! Why?\n\nManual exploits often fail. Here's the debugging checklist:\n\n1.  **Target OS/Architecture**: Is it Linux or Windows? 32-bit or 64-bit? The exploit might be specific.\n2.  **Dependencies**: Does the script require `python2` instead of `python3`? Are required modules installed (`pip install pwn`)?\n3.  **Return Addresses**: Buffer overflow exploits may have hardcoded addresses that only work on specific OS versions (e.g., Windows XP SP2 vs SP3).\n4.  **Firewall**: Is the target's firewall blocking the connection?\n5.  **Read the Code!**: The comments at the top of the exploit often contain crucial instructions."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "tip",
+            "title": "Pro Tip: Using SearchSploit's -w 🚀",
+            "content": "## Get the Exploit URL\n\n`searchsploit` now has a `-w` flag to give you the direct URL to the Exploit-DB entry, which often contains discussion and updated versions.\n\n```bash\nsearchsploit samba 3.0.20 -w\n```\n\nThis opens the web page where you can see if others had issues and how they fixed them."
+        }
+    ]
+}

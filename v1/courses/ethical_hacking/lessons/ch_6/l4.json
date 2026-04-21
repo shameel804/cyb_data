@@ -1,0 +1,91 @@
+{
+    "id": "l4",
+    "chapterId": "ch_6",
+    "title": "Automated Scanners: OpenVAS & Nikto 🤖",
+    "description": "Run industry-standard vulnerability scanners against your lab.",
+    "xpReward": 40,
+    "estimatedMinutes": 12,
+    "section": "Tools",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Why Automate? 🦾",
+            "content": "# Speed and Coverage\n\nManually checking every port for every CVE is impossible. **Vulnerability Scanners** automate this process by sending thousands of checks against a target.\n\n**Two Types of Scanners:**\n- **Network Scanners**: Scan entire IP ranges for OS and service vulnerabilities. (e.g., **OpenVAS**, **Nessus**, **Qualys**).\n- **Web Application Scanners**: Focus specifically on web vulnerabilities like SQLi and XSS. (e.g., **Nikto**, **Burp Suite Scanner**, **Acunetix**).\n\n**Analogy**: If manual checking is a detective with a magnifying glass, an automated scanner is a team of 100 detectives with checklists."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "OpenVAS (Greenbone) 🟢",
+            "content": "# The Open Source Powerhouse\n\n**OpenVAS** (Open Vulnerability Assessment System) is the open-source fork of Nessus. It is the go-to free network vulnerability scanner.\n\n**Components:**\n- **Greenbone Security Assistant (GSA)**: Web interface.\n- **OpenVAS Scanner**: The engine that runs the tests.\n- **Feed**: Daily updates of vulnerability tests (NVTs).\n\n**Installation on Kali:**\n```bash\nsudo apt install openvas\nsudo gvm-setup\n```\n*Note: OpenVAS is resource-heavy. It may be slow on a VM with limited RAM. For this course, we focus on the lighter **Nikto** for lab practice, but you should know OpenVAS exists.*"
+        },
+        {
+            "id": "s_l4_3",
+            "type": "tip",
+            "title": "OpenVAS Alternative: Nessus 🚀",
+            "content": "## The Industry Standard\n\n**Nessus** by Tenable is the most widely used commercial vulnerability scanner. It offers a **free 'Home' license** for up to 16 IPs.\n\n**Why mention it?** If you pursue a career in pentesting, you **will** use Nessus. The interface and logic are nearly identical to OpenVAS. Learning one teaches you 90% of the other."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Nikto: Web Server Scanner 🕸️",
+            "content": "# Lightweight and Loud\n\n**Nikto** is an open-source web server scanner that performs comprehensive tests against web servers for multiple items, including:\n- Over 6700 potentially dangerous files/programs.\n- Outdated versions of over 1250 servers.\n- Version specific problems on over 270 servers.\n- Server configuration items (e.g., Indexes enabled, TRACE methods).\n\n**Command Syntax:**\n```bash\nnikto -h http://192.168.56.101\n```\n\n**Pros**: Fast, easy, great for finding low-hanging fruit like `/phpinfo.php` or `/admin/`.\n**Cons**: **Extremely noisy**. It sends thousands of requests and will light up any IDS."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Nikto in Action 💻",
+            "content": "Run Nikto against your Metasploitable VM's web server.",
+            "codeSnippet": "# Basic scan\nnikto -h http://192.168.56.101\n\n# Scan on different port\nnikto -h http://192.168.56.101:8080\n\n# Save output to file\nnikto -h http://192.168.56.101 -o nikto_results.txt\n\n# Tune specific tests (e.g., file uploads)\nnikto -h http://192.168.56.101 -Tuning 5",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Scanner Choice 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which tool is specifically designed for comprehensive web server scanning, checking for outdated software and dangerous files?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "OpenVAS",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Nikto",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Nmap",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "SearchSploit",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Nikto is a dedicated web server scanner. OpenVAS scans the whole network stack.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Interpreting Scanner Results 📋",
+            "content": "# Separating Signal from Noise\n\nAutomated scanners produce **a lot** of findings. Not all are accurate.\n\n**1. False Positives**\nThe scanner says a vulnerability exists, but it doesn't (e.g., banner misidentification). **Always verify manually.**\n\n**2. Informational**\nNot a vulnerability, just a fact (e.g., 'Allowed HTTP Methods: GET, POST'). Useful for context.\n\n**3. Low / Medium / High**\nCategorized by CVSS.\n\n**Hacker Workflow**: Look at the **High/Critical** findings first. Try to exploit them. If you can't, investigate why (False Positive?)."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "warning",
+            "title": "Scanning Etiquette ⚠️",
+            "content": "## Never Scan Production Without Permission\n\nVulnerability scanners are **intrusive**. They can:\n- Crash fragile services (e.g., old printers, IoT devices).\n- Fill up log files (causing disk space issues).\n- Trigger alarms and panic the SOC.\n\n**In a real test**, coordinate with the client. Often, scanning is done **outside business hours**."
+        }
+    ]
+}

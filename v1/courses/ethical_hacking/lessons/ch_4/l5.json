@@ -1,0 +1,85 @@
+{
+    "id": "l5",
+    "chapterId": "ch_4",
+    "title": "Website & Technology Fingerprinting 🧬",
+    "description": "Identify web servers, CMS platforms, and hidden directories.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Active",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "What's Running That Site? 🕸️",
+            "content": "# Technology Stack Identification\n\nKnowing the exact software version is the first step to finding an exploit. This process is called **Fingerprinting**.\n\n**Key Information to Gather:**\n- Web Server: Apache, Nginx, IIS?\n- Programming Language: PHP, ASP.NET, Python?\n- Content Management System (CMS): WordPress, Joomla, Drupal?\n- JavaScript Libraries: React, Angular, jQuery versions?"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "HTTP Headers Analysis 📡",
+            "content": "The server often tells you exactly what it is in the response headers.",
+            "codeSnippet": "curl -I https://example.com\n\n# Look for headers like:\n# Server: Apache/2.4.41 (Ubuntu)\n# X-Powered-By: PHP/7.4.3\n# X-AspNet-Version: 4.0.30319",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Header Analysis 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "You see the header `X-Powered-By: PHP/5.6.40`. What should immediately come to mind?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The website is modern and secure.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The website is running an end-of-life, potentially vulnerable version of PHP.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The website is built with WordPress.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The website is using a CDN.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "PHP 5.6 reached End of Life in 2018. It has known security vulnerabilities. This is a red flag.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "WhatWeb & Wappalyzer 🛠️",
+            "content": "# Automated Fingerprinting Tools\n\nManually checking headers is good, but tools automate the entire process.\n\n**WhatWeb (Kali Built-in):**\n```bash\nwhatweb example.com\n```\nIt checks over 1800 plugins to identify everything from CMS versions to analytics trackers.\n\n**Wappalyzer**: A browser extension that gives a visual breakdown of the tech stack with one click.\n\n**BuiltWith**: A website that provides historical technology profiles for domains."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Directory & File Enumeration 📁",
+            "content": "# Finding the Hidden Doors\n\nWeb servers often have directories that aren't linked from the main page (e.g., `/admin`, `/backup`, `/logs`).\n\n**Tools for Discovery:**\n- **Gobuster** : Fast, multi-threaded directory/file bruteforcer.\n- **Dirb** : Classic web content scanner.\n\n**Command Example:**\n```bash\ngobuster dir -u http://192.168.56.101 -w /usr/share/wordlists/dirb/common.txt\n```\n\n**Important Files to Look For:**\n- `robots.txt` : Tells search engines what **not** to index. Hackers read this first!\n- `sitemap.xml` : Lists all pages the site *wants* indexed.\n- `.git/` : If exposed, contains the entire source code history. **Critical finding.**\n- `backup.zip` / `backup.sql` : Database dumps."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "warning",
+            "title": "Gobuster is LOUD 🔊",
+            "content": "Running Gobuster sends hundreds or thousands of requests in seconds. This is **Active Reconnaissance**. It will fill up the server logs and likely trigger a Web Application Firewall (WAF) block. **Only do this on targets you own or have permission to test.**"
+        },
+        {
+            "id": "s_l5_7",
+            "type": "tip",
+            "title": "Pro Tip: Favicon Hashing 🚀",
+            "content": "## Identifying CMS by the Tab Icon\n\nEvery website has a `favicon.ico` (the tiny icon in the browser tab). If the admin hasn't changed the default, the favicon is a unique fingerprint for that CMS.\n\n**Example**: The default WordPress favicon has a specific MD5 hash. Tools like the **OWASP Favicon Database** can identify the exact CMS version just from that icon."
+        }
+    ]
+}

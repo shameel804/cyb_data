@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_4",
+    "title": "Google Dorking Challenge",
+    "description": "Use Google search operators to locate specific files.",
+    "estimatedMinutes": 20,
+    "problemStatement": "# Objective\nBecome proficient with Google Dorking syntax to uncover exposed information on `tesla.com`.\n\n## Challenge Tasks\nPerform the following searches and document the number of results or a sample URL for each. (Note: Results change over time).\n\n1.  Find all **PDF documents** on `tesla.com` that contain the word `\"quarterly\"`.\n2.  Find pages on `tesla.com` that have `\"index of /\"` in the title (directory listings).\n3.  Find Excel files (`.xls` or `.xlsx`) on `tesla.com`.\n\n## Deliverable\nWrite down the exact Google query strings you used.",
+    "hints": [
+        "Use `site:` to restrict domain.",
+        "Use `filetype:` for extensions.",
+        "Use `intitle:` for searching the HTML title."
+    ],
+    "expectedOutput": "1. `site:tesla.com filetype:pdf quarterly`\n2. `site:tesla.com intitle:\"index of /\"`\n3. `site:tesla.com filetype:xls OR filetype:xlsx`",
+    "solutionCode": "# Query 1\nsite:tesla.com filetype:pdf quarterly\n\n# Query 2\nsite:tesla.com intitle:\"index of /\"\n\n# Query 3\nsite:tesla.com (filetype:xls OR filetype:xlsx)"
+}

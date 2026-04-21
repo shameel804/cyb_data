@@ -1,0 +1,85 @@
+{
+    "id": "l2",
+    "chapterId": "ch_4",
+    "title": "OSINT: Open Source Intelligence 🌍",
+    "description": "Master the art of finding public information online.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Passive",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "What is OSINT? 📚",
+            "content": "# Open Source INTelligence\n\nOSINT is the collection and analysis of information gathered from **public, legally accessible sources**.\n\n**Sources Include:**\n- Search Engines (Google, Bing, Yandex)\n- Social Media (LinkedIn, Twitter/X, Facebook, Instagram)\n- Public Records (Government websites, Court filings)\n- Code Repositories (GitHub, GitLab)\n- Paste Sites (Pastebin)\n- Internet Archives (Wayback Machine)"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Google Dorking (Advanced Search) 🔍",
+            "content": "# Google is a Hacking Tool\n\n**Google Dorking** involves using advanced search operators to find information that Google has indexed but wasn't meant to be easily found.\n\n**Essential Operators:**\n- `site:example.com` : Limit search to a specific domain.\n- `filetype:pdf` : Search for specific file types (doc, xls, txt, log).\n- `intitle:\"Index of\"` : Find directory listings.\n- `inurl:admin` : Find admin login pages.\n- `\"Confidential\"` : Search for exact phrase matches.\n\n**Example Query:** `site:tesla.com filetype:pdf \"confidential\"`"
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Google Dork Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What does the Google search query `intitle:\"webcam 7\" inurl:view/index.shtml` attempt to find?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Pages about the movie 'Webcam 7'.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Publicly accessible live webcam feeds.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A specific brand of camera software.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Instructions on how to set up a webcam.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! This is a classic dork for finding unsecured IP cameras.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Shodan: The Search Engine for Devices 📡",
+            "content": "# Finding the Internet's Back Doors\n\nWhile Google indexes **websites**, **Shodan** indexes **banners** from services running on IP addresses. It scans the entire internet and records what's listening.\n\n**What Shodan Finds:**\n- Webcams\n- Industrial Control Systems (SCADA)\n- Default Passwords on Routers\n- Exposed Databases (MongoDB, Elasticsearch)\n\n**Basic Search Queries:**\n- `port:22` : Find SSH servers.\n- `org:\"Tesla\"` : Find IP ranges owned by an org.\n- `product:\"Apache httpd\"` : Find specific software versions.\n- `city:\"San Francisco\"` : Geofenced searches.\n\n**Ethical Note**: **Do not connect** to random devices. Just observe the data."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Shodan CLI (Command Line) 💻",
+            "content": "You can interact with Shodan directly from Kali using the `shodan` CLI tool. (Requires free API key).",
+            "codeSnippet": "# Install\nsudo apt install python3-shodan\n\n# Initialize with your key\nshodan init YOUR_API_KEY\n\n# Search for Apache servers\nshodan search 'apache 2.4.49'\n\n# Get info about your own public IP\nshodan myip",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Social Media Intelligence (SOCMINT) 👥",
+            "content": "# LinkedIn: The Hacker's Goldmine\n\nEmployees are the weakest link. LinkedIn tells you **exactly** what technology stack a company uses.\n\n**What to look for:**\n- **Job Descriptions**: \"Looking for a SysAdmin with **Palo Alto Firewall** and **Windows Server 2019** experience.\" (Now you know their defenses!)\n- **Employee Skill Lists**: \"Expert in **AWS Lambda** and **Terraform**.\"\n- **IT Team Structure**: Identify the Helpdesk, Network, and Security teams.\n\n**Other Platforms:**\n- **Twitter/X**: Search for `[Company] vpn` or `[Company] password` to see if employees are complaining publicly.\n- **Instagram**: Geotagged photos inside the office. Look for computer screens, whiteboards, or badges in the background."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "tip",
+            "title": "Pro Tip: The Wayback Machine 🕰️",
+            "content": "## Archive.org\n\nWebsites change. But the **Internet Archive's Wayback Machine** stores snapshots of websites from years ago.\n\n**Hacker Use Case:**\n- Find old `/admin` directories that have been removed but not secured.\n- Find old email addresses on 'Contact Us' pages that are no longer in use (great for impersonation).\n- View `robots.txt` files from years ago which often list sensitive directories they wanted to hide from Google."
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_3",
+    "title": "Permission Fixer",
+    "description": "Secure a world-writable file and change ownership.",
+    "estimatedMinutes": 15,
+    "problemStatement": "# Objective\nCorrect a security misconfiguration on a file.\n\n## Scenario\nYou discovered that the file `/home/kali/secrets.txt` has permissions `777` (everyone can read, write, and execute). This is a major security risk. \n\n## Requirements\n1.  Check the current permissions of `secrets.txt` using `ls -l`.\n2.  Change the permissions so that **only the owner (kali)** can read and write the file. No one else should have any access.\n3.  Verify the new permissions are `600` (`-rw-------`).\n\n**Note**: You may need to create the file first with `touch secrets.txt`.",
+    "hints": [
+        "Use `chmod 600 secrets.txt`.",
+        "Or use symbolic: `chmod u=rw,go= secrets.txt`."
+    ],
+    "expectedOutput": "Output of `ls -l secrets.txt` showing `-rw------- 1 kali kali ...`",
+    "solutionCode": "# Create file if it doesn't exist\ntouch secrets.txt\n\n# Check current perms (default may be 644 or 664)\nls -l secrets.txt\n\n# Secure the file\nchmod 600 secrets.txt\n\n# Verify\nls -l secrets.txt"
+}

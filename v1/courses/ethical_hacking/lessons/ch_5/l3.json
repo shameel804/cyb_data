@@ -1,0 +1,120 @@
+{
+    "id": "l3",
+    "chapterId": "ch_5",
+    "title": "Host Discovery & Port Scanning Techniques 🔍",
+    "description": "Learn when and how to use different scan types for accurate results.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Scanning",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Host Discovery (Ping Sweeps) 📡",
+            "content": "# Who is Alive?\n\nBefore scanning ports, you often want to know which IPs are active on a network.\n\n**Nmap Host Discovery Options:**\n- `-sn` : **Ping Scan**. Disables port scanning. Sends ICMP Echo, TCP SYN to 443, TCP ACK to 80, and ICMP Timestamp.\n- `-PE` : Use standard ICMP Echo requests (like `ping` command).\n- `-PS` : TCP SYN Ping (send SYN to specified ports).\n- `-PA` : TCP ACK Ping.\n\n**Example:**\n```bash\nnmap -sn 192.168.1.0/24\n```\n\n**When to Use `-Pn`**: If a host is blocking ICMP (ping) but actually has open ports, use `-Pn` to **skip host discovery** and treat the host as up."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Host Discovery 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "You try to scan a Windows server but `nmap` reports 'Host seems down'. You know the server is online and has a web server on port 80. What flag should you add?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "-sV",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "-Pn",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "-O",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "-sS",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-Pn` tells Nmap to skip the host discovery phase and assume the host is up.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "TCP SYN Scan (-sS) 🥷",
+            "content": "# The Stealth Scan (Default)\n\n**How it Works:**\n1.  Nmap sends a **SYN** packet.\n2.  **Open Port**: Target replies with **SYN-ACK**. Nmap immediately sends **RST** to tear down the connection (never completes the handshake).\n3.  **Closed Port**: Target replies with **RST**.\n\n**Advantages:**\n- **Fast** and **reliable**.\n- **Stealthy**: Since the connection is never fully established, many applications and simple firewalls **do not log** the attempt. (Advanced IDS will catch it).\n\n**Requires Root Privileges**: Because it crafts raw packets. (Use `sudo`).\n\n**Command:**\n```bash\nsudo nmap -sS 192.168.56.101\n```"
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "TCP Connect Scan (-sT) 🤝",
+            "content": "# The Full Handshake Scan\n\n**How it Works:**\nNmap uses the standard `connect()` system call to complete the **full three-way handshake** (SYN -> SYN-ACK -> ACK).\n\n**When to Use:**\n- When you **do not have root privileges** (e.g., a limited shell).\n- When scanning through certain types of proxies or tunnels.\n\n**Disadvantages:**\n- **Slower** than SYN scan.\n- **Noisy**: Establishes a full connection, which is **logged by the target application** (e.g., Apache access log shows a connection from your IP).\n\n**Command:**\n```bash\nnmap -sT 192.168.56.101\n```"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "UDP Scan (-sU) 🐌",
+            "content": "# The Slow and Painful One\n\nUDP is connectionless. There is no handshake to confirm a port is open.\n\n**How it Works:**\n1.  Nmap sends a UDP packet to a port.\n2.  **Open Port**: The service might send a UDP response. Or, it might remain silent.\n3.  **Closed Port**: Target sends an **ICMP Port Unreachable** message.\n\n**Problems:**\n- **Unreliable**: Many services simply ignore unexpected UDP packets. Nmap often reports `open|filtered` because it cannot distinguish between a silent open port and a firewall drop.\n- **Slow**: Waiting for ICMP responses takes time.\n\n**Command:**\n```bash\nsudo nmap -sU 192.168.56.101\n```\n\n**Hacker Tip**: Scan the top 100 UDP ports only (`--top-ports 100`) to save time."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "code",
+            "title": "Specialty Scans (FIN, NULL, Xmas) 🎄",
+            "content": "These scans send **non-standard** TCP packets. They exploit ambiguities in the TCP RFC to bypass primitive firewalls.",
+            "codeSnippet": "# FIN Scan (Send FIN flag)\nnmap -sF 192.168.56.101\n\n# NULL Scan (Send no flags)\nnmap -sN 192.168.56.101\n\n# Xmas Scan (Send FIN, PSH, URG flags - lights up like a tree)\nnmap -sX 192.168.56.101",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_7",
+            "type": "warning",
+            "title": "Specialty Scan Limitation ⚠️",
+            "content": "## Works Against Linux/Unix, Not Windows\n\nFIN, NULL, and Xmas scans rely on RFC 793 behavior: a closed port **must** reply with RST, an open port **must** drop the packet.\n\n**Windows does not follow this rule.** Windows always replies with RST regardless of port state. Therefore, these scans will show **all ports as closed** on a Windows target, leading to **false negatives**. **Only use these against Unix-like systems.**"
+        },
+        {
+            "id": "s_l3_8",
+            "type": "quiz",
+            "title": "Scan Type Selection 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "You are performing a penetration test and have obtained a low-privilege shell on a Linux server. You want to scan the internal network for open web servers. Which scan type must you use?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "SYN Scan (-sS)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "UDP Scan (-sU)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Connect Scan (-sT)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "FIN Scan (-sF)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Without root, you cannot craft raw packets. You must use the Connect scan which uses standard system calls.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,114 @@
+{
+    "id": "l1",
+    "chapterId": "ch_3",
+    "title": "Why Linux? Enter the Terminal 💻",
+    "description": "Discover why Linux is the hacker's OS and learn terminal basics.",
+    "xpReward": 20,
+    "estimatedMinutes": 6,
+    "section": "Introduction",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Linux: The Hacker's Playground 🐧",
+            "content": "# Why Do Hackers Love Linux?\n\nIf you've ever seen a movie hacker, they're usually staring at a black screen with green text. That's a **Linux terminal**. But why?\n\n**1. Open Source 🔓**\nThe source code is public. You can inspect it for vulnerabilities or modify it to suit your needs. You cannot do this with Windows.\n\n**2. Control & Transparency 🎛️**\nLinux doesn't hide things from you. Every system call, network packet, and log file is accessible. You can see *exactly* what the machine is doing.\n\n**3. The Toolset 🧰**\nThe vast majority of penetration testing tools (Nmap, Metasploit, Wireshark, Burp Suite) are built **for Linux first**. Kali Linux is the gold standard.\n\n**4. Lightweight ⚡**\nLinux can run on a potato. It uses minimal resources, perfect for Virtual Machines or Raspberry Pi drop boxes."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Linux Advantage 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is a key advantage of Linux being 'Open Source' for a security researcher?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It's free to download.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "You can read the code to understand exactly how the encryption or network stack works.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It has a cute penguin mascot.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It never gets viruses.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! Transparency allows for deep auditing and trust verification.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "The Shell: Your Command Center 🐚",
+            "content": "# What is a Shell?\n\nA **Shell** is a program that takes commands from the keyboard and gives them to the operating system to perform. It's the interpreter between you and the kernel.\n\n**Analogy**: The shell is like a restaurant waiter. You tell the waiter (shell) *\"I want a steak\"*. The waiter translates that into kitchen lingo, tells the chef (kernel), and brings you back the result.\n\n**Which Shell?**\nKali Linux uses **ZSH** by default, but the industry standard scripting language is **Bash (Bourne Again Shell)** .\n\n**Open the Terminal**: Click the black screen icon in the top bar or press `Ctrl+Alt+T`."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Anatomy of the Prompt ⌨️",
+            "content": "# Understanding What You See\n\nWhen you open the terminal, you see something like:\n```bash\nkali@kali:~$\n```\n\nLet's break it down:\n- **kali**: Your **username**.\n- **@**: Separator (at).\n- **kali**: The **hostname** (name of the computer).\n- **~**: Current **directory**. `~` is a shortcut for your **home folder** (`/home/kali`).\n- **$**: Means you are a **normal user**. If you see `#`, you are **root** (God Mode)."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Your First Command: echo 📢",
+            "content": "Let's make the computer talk back to you.",
+            "codeSnippet": "echo \"Hello, Hackers!\"",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "The Most Important Command: man 📚",
+            "content": "## Manual Pages\n\nForget Google for a second. Linux has built-in documentation for almost every command.\n\n**Syntax**: `man [command]`\n\nTry it: `man ls`\n- Press **Space** to scroll down.\n- Press **q** to quit.\n\n**Pro Tip**: If `man` is too dense, try `[command] --help` for a quick summary.\n```bash\nls --help\n```"
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "Terminal Symbols 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "In the prompt `kali@kali:~$`, what does the `~` represent?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The root directory of the entire system.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The current user's home directory.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A temporary folder.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "That you are logged in as root.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The tilde `~` is shorthand for `/home/username`.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

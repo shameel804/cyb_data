@@ -1,0 +1,70 @@
+{
+    "id": "l1",
+    "chapterId": "ch_4",
+    "title": "The Art of Information Gathering 🕵️",
+    "description": "Why reconnaissance is the most important phase of a hack.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Why Recon First? 🎯",
+            "content": "# Know Your Enemy\n\nSun Tzu said: *\"If you know the enemy and know yourself, you need not fear the result of a hundred battles.\"*\n\nIn hacking, **Footprinting** (also called Reconnaissance) is the process of gathering as much information as possible about a target **before** launching an attack.\n\n**Analogy**: You wouldn't try to rob a bank without knowing the floor plan, security guard schedules, and camera positions. Recon is the **blueprint phase**.\n\n**What We're Looking For:**\n- IP Addresses & Network Ranges\n- Domain Names & Subdomains\n- Employee Names & Emails\n- Technologies Used (Web server, CMS, Firewall)\n- Leaked Credentials or Documents"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Recon Importance 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Why do professional penetration testers spend 60-70% of their time on reconnaissance?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It's the easiest part.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It allows them to charge more hours.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A well-researched target is exponentially easier to exploit and less likely to trigger alarms.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Exploits are illegal, recon is not.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! Accurate recon reduces the attack surface and identifies the path of least resistance.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Passive vs. Active Recon ⚡ vs. 👻",
+            "content": "# The Two Approaches\n\n**1. Passive Reconnaissance**\n- **Definition**: Gathering information **without directly interacting** with the target's systems.\n- **Risk**: Extremely low. Target has no idea you're looking.\n- **Examples**: Google Dorking, checking WHOIS history, scraping LinkedIn, searching Shodan.\n\n**2. Active Reconnaissance**\n- **Definition**: **Directly interacting** with the target's network or servers.\n- **Risk**: High. Your IP is logged. You might trigger an Intrusion Detection System (IDS).\n- **Examples**: Port scanning, DNS Zone Transfer attempts, Web Directory Bruteforcing.\n\n**Golden Rule**: Start **Passive**. Only go **Active** when you've exhausted public data or you have explicit permission (RoE)."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "warning",
+            "title": "Legal Boundary Alert ⚠️",
+            "content": "## Active Recon = Tread Carefully\n\nEven something as simple as a `ping` or `nslookup` to a custom subdomain can be considered an unauthorized probe in some jurisdictions if you don't have a contract.\n\n**In this course:**\n- Use **Passive** techniques on `tesla.com`, `google.com` (public data only).\n- Use **Active** techniques ONLY on your **Metasploitable VM** or authorized platforms like `scanme.nmap.org`."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "tip",
+            "title": "The Recon Mindset 🧠",
+            "content": "## Think Like a Detective, Not a Criminal\n\nFootprinting is about connecting the dots. One piece of info leads to another.\n\n**Example Flow:**\n1.  Company Name -> LinkedIn -> Find IT Admin Name.\n2.  IT Admin Name -> Google -> Find personal blog.\n3.  Personal Blog -> View Page Source -> Find mention of their favorite CMS.\n4.  Favorite CMS -> Google Dork -> Find default login path.\n\n**Chain of information.**"
+        }
+    ]
+}

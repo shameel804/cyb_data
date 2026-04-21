@@ -1,0 +1,114 @@
+{
+    "id": "l2",
+    "chapterId": "ch_7",
+    "title": "Metasploit Framework Basics 🛠️",
+    "description": "Learn the architecture and essential commands of the world's most popular exploitation framework.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Tools",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "What is Metasploit? 🦾",
+            "content": "# The Hacker's Toolkit\n\n**Metasploit Framework** is an open-source project that provides:\n- A **database** of hundreds of exploits.\n- A **payload** generation system.\n- **Auxiliary modules** for scanning and enumeration.\n- **Post-exploitation modules** for gathering loot.\n\n**Analogy**: Metasploit is like a power drill with interchangeable bits. The drill is the framework; the bits are the exploits and payloads.\n\n**Why Use It?**\n- **Standardization**: Every module uses the same commands (`use`, `set`, `run`).\n- **Automation**: Handles socket connections, shellcode encoding, and cleanup.\n- **Community**: Thousands of contributors."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Metasploit Architecture 🏗️",
+            "content": "# Understanding the Components\n\n**1. Modules** (Located in `/usr/share/metasploit-framework/modules/`)\n- **exploits/**: Code that triggers the vulnerability.\n- **payloads/**: Code that runs after successful exploitation.\n- **auxiliary/**: Scanners, fuzzers, DoS tools.\n- **post/**: Post-exploitation (gather hashes, enable RDP).\n- **encoders/**: Obfuscate payloads to evade antivirus.\n\n**2. Interfaces**\n- **msfconsole**: The interactive command-line interface (what we'll use).\n- **msfvenom**: Standalone payload generator.\n- **Armitage**: Graphical user interface (not covered here).\n\n**3. Database**\nMetasploit can connect to a PostgreSQL database to store scan results and host information."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Module Types 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "In Metasploit, which module type contains the code that triggers the actual vulnerability?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "payload",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "auxiliary",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "exploit",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "post",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Exploit modules contain the logic to abuse a specific vulnerability.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Starting msfconsole 💻",
+            "content": "Open a terminal in Kali and launch the Metasploit console.",
+            "codeSnippet": "# Launch msfconsole (may take 30 seconds to load)\nmsfconsole\n\n# Once loaded, you'll see the banner and 'msf6 >' prompt.\n\n# Check database status\ndb_status\n\n# Update Metasploit (optional, can take time)\nmsfupdate",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Essential msfconsole Commands 📋",
+            "content": "# Navigating the Framework\n\n| Command | Purpose |\n| :--- | :--- |\n| `search [term]` | Find modules by name/CVE (e.g., `search vsftpd`) |\n| `use [module_path]` | Select a module (e.g., `use exploit/unix/ftp/vsftpd_234_backdoor`) |\n| `info` | Display detailed information about the selected module |\n| `show options` | List required and optional parameters for the module |\n| `set [option] [value]` | Set a parameter (e.g., `set RHOSTS 192.168.56.101`) |\n| `setg [option] [value]` | Set a **global** parameter (persists across modules) |\n| `run` or `exploit` | Execute the module |\n| `back` | Exit current module context |\n| `sessions -l` | List active sessions (shells) |\n| `sessions -i [id]` | Interact with a session |"
+        },
+        {
+            "id": "s_l2_6",
+            "type": "tip",
+            "title": "Pro Tip: Workspaces 🚀",
+            "content": "## Stay Organized\n\nUse **workspaces** to separate data from different penetration tests.\n\n```bash\n# In msfconsole\nworkspace -a ClientName_2024\nworkspace ClientName_2024\n```\n\nThis keeps your `hosts`, `services`, and `loot` tables clean and separate."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "Command Recall 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "You want to set the target IP address for an exploit and have it automatically apply to any other module you load. Which command should you use?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "set RHOSTS 10.0.0.1",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "setg RHOSTS 10.0.0.1",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "global RHOSTS 10.0.0.1",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "set RHOST 10.0.0.1",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`setg` sets a global variable that persists across module changes.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

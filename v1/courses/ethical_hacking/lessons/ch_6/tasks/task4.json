@@ -1,0 +1,14 @@
+{
+    "id": "task4",
+    "chapterId": "ch_6",
+    "title": "False Positive Analysis",
+    "description": "Understand why scanners sometimes report incorrect findings.",
+    "estimatedMinutes": 15,
+    "problemStatement": "# Objective\nAnalyze a common false positive scenario.\n\n## Scenario\nA vulnerability scanner reports that Metasploitable is vulnerable to **CVE-2014-0160 (Heartbleed)** on port 443. However, Metasploitable does not even have HTTPS enabled on port 443 (only HTTP on 80).\n\n## Task\nWrite a short paragraph (3-4 sentences) explaining **two possible reasons** why the scanner might have generated this false positive.\n\n## Deliverable\nA text explanation identifying at least two plausible causes for the false positive.",
+    "hints": [
+        "Consider banner grabbing: does the scanner check the actual service or just a generic response?",
+        "Could a network device (like a firewall) be intercepting and responding?"
+    ],
+    "expectedOutput": "1. Banner misidentification: The scanner might have received a generic TCP response (RST) and misinterpreted it as an SSL handshake. 2. Firewall/Proxy interference: An intermediate device could be spoofing responses. 3. Scanner plugin error: The test logic incorrectly flagged a closed port as vulnerable.",
+    "solutionCode": "Possible reasons for the false positive:\n\n1. **Banner Grabbing Error**: The scanner sent a probe to port 443, which is closed on Metasploitable. The operating system replied with a TCP RST packet. The scanner's pattern-matching algorithm might have misinterpreted the raw bytes of the RST packet as an SSL/TLS banner, triggering the Heartbleed check erroneously.\n\n2. **Scanner Database Inaccuracy**: The scanner relies on a database of signatures. It might have a rule that says 'If IP address X responds on port 443, it's vulnerable to Y'. A closed port might still trigger a generic 'Host is up' response leading to false flagging.\n\n3. **Network Address Translation (NAT) Interference**: If scanning through a complex network, a firewall might be returning a spoofed SYN-ACK or RST packet that confuses the scanner's service detection."
+}

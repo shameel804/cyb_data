@@ -1,0 +1,259 @@
+{
+    "id": "quiz_ch_8",
+    "chapterId": "ch_8",
+    "title": "Chapter 8 Quiz",
+    "description": "Test your knowledge of web application hacking techniques and the OWASP Top 10.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which OWASP Top 10 2021 category includes SQL Injection and Cross-Site Scripting?",
+            "options": [
+                "A01: Broken Access Control",
+                "A03: Injection",
+                "A05: Security Misconfiguration",
+                "A07: Authentication Failures"
+            ],
+            "correctAnswer": 1,
+            "explanation": "SQLi and XSS fall under A03: Injection in the 2021 revision."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What is the purpose of the `-- ` sequence in a classic SQL injection login bypass?",
+            "options": [
+                "To terminate the SQL statement.",
+                "To comment out the remainder of the SQL query.",
+                "To drop the database.",
+                "To concatenate strings."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-- ` starts a comment, ignoring the password check part of the query."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "Stored XSS requires the victim to click a specially crafted link to be exploited.",
+            "correctAnswer": false,
+            "explanation": "False. Stored XSS is saved on the server and executes automatically when the victim views the page."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "In a UNION-based SQL injection attack, we use a series of ______ values to determine the number of columns in the original query.",
+            "options": [
+                "NULL",
+                "1",
+                "SELECT",
+                "FROM"
+            ],
+            "correctAnswer": "NULL",
+            "explanation": "NULL is compatible with any data type, making it ideal for column counting."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which HTTP method, if enabled unnecessarily, can allow an attacker to upload a web shell?",
+            "options": [
+                "GET",
+                "POST",
+                "PUT",
+                "HEAD"
+            ],
+            "correctAnswer": 2,
+            "explanation": "PUT is used for file uploads. If enabled without authentication, it's a critical vulnerability."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the primary mitigation for XSS attacks?",
+            "options": [
+                "Using HTTPS.",
+                "Output encoding/escaping based on context.",
+                "Using parameterized queries.",
+                "Setting secure cookies."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Proper output encoding prevents browsers from interpreting data as code."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "Path Traversal vulnerabilities allow an attacker to read arbitrary files outside the web root.",
+            "correctAnswer": true,
+            "explanation": "True. By using `../` sequences, attackers can traverse the file system."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which tool is specifically designed for automated detection and exploitation of SQL injection flaws?",
+            "options": [
+                "Burp Suite",
+                "Hydra",
+                "SQLMap",
+                "Gobuster"
+            ],
+            "correctAnswer": 2,
+            "explanation": "SQLMap automates the process of detecting and exploiting SQLi."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "You change the URL parameter `?id=101` to `?id=102` and see another user's invoice. What vulnerability is this?",
+            "options": [
+                "SQL Injection",
+                "Cross-Site Scripting",
+                "Insecure Direct Object Reference (IDOR)",
+                "Command Injection"
+            ],
+            "correctAnswer": 2,
+            "explanation": "IDOR occurs when references to objects are exposed without authorization checks."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What does the 'HttpOnly' cookie flag mitigate?",
+            "options": [
+                "SQL Injection",
+                "Session Hijacking via XSS (cookie theft)",
+                "CSRF",
+                "Clickjacking"
+            ],
+            "correctAnswer": 1,
+            "explanation": "HttpOnly prevents JavaScript from accessing the cookie, making XSS-based cookie theft harder."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "Remote File Inclusion (RFI) can lead to remote code execution if `allow_url_include` is enabled.",
+            "correctAnswer": true,
+            "explanation": "True. RFI allows including a remote script containing malicious PHP code."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which Burp Suite component is used to intercept and view HTTP traffic between the browser and the server?",
+            "options": [
+                "Repeater",
+                "Intruder",
+                "Proxy",
+                "Decoder"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Proxy intercepts and displays the traffic."
+        },
+        {
+            "id": "q13",
+            "type": "fill_blank",
+            "question": "To bypass file upload restrictions, adding `GIF89a;` at the start of a PHP file is an example of ______ byte manipulation.",
+            "options": [
+                "magic",
+                "header",
+                "signature",
+                "file"
+            ],
+            "correctAnswer": "magic",
+            "explanation": "Magic bytes are file signatures used to identify file types."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is the primary difference between LFI and RFI?",
+            "options": [
+                "LFI includes local files; RFI includes remote files via URL.",
+                "LFI works on Linux; RFI works on Windows.",
+                "LFI requires authentication; RFI does not.",
+                "LFI is more severe than RFI."
+            ],
+            "correctAnswer": 0,
+            "explanation": "LFI includes files from the server's file system; RFI fetches code from an external source."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Which command is used with Gobuster to discover PHP files and text files in addition to directories?",
+            "options": [
+                "-x php,txt",
+                "-f php,txt",
+                "-e php,txt",
+                "-t php,txt"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`-x` specifies file extensions to append during brute-forcing."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "Using SQLMap with the `--delay` flag increases scanning speed.",
+            "correctAnswer": false,
+            "explanation": "False. `--delay` slows down requests to avoid detection."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which of these is a common blind command injection detection technique?",
+            "options": [
+                "Using a UNION SELECT statement.",
+                "Injecting a sleep command (e.g., `sleep 10`).",
+                "Uploading a web shell.",
+                "Brute forcing login credentials."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Time delays are a reliable indicator when output is not visible."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "What is the purpose of a 'web shell'?",
+            "options": [
+                "To protect a website from hackers.",
+                "To provide a graphical interface for server management.",
+                "To execute system commands on the underlying server via HTTP.",
+                "To encrypt web traffic."
+            ],
+            "correctAnswer": 2,
+            "explanation": "A web shell is a malicious script that gives an attacker command execution on the web server."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "Which attack involves tricking a victim into logging in with a session ID known to the attacker?",
+            "options": [
+                "Session Hijacking",
+                "Session Fixation",
+                "Cross-Site Request Forgery",
+                "Credential Stuffing"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Session Fixation forces a known session ID onto the victim."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "You are testing a search box. You enter `<script>alert(1)</script>` and see a popup. What vulnerability have you found?",
+            "options": [
+                "SQL Injection",
+                "Reflected XSS",
+                "Stored XSS",
+                "Command Injection"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The script is reflected immediately in the response, indicating Reflected XSS."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "Which wordlist is commonly used for directory brute-forcing with Gobuster?",
+            "options": [
+                "/usr/share/wordlists/rockyou.txt",
+                "/usr/share/wordlists/dirb/common.txt",
+                "/usr/share/wordlists/fasttrack.txt",
+                "/usr/share/wordlists/nmap.lst"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`dirb/common.txt` contains common directory and file names."
+        }
+    ]
+}

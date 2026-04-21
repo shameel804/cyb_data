@@ -1,0 +1,14 @@
+{
+    "id": "task3",
+    "chapterId": "ch_9",
+    "title": "Crack the Handshake",
+    "description": "Use aircrack-ng and Hashcat to crack the captured handshake.",
+    "estimatedMinutes": 25,
+    "problemStatement": "# Objective\nCrack the WPA2 password from the handshake captured in Task 2.\n\n## Prerequisites\n- The `capture-01.cap` file from Task 2.\n- You should know the **actual password** of your test router (for verification). Add this exact password to a custom wordlist if it's not in `rockyou.txt`.\n\n## Steps\n1.  **Option A: aircrack-ng (CPU)**\n    ```bash\n    aircrack-ng -w /usr/share/wordlists/rockyou.txt capture-01.cap\n    ```\n2.  **Option B: Hashcat (GPU, faster)**\n    - Convert the capture: `hcxpcapngtool -o hash.txt capture-01.cap`\n    - Crack: `hashcat -m 22000 hash.txt /usr/share/wordlists/rockyou.txt`\n    - Show result: `hashcat -m 22000 hash.txt --show`\n3.  Verify the cracked password matches your actual router password.\n\n## Deliverable\nScreenshot of the cracked password (e.g., `KEY FOUND! [ yourpassword ]`).",
+    "hints": [
+        "If your password isn't in rockyou.txt, create a custom wordlist: `echo 'yourpassword' > custom.txt` and use that.",
+        "Hashcat requires a GPU. If running in a VM, aircrack-ng may be more compatible."
+    ],
+    "expectedOutput": "The correct Wi-Fi password displayed.",
+    "solutionCode": "# Option A: aircrack-ng\naircrack-ng -w /usr/share/wordlists/rockyou.txt capture-01.cap\n\n# Option B: Hashcat\nhcxpcapngtool -o hash.txt capture-01.cap\nhashcat -m 22000 hash.txt /usr/share/wordlists/rockyou.txt\nhashcat -m 22000 hash.txt --show"
+}

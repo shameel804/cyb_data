@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_6",
+    "title": "Web Server Vulnerability Scan",
+    "description": "Run Nikto against Metasploitable's web server.",
+    "estimatedMinutes": 25,
+    "problemStatement": "# Objective\nPerform an automated web vulnerability scan using Nikto and interpret the results.\n\n## Steps\n1.  Ensure Metasploitable VM is running and accessible.\n2.  Run a basic Nikto scan against `http://[Metasploitable_IP]`.\n3.  Save the output to a file named `nikto_scan.txt`.\n4.  Review the output and identify **three** interesting findings (e.g., directories, outdated software, configuration issues).\n\n## Deliverable\nA list of three specific findings from the Nikto scan and a brief explanation of why each is relevant to an attacker.\n\n**Example:**\n- Finding: `/phpinfo.php` -> Exposes PHP configuration details.\n- Finding: `/dvwa/` -> Damn Vulnerable Web Application is installed.\n- Finding: Outdated Apache version mentioned in headers.",
+    "hints": [
+        "Nikto output can be long; use `grep` to find key terms: `nikto -h [IP] | grep -E 'OSVDB|CVE|/admin|phpmyadmin'`",
+        "Look for lines starting with `+` (these are findings)."
+    ],
+    "expectedOutput": "Examples: `/phpinfo.php`, `/dvwa/`, `/tikiwiki/`, `TRACE method enabled`, `Apache/2.2.8 appears to be outdated`.",
+    "solutionCode": "# Run Nikto\nnikto -h http://192.168.56.101 -o nikto_scan.txt\n\n# Review findings\ncat nikto_scan.txt | grep \"^+\"\n\n# Three notable findings:\n# 1. + /phpinfo.php: Contains PHP configuration information\n# 2. + /dvwa/: Damn Vulnerable Web Application is installed\n# 3. + OSVDB-877: HTTP TRACE method is active"
+}

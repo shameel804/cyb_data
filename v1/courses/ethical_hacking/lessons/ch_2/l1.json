@@ -1,0 +1,117 @@
+{
+    "id": "l1",
+    "chapterId": "ch_2",
+    "title": "OSI Model & TCP/IP Stack 🏗️",
+    "description": "The blueprint of network communication.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Why Models Matter 📐",
+            "content": "# The OSI Model\n\nNetworking is complex. To make it manageable, we use **models**. The **Open Systems Interconnection (OSI)** model is a conceptual framework that standardizes the functions of a network into **7 distinct layers**.\n\n**Analogy**: Think of sending a package via FedEx.\n- You put the item in a box (Layer 7).\n- You wrap it in bubble wrap (Layer 6).\n- You write the address (Layer 3).\n- The truck driver just drives the route (Layer 1).\n\nEach layer does its specific job without worrying about the others.\n\n**The 7 Layers (Please Do Not Throw Sausage Pizza Away):**\n1. **Physical** ⚡\n2. **Data Link** 🔗\n3. **Network** 🌐\n4. **Transport** 🚚\n5. **Session** 🛋️\n6. **Presentation** 🎨\n7. **Application** 📱"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Layer Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which OSI layer is responsible for **routing** data across different networks using IP addresses?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Layer 2 (Data Link)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Layer 3 (Network)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Layer 4 (Transport)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Layer 7 (Application)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! Layer 3 (Network) handles logical addressing (IP addresses) and path determination.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Layer 1: Physical Layer ⚡",
+            "content": "## The Hardware\n\nThis is the actual wire, fiber optic cable, or radio wave. It transmits **raw bits** (1s and 0s) as electrical signals or light pulses.\n\n**What a Hacker Cares About**:\n- **Tapping**: Physically plugging into an Ethernet cable.\n- **Signal Interference**: Using a jammer to disrupt Wi-Fi.\n- **Devices**: Repeaters, Hubs, Network Interface Cards (NICs)."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Layer 2: Data Link Layer 🔗",
+            "content": "## MAC Addresses & Switches\n\nThis layer organizes bits into **frames** and handles delivery between **directly connected** devices on the **same local network (LAN)**.\n\n**Addressing**: Uses **MAC (Media Access Control)** addresses. A 48-bit hardware address burned into your network card. Looks like `08:00:27:ab:cd:ef`.\n\n**Hacker Tools**:\n- **ARP Spoofing**: Tricking devices into sending traffic to you instead of the router.\n- **MAC Flooding**: Overwhelming a switch to make it act like a hub (allowing sniffing of all traffic)."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "quiz",
+            "title": "MAC vs IP 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "Which address changes as a packet travels across the internet through multiple routers?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Source MAC Address",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Destination IP Address",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Source Port Number",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Destination MAC Address",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "MAC addresses are only relevant on the local segment. At each router hop, the Source MAC is replaced with the router's MAC.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "Layer 3 & 4: The Internet's Backbone 🌐",
+            "content": "## Layer 3: Network (IP)\nHandles **logical addressing (IP)** and **routing**. It figures out the best path to send a packet from `192.168.1.10` to `8.8.8.8`.\n- **Devices**: Routers.\n- **Protocol**: IP (Internet Protocol).\n\n## Layer 4: Transport (TCP/UDP)\nHandles **end-to-end reliability and data segmentation**. \n- **TCP (Transmission Control Protocol)**: Reliable, ordered, connection-oriented. Like a phone call. (Web, Email, SSH).\n- **UDP (User Datagram Protocol)**: Fast, connectionless, unreliable. Like a postcard. (Video streaming, DNS).\n\n**Crucial Concept**: Layer 4 uses **Port Numbers** to direct traffic to the correct application."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "tip",
+            "title": "Pro Tip: TCP/IP Model 🚀",
+            "content": "## The Real World Standard\n\nIn reality, the internet runs on the **TCP/IP Model**, which is simpler than OSI. It combines Layers 5-7 into a single 'Application' layer.\n\n| OSI Layer | TCP/IP Layer |\n| :--- | :--- |\n| Application (7,6,5) | **Application** |\n| Transport (4) | **Transport** |\n| Network (3) | **Internet** |\n| Data Link (2), Physical (1) | **Network Access** |"
+        },
+        {
+            "id": "s_l1_8",
+            "type": "text",
+            "title": "Encapsulation: The Russian Doll 📦",
+            "content": "# How Data Moves Down the Stack\n\nWhen you send a request to google.com, your computer **encapsulates** the data:\n\n1.  **Application**: Creates HTTP request (`GET /`).\n2.  **Transport**: Wraps it in a **TCP Segment** (adds port 80).\n3.  **Network**: Wraps that in an **IP Packet** (adds source/dest IP).\n4.  **Data Link**: Wraps that in an **Ethernet Frame** (adds MAC addresses).\n5.  **Physical**: Sends it as electrical signals.\n\nWhen the server receives it, it **de-encapsulates** in reverse order."
+        }
+    ]
+}

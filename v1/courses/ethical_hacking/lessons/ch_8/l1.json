@@ -1,0 +1,111 @@
+{
+    "id": "l1",
+    "chapterId": "ch_8",
+    "title": "Web App Architecture & HTTP Review 🌐",
+    "description": "Understand the underlying technologies that power the web.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "What is a Web Application? 🖥️",
+            "content": "# Beyond Static Pages\n\nA **web application** is a client-server program delivered over HTTP. Unlike a static brochure website, web apps allow user interaction, database queries, and dynamic content.\n\n**Components:**\n- **Client**: Browser (Chrome, Firefox) rendering HTML, CSS, and JavaScript.\n- **Server**: Runs application logic (PHP, Python, Java, Node.js, C#).\n- **Database**: Stores data (MySQL, PostgreSQL, MSSQL, MongoDB).\n\n**Analogy**: The client is the restaurant menu. The server is the kitchen. The database is the pantry.\n\n**Why Hack Web Apps?**\n- They are exposed to the **public internet**.\n- They often hold **sensitive data** (PII, credit cards).\n- They are **complex**, leading to misconfigurations."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Web App Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which component is responsible for executing the business logic and generating dynamic content?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Web Browser",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Web Server / Application Server",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Database",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "CSS Stylesheet",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The server-side code processes requests and interacts with the database.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "HTTP Review: The Language of the Web 📡",
+            "content": "# Requests and Responses\n\nWe covered HTTP in Chapter 2, but let's focus on the **hacker-relevant** parts.\n\n**HTTP Request Structure:**\n```\nGET /login.php?user=admin HTTP/1.1\nHost: example.com\nUser-Agent: Mozilla/5.0\nCookie: PHPSESSID=abc123\n```\n- **Method**: GET, POST, PUT, DELETE, OPTIONS.\n- **Path & Query String**: Where we find **parameters** to inject (`?id=1`).\n- **Headers**: Host, User-Agent, Cookie, Referer.\n- **Body**: Data sent in POST requests.\n\n**HTTP Response:**\n```\nHTTP/1.1 200 OK\nServer: Apache/2.4.41\nSet-Cookie: session=xyz; HttpOnly\n\n<html>...</html>\n```"
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "HTTP Methods: More Than GET and POST 🛠️",
+            "content": "# Uncommon Methods Can Be Dangerous\n\n| Method | Purpose | Hacker Relevance |\n| :--- | :--- | :--- |\n| **GET** | Request data | Parameters in URL (easy to manipulate). |\n| **POST** | Submit data | Used for logins, file uploads. |\n| **PUT** | Upload file | If enabled, can lead to **web shell upload**. |\n| **DELETE** | Delete file | Can cause data loss. |\n| **OPTIONS** | List allowed methods | Recon: find out if PUT is enabled. |\n| **TRACE** | Echo request | **XST (Cross-Site Tracing)** attacks (rare now). |\n\n**Test with `curl`:**\n```bash\ncurl -X OPTIONS http://192.168.56.101/ -v\n```"
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Cookies & Sessions 🍪",
+            "content": "# Maintaining State in a Stateless Protocol\n\nHTTP is **stateless**. The server doesn't remember you from one click to the next. **Cookies** solve this.\n\n- **Session Cookie**: Stores a random ID (`PHPSESSID=abc123`). The server associates this ID with your login state.\n- **Persistent Cookie**: Stored on disk (`remember_me=1`).\n\n**Hacker's Goldmine:**\nIf you can **steal** a user's session cookie, you can **impersonate** them without needing a password. This is **Session Hijacking**.\n\n**Cookie Attributes to Know:**\n- **HttpOnly**: Prevents JavaScript from reading the cookie (mitigates XSS theft).\n- **Secure**: Cookie only sent over HTTPS.\n- **SameSite**: Prevents CSRF attacks."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Cookie Security 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "What does the 'HttpOnly' flag on a cookie prevent?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The cookie being sent over HTTP.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "JavaScript from accessing the cookie via document.cookie.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The cookie from being modified by the user.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The cookie from expiring.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "HttpOnly restricts access to the cookie from client-side scripts, mitigating session theft via XSS.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "tip",
+            "title": "Pro Tip: The 'Host' Header 🚀",
+            "content": "## Virtual Host Routing\n\nMany servers host multiple websites on one IP. The **Host** header tells the server which site you want.\n\n**Hacker Use Case**: If you find an IP address but no domain resolves to it, try adding a `Host` header manually to access internal sites.\n```bash\ncurl -H \"Host: internal.corp.com\" http://10.0.0.5\n```"
+        }
+    ]
+}

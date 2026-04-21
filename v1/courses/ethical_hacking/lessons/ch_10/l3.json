@@ -1,0 +1,126 @@
+{
+    "id": "l3",
+    "chapterId": "ch_10",
+    "title": "Phishing: The Digital Bait 🎣",
+    "description": "Craft convincing emails, clone websites, and bypass email security controls.",
+    "xpReward": 45,
+    "estimatedMinutes": 15,
+    "section": "Attacks",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "What is Phishing? 📧",
+            "content": "# Casting a Wide Net\n\n**Phishing** is a fraudulent attempt to obtain sensitive information (usernames, passwords, credit card details) by disguising oneself as a trustworthy entity in electronic communication.\n\n**Types of Phishing:**\n- **Mass Phishing**: Generic emails sent to thousands. (e.g., *\"Your Apple ID has been locked.\"*)\n- **Spear Phishing**: Highly targeted at a specific individual or department.\n- **Whaling**: Targeting high-profile executives (CEO, CFO).\n- **Clone Phishing**: Replacing a legitimate link/attachment in a real email with a malicious one.\n\n**Analogy**: Mass phishing is fishing with a huge net in the ocean. Spear phishing is using a spear gun to catch one specific, valuable fish."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Phishing Types 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "An attacker researches the CFO of a company and sends a personalized email referencing a recent conference they both attended. This is an example of:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Mass Phishing",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Spear Phishing",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Vishing",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Smishing",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Spear phishing is targeted and personalized using OSINT.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Anatomy of a Phishing Email ✉️",
+            "content": "# Crafting the Perfect Bait\n\n**1. The Sender (From:)**\n- **Spoofing**: Forging the `From:` header (e.g., `ceo@company.com`). \n- **Look-alike Domains**: `micros0ft.com` instead of `microsoft.com`, or `amazon-support.net`.\n- **Display Name Spoofing**: `\"IT Helpdesk\" <hacker123@gmail.com>`.\n\n**2. The Subject Line**\n- Creates **urgency** or **curiosity**.\n- *\"ACTION REQUIRED: Password Expires in 2 Hours\"*\n- *\"Voice Message from CEO (1:23)\"*\n\n**3. The Body**\n- Logos and corporate branding (copied from real emails).\n- Professional language and grammar (AI tools like ChatGPT make this trivial now).\n- A clear **Call to Action (CTA)** : *\"Click Here to Verify Account\"*.\n\n**4. The Payload**\n- **Link**: Points to a **credential harvester** (fake login page).\n- **Attachment**: Malicious Office document with macros or a PDF with an embedded link."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Cloning Websites (Credential Harvesting) 🎭",
+            "content": "# Building the Fake Login Page\n\n**Tool: SET (Social-Engineer Toolkit)**\nIncluded in Kali, SET automates the cloning of websites and the harvesting of credentials.\n\n**Workflow with SET:**\n1.  `sudo setoolkit`\n2.  Select **1) Social-Engineering Attacks**.\n3.  Select **2) Website Attack Vectors**.\n4.  Select **3) Credential Harvester Attack Method**.\n5.  Select **2) Site Cloner**.\n6.  Enter your **Kali IP** (for the POST back).\n7.  Enter the **URL to clone** (e.g., `https://login.microsoftonline.com`).\n\nSET will host a fake login page. When the victim enters their credentials, they are **captured** and displayed in your terminal, and the victim is then redirected to the real site (so they don't get suspicious).\n\n**Note**: You need to send the phishing email containing the link to **your** Kali IP."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "SET Credential Harvester in Action 💻",
+            "content": "Example of running SET to clone a login page.",
+            "codeSnippet": "sudo setoolkit\n\n# Menu Navigation:\n1 (Social-Engineering Attacks)\n2 (Website Attack Vectors)\n3 (Credential Harvester Attack Method)\n2 (Site Cloner)\n\n# Set IP address for POST back:\nIP address for the POST back in Harvester/Tabnabbing: 192.168.56.102\n\n# Enter URL to clone:\nEnter the url to clone: https://example.com/login\n\n# Press Enter to start. Visit http://192.168.56.102 in a browser to see the clone.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Bypassing Email Security (SPF/DKIM/DMARC) 🛡️",
+            "content": "# Why Spoofing Fails (And How to Work Around It)\n\nModern email servers check three DNS records to prevent spoofing.\n\n| Record | Purpose | Attacker Bypass |\n| :--- | :--- | :--- |\n| **SPF** | Lists IPs allowed to send mail for the domain. | Use **look-alike domains** (`rnicrosoft.com`). |\n| **DKIM** | Cryptographic signature verifying email integrity. | Hard to bypass; focus on look-alike domains. |\n| **DMARC** | Tells server what to do if SPF/DKIM fails. | If policy is `p=none`, spoofing works! Check with `dig _dmarc.domain.com TXT`. |\n\n**The Real-World Strategy**: **Do not spoof the exact domain.** Register a **typosquat domain**:\n- `microsotf.com`\n- `amazonsupport.com`\n- `paypa1.com`\n\nSet up proper SPF/DKIM for **that fake domain** so it lands in the Inbox, not Spam."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Email Security Bypass 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "You run `dig _dmarc.company.com TXT` and see `v=DMARC1; p=none;`. What does this mean for an attacker?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The domain is highly secure; spoofing is impossible.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Spoofed emails might be delivered because the policy is set to monitor only (no action).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "All emails are encrypted.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The domain uses two-factor authentication.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`p=none` means DMARC is in monitoring mode. It does not reject or quarantine failing emails.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_8",
+            "type": "text",
+            "title": "Advanced: HTML Smuggling & QR Code Phishing (Quishing) 📦",
+            "content": "# Evolving Techniques\n\n**HTML Smuggling**\nInstead of attaching a `.exe` (blocked), you attach an **HTML file** that, when opened, **reconstructs the malicious file** locally using JavaScript. This bypasses attachment filters.\n\n**Quishing (QR Code Phishing)**\nAttach a QR code to the email. The user scans it with their **personal phone** (outside corporate email security). The phone browser then opens the malicious link.\n\n**MFA Fatigue (Push Bombing)**\nIf you have the user's password (from a previous breach), you spam them with MFA push notifications until they accidentally approve one or approve just to stop the noise."
+        },
+        {
+            "id": "s_l3_9",
+            "type": "warning",
+            "title": "Phishing Simulation Ethics ⚠️",
+            "content": "## Never Collect Real Passwords\n\nIn a professional phishing simulation, **never harvest and store real user passwords**. Use a fake login page that simply displays 'This was a simulation' and tracks the click. Storing real credentials violates privacy and security policies."
+        }
+    ]
+}

@@ -1,0 +1,70 @@
+{
+    "id": "l5",
+    "chapterId": "ch_10",
+    "title": "Physical Social Engineering & Defenses 🚪",
+    "description": "Tailgating, USB drops, and how to build a human firewall.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Advanced & Defense",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Physical Social Engineering 🚪",
+            "content": "# Getting Past the Front Door\n\nSometimes the best hack is walking right in.\n\n**1. Tailgating (Piggybacking)**\n- Following an authorized person through a secure door before it closes.\n- **Technique**: Carry a heavy box or a tray of coffee. *\"Thanks for holding the door!\"*\n- **Psychology**: People don't want to be rude to someone with their hands full.\n\n**2. Impersonation**\n- **Vendor/Technician**: Wear a high-vis vest and carry a toolbox. *\"Here to fix the AC unit on Floor 3.\"*\n- **Delivery Person**: Carry a package and a clipboard.\n- **IT Support**: Laptop bag, polo shirt. *\"Called about a network drop in the conference room.\"*\n\n**3. USB Drop**\n- Leave a few USB drives in the parking lot, labeled *\"Confidential: Salary 2024\"* or *\"Layoff List\"*.\n- **Psychology**: Curiosity and Fear. Employees plug it in to see what's on it.\n- **Payload**: The USB emulates a keyboard and types out a reverse shell command, or runs a HID attack."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "Physical SE 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "You are carrying a heavy box. You approach a secure door and an employee badges in. What principle makes them likely to hold the door for you?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Reciprocity (they expect a favor later).",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Social Proof (others are doing it).",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Politeness Norm / Helping Bias (they don't want to seem rude).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Authority.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Social conditioning makes us want to be helpful and not let doors slam in people's faces.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Building the Human Firewall 🛡️",
+            "content": "# Defending Against Social Engineering\n\nTechnology can't fix human nature. The only defense is **awareness and culture**.\n\n**1. Training & Simulations**\n- Run **monthly phishing simulations**.\n- Reward employees who **report** phishing (positive reinforcement), rather than just punishing those who click.\n- Use **just-in-time training**: When a user clicks a simulated phish, show a 2-minute video explaining what they missed.\n\n**2. Clear Reporting Process**\n- Give employees a **one-click button** in Outlook to report phishing.\n- Ensure they know who to call to verify suspicious requests (e.g., *\"Call the CFO directly at extension 1234 to confirm wire transfers.\"*).\n\n**3. Policy and Culture**\n- **No Password Sharing Policy**.\n- **Clean Desk Policy**: No passwords on sticky notes.\n- **Challenge Culture**: Empower employees to say *\"No, I need to verify your identity\"* without fear of reprisal.\n\n**4. Technical Controls**\n- **MFA** for everything. (Stops 99% of credential stuffing).\n- **Conditional Access Policies**: Block logins from unusual locations.\n- **Disable Macros** in Office.\n- **Application Allowlisting**: Prevent unknown executables from running."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "The Report: Documenting Social Engineering Findings 📝",
+            "content": "# How to Write It Up\n\nSocial engineering findings are **high impact** because they indicate a **cultural weakness**.\n\n**What to Include in the Report:**\n- **Narrative**: Tell the story of the call/email. *\"Posing as IT Support, I called Jane Doe and obtained her login credentials within 3 minutes.\"*\n- **Screenshot Evidence**: Email logs, call recording transcripts (if legal).\n- **Root Cause**: *\"Lack of verification procedure for inbound IT calls.\"*\n- **Risk**: *\"An attacker could use this to gain access to the corporate VPN and internal file shares.\"*\n- **Remediation**: Specific, actionable steps.\n    - *\"Implement a call-back verification policy for all password reset requests.\"*\n    - *\"Conduct targeted anti-vishing training for all employees.\"*\n\n**Important**: Anonymize the specific employee. The goal is to fix the **process**, not to fire the person."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "tip",
+            "title": "Pro Tip: The 'Report Phish' Button 🚀",
+            "content": "## The Best Metric\n\nIn a mature security program, the **Phish Reporting Rate** (percentage of employees who report a simulated phish instead of clicking) is a **more important metric** than the **Click Rate**. A high reporting rate means your human sensors are active."
+        }
+    ]
+}

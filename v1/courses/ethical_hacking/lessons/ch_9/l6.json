@@ -1,0 +1,85 @@
+{
+    "id": "l6",
+    "chapterId": "ch_9",
+    "title": "Deauthentication & Evil Twin Attacks 👿",
+    "description": "Force clients to disconnect and trick them into connecting to your rogue AP.",
+    "xpReward": 40,
+    "estimatedMinutes": 12,
+    "section": "Attacks",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "Beyond Password Cracking 🎭",
+            "content": "# When the Password is Too Strong\n\nWhat if the Wi-Fi password is a random 20-character string? You'll never crack it. But you can still **trick users** into giving you access.\n\n**Evil Twin Attack Overview:**\n1.  Create a **fake Access Point** with the **exact same SSID** as the target network.\n2.  Use **deauthentication packets** to kick users off the legitimate AP.\n3.  Users' devices automatically try to reconnect and may choose **your stronger signal**.\n4.  When they connect, you present a **fake captive portal** (e.g., \"Wi-Fi Password Expired. Please re-enter your password.\").\n5.  User enters the **real Wi-Fi password** (or corporate credentials). You capture it and then pass them through to the real internet (so they don't get suspicious).\n\n**Analogy**: You open a fake bank branch next to the real one. You direct customers to your door, take their ATM card and PIN, then tell them \"The system is down, try the real branch.\""
+        },
+        {
+            "id": "s_l6_2",
+            "type": "quiz",
+            "title": "Evil Twin Concept 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "What is the primary goal of an Evil Twin attack?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To crack the WPA2 password using GPU power.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To trick users into connecting to a rogue AP and stealing credentials or the Wi-Fi password itself.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To jam the signal of the legitimate AP.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To install malware on the router.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Evil Twin attacks focus on social engineering and credential harvesting, not cryptographic cracking.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_3",
+            "type": "text",
+            "title": "Tools for Evil Twin: Airgeddon & Fluxion 🛠️",
+            "content": "# Automated Evil Twin Frameworks\n\nManually setting up an Evil Twin is complex. Tools like **Airgeddon** and **Fluxion** automate the entire process.\n\n**Airgeddon Workflow:**\n1.  Select target network from scan.\n2.  Launch **deauth attack** against all clients.\n3.  Start **rogue AP** with same SSID.\n4.  Provide **DHCP and internet** to connected victims (via your Kali machine's internet).\n5.  Present **captive portal** (choose from templates: Google Login, Router Admin, etc.).\n6.  Capture submitted passwords.\n\n**Installation:**\n```bash\ngit clone https://github.com/v1s1t0r1sh3r3/airgeddon.git\ncd airgeddon\nsudo bash airgeddon.sh\n```\n\n**Note**: Airgeddon is a **menu-driven** tool. It will guide you through each step."
+        },
+        {
+            "id": "s_l6_4",
+            "type": "code",
+            "title": "Manual Rogue AP with Hostapd & Dnsmasq 💻",
+            "content": "For deeper understanding, here's the manual process.",
+            "codeSnippet": "# 1. Create hostapd config (rogue AP)\necho \"interface=wlan0mon\nssid=TargetWiFi\nchannel=6\" > hostapd.conf\n\n# 2. Start the AP\nsudo hostapd hostapd.conf\n\n# 3. Configure dnsmasq for DHCP\nsudo dnsmasq -C dnsmasq.conf\n\n# 4. Enable IP forwarding and NAT\nsudo sysctl net.ipv4.ip_forward=1\nsudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE\n\n# 5. Deauth clients from real AP\nsudo aireplay-ng -0 0 -a [Real_AP_BSSID] wlan0mon",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "KARMA Attacks: The Loud Evil Twin 📢",
+            "content": "# Responding to Every Probe\n\n**KARMA** is an advanced attack where the rogue AP **responds to any Probe Request** it sees.\n\n- **Normal Probe**: Client asks *\"Is Starbucks Wi-Fi here?\"*\n- **KARMA Response**: Rogue AP says *\"Yes! I am Starbucks Wi-Fi! Connect to me!\"*\n\nThis works because many devices **actively probe** for saved networks. Even if you're miles away from Starbucks, your phone is asking for it. A KARMA attack can collect **dozens of SSIDs** and credentials.\n\n**Tool**: **Mana Toolkit** (successor to KARMA).\n\n**Defense**: Modern phones have mitigated this by randomizing MAC addresses and limiting active probing. But many IoT devices (smart plugs, cameras) are still vulnerable."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "text",
+            "title": "Defending Against Wi-Fi Attacks 🛡️",
+            "content": "# Protecting Your Network\n\n**1. Use WPA3 (or WPA2 with a Strong Password)**\n- Minimum **14 random characters**. No dictionary words.\n\n**2. Disable WPS (Wi-Fi Protected Setup)**\n- WPS PIN is 8 digits and **trivially brute-forced** in hours.\n\n**3. Use Enterprise Authentication (802.1X)**\n- Requires individual usernames/passwords or certificates. Much harder to crack.\n\n**4. Monitor for Deauth Packets**\n- Some enterprise APs can detect deauth floods and alert administrators.\n\n**5. Use a VPN**\n- Even if an attacker cracks your Wi-Fi, they still can't read your traffic if it's inside a VPN tunnel.\n\n**6. Be Suspicious of Captive Portals**\n- If your home Wi-Fi suddenly asks for a password *again*, check the URL. Don't enter it."
+        },
+        {
+            "id": "s_l6_7",
+            "type": "warning",
+            "title": "Wi-Fi Hacking in the Real World ⚠️",
+            "content": "## Scope and Legal Boundaries\n\nWi-Fi attacks **transmit radio signals**. In many countries, jamming or deauth attacks are **illegal** even against your own equipment if it interferes with neighbors (FCC regulations in the US).\n\n**Best Practices for Ethical Testing:**\n- **Faraday Cage/Shielded Room**: For lab testing, use a Faraday bag or turn down TX power to avoid signal leakage.\n- **Explicit Scope**: Ensure wireless testing is **specifically included** in the Statement of Work.\n- **Off-Hours Only**: Perform deauth attacks when network downtime is acceptable."
+        }
+    ]
+}

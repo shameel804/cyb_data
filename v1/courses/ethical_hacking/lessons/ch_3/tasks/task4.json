@@ -1,0 +1,15 @@
+{
+    "id": "task4",
+    "chapterId": "ch_3",
+    "title": "Automated Recon Script",
+    "description": "Write a Bash script to automate a simple network scan.",
+    "estimatedMinutes": 30,
+    "problemStatement": "# Objective\nCreate a reusable Bash script named `recon.sh` that automates the initial steps of host discovery.\n\n## Requirements\nThe script should:\n1.  Take a subnet as a command-line argument (e.g., `./recon.sh 192.168.56`).\n2.  Print a banner: `=== Starting Recon on $1.0/24 ===`.\n3.  Perform a **Ping Sweep** using `nmap -sn` on the provided subnet.\n4.  Save the output of the scan to a file named `recon_results.txt` in the current directory.\n5.  Print a completion message.\n\n## Example Usage\n```bash\n./recon.sh 192.168.56\n```\n\n**Deliverable**: The script file `recon.sh`.",
+    "hints": [
+        "Remember to start with `#!/bin/bash`.",
+        "Use `$1` to access the argument.",
+        "Redirect output with `>`."
+    ],
+    "expectedOutput": "A file `recon_results.txt` containing the Nmap ping sweep results.",
+    "solutionCode": "#!/bin/bash\n\nif [ -z \"$1\" ]; then\n    echo \"Usage: $0 <first_three_octets>\"\n    echo \"Example: $0 192.168.1\"\n    exit 1\nfi\n\necho \"=== Starting Recon on $1.0/24 ===\"\nnmap -sn $1.0/24 > recon_results.txt\necho \"=== Scan Complete. Results saved to recon_results.txt ===\""
+}

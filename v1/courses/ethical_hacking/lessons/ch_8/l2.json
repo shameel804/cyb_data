@@ -1,0 +1,76 @@
+{
+    "id": "l2",
+    "chapterId": "ch_8",
+    "title": "OWASP Top 10: The Hit List 📋",
+    "description": "The definitive list of the most critical web application security risks.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Frameworks",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "What is OWASP? 🏢",
+            "content": "# The Open Web Application Security Project\n\n**OWASP** is a nonprofit foundation that works to improve software security. They are most famous for the **OWASP Top 10**—a regularly updated report outlining the most critical security risks to web applications.\n\n**Why It Matters:**\n- It's the **industry standard** for web security testing.\n- Compliance frameworks (PCI DSS) require testing for the Top 10.\n- Every web app penetration test includes checking for these.\n\n**Current Version**: OWASP Top 10 2021 (Updated every 3-4 years)."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "The OWASP Top 10 2021 🏆",
+            "content": "# The Hit List\n\n1.  **A01:2021 – Broken Access Control**\n2.  **A02:2021 – Cryptographic Failures** (Sensitive Data Exposure)\n3.  **A03:2021 – Injection** (SQLi, Command Injection, etc.)\n4.  **A04:2021 – Insecure Design**\n5.  **A05:2021 – Security Misconfiguration**\n6.  **A06:2021 – Vulnerable and Outdated Components**\n7.  **A07:2021 – Identification and Authentication Failures**\n8.  **A08:2021 – Software and Data Integrity Failures**\n9.  **A09:2021 – Security Logging and Monitoring Failures**\n10. **A10:2021 – Server-Side Request Forgery (SSRF)**\n\n**Note**: Classic categories like **XSS** now fall under **A03: Injection**."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "OWASP Awareness 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "According to the OWASP Top 10 2021, which category does SQL Injection belong to?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A01: Broken Access Control",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A03: Injection",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A05: Security Misconfiguration",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A07: Authentication Failures",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "SQLi, XSS, and Command Injection all fall under the broad 'Injection' category (A03:2021).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "A01: Broken Access Control 🚪",
+            "content": "# Seeing What You Shouldn't\n\n**Definition**: Restrictions on what authenticated users are allowed to do are not properly enforced.\n\n**Examples:**\n- **IDOR (Insecure Direct Object Reference)**: Changing the `id` parameter in the URL to access another user's data.\n    - `profile.php?user_id=123` -> Change to `124` -> See someone else's profile.\n- **Privilege Escalation**: A normal user accessing admin functions (`/admin/delete_user.php`).\n- **CORS Misconfiguration**: Allowing malicious sites to read sensitive API responses.\n\n**How to Test**: Create two user accounts. Log in as User A. Try to access User B's resources by modifying identifiers in the URL or POST body."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "A03: Injection (The Big One) 💉",
+            "content": "# Interpreting Data as Code\n\n**Definition**: Untrusted data is sent to an interpreter as part of a command or query.\n\n**Types Covered in This Chapter:**\n- **SQL Injection (SQLi)**: Database queries.\n- **Cross-Site Scripting (XSS)**: HTML/JavaScript injection in the browser.\n- **Command Injection**: OS system commands.\n- **LDAP Injection**, **XPath Injection**, etc.\n\n**Core Problem**: The application fails to separate **code** from **data**.\n\n**Analogy**: You tell a waiter: *\"I'd like a coffee; also, give the cash register to me.\"* A good waiter recognizes the second part is nonsense. A vulnerable waiter executes both parts."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "warning",
+            "title": "Don't Just Scan for OWASP ⚠️",
+            "content": "## Logic Flaws Are Not in the Top 10\n\nThe OWASP Top 10 is a **starting point**, not a complete checklist. Many high-impact vulnerabilities are **business logic flaws** unique to the application.\n\n**Example**: A coupon code `SAVE100` that should only work once per user, but can be used infinitely because the application doesn't track usage correctly. This is not 'Injection' or 'Broken Access Control'—it's a logic flaw. **Think creatively.**"
+        }
+    ]
+}

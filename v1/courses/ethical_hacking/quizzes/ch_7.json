@@ -1,0 +1,246 @@
+{
+    "id": "quiz_ch_7",
+    "chapterId": "ch_7",
+    "title": "Chapter 7 Quiz",
+    "description": "Test your knowledge of system exploitation techniques and tools.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which phase of hacking does exploitation belong to?",
+            "options": [
+                "Reconnaissance",
+                "Scanning",
+                "Gaining Access",
+                "Maintaining Access"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Exploitation is the act of gaining initial access to the system."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What is the primary function of a 'payload' in Metasploit?",
+            "options": [
+                "To trigger the vulnerability.",
+                "To scan for open ports.",
+                "To execute code or provide access after successful exploitation.",
+                "To evade antivirus detection."
+            ],
+            "correctAnswer": 2,
+            "explanation": "The payload is the code that runs on the target after the exploit succeeds."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "A Reverse Shell payload connects from the attacker's machine to the target machine.",
+            "correctAnswer": false,
+            "explanation": "False. A Reverse Shell connects from the target back to the attacker."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "In Metasploit, the command to set a global variable that persists across modules is ______.",
+            "options": [
+                "set",
+                "setg",
+                "global",
+                "unset"
+            ],
+            "correctAnswer": "setg",
+            "explanation": "`setg` sets a global option; `set` sets it only for the current module."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What is the main advantage of a staged payload over a single payload?",
+            "options": [
+                "It is more reliable.",
+                "It has a smaller initial size, useful for tight buffer constraints.",
+                "It works on all operating systems.",
+                "It is encrypted by default."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Staged payloads use a small stager to download the larger stage, fitting in small buffer spaces."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which command in msfconsole lists all active sessions?",
+            "options": [
+                "show sessions",
+                "sessions -l",
+                "list sessions",
+                "sessions -s"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`sessions -l` lists active sessions; `sessions -i [id]` interacts with one."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "The vsftpd 2.3.4 backdoor is triggered by sending a smiley face `:)` in the username field.",
+            "correctAnswer": true,
+            "explanation": "True. The backdoor listens on port 6200 after receiving a username containing `:)`."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which tool is used to generate standalone payload executables from the command line?",
+            "options": [
+                "msfconsole",
+                "msfvenom",
+                "Armitage",
+                "searchsploit"
+            ],
+            "correctAnswer": 1,
+            "explanation": "msfvenom is the payload generator and encoder tool."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What is the purpose of the `check` command in a Metasploit exploit module?",
+            "options": [
+                "To verify that the module syntax is correct.",
+                "To safely determine if the target is vulnerable without exploiting it.",
+                "To scan for open ports.",
+                "To update the module database."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`check` performs a non-intrusive vulnerability check."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which Meterpreter command is used to move the payload from the initial process to a more stable one (e.g., explorer.exe)?",
+            "options": [
+                "ps",
+                "migrate",
+                "getsystem",
+                "execute"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`migrate [PID]` transfers the Meterpreter session to another process."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What is the difference between `-l` and `-L` in Hydra?",
+            "options": [
+                "`-l` specifies a single username, `-L` specifies a file of usernames.",
+                "`-l` specifies a single password, `-L` specifies a file of passwords.",
+                "`-l` enables logging, `-L` disables logging.",
+                "`-l` is for Linux, `-L` is for Windows."
+            ],
+            "correctAnswer": 0,
+            "explanation": "`-l` (lowercase) is for a single login name; `-L` (uppercase) is for a login list file."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which attack involves trying one common password against many user accounts to avoid account lockouts?",
+            "options": [
+                "Dictionary Attack",
+                "Brute Force Attack",
+                "Password Spraying",
+                "Rainbow Table Attack"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Password spraying uses a single password against many usernames."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "Client-side exploits rely on the victim initiating the connection, thus bypassing inbound firewall restrictions.",
+            "correctAnswer": true,
+            "explanation": "True. The victim's machine connects outbound to the attacker."
+        },
+        {
+            "id": "q14",
+            "type": "fill_blank",
+            "question": "The framework for exploiting web browsers by injecting a JavaScript hook is called ______.",
+            "options": [
+                "Metasploit",
+                "BeEF",
+                "Burp Suite",
+                "SQLMap"
+            ],
+            "correctAnswer": "BeEF",
+            "explanation": "BeEF (Browser Exploitation Framework) hooks and controls web browsers."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Which hashcat mode number is used for NTLM hashes (Windows)?",
+            "options": [
+                "0",
+                "1000",
+                "1800",
+                "500"
+            ],
+            "correctAnswer": 1,
+            "explanation": "1000 is the mode for NTLM hashes."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What is the primary risk of running an exploit rated 'Low' or 'Normal' on a production server?",
+            "options": [
+                "It takes too long.",
+                "It may crash the service or operating system.",
+                "It requires a paid license.",
+                "It only works on Windows."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Unreliable exploits can cause denial of service or system instability."
+        },
+        {
+            "id": "q17",
+            "type": "true_false",
+            "question": "Meterpreter payloads write files to disk to maintain persistence.",
+            "correctAnswer": false,
+            "explanation": "False. Meterpreter runs entirely in memory (RAM), making it stealthier."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "You want to compile a Windows exploit on Kali. Which compiler package should you install?",
+            "options": [
+                "gcc",
+                "mingw-w64",
+                "clang",
+                "javac"
+            ],
+            "correctAnswer": 1,
+            "explanation": "MinGW-w64 is a cross-compiler for Windows targets on Linux."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is the purpose of the `-f` flag in msfvenom?",
+            "options": [
+                "Force overwrite of output file.",
+                "Specify the output format (e.g., exe, python, raw).",
+                "Set the filename.",
+                "Enable fragmentation."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-f` defines the format of the generated payload."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which Metasploit module type is used to handle incoming reverse shell connections from standalone payloads?",
+            "options": [
+                "exploit/multi/handler",
+                "auxiliary/scanner/portscan",
+                "payload/windows/reverse_tcp",
+                "post/windows/gather/hashdump"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`exploit/multi/handler` is a generic listener for catching reverse shells."
+        }
+    ]
+}

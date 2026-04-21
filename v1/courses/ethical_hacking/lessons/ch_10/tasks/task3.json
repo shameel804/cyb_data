@@ -1,0 +1,14 @@
+{
+    "id": "task3",
+    "chapterId": "ch_10",
+    "title": "Analyze a Phishing Email",
+    "description": "Examine email headers and identify red flags.",
+    "estimatedMinutes": 20,
+    "problemStatement": "# Objective\nAnalyze the provided raw email headers and content to identify phishing indicators.\n\n## Provided Email (Simulated)\n```\nFrom: \"PayPal Service\" <service@paypal.com>\nReply-To: paypal-update@secure-login.tk\nSubject: URGENT: Your Account Has Been Limited\nDate: Mon, 20 Oct 2024 10:23:45 -0500\nTo: victim@example.com\n\nDear Customer,\n\nWe noticed unusual activity on your account. Please verify your information immediately to avoid suspension.\n\nClick here to restore access: http://paypal.com.verify-id.tk/login.php\n\nThanks,\nPayPal Security Team\n```\n\n## Tasks\n1.  Identify the **display name spoofing** tactic used.\n2.  Analyze the **Reply-To** address. What domain is it actually using? Is it legitimate?\n3.  Examine the **link** in the email body. What is the true domain? What technique is being used to hide it?\n4.  List **three** additional red flags present in the email body text.\n\n## Deliverable\nA short list of the 4 findings above.",
+    "hints": [
+        "Look at the part after the '@' symbol in the Reply-To field.",
+        "The link text shows 'paypal.com' but the actual href goes to a different domain."
+    ],
+    "expectedOutput": "1. Display name 'PayPal Service' but email not verified. 2. Reply-To uses .tk domain (free, suspicious). 3. Link goes to verify-id.tk, a typosquat/lookalike domain. 4. Red flags: Urgency, generic greeting, grammar issues, threat of suspension.",
+    "solutionCode": "# Analysis\n1. Display name 'PayPal Service' but actual From address is missing/not shown; likely spoofed or from a free account.\n2. Reply-To domain is 'secure-login.tk'. '.tk' is a free domain often used in scams. Not PayPal.com.\n3. Link text is 'http://paypal.com.verify-id.tk/login.php'. The actual domain is 'verify-id.tk' (paypal.com is a subdomain). This is a subdomain attack.\n4. Red flags: Urgency ('URGENT'), generic greeting ('Dear Customer'), threat ('avoid suspension'), grammatical oddness."
+}

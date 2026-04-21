@@ -1,0 +1,120 @@
+{
+    "id": "l3",
+    "chapterId": "ch_6",
+    "title": "Vulnerability Databases & Research 📚",
+    "description": "Master CVE, NVD, and Exploit-DB to find working exploits.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Research",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Library of Vulnerabilities 📖",
+            "content": "# Where Hackers Go to Learn\n\nWhen you find a software version (e.g., `vsftpd 2.3.4`), you don't guess what's wrong with it. You look it up in a **vulnerability database**.\n\n**The Big Three:**\n1.  **CVE** (Common Vulnerabilities and Exposures): The unique ID number (e.g., CVE-2021-44228).\n2.  **NVD** (National Vulnerability Database): The US government's repository providing CVSS scores and descriptions.\n3.  **Exploit-DB**: A collection of **actual working exploit code** (Proof of Concepts)."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "CVE Identifiers 🏷️",
+            "content": "# The Universal Language\n\nA **CVE ID** is a unique, common identifier for a publicly known cybersecurity vulnerability.\n\n**Format**: `CVE-YYYY-NNNNN`\n- `YYYY`: Year the CVE was assigned.\n- `NNNNN`: Arbitrary digits (at least 4).\n\n**Example**: `CVE-2011-2523`\n- Year: 2011\n- ID: 2523\n\n**Why it Matters**: Everyone in the industry speaks CVE. If you say `vsftpd 2.3.4` backdoor, a security engineer knows exactly what you mean. The CVE for this is `CVE-2011-2523`."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "CVE Format 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What does the '2021' in `CVE-2021-44228` represent?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The severity score.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The year the CVE ID was reserved or published.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The number of affected systems.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The patch version.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The first part of the CVE ID is the year of assignment.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "NVD: The Official Source 🏛️",
+            "content": "# National Vulnerability Database\n\n**Website**: `nvd.nist.gov`\n\nThe NVD synchronizes with the CVE list and **enhances** it with:\n- **CVSS Base Scores**\n- **CPE (Common Platform Enumeration)** strings (exactly which software versions are affected).\n- **References** to vendor advisories.\n\n**How Hackers Use It:**\n1.  Search for the software: `vsftpd 2.3.4`\n2.  Find CVE-2011-2523.\n3.  Note the CVSS score (10.0 Critical).\n4.  Scroll down to **References** for links to exploits."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Exploit-DB: The Toolbox 🧰",
+            "content": "# From Theory to Practice\n\nKnowing a CVE exists is one thing. Having a ready-made script to exploit it is another.\n\n**Website**: `exploit-db.com` (Maintained by Offensive Security, creators of Kali).\n\n**What You'll Find:**\n- **Verified Exploits**: Code written in Python, Ruby, C, Bash.\n- **Shellcode**: Machine code payloads.\n- **Papers**: Whitepapers explaining the vulnerability logic.\n\n**Search Hack**: Use **SearchSploit** in Kali to search the Exploit-DB archive **offline**.\n```bash\nsearchsploit vsftpd 2.3.4\n```"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "code",
+            "title": "Using SearchSploit 💻",
+            "content": "SearchSploit is pre-installed on Kali. It's much faster than browsing the website.",
+            "codeSnippet": "# Search for a specific service\nsearchsploit vsftpd\n\n# Search for exact version\nsearchsploit vsftpd 2.3.4\n\n# Copy the exploit to current directory\nsearchsploit -m 49757\n\n# Examine the copied file\ncat 49757.py",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_7",
+            "type": "warning",
+            "title": "Exploit Code Safety ⚠️",
+            "content": "## Don't Run Random Code Blindly\n\nExploit code from public sources can be **malicious**. A 'security researcher' might upload a 'proof of concept' that actually installs a backdoor on **your** attacking machine.\n\n**Best Practices:**\n- **Read the code** before running it (especially with `sudo`).\n- Run it inside a **Virtual Machine** snapshot.\n- Look for suspicious commands like `rm -rf`, `curl ... | sh`, or base64 encoded strings.\n- Trust but verify."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "quiz",
+            "title": "Database Usage 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "You find Apache 2.4.49 on a target. Which resource is BEST for finding a ready-to-run exploit script?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "NVD (nvd.nist.gov)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "CVSS Calculator",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Exploit-DB / SearchSploit",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Shodan",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Exploit-DB contains actual exploit code. NVD provides the score and description.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

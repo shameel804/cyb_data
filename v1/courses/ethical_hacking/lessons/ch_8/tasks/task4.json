@@ -1,0 +1,14 @@
+{
+    "id": "task4",
+    "chapterId": "ch_8",
+    "title": "Directory Enumeration & IDOR",
+    "description": "Use Gobuster to find hidden directories and exploit IDOR on Mutillidae.",
+    "estimatedMinutes": 25,
+    "problemStatement": "# Objective\nPerform directory enumeration on Metasploitable and exploit an IDOR vulnerability in Mutillidae.\n\n## Part 1: Gobuster\n1.  Run Gobuster against `http://192.168.56.101`.\n2.  Use wordlist `/usr/share/wordlists/dirb/common.txt`.\n3.  Identify at least three interesting directories (e.g., `/dvwa`, `/mutillidae`, `/phpmyadmin`).\n\n## Part 2: IDOR\n1.  Navigate to Mutillidae: `http://192.168.56.101/mutillidae`.\n2.  Find the **User Info** page (OWASP 2013 -> A4 Insecure Direct Object References -> User Info).\n3.  Observe the URL parameter or POST request that specifies the user.\n4.  Use Burp Suite or browser to change the user identifier to view another user's information.\n\n## Deliverable\nScreenshot of another user's profile data displayed.",
+    "hints": [
+        "Gobuster: `gobuster dir -u http://192.168.56.101 -w /usr/share/wordlists/dirb/common.txt`",
+        "IDOR: Look for a dropdown or parameter like `username=user1` or `uid=1`. Change the value."
+    ],
+    "expectedOutput": "Profile of a different user (e.g., `adrian` or `john`) instead of your own.",
+    "solutionCode": "# Gobuster\ngobuster dir -u http://192.168.56.101 -w /usr/share/wordlists/dirb/common.txt -o gobuster.txt\n\n# IDOR on Mutillidae\n# Visit: http://192.168.56.101/mutillidae/index.php?page=user-info.php\n# Intercept request, change username=test to username=admin\n# Or change uid parameter if present."
+}

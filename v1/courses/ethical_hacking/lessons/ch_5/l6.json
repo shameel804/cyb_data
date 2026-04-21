@@ -1,0 +1,126 @@
+{
+    "id": "l6",
+    "chapterId": "ch_5",
+    "title": "Service Enumeration Deep Dive 📂",
+    "description": "Extract usernames, shares, and configurations from common services.",
+    "xpReward": 40,
+    "estimatedMinutes": 12,
+    "section": "Enumeration",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "What is Enumeration? 📋",
+            "content": "# Beyond the Open Port\n\n**Scanning** tells you the door is open. **Enumeration** is walking through the door and looking around to see what's inside.\n\nEnumeration involves actively querying the service to extract:\n- **Usernames** and **group memberships**.\n- **File shares** and **directory structures**.\n- **Configuration details**.\n- **Network information**.\n\nWe'll cover enumeration of the most common and juicy services: **SMB, SNMP, FTP, and SSH**."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "SMB Enumeration (Windows File Sharing) 📁",
+            "content": "# Ports 139 & 445\n\n**SMB (Server Message Block)** is the protocol for Windows file and printer sharing. It's a **goldmine** if misconfigured.\n\n**Goals of SMB Enumeration:**\n1.  List available **Shares** (folders).\n2.  Check for **NULL Session** authentication (access without credentials!).\n3.  Enumerate **Users** and **Groups**.\n\n**Tools:**\n- **`smbclient`**: FTP-like client for SMB.\n- **`enum4linux`**: Automated SMB enumeration script (Perl).\n- **Nmap NSE Scripts**: `smb-enum-shares`, `smb-enum-users`."
+        },
+        {
+            "id": "s_l6_3",
+            "type": "code",
+            "title": "SMB Enumeration Commands 🛠️",
+            "content": "Using enum4linux and smbclient against Metasploitable.",
+            "codeSnippet": "# enum4linux - All basic enumeration\necho y | enum4linux 192.168.56.101\n\n# List shares anonymously\nsmbclient -L //192.168.56.101 -N\n\n# Connect to a share\nsmbclient //192.168.56.101/tmp -N\n\n# Nmap scripts\nnmap -p 445 --script smb-enum-shares 192.168.56.101\nnmap -p 445 --script smb-enum-users 192.168.56.101",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_4",
+            "type": "quiz",
+            "title": "SMB Null Session 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "What is a 'NULL Session' in SMB context?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A crashed SMB service.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Connecting to SMB without providing any username or password.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Encrypted SMB traffic.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A specific type of share name.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A NULL session uses empty credentials, often allowing enumeration of shares and users on older systems.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "SNMP Enumeration (Network Management) 📡",
+            "content": "# Port 161 (UDP)\n\n**Simple Network Management Protocol** is used to monitor and configure network devices. It uses **Community Strings** as passwords.\n\n**Default Community Strings:**\n- **Read-Only**: `public`\n- **Read-Write**: `private`\n\nIf SNMP is exposed with default strings, an attacker can extract a **wealth of information**: running processes, network interfaces, installed software, and sometimes even **usernames**.\n\n**Tool: `snmpwalk`**\n```bash\nsnmpwalk -v 1 -c public 192.168.56.101\n```\n\n**Nmap Script:**\n```bash\nnmap -sU -p 161 --script snmp-brute 192.168.56.101\n```"
+        },
+        {
+            "id": "s_l6_6",
+            "type": "text",
+            "title": "FTP Enumeration (File Transfer) 📂",
+            "content": "# Port 21\n\nFTP is often configured to allow **Anonymous Login**.\n\n**Anonymous Credentials:**\n- Username: `anonymous` or `ftp`\n- Password: anything (usually an email)\n\n**Enumeration Steps:**\n1.  Check for anonymous access.\n2.  List directory contents.\n3.  Look for readable configuration files, backups, or scripts.\n\n**Command:**\n```bash\nftp 192.168.56.101\n# Enter 'anonymous' as username, press Enter for password.\n# Once in: ls, cd, get [file]\n```\n\n**Nmap Script:**\n```bash\nnmap -p 21 --script ftp-anon 192.168.56.101\n```"
+        },
+        {
+            "id": "s_l6_7",
+            "type": "text",
+            "title": "SSH Enumeration (Secure Shell) 🔑",
+            "content": "# Port 22\n\nSSH is encrypted, so you cannot just sniff passwords. But you can still **enumerate**.\n\n**Enumeration Goals:**\n- **Server Version**: Banner grabbing reveals version (e.g., `OpenSSH 7.4`).\n- **Authentication Methods**: Does it allow password auth, or only keys?\n- **User Enumeration**: Some older SSH versions leak whether a username exists via timing attacks.\n\n**Tools:**\n- **`ssh-audit`**: Analyzes SSH server configuration and crypto algorithms.\n- **`hydra`**: Password brute-forcing (covered in later chapter).\n\n**Command:**\n```bash\nssh-audit 192.168.56.101\n```"
+        },
+        {
+            "id": "s_l6_8",
+            "type": "tip",
+            "title": "Nmap Scripting Engine (NSE) 🚀",
+            "content": "## Automating Enumeration\n\nNmap has hundreds of scripts located in `/usr/share/nmap/scripts/`. Use `--script` to run them.\n\n**Categories:**\n- `--script safe`: Non-intrusive scripts.\n- `--script default`: Common scripts (equiv to `-sC`).\n- `--script vuln`: Check for known vulnerabilities.\n\n**Useful Enumeration Scripts:**\n```bash\n# Run all SMB enumeration scripts\nnmap -p 445 --script smb-enum-* 192.168.56.101\n\n# Run all FTP scripts\nnmap -p 21 --script ftp-* 192.168.56.101\n```"
+        },
+        {
+            "id": "s_l6_9",
+            "type": "quiz",
+            "title": "Service Enumeration 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "multiple_choice",
+                "question": "You run `nmap -p 161 -sU 192.168.56.101` and see `open|filtered`. Which tool would you use next to try and extract information if SNMP is open?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "smbclient",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "snmpwalk",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "ftp",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "enum4linux",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`snmpwalk` queries the SNMP service for its Management Information Base (MIB).",
+                "xpReward": 10
+            }
+        }
+    ]
+}

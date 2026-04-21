@@ -1,0 +1,14 @@
+{
+    "id": "task1",
+    "chapterId": "ch_2",
+    "title": "Ping Sweep Discovery",
+    "description": "Use Nmap to find live hosts on your subnet.",
+    "estimatedMinutes": 15,
+    "problemStatement": "# Objective\nDiscover which IP addresses are active on your VirtualBox Host-Only Network.\n\n## Background\nYour Kali Linux VM and Metasploitable VM are on the same subnet (e.g., `192.168.56.0/24`). You need to confirm they can see each other and identify the exact IP of the Metasploitable machine.\n\n## Steps\n1.  Open Terminal in Kali.\n2.  Find your Kali IP address using `ip a` or `ifconfig`. Look for `eth0` or `eth1`. Note the subnet (likely `/24`).\n3.  Perform a **Ping Sweep** using Nmap to find all live hosts on that subnet.\n4.  Identify the IP address that is **NOT** your Kali machine. That is Metasploitable.\n\n**Goal**: Output the IP address of the Metasploitable machine.",
+    "hints": [
+        "Use `nmap -sn [subnet]`. The `-sn` flag skips port scanning (ping only).",
+        "Example: `nmap -sn 192.168.56.0/24`"
+    ],
+    "expectedOutput": "A list of live IPs. Example: `Nmap scan report for 192.168.56.101` (This is Metasploitable).",
+    "solutionCode": "# Identify Kali IP\nip a\n\n# Assuming Kali is 192.168.56.102, scan the network\nnmap -sn 192.168.56.0/24\n\n# Output will show two hosts: .102 (Kali) and .101 (Metasploitable)."
+}

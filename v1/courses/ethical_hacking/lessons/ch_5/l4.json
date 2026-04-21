@@ -1,0 +1,73 @@
+{
+    "id": "l4",
+    "chapterId": "ch_5",
+    "title": "Service & Version Detection 🧬",
+    "description": "Go beyond open ports to identify the exact software and version.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Enumeration",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Why Version Matters 🔬",
+            "content": "# Port 80 vs. Apache 2.4.49\n\nKnowing that port 80 is open is good. Knowing that it's running **Apache httpd 2.4.49** is **gold**.\n\n**Reason**: You can immediately search for known vulnerabilities (CVEs). Apache 2.4.49 has a famous **Path Traversal and Remote Code Execution** vulnerability (CVE-2021-41773).\n\n**Version Detection (`-sV`)** probes open ports to determine the exact service protocol, application name, and version number."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Using -sV 💻",
+            "content": "Combine with port scanning to get detailed service info.",
+            "codeSnippet": "# Basic version scan on common ports\nnmap -sV 192.168.56.101\n\n# Increase version intensity (more probes, more accurate)\nnmap -sV --version-intensity 9 192.168.56.101\n\n# Light version scan (faster, less accurate)\nnmap -sV --version-light 192.168.56.101\n\n# Scan specific port with version\nnmap -sV -p 445 192.168.56.101",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Version Detection 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "You see port 21 open. An `-sV` scan reports `vsftpd 2.3.4`. Why is this immediately concerning?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "vsftpd is a Windows-only service.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "vsftpd 2.3.4 has a notorious backdoor vulnerability.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "FTP is always encrypted.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The version number indicates it's a honeypot.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! vsftpd 2.3.4 contains a backdoor triggered by a smiley face `:)` in the username.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "How Version Detection Works ⚙️",
+            "content": "# Probing the Service\n\nNmap maintains a massive database (`nmap-service-probes`) of signature probes.\n\n**Process:**\n1.  Nmap connects to the open port.\n2.  It sends a series of generic probes (e.g., `HELP`, `GET /`, `SSH-2.0-`).\n3.  It matches the response against thousands of known **regex patterns**.\n4.  If a match is found, it returns the service name and version.\n\n**Null Probe**: Sometimes just listening to the **initial banner** the server sends upon connection is enough (e.g., `220 ProFTPD 1.3.5 Server`)."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "tip",
+            "title": "Pro Tip: Aggressive Detection (-A) 🚀",
+            "content": "## The All-in-One Flag\n\nThe `-A` flag is a shortcut that enables:\n- OS Fingerprinting (`-O`)\n- Version Detection (`-sV`)\n- Script Scanning (`-sC`)\n- Traceroute (`--traceroute`)\n\n```bash\nnmap -A 192.168.56.101\n```\n\n**Warning**: This is **extremely noisy**. It sends a lot of traffic and will absolutely be logged by any decent IDS. Use it in internal labs, but be cautious on real engagements."
+        }
+    ]
+}

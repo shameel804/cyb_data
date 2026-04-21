@@ -1,0 +1,14 @@
+{
+    "id": "task4",
+    "chapterId": "ch_5",
+    "title": "Firewall Evasion Script",
+    "description": "Write a Bash script that performs a stealthy, slow scan.",
+    "estimatedMinutes": 20,
+    "problemStatement": "# Objective\nCreate a Bash script `stealth_scan.sh` that performs a SYN scan with evasion techniques.\n\n## Requirements\nThe script should:\n1.  Take a target IP as an argument.\n2.  Perform a SYN scan (`-sS`) using **Sneaky timing** (`-T1`).\n3.  Use **packet fragmentation** (`-f`).\n4.  Scan only common web ports (80, 443, 8080, 8443).\n5.  Save the output to a file named `stealth_results.txt`.\n6.  Print a message: \"Stealth scan completed.\"\n\n## Example Usage\n```bash\n./stealth_scan.sh 192.168.56.101\n```\n\n## Deliverable\nThe script file `stealth_scan.sh`.",
+    "hints": [
+        "Use `$1` for the target IP.",
+        "Combine flags: `nmap -sS -T1 -f -p 80,443,8080,8443 $1 -oN stealth_results.txt`"
+    ],
+    "expectedOutput": "Script runs without errors and creates `stealth_results.txt`.",
+    "solutionCode": "#!/bin/bash\n\nif [ -z \"$1\" ]; then\n    echo \"Usage: $0 <target_ip>\"\n    exit 1\nfi\n\necho \"Starting stealth scan on $1...\"\nnmap -sS -T1 -f -p 80,443,8080,8443 \"$1\" -oN stealth_results.txt\necho \"Stealth scan completed. Results saved to stealth_results.txt\""
+}

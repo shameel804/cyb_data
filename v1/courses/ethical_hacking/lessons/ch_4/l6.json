@@ -1,0 +1,79 @@
+{
+    "id": "l6",
+    "chapterId": "ch_4",
+    "title": "Email & Document Metadata Mining 📎",
+    "description": "Extract hidden information from files and emails.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Passive",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "Email Harvesting 📧",
+            "content": "# Finding Valid Usernames\n\nBefore you can launch a phishing campaign or password spray attack, you need a list of valid email addresses.\n\n**Techniques:**\n- **Google Dorks**: `site:company.com \"@company.com\"`\n- **Hunter.io**: Finds email patterns associated with a domain.\n- **theHarvester**: A Kali tool that scrapes Google, Bing, LinkedIn, and PGP servers for emails.\n\n**Command:**\n```bash\ntheHarvester -d tesla.com -b all\n```"
+        },
+        {
+            "id": "s_l6_2",
+            "type": "quiz",
+            "title": "Email Recon 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "You discover the company uses the format `firstname.lastname@company.com`. Why is this valuable for an attacker?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It makes emails easy to remember.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Once you find employee names on LinkedIn, you instantly know their corporate login username.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It reveals the mail server software.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It is a strong indicator of security awareness.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Username enumeration is a critical step for password attacks or phishing.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_3",
+            "type": "text",
+            "title": "Metadata: The Hidden Story 🕵️",
+            "content": "# What's Inside the File?\n\nWhen you create a Word document, PDF, or JPG photo, the software embeds **metadata** into the file. This can include:\n\n- **Author Name** (Usernames!)\n- **Software Version** (Adobe Acrobat 11.0.23)\n- **Internal File Paths** (`C:\\Users\\John.Doe\\Projects\\Secret`)\n- **GPS Coordinates** (For photos taken on a phone)\n\n**Hacker Tool: `exiftool`**\n```bash\nexiftool document.pdf\nexiftool vacation_photo.jpg\n```"
+        },
+        {
+            "id": "s_l6_4",
+            "type": "code",
+            "title": "Using exiftool 🔬",
+            "content": "Install and use exiftool to analyze a file from your target's public press releases.",
+            "codeSnippet": "# Install\nsudo apt install exiftool\n\n# Analyze a file\nexiftool annual_report_2023.pdf\n\n# Look for:\n# Creator : John Smith\n# CreatorTool : Microsoft Word 2016\n# Geolocation : 37 deg 46' 29.56\" N, 122 deg 25' 9.20\" W",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_5",
+            "type": "warning",
+            "title": "Real World Breach Example ⚠️",
+            "content": "## The Casey Anthony Trial\n\nIn a famous criminal case, investigators analyzed metadata from a photo of the suspect's car. The metadata revealed the photo was taken in the exact location where the victim's body was later found, contradicting the suspect's timeline.\n\n**Lesson**: Never publish original files directly to the internet. Always strip metadata before uploading."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "text",
+            "title": "Pastebin & Code Repos 📦",
+            "content": "# Finding Leaked Secrets\n\nDevelopers often accidentally commit passwords, API keys, and private keys to public **GitHub** repositories.\n\n**Search Techniques (GitHub Dorking):**\n- Search for `org:tesla password`\n- Search for `filename:.env` (Environment files often contain secrets).\n- Search for `BEGIN RSA PRIVATE KEY` (Private SSH keys).\n\n**Pastebin**: Hackers and insiders sometimes leak data here. Monitor for company mentions.\n\n**Tool**: **GitRob** or **TruffleHog** - Automate finding secrets in Git history."
+        }
+    ]
+}
