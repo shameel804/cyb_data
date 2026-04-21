@@ -1,0 +1,113 @@
+{
+    "id": "l2",
+    "chapterId": "ch_12",
+    "title": "Finding Yourself: Tracking Your Own Footprints",
+    "description": "Use `journalctl`, `last`, and `/var/log` to see exactly what a hacker would see about you.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Log Analysis",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Be the Blue Team: Hunt Yourself 🔍",
+            "content": "# Know What They Know\n\nBefore you can hide, you must understand **exactly** what evidence you leave behind.\n\nThe best way to learn OPSEC is to simulate a small attack and then analyze the logs as if you were the defender.\n\nLet's generate some forensic evidence right now:\n1.  Open a new terminal tab.\n2.  Run a command with `sudo`: `sudo apt update`.\n3.  Try to SSH to a non-existent server: `ssh fake@192.168.1.254`.\n4.  Now, let's find those traces."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "The Command History: `~/.bash_history` 📜",
+            "content": "# Your Personal Confession\n\nEvery command you type in the terminal is saved in `~/.bash_history` (unless you've disabled it).\n\n**Check it:**\n```bash\ncat ~/.bash_history | tail -10\n```\n\n**Hacker Defense:**\n- **Avoid recording:** Start a command with a **space** to skip history (if `HISTCONTROL=ignorespace` is set).\n- **Clear history:** `history -c` (clears memory) and `> ~/.bash_history` (wipes file).\n- **Disable entirely:** `unset HISTFILE` for the current session.\n\n**Forensic Reality:** A skilled analyst will notice an **empty** or **truncated** `.bash_history` file. It's a massive red flag that screams \"SOMEONE WAS HERE AND TRIED TO HIDE.\""
+        },
+        {
+            "id": "s_l2_3",
+            "type": "code",
+            "title": "View Your History",
+            "content": "See the last few commands you've typed.",
+            "codeSnippet": "tail -10 ~/.bash_history",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "History Evasion 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What is a suspicious indicator when examining a user's `.bash_history` file?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Hundreds of valid commands.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A completely empty file or missing file.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Commands separated by newlines.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Normal users accumulate history. An empty file suggests deliberate wiping.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Using `journalctl`: The systemd Journal 📓",
+            "content": "# Reading Binary Logs\n\n`journalctl` is your window into the modern logging system.\n\n**Essential Queries:**\n| Command | What It Shows |\n| :--- | :--- |\n| `journalctl` | All logs (massive). |\n| `journalctl -xe` | Recent logs with explanations. |\n| `journalctl -u ssh` | Logs for the SSH service only. |\n| `journalctl _COMM=sudo` | All `sudo` executions. |\n| `journalctl --since \"10 minutes ago\"` | Time-based filtering. |\n| `journalctl -f` | **Follow** mode (live tail). |\n\n### Find Your Recent Sudo Command:\n```bash\njournalctl _COMM=sudo | tail -5\n```\nYou'll see entries like: `cybron : TTY=pts/0 ; PWD=/home/cybron ; USER=root ; COMMAND=/usr/bin/apt update`\n\n**There is no escape from this log as a normal user.**"
+        },
+        {
+            "id": "s_l2_6",
+            "type": "code",
+            "title": "Find Your Sudo Traces",
+            "content": "Use journalctl to see recent sudo commands.",
+            "codeSnippet": "journalctl _COMM=sudo --since \"1 hour ago\"",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Login Records: `last` and `lastb` 🚪",
+            "content": "# Who Knocked on the Door?\n\n- **`last`** : Reads `/var/log/wtmp`. Shows successful logins, reboots, and session durations.\n- **`lastb`** : Reads `/var/log/btmp`. Shows **failed** login attempts (requires `sudo`).\n\n```bash\nlast -10\nsudo lastb -10\n```\n\n**Output Example:**\n`cybron   tty7         :0               Fri Jan 10 08:30   still logged in`\n`root     sshd        192.168.1.100    Fri Jan 10 03:15 - 03:20 (00:05)`\n\n**Hacker Note:** A defender seeing `still logged in` for `root` at 3:15 AM is immediate cause for alarm. Failed `lastb` entries for `root` indicate a brute-force attack."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "quiz",
+            "title": "Login Evidence 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "Which command shows a list of recent successful user logins?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "lastb",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "last",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "whoami",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`last` parses `/var/log/wtmp` to show successful login history.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

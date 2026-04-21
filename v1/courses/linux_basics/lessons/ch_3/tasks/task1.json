@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_3",
+    "title": "Build a Project Skeleton",
+    "description": "Create a structured folder hierarchy for a cybersecurity project using `mkdir -p` and `touch`.",
+    "estimatedMinutes": 10,
+    "problemStatement": "You are starting a new penetration test for a client named 'Acme Corp'. You need to create a standard directory structure to keep your findings organized.\n\n**Requirements:**\n1. Create a main folder named `Acme_Pentest`.\n2. Inside `Acme_Pentest`, create the following subfolders: `scans`, `logs`, `reports`, `loot`.\n3. Inside `scans`, create a subfolder named `nmap`.\n4. Inside `logs`, create empty files named `access.log` and `error.log` using a single `touch` command.\n5. Verify your structure using the `ls -R` command.\n\n**Hint:** Use `mkdir -p` to create nested paths in one go.",
+    "hints": [
+        "Start with `mkdir -p Acme_Pentest/scans/nmap`",
+        "Then create the other directories: `mkdir Acme_Pentest/{logs,reports,loot}`",
+        "To create both log files at once: `touch Acme_Pentest/logs/access.log Acme_Pentest/logs/error.log`"
+    ],
+    "expectedOutput": "A recursive listing showing the full folder tree with files.",
+    "solutionCode": "mkdir -p Acme_Pentest/scans/nmap\nmkdir Acme_Pentest/logs Acme_Pentest/reports Acme_Pentest/loot\ntouch Acme_Pentest/logs/access.log Acme_Pentest/logs/error.log\nls -R Acme_Pentest"
+}

@@ -1,0 +1,104 @@
+{
+    "id": "l1",
+    "chapterId": "ch_9",
+    "title": "The Linux Software Ecosystem: Repos & Packages",
+    "description": "Understand where software comes from, what a package is, and why repositories matter for security.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Package Management",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "How Does Software Get On Linux? 📦",
+            "content": "# It's Not Random Download Buttons\n\nIn Windows, you download an `.exe` from a random website and pray it's not malware.\n\nIn Linux, software comes from **trusted, centralized servers** called **Repositories** (\"Repos\").\n\n### Analogy: The App Store vs. The Wild West 🤠\n- **Windows Freeware**: Walking through a dark alley, taking candy from a stranger.\n- **Linux Repositories**: Shopping at a certified, inspected grocery store.\n\nWhen you run `apt install nmap`, your system:\n1.  Connects to a **Repository** URL (pre-configured in `/etc/apt/sources.list`).\n2.  Downloads a **Package** (`.deb` file).\n3.  Verifies the **cryptographic signature** to ensure it hasn't been tampered with.\n4.  Installs it."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "What is a Package? 🎁",
+            "content": "# More Than Just the Program\n\nA `.deb` package (Debian/Ubuntu/Kali) contains:\n1.  The compiled **binary** (the actual program).\n2.  **Configuration files** (default settings).\n3.  **Metadata** (version, description, dependencies).\n4.  **Pre/Post installation scripts** (to set up users, start services).\n\n### Dependencies: The Hidden Web 🕸️\nMost software relies on **libraries** (shared code). For example, `nmap` needs `libpcap` to capture packets.\n\n**The Package Manager (`apt`)** solves this nightmare for you. It reads the dependency list and automatically installs everything needed.\n\n**Manual Install Hell (1990s):** \"I want to install Game X. Oh, it needs Library Y. Oh, Library Y needs Compiler Z...\" (Rage quit).\n\n**Modern Linux:** `apt install game-x` -> Done."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the primary advantage of using official Linux repositories?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "They have the latest beta software.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Packages are cryptographically signed and trusted.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "They are faster than direct downloads.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Security and trust are the main reasons. Repos prevent man-in-the-middle attacks.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Sources List: Where to Shop 🗺️",
+            "content": "# `/etc/apt/sources.list`\n\nThis file tells `apt` which servers to trust.\n\n```bash\ncat /etc/apt/sources.list\n```\n\n**Example Line (Kali Linux):**\n`deb http://http.kali.org/kali kali-rolling main non-free contrib`\n\nLet's decode:\n- **`deb`** : Binary packages (source code would be `deb-src`).\n- **URL** : The repository server.\n- **Distribution** : `kali-rolling` (the version codename).\n- **Components** : `main`, `non-free`, `contrib` (sections of the repo).\n\n### Sections Explained:\n- **`main`** : Fully open-source, officially supported.\n- **`contrib`** : Open-source but depends on non-free software.\n- **`non-free`** : Proprietary software (drivers, firmware).\n\n**Hacker Tip:** Adding random PPAs (Personal Package Archives) from the internet is the #1 way to compromise your own system. Treat PPAs like strange USB sticks."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "View Your Sources",
+            "content": "Look at where your system gets its software from.",
+            "codeSnippet": "cat /etc/apt/sources.list",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "Package Managers by Distro 📋",
+            "content": "# Debian/Ubuntu/Kali vs. Red Hat/Arch\n\nDifferent Linux families use different package managers. You must know which is which.\n\n| Distro Family | Package Format | Package Manager |\n| :--- | :--- | :--- |\n| **Debian / Ubuntu / Kali** | `.deb` | `apt`, `dpkg` |\n| **Red Hat / Fedora / CentOS** | `.rpm` | `dnf`, `yum`, `rpm` |\n| **Arch Linux / BlackArch** | `.pkg.tar.zst` | `pacman` |\n\nThis course focuses on **APT** because Kali Linux (the hacker's Swiss Army knife) is based on Debian."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "Package Formats 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "Which package format does Kali Linux use?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": ".rpm",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": ".deb",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": ".pkg.tar.zst",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Kali is based on Debian Testing, so it uses `.deb` packages and APT.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

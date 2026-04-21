@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_2",
+    "title": "Directory Reconnaissance",
+    "description": "Navigate to specific system directories and list their hidden contents.",
+    "estimatedMinutes": 10,
+    "problemStatement": "You are a security analyst tasked with checking for hidden configuration files in two key system locations: the root directory (`/`) and the system configuration directory (`/etc`).\n\n**Steps:**\n1.  Use `pwd` to confirm you are starting in your home directory.\n2.  Navigate to the root directory (`/`).\n3.  List **all** files (including hidden ones) in long format, with human-readable sizes. Look for any hidden files (starting with `.`).\n4.  Change directory to `/etc`.\n5.  Again, list **all** files in long format with human-readable sizes. Notice the many configuration files.\n6.  Finally, return to your home directory without typing the full path `/home/your_username`.",
+    "hints": [
+        "Use `cd /` to go to root.",
+        "The command to list all long human-readable files is `ls -lah`.",
+        "Use `cd` with no arguments to return home."
+    ],
+    "expectedOutput": "Command sequence: pwd; cd /; ls -lah; cd /etc; ls -lah; cd",
+    "solutionCode": "pwd\ncd /\nls -lah\ncd /etc\nls -lah\ncd"
+}

@@ -1,0 +1,115 @@
+{
+    "id": "l6",
+    "chapterId": "ch_7",
+    "title": "DNS: The Phonebook of the Internet",
+    "description": "Translate human-friendly names to IP addresses using `nslookup` and `dig`.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Name Resolution",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "Why We Need DNS 📞",
+            "content": "# Humans Can't Remember `142.250.185.46`\n\nWe type `google.com`. Computers need `142.250.185.46`.\n\n**DNS (Domain Name System)** is the global, distributed database that translates domain names to IP addresses.\n\n### Analogy: The Phonebook 📖\n- **Domain Name**: \"John Smith\"\n- **DNS Server**: The phonebook.\n- **IP Address**: \"555-123-4567\"\n\n### The Resolution Process:\n1.  Your computer asks the **Recursive Resolver** (usually your ISP).\n2.  The Resolver asks the **Root Servers** (`.`).\n3.  The Root servers point to the **TLD Servers** (`.com`).\n4.  The TLD servers point to the **Authoritative Nameservers** (`google.com`).\n5.  The IP is returned and cached."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "Simple Queries: `nslookup` 🔎",
+            "content": "# The Easy Way\n\n`nslookup` (Name Server Lookup) is a simple, interactive or one-shot tool.\n\n**Basic Query:**\n```bash\nnslookup google.com\n```\n\n**Output:**\n```\nServer:         8.8.8.8\nAddress:        8.8.8.8#53\n\nNon-authoritative answer:\nName:   google.com\nAddress: 142.250.185.46\n```\n\n### Query a Specific DNS Server:\n```bash\nnslookup google.com 1.1.1.1\n```\nThis asks Cloudflare's DNS (1.1.1.1) instead of your default resolver. Useful for checking if a DNS change has propagated globally."
+        },
+        {
+            "id": "s_l6_3",
+            "type": "code",
+            "title": "Try `nslookup`",
+            "content": "Look up the IP address for a domain.",
+            "codeSnippet": "nslookup example.com",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l6_4",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "fill_blank",
+                "question": "DNS stands for Domain _____ System.",
+                "options": [
+                    "Name",
+                    "Network",
+                    "Number",
+                    "Naming"
+                ],
+                "correctAnswer": "Name",
+                "explanation": "DNS = Domain Name System.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "The Power Tool: `dig` ⛏️",
+            "content": "# Domain Information Groper\n\n`dig` is the professional's choice. It provides far more detailed output and is essential for troubleshooting.\n\n**Basic Query:**\n```bash\ndig google.com\n```\n\n**The Output Sections:**\n- **HEADER**: Status (NOERROR, NXDOMAIN).\n- **QUESTION**: What you asked.\n- **ANSWER**: The IP address(es).\n- **AUTHORITY**: The nameservers responsible for the domain.\n\n### Essential `dig` Options:\n- **`+short`** : Only show the IP address. Perfect for scripts.\n- **`-t MX`** : Query **Mail Exchange** records (find the email server).\n- **`-t NS`** : Query **Name Server** records.\n- **`-t ANY`** : Try to get all records (often blocked now).\n- **`@server`** : Query a specific DNS server (e.g., `dig @8.8.8.8 google.com`)."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "code",
+            "title": "Use `dig` +short",
+            "content": "Get just the IP address cleanly.",
+            "codeSnippet": "dig +short google.com",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l6_7",
+            "type": "text",
+            "title": "Reverse DNS Lookup: `-x` 🔄",
+            "content": "# IP to Domain Name\n\nYou have an IP address and want to know which domain it belongs to (if any).\n\n```bash\ndig -x 8.8.8.8\n```\n\n**Output:** `dns.google.`\n\n**Hacker Use:** During a penetration test, you might see a suspicious outbound connection to `34.120.8.2`. Reverse DNS can tell you it's a Google server, so it's likely just browser traffic and not a C2 beacon."
+        },
+        {
+            "id": "s_l6_8",
+            "type": "quiz",
+            "title": "Record Type 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "multiple_choice",
+                "question": "Which `dig` query type finds the mail server for a domain?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "dig -t A",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "dig -t MX",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "dig -t NS",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "MX stands for Mail Exchange.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_9",
+            "type": "text",
+            "title": "Local Override: `/etc/hosts` 📁",
+            "content": "# The Pre-Phonebook\n\nBefore your system queries DNS, it checks the local file `/etc/hosts`.\n\n```bash\ncat /etc/hosts\n```\n\nYou can manually map IPs to domain names here.\n\n```\n127.0.0.1   localhost\n192.168.1.5   devserver.local\n```\n\n**Hacker Use:**\n- **Defense**: Block malicious domains by pointing them to `0.0.0.0` or `127.0.0.1`.\n- **Offense (Red Team)**: Redirect a specific hostname to your attack server IP to intercept traffic during a Man-in-the-Middle attack (requires modifying the victim's hosts file)."
+        },
+        {
+            "id": "s_l6_10",
+            "type": "warning",
+            "title": "⚠️ DNS Hijacking",
+            "content": "## Check Your Resolver\n\nMalware often changes your DNS server to a malicious one (e.g., `systemd-resolve --status`). Always verify you are using a trusted resolver like `8.8.8.8` (Google) or `1.1.1.1` (Cloudflare)."
+        }
+    ]
+}

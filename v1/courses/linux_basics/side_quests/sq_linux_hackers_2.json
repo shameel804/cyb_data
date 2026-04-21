@@ -1,0 +1,76 @@
+{
+    "id": "sq_linux_hackers_2",
+    "title": "Predict the Matrix",
+    "triggerChapterIndex": 5,
+    "metadata": {
+        "type": "prediction"
+    },
+    "questions": [
+        {
+            "id": "sq_linux_hackers_2_q1",
+            "type": "code_output",
+            "question": "What is the output of the following command sequence?",
+            "codeSnippet": "mkdir -p test && cd test && touch file.txt && echo \"hello\" > file.txt && cat file.txt | wc -c",
+            "correctOutput": "6",
+            "options": [],
+            "explanation": "`echo \"hello\"` writes 5 characters plus a newline, total 6 bytes. `wc -c` counts bytes.",
+            "xpReward": 25,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_linux_hackers_2_q2",
+            "type": "code_output",
+            "question": "What is the output of this script?",
+            "codeSnippet": "#!/bin/bash\nvar=\"apple banana cherry\"\nfor fruit in $var; do echo $fruit; done | wc -l",
+            "correctOutput": "3",
+            "options": [],
+            "explanation": "The loop echoes each word on a separate line, then `wc -l` counts the lines. Three fruits → 3 lines.",
+            "xpReward": 25,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_linux_hackers_2_q3",
+            "type": "code_output",
+            "question": "What will be printed when this command runs? (Assume the file does not exist initially.)",
+            "codeSnippet": "ls non_existent_file 2>&1 | grep \"No such file\" | wc -l",
+            "correctOutput": "1",
+            "options": [],
+            "explanation": "`ls` error is redirected to stdout via `2>&1`, then piped to `grep` which finds the error message, and `wc -l` counts that line.",
+            "xpReward": 25,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_linux_hackers_2_q4",
+            "type": "code_output",
+            "question": "What does this command sequence output?",
+            "codeSnippet": "echo \"Hello World\" | tr 'a-z' 'A-Z' | cut -d' ' -f1",
+            "correctOutput": "HELLO",
+            "options": [],
+            "explanation": "`tr` converts to uppercase, `cut` splits by space and takes the first field.",
+            "xpReward": 25,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_linux_hackers_2_q5",
+            "type": "code_output",
+            "question": "Predict the output of the following script:",
+            "codeSnippet": "#!/bin/bash\ncount=0\nfor i in {1..5}; do\n    if [ $((i % 2)) -eq 0 ]; then\n        count=$((count + i))\n    fi\ndone\necho $count",
+            "correctOutput": "6",
+            "options": [],
+            "explanation": "The loop adds even numbers (2 and 4) to `count`, resulting in 6.",
+            "xpReward": 25,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_linux_hackers_2_q6",
+            "type": "code_output",
+            "question": "What is the output of this command? (Assume you are in an empty directory.)",
+            "codeSnippet": "touch file{1..3}.txt && ls | grep \"file[0-9].txt\" | wc -l",
+            "correctOutput": "3",
+            "options": [],
+            "explanation": "`touch` creates file1.txt, file2.txt, file3.txt; `grep` matches all three, `wc -l` counts 3.",
+            "xpReward": 25,
+            "difficulty": 1
+        }
+    ]
+}

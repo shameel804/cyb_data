@@ -1,0 +1,246 @@
+{
+    "id": "quiz_ch_10",
+    "chapterId": "ch_10",
+    "title": "Chapter 10 Quiz: The Art of Redirection",
+    "description": "Test your mastery of standard streams, file redirection, and advanced data flow control.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the file descriptor number for standard output (stdout)?",
+            "options": [
+                "0",
+                "1",
+                "2",
+                "3"
+            ],
+            "correctAnswer": 1,
+            "explanation": "stdin is 0, stdout is 1, stderr is 2."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "By default, stderr is displayed on the terminal screen.",
+            "correctAnswer": true,
+            "explanation": "True. Both stdout and stderr go to the terminal unless redirected."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which operator redirects stdout to a file, overwriting it if it exists?",
+            "options": [
+                ">",
+                ">>",
+                "2>",
+                "&>"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`>` overwrites; `>>` appends."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "To redirect stderr to a file called `errors.log`, you use `command _____ errors.log`.",
+            "options": [
+                "2>",
+                "1>",
+                "&>",
+                ">>"
+            ],
+            "correctAnswer": "2>",
+            "explanation": "stderr is file descriptor 2."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What is the correct syntax to redirect both stdout and stderr to the same file in a portable (POSIX) way?",
+            "options": [
+                "command &> file",
+                "command > file 2>&1",
+                "command 2>&1 > file",
+                "command > file 2> file"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`> file 2>&1` is the standard. `&>` is a Bash extension."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "The order of `> file` and `2>&1` does not matter as long as both are present.",
+            "correctAnswer": false,
+            "explanation": "False. Order is critical: `2>&1` must come after `> file`."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What does `>> log.txt` do if `log.txt` does not exist?",
+            "options": [
+                "Creates the file and writes to it.",
+                "Throws an error.",
+                "Does nothing.",
+                "Waits for the file to be created."
+            ],
+            "correctAnswer": 0,
+            "explanation": "`>>` creates the file if it doesn't exist, then appends."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which command discards only error messages?",
+            "options": [
+                "command > /dev/null",
+                "command 2> /dev/null",
+                "command &> /dev/null",
+                "command < /dev/null"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`2>` redirects stderr. Sending it to `/dev/null` discards it."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What is the purpose of the `tee` command?",
+            "options": [
+                "Discards output.",
+                "Splits output to both a file and stdout.",
+                "Translates characters.",
+                "Counts lines of input."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`tee` writes to a file and passes the data through to stdout."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "How do you feed the contents of `data.txt` as input to the `sort` command using redirection?",
+            "options": [
+                "sort data.txt",
+                "sort < data.txt",
+                "Both A and B",
+                "sort > data.txt"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Both work. `sort data.txt` is the conventional way, but `sort < data.txt` explicitly demonstrates input redirection."
+        },
+        {
+            "id": "q11",
+            "type": "fill_blank",
+            "question": "A Here Document is defined using the operator `_____` followed by a delimiter.",
+            "options": [
+                "<<",
+                ">>",
+                "<",
+                "<<"
+            ],
+            "correctAnswer": "<<",
+            "explanation": "`<< DELIMITER ... DELIMITER` defines a heredoc."
+        },
+        {
+            "id": "q12",
+            "type": "true_false",
+            "question": "The command `tr 'a-z' 'A-Z' file.txt` works correctly to translate the file contents to uppercase.",
+            "correctAnswer": false,
+            "explanation": "False. `tr` does not accept a filename argument. You must use input redirection: `tr 'a-z' 'A-Z' < file.txt`."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What does `/dev/null` do?",
+            "options": [
+                "It is a virtual file that stores log data.",
+                "It is a black hole that discards all data written to it.",
+                "It is the root of the filesystem.",
+                "It contains random data."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`/dev/null` is the null device; data written to it is discarded."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Which command will safely write 'hello' to a protected file using `sudo` without spawning a new shell?",
+            "options": [
+                "sudo echo \"hello\" > /etc/protected",
+                "echo \"hello\" | sudo tee /etc/protected",
+                "echo \"hello\" > sudo /etc/protected",
+                "sudo cat > /etc/protected"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`sudo tee` runs with elevated privileges and can write to protected files."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What is the difference between `>` and `>>`?",
+            "options": [
+                "`>` overwrites; `>>` appends.",
+                "`>` is for stdout; `>>` is for stderr.",
+                "`>` is faster.",
+                "There is no difference."
+            ],
+            "correctAnswer": 0,
+            "explanation": "`>` truncates the file first; `>>` adds to the end."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which operator is used for a Here String in Bash?",
+            "options": [
+                "<<",
+                "<<<",
+                "<",
+                "|"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`<<<` provides a single string as stdin input."
+        },
+        {
+            "id": "q17",
+            "type": "true_false",
+            "question": "Process substitution `<(command)` allows you to treat the output of a command as if it were a file.",
+            "correctAnswer": true,
+            "explanation": "True. `<(cmd)` creates a named pipe that can be used where a filename is expected."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "You want to compare the output of two `ls` commands. Which syntax is correct?",
+            "options": [
+                "diff ls dir1 ls dir2",
+                "diff <(ls dir1) <(ls dir2)",
+                "ls dir1 | diff - ls dir2",
+                "diff $(ls dir1) $(ls dir2)"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Process substitution `<()` provides the output as a file descriptor to `diff`."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What does the `set -o noclobber` option do?",
+            "options": [
+                "Prevents overwriting existing files with `>`.",
+                "Prevents appending to files with `>>`.",
+                "Hides error messages.",
+                "Automatically creates backups."
+            ],
+            "correctAnswer": 0,
+            "explanation": "`noclobber` makes `>` fail if the target file already exists."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "How do you redirect ALL subsequent output in a script permanently to a log file?",
+            "options": [
+                "script.sh > log.txt",
+                "exec > log.txt 2>&1",
+                "set -o output=log.txt",
+                "alias output='> log.txt'"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`exec > file` redirects the shell's stdout for the remainder of the script."
+        }
+    ]
+}

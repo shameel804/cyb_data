@@ -1,0 +1,110 @@
+{
+    "id": "l5",
+    "chapterId": "ch_9",
+    "title": "Enabling and Masking Services for Stealth",
+    "description": "Make services start at boot, or disable them permanently to reduce attack surface and stay hidden.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Service Management",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Startup Persistence: `enable` and `disable` ⏰",
+            "content": "# Surviving a Reboot\n\n`systemctl start` only runs the service **right now**. If you reboot the machine, the service will go back to its default state (stopped).\n\nTo make a service start automatically at boot, you **enable** it.\n\n- `sudo systemctl enable ssh` : Creates a symbolic link that tells `systemd` to start SSH on boot.\n- `sudo systemctl disable ssh` : Removes that link. The service will **not** start on boot.\n\n### Hacker Use Case (Defense):\nYou find a suspicious service (`evil-backdoor.service`). You should:\n1.  `sudo systemctl stop evil-backdoor` (Kill it now).\n2.  `sudo systemctl disable evil-backdoor` (Prevent it from coming back after reboot).\n\n### Hacker Use Case (Offense/Persistence):\nYou compromised a server and installed your own backdoor. You want it to survive a reboot:\n```bash\nsudo systemctl enable my-innocent-looking-service\n```"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Check Enabled Services",
+            "content": "List all services that are configured to start at boot.",
+            "codeSnippet": "systemctl list-unit-files --type=service --state=enabled",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Enable vs Start 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is the difference between `start` and `enable`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Start runs now; Enable runs at boot.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "They are the same thing.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Enable runs now; Start runs at boot.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`start` affects the current session; `enable` affects the boot process.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "The Nuclear Option: `mask` ☢️",
+            "content": "# Preventing Accidental (or Malicious) Start\n\nWhat if you want to make absolutely sure a service **never** runs, even if another program tries to start it?\n\n**Masking** links the service file to `/dev/null`. Any attempt to start the service will fail silently.\n\n```bash\nsudo systemctl mask bluetooth\n```\n\nNow, even if you type `sudo systemctl start bluetooth`, it will refuse.\n\n### Unmasking:\n```bash\nsudo systemctl unmask bluetooth\n```\n\n### Stealth Use Case:\nYou are on a Red Team exercise. You've disabled the system firewall (`ufw`), but you don't want the Blue Team to simply run `systemctl start ufw` to turn it back on. \n\n```bash\nsudo systemctl mask ufw\n```\n\nNow the Blue Team must figure out that the service is **masked** (not just disabled), costing them valuable minutes."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "warning",
+            "title": "⚠️ Critical Services",
+            "content": "## Don't Mask These!\n\nNever mask `systemd-logind`, `dbus`, or `NetworkManager` unless you know exactly what you're doing. You can lock yourself out of the system or prevent it from booting to a usable state."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Reducing Attack Surface 🛡️",
+            "content": "# The Principle of Least Privilege\n\nA core security principle is: **If you don't need it, turn it off.**\n\nEvery running service is a potential door for an attacker. A bug in `cups` (printing service) could let someone hack your laptop even if you've never printed anything.\n\n### Hacker's Hardening Checklist:\n1.  List running services: `systemctl list-units --type=service --state=running`\n2.  Identify unnecessary services (e.g., `bluetooth`, `cups`, `avahi-daemon`).\n3.  Stop them: `sudo systemctl stop cups`\n4.  Disable them: `sudo systemctl disable cups`\n5.  Mask them (optional, for paranoia): `sudo systemctl mask cups`\n\n**Result:** A quieter system, fewer processes in `ps aux`, and fewer ways to get hacked."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Masking Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "You run `sudo systemctl mask apache2`. What happens if someone runs `sudo systemctl start apache2`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Apache starts normally.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The command fails and Apache does not start.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Apache starts but logs a warning.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A masked service is completely blocked from being started manually or automatically.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## `systemctl is-enabled`\n\nQuickly check if a service is enabled:\n```bash\nsystemctl is-enabled ssh\n```\nOutputs `enabled`, `disabled`, `masked`, or `static`."
+        }
+    ]
+}

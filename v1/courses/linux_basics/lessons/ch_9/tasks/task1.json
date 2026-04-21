@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_9",
+    "title": "System Audit and Cleanup",
+    "description": "Audit installed packages and running services, then remove unnecessary bloat.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You suspect your system is bloated with unused software and has unnecessary services running, increasing the attack surface.\n\n**Part 1: Package Audit**\n1. Update your package list: `sudo apt update`.\n2. List all manually installed packages (this can be tricky, so we'll use a simulated approach: `apt list --installed | wc -l` to get a count).\n3. Check for orphaned dependencies: `sudo apt autoremove --dry-run`. See what would be removed.\n4. Simulate cleaning the cache: `sudo apt clean --dry-run` (note: `clean` doesn't have dry-run, just note the command).\n5. Find out which version of `nmap` is installed (or if it is installed) using `apt list --installed | grep nmap`.\n\n**Part 2: Service Audit**\n1. List all currently **running** services: `systemctl list-units --type=service --state=running`.\n2. List all **enabled** services (start at boot): `systemctl list-unit-files --type=service --state=enabled`.\n3. Identify one service that is safe to stop temporarily (e.g., `bluetooth` if you're on a VM/server, or `cups`).\n4. Check its status: `systemctl status [service]`.\n\n**Deliverable:** Paste the count of installed packages and the list of enabled services.",
+    "hints": [
+        "Use `grep -c` to count lines quickly.",
+        "Safe services to check: `cups`, `bluetooth`, `avahi-daemon`.",
+        "Always use `--dry-run` with `autoremove` first."
+    ],
+    "expectedOutput": "Number of packages and a list of enabled services.",
+    "solutionCode": "sudo apt update\napt list --installed | wc -l\nsudo apt autoremove --dry-run\napt list --installed | grep nmap\nsystemctl list-units --type=service --state=running\nsystemctl list-unit-files --type=service --state=enabled\nsystemctl status bluetooth"
+}

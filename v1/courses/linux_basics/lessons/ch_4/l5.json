@@ -1,0 +1,110 @@
+{
+    "id": "l5",
+    "chapterId": "ch_4",
+    "title": "Regular Expressions: The Superpower",
+    "description": "Go beyond literal text. Match patterns with wildcards, anchors, and character classes.",
+    "xpReward": 35,
+    "estimatedMinutes": 9,
+    "section": "Advanced Filtering",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Beyond Literal Text: Regex 🧬",
+            "content": "# Regular Expressions (Regex)\n\nSo far we've searched for **literal** strings: \"error\", \"apple\", \"192.168.1.1\".\n\nBut what if you want to find:\n*   Any line that **starts** with \"Error\"?\n*   Any line that contains a **number**?\n*   Any line that ends with a **period**?\n\nYou need **Regular Expressions** (Regex). Regex is a special language for describing text patterns.\n\n### Important Flag:\nBy default, `grep` interprets basic regex patterns. For advanced features, use the **`-E`** flag (Extended Regex) or just use `egrep`."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Anchors: Start `^` and End `$` ⚓",
+            "content": "# Matching Position, Not Characters\n\n*   **`^` (Caret)**: Matches the **start** of a line.\n*   **`$` (Dollar)**: Matches the **end** of a line.\n\n### Examples:\n| Pattern | Matches Lines... |\n| :--- | :--- |\n| `^Error` | That **start** with \"Error\" |\n| `error$` | That **end** with \"error\" |\n| `^$` | That are **completely empty** |\n\n**Usage:**\n```bash\ngrep \"^Error\" log.txt\n```"
+        },
+        {
+            "id": "s_l5_3",
+            "type": "code",
+            "title": "Try Anchors",
+            "content": "Find lines that start with a specific word.",
+            "codeSnippet": "echo -e \"apple pie\napple crumble\npineapple\" > food.txt\ngrep \"^apple\" food.txt",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_4",
+            "type": "quiz",
+            "title": "Anchor Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Which regex pattern finds lines that end with `.txt`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "^.txt",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": ".txt$",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": ".txt^",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The `$` symbol anchors the pattern to the end of the line.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Character Classes: `[abc]` 🎲",
+            "content": "# Match One of Several Characters\n\nSquare brackets `[]` define a set of characters to match **any single one** of them.\n\n*   **`[Cc]at`**: Matches \"Cat\" or \"cat\". (Better than `-i` if you only want that specific letter).\n*   **`[0-9]`**: Matches any **single digit** (0 through 9).\n*   **`[a-z]`**: Matches any **single lowercase letter**.\n*   **`[A-Za-z]`**: Matches any **single letter** (upper or lower).\n\n### Example: Finding IP Addresses (Basic)\n```bash\ngrep \"[0-9]\" log.txt\n```\nThis finds any line containing at least one digit."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Quantifiers: `*`, `+`, `?`, `{n}` 🔁",
+            "content": "# Controlling Repetition\n\n*   **`*`** : Zero or more of the preceding character. (`app*le` matches \"ale\", \"apple\", \"apppple\")\n*   **`+`** : **One** or more of the preceding character. (`app+le` matches \"apple\", \"apppple\" but NOT \"ale\")\n*   **`?`** : Zero or **one** of the preceding character. (`colou?r` matches \"color\" and \"colour\")\n*   **`{n}`** : Exactly **n** times. (`[0-9]{3}` matches exactly 3 digits)\n\n### Real World: Finding MAC Addresses\n```bash\ngrep -E \"[0-9A-F]{2}(:[0-9A-F]{2}){5}\" network.log\n```\n(This looks scary but it's just saying: 2 hex digits followed by 5 pairs of colon + 2 hex digits)."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "warning",
+            "title": "⚠️ Escaping Special Characters",
+            "content": "## Literal Dot vs Wildcard Dot\n\nIn Regex, the dot **`.`** means **'any single character'**.\n\n*   `grep \"file.txt\"` matches `file.txt`, but also `fileAtxt`, `file1txt`.\n\nIf you want to search for a **literal** dot (like an IP address `192.168.1.1`), you must **escape** it with a backslash `\\.`.\n\n```bash\ngrep \"192\\.168\\.1\\.1\" log.txt\n```\n\nIf you forget the backslash, `192.168.1.1` would also match `192a168b1c1`."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "quiz",
+            "title": "Regex Challenge 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "Which regex pattern matches exactly 4 digits in a row?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "[0-9]{4}",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "[0-9]*",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "[0-9]+",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`{4}` is a quantifier that matches exactly 4 occurrences of the preceding character class.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

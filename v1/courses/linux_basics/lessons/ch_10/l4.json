@@ -1,0 +1,107 @@
+{
+    "id": "l4",
+    "chapterId": "ch_10",
+    "title": "Feeding Data In: < and Here Documents",
+    "description": "Supply input to commands from files or directly within your script using heredocs.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Input Redirection",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Input Redirection: `<` 📥",
+            "content": "# Reading from a File Instead of the Keyboard\n\nMost commands that accept keyboard input can also read from a file using `<`.\n\n**Syntax:**\n```bash\ncommand < input.txt\n```\n\n### Example: `sort`\n```bash\nsort < unsorted_names.txt\n```\n`sort` reads the file and prints the sorted lines. This is functionally identical to `sort unsorted_names.txt`, but it demonstrates the mechanism.\n\n### Where It Shines: Commands That Don't Accept Filenames\nSome commands (like `tr` for character translation) **only** read from stdin. They don't take a filename argument.\n\n```bash\n# Convert lowercase to uppercase\ntr 'a-z' 'A-Z' < lowercase.txt > uppercase.txt\n```\n\nThis is the **only** way to feed a file directly to `tr`."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Try Input Redirection",
+            "content": "Use `tr` to translate characters from a file.",
+            "codeSnippet": "echo \"hello world\" > test.txt\ntr 'a-z' 'A-Z' < test.txt",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Input Redirection Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Why is `tr 'a-z' 'A-Z' < file.txt` used instead of `tr 'a-z' 'A-Z' file.txt`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It is faster.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "`tr` does not accept a filename argument; it reads from stdin.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It preserves file permissions.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`tr` expects input on stdin and does not take filenames as arguments.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Here Documents: `<<` 📄",
+            "content": "# Embedding Multi-Line Input Inside a Script\n\nA **Here Document** (heredoc) allows you to pass a block of text directly to a command's stdin without creating a separate file.\n\n**Syntax:**\n```bash\ncommand << DELIMITER\nline 1\nline 2\nline 3\nDELIMITER\n```\n\n### Example: Create a File from Within a Script\n```bash\ncat << EOF > config.conf\nserver {\n    listen 80;\n    root /var/www/html;\n}\nEOF\n```\n\nThis creates `config.conf` with the exact content between the `EOF` markers. `EOF` is the traditional delimiter (End Of File), but you can use any word.\n\n**Hacker Use:** Generating payloads, configuration files, or SQL injection queries on the fly inside a script."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Here Document Demo",
+            "content": "Create a file with multiple lines using cat and heredoc.",
+            "codeSnippet": "cat << EOF > greeting.txt\nHello, Hacker!\nWelcome to the matrix.\nEOF\ncat greeting.txt",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Here Strings: `<<<` 🧵",
+            "content": "# Single-Line Input Without a File\n\nIf you only need to pass a single string to stdin, a **Here String** is cleaner than a heredoc.\n\n**Syntax:**\n```bash\ncommand <<< \"text string\"\n```\n\n### Example: Check if a Word is in a List\n```bash\ngrep \"needle\" <<< \"haystack needle thread\"\n```\n\n### Example: Pass a Variable to `bc` (Calculator)\n```bash\nbc <<< \"scale=2; 10/3\"\n```\n\nHere Strings are a Bash extension and extremely handy for quick tests and one-liners."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "Heredoc vs Here String 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "Which is the correct syntax for a here document?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "command <<< \"text\"",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "command << EOF ... EOF",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "command < file.txt",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`<< DELIMITER ... DELIMITER` defines a here document.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

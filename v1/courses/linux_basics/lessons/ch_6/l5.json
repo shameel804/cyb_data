@@ -1,0 +1,110 @@
+{
+    "id": "l5",
+    "chapterId": "ch_6",
+    "title": "The Background Stage: Job Control",
+    "description": "Run commands in the background, manage jobs, and detach processes from your terminal.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Advanced Job Control",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Running Commands in the Background 👻",
+            "content": "# Append `&` to the Command\n\nWe briefly saw this in Lesson 1. The ampersand `&` tells the shell to start the process and immediately give you back the prompt.\n\n```bash\nlong_running_script.sh &\n```\n\n**What happens:**\n1.  Shell prints **Job ID** in brackets and **PID**: `[1] 1234`\n2.  Prompt returns immediately.\n3.  Process runs **in the background**, but is still **attached** to the terminal. If you close the terminal, it dies."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Managing Background Jobs: `jobs`, `fg`, `bg` 🎛️",
+            "content": "# The Job Table\n\nYour shell keeps a list of your background tasks called the **Job Table**.\n\n### `jobs` : List Your Jobs\n```bash\njobs\n```\nOutput:\n`[1]-  Running    sleep 100 &`\n`[2]+  Stopped    nano`\n\nThe `+` indicates the **current job** (default target). The `-` indicates the **previous job**.\n\n### `fg` : Bring to Foreground\n```bash\nfg %1    # Bring job 1 to foreground\nfg       # Bring current job (+) to foreground\n```\n\n### `Ctrl+Z` : Suspend Foreground Job\nIf you are running `nano` and want to check something quickly, press `Ctrl+Z`. It **suspends** (pauses) the process and puts it in the background as `Stopped`.\n\n### `bg` : Resume in Background\n```bash\nbg %1    # Resume job 1 in the background\n```"
+        },
+        {
+            "id": "s_l5_3",
+            "type": "code",
+            "title": "Job Control in Action",
+            "content": "Start a job, suspend it, background it, bring it back.",
+            "codeSnippet": "sleep 300 &\njobs\nfg %1\n# Press Ctrl+Z to suspend\nbg %1\njobs",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_4",
+            "type": "quiz",
+            "title": "Job Control Commands 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "You are editing a file in `nano` and want to temporarily check the date. What key sequence pauses `nano` and gives you a prompt?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Ctrl+C",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Ctrl+Z",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Ctrl+D",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Ctrl+Z suspends the foreground process. Use `fg` to resume it.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Detaching from the Terminal: `nohup` and `disown` 🔗",
+            "content": "# Survive Terminal Closure\n\nIf you close your terminal, the shell sends **SIGHUP** to all child jobs, killing them. What if you want a download to continue overnight?\n\n### `nohup` (No Hang Up)\nRun the command with `nohup` to **ignore SIGHUP**.\n```bash\nnohup wget https://example.com/large_file.iso &\n```\nOutput is redirected to `nohup.out` by default. You can safely close the terminal.\n\n### `disown` (For Already Running Jobs)\nOops! You forgot `nohup` and started a long job. You can detach it from the shell's job table **after** it started.\n1.  Suspend it: `Ctrl+Z`\n2.  Background it: `bg`\n3.  Remove from job table: `disown %1`\n\nNow the process is owned by `init` (PID 1) and will survive terminal closure."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "The Ultimate Session Manager: `screen` and `tmux` 🖥️",
+            "content": "# True Terminal Multiplexers\n\nFor serious work (like a long-running hacking scan or a remote server maintenance), `nohup` is clumsy. You want to be able to **reconnect** to the running session later from a different computer.\n\nEnter **Terminal Multiplexers**:\n\n### `screen` (Classic)\n```bash\nscreen -S mysession   # Start a named session\n# Run your commands...\n# Detach: Ctrl+A, then press D\nscreen -r mysession   # Reattach later\n```\n\n### `tmux` (Modern, Preferred)\n```bash\ntmux new -s mysession # Start named session\n# Run commands...\n# Detach: Ctrl+B, then press D\ntmux attach -t mysession # Reattach\n```\n\nBoth allow you to keep a shell alive on a remote server even if your SSH connection drops. **Essential for penetration testers.**"
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Detachment Methods 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "You started `wget` without `nohup` and need to close your laptop. What sequence saves the download?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Ctrl+Z, bg, disown",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Ctrl+C, restart with nohup",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "kill -STOP, bg",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Suspend (Ctrl+Z), background (bg), and then disown it to remove from shell's job table.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## `&>` for Background Output\n\nWhen running a background job, its output can clutter your terminal. Redirect it!\n\n```bash\nlong_script.sh > output.log 2>&1 &\n```\n\nThis sends both stdout and stderr to `output.log` while running in the background."
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_9",
+    "title": "Stealth Service Configuration",
+    "description": "Stop, disable, and mask a service to understand persistence and stealth.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You are simulating a Red Team operation. You need to ensure that the `cups` (printing) service is completely silenced so it doesn't interfere or give away your presence.\n\n**Important:** Choose a non-critical service for this task. **Do NOT mask sshd or NetworkManager** or you may lock yourself out. We recommend using `cups` (Common Unix Printing System) as it is safe to disable on most servers/VMs.\n\n**Steps:**\n1. Check the current status of `cups`: `systemctl status cups`.\n2. If it is running, stop it: `sudo systemctl stop cups`.\n3. Prevent it from starting at boot: `sudo systemctl disable cups`.\n4. Verify it is disabled: `systemctl is-enabled cups`.\n5. Take the stealth approach: **Mask** the service so it cannot be started even manually.\n   ```bash\n   sudo systemctl mask cups\n   ```\n6. Try to start the service: `sudo systemctl start cups`. Observe the error message.\n7. Check the status: `systemctl status cups`. Note that it is 'masked' and 'inactive (dead)'.\n8. Clean up (Optional): Unmask and re-enable the service if you actually need printing.\n   ```bash\n   sudo systemctl unmask cups\n   sudo systemctl enable cups\n   sudo systemctl start cups\n   ```\n\n**Deliverable:** The output of `systemctl status cups` after masking, showing the 'masked' state.",
+    "hints": [
+        "Masking links the service file to `/dev/null`.",
+        "The error when starting a masked service is: `Failed to start cups.service: Unit cups.service is masked.`",
+        "Use `systemctl list-unit-files | grep cups` to see the 'masked' state."
+    ],
+    "expectedOutput": "cups service is masked and cannot be started.",
+    "solutionCode": "systemctl status cups\nsudo systemctl stop cups\nsudo systemctl disable cups\nsystemctl is-enabled cups\nsudo systemctl mask cups\nsudo systemctl start cups\nsystemctl status cups\n# Cleanup (if desired)\nsudo systemctl unmask cups\nsudo systemctl enable cups\nsudo systemctl start cups"
+}

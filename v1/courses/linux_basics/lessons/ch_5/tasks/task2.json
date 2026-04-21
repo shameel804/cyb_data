@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_5",
+    "title": "Permission Audit and Fix",
+    "description": "Identify and correct insecure file permissions on a web server document root.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You are hardening a web server. The document root is `/var/www/html`. You discover that some files have overly permissive permissions, allowing any user on the system to modify them.\n\n**Setup (simulate insecure files):**\n```bash\nsudo mkdir -p /var/www/html\ncd /var/www/html\nsudo touch index.html config.php\nsudo chmod 666 index.html\nsudo chmod 646 config.php\n```\n\n**Tasks:**\n1. List the current permissions of all files in `/var/www/html` using `ls -l`.\n2. Identify the security issue: `index.html` is world-writable (666) and `config.php` is group-writable by an unknown group.\n3. Correct the permissions to a secure standard:\n   - Files should be `644` (owner read/write, group/others read-only).\n   - Use a single command with a wildcard to fix all `.html` and `.php` files.\n4. Verify the new permissions.\n5. Ensure the directory itself has proper permissions (`755`) so the web server user (often `www-data`) can traverse and read.\n\n**Bonus:** Change the group ownership of all files to `www-data` to align with the web server process.",
+    "hints": [
+        "Use `chmod 644 *.html *.php` to fix multiple extensions.",
+        "Use `chmod 755 /var/www/html` for the directory.",
+        "Use `sudo chgrp -R www-data /var/www/html` to fix group ownership."
+    ],
+    "expectedOutput": "All files have 644 permissions, directory has 755, group is www-data.",
+    "solutionCode": "ls -l /var/www/html\nsudo chmod 644 /var/www/html/*.html /var/www/html/*.php\nsudo chmod 755 /var/www/html\nsudo chgrp -R www-data /var/www/html\nls -l /var/www/html"
+}

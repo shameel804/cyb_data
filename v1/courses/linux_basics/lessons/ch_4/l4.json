@@ -1,0 +1,113 @@
+{
+    "id": "l4",
+    "chapterId": "ch_4",
+    "title": "`grep` Mastery: Options and Context",
+    "description": "Control case sensitivity, show line numbers, and get surrounding context.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Search & Filter",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Show Me the Numbers: `-n` 🔢",
+            "content": "# Line Numbers\n\nWhen you find a match, you usually want to know *where* in the file it is so you can open it in an editor later.\n\nThe **`-n`** flag prefixes each line with its line number.\n\n```bash\ngrep -n \"error\" /var/log/syslog\n```\n\n**Output Example:**\n`42: Jan 15 10:30:00 systemd[1]: Failed to start Network Manager.`\n\nThe match is on line 42."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Try Line Numbers",
+            "content": "Add line numbers to our previous search.",
+            "codeSnippet": "grep -n \"apple\" fruits.txt",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which `grep` option displays the line number of each match?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "-l",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "-n",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "-c",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-n` stands for line number.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Counting Matches: `-c` 🧮",
+            "content": "# Just the Stats\n\nSometimes you don't need to see the lines, you just need to know **how many** matches there are.\n\n```bash\ngrep -c \"Failed password\" /var/log/auth.log\n```\n\nThis prints a single number: the count of lines containing \"Failed password\". This is perfect for quick security assessments: \"How many failed login attempts have we had today?\""
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Context is King: `-A`, `-B`, `-C` 👑",
+            "content": "# See What's Around the Match\n\nFinding \"error\" is great, but what happened *before* the error? Or *after*?\n\n*   **`-B N`** (Before): Show **N** lines **before** the match.\n*   **`-A N`** (After): Show **N** lines **after** the match.\n*   **`-C N`** (Context): Show **N** lines both before and after.\n\n### Real World Example:\n```bash\ngrep -B 2 -A 5 \"FATAL\" application.log\n```\nThis shows 2 lines before the fatal error and 5 lines after. This gives you the full crash report context without opening the whole file."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "code",
+            "title": "Context in Action",
+            "content": "Create a numbered log and see the surrounding lines of a specific number.",
+            "codeSnippet": "seq 1 20 > log.txt\ngrep -B 2 -A 3 \"5\" log.txt",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "Context Challenge 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "You want to see the line containing 'ERROR' and the 3 lines that follow it. Which command?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "grep -B 3 ERROR log.txt",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "grep -A 3 ERROR log.txt",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "grep -C 3 ERROR log.txt",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-A` stands for 'After'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Highlighting Matches\n\nIf you are using `grep` on a modern terminal, it might already highlight the matching text in red. If it doesn't, force it with:\n\n```bash\ngrep --color=always \"term\" file.txt\n```\n\nThis makes the needles pop out visually."
+        }
+    ]
+}

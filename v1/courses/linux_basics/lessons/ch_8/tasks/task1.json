@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_8",
+    "title": "Write a Port Scanner Script",
+    "description": "Create a script that checks if specific ports are open on a target using netcat or /dev/tcp.",
+    "estimatedMinutes": 20,
+    "problemStatement": "Build a basic port scanner script named `portscan.sh`. This script will help you understand loops, conditionals, and network redirections.\n\n**Requirements:**\n1. The script should accept two arguments: a target IP/hostname and a port range (e.g., `./portscan.sh scanme.nmap.org 20-25`).\n2. Validate that both arguments are provided. If not, print usage and exit.\n3. Parse the port range into START and END variables. (Hint: Use `IFS='-' read -ra RANGE <<< \"$2\"`).\n4. Loop from START to END.\n5. For each port, attempt to connect using Bash's built-in TCP feature:\n   ```bash\n   timeout 1 bash -c \"echo >/dev/tcp/$TARGET/$PORT\" 2>/dev/null\n   ```\n6. If the connection succeeds (exit status 0), print \"Port $PORT is OPEN\".\n7. If it fails, you can either print nothing (stealthy) or \"Port $PORT closed\".\n\n**Bonus:** Add color to the output! Green for open, red for closed (using ANSI escape codes).\n\n**Testing:** Run `./portscan.sh scanme.nmap.org 22-80` and verify you see SSH (22) and HTTP (80) as open.",
+    "hints": [
+        "Parse range: `IFS='-' read -r START END <<< \"$2\"`",
+        "Test TCP: `timeout 1 bash -c \"echo >/dev/tcp/$1/$PORT\" 2>/dev/null`",
+        "Check success: `if [ $? -eq 0 ]; then ... fi`"
+    ],
+    "expectedOutput": "List of open ports within the specified range.",
+    "solutionCode": "#!/bin/bash\n\nif [ $# -ne 2 ]; then\n    echo \"Usage: $0 <target> <port-range>\"\n    echo \"Example: $0 192.168.1.1 1-100\"\n    exit 1\nfi\n\nTARGET=$1\nIFS='-' read -r START END <<< \"$2\"\n\necho \"Scanning $TARGET from port $START to $END...\"\n\nfor (( PORT=$START; PORT<=$END; PORT++ )); do\n    timeout 1 bash -c \"echo >/dev/tcp/$TARGET/$PORT\" 2>/dev/null\n    if [ $? -eq 0 ]; then\n        echo \"Port $PORT is OPEN\"\n    fi\ndone\n\necho \"Scan complete.\""
+}

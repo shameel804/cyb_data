@@ -1,0 +1,17 @@
+{
+    "id": "task2",
+    "chapterId": "ch_3",
+    "title": "Organize and Clean Up",
+    "description": "Practice copying, moving, and safely deleting files using wildcards.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You have a messy directory with mixed file types. You need to organize the files and then clean up safely.\n\n**Setup (Run these commands first in a test directory):**\n```bash\nmkdir MessyFolder\ncd MessyFolder\ntouch note1.txt report.doc image.png script.sh note2.txt data.csv\n```\n\n**Mission:**\n1. Create a new folder called `TextFiles`.\n2. Move **all** `.txt` files from the current directory into `TextFiles` using a wildcard.\n3. Copy **all** remaining files (the ones not moved) into a backup folder named `Backup`. (Hint: You can move all `.txt` first, then copy everything else `*` to Backup).\n4. Safely delete the original `data.csv` file. (Use `rm -i` to practice interactive deletion).\n5. Finally, delete the entire `MessyFolder` directory and all its contents safely. (Hint: Use `cd ..` first to get out of the folder, then use `rm -ri MessyFolder`).\n\n**Safety Note:** Always check with `ls` before deleting with wildcards.",
+    "hints": [
+        "Use `mkdir TextFiles Backup` to create the folders.",
+        "Move txt files: `mv *.txt TextFiles/`.",
+        "Copy remaining: `cp * Backup/` (this will show errors because it tries to copy folders into themselves, ignore those).",
+        "Delete data.csv: `rm -i data.csv` and answer 'y'.",
+        "Go up one level: `cd ..` then `rm -ri MessyFolder` and answer 'y' for each prompt."
+    ],
+    "expectedOutput": "Clean deletion of the entire test directory structure.",
+    "solutionCode": "mkdir MessyFolder && cd MessyFolder\ntouch note1.txt report.doc image.png script.sh note2.txt data.csv\nmkdir TextFiles Backup\nmv *.txt TextFiles/\ncp * Backup/ 2>/dev/null\nrm -i data.csv\ncd ..\nrm -ri MessyFolder"
+}

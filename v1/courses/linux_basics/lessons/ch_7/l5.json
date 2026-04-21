@@ -1,0 +1,113 @@
+{
+    "id": "l5",
+    "chapterId": "ch_7",
+    "title": "Local Network Recon: `netstat` and `ss`",
+    "description": "Inspect open ports, listening services, and active connections on your own machine.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Host Reconnaissance",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "What's Listening on My Box? 👂",
+            "content": "# `netstat` (Network Statistics)\n\n`netstat` is a classic tool (deprecated but still widely used) that displays network connections, routing tables, and interface statistics.\n\n**Most Important Usage:**\n```bash\nnetstat -tulpn\n```\n\n### Breaking Down the Flags:\n- **`-t`** : Show **TCP** ports.\n- **`-u`** : Show **UDP** ports.\n- **`-l`** : Show only **Listening** sockets (services waiting for connections).\n- **`-p`** : Show the **Process ID and name** using the socket.\n- **`-n`** : Show **Numeric** addresses (don't resolve hostnames/ports).\n\nThis command tells you **exactly which services are running and exposed to the network**."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Run `netstat`",
+            "content": "Check for listening services on your system.",
+            "codeSnippet": "sudo netstat -tulpn",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Decoding `netstat -tulpn` Output 🔍",
+            "content": "# What to Look For\n\n```\nProto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name\ntcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      1234/sshd\ntcp        0      0 127.0.0.1:3306          0.0.0.0:*               LISTEN      5678/mysqld\n```\n\n- **`0.0.0.0:22`** : **DANGER!** Listening on all interfaces (exposed to the network).\n- **`127.0.0.1:3306`** : **SAFE!** Listening only on localhost (only local processes can connect).\n\n**Hacker's Goal:** Find services listening on `0.0.0.0` or your public interface. Those are the entry points."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "quiz",
+            "title": "Listening Address Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "In `netstat -tulpn`, what does `0.0.0.0:80` mean?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The service is listening on all network interfaces.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The service is not running.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The service is only accessible locally.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`0.0.0.0` means the service is bound to all available IP addresses on the machine.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Active Connections: `netstat -tupn`",
+            "content": "# Who Is Connected to Me Right Now?\n\nRemove the `-l` flag to see **established connections**.\n\n```bash\nnetstat -tupn\n```\n\nThis shows connections like:\n\n`tcp  0  0  192.168.1.100:45678  34.120.8.2:443  ESTABLISHED  2345/firefox`\n\nThis tells you that Firefox (PID 2345) has an established connection to a Google server (34.120.8.2) on port 443 (HTTPS).\n\n**Hacker Use:** Identifying Command & Control (C2) callbacks or unexpected outbound connections (malware beaconing)."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "The Modern Replacement: `ss` ⚡",
+            "content": "# Faster, More Detailed, Same Flags\n\n`netstat` is deprecated in modern Linux distros in favor of **`ss`** (Socket Statistics).\n\n**Good News:** The flags are almost identical!\n\n```bash\nss -tulpn\n```\n\n### Advantages of `ss`:\n- **Faster**: Reads directly from kernel space.\n- **More TCP Info**: Shows timer info, congestion control.\n\n**Rule of Thumb:** Use `ss` if it's available. Fall back to `netstat` if not."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "code",
+            "title": "Try `ss`",
+            "content": "Use the modern replacement for netstat.",
+            "codeSnippet": "ss -tulpn",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_8",
+            "type": "quiz",
+            "title": "Tool Equivalence 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "What is the modern replacement for `netstat` on Linux?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "ifconfig",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "ss",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "ip",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`ss` (Socket Statistics) is the recommended tool for examining sockets.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,113 @@
+{
+    "id": "l2",
+    "chapterId": "ch_8",
+    "title": "Variables: The Memory of Your Script",
+    "description": "Store and manipulate data. Learn about user input, environment variables, and variable scope.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Core Concepts",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "What is a Variable? 📦",
+            "content": "# A Labeled Storage Box\n\nA variable is a name that holds a piece of data (a string, a number, a filename). You can use that data later by referencing the name.\n\n### Analogy: Post-It Notes 📋\nYou write `TARGET_IP=192.168.1.10` on a sticky note. Later, you look at the note instead of remembering the number.\n\n### Syntax Rules (CRITICAL):\n- **No spaces around the `=` sign!**\n  - ✅ `name=\"John\"`\n  - ❌ `name = \"John\"` (Bash will think 'name' is a command).\n- **Variable names** are case-sensitive. Usually UPPERCASE for constants, lowercase for local vars.\n- To **use** the variable, prefix it with `$`.\n\n```bash\nTARGET=\"google.com\"\necho \"Pinging $TARGET...\"\nping -c 2 $TARGET\n```"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Try Variables",
+            "content": "Set a variable and use it.",
+            "codeSnippet": "NAME=\"Cybron\"\necho \"Welcome to $NAME Academy!\"",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Syntax Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which is the correct way to assign a variable in Bash?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "MY_VAR = \"hello\"",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "MY_VAR=\"hello\"",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "set MY_VAR=\"hello\"",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "No spaces are allowed around the equals sign in Bash assignment.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "User Input: The `read` Command ⌨️",
+            "content": "# Making Interactive Scripts\n\nA static script is fine, but a dynamic script that asks the user for input is a tool.\n\n```bash\necho \"Enter the target IP:\"\nread IP\necho \"Scanning $IP...\"\n```\n\n### Useful `read` Options:\n- **`-p`** : Provide a prompt (combine echo and read).\n  ```bash\n  read -p \"Enter filename: \" FILE\n  ```\n- **`-s`** : **Silent** mode. Doesn't show what the user types. **Essential for passwords!**\n  ```bash\n  read -sp \"Enter Password: \" PASSWD\n  echo  # Add a newline after silent input\n  ```\n- **`-t`** : **Timeout**. Automatically continue after N seconds."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Interactive Script",
+            "content": "Prompt for a name and greet the user.",
+            "codeSnippet": "read -p \"What is your hacker alias? \" ALIAS\necho \"Welcome, $ALIAS. We've been expecting you.\"",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Special Variables: Script Arguments $1, $2, $# 💵",
+            "content": "# Passing Data on the Command Line\n\nYou can pass arguments to your script just like you do with commands like `ls -l`.\n\n```bash\n./myscript.sh arg1 arg2\n```\n\nInside the script:\n- **`$1`** : First argument.\n- **`$2`** : Second argument.\n- **`$#`** : **Number** of arguments passed.\n- **`$@`** : **All** arguments as separate words.\n- **`$0`** : The name of the script itself.\n\n### Example: A Targeted Ping Script\n```bash\n#!/bin/bash\nTARGET=$1\nCOUNT=$2\nping -c $COUNT $TARGET\n```\nUsage: `./pingit.sh google.com 4`"
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "Argument Variables 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "You run `./scan.sh 192.168.1.1 80`. What does `$2` represent?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "scan.sh",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "192.168.1.1",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "80",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "`$1` is the first argument, `$2` is the second.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_8",
+            "type": "text",
+            "title": "Environment Variables 🌍",
+            "content": "# Variables the System Gives You\n\nYour shell session has pre-defined variables.\n\n- **`$USER`** : Your username.\n- **`$HOME`** : Your home directory path.\n- **`$PATH`** : Directories searched for executables.\n- **`$SHELL`** : Your current shell.\n- **`$RANDOM`** : Generates a random integer. (Great for temp file names!)\n\n```bash\necho \"Hello $USER, your home is $HOME.\"\n```\n\n**Hacker Tip:** Use `$RANDOM` to create unique filenames for temporary output files to avoid overwriting previous scans.\n```bash\nOUTFILE=\"scan_results_$RANDOM.txt\"\n```"
+        }
+    ]
+}

@@ -1,0 +1,309 @@
+{
+    "id": "quiz_ch_5",
+    "chapterId": "ch_5",
+    "title": "Chapter 5 Quiz: Gatekeepers",
+    "description": "Test your mastery of users, groups, ownership, and Linux permissions.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which command displays your current username?",
+            "options": [
+                "id",
+                "whoami",
+                "who",
+                "pwd"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`whoami` prints the effective username."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "The file `/etc/passwd` stores user password hashes.",
+            "correctAnswer": false,
+            "explanation": "False. Password hashes are in `/etc/shadow`. `/etc/passwd` is world-readable and contains only an 'x' placeholder."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "What is the UID of the root user?",
+            "options": [
+                "1",
+                "0",
+                "1000",
+                "999"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Root always has UID 0."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "The file that defines all system groups is `/etc/_____`.",
+            "options": [
+                "passwd",
+                "shadow",
+                "group",
+                "sudoers"
+            ],
+            "correctAnswer": "group",
+            "explanation": "`/etc/group` contains group definitions and membership lists."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which command changes the group ownership of a file to 'developers'?",
+            "options": [
+                "chown developers file",
+                "chgrp developers file",
+                "chmod developers file",
+                "groupadd developers file"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`chgrp` changes group ownership."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "A regular user can use `chown` to change the owner of their own file to another user.",
+            "correctAnswer": false,
+            "explanation": "False. Only root can use `chown` to change file ownership."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "In the permission string `-rwxr-x---`, what can the Group do?",
+            "options": [
+                "Read only",
+                "Read and Execute",
+                "Read, Write, Execute",
+                "No access"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Group triad is `r-x`: Read and Execute."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What does the first character in `drwxr-xr-x` represent?",
+            "options": [
+                "It's a regular file",
+                "It's a directory",
+                "It's a symbolic link",
+                "It's a device file"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`d` stands for directory."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What numeric (octal) value corresponds to `rw-`?",
+            "options": [
+                "7",
+                "6",
+                "5",
+                "4"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Read (4) + Write (2) = 6."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which `chmod` command gives the owner read/write/execute and everyone else read-only?",
+            "options": [
+                "chmod 744 file",
+                "chmod 755 file",
+                "chmod 644 file",
+                "chmod 600 file"
+            ],
+            "correctAnswer": 0,
+            "explanation": "744 = Owner rwx (7), Group r-- (4), Others r-- (4)."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which symbolic `chmod` command removes write permission for others?",
+            "options": [
+                "chmod o-w file",
+                "chmod g-w file",
+                "chmod u-w file",
+                "chmod a-w file"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`o-w` means 'others minus write'."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "You have write permission on a directory but not on a file inside it. Can you delete the file?",
+            "options": [
+                "Yes",
+                "No"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Yes. Deleting a file requires write permission on the parent directory, not on the file itself."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "Having execute permission on a directory allows you to `cd` into it.",
+            "correctAnswer": true,
+            "explanation": "True. Execute on a directory allows traversal (entering it)."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What does SUID (Set User ID) do?",
+            "options": [
+                "Makes a file immutable.",
+                "Runs the program with the file owner's permissions.",
+                "Hides the file from `ls`.",
+                "Grants group ownership to new files in a directory."
+            ],
+            "correctAnswer": 1,
+            "explanation": "SUID executes the file with the effective UID of the file owner."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Which numeric `chmod` value should you use for a private SSH key (`id_rsa`)?",
+            "options": [
+                "777",
+                "755",
+                "644",
+                "600"
+            ],
+            "correctAnswer": 3,
+            "explanation": "600 gives read/write to owner only. SSH refuses to use keys with group/other permissions."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What is the correct way to edit the protected file `/etc/hosts`?",
+            "options": [
+                "nano /etc/hosts",
+                "sudo nano /etc/hosts",
+                "chmod 777 /etc/hosts",
+                "su nano /etc/hosts"
+            ],
+            "correctAnswer": 1,
+            "explanation": "You must use `sudo` to gain temporary root privileges to edit system files."
+        },
+        {
+            "id": "q17",
+            "type": "fill_blank",
+            "question": "To apply a permission change to a directory and all its contents, you use the `-_____` flag with `chmod` or `chown`.",
+            "options": [
+                "r",
+                "R",
+                "rec",
+                "all"
+            ],
+            "correctAnswer": "R",
+            "explanation": "`-R` (uppercase) stands for Recursive."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "You forgot to type `sudo` before a long command. What shortcut reruns it with sudo?",
+            "options": [
+                "sudo !!",
+                "sudo !1",
+                "sudo --last",
+                "Ctrl+R sudo"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`!!` expands to the previous command."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is the numeric (octal) value of the Sticky Bit when used as a fourth digit?",
+            "options": [
+                "1",
+                "2",
+                "4",
+                "7"
+            ],
+            "correctAnswer": 0,
+            "explanation": "SUID=4, SGID=2, Sticky=1."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "Members of the `sudo` group can run any command as root without restriction.",
+            "correctAnswer": true,
+            "explanation": "True, unless specifically restricted by the `/etc/sudoers` file. By default, the `sudo` group has full root access."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "Which command shows all groups your user belongs to?",
+            "options": [
+                "id",
+                "whoami",
+                "groups",
+                "cat /etc/group"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`groups` lists the groups for the current user."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "What is the purpose of the `/etc/shadow` file?",
+            "options": [
+                "Store user password hashes securely.",
+                "List user account information.",
+                "Define group memberships.",
+                "Store encrypted files."
+            ],
+            "correctAnswer": 0,
+            "explanation": "`/etc/shadow` stores hashed passwords and is readable only by root."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "You want to set exact permissions `rwxr-x---` using symbolic mode. Which command?",
+            "options": [
+                "chmod u=rwx,g=rx,o= file",
+                "chmod u+rwx,g+rx,o-rwx file",
+                "chmod 750 file",
+                "All of the above"
+            ],
+            "correctAnswer": 3,
+            "explanation": "All three commands achieve the same resulting permissions."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "Which flag makes `sudo` ask for the target user's password instead of the invoking user's?",
+            "options": [
+                "-k",
+                "-v",
+                "-u",
+                "This is not a feature of sudo."
+            ],
+            "correctAnswer": 3,
+            "explanation": "`sudo` always asks for the invoking user's password (or caches it). You cannot make it ask for root's password; that would be `su`."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "Why is being in the `docker` group a security risk?",
+            "options": [
+                "Docker is written in Go.",
+                "Users can mount the host filesystem and effectively become root.",
+                "Docker containers use too much RAM.",
+                "The group name is easy to guess."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Docker group membership allows mounting the host root filesystem into a container, giving the user full control over the host."
+        }
+    ]
+}

@@ -1,0 +1,86 @@
+{
+    "id": "l7",
+    "chapterId": "ch_8",
+    "title": "Build Your First Hacking Script",
+    "description": "Combine everything you've learned to build a practical network reconnaissance tool.",
+    "xpReward": 40,
+    "estimatedMinutes": 10,
+    "section": "Practical Application",
+    "slides": [
+        {
+            "id": "s_l7_1",
+            "type": "text",
+            "title": "Project: The Ping Sweeper 🧹",
+            "content": "# A Classic Reconnaissance Tool\n\nWe will build a script that:\n1.  Takes a subnet prefix as an argument (e.g., `192.168.1`).\n2.  Loops through all 254 possible host addresses (`.1` to `.254`).\n3.  Pings each address **once**.\n4.  If a host replies, it prints \"Host X is alive\".\n5.  Logs the results to a file with a timestamp.\n\nThis is a **Ping Sweep**. It's the first step in mapping a network.\n\n**Script Name:** `pingsweep.sh`\n**Usage:** `./pingsweep.sh 192.168.1`"
+        },
+        {
+            "id": "s_l7_2",
+            "type": "text",
+            "title": "Step 1: Argument Validation and Setup ✅",
+            "content": "# Checking User Input\n\nFirst, we ensure the user provided the subnet prefix.\n\n```bash\n#!/bin/bash\n\n# Check if argument provided\nif [ -z \"$1\" ]\nthen\n    echo \"Usage: $0 <subnet_prefix>\"\n    echo \"Example: $0 192.168.1\"\n    exit 1\nfi\n\nSUBNET=$1\nTIMESTAMP=$(date +\"%Y%m%d_%H%M%S\")\nOUTFILE=\"pingsweep_${SUBNET}_${TIMESTAMP}.txt\"\n\necho \"Starting ping sweep on $SUBNET.0/24...\"\necho \"Results will be saved to $OUTFILE\"\necho \"Scan started at $(date)\" > \"$OUTFILE\"\n```"
+        },
+        {
+            "id": "s_l7_3",
+            "type": "text",
+            "title": "Step 2: The Sweep Loop 🔄",
+            "content": "# Iterating Over the Host Range\n\nWe'll use a `for` loop from 1 to 254.\n\n```bash\nfor HOST in {1..254}\ndo\n    TARGET=\"$SUBNET.$HOST\"\n    \n    # Ping with 1 packet, timeout 1 second\n    # Send output to /dev/null (we don't need to see it)\n    ping -c 1 -W 1 \"$TARGET\" > /dev/null 2>&1\n    \n    # Check the exit status of ping ($?)\n    if [ $? -eq 0 ]\n    then\n        echo \"[+] Host $TARGET is ALIVE\"\n        echo \"$TARGET\" >> \"$OUTFILE\"\n    else\n        echo \"[-] Host $TARGET is dead or filtered\"\n    fi\ndone\n```\n\n**Explanation:**\n- `> /dev/null 2>&1` discards both standard output and standard error.\n- `$?` holds the exit status of the last command. `0` means success (ping reply received)."
+        },
+        {
+            "id": "s_l7_4",
+            "type": "text",
+            "title": "Step 3: Final Report 📊",
+            "content": "# Summarizing the Results\n\nAfter the loop, we can count how many hosts were found alive.\n\n```bash\n# Count lines in the output file (excluding the header line)\nALIVE_COUNT=$(tail -n +2 \"$OUTFILE\" | wc -l)\n\necho \"==============================\"\necho \"Scan completed at $(date)\"\necho \"Found $ALIVE_COUNT live hosts.\"\necho \"Full list saved to $OUTFILE\"\necho \"==============================\" >> \"$OUTFILE\"\n```\n\n**Putting it all together:** The full script is shown in the code slide."
+        },
+        {
+            "id": "s_l7_5",
+            "type": "code",
+            "title": "Full Ping Sweeper Script",
+            "content": "The complete, production-ready reconnaissance tool.",
+            "codeSnippet": "#!/bin/bash\n\nif [ -z \"$1\" ]; then\n    echo \"Usage: $0 <subnet_prefix>\"\n    echo \"Example: $0 192.168.1\"\n    exit 1\nfi\n\nSUBNET=$1\nTIMESTAMP=$(date +\"%Y%m%d_%H%M%S\")\nOUTFILE=\"pingsweep_${SUBNET}_${TIMESTAMP}.txt\"\n\necho \"Starting ping sweep on $SUBNET.0/24...\"\necho \"Scan started at $(date)\" > \"$OUTFILE\"\n\nfor HOST in {1..254}; do\n    TARGET=\"$SUBNET.$HOST\"\n    ping -c 1 -W 1 \"$TARGET\" > /dev/null 2>&1\n    if [ $? -eq 0 ]; then\n        echo \"[+] Host $TARGET is ALIVE\"\n        echo \"$TARGET\" >> \"$OUTFILE\"\n    fi\ndone\n\nALIVE_COUNT=$(tail -n +2 \"$OUTFILE\" | wc -l)\necho \"Scan completed. Found $ALIVE_COUNT live hosts.\"",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l7_6",
+            "type": "quiz",
+            "title": "Script Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l7_1",
+                "type": "multiple_choice",
+                "question": "In the ping sweeper, what does `$?` represent?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The target IP address.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The exit status of the ping command.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The number of arguments passed to the script.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`$?` stores the exit code of the most recently executed foreground command.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l7_7",
+            "type": "text",
+            "title": "Enhancements: Making It Faster with Backgrounding ⚡",
+            "content": "# The Problem with Sequential Pings\n\nOur script pings one IP, waits for a reply or timeout, then moves to the next. Pinging 254 hosts with a 1-second timeout takes over 4 minutes!\n\n**Solution:** Run pings in the **background** and wait for all of them to finish.\n\n```bash\nfor HOST in {1..254}; do\n    TARGET=\"$SUBNET.$HOST\"\n    # Run ping in background subshell\n    (\n        ping -c 1 -W 1 \"$TARGET\" > /dev/null 2>&1\n        if [ $? -eq 0 ]; then\n            echo \"$TARGET\" >> \"$OUTFILE\"\n        fi\n    ) &\ndone\n\nwait  # Wait for all background jobs to finish\necho \"All pings completed.\"\n```\n\n**Warning:** Writing to the same file from multiple background processes can cause race conditions. Use a separate temp file per host and concatenate, or use `flock` for locking. This is advanced but demonstrates the power of job control in scripts."
+        },
+        {
+            "id": "s_l7_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use `nmap` for Real Work\n\nOur ping sweeper is a fantastic learning tool and works when ICMP is allowed. However, for professional network mapping, use `nmap`:\n\n```bash\nnmap -sn 192.168.1.0/24\n```\n\n`-sn` is a ping scan. It's faster and uses multiple techniques (ICMP, TCP ACK) to detect hosts even if ICMP is blocked."
+        }
+    ]
+}

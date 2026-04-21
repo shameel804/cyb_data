@@ -1,0 +1,104 @@
+{
+    "id": "l1",
+    "chapterId": "ch_12",
+    "title": "The Digital Paper Trail: What Are Logs?",
+    "description": "Discover what logs are, why they exist, and where Linux hides the evidence of your actions.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Log Fundamentals",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Every Move You Make, Linux is Watching 👁️",
+            "content": "# The Invisible Recorder\n\nFrom the moment you log in until you shut down, Linux is quietly writing down what you do. These records are called **Logs**.\n\nLogs are text files that chronicle system events:\n- Who logged in and when.\n- What commands were run (if auditing is enabled).\n- Errors that occurred.\n- Network connections made.\n- Authentication attempts (successful and failed).\n\n### Analogy: The Hotel Registry 📖\nEvery time a guest (process or user) does something, the front desk clerk writes it in a giant book. The date, time, room number, and action are all recorded. Logs are the hotel registry of your operating system.\n\n### Why Logs Exist:\n- **Troubleshooting**: \"Why did the web server crash at 3:00 AM?\"\n- **Security Auditing**: \"Someone tried to SSH into our server 5,000 times last night.\"\n- **Compliance**: Laws require certain industries to keep logs.\n- **Forensics**: After a hack, logs are the first place investigators look."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the primary purpose of system logs?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To speed up the computer.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To record system events and user actions for auditing and debugging.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To encrypt user files.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Logs provide a chronological record of what happened on the system.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "The Logging Ecosystem: Two Major Players 🌳",
+            "content": "# Syslog (Traditional) vs. Journald (Modern)\n\nDepending on your Linux distribution, logs are managed by one of two systems:\n\n### 1. Syslog (rsyslog/syslog-ng)\n- The classic Unix logging system.\n- Logs are stored as plain text files in **`/var/log/`**.\n- You can read them with `cat`, `less`, `grep`.\n- **Examples:** `/var/log/syslog`, `/var/log/auth.log`, `/var/log/kern.log`.\n\n### 2. Journald (systemd-journald)\n- The modern binary logging system used by systemd.\n- Logs are stored in a binary format (not plain text).\n- You **must** use the **`journalctl`** command to read them.\n- Advantages: Structured data, faster searching, automatic rotation.\n\n**Hacker Note:** Many systems use **both**. Syslog receives copies of journald messages. You need to check both places to know what's being recorded."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "code",
+            "title": "Check Your Logging System",
+            "content": "See if journald and rsyslog are running.",
+            "codeSnippet": "systemctl status systemd-journald\nsystemctl status rsyslog",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "The Holy Directory: `/var/log/` 📁",
+            "content": "# Where the Bodies Are Buried\n\nLet's take a tour of the most forensically important files:\n\n| File | Contents | Hacker Relevance |\n| :--- | :--- | :--- |\n| **`/var/log/auth.log`** | Authentication events (logins, sudo, SSH). | **CRITICAL**: Every login and `sudo` command is here. |\n| **`/var/log/syslog`** | General system messages. | Catch-all for service starts/stops. |\n| **`/var/log/kern.log`** | Kernel messages. | Hardware issues, firewall drops. |\n| **`/var/log/dpkg.log`** | Package installation history. | Shows what tools you installed. |\n| **`/var/log/wtmp`** | Binary log of logins/logouts. | Use `last` command to read. |\n| **`/var/log/btmp`** | Failed login attempts. | Use `lastb` command (requires root). |\n| **`~/.bash_history`** | **Not in /var/log!** Your command history. | The #1 place defenders check. |"
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Log File Identification 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "Which log file records every `sudo` command executed?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "/var/log/syslog",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "/var/log/auth.log",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "~/.bash_history",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`auth.log` tracks authentication and privilege escalation events, including `sudo` usage.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "warning",
+            "title": "⚠️ Logs Are Not Just Local",
+            "content": "## Remote Logging (SIEM)\n\nIn enterprise environments, logs are often sent in **real-time** to a central server (SIEM - Security Information and Event Management).\n\nIf you wipe the local `auth.log`, the failed SSH attempt from your IP is **already sitting on a secure server in a different building**.\n\n**OPSEC Rule #1:** Assume every action is being logged remotely and that you cannot delete those logs."
+        }
+    ]
+}

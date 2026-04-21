@@ -1,0 +1,104 @@
+{
+    "id": "l3",
+    "chapterId": "ch_12",
+    "title": "Cleaning Up: Removing Evidence from Logs",
+    "description": "Learn how to selectively delete, shred, and tamper with log files to hide your presence.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Anti-Forensics",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Art of Selective Deletion ✂️",
+            "content": "# Don't Just Delete Everything!\n\nAn empty log file is a screaming alarm. A **slightly modified** log file looks like a glitch or log rotation.\n\nThe goal is to **remove YOUR specific tracks** while leaving the rest intact.\n\n### Technique 1: `sed -i` (In-Place Removal)\nRemove lines containing your IP address or username.\n```bash\nsudo sed -i '/192.168.1.100/d' /var/log/auth.log\n```\n- **`-i`** : Edit the file in place.\n- **`/pattern/d`** : Delete lines matching `pattern`.\n\n### Technique 2: `grep -v` (Inverse Match)\nCreate a new clean file and replace the old one.\n```bash\nsudo grep -v \"cybron\" /var/log/syslog > /tmp/clean.log\nsudo mv /tmp/clean.log /var/log/syslog\n```\nThis is safer because you can verify the output before overwriting."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Simulate Log Cleaning",
+            "content": "Create a fake log and remove specific lines.",
+            "codeSnippet": "echo -e \"admin login\\nhacker login\\nadmin logout\" > fake.log\ngrep -v \"hacker\" fake.log > clean.log\ncat clean.log",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Cleaning Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What is the primary advantage of `grep -v` over deleting the entire log file?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It is faster.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It removes only specific entries, making the tampering less obvious.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It does not require root privileges.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Selective removal is stealthier than complete deletion, which leaves an obvious gap.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Journald Cleaning: `journalctl --vacuum` 🧹",
+            "content": "# You Cannot `sed` a Binary Log\n\nSince the systemd journal is binary, you cannot use text tools like `grep` directly on the files in `/var/log/journal/`.\n\n**To completely wipe the journal (LOUD!):**\n```bash\nsudo journalctl --rotate\nsudo journalctl --vacuum-time=1s\n```\n- `--rotate` : Archives current logs.\n- `--vacuum-time=1s` : Deletes all logs older than 1 second (i.e., everything).\n\nThis is **extremely suspicious**. The system log will show a massive gap.\n\n### Stealthier Approach (Advanced):\nUse `journalctl` to export logs to text, edit with `sed`, and then... well, there's no official way to re-import edited logs. This is why experienced attackers prefer to **avoid generating logs** in the first place (Lesson 4)."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Timestomping: Covering Your Temporal Tracks ⏱️",
+            "content": "# Changing File Timestamps\n\nEven if you delete a file, its creation/modification time in the filesystem journal might be recorded. `touch` can be used to alter file timestamps.\n\n**Set a specific timestamp:**\n```bash\ntouch -t 202401011200.00 /path/to/file\n```\nThis sets the timestamp to **January 1, 2024, 12:00 PM**.\n\n**Clone timestamp from another file:**\n```bash\ntouch -r /bin/ls /path/to/backdoor.sh\n```\nThis makes `backdoor.sh` look like it was created at the same time as the legitimate `ls` binary.\n\n**Forensic Reality:** Advanced filesystems (ext4, XFS) and security tools (auditd) log **file birth time (crtime)** separately from modification time. `touch` cannot change the creation/birth time. Only kernel modules can."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Timestomp Limits 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "What limitation does the `touch` command have regarding anti-forensics?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It requires root privileges.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It cannot change the file creation (birth) time.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It only works on directories.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The `stat` command shows a 'Birth' field that `touch` does not modify.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "warning",
+            "title": "⚠️ The Secure Deletion Myth: `shred`",
+            "content": "## `shred` Doesn't Work on SSDs\n\nThe `shred` command overwrites a file multiple times before deleting it.\n```bash\nshred -z -u secret.txt\n```\n\n**The Problem:** Modern **Solid State Drives (SSDs)** use wear-leveling and internal caching. The drive controller might write the 'overwritten' data to a **different physical flash cell**, leaving the original data intact and recoverable with specialized hardware.\n\n**The Only Reliable Way to Destroy Data on an SSD:** Full Disk Encryption (LUKS) + Secure Erase command, or physical destruction."
+        }
+    ]
+}

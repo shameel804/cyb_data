@@ -1,0 +1,29 @@
+{
+    "id": "project1",
+    "title": "Linux System Auditor",
+    "description": "Build a comprehensive Bash script that gathers system information, user accounts, running services, and open ports into a professional audit report.",
+    "difficulty": "Beginner/Intermediate",
+    "estimatedHours": "3-5",
+    "problemStatement": "# Project 1: Linux System Auditor\n\nYou are a junior security analyst tasked with creating a reusable system auditing tool. The script must collect essential information about a Linux machine and generate a clean, timestamped report. This report will be used for baseline hardening and incident response.\n\n## Learning Objectives\n- Apply filesystem navigation and file manipulation commands.\n- Use text processing tools (`grep`, `awk`, `cut`) to extract relevant data.\n- Work with processes (`ps`), services (`systemctl`), and network connections (`ss`).\n- Implement proper error handling and output redirection.\n- Structure a Bash script with functions and comments.\n\n## Functional Requirements\n\n1. **Script Initialization**\n   - The script must accept an optional output directory argument. If none is provided, it defaults to `~/audit_reports`.\n   - Create the output directory if it does not exist (use `mkdir -p`).\n   - Generate a timestamp in the format `YYYYMMDD_HHMMSS` for the report filename.\n   - The report file should be named `audit_<timestamp>.txt`.\n\n2. **Information Gathering Sections**\n   Each section must be clearly separated with headers in the report.\n\n   - **System Information**\n     - Hostname, kernel version, and OS distribution (parse `/etc/os-release` or use `hostnamectl`).\n     - Current uptime and load average (use `uptime`).\n     - Memory usage (free and total) (use `free -h`).\n     - Disk usage for all mounted filesystems (use `df -h`).\n\n   - **User Accounts**\n     - List all human users (UID >= 1000) from `/etc/passwd`. Display username, UID, home directory, and shell.\n     - Show currently logged-in users (use `who` or `users`).\n     - List users with `sudo` privileges (check group `sudo` or `wheel`).\n\n   - **Running Services**\n     - List all **enabled** systemd services (use `systemctl list-unit-files --type=service --state=enabled`).\n     - List all currently **active** services (use `systemctl list-units --type=service --state=running`).\n\n   - **Network Connections**\n     - Show listening TCP and UDP ports with the associated process names (use `ss -tulpn`).\n     - Display established connections (use `ss -tupn state established`).\n\n   - **Scheduled Tasks**\n     - List all user crontabs for users with UID >= 1000 (if accessible). If running as root, iterate through `/var/spool/cron/crontabs/`. If not, list current user's crontab with `crontab -l`.\n\n   - **Recent Log Entries (Optional Security Check)**\n     - Extract the last 10 failed authentication attempts from `/var/log/auth.log` (if readable).\n\n3. **Report Formatting**\n   - Use plain text with clear section headers and separators.\n   - Redirect both stdout and stderr appropriately so the script can run silently except for a final confirmation message.\n   - The script should print to the terminal only: `Audit completed. Report saved to <full_path>`.\n\n4. **Error Handling**\n   - If a command requires `sudo` and is not run with sufficient privileges, the script should note \"Permission denied\" in that section but continue.\n   - Use functions to keep the code modular (e.g., `get_system_info()`, `get_user_info()`).\n\n## Example Report Snippet\n```\n========================================\n LINUX SYSTEM AUDIT REPORT\n Generated: 2025-01-15 14:30:00\n Hostname: kali-vm\n========================================\n\n--- SYSTEM INFORMATION ---\nKernel: Linux 6.1.0-kali9-amd64\nOS: Kali GNU/Linux Rolling\nUptime: 2 days, 3 hours, 15 minutes\nLoad Average: 0.15, 0.20, 0.18\nMemory: 3.8Gi total, 1.2Gi used\nDisk Usage:\n/dev/sda1       50G   20G   30G  40% /\n```\n\n## Hints\n- Use `awk -F: '$3 >= 1000 {print $1}' /etc/passwd` to get human users.\n- Use `systemctl list-unit-files --type=service --state=enabled --no-legend` for cleaner output.\n- For network info, `ss -tulpn` may require `sudo` to show process names.\n- Remember to use `2>/dev/null` where appropriate to suppress errors.\n- Use command substitution `$( ... )` to capture output into variables.\n\n## Deliverables\n- The complete `audit.sh` script.\n- A sample report generated from running the script on your own machine (redact sensitive IPs if needed).",
+    "requirements": [
+        "Accepts optional output directory argument, defaults to ~/audit_reports",
+        "Creates output directory if missing",
+        "Generates timestamped report filename",
+        "Collects system info (hostname, OS, uptime, memory, disk)",
+        "Lists human user accounts and sudoers",
+        "Shows enabled and active systemd services",
+        "Displays listening ports and established connections with process info",
+        "Lists user crontabs (current user or all if root)",
+        "Extracts last 10 failed auth attempts from auth.log",
+        "Prints only final success message to terminal",
+        "Uses functions and includes error handling for missing permissions"
+    ],
+    "hints": [
+        "Start by writing individual functions and testing them in the terminal.",
+        "Use `if [ -f /var/log/auth.log ]; then ... fi` to check log existence.",
+        "Consider using `tee` in append mode to write to the report file.",
+        "For sudoers, check group membership: `getent group sudo` or `getent group wheel`.",
+        "Remember that `systemctl` commands may be available without sudo for listing."
+    ],
+    "expectedOutput": "A well-structured Bash script that produces a comprehensive audit report file with all specified sections."
+}

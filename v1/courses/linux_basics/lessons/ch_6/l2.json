@@ -1,0 +1,119 @@
+{
+    "id": "l2",
+    "chapterId": "ch_6",
+    "title": "Process Surveillance: The `ps` Command",
+    "description": "Take a snapshot of running processes. Learn the essential `ps aux` and custom formats.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Process Inspection",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Snapshot Tool: `ps` 📸",
+            "content": "# Process Status\n\n`ps` displays information about active processes. It's like taking a single photograph of the process table at a specific moment.\n\n**Important:** `ps` is **not** real-time. It shows the state of the system at the exact moment you pressed Enter. For real-time updates, you'll use `top` (Lesson 3).\n\n### The Three Flavors of `ps` Options\n`ps` has a confusing history of option styles. You need to know all three:\n1.  **UNIX style**: Prefixed with a dash (e.g., `-e`, `-f`).\n2.  **BSD style**: No dash (e.g., `aux`).\n3.  **GNU long style**: Double dash (e.g., `--forest`).\n\n### The Hacker's Favorite: `ps aux`\nThis is the universal command for seeing **every process on the system**.\n- `a` : Show processes for **all users** (not just you).\n- `u` : Show **user-oriented** format (CPU%, MEM%, user name).\n- `x` : Show processes **not attached to a terminal** (daemons, background services)."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Run `ps aux`",
+            "content": "View all processes on the system with detailed information.",
+            "codeSnippet": "ps aux | head -10",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Decoding `ps aux` Output 🔍",
+            "content": "# Column Meanings\n\nWhen you run `ps aux`, you get many columns. Here are the most important for a hacker:\n\n| Column | Meaning |\n| :--- | :--- |\n| **USER** | Who owns the process. |\n| **PID** | Process ID. The target for `kill`. |\n| **%CPU** | CPU usage percentage. |\n| **%MEM** | RAM usage percentage. |\n| **VSZ** | Virtual Memory Size (total memory allocated). |\n| **RSS** | Resident Set Size (physical RAM actually used). |\n| **TTY** | Controlling terminal (`?` means no terminal / daemon). |\n| **STAT** | Process State (See next slide). |\n| **START** | When the process started. |\n| **TIME** | Total CPU time used so far. |\n| **COMMAND** | The command line that launched it."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Process States: The STAT Column 🚦",
+            "content": "# What is the Process Doing?\n\nThe STAT column uses codes to describe the process state.\n\n| Code | Meaning |\n| :--- | :--- |\n| **R** | **Running** or runnable (on the CPU or waiting for it). |\n| **S** | **Sleeping** (waiting for an event, e.g., user input or network packet). Most processes are Sleeping. |\n| **D** | **Uninterruptible Sleep** (usually waiting for disk I/O). **Cannot be killed**, even with `kill -9`. |\n| **Z** | **Zombie** 💀. The process is dead, but its parent hasn't read its exit status. It consumes no resources but clutters the process table. |\n| **T** | **Stopped** (suspended, usually by `Ctrl+Z`). |\n\n**Additional Flags (Lowercase):**\n- **`s`** : Session leader.\n- **`l`** : Multi-threaded.\n- **`+`** : In the **foreground** process group."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "State Identification 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What does a process state of 'Z' (Zombie) mean?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It is consuming 100% CPU.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It has terminated but the parent hasn't acknowledged it.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It is a malicious rootkit.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A Zombie process has finished execution but still has an entry in the process table. It's harmless but indicates a sloppy parent program.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Finding Specific Processes: `ps aux | grep` 🔍",
+            "content": "# Filtering the Noise\n\n`ps aux` dumps hundreds of lines. Combine it with `grep` to find what you want.\n\n**Find all processes named 'firefox':**\n```bash\nps aux | grep firefox\n```\n\n**Pro Tip:** This will also show the `grep firefox` command itself in the output! To filter out the grep line, use this clever trick:\n```bash\nps aux | grep [f]irefox\n```\nThe pattern `[f]irefox` matches 'firefox' but `grep` sees `[f]irefox`, so it doesn't match its own command line."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Forest View: Process Hierarchy 🌳",
+            "content": "# Seeing Parent-Child Relationships\n\nUse the `-f` (full format) or `-H` (hierarchy) flags to see the tree structure.\n\n**BSD Style (Tree):**\n```bash\nps axjf\n```\n\n**GNU Style (Forest):**\n```bash\nps aux --forest\n```\n\nThis visually indents child processes under their parents. It's incredibly useful for understanding how services spawn worker processes (e.g., Apache web server spawning multiple `httpd` children)."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "View Process Tree",
+            "content": "Show the hierarchical relationship between processes.",
+            "codeSnippet": "ps aux --forest | head -20",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_9",
+            "type": "quiz",
+            "title": "Command Mastery 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "Which `ps` option combination shows processes from all users, in user-oriented format, including those without a terminal?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "ps -ef",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "ps aux",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "ps -l",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`a` (all users), `u` (user format), `x` (no terminal).",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_2",
+    "title": "Efficient Path Traversal",
+    "description": "Practice moving up and down the filesystem using relative shortcuts.",
+    "estimatedMinutes": 10,
+    "problemStatement": "Navigate through the Linux filesystem using only relative paths and shortcuts to reach a target. This simulates moving quickly without looking at a map.\n\n**Starting Point:** Your home directory (`~`).\n\n**Mission:**\n1.  Move to the **parent directory** of your home. (Hint: This is `/home`).\n2.  Verify you are in `/home` using `pwd`.\n3.  From `/home`, move to the **root** of the filesystem using a **relative** path (do not type `cd /`).\n4.  Verify you are in `/`.\n5.  From `/`, change to the **log** directory (`/var/log`) using an **absolute** path.\n6.  From `/var/log`, move up **two** levels in one command. Where are you? (Check with `pwd`).\n7.  Finally, use the 'back' button shortcut (`cd -`) twice to return to your starting home directory.",
+    "hints": [
+        "Parent of home is `..`.",
+        "Parent of `/home` is `/` (so `cd ..` from `/home` takes you to root).",
+        "To go up two levels, use `cd ../..`.",
+        "`cd -` toggles between the last two directories."
+    ],
+    "expectedOutput": "Ending back in home directory after a sequence of moves.",
+    "solutionCode": "cd ..\npwd\ncd ..\npwd\ncd /var/log\ncd ../..\npwd\ncd -\ncd -"
+}

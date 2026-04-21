@@ -1,0 +1,103 @@
+{
+    "id": "l3",
+    "chapterId": "ch_10",
+    "title": "Handling Errors: 2> and &>",
+    "description": "Separate error messages from normal output. Combine or split streams like a pro.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Error Redirection",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Redirecting stderr: `2>` 🚫",
+            "content": "# Silence Those Annoying Errors\n\n`>` only captures stdout. If your command produces errors, they will still clutter your terminal or get lost.\n\nTo redirect **only** stderr, use `2>`.\n\n```bash\nfind / -name \"*.conf\" 2> errors.log\n```\n\n- **stdout** (found files) prints to the terminal.\n- **stderr** (permission denied) is saved to `errors.log`.\n\n### Discarding Errors Entirely:\nSend them to the black hole `/dev/null`.\n```bash\nfind / -name \"*.conf\" 2> /dev/null\n```\nThis is the cleanest way to run a command when you don't care about the error noise."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Capture Only Errors",
+            "content": "List a non-existent file and a real file, capturing only the error.",
+            "codeSnippet": "ls /root /home 2> error.txt\ncat error.txt",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Redirection Syntax 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "fill_blank",
+                "question": "To redirect error messages to a file called `err.log`, you use `command _____ err.log`.",
+                "options": [
+                    "2>",
+                    "1>",
+                    "&>",
+                    ">>"
+                ],
+                "correctAnswer": "2>",
+                "explanation": "stderr is file descriptor 2, so the operator is `2>`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Sending stderr to the Same Place as stdout 🔀",
+            "content": "# The Classic `2>&1`\n\nOften you want to capture **both** normal output and errors into the **same** file for a complete log.\n\nYou need to redirect stderr (2) to wherever stdout (1) is currently going.\n\n**Correct Syntax:**\n```bash\ncommand > output.log 2>&1\n```\n\n**Order Matters!** This does NOT work:\n```bash\ncommand 2>&1 > output.log   # WRONG!\n```\n\n### Why Order Matters:\n- `2>&1` means \"Make stderr point to **whatever stdout is pointing to RIGHT NOW**.\"\n- If you put `2>&1` first, stderr points to the **terminal** (original stdout). Then you move stdout to the file. stderr is left behind, still pointing to the terminal."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Capture All Output",
+            "content": "Redirect both stdout and stderr to a single file.",
+            "codeSnippet": "ls /root /home > all_output.txt 2>&1\ncat all_output.txt",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "The Shorthand: `&>` (Bash Only) 💨",
+            "content": "# Quick and Dirty Combination\n\nBash provides a convenient shortcut for `> file 2>&1`.\n\n```bash\ncommand &> combined.log\n```\n\nThis redirects **both** stdout and stderr to `combined.log`.\n\n### Append Both:\n```bash\ncommand &>> combined.log\n```\n\n**Note:** `&>` is a **Bash extension**. It works in Bash and Zsh but not in plain `/bin/sh`. For maximum portability in scripts, stick to `> file 2>&1`."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Stream Merging 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "Which command correctly sends both stdout and stderr to `output.txt`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "command 2>&1 > output.txt",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "command > output.txt 2>&1",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "command 2> output.txt 1> output.txt",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The order is critical: redirect stdout first, then redirect stderr to the new destination of stdout.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Separate Logging for Debugging\n\nAdvanced scripters often log stdout to one file and stderr to another, then use `tail -f` on the error log to watch for problems while the script runs."
+        }
+    ]
+}

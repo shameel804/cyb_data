@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_11",
+    "title": "Create a Log Rotator Cron Job",
+    "description": "Schedule a script to archive and clean up old log files daily.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You have an application that writes logs to `~/app/logs/app.log`. The file grows quickly and you need to archive it daily and keep only the last 7 days of archives.\n\n**Requirements:**\n1. Write a script called `rotate_logs.sh` in your home directory.\n2. The script should:\n   - Check if `~/app/logs/app.log` exists. If not, exit silently.\n   - Create a timestamped archive: `~/app/logs/archive/app-YYYYMMDD.log` (use `date +%Y%m%d`).\n   - Move the current `app.log` to the archive file (effectively rotating it).\n   - Create a new empty `app.log` (or touch it).\n   - Delete archives older than 7 days in the archive directory.\n3. Make the script executable.\n4. Schedule the script to run **every day at 1:00 AM** using `crontab -e`.\n5. Ensure that the cron job logs its actions (stdout and stderr) to `~/rotate_cron.log`.\n\n**Hints:**\n- Use `mkdir -p` to ensure the archive directory exists.\n- Use `find ~/app/logs/archive -name \"app-*.log\" -mtime +7 -delete` to clean old files.\n- The crontab entry: `0 1 * * * /home/your_user/rotate_logs.sh >> /home/your_user/rotate_cron.log 2>&1`.",
+    "hints": [
+        "Archive move: `mv ~/app/logs/app.log ~/app/logs/archive/app-$(date +%Y%m%d).log`",
+        "Create new empty log: `touch ~/app/logs/app.log`",
+        "Test the script manually before adding to cron."
+    ],
+    "expectedOutput": "Script scheduled and logs rotation occurs daily.",
+    "solutionCode": "#!/bin/bash\n\nLOG_DIR=\"$HOME/app/logs\"\nARCHIVE_DIR=\"$LOG_DIR/archive\"\nLOG_FILE=\"$LOG_DIR/app.log\"\n\nif [ ! -f \"$LOG_FILE\" ]; then\n    exit 0\nfi\n\nmkdir -p \"$ARCHIVE_DIR\"\n\nTIMESTAMP=$(date +%Y%m%d)\nmv \"$LOG_FILE\" \"$ARCHIVE_DIR/app-$TIMESTAMP.log\"\ntouch \"$LOG_FILE\"\n\nfind \"$ARCHIVE_DIR\" -name \"app-*.log\" -mtime +7 -delete\n\necho \"$(date): Log rotation completed.\"\n\n# Crontab entry:\n# 0 1 * * * /home/your_user/rotate_logs.sh >> /home/your_user/rotate_cron.log 2>&1"
+}

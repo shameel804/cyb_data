@@ -1,0 +1,246 @@
+{
+    "id": "quiz_ch_3",
+    "chapterId": "ch_3",
+    "title": "Chapter 3 Quiz: Digital Carpentry",
+    "description": "Test your knowledge of file creation, copying, moving, and deletion.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What command creates an empty file named `data.log`?",
+            "options": [
+                "mkdir data.log",
+                "touch data.log",
+                "create data.log",
+                "new data.log"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`touch` creates an empty file if it doesn't exist."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "Running `touch` on an existing file will erase its contents.",
+            "correctAnswer": false,
+            "explanation": "False. It only updates the timestamp."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which `mkdir` flag creates parent directories as needed?",
+            "options": [
+                "-r",
+                "-p",
+                "-f",
+                "-v"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The `-p` flag stands for 'parents'."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "You want to copy a folder named `src` and all its contents to `dest`. Which command works?",
+            "options": [
+                "cp src dest",
+                "cp -r src dest",
+                "cp -f src dest",
+                "mv src dest"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-r` (recursive) is required to copy directories."
+        },
+        {
+            "id": "q5",
+            "type": "fill_blank",
+            "question": "To rename a file from `a.txt` to `b.txt`, you use the command `_____ a.txt b.txt`.",
+            "options": [
+                "cp",
+                "mv",
+                "ren",
+                "touch"
+            ],
+            "correctAnswer": "mv",
+            "explanation": "`mv` is used for both moving and renaming files."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "The `rmdir` command can delete a folder containing files.",
+            "correctAnswer": false,
+            "explanation": "False. `rmdir` only works on completely empty directories."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What does the `-i` flag do when used with `cp` or `mv`?",
+            "options": [
+                "Ignites the file.",
+                "Prompts before overwriting files.",
+                "Increases speed.",
+                "Includes hidden files."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-i` stands for interactive. It asks for confirmation before overwriting a destination file."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which command deletes the folder `old_data` and everything inside it?",
+            "options": [
+                "rm old_data",
+                "rmdir old_data",
+                "rm -r old_data",
+                "rm -i old_data"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`rm -r` recursively removes the directory and its contents."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What does the wildcard `*.log` match?",
+            "options": [
+                "All files named 'log'.",
+                "All files ending with '.log'.",
+                "All files starting with 'log'.",
+                "Only the file '*.log'."
+            ],
+            "correctAnswer": 1,
+            "explanation": "The asterisk matches any characters, so `*.log` matches any filename ending with `.log`."
+        },
+        {
+            "id": "q10",
+            "type": "true_false",
+            "question": "Files deleted with `rm` can be easily restored from the system Trash folder.",
+            "correctAnswer": false,
+            "explanation": "False. Terminal deletion bypasses the GUI trash. Recovery is complex and often impossible."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "You want to see which files will be deleted by `rm *.tmp` before running it. What command should you run first?",
+            "options": [
+                "ls *.tmp",
+                "cp *.tmp",
+                "echo *.tmp",
+                "find *.tmp"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`ls *.tmp` lists the files that match the wildcard pattern."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which wildcard matches exactly one character?",
+            "options": [
+                "*",
+                "?",
+                "[]",
+                "."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`?` is the single-character wildcard."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What happens if you run `mv file1.txt file2.txt` and `file2.txt` already exists?",
+            "options": [
+                "The move fails.",
+                "`file2.txt` is overwritten silently.",
+                "You are prompted to confirm (if alias is set).",
+                "A backup is created automatically."
+            ],
+            "correctAnswer": 1,
+            "explanation": "By default, `mv` silently overwrites the destination. Using `-i` prompts for confirmation."
+        },
+        {
+            "id": "q14",
+            "type": "fill_blank",
+            "question": "The command to copy a file and get a warning before overwriting is `cp -_____ source dest`.",
+            "options": [
+                "i",
+                "v",
+                "f",
+                "r"
+            ],
+            "correctAnswer": "i",
+            "explanation": "`-i` is the interactive flag."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Which of these is the most dangerous command?",
+            "options": [
+                "rm -rf /",
+                "rm -i file.txt",
+                "rmdir EmptyFolder",
+                "cp file1 file2"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`rm -rf /` attempts to delete the entire filesystem recursively and forcefully."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "The command `touch file1.txt file2.txt` creates two files.",
+            "correctAnswer": true,
+            "explanation": "True. `touch` accepts multiple filename arguments."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What is the difference between `cp` and `mv`?",
+            "options": [
+                "`cp` leaves the original; `mv` removes the original.",
+                "`cp` moves files; `mv` copies them.",
+                "There is no difference.",
+                "`cp` is for folders; `mv` is for files."
+            ],
+            "correctAnswer": 0,
+            "explanation": "`cp` duplicates; the original remains. `mv` relocates; the original is gone from the source."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "You want to create a directory called 'My Photos'. Which command handles the space correctly?",
+            "options": [
+                "mkdir My Photos",
+                "mkdir My\\ Photos",
+                "mkdir 'My Photos'",
+                "Both B and C"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Both escaping with `\\` and quoting with `' '` work."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What does `ls -l` show that `ls` does not?",
+            "options": [
+                "Hidden files",
+                "File size and permissions",
+                "Color output",
+                "Only directories"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The `-l` flag provides a long listing with metadata like permissions, owner, size, and date."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "How do you delete an empty directory named 'Test'?",
+            "options": [
+                "rm Test",
+                "rmdir Test",
+                "del Test",
+                "remove Test"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`rmdir` is specifically for removing empty directories safely."
+        }
+    ]
+}

@@ -1,0 +1,104 @@
+{
+    "id": "l5",
+    "chapterId": "ch_2",
+    "title": "Hidden Treasures & Shortcuts",
+    "description": "Discover dotfiles, the home shortcut `~`, and the mysterious `.` and `..` directories.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Advanced Navigation",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Secrets of the Dot 🔴",
+            "content": "# Hidden Files in Linux\n\nIn Windows, a file is hidden if you right-click and check a 'Hidden' box.\n\nIn Linux, a file is hidden **if its name starts with a dot** `.`.\n\n### Examples:\n*   `.bashrc` (Hidden - configuration file for Bash)\n*   `.config` (Hidden - folder for app settings)\n*   `README.txt` (Visible)\n\n### Why hide files?\nMainly to reduce clutter. Configuration files are important, but you don't need to see them in every `ls` command. They are 'housekeeping' files."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Revealing the Hidden: `ls -a`",
+            "content": "To see *all* files, including the hidden ones, use the `-a` option (All).\n\nRun this command in your home directory. You will suddenly see a TON of new files!",
+            "codeSnippet": "ls -a",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "How do you view hidden files in Linux?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "ls -h",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "ls -a",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "ls -l",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The `-a` flag stands for 'all'. It includes files starting with a dot.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "The Home Shortcut: `~` 🏠",
+            "content": "# Your Best Friend in the Terminal\n\nWe saw this in the prompt earlier. The tilde character `~` is a **shortcut** for your Home Directory.\n\n### Using `~` with `cd`:\n*   `cd ~` -> Goes to `/home/your_username`\n*   `cd ~/Documents` -> Goes to `/home/your_username/Documents`\n\n### Using `~` with `ls`:\n*   `ls ~/Downloads` -> Lists files in your Downloads folder, no matter where you currently are.\n\n**This saves so much typing.** Instead of typing `/home/cybron/projects/hack_the_planet`, you can just type `~/projects/hack_the_planet`."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "The Mysterious `.` and `..` Directories 👻",
+            "content": "# The Ghosts in Every Folder\n\nRun `ls -a` in any folder. You will **always** see two entries at the top:\n\n*   **`.`** (Single Dot): Represents the **Current Directory**.\n*   **`..`** (Double Dot): Represents the **Parent Directory** (one level up).\n\n### Why does this matter?\n1.  **Moving Up:** To go up one folder, you don't need to type the full path. Just use:\n    ```bash\n    cd ..\n    ```\n    *If you are in `/home/cybron/Downloads`, `cd ..` takes you to `/home/cybron`.*\n\n2.  **Moving Up Twice:**\n    ```bash\n    cd ../..\n    ```\n    *From `/home/cybron/Downloads`, this takes you all the way up to `/home`.*\n\n3.  **Running Scripts:** Sometimes you need to run a program located in your *current* folder. You use:\n    ```bash\n    ./my_script.sh\n    ```\n    (This tells Linux: \"Look in *this* directory for the script.\")"
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Navigation Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "You are in `/home/user/Music/Rock`. What command takes you to `/home/user/Music`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "cd ..",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "cd .",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "cd ~",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`..` refers to the parent directory, which in this case is `Music`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "tip",
+            "title": "Combining It All",
+            "content": "## The Ultimate Lazy Command\n\nYou can chain these shortcuts together.\n\n*   `cd ~/../../` : Go home, then go up two levels (usually to `/home`).\n*   `ls -la ~` : List all hidden files in your home directory in long format.\n\nMastery of navigation is about minimizing keystrokes while maximizing speed."
+        }
+    ]
+}

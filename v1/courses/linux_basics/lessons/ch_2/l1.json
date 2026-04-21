@@ -1,0 +1,89 @@
+{
+    "id": "l1",
+    "chapterId": "ch_2",
+    "title": "The Linux Filesystem Tree",
+    "description": "Understand the hierarchical structure that organizes every file and folder in Linux.",
+    "xpReward": 20,
+    "estimatedMinutes": 5,
+    "section": "Fundamentals",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "It All Starts at the Root 🌳",
+            "content": "# No C: Drive Here\n\nIf you're coming from Windows, you're used to `C:\\`, `D:\\`, etc. Each drive is its own little world.\n\nLinux does it differently. Everything—**EVERYTHING**—is a file or a folder, and it all lives under one single starting point.\n\nThat starting point is called the **Root Directory**, and it's represented by a simple forward slash:\n\n`/`\n\n### Analogy: A Giant Inverted Tree 🌲\n*   **Root (`/`)**: The trunk of the tree buried in the ground.\n*   **Directories**: The big branches growing from the trunk (`/home`, `/etc`, `/usr`).\n*   **Subdirectories**: Smaller branches growing off the big ones (`/home/user/Downloads`).\n*   **Files**: The leaves at the end of the branches.\n\nEven if you plug in a USB stick or an external hard drive, it gets 'mounted' (attached) to a branch somewhere under `/` (usually `/media` or `/mnt`)."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What symbol represents the top-level Root directory in Linux?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "C:\\",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "/",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "~",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The forward slash `/` is the root of the entire filesystem. `~` is your home directory, and `C:\\` is a Windows concept.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "The Major Branches (Key Directories) 🗺️",
+            "content": "# A Tour of `/`\n\nLet's look inside the Root directory. These folders have specific purposes according to the Linux Filesystem Hierarchy Standard (FHS).\n\n*   **`/bin`** & **`/sbin`**: Essential **Bin**aries (programs) needed to boot and run the system. `ls`, `cd`, `echo` live here.\n*   **`/etc`**: **Etc**etera. Configuration files. Think of it as the control panel. Network settings, user passwords (encrypted), and startup scripts live here.\n*   **`/home`**: **Home** sweet home. This is where *your* personal files live. Each user gets a subfolder: `/home/john`, `/home/jane`. This is the ONLY place you should be creating and deleting files regularly as a beginner.\n*   **`/root`**: The home folder for the **root** superuser. Stay out of here for now. It's the admin's private office.\n*   **`/tmp`**: **Tem**porary files. Anything here gets wiped on reboot. Good for quick tests.\n*   **`/var`**: **Var**iable data. Log files, caches, databases. Hackers love `/var/log` to see what the system has been doing.\n*   **`/usr`**: **U**ser **S**ystem **R**esources. Most of the software you install goes here."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "warning",
+            "title": "⚠️ Stay in Your Lane",
+            "content": "## Don't Delete Random Folders!\n\nAs a beginner, **do not touch** anything in `/bin`, `/etc`, `/boot`, or `/usr` unless a trusted tutorial specifically tells you to (and you know exactly why).\n\nDeleting the wrong file here is like deleting `C:\\Windows\\System32`. Your system will break.\n\n**Safe Zone:** `/home/your_username/`\n\n**Danger Zone:** Everywhere else (for now)."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "quiz",
+            "title": "Identify the Purpose 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "Where would you find a user named 'alice's personal Documents folder?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "/root/alice/Documents",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "/home/alice/Documents",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "/usr/alice/Documents",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "User data belongs in `/home/[username]`. `/root` is only for the admin user named 'root'.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

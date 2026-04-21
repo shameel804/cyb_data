@@ -1,0 +1,113 @@
+{
+    "id": "l1",
+    "chapterId": "ch_6",
+    "title": "The Ghost in the Machine: What is a Process?",
+    "description": "Understand PIDs, parent-child relationships, and the lifecycle of running programs.",
+    "xpReward": 20,
+    "estimatedMinutes": 6,
+    "section": "Process Fundamentals",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Program vs Process 📄➡️👻",
+            "content": "# A Program is a Blueprint; A Process is the Running Building\n\n- **Program**: A file sitting on your hard drive (e.g., `/usr/bin/firefox`). It's static, dead code.\n- **Process**: A program that has been loaded into RAM and is being executed by the CPU. It's alive, consuming resources.\n\nYou can run the same program multiple times. Each instance creates a **separate process** with its own unique ID.\n\n### Analogy: The Recipe and the Meal 🍳\n- **Program**: The written recipe on paper.\n- **Process**: The actual act of cooking the meal in the kitchen. You can have multiple cooks (processes) following the same recipe simultaneously."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "The Process ID (PID) 🆔",
+            "content": "# Every Process Has a Number\n\nWhen a process starts, the Linux kernel assigns it a unique identification number called the **Process ID (PID)**.\n\n- PIDs are integers.\n- They are assigned sequentially (1, 2, 3...).\n- When a process dies, its PID is recycled for new processes.\n\n**The First Process: `init` or `systemd` (PID 1)**\nWhen Linux boots, the very first user-space process launched is `init` (or `systemd` on modern systems). It always gets **PID 1**. It is the **grandparent of all processes**. If PID 1 dies, the kernel panics and the system crashes.\n\n### Finding Your Shell's PID:\nEvery terminal window you open runs a shell process. You can find its PID using the special variable `$$`.\n```bash\necho $$\n```"
+        },
+        {
+            "id": "s_l1_3",
+            "type": "code",
+            "title": "See Your Shell's PID",
+            "content": "Run this to see the PID of your current Bash shell.",
+            "codeSnippet": "echo $$",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the PID of the very first process started by the kernel during boot?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "0",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "1",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "100",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The init process (or systemd) always receives PID 1.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Parent and Child Processes 👨‍👧",
+            "content": "# The Family Tree\n\nProcesses don't appear out of thin air. A process creates another process using a system call called `fork()`.\n\n- **Parent Process**: The creator.\n- **Child Process**: The newly created process.\n\nEvery process (except PID 1) has a **Parent Process ID (PPID)**.\n\n### Analogy: Opening an App from Terminal\n1.  Your shell (PID 100) is the parent.\n2.  You type `firefox` and press Enter.\n3.  The shell `fork()`s a child process (PID 250).\n4.  The child transforms itself into Firefox using `exec()`.\n5.  Firefox (PID 250) now runs, and its **PPID** is 100 (the shell).\n\nIf a parent process dies before its child, the child becomes an **Orphan** and is automatically 'adopted' by PID 1."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "Foreground vs Background 🎭",
+            "content": "# Who Has the Mic?\n\nWhen you run a command normally, it occupies your terminal. You can't type new commands until it finishes. This is a **Foreground Process**.\n\n```bash\nsleep 30  # Blocks your terminal for 30 seconds\n```\n\n### Background Process\nIf you add an ampersand `&` at the end of the command, it runs in the **background**. You get your prompt back immediately.\n\n```bash\nsleep 30 &   # Runs in background, you can keep working\n```\n\nThe shell will print the **Job ID** and **PID**, then return control to you. We'll master background jobs in Lesson 5."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "code",
+            "title": "Run a Background Job",
+            "content": "Start a long-running command in the background.",
+            "codeSnippet": "sleep 60 &\necho \"I can type this immediately!\"",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_8",
+            "type": "quiz",
+            "title": "Parent-Child Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "If you run `firefox` from the terminal and then close the terminal window, what happens to Firefox by default?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Firefox continues running normally.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Firefox is terminated (killed).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Firefox becomes owned by root.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "When the parent shell dies, it sends a SIGHUP signal to its children, terminating them. (Unless detached with `nohup` or `disown`).",
+                "xpReward": 10
+            }
+        }
+    ]
+}

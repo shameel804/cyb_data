@@ -1,0 +1,119 @@
+{
+    "id": "l6",
+    "chapterId": "ch_4",
+    "title": "Chaining Commands: Pipes and Redirection",
+    "description": "Combine `cat`, `grep`, and other tools to build powerful data processing pipelines.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Workflow Mastery",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "The Pipe Symbol: `|` 🔗",
+            "content": "# Connecting Commands Together\n\nThis is the most important concept in Linux. It separates the beginners from the pros.\n\nThe **Pipe** `|` takes the **output** of the command on the left and feeds it as **input** to the command on the right.\n\n**Syntax:**\n```bash\ncommand1 | command2 | command3\n```\n\n### Analogy: The Factory Assembly Line 🏭\n*   **Step 1 (Cat)**: Dump raw logs onto conveyor belt.\n*   **Step 2 (Grep)**: Pick out only items marked 'ERROR'.\n*   **Step 3 (Head)**: Take only the first 5 of those errors.\n\n```bash\ncat huge_log.txt | grep \"ERROR\" | head -5\n```"
+        },
+        {
+            "id": "s_l6_2",
+            "type": "code",
+            "title": "Basic Pipeline",
+            "content": "List all files, then filter for '.txt' files.",
+            "codeSnippet": "ls -la | grep \".txt\"",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "What does `cat file.txt | grep \"hello\"` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Saves the word 'hello' to file.txt.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Prints lines from file.txt that contain 'hello'.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Counts how many times 'hello' appears.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "This is functionally the same as `grep \"hello\" file.txt`. The pipe connects the output of `cat` to the input of `grep`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "Useless Use of Cat? 🐱",
+            "content": "# Optimizing Pipelines\n\nYou might notice that:\n\n`cat file | grep hello` is the same as `grep hello file`.\n\nIn this specific case, the `cat` is **redundant**. Experienced users might call this a \"Useless Use of Cat\".\n\nHowever, `cat` becomes **essential** when you have **multiple files** or when you are chaining **many** commands.\n\n**Good use of cat:**\n```bash\ncat file1.txt file2.txt | grep error | sort | uniq\n```\n\nYou are concatenating two files first, then processing the combined stream."
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "Counting with `wc` 📊",
+            "content": "# Word Count\n\n`wc` is a fantastic tool that pairs beautifully with pipes.\n\n*   **`wc -l`**: Count **lines**.\n*   **`wc -w`**: Count **words**.\n*   **`wc -c`**: Count **characters**.\n\n### Real World Hacker Usage:\n\"How many unique IP addresses visited my website today?\"\n\n```bash\ncat access.log | cut -d' ' -f1 | sort | uniq | wc -l\n```\n(We haven't learned `cut` or `sort` yet, but see the pipeline pattern? It's all about flowing data.)\n\n**Simpler example:** Count how many errors occurred.\n```bash\ngrep \"ERROR\" app.log | wc -l\n```"
+        },
+        {
+            "id": "s_l6_6",
+            "type": "code",
+            "title": "Count Errors",
+            "content": "Create some sample data and count the 'error' lines.",
+            "codeSnippet": "echo -e \"info\ninfo\nerror\ninfo\nerror\" > sample.log\ngrep \"error\" sample.log | wc -l",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l6_7",
+            "type": "text",
+            "title": "Redirection: Saving Results `>` 💾",
+            "content": "# Write to a File\n\nPipes send data to the screen (or to the next command). What if you want to **save** the filtered results?\n\nUse **Redirection**.\n\n*   **`>`** : Redirect output to a file, **overwriting** it if it exists.\n*   **`>>`** : Redirect output to a file, **appending** to the end if it exists.\n\n**Example:** Extract all errors into a separate report.\n```bash\ngrep \"ERROR\" app.log > error_report.txt\n```\n\n### Combining Pipes and Redirection:\n```bash\ncat access.log | grep \"404\" | tail -20 > last_20_404s.txt\n```\nThis takes the log, filters for 404 errors, takes the last 20, and saves them to a file."
+        },
+        {
+            "id": "s_l6_8",
+            "type": "quiz",
+            "title": "Redirection Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "multiple_choice",
+                "question": "What happens if you run `grep error app.log > errors.txt` and `errors.txt` already exists?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It appends to the file.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It overwrites the file silently.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It gives an error and stops.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A single `>` overwrites the destination. Use `>>` to append.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## `tee`: The T-Junction\n\nWhat if you want to see the output on the screen **AND** save it to a file simultaneously?\n\n```bash\ngrep ERROR app.log | tee errors.txt\n```\n\n`tee` splits the pipeline. It writes the data to the file AND passes it along to the screen (or next command). It's named after a plumbing T-junction."
+        }
+    ]
+}

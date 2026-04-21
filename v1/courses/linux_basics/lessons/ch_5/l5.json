@@ -1,0 +1,104 @@
+{
+    "id": "l5",
+    "chapterId": "ch_5",
+    "title": "Changing Permissions: Symbolic Mode",
+    "description": "Use letters and operators to modify permissions intuitively with `chmod`.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "chmod Mastery",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Introducing `chmod` ✨",
+            "content": "# Change Mode\n\n`chmod` is the command to modify permissions (the 'mode' of a file).\n\nThere are two ways to use it:\n1.  **Symbolic Mode** (This Lesson): Uses letters: `u`, `g`, `o`, `a`, `r`, `w`, `x`.\n2.  **Octal Mode** (Next Lesson): Uses numbers: `755`, `644`.\n\nSymbolic mode is more intuitive for beginners. You 'speak' the permission change.\n\n**Syntax:**\n```bash\nchmod [who][operator][permissions] filename\n```\n\n### Who:\n- `u` : User (Owner)\n- `g` : Group\n- `o` : Others\n- `a` : All (u, g, and o)\n\n### Operators:\n- `+` : Add permission\n- `-` : Remove permission\n- `=` : Set exact permission (overwrite)\n\n### Permissions:\n- `r` : Read\n- `w` : Write\n- `x` : Execute"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Symbolic Examples 📝",
+            "content": "# Speaking `chmod`\n\nLet's translate plain English into `chmod` commands.\n\n### Example 1: \"Give the owner execute permission.\"\n```bash\nchmod u+x script.sh\n```\n\n### Example 2: \"Remove write permission from group and others.\"\n```bash\nchmod go-w secret.txt\n```\n\n### Example 3: \"Make the file readable and writable ONLY by the owner. Group and others get nothing.\"\n```bash\nchmod u=rw,go= private.txt\n```\n\n### Example 4: \"Give everyone read permission.\"\n```bash\nchmod a+r public.txt\n# or simply: chmod +r public.txt (defaults to 'a')\n```"
+        },
+        {
+            "id": "s_l5_3",
+            "type": "code",
+            "title": "Try Symbolic Mode",
+            "content": "Create a file, check permissions, add execute, check again.",
+            "codeSnippet": "touch test.sh\nls -l test.sh\nchmod u+x test.sh\nls -l test.sh",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_4",
+            "type": "quiz",
+            "title": "Symbolic Translation 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Which command removes write permission for the group?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "chmod g-w file.txt",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "chmod g+w file.txt",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "chmod u-w file.txt",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`g-w` means 'group minus write'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Multiple Changes at Once 🔗",
+            "content": "# Combine with Commas\n\nYou can modify multiple targets in one command by separating clauses with commas.\n\n```bash\nchmod u+x,g-w,o= file.txt\n```\n\nThis does three things:\n1.  `u+x` : Add execute for owner.\n2.  `g-w` : Remove write for group.\n3.  `o=` : Set others to no permissions (clears all).\n\n### The Capital 'X' (Conditional Execute)\nSometimes you want to add execute permission to all **directories** and **executable files** but not to regular text files.\n\n```bash\nchmod -R a+X /path/to/folder\n```\n\n`X` adds execute **only if the file is a directory or already has some execute bit set**. This is a safe way to fix folder permissions without making text files accidentally executable."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Combined Command 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "What does `chmod u=rwx,go=r file.txt` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Owner can read/write/execute; group and others can only read.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Everyone can read/write/execute.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Owner can read/write; group and others have no access.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`u=rwx` sets owner to full access; `go=r` sets group and others to read-only.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## `chmod -R` : Recursive\n\nUse the `-R` flag to apply permission changes to a directory and everything inside it.\n\n```bash\nchmod -R g+w shared_folder/\n```\n\nBe careful with recursive `chmod`. It's easy to accidentally make system files world-writable or non-executable."
+        }
+    ]
+}

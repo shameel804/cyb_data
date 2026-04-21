@@ -1,0 +1,104 @@
+{
+    "id": "l2",
+    "chapterId": "ch_5",
+    "title": "Strength in Numbers: Groups",
+    "description": "Learn how groups simplify permission management for teams and services.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Group Management",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Why Groups? 🤝",
+            "content": "# Sharing Without Giving Away the Keys\n\nImagine you have a team of developers: Alice, Bob, and Charlie. They all need access to the `/projects/webserver` folder.\n\nYou could individually grant Alice, Bob, and Charlie permissions. But what happens when Diana joins the team? You have to update permissions again.\n\n**Groups** solve this.\n1.  Create a group called `developers`.\n2.  Add Alice, Bob, and Charlie to the `developers` group.\n3.  Grant the `developers` group access to the folder.\n4.  When Diana joins, just add her to the group.\n\n### Analogy: The VIP List 📋\nThe bouncer at the club doesn't check a list of 5,000 names. He checks if you're on the \"VIP Guest List\" group. Groups make administration scalable."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "See Your Groups",
+            "content": "Use the `groups` command to see which groups your user belongs to.",
+            "codeSnippet": "groups",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What is the primary advantage of using groups instead of assigning permissions to individual users?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It makes the system faster.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It simplifies adding and removing access for multiple users.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It hides files from root.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Groups centralize access control, making management much easier.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "The Group Database: `/etc/group` 📚",
+            "content": "# The Roster\n\nAll groups are defined in `/etc/group`.\n\n```bash\ncat /etc/group\n```\n\nA typical line:\n`sudo:x:27:cybron,alice`\n\nFields separated by colons `:`:\n1.  **Group Name**: `sudo`\n2.  **Password Placeholder**: `x` (rarely used)\n3.  **GID**: `27` (Group ID)\n4.  **Member List**: `cybron,alice` (Comma-separated usernames)\n\n### Primary vs Supplementary Groups\n- **Primary Group**: The group associated with your user account in `/etc/passwd`. When you create a file, it belongs to this group by default.\n- **Supplementary Groups**: Additional groups you are a member of, listed in `/etc/group`."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Important Default Groups 🏷️",
+            "content": "# Groups You Should Know\n\n- **`sudo`** or **`wheel`**: Members can use the `sudo` command to become root. This is the key to the kingdom.\n- **`adm`**: Can read log files in `/var/log`. Useful for system administrators.\n- **`docker`**: Members can run Docker containers. **Security Risk!** Being in the `docker` group is almost equivalent to having root access because you can mount the host filesystem inside a container.\n\nCheck if you are in the `sudo` group:\n```bash\ngroups | grep sudo\n```"
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Group Membership 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "Where is the list of group members stored?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "/etc/passwd",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "/etc/group",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "/etc/members",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`/etc/group` contains group definitions and member lists.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Creating Users and Groups\n\nWhile this course focuses on *using* permissions, you might need to create groups someday. The commands are:\n\n- `useradd` : Create a new user.\n- `groupadd` : Create a new group.\n- `usermod -aG groupname username` : Add user to a supplementary group.\n\nThese require `sudo` privileges."
+        }
+    ]
+}

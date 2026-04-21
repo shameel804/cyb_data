@@ -1,0 +1,101 @@
+{
+    "id": "l3",
+    "chapterId": "ch_6",
+    "title": "The Living Monitor: `top` and `htop`",
+    "description": "Watch processes in real-time. Identify CPU hogs and memory leaks interactively.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Real-time Monitoring",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "From Snapshot to Live Stream 📺",
+            "content": "# `top`: The Task Manager of Linux\n\n`ps` is a photo. `top` is a live video feed.\n\n```bash\ntop\n```\n\n`top` refreshes every 3 seconds by default, showing you the **most active** processes consuming CPU and Memory.\n\n### The Dashboard (Top Section)\n- **Load Average**: System load for the last 1, 5, and 15 minutes. (Values represent how many processes are waiting for CPU).\n- **Tasks**: Total, running, sleeping, stopped, zombie.\n- **%CPU(s)** : Breakdown of CPU time (user, system, idle, waiting).\n- **MiB Mem** : Total RAM and how it's used.\n\n### The Process List (Bottom Section)\nSorted by **%CPU** by default. The greediest process is at the top."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Interactive `top` Shortcuts 🎮",
+            "content": "# Control the Display\n\n`top` is interactive. You don't type commands; you press single keys.\n\n| Key | Action |\n| :--- | :--- |\n| **`q`** | **Quit** `top`. |\n| **`h`** | Help screen. |\n| **`1`** | Toggle CPU core breakdown (show all cores vs single aggregate). |\n| **`P`** | Sort by **CPU** usage (uppercase P). |\n| **`M`** | Sort by **Memory** usage (uppercase M). |\n| **`T`** | Sort by **Time** running. |\n| **`k`** | **Kill** a process. You'll be prompted for PID and signal. |\n| **`r`** | **Renice** a process (change priority). |\n| **`c`** | Toggle full **Command** line vs just program name. |\n| **`V`** | Forest view (Hierarchy). |\n| **`u`** | Filter by **User**. |"
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Inside `top`, which key sorts the process list by Memory usage?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "m",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "M",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "P",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Uppercase `M` sorts by memory. Lowercase `m` toggles the memory summary display.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "The Modern Upgrade: `htop` 🌈",
+            "content": "# Prettier, Friendlier, Mouse-Controlled\n\n`htop` is a modern replacement for `top`. It's often not installed by default, but it's worth installing.\n\n```bash\nsudo apt install htop   # Debian/Ubuntu\nhtop\n```\n\n### Advantages over `top`:\n1.  **Color-coded** output.\n2.  **Mouse support**: Click on columns to sort.\n3.  **Scrollable list**: See all processes, not just what fits on screen.\n4.  **Tree view by default**: See the parent-child hierarchy easily (F5 to toggle).\n5.  **Function Keys**: F9 to Kill, F7/F8 to adjust priority.\n\n**Hacker's Preference:** Many pros use `htop` for quick visual assessment but fall back to `top` when remoting into minimal systems where `htop` isn't available."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "warning",
+            "title": "⚠️ The Load Average Trap",
+            "content": "# High Load != High CPU\n\nA common mistake is seeing a load average of 8.0 on a 4-core system and panicking.\n\n**Understanding Load Average:**\n- A value of **1.0** means **one process** was actively using or waiting for the CPU.\n- A value of **4.0** on a **4-core** system means the CPUs are fully utilized (perfectly balanced).\n- A value of **8.0** on a **4-core** system means there is a **queue** of 4 processes waiting. **This is when you feel slowness.**\n\n**The 'D' State Trap:** Processes stuck in **Uninterruptible Sleep (D)** waiting for a dead hard drive will **increase the load average** but show **0% CPU usage**. This is a classic sign of failing storage hardware."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Load Average Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "A system has 2 CPU cores. A load average of 2.0 indicates what?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The system is idle.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The CPUs are fully saturated (100% utilized).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The system is overloaded and crashing.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Load average equals the number of cores means full utilization. Over that number means a queue is forming.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Batch Mode `top` for Scripts\n\nYou can use `top` in scripts with `-b` (batch mode) and `-n` (number of iterations).\n\n```bash\ntop -b -n 1 | head -10\n```\n\nThis captures a single snapshot and exits, perfect for cron jobs or logging."
+        }
+    ]
+}

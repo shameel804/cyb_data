@@ -1,0 +1,104 @@
+{
+    "id": "l1",
+    "chapterId": "ch_8",
+    "title": "Why Script? The Automation Mindset",
+    "description": "Stop typing the same commands. Learn to think like a programmer to multiply your hacking efficiency.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Scripting Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "From Command Line to Script 📜",
+            "content": "# The Terminal is a REPL\n\nEvery time you type a command in the terminal and press Enter, you are programming. You are giving the shell a single instruction.\n\nA **Bash Script** is simply a **list of those instructions** saved in a text file that the shell executes one after another.\n\n### Analogy: The Cooking Show vs. The Recipe Book 📖\n- **Terminal Commands**: Like a cooking show where the chef chops one onion right now because you asked for it.\n- **Bash Script**: Like writing down the entire recipe. Once written, you can cook the meal perfectly, identically, a thousand times without thinking.\n\n**Hacker Mindset:** Manual typing is slow and error-prone. Scripting is **force multiplication**. You want to scan 1000 IP addresses? You write a loop once, not type `nmap` 1000 times."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is a Bash script fundamentally?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A compiled binary program.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A text file containing a sequence of shell commands.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A configuration file for Bash.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A Bash script is an interpreted text file with commands executed sequentially.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Hello, Script! Creating Your First Script 👶",
+            "content": "# Three Simple Steps\n\n1.  **Create a file** ending in `.sh`.\n    ```bash\n    touch myscript.sh\n    ```\n\n2.  **Add the Shebang** as the first line. This tells the system which interpreter to use.\n    ```bash\n    #!/bin/bash\n    ```\n\n3.  **Write your commands** below the shebang.\n    ```bash\n    echo \"Hello, Hackers!\"\n    ```\n\n4.  **Make it executable**.\n    ```bash\n    chmod +x myscript.sh\n    ```\n\n5.  **Run it**.\n    ```bash\n    ./myscript.sh\n    ```"
+        },
+        {
+            "id": "s_l1_4",
+            "type": "code",
+            "title": "Your First Script",
+            "content": "Create a file, add the shebang and echo, then execute.",
+            "codeSnippet": "echo '#!/bin/bash\necho \"I am now a hacker!\"' > first.sh\nchmod +x first.sh\n./first.sh",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Why the Shebang `#!/bin/bash` Matters #!",
+            "content": "# The Interpreter Directive\n\nIf you omit the shebang, the script will still often work because your *current* shell tries to interpret it. But this is unreliable.\n\n- Different users have different default shells (e.g., `zsh`, `sh`).\n- The shebang guarantees the script runs using `/bin/bash` regardless of who runs it.\n\n### Alternative Shebangs:\n- `#!/bin/sh` : Bourne Shell (more limited, portable).\n- `#!/usr/bin/env bash` : Searches PATH for bash (more portable across different Linux installs).\n\n**Best Practice:** Always start your scripts with `#!/bin/bash`."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Set `-e` to Fail Fast\n\nAdd this line right after the shebang:\n\n```bash\nset -e\n```\n\nIf any command in the script fails (returns a non-zero exit code), the script will **immediately stop**. Without this, a script might continue running after a critical error, causing chaos.\n\nFor debugging, use `set -x` to print every command as it executes."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "Script Execution 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "What command makes a script file executable?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "chmod +x script.sh",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "bash script.sh",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "./script.sh",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`chmod +x` adds the execute permission to the file.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,86 @@
+{
+    "id": "l8",
+    "chapterId": "ch_8",
+    "title": "Automation with Cron",
+    "description": "Schedule your scripts to run automatically at specific times—the final piece of the automation puzzle.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Scheduling",
+    "slides": [
+        {
+            "id": "s_l8_1",
+            "type": "text",
+            "title": "Why Schedule? ⏰",
+            "content": "# Set It and Forget It\n\nYou've written an amazing script. Now, do you want to wake up at 3:00 AM to run it? No.\n\n**Cron** is the Linux task scheduler. It runs commands or scripts at specific times, dates, or intervals.\n\n### Analogy: The Alarm Clock ⏰\nYou set the alarm for 7:00 AM. Cron rings the bell and executes your script.\n\n**Hacker Use Cases:**\n- Run a daily backup of your loot folder.\n- Check for system updates and apply them.\n- Automate a recurring scan of a target network.\n- **Persistence:** Make a backdoor phone home every 5 minutes."
+        },
+        {
+            "id": "s_l8_2",
+            "type": "text",
+            "title": "The Crontab File 📅",
+            "content": "# Editing Your Schedule\n\nEach user has their own **crontab** (cron table) file. To edit yours:\n\n```bash\ncrontab -e\n```\n\nThis opens the file in your default editor.\n\n### Crontab Syntax\n```\n* * * * * command_to_execute\n│ │ │ │ │\n│ │ │ │ └─── Day of Week (0 - 6) (Sunday = 0 or 7)\n│ │ │ └───── Month (1 - 12)\n│ │ └─────── Day of Month (1 - 31)\n│ └───────── Hour (0 - 23)\n└─────────── Minute (0 - 59)\n```\n\n**Special Characters:**\n- `*` : Every unit (e.g., `*` in hour means every hour).\n- `*/N` : Every N units (e.g., `*/5` in minute means every 5 minutes).\n- `,` : List of values (e.g., `1,15,30`)."
+        },
+        {
+            "id": "s_l8_3",
+            "type": "text",
+            "title": "Cron Examples 📝",
+            "content": "# Real-World Schedules\n\n| Schedule | Meaning |\n| :--- | :--- |\n| `0 * * * *` | At the top of every hour. |\n| `0 2 * * *` | Every day at 2:00 AM. |\n| `0 2 * * 0` | Every Sunday at 2:00 AM. |\n| `*/5 * * * *` | **Every 5 minutes**. (Hacker persistence classic). |\n| `@reboot` | Run once when the system boots. |\n| `@daily` | Run once a day (same as `0 0 * * *`). |\n\n**Example Crontab Entry:**\n```\n# Run my ping sweeper every day at 3:00 AM\n0 3 * * * /home/cybron/scripts/pingsweep.sh 192.168.1\n```"
+        },
+        {
+            "id": "s_l8_4",
+            "type": "quiz",
+            "title": "Cron Schedule 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l8_1",
+                "type": "multiple_choice",
+                "question": "What does the cron schedule `*/15 * * * *` mean?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Every 15 hours.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Every 15 minutes.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "At 15 minutes past every hour.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`*/15` in the minute field means 'every 15 minutes'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l8_5",
+            "type": "text",
+            "title": "Cron Best Practices 🛠️",
+            "content": "# Avoiding Common Pitfalls\n\n1.  **Use Absolute Paths**: Cron runs with a minimal environment. Do not rely on `~` or relative paths.\n    - ❌ `./myscript.sh`\n    - ✅ `/home/cybron/scripts/myscript.sh`\n\n2.  **Redirect Output**: Cron emails output to the user by default (which clutters your mailbox). Redirect to a log file.\n    ```\n    0 3 * * * /home/cybron/scripts/backup.sh >> /home/cybron/logs/backup.log 2>&1\n    ```\n\n3.  **Test in Shell First**: Run the exact command from your terminal before adding it to crontab.\n\n4.  **Check Cron Logs**: If it doesn't work, check the system cron log:\n    ```bash\n    sudo grep CRON /var/log/syslog\n    ```"
+        },
+        {
+            "id": "s_l8_6",
+            "type": "warning",
+            "title": "⚠️ OPSEC Alert",
+            "content": "## Cron is Loud\n\nCron jobs are logged. If you are trying to be stealthy, a cron job running every minute is a massive red flag in forensic analysis.\n\nFor stealthy persistence, attackers often use **systemd timers** or hide inside legitimate user processes. But cron is perfect for legitimate system administration tasks."
+        },
+        {
+            "id": "s_l8_7",
+            "type": "code",
+            "title": "View Your Crontab",
+            "content": "List your current scheduled jobs.",
+            "codeSnippet": "crontab -l",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l8_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## `crontab.guru`\n\nCan't remember the syntax? Use the website **crontab.guru**. It's an interactive editor that explains cron expressions in plain English."
+        }
+    ]
+}

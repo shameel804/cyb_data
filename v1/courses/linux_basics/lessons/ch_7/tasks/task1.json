@@ -1,0 +1,14 @@
+{
+    "id": "task1",
+    "chapterId": "ch_7",
+    "title": "Network Scanning Simulation",
+    "description": "Use `ping` and `netstat` to discover live hosts and open ports in a simulated environment.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You are performing internal reconnaissance on your local machine and simulated network targets.\n\n**Part 1: Local Listening Services**\n1. Use `ss -tulpn` (or `netstat -tulpn`) to list all listening TCP and UDP ports on your machine.\n2. Identify which services are exposed to the network (listening on `0.0.0.0` or `*:*`) versus localhost only (`127.0.0.1`).\n3. Note the process names (e.g., `sshd`, `systemd-resolve`).\n\n**Part 2: Ping Sweep Simulation**\nWe cannot actually scan a real network, but we can test local connectivity.\n1. Ping your loopback address: `ping -c 2 127.0.0.1`. This should always succeed.\n2. Ping a public DNS server: `ping -c 2 8.8.8.8`.\n3. Try pinging a non-existent private IP: `ping -c 2 192.168.1.254` (assuming no such host). Observe the 'Destination Host Unreachable' message.\n4. Write a one-liner to ping the first 5 addresses in the `127.0.0.1/24` range (Note: This range is loopback, so only `127.0.0.1` replies). Example: `for i in {1..5}; do ping -c 1 127.0.0.$i | grep \"64 bytes\" ; done`.\n\n**Deliverable:** Paste the output of `ss -tulpn` and the successful ping results.",
+    "hints": [
+        "Use `sudo` with `ss -tulpn` to see process names if they are hidden.",
+        "The `for` loop for ping: `for i in {1..5}; do ping -c 1 -W 1 127.0.0.$i | grep \"64 bytes\" ; done`"
+    ],
+    "expectedOutput": "List of listening services and ping responses.",
+    "solutionCode": "ss -tulpn\nping -c 2 127.0.0.1\nping -c 2 8.8.8.8\nfor i in {1..5}; do ping -c 1 -W 1 127.0.0.$i | grep \"64 bytes\" ; done"
+}

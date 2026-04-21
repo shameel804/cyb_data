@@ -1,0 +1,100 @@
+{
+    "id": "l1",
+    "chapterId": "ch_5",
+    "title": "Who Are You? Users in Linux",
+    "description": "Discover how Linux identifies you and why user accounts are the foundation of security.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "User Identity",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Multi-User from the Ground Up 👥",
+            "content": "# Linux Is Built for Sharing\n\nUnlike old versions of Windows where one person owned the whole computer, Linux was designed from day one to support **multiple users** simultaneously.\n\nImagine a university mainframe in the 1970s. Students connect via dumb terminals. Alice, Bob, and Charlie are all logged in at the same time. The system must ensure:\n\n1.  Alice cannot read Bob's term paper.\n2.  Bob cannot delete Charlie's research data.\n3.  Charlie cannot install viruses that affect everyone.\n\nThis is achieved through **Users**, **Groups**, and **Permissions**.\n\n### Analogy: The Apartment Building 🏢\n- **Users**: Individual tenants with their own apartment keys.\n- **Groups**: The building's maintenance staff, the tenant association.\n- **Permissions**: The locks on each door."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Why does Linux need a multi-user permission system?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To make the terminal look cool.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To isolate and protect different users' files and processes.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To slow down hackers.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Security and privacy are the core reasons. The system prevents users from interfering with each other.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Who Am I? The `whoami` Command 🪪",
+            "content": "# Your Current Identity\n\nIn the terminal, you are logged in as a specific user. To check who you are currently acting as, use:\n\n```bash\nwhoami\n```\n\nThis prints your username. Simple but essential.\n\n### Another Way: `id`\n```bash\nid\n```\nThis gives much more detail:\n\n`uid=1000(cybron) gid=1000(cybron) groups=1000(cybron),4(adm),27(sudo)...`\n\nLet's decode:\n- **uid**: User ID number.\n- **gid**: Primary Group ID number.\n- **groups**: All groups you belong to."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "code",
+            "title": "Check Your Identity",
+            "content": "Run these commands to see your current user information.",
+            "codeSnippet": "whoami\nid",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "The User Database: `/etc/passwd` 📇",
+            "content": "# The Phonebook of Users\n\nEvery user on the system is listed in the file `/etc/passwd`. Despite the name, it does **NOT** contain passwords (those are in `/etc/shadow`).\n\nLet's peek at it:\n```bash\ncat /etc/passwd\n```\n\nA typical line looks like this:\n`cybron:x:1000:1000:Cybron User:/home/cybron:/bin/bash`\n\nFields separated by colons `:`:\n1.  **Username**: `cybron`\n2.  **Password Placeholder**: `x` (actual hash is in `/etc/shadow`)\n3.  **UID**: `1000` (User ID)\n4.  **GID**: `1000` (Primary Group ID)\n5.  **GECOS/Comment**: `Cybron User` (Full name or description)\n6.  **Home Directory**: `/home/cybron`\n7.  **Login Shell**: `/bin/bash`"
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Database Decoding 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "fill_blank",
+                "question": "The file that contains the list of all user accounts on a Linux system is `/etc/_____`.",
+                "options": [
+                    "shadow",
+                    "passwd",
+                    "users",
+                    "group"
+                ],
+                "correctAnswer": "passwd",
+                "explanation": "`/etc/passwd` is the world-readable user database.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "The Root User 👑",
+            "content": "# UID 0: The Superuser\n\nThere is one user to rule them all: **root**.\n\n- **Username**: `root`\n- **UID**: `0`\n\nRoot bypasses **all** permission checks. Root can read, write, or delete any file. Root can kill any process. Root can even wipe the entire hard drive.\n\n### Analogy: The Landlord with Master Keys 🗝️\nNormal users have keys to their own apartments. Root has the master key to every door, the boiler room, and the electrical closet.\n\n**Golden Rule of Security:** NEVER log in directly as `root`. ALWAYS use `sudo` (Lesson 7) to borrow root powers temporarily. This prevents accidents."
+        },
+        {
+            "id": "s_l1_8",
+            "type": "warning",
+            "title": "⚠️ System Users",
+            "content": "## Not All Users Are Human\n\nIf you look at `/etc/passwd`, you'll see users like `www-data`, `mysql`, `nobody`. These are **system users**.\n\nThey don't have login passwords. They exist solely to run specific services (web server, database) with limited privileges. If a hacker compromises the web server, they only gain the permissions of `www-data`, not `root`. This is called **privilege separation**."
+        }
+    ]
+}

@@ -1,0 +1,99 @@
+{
+    "id": "l5",
+    "chapterId": "ch_8",
+    "title": "Code Reuse: Functions",
+    "description": "Write modular code. Define functions to organize your logic and avoid repetition.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Structuring Code",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "What is a Function? 🧩",
+            "content": "# A Mini-Script Inside Your Script\n\nA function is a named block of code that performs a specific task. You define it once and call it whenever you need it.\n\n### Analogy: The Sous Chef 👨‍🍳\nYour main script is the Head Chef. It says \"Make the sauce!\" The Sous Chef (function) knows exactly how to make the sauce and does it perfectly every time.\n\n### Why Functions?\n1.  **Avoid Repetition**: Write code once, use many times.\n2.  **Organization**: Break complex scripts into logical, manageable pieces.\n3.  **Maintainability**: Fix a bug in one place, not ten.\n\n### Syntax:\n```bash\nfunction_name() {\n    # Commands\n}\n\n# Or (older style):\nfunction function_name {\n    # Commands\n}\n```\n\n**Calling a function:** Just type its name.\n```bash\nsay_hello\n```"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Simple Function",
+            "content": "Define and call a function.",
+            "codeSnippet": "greet() {\n    echo \"Hello from the function!\"\n}\n\ngreet\ngreet",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Passing Arguments to Functions 📨",
+            "content": "# Parameters Inside Functions\n\nFunctions have their own set of positional parameters (`$1`, `$2`, etc.), separate from the main script's arguments.\n\n```bash\nscan_host() {\n    TARGET=$1\n    PORT=$2\n    echo \"Scanning $TARGET on port $PORT...\"\n    # nmap or netcat command here\n}\n\n# Call the function\nscan_host \"192.168.1.1\" 80\nscan_host \"google.com\" 443\n```\n\n**Important:** `$1` inside the function is the first argument passed *to the function*, not the script. The script's arguments are still available globally, but it's better practice to pass them explicitly."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "quiz",
+            "title": "Function Arguments 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "In the function call `myfunc apple banana`, what is `$2` inside the function?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "myfunc",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "apple",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "banana",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "`$2` is the second argument passed to the function.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Return Values 📤",
+            "content": "# Getting Data Back\n\nBash functions don't return strings like Python or JavaScript. They return an **exit status** (0 for success, non-zero for failure).\n\n- **`return`**: Sets the exit status.\n- To **capture output**, use **Command Substitution** (Lesson 6).\n\n```bash\ncheck_root() {\n    if [ \"$EUID\" -eq 0 ]\n    then\n        return 0 # Success\n    else\n        return 1 # Failure\n    fi\n}\n\nif check_root\nthen\n    echo \"You are root!\"\nelse\n    echo \"You are not root.\"\nfi\n```"
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Variable Scope: Local vs Global 🌐",
+            "content": "# Where Can I See This Variable?\n\nBy default, all variables in a Bash script are **global**. They are accessible everywhere, including inside functions.\n\nThis can cause bugs if a function accidentally changes a variable you were using elsewhere.\n\n### The `local` Keyword\nUse `local` to create a variable that exists **only inside the function**.\n\n```bash\nmyfunc() {\n    local TEMP_FILE=\"/tmp/myfunc.$$\"\n    echo \"Using temp file: $TEMP_FILE\"\n}\n\nmyfunc\necho \"TEMP_FILE outside: $TEMP_FILE\"  # Prints nothing (empty)\n```\n\n**Best Practice:** Always declare function-internal variables with `local`."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Variable Scope 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "Variables declared inside a function without the `local` keyword are accessible globally.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "True. By default, Bash variables are global unless declared with `local`.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

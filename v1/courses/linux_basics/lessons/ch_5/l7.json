@@ -1,0 +1,111 @@
+{
+    "id": "l7",
+    "chapterId": "ch_5",
+    "title": "With Great Power: `sudo`",
+    "description": "Temporarily borrow the power of root. The right way to administer a system.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Privilege Escalation",
+    "slides": [
+        {
+            "id": "s_l7_1",
+            "type": "text",
+            "title": "The Problem with Root 👑",
+            "content": "# Why You Shouldn't Be Root All the Time\n\nLogging in directly as `root` is like walking around your house with a flamethrower to light candles. One wrong move and everything burns.\n\n**Risks of running as root:**\n1.  **Accidental Deletion**: `rm -rf /` becomes possible.\n2.  **Malware**: Any program you run has **full system access**.\n3.  **No Accountability**: Logs show 'root' did it, not *who* did it.\n\n### The Solution: `sudo`\n`sudo` (Super User Do) allows **authorized users** to run **specific commands** with **root privileges** without logging in as root.\n\n**Analogy: The Valet Key 🚗**\nInstead of handing out your master house key, you give a valet a special key that only starts the car and opens the driver's door, but doesn't open the trunk or glove box. `sudo` is a granular permission system."
+        },
+        {
+            "id": "s_l7_2",
+            "type": "text",
+            "title": "Using `sudo` 🛡️",
+            "content": "# Prefix Any Command with `sudo`\n\n**Syntax:**\n```bash\nsudo [command]\n```\n\n**Example:**\n```bash\nsudo apt update\n```\n\n### What Happens?\n1.  You are prompted for **YOUR** password (not root's password).\n2.  The system checks if your user is in the `sudo` group (or listed in `/etc/sudoers`).\n3.  If authorized, the command runs as `root`.\n4.  The action is logged.\n\n### The 5-Minute Grace Period\nAfter entering your password, `sudo` remembers it for about 5 minutes. Subsequent `sudo` commands won't ask for the password again."
+        },
+        {
+            "id": "s_l7_3",
+            "type": "code",
+            "title": "Try `sudo` (Read-Only)",
+            "content": "View a restricted file that only root can read. (This won't change anything).",
+            "codeSnippet": "sudo cat /etc/shadow",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l7_4",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l7_1",
+                "type": "multiple_choice",
+                "question": "Whose password do you enter when running `sudo`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The root user's password.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Your own user password.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "No password is required.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "You authenticate with your own password to prove you are you, not that you know the root secret.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l7_5",
+            "type": "text",
+            "title": "Switching to Root Shell (If Needed) 🔄",
+            "content": "# `sudo -i` or `sudo su`\n\nSometimes you need to run many commands as root. Typing `sudo` each time is annoying.\n\nYou can open a **root shell**:\n```bash\nsudo -i\n```\nor\n```bash\nsudo su -\n```\n\nYour prompt changes from `$` to `#`. You are now in a root shell.\n\n**⚠️ Warning:** Be extremely careful in a root shell. Type `exit` or press `Ctrl+D` to return to your normal user shell **immediately** when done."
+        },
+        {
+            "id": "s_l7_6",
+            "type": "text",
+            "title": "Editing Protected Files ✏️",
+            "content": "# `sudo nano` or `sudo vim`\n\nYou cannot edit system configuration files like `/etc/hosts` without `sudo`.\n\n```bash\nsudo nano /etc/hosts\n```\n\nThis opens the text editor with root privileges, allowing you to save changes to the protected file.\n\n**Never use a graphical text editor with `sudo`** (e.g., `sudo gedit`). Use terminal editors like `nano` or `vim` to avoid permission issues with your user's GUI environment."
+        },
+        {
+            "id": "s_l7_7",
+            "type": "warning",
+            "title": "⚠️ `sudo` with Redirection",
+            "content": "## The Classic Pitfall\n\nThis **WILL NOT WORK**:\n```bash\nsudo echo \"nameserver 8.8.8.8\" > /etc/resolv.conf\n```\n\nWhy? The redirection `>` is handled by your **current shell** (which is not root) before `sudo` runs. Your shell tries to open the file and fails.\n\n### The Solution: `tee`\n```bash\necho \"nameserver 8.8.8.8\" | sudo tee /etc/resolv.conf\n```\n\nOr spawn a root shell:\n```bash\nsudo bash -c 'echo \"nameserver 8.8.8.8\" > /etc/resolv.conf'\n```"
+        },
+        {
+            "id": "s_l7_8",
+            "type": "quiz",
+            "title": "Sudo Scenario 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l7_2",
+                "type": "true_false",
+                "question": "It is safe to stay logged in as root all day if you are careful.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. Even careful users make typos. `sudo` provides a safety net and audit trail.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l7_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## `!!` : Run Last Command with Sudo\n\nYou typed a long command and forgot `sudo`. Instead of retyping the whole thing, use:\n\n```bash\nsudo !!\n```\n\nThis runs the previous command with `sudo` prepended. Magic!"
+        }
+    ]
+}

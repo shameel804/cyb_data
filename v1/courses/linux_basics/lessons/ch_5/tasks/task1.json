@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_5",
+    "title": "Securing a Shared Directory",
+    "description": "Create a group-shared folder with proper ownership and permissions for a team.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You are setting up a shared project folder for the 'pentesters' team. Users 'alice' and 'bob' need to read and write files in `/srv/pentest_loot`.\n\n**Assumptions:**\n- The group 'pentesters' already exists (we'll simulate this).\n- Your current user is in the 'pentesters' group.\n\n**Steps:**\n1. Create the directory: `sudo mkdir -p /srv/pentest_loot`\n2. Change the group ownership to 'pentesters': `sudo chgrp pentesters /srv/pentest_loot`\n3. Set permissions so that the owner and group can read, write, and access the directory, but others have no access. Use octal mode.\n4. Set the SGID bit on the directory so that new files created inside automatically inherit the 'pentesters' group.\n5. Create a test file inside the directory and verify its group ownership.\n\n**Hint:** SGID on a directory is octal `2` prefix. So `chmod 2770 /srv/pentest_loot`.",
+    "hints": [
+        "Octal 770 gives rwxrwx--- (owner and group full access, others none).",
+        "Add a leading 2 for SGID: `2770`.",
+        "Verify with `ls -ld /srv/pentest_loot`. You should see `drwxrws---` (note the 's' in group execute position)."
+    ],
+    "expectedOutput": "Directory with SGID set and correct permissions.",
+    "solutionCode": "sudo mkdir -p /srv/pentest_loot\nsudo chgrp pentesters /srv/pentest_loot\nsudo chmod 2770 /srv/pentest_loot\nsudo touch /srv/pentest_loot/test.txt\nls -l /srv/pentest_loot/"
+}

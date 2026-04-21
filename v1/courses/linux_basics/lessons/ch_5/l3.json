@@ -1,0 +1,110 @@
+{
+    "id": "l3",
+    "chapterId": "ch_5",
+    "title": "Who Owns This? `chown` and `chgrp`",
+    "description": "Take ownership of files and transfer them to other users and groups.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Ownership",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Every File Has an Owner 🏷️",
+            "content": "# User Owner and Group Owner\n\nWhen you create a file with `touch report.txt`, that file is stamped with two ownership attributes:\n\n1.  **User Owner**: You (e.g., `cybron`).\n2.  **Group Owner**: Your primary group (e.g., `cybron`).\n\nYou can see this with `ls -l`:\n\n`-rw-r--r-- 1 cybron cybron 0 Oct 26 10:00 report.txt`\n\nColumn 3 is the **User Owner** (`cybron`). Column 4 is the **Group Owner** (`cybron`).\n\n### Why Ownership Matters\nPermissions (rwx) are applied separately to the **Owner**, the **Group**, and **Others**. We'll cover this in Lesson 4."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Check Ownership",
+            "content": "Create a file and verify its ownership.",
+            "codeSnippet": "touch myfile.txt\nls -l myfile.txt",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Ownership Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "In `ls -l` output `-rw-r--r-- 1 alice developers ...`, who is the group owner?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "alice",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "developers",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "rw-r--r--",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The fourth column is the group owner.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Changing Ownership: `chown` 👑",
+            "content": "# Change Owner (Requires Root)\n\n`chown` changes the **User Owner** (and optionally the Group Owner) of a file.\n\n**Syntax:**\n```bash\nchown [new_owner] filename\n```\n\n**Example:**\n```bash\nsudo chown alice report.txt\n```\n\nNow `alice` owns `report.txt`.\n\n### Important Restriction:\nOnly **root** can use `chown`. Why? Imagine if a regular user could give their malicious file to `root`. That would be a security disaster. You must use `sudo` to change ownership.\n\n### Changing Both User and Group:\n```bash\nsudo chown alice:developers report.txt\n```\nThis sets the owner to `alice` and the group to `developers` in one command."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "warning",
+            "title": "⚠️ Ownership is Not Permission",
+            "content": "## Ownership != Access\n\nGiving a file to `alice` does **not** automatically grant `alice` permission to read it. It simply tags the file as \"Belongs to Alice.\"\n\nPermissions are a separate layer (next lesson)."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Changing Group: `chgrp` 👥",
+            "content": "# Change Group (Easier)\n\n`chgrp` changes only the **Group Owner**.\n\n**Syntax:**\n```bash\nchgrp [new_group] filename\n```\n\n**Example:**\n```bash\nchgrp developers report.txt\n```\n\n### Who Can Use `chgrp`?\nA regular user can change the group of a file they own, **but only to a group that they themselves belong to**.\n\nIf you are a member of `developers`, you can change your file's group to `developers`. You cannot change it to `admin` unless you are in the `admin` group."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Command Choice 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "You own a file and want to share it with the 'marketing' group (you are a member). Which command works without `sudo`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "chown :marketing file.txt",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "chgrp marketing file.txt",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "chown marketing file.txt",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`chgrp` can be used by the file owner to change the group to one they belong to.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_8",
+            "type": "tip",
+            "title": "Recursive Ownership 🔁",
+            "content": "## Changing an Entire Folder\n\nUse the `-R` (Recursive) flag to change ownership of a directory and everything inside it.\n\n```bash\nsudo chown -R www-data:www-data /var/www/html/\n```\n\nThis is essential for setting up web servers."
+        }
+    ]
+}

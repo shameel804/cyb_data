@@ -1,0 +1,107 @@
+{
+    "id": "l4",
+    "chapterId": "ch_2",
+    "title": "Changing Directories: `cd`",
+    "description": "Master the art of moving through the filesystem using absolute and relative paths.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Movement",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Teleporter: `cd` 🌀",
+            "content": "# Change Directory\n\nKnowing where you are is useless if you can't go anywhere else.\n\nThe command is `cd` (Change Directory).\n\n**Usage:**\n```bash\ncd [destination]\n```\n\n### Example:\n```bash\ncd /home/cybron/Documents\n```\n\nYou are now standing in the `Documents` folder. Run `pwd` to prove it to yourself."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What command moves you from `/home/user` to `/home/user/Downloads`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "cd Downloads",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "cd /Downloads",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "cd ..",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Since you are already in `/home/user`, you can just type the folder name `Downloads`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Absolute Paths: The Full Address 🗺️",
+            "content": "# Starting from the Root\n\nAn **Absolute Path** always starts with a `/`. It is the **complete** street address of a file or folder.\n\n```bash\ncd /usr/share/themes\n```\n\nNo matter where you currently are in the filesystem, if you type this exact command, you will end up in `/usr/share/themes`.\n\n### Analogy: GPS Coordinates 🌍\nAn absolute path is like giving someone Latitude and Longitude coordinates. It works no matter where they start."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Relative Paths: Turn Left at the Big Tree ➡️",
+            "content": "# Starting from Where You Stand\n\nA **Relative Path** does **NOT** start with a `/`. It's a set of directions based on your *current* location.\n\nLet's say you are in `/home/cybron`.\n\n*   **Command:** `cd Documents`\n*   **Result:** You go to `/home/cybron/Documents`.\n\n### Analogy: Turn-by-Turn Directions 🚗\n*   Absolute: \"Go to 123 Main Street, Springfield.\"\n*   Relative: \"Walk out of this room, turn right, go to the end of the hall.\"\n\n**Why use Relative Paths?** They are much shorter to type!"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "warning",
+            "title": "⚠️ Common Trap",
+            "content": "## `cd /Documents` vs `cd Documents`\n\n*   **`cd /Documents`**: Go to the **Root** of the drive and look for a folder called `Documents`. (This folder doesn't exist by default on Linux, so it will fail).\n*   **`cd Documents`**: Look for a folder called `Documents` inside my **current** directory.\n\nOne tiny slash makes a world of difference!"
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Path Identification 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "Which of these is an Absolute Path?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "home/user/file.txt",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "/home/user/file.txt",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "./file.txt",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Absolute paths always start with a forward slash `/` from the root directory.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Going Back Home: `cd` with no arguments 🏠",
+            "content": "# The Fastest Way Home\n\nNo matter how deep you wander into the filesystem tree...\n\n`/usr/share/icons/Adwaita/96x96/emblems/`\n\n...you can snap back to your safe **Home Directory** instantly by typing:\n\n```bash\ncd\n```\n\nThat's it. Just `cd` with nothing after it. It's a magical teleport back to `/home/your_username`."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## `cd -` : The Undo Button\n\nWant to go back to the *last* directory you were in?\n\n```bash\ncd -\n```\n\nThis is like the 'Back' button in a web browser. It swaps you back and forth between two directories."
+        }
+    ]
+}

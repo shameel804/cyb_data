@@ -1,0 +1,96 @@
+{
+    "id": "l4",
+    "chapterId": "ch_5",
+    "title": "The Holy Trinity: r w x",
+    "description": "Decode the cryptic permission string. Understand Read, Write, and Execute.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Permission Basics",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Decoding the Mystery String 🔐",
+            "content": "# `-rw-r--r--`\n\nThis 10-character string from `ls -l` is the **Permission String**.\n\nLet's break it down character by character.\n\n### Character 1: File Type\n- **`-`** : Regular file.\n- **`d`** : Directory.\n- **`l`** : Symbolic Link (Shortcut).\n\n### Characters 2-10: Three Triads (rwx)\nThese 9 characters are grouped into three sets of three:\n\n1.  **Characters 2-4**: **User (Owner)** permissions.\n2.  **Characters 5-7**: **Group** permissions.\n3.  **Characters 8-10**: **Others** (Everyone else) permissions.\n\n### The Triad: `rwx`\n- **`r`** : **Read** permission.\n- **`w`** : **Write** permission.\n- **`x`** : **Execute** permission.\n- **`-`** : Permission **NOT granted**.\n\n**Example:** `rw-r--r--`\n- User (Owner): `rw-` (Read, Write, no Execute)\n- Group: `r--` (Read only)\n- Others: `r--` (Read only)"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "String Decoding 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "In permission string `-rwxr-x---`, what can the Group do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Read only",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Read and Execute",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Read, Write, Execute",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Group triad is `r-x`: Read (yes), Write (no), Execute (yes).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Read (`r`) Permission 📖",
+            "content": "# What Does 'Read' Actually Mean?\n\n### For Files:\nYou can view the contents of the file.\n- `cat file.txt` works.\n- Opening in a text editor works.\n\n### For Directories:\nYou can **list the contents** of the directory.\n- `ls directory/` works.\n\n**Crucial Distinction:** Having read on a directory only lets you see *what files exist*. It does **not** let you enter the directory (`cd`) or read the files inside. That requires **Execute** on the directory."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Write (`w`) Permission ✏️",
+            "content": "# What Does 'Write' Actually Mean?\n\n### For Files:\nYou can **modify** the contents of the file.\n- Editing in `nano` works.\n- Redirecting output with `>` works.\n\n**Important:** Write permission on a file does **not** allow you to **delete** the file! Deletion is controlled by **Write permission on the parent directory**.\n\n### For Directories:\nYou can **create, delete, or rename** files inside the directory.\n- `touch newfile` works.\n- `rm existingfile` works.\n- `mv oldname newname` works.\n\n**Hacker Mindset:** If you have Write permission on a directory, you can delete any file inside it, **even if you don't own the file and can't read it**."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Execute (`x`) Permission 🏃",
+            "content": "# What Does 'Execute' Actually Mean?\n\n### For Files:\nYou can **run the file as a program**.\n- Running a compiled binary: `./program`.\n- Running a Bash script: `./script.sh`.\n\n### For Directories:\nYou can **enter (traverse) the directory**.\n- `cd directory/` works.\n- Accessing files inside (e.g., `cat directory/file.txt`) works, provided you also have Read on the file.\n\n### Analogy: The Hallway 🚪\n- **Read on Directory**: See a list of room numbers in the hallway.\n- **Execute on Directory**: Walk down the hallway to stand in front of a room.\n- **Read on File**: Open the room door and look inside.\n\nWithout Execute on a directory, you cannot access **anything** inside it, even if you know the filename."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Permission Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "You have `rw-` on a file, but no Write permission on the folder containing it. Can you edit the file?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Yes",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "No",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Yes. Editing a file requires Write on the file. Deleting or renaming the file requires Write on the parent folder.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "warning",
+            "title": "⚠️ Common Confusion",
+            "content": "## Directory Traversal\n\nTo `cd` into `/home/user/Documents`, you need **Execute** permission on:\n1.  `/`\n2.  `/home`\n3.  `/home/user`\n4.  `/home/user/Documents`\n\nYou do NOT need Read permission on the intermediate directories to pass through them. You only need Execute. This is why `/home` usually has `drwx--x--x` (Others can enter but cannot list contents)."
+        }
+    ]
+}

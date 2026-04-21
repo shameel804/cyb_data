@@ -1,0 +1,97 @@
+{
+    "id": "l2",
+    "chapterId": "ch_3",
+    "title": "Making Directories: `mkdir`",
+    "description": "Build the folders that will house your digital empire.",
+    "xpReward": 20,
+    "estimatedMinutes": 5,
+    "section": "Directory Creation",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Building Rooms: `mkdir` 📁",
+            "content": "# Make Directory\n\nFiles are great, but they need a place to live. You can't have a clean system with 10,000 files in one folder.\n\nThe command is `mkdir` (Make Directory).\n\n**Usage:**\n```bash\nmkdir new_folder_name\n```\n\nThis creates an empty folder (directory) in your current location.\n\n### Analogy: The Construction Crew 👷\n`touch` is like placing a single brick. `mkdir` is like building a new empty room to put bricks in."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Create a Project Folder",
+            "content": "Let's create a folder named `Hacking_Tools` and then move into it.",
+            "codeSnippet": "mkdir Hacking_Tools\nls -l\ncd Hacking_Tools\npwd",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "fill_blank",
+                "question": "The command to create a new directory named 'Evidence' is `_____ Evidence`.",
+                "options": [
+                    "touch",
+                    "mkfile",
+                    "mkdir",
+                    "newdir"
+                ],
+                "correctAnswer": "mkdir",
+                "explanation": "`mkdir` stands for 'make directory'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Nested Directories: The `-p` Flag 🏗️",
+            "content": "# Creating a Path of Folders\n\nWhat if you want to create a folder inside a folder that doesn't exist yet?\n\n```bash\nmkdir Projects/2024/January\n```\n\nIf `Projects` doesn't exist, this command will **FAIL** with an error: `No such file or directory`.\n\n### The Solution: `-p` (Parents)\nThe `-p` flag tells `mkdir`: \"Create any missing parent directories along the way.\"\n\n```bash\nmkdir -p Projects/2024/January\n```\n\nThis creates:\n1.  `Projects/`\n2.  `Projects/2024/`\n3.  `Projects/2024/January/`\n\nAll in one shot. This is essential for setting up complex project structures quickly."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Try Nested Creation",
+            "content": "Create a deep folder structure for a penetration test report.",
+            "codeSnippet": "mkdir -p Pentest/Client_A/Scans/Nmap\nls -R Pentest",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## `mkdir` and Spaces\n\nRemember our lesson on spaces? If you want a folder named `My Projects`, you must:\n\n```bash\nmkdir \"My Projects\"\n# OR\nmkdir My\\ Projects\n```\n\nAvoid spaces in folder names whenever possible. Use **underscores** or **hyphens** instead: `My_Projects` or `My-Projects`. It makes scripting much easier."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "Flag Identification 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "You want to create `/home/user/A/B/C` but `A` doesn't exist yet. Which command works?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "mkdir A/B/C",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "mkdir -p A/B/C",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "mkdir -r A/B/C",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The `-p` flag (parents) creates all necessary intermediate directories.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

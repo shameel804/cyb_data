@@ -1,0 +1,93 @@
+{
+    "id": "l1",
+    "chapterId": "ch_10",
+    "title": "The Three Data Streams: stdin, stdout, stderr",
+    "description": "Understand file descriptors 0, 1, and 2—the hidden plumbing behind every command.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Stream Fundamentals",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Every Command Has Three Channels 📡",
+            "content": "# The Hidden Plumbing\n\nIn Linux, when you run a command, the operating system automatically opens three communication channels called **Standard Streams**.\n\n1.  **Standard Input (stdin)** : Where the command reads data **from**.\n2.  **Standard Output (stdout)** : Where the command writes normal **results**.\n3.  **Standard Error (stderr)** : Where the command writes **error messages**.\n\n### Analogy: The Office Worker 👨‍💼\n- **stdin** : The Inbox (letters coming in).\n- **stdout** : The Outbox (completed reports going out).\n- **stderr** : The Sticky Note on the monitor (\"Printer is jammed!\").\n\nBy default:\n- **stdin** is connected to your **keyboard**.\n- **stdout** and **stderr** are connected to your **terminal screen**.\n\n**Redirection** changes where these streams point."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "File Descriptors: The Secret Numbers 🔢",
+            "content": "# 0, 1, and 2\n\nEvery open file or stream in Linux is assigned a number called a **File Descriptor (FD)** .\n\nFor the three standard streams, the numbers are **fixed**:\n\n| Stream | File Descriptor | Symbol |\n| :--- | :--- | :--- |\n| Standard Input | **0** | `<` or `0<` |\n| Standard Output | **1** | `>` or `1>` |\n| Standard Error | **2** | `2>` |\n\nYou don't *have* to type the numbers for input (0) and output (1) because they are the defaults. But you **must** type `2` to redirect stderr.\n\n```bash\n# These two lines do the exact same thing:\necho \"Hello\" > file.txt\necho \"Hello\" 1> file.txt\n```"
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the file descriptor number for Standard Error (stderr)?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "0",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "1",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "2",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "stderr is file descriptor 2. stdin is 0, stdout is 1.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Why Separate stdout and stderr? 🎯",
+            "content": "# Don't Mix Garbage with Gold\n\nImagine you are scanning a network and logging results.\n\n- **stdout** contains the list of live IP addresses (the **Gold** you want to keep).\n- **stderr** contains \"Permission denied\" or \"Connection timed out\" messages (the **Garbage** you might want to discard).\n\nIf you just redirect normally (`>`), you capture **only** the gold. The garbage still spills onto your screen.\n\n### Example:\n```bash\nfind / -name \"*.conf\" 2> errors.log > results.txt\n```\n- Normal output (found files) goes to `results.txt`.\n- Errors (permission denied) go to `errors.log`.\n- Your terminal stays **clean**.\n\nThis is the essence of professional scripting."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "See the Split",
+            "content": "Generate both stdout and stderr and observe where they go.",
+            "codeSnippet": "ls /root /home 2>/dev/null",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Stream Identification 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "By default, both stdout and stderr are printed to the terminal screen.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "True. Both are connected to the terminal unless redirected separately.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

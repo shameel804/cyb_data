@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_6",
+    "title": "Persistent Background Download",
+    "description": "Start a long-running task, suspend it, background it, and detach it so it survives terminal closure.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You are in the middle of a penetration test and need to download a large password dictionary file, but you must log out of the VPN session soon. The download must continue after you disconnect.\n\n**Simulated Task:**\nWe'll use `sleep` to simulate a long-running download process.\n\n**Steps:**\n1. Start the 'download' in the foreground:\n   ```bash\n   sleep 300\n   ```\n2. Realize you need the terminal back. Suspend the process using `Ctrl+Z`.\n3. Check the job status with `jobs`. Note the Job ID (e.g., `[1]+  Stopped`).\n4. Resume the job in the **background** using the `bg` command.\n5. Verify it is now `Running` using `jobs`.\n6. You are about to close the terminal. To prevent the job from dying, use `disown %1` (or the appropriate job number) to detach it from the shell.\n7. Verify the job is no longer listed in `jobs`.\n8. Check that the process is still alive using `ps -p PID` (where PID was shown when you started the job or in `jobs -l`).\n9. Once verified, you can `kill` the sleep process as we don't actually need it to run for 5 minutes.\n\n**Challenge:** Repeat the process but use `nohup` from the beginning:\n```bash\nnohup sleep 300 &\n```\nObserve the creation of `nohup.out`.",
+    "hints": [
+        "After `Ctrl+Z`, the job is 'Stopped'. Use `bg` to make it 'Running'.",
+        "`disown %1` removes job 1 from the shell's responsibility.",
+        "Use `jobs -l` to see PIDs of jobs."
+    ],
+    "expectedOutput": "Job continues running after disown, verified by `ps`.",
+    "solutionCode": "# Foreground start\nsleep 300\n# Press Ctrl+Z\njobs\nbg %1\njobs\ndisown %1\njobs -l  # Note PID\nps -p <PID>\nkill <PID>\n\n# Alternative with nohup\nnohup sleep 300 &\n# Close terminal, reopen, check with ps aux | grep sleep"
+}

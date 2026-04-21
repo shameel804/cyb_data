@@ -1,0 +1,101 @@
+{
+    "id": "l2",
+    "chapterId": "ch_7",
+    "title": "Ports: The Apartment Numbers",
+    "description": "Learn how services are identified by port numbers and why scanning ports is a hacker's first step.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Network Foundations",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "What is a Port? 🚪",
+            "content": "# Beyond the IP Address\n\nAn IP address gets data to the **correct computer**. But a computer runs many programs (web server, email, SSH). Which program should receive the data?\n\nThe answer: **Ports**.\n\nA port is a 16-bit number (0-65535) that identifies a specific **service** or **process** listening on that machine.\n\n### Analogy: Apartment Building 🏢\n- **IP Address**: The building's street address.\n- **Port Number**: The individual apartment number.\n\n`192.168.1.10:22` means \"Go to building 192.168.1.10, knock on door 22 (SSH).\""
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Port Ranges: Well-Known, Registered, Dynamic 🔢",
+            "content": "# Who Uses Which Door?\n\nPorts are divided into ranges by the IANA:\n\n| Range | Type | Description |\n| :--- | :--- | :--- |\n| **0 - 1023** | **Well-Known Ports** | Reserved for core system services. Require **root** privileges to open. |\n| **1024 - 49151** | **Registered Ports** | Used by user applications (e.g., 3306 MySQL, 5432 PostgreSQL). |\n| **49152 - 65535** | **Dynamic / Ephemeral** | Temporary ports assigned automatically for outbound connections. |\n\n**Hacker Mindset:** Scanning for open well-known ports tells you exactly what software is running on a target."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "The Dirty Dozen: Ports You MUST Memorize 🧠",
+            "content": "# Essential Service Ports\n\n| Port | Protocol | Service |\n| :--- | :--- | :--- |\n| **21** | TCP | FTP (File Transfer) |\n| **22** | TCP | **SSH** (Secure Shell) |\n| **23** | TCP | Telnet (Insecure, avoid) |\n| **25** | TCP | SMTP (Email Sending) |\n| **53** | UDP/TCP | **DNS** (Domain Name System) |\n| **80** | TCP | **HTTP** (Web) |\n| **110** | TCP | POP3 (Email Retrieval) |\n| **143** | TCP | IMAP (Email Retrieval) |\n| **443** | TCP | **HTTPS** (Secure Web) |\n| **445** | TCP | SMB (Windows File Sharing) |\n| **3306** | TCP | MySQL Database |\n| **3389** | TCP | RDP (Remote Desktop) |\n| **8080** | TCP | HTTP Alternate / Proxy |"
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "Port Knowledge Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which port is used for secure web traffic (HTTPS)?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "80",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "443",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "22",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Port 443 is the standard port for HTTPS (HTTP over SSL/TLS).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "TCP vs UDP: Two Delivery Methods 📦",
+            "content": "# Reliable Courier vs. Fast Mailman\n\nPorts can listen using two different transport protocols:\n\n### TCP (Transmission Control Protocol)\n- **Connection-oriented**: Establishes a handshake before sending data.\n- **Reliable**: Guarantees delivery and order.\n- **Analogy**: **Certified Mail with Return Receipt**. You know it arrived.\n- **Use Cases**: Web browsing (HTTP/HTTPS), Email, SSH.\n\n### UDP (User Datagram Protocol)\n- **Connectionless**: Just sends packets without setup.\n- **Unreliable**: No guarantee of delivery or order.\n- **Analogy**: **Throwing Paper Airplanes**. Fast, but might get lost.\n- **Use Cases**: Streaming video/audio, DNS queries, Online gaming."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Protocol Match 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "Which protocol is connection-oriented and guarantees delivery?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "UDP",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "TCP",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "ICMP",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "TCP establishes a connection and ensures reliable data transfer.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "warning",
+            "title": "⚠️ Ports and Security",
+            "content": "## Open Ports = Attack Surface\n\nEvery open port is a door that a hacker can try to pick. \n\n**Defense Strategy:** \n- Use a firewall to block all ports except those absolutely necessary.\n- If you see port 22 (SSH) open to the world, it **will** be brute-forced within hours.\n\n**Offensive Strategy:** \n- Use `nmap` (outside this course) to scan for open ports. The response tells you the OS and software version."
+        }
+    ]
+}

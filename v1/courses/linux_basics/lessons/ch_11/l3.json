@@ -1,0 +1,78 @@
+{
+    "id": "l3",
+    "chapterId": "ch_11",
+    "title": "Advanced Scheduling and Logging",
+    "description": "Redirect output, set environment variables, and troubleshoot failing cron jobs.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Production Readiness",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Logging Cron Output 📝",
+            "content": "# Don't Lose Your Data!\n\nSince cron has no terminal, you **must** explicitly redirect output to a file to see what happened.\n\n### Redirect Both stdout and stderr to a Log File:\n```\n*/5 * * * * /path/to/script.sh >> /home/user/cron.log 2>&1\n```\n\n### Append a Timestamp (Advanced):\n```\n*/5 * * * * echo \"$(date): Starting script\" >> /home/user/cron.log; /path/to/script.sh >> /home/user/cron.log 2>&1\n```\n\n### Discard All Output (Stealth Mode):\n```\n*/5 * * * * /path/to/script.sh > /dev/null 2>&1\n```\nThis is perfect for silent beacons or cleanup scripts."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Example: Logging Job",
+            "content": "Add a cron job that writes a timestamp to a log file every minute (for testing).",
+            "codeSnippet": "# Add this line with 'crontab -e'\n* * * * * echo \"Cron ran at $(date)\" >> /home/user/cron_test.log 2>&1",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Setting Environment Variables in Crontab 🌍",
+            "content": "# Defining PATH, MAILTO, and Custom Vars\n\nYou can set environment variables at the top of your crontab file that apply to **all** subsequent jobs.\n\n**Common Variables:**\n- **`PATH`** : Extend the search path for executables.\n- **`MAILTO`** : Send email output to a specific address (or `MAILTO=\"\"` to disable email).\n- **`SHELL`** : Specify which shell to use (default is `/bin/sh`).\n\n**Example Crontab:**\n```\nPATH=/usr/local/bin:/usr/bin:/bin\nMAILTO=\"\"\nMY_VAR=\"production\"\n\n0 2 * * * /home/user/backup.sh\n```\n\nNow `backup.sh` will have access to `$MY_VAR` and the extended `PATH`."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "quiz",
+            "title": "Cron Environment 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "true_false",
+                "question": "Cron jobs automatically inherit your shell aliases and functions from .bashrc.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. Cron runs with a minimal environment. You must explicitly set PATH and variables.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Troubleshooting: Why Isn't My Cron Job Running? 🔧",
+            "content": "# The Forensic Checklist\n\n1.  **Is the cron daemon running?**\n    ```bash\n    systemctl status cron\n    ```\n\n2.  **Is the syntax correct?** Check for extra spaces or missing newlines.\n\n3.  **Is the command using absolute paths?**\n    - ❌ `nmap -sn 192.168.1.1`\n    - ✅ `/usr/bin/nmap -sn 192.168.1.1`\n\n4.  **Check the system cron log:**\n    ```bash\n    grep CRON /var/log/syslog\n    ```\n    This shows exactly which jobs were executed and whether they succeeded.\n\n5.  **Test manually:** Copy the exact command from the crontab (with full paths) and run it in your terminal. Does it work? If it fails due to permissions, cron will fail too.\n\n6.  **Permissions:** Does the script have execute permission? (`chmod +x script.sh`)"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "code",
+            "title": "Check Cron Logs",
+            "content": "View the system log to see recent cron activity.",
+            "codeSnippet": "sudo grep CRON /var/log/syslog | tail -20",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_7",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Simulate Cron Environment for Testing\n\nTo debug a script that works in terminal but fails in cron, run it with a minimal environment:\n\n```bash\nenv -i HOME=$HOME PATH=/usr/bin:/bin /bin/bash -c 'your_command_here'\n```\n\nThis strips away your custom PATH and variables, mimicking cron's execution context."
+        }
+    ]
+}

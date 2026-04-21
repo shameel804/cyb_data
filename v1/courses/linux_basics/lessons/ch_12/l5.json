@@ -1,0 +1,105 @@
+{
+    "id": "l5",
+    "chapterId": "ch_12",
+    "title": "Advanced Anti-Forensics and Stealth",
+    "description": "Manipulate timestamps, use memory-only execution, and understand the limits of log wiping.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Advanced Stealth",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Audit Daemon: `auditd` 🛡️",
+            "content": "# The Inescapable Eye\n\n`auditd` is the Linux kernel's auditing system. It can be configured to log **every single system call** made by a specific user or file.\n\n- **Logs are stored in:** `/var/log/audit/audit.log`\n- **Immutable rules:** Can be set so that even **root cannot stop the audit daemon** without rebooting into single-user mode.\n\nIf you are on a system with `auditd` running, **every command you type, every file you open, is logged with microsecond precision.**\n\n### Checking for `auditd`:\n```bash\nsystemctl status auditd\n```\n\n### Viewing Audit Rules:\n```bash\nsudo auditctl -l\n```\n\n**Reality Check:** In a high-security environment (government, finance), you **cannot** hide from `auditd` with software tools. You would need to exploit a kernel vulnerability to disable it, which is highly advanced."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Check for Auditd",
+            "content": "See if the kernel audit framework is active.",
+            "codeSnippet": "systemctl is-active auditd",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Auditd Awareness 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "true_false",
+                "question": "The `auditd` daemon can be configured so that even the root user cannot stop it without a reboot.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "True. `auditd` supports immutable rules that lock the audit configuration.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Live Forensics: What About RAM? 🧠",
+            "content": "# The Evidence in Memory\n\nEven if you wipe the disk, evidence of your activity exists in **RAM (Random Access Memory)** .\n\n- **Process List**: `ps aux` shows running processes.\n- **Network Connections**: `netstat` shows active sockets.\n- **Command History in Memory**: The shell keeps the current session's history in memory before writing to disk.\n\n### Memory Acquisition (Cold Boot Attack):\nAn attacker with physical access can freeze the RAM chips and read the contents later.\n\n### Memory Dumping (Live System):\nA defender can use `LiME` (Linux Memory Extractor) to dump the entire RAM contents to disk for offline analysis. Your decrypted SSH keys, your in-memory payload—everything is captured.\n\n**OPSEC Implication:** If you suspect a system is being monitored, **do not enter sensitive credentials**. The monitoring tools might be capturing RAM snapshots periodically."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Filesystem Journaling: The Ghost of Data Past 👻",
+            "content": "# Deleted is Not Deleted\n\nModern Linux filesystems (ext4, XFS) are **journaling filesystems**. Before writing data to the main disk, they write a record of the change to a **journal**.\n\nEven if you `rm` a file, the journal might contain metadata or even fragments of the file content.\n\n### Forensic Tools:\n- **`extundelete`** : Attempts to recover deleted files on ext3/ext4.\n- **`testdisk` / `photorec`** : Carves raw data from the disk surface, ignoring the filesystem structure.\n\n### Defeating This:\n- **Full Disk Encryption (LUKS)** : If the disk is encrypted and the key is in RAM, physical access is required.\n- **Secure Erase**: Overwrite the entire partition with random data.\n- **Physical Destruction**: The only 100% guarantee."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Recovery Possibility 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "Why might a file deleted with `rm` still be recoverable?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The file is moved to a hidden recycle bin.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The filesystem journal may contain metadata or data remnants.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "`rm` only hides the file; it doesn't delete it.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Journaling filesystems keep logs of changes that can be forensically analyzed.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "The Ultimate Stealth: Stateless / Ephemeral Systems ☁️",
+            "content": "# Burn It All Down\n\nThe most advanced OPSEC is **not playing the logging game at all**.\n\n### Techniques:\n- **Tails OS**: A live operating system that runs entirely from a USB stick and **writes nothing to the hard drive**. Everything is in RAM. When you shut down, **everything is gone**. (Amnesiac).\n- **Kali Live USB with Persistence (Encrypted)** : Only the changes you save are written to an encrypted partition.\n- **Disposable Docker Containers**: Spin up a container, do your work, and `docker rm` it. The host system logs very little.\n- **Cloud Shells**: Use AWS CloudShell or Google Cloud Shell. The logs belong to the cloud provider's account, not your local machine.\n\n### The Whonix Gateway:\nFor absolute network anonymity, use **Whonix**. It consists of two VMs: one acts as a Tor gateway, the other is a workstation that can **only** talk through Tor. Even if the workstation is rooted, the attacker gets no real IP."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## `/dev/shm` - The RAM Disk\n\nLinux provides a temporary filesystem that lives entirely in RAM: `/dev/shm/`.\n\nFiles written here are **never committed to physical disk** (unless swap is used). When the system reboots, the contents vanish.\n\n**Usage:**\n```bash\ncp /usr/bin/nmap /dev/shm/\n/dev/shm/nmap -sn 192.168.1.0/24\n```\n\nThis leaves **no trace** on the hard drive. Perfect for running tools you don't want discovered."
+        }
+    ]
+}

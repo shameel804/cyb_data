@@ -1,0 +1,95 @@
+{
+    "id": "l2",
+    "chapterId": "ch_9",
+    "title": "Installing Tools: apt-get and apt",
+    "description": "Master the essential commands to find and install hacking tools from trusted sources.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Package Management",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "`apt` vs `apt-get`: The Evolution 🐒➡️👨",
+            "content": "# Which One Do I Use?\n\nYou will see both `apt-get` and `apt` in tutorials.\n\n- **`apt-get`** : The classic, stable backend tool. Great for scripts.\n- **`apt`** : The modern, user-friendly frontend. **Use this for daily driving.**\n\n`apt` combines the most common commands from `apt-get` and `apt-cache` into one cleaner interface with a **progress bar**!\n\n**Rule of Thumb:** In a script, use `apt-get -y`. In the terminal, use `apt`.\n\n### The APT Workflow (You Must Memorize This!)\n1.  **Update** the package list (`apt update`).\n2.  **Search** for a tool (`apt search nmap`).\n3.  **Install** the tool (`apt install nmap`)."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Step 1: `sudo apt update` 🔄",
+            "content": "# Refresh the Catalog\n\n**This command does NOT install updates.** It only downloads the latest **list of available packages** from the repositories.\n\n```bash\nsudo apt update\n```\n\n### Analogy: Checking the Menu 🍽️\nYou're at a restaurant. `apt update` is asking the waiter for today's specials. You haven't ordered food yet; you're just seeing what's available.\n\n**Why is this required?**\nIf your package list is old, `apt install` might try to download a version that no longer exists on the server. **Always run `sudo apt update` before installing anything new.**"
+        },
+        {
+            "id": "s_l2_3",
+            "type": "code",
+            "title": "Update Package List",
+            "content": "Refresh your local cache of available software.",
+            "codeSnippet": "sudo apt update",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Step 2: `apt search` and `apt show` 🔍",
+            "content": "# Finding the Right Tool\n\nBefore installing, you should see if a package exists and what it does.\n\n### Search by Keyword:\n```bash\napt search \"network scanner\"\n```\n\n### Show Detailed Info:\n```bash\napt show nmap\n```\n\nThis displays the description, version, dependencies, and **installed size**. This is crucial for knowing how much space a tool will take up on a small system."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Search for a Tool",
+            "content": "Find all packages related to 'sniffer'.",
+            "codeSnippet": "apt search sniffer",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "APT Sequence 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What is the FIRST command you should run before installing new software?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "sudo apt upgrade",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "sudo apt update",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "sudo apt install",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`apt update` refreshes the package index so you install the latest available version.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Step 3: `sudo apt install` ⬇️",
+            "content": "# Download and Set Up\n\nFinally, the main event.\n\n```bash\nsudo apt install nmap\n```\n\n**What happens next:**\n1.  APT calculates dependencies.\n2.  It shows you a summary: \"The following NEW packages will be installed... Need to download 25 MB.\"\n3.  It asks: `Do you want to continue? [Y/n]`\n4.  Press `Y` (or just Enter).\n\n### Install Multiple Packages at Once:\n```bash\nsudo apt install nmap wireshark gobuster\n```\n\n### Accept Automatically (Scripting):\n```bash\nsudo apt install -y nmap\n```\nThe `-y` flag answers 'yes' to the prompt automatically. **Essential for automation scripts.**"
+        },
+        {
+            "id": "s_l2_8",
+            "type": "warning",
+            "title": "⚠️ The `-y` Trap",
+            "content": "## Always Read the Prompt First!\n\nSometimes `apt install` will say: \"The following packages will be **REMOVED**: linux-image-...\"\n\nIf you blindly use `-y`, you might uninstall your kernel or desktop environment. This is rare in stable repos but common when mixing unstable PPAs.\n\n**Manual confirmation is a safety feature.**"
+        },
+        {
+            "id": "s_l2_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Installing `.deb` Files Manually\n\nSometimes you download a `.deb` file from a website (e.g., Google Chrome, VSCode).\n\n```bash\nsudo dpkg -i package_name.deb\n```\n\nThis installs the package but **does NOT resolve dependencies**. If it fails due to missing dependencies, fix it with:\n```bash\nsudo apt install -f\n```\nThis command (\"fix broken\") downloads and installs any missing dependencies."
+        }
+    ]
+}

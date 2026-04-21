@@ -1,0 +1,74 @@
+{
+    "id": "l4",
+    "chapterId": "ch_7",
+    "title": "Tracing the Path: `traceroute`",
+    "description": "Map the journey of packets across the internet and identify network bottlenecks.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Network Reconnaissance",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Road Map: `traceroute` 🗺️",
+            "content": "# See Every Hop on the Journey\n\n`ping` tells you *if* you can reach the destination. `traceroute` shows you **the exact path** your packets take to get there, listing every router (hop) along the way.\n\n**Usage:**\n```bash\ntraceroute google.com\n```\n(On some systems, it's `traceroute` or `tracepath`).\n\n### How It Works (The TTL Trick):\n1.  `traceroute` sends a packet with **TTL=1**. The first router decrements it to 0 and sends back a 'Time Exceeded' error, revealing its IP address.\n2.  Then it sends a packet with **TTL=2**, revealing the second router.\n3.  This repeats until the final destination is reached."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Trace a Route",
+            "content": "See the path to Google's DNS. (Use `traceroute` or `tracepath`).",
+            "codeSnippet": "traceroute -n 8.8.8.8",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Reading the Output 📊",
+            "content": "# Asterisks and Latency\n\n```\n 4  10.0.0.1  15.3 ms  12.1 ms  14.8 ms\n 5  * * *\n 6  142.250.185.46  20.5 ms  19.8 ms  21.1 ms\n```\n\n- **Line 4**: A router at `10.0.0.1` responded three times. Latency is ~14ms.\n- **Line 5**: `* * *` means the router did **not respond** to the probe (Firewall blocking). The trace continues because the next router (Line 6) did respond.\n\n### Interpreting `* * *`:\n- If it appears for one hop but the trace continues: **Firewall dropping ICMP**.\n- If `* * *` persists for all remaining hops: The destination is unreachable or heavily firewalled.\n\n**Hacker Use:** Identifying the network border (where your ISP hands off to another ISP) and detecting filtering devices."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "quiz",
+            "title": "Output Analysis 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What does `* * *` in a `traceroute` line usually mean?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The router is down.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The router didn't respond (firewall).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The packet was lost.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Asterisks indicate no response was received for those specific probes, often due to ICMP rate limiting or firewall rules.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "`traceroute` vs `tracepath` 🔄",
+            "content": "# Two Flavors\n\n- **`traceroute`** : The classic tool. Uses UDP packets by default (can be changed with `-I` for ICMP or `-T` for TCP). Requires root for some options.\n- **`tracepath`** : Simpler, non-root alternative. Uses UDP. Good for basic path discovery.\n\n### Useful `traceroute` Options:\n- **`-n`** : Do not resolve IPs to hostnames (faster).\n- **`-I`** : Use **ICMP Echo** instead of UDP. Sometimes bypasses firewalls that only block UDP.\n- **`-p PORT`** : Specify destination port (for UDP/TCP probes)."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## `mtr` : The Hybrid Tool\n\nCombine the continuous monitoring of `ping` with the hop-by-hop analysis of `traceroute`.\n\n```bash\nmtr google.com\n```\n\n`mtr` (My Traceroute) provides a real-time, updating display of latency and packet loss for every hop. Essential for diagnosing intermittent network issues."
+        }
+    ]
+}

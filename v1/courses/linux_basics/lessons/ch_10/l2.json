@@ -1,0 +1,83 @@
+{
+    "id": "l2",
+    "chapterId": "ch_10",
+    "title": "Capturing Output: > and >>",
+    "description": "Redirect standard output to files. Learn the crucial difference between overwriting and appending.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Output Redirection",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Single Greater-Than: `>` ✍️",
+            "content": "# Write to a File (Overwrite)\n\nThe `>` operator redirects **stdout** to a file.\n\n**Syntax:**\n```bash\ncommand > filename\n```\n\n### Critical Behavior: It DESTROYS First!\nIf `filename` already exists, `>` will **immediately truncate (empty) the file** before the command even runs.\n\n```bash\necho \"Important Data\" > backup.txt   # Creates/overwrites backup.txt\necho \"New Data\" > backup.txt         # backup.txt now contains ONLY \"New Data\"\n```\n\n### Analogy: The Whiteboard 🧽\nYou want to write a new message. You grab the eraser, wipe the board completely clean, then write your message. The old message is **gone forever**."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Try Overwrite",
+            "content": "Observe how > replaces the file content.",
+            "codeSnippet": "echo \"First line\" > test.txt\ncat test.txt\necho \"Second line\" > test.txt\ncat test.txt",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Overwrite Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What happens if you run `echo \"Hello\" > file.txt` and `file.txt` already has 1000 lines of text?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "\"Hello\" is added as line 1001.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The file is erased and contains only \"Hello\".",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "An error occurs because the file exists.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`>` truncates the file to zero bytes before writing the new output.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "The Double Greater-Than: `>>` 📎",
+            "content": "# Append to a File\n\nIf you want to add data to the **end** of an existing file without deleting it, use `>>`.\n\n```bash\necho \"Log entry 1\" >> app.log\necho \"Log entry 2\" >> app.log\n```\n\n### Behavior:\n- If the file **doesn't exist**, `>>` creates it (just like `>`).\n- If the file **exists**, it appends the new data to the end.\n\n### Hacker Use Case: Logging Script Output\n```bash\n./scan_target.sh >> scan_history.log\n```\nThis keeps a permanent, growing record of all your scans."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Try Append",
+            "content": "Build a file line by line.",
+            "codeSnippet": "echo \"Line 1\" > log.txt\necho \"Line 2\" >> log.txt\necho \"Line 3\" >> log.txt\ncat log.txt",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "warning",
+            "title": "⚠️ The Silent Destroyer: `set -o noclobber`",
+            "content": "## Prevent Accidental Overwrite\n\nIf you are paranoid about overwriting important files with `>`, you can enable **noclobber**.\n\n```bash\nset -o noclobber\n```\n\nNow, `>` will **refuse** to overwrite an existing file. To force an overwrite, use `>|`.\n\n```bash\necho \"Data\" > important.txt   # Error: cannot overwrite existing file\necho \"Data\" >| important.txt  # Force overwrite\n```\n\nThis is a great safety net for critical systems."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Creating Empty Files with Redirection\n\nYou can use `>` to quickly create an empty file (or empty an existing one).\n\n```bash\n> newfile.txt\n```\n\nThis redirects 'nothing' to the file, effectively touching it or truncating it. It's a common shorthand in scripts."
+        }
+    ]
+}

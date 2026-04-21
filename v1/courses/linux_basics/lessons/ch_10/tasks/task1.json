@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_10",
+    "title": "Build a Silent Scanner Wrapper",
+    "description": "Write a script that runs a noisy command and separates output, errors, and logs.",
+    "estimatedMinutes": 20,
+    "problemStatement": "You need to run a network scan using `nmap` or a simulated command, but you want a clean terminal experience while still preserving all data for later analysis.\n\n**Setup:** We'll simulate a command that produces both stdout and stderr.\n```bash\n# Simulated scanner script (save as noisy_scanner.sh)\n#!/bin/bash\necho \"Scanning port 22...\"\necho \"Port 22 is OPEN\"\necho \"Scanning port 80...\" >&2\necho \"Port 80 is OPEN\" >&2\necho \"Scan complete.\"\n```\nMake it executable: `chmod +x noisy_scanner.sh`.\n\n**Requirements for your wrapper script (`stealth_scan.sh`):**\n1. Accept a target as an argument. If none provided, use `localhost`.\n2. Run `./noisy_scanner.sh` and:\n   - Discard **all** output to the terminal (completely silent).\n   - Save **stdout** (the open ports) to `scan_results.txt`.\n   - Save **stderr** (the scanning progress) to `scan_errors.log`.\n   - Save **both combined** into `scan_full.log` for complete audit trail.\n3. Use `tee` to also display a one-line summary on the terminal: \"Scan complete. Check scan_results.txt and scan_full.log.\"\n4. After the scan, count how many open ports were found (lines in `scan_results.txt`) and append that count to the summary.\n\n**Hints:**\n- To run silently but capture separately, you'll need multiple redirections. You can run the command once and use `tee` and process substitution, OR run it multiple times (less efficient).\n- For the combined log, `&>` is your friend.\n- Use `wc -l` to count lines.",
+    "hints": [
+        "Run command once and use `tee` with process substitution: `./noisy_scanner.sh > >(tee scan_results.txt) 2> >(tee scan_errors.log >&2)` but we want silent terminal.",
+        "Simpler: `./noisy_scanner.sh > scan_results.txt 2> scan_errors.log` then combine logs.",
+        "To combine: `cat scan_results.txt scan_errors.log > scan_full.log`."
+    ],
+    "expectedOutput": "Silent execution, files created, summary printed.",
+    "solutionCode": "#!/bin/bash\nTARGET=${1:-localhost}\n\necho \"Starting silent scan of $TARGET...\"\n\n# Run silently, capture stdout and stderr separately\n./noisy_scanner.sh > scan_results.txt 2> scan_errors.log\n\n# Combine for full log\ncat scan_results.txt scan_errors.log > scan_full.log\n\n# Count results\nOPEN_PORTS=$(wc -l < scan_results.txt)\n\necho \"Scan complete. Found $OPEN_PORTS open ports.\"\necho \"Details: scan_results.txt, Errors: scan_errors.log, Full: scan_full.log\""
+}

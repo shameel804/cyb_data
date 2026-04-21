@@ -1,0 +1,246 @@
+{
+    "id": "quiz_ch_12",
+    "chapterId": "ch_12",
+    "title": "Chapter 12 Quiz: Logging & The OPSEC Mindset",
+    "description": "Test your knowledge of system logs, anti-forensics techniques, and operational security.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary purpose of system logs?",
+            "options": [
+                "Speed up the boot process.",
+                "Record system events and user actions for auditing.",
+                "Encrypt user files.",
+                "Manage memory allocation."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Logs provide a historical record for debugging and security auditing."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "The `~/.bash_history` file is stored in the `/var/log/` directory.",
+            "correctAnswer": false,
+            "explanation": "False. It is stored in the user's home directory."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which log file contains authentication events, including `sudo` usage?",
+            "options": [
+                "/var/log/syslog",
+                "/var/log/auth.log",
+                "/var/log/kern.log",
+                "/var/log/dpkg.log"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`auth.log` tracks logins and privilege escalations."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "The command used to read the systemd journal is `_____`.",
+            "options": [
+                "journalctl",
+                "syslog",
+                "dmesg",
+                "logread"
+            ],
+            "correctAnswer": "journalctl",
+            "explanation": "`journalctl` is the client for querying the systemd journal."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which command shows a history of successful user logins?",
+            "options": [
+                "lastb",
+                "who",
+                "last",
+                "login"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`last` parses `/var/log/wtmp`."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "An empty `~/.bash_history` file is normal and not suspicious.",
+            "correctAnswer": false,
+            "explanation": "False. It is a strong indicator of log wiping."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What does the command `sed -i '/192.168.1.100/d' /var/log/auth.log` do?",
+            "options": [
+                "Adds the IP address to the log.",
+                "Deletes lines containing the specified IP address from the log.",
+                "Encrypts the log file.",
+                "Backs up the log file."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`sed -i` edits the file in place, and `/pattern/d` deletes matching lines."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Why is the `shred` command often ineffective on modern SSDs?",
+            "options": [
+                "SSDs are read-only.",
+                "Wear-leveling and caching may write data to a different physical cell.",
+                "`shred` only works on HDDs.",
+                "SSDs automatically encrypt shredded files."
+            ],
+            "correctAnswer": 1,
+            "explanation": "The SSD controller's internal management makes overwriting the exact physical sector unreliable."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What does OPSEC stand for?",
+            "options": [
+                "Operating System Encryption",
+                "Operational Security",
+                "Open Source Environment Control",
+                "Offensive Penetration Execution Command"
+            ],
+            "correctAnswer": 1,
+            "explanation": "OPSEC = Operational Security."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is the primary advantage of piping `curl` directly into `bash` for a payload?",
+            "options": [
+                "It bypasses the firewall.",
+                "No file is written to the filesystem.",
+                "It encrypts the payload.",
+                "It hides the process from `ps`."
+            ],
+            "correctAnswer": 1,
+            "explanation": "The payload executes directly in memory without touching the disk."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "The `touch` command can change the file creation (birth) time on ext4 filesystems.",
+            "correctAnswer": false,
+            "explanation": "False. `touch` changes modification and access times, not the creation/birth time."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is the function of the `auditd` daemon?",
+            "options": [
+                "Scans for viruses.",
+                "Provides kernel-level system call auditing.",
+                "Manages user passwords.",
+                "Optimizes disk performance."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`auditd` is the Linux Audit daemon, capable of logging detailed system events."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which technique is effective for hiding data exfiltration traffic?",
+            "options": [
+                "Using a custom high-numbered port.",
+                "Tunneling traffic over HTTPS (port 443).",
+                "Sending data in plaintext.",
+                "Disabling the firewall."
+            ],
+            "correctAnswer": 1,
+            "explanation": "HTTPS traffic blends in with normal web browsing."
+        },
+        {
+            "id": "q14",
+            "type": "fill_blank",
+            "question": "The filesystem that resides entirely in RAM and leaves no disk traces is `_____`.",
+            "options": [
+                "/tmp",
+                "/dev/shm",
+                "/var/run",
+                "/proc"
+            ],
+            "correctAnswer": "/dev/shm",
+            "explanation": "`/dev/shm` is a temporary filesystem (tmpfs) stored in volatile memory."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Why is Tails OS considered an amnesiac system?",
+            "options": [
+                "It has a built-in password manager.",
+                "It runs entirely from RAM and writes nothing to disk by default.",
+                "It automatically updates every hour.",
+                "It uses a custom kernel."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Tails is designed to leave no trace on the host computer."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "Logs can be sent to a remote SIEM server in real-time, making local log wiping ineffective.",
+            "correctAnswer": true,
+            "explanation": "True. Enterprise environments often forward logs immediately."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which file contains a binary record of failed login attempts?",
+            "options": [
+                "/var/log/wtmp",
+                "/var/log/btmp",
+                "/var/log/auth.log",
+                "/var/log/lastlog"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`/var/log/btmp` stores failed login attempts. Use `lastb` to read it."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "What is a key limitation of using `proxychains` with `nmap` for stealth scanning?",
+            "options": [
+                "It only works on Windows.",
+                "SYN scans (-sS) bypass the proxy and reveal the real IP.",
+                "It requires a paid license.",
+                "It slows down the scan too much."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Proxychains uses TCP connect() calls, so raw packet scans like SYN scans cannot be proxied."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is the OPSEC risk of running a cron job every minute?",
+            "options": [
+                "It consumes too much CPU.",
+                "It creates a predictable, detectable pattern in logs.",
+                "It requires root privileges.",
+                "It is impossible to do."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Frequent, regular events are easy to spot in log analysis."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which of the following is NOT a recommended OPSEC practice?",
+            "options": [
+                "Deleting all system logs to be safe.",
+                "Using memory-only execution.",
+                "Mimicking legitimate user-agent strings.",
+                "Routing traffic through Tor."
+            ],
+            "correctAnswer": 0,
+            "explanation": "Deleting all logs is a massive red flag. Selective removal or avoidance is better."
+        }
+    ]
+}

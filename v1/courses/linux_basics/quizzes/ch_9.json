@@ -1,0 +1,246 @@
+{
+    "id": "quiz_ch_9",
+    "chapterId": "ch_9",
+    "title": "Chapter 9 Quiz: Stealth & Services",
+    "description": "Test your knowledge of APT package management and systemd service control.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary purpose of a Linux package manager like APT?",
+            "options": [
+                "To compile source code.",
+                "To download, install, and manage software and its dependencies.",
+                "To edit text files.",
+                "To manage user accounts."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Package managers handle software installation, updates, and dependency resolution."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "Kali Linux uses RPM packages by default.",
+            "correctAnswer": false,
+            "explanation": "False. Kali is based on Debian and uses DEB packages with APT."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "What does the command `sudo apt update` actually do?",
+            "options": [
+                "Installs all available security patches.",
+                "Refreshes the local list of available packages from repositories.",
+                "Upgrades the Linux kernel.",
+                "Checks for broken dependencies."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`apt update` downloads the latest package index; it does not install updates."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "To install a package without being prompted for confirmation, you use the `-_____` flag.",
+            "options": [
+                "y",
+                "f",
+                "q",
+                "s"
+            ],
+            "correctAnswer": "y",
+            "explanation": "`-y` assumes 'yes' to all prompts."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which command removes a package AND its configuration files?",
+            "options": [
+                "apt remove",
+                "apt delete",
+                "apt purge",
+                "apt autoremove"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`purge` removes binaries and configs; `remove` leaves configs behind."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "`sudo apt upgrade` can remove existing packages if necessary to complete the upgrade.",
+            "correctAnswer": false,
+            "explanation": "False. `upgrade` is conservative; use `full-upgrade` if package removal is required."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What is the purpose of `sudo apt autoremove`?",
+            "options": [
+                "Removes old kernel versions.",
+                "Removes packages that were installed as dependencies but are no longer needed.",
+                "Removes all cached package files.",
+                "Uninstalls the operating system."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`autoremove` cleans up orphaned dependencies."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which command frees up disk space by deleting all cached `.deb` files?",
+            "options": [
+                "apt clean",
+                "apt autoclean",
+                "apt remove-cache",
+                "apt purge"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`apt clean` removes the entire local cache of package files."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What does `systemctl status ssh` show?",
+            "options": [
+                "Only whether SSH is running or not.",
+                "Detailed status including PID, recent logs, and whether it's enabled.",
+                "The version of SSH installed.",
+                "The configuration file for SSH."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`status` provides a comprehensive overview including logs and activation state."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is the difference between `systemctl start` and `systemctl enable`?",
+            "options": [
+                "`start` runs now; `enable` configures to start at boot.",
+                "`start` configures boot; `enable` runs now.",
+                "They are synonyms.",
+                "`start` is for services; `enable` is for timers."
+            ],
+            "correctAnswer": 0,
+            "explanation": "Start affects current state; Enable affects boot configuration."
+        },
+        {
+            "id": "q11",
+            "type": "fill_blank",
+            "question": "To completely prevent a service from being started manually or automatically, you use the `_____` command.",
+            "options": [
+                "disable",
+                "stop",
+                "mask",
+                "kill"
+            ],
+            "correctAnswer": "mask",
+            "explanation": "`mask` links the service to /dev/null, making it impossible to start."
+        },
+        {
+            "id": "q12",
+            "type": "true_false",
+            "question": "Running `systemctl stop bluetooth` ensures Bluetooth will not start on the next reboot.",
+            "correctAnswer": false,
+            "explanation": "False. `stop` only affects the current session. Use `disable` to prevent startup on boot."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which command lists all service unit files and shows if they are enabled or disabled?",
+            "options": [
+                "systemctl list-units",
+                "systemctl list-unit-files --type=service",
+                "systemctl --failed",
+                "systemctl status"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`list-unit-files` shows the installation state (enabled, disabled, static, masked)."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "You want to apply a new configuration to Apache without dropping active client connections. Which command is best?",
+            "options": [
+                "systemctl restart apache2",
+                "systemctl reload apache2",
+                "systemctl stop apache2 && systemctl start apache2",
+                "killall -HUP apache2"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`reload` signals the daemon to re-read configuration gracefully."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What is a 'daemon' in Linux?",
+            "options": [
+                "A malicious virus.",
+                "A background service process.",
+                "The graphical user interface.",
+                "A type of file system."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Daemons are background processes that handle system tasks or services."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "You installed a `.deb` file manually with `dpkg -i` and it failed due to missing dependencies. How do you fix it?",
+            "options": [
+                "apt install -f",
+                "apt update",
+                "dpkg --fix-broken",
+                "apt upgrade"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`apt install -f` (or `--fix-broken`) resolves and installs missing dependencies."
+        },
+        {
+            "id": "q17",
+            "type": "true_false",
+            "question": "It is safe to add any PPA (Personal Package Archive) found on the internet to your system.",
+            "correctAnswer": false,
+            "explanation": "False. PPAs are third-party sources and can contain malicious or unstable software."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which file contains the list of APT repositories?",
+            "options": [
+                "/etc/apt/sources.list",
+                "/etc/apt/apt.conf",
+                "/var/lib/apt/lists",
+                "/etc/apt/repos.conf"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`/etc/apt/sources.list` is the primary configuration file for repositories."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What does `systemctl --failed` display?",
+            "options": [
+                "All enabled services.",
+                "Services that have crashed or exited with an error.",
+                "Services that are masked.",
+                "A list of all available commands."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`--failed` shows units that are in a failed state."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Why is reducing the number of running services important for security?",
+            "options": [
+                "It saves RAM.",
+                "It reduces the attack surface (fewer programs to exploit).",
+                "It makes the desktop look cleaner.",
+                "It increases battery life."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Every network-facing service is a potential entry point. Disabling unnecessary ones improves security."
+        }
+    ]
+}

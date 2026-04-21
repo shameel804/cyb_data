@@ -1,0 +1,113 @@
+{
+    "id": "l5",
+    "chapterId": "ch_10",
+    "title": "The Black Hole and Advanced Tricks",
+    "description": "Master /dev/null, split streams with tee, and unlock process substitution for complex workflows.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Advanced Redirection",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Null Device: `/dev/null` 🕳️",
+            "content": "# Where Data Goes to Die\n\n`/dev/null` is a special virtual file that acts as a **bottomless trash can**.\n\n- Anything written to `/dev/null` is **discarded immediately**.\n- If you try to **read** from `/dev/null`, you get an immediate **EOF** (End of File).\n\n### Common Uses:\n1.  **Silence a Command**:\n    ```bash\n    noisy_command > /dev/null 2>&1\n    ```\n\n2.  **Check if a Command Succeeds Without Seeing Output**:\n    ```bash\n    if ping -c 1 google.com > /dev/null 2>&1; then\n        echo \"Internet is up\"\n    fi\n    ```\n\n3.  **Empty a File**:\n    ```bash\n    cat /dev/null > large.log\n    # Or simply: > large.log\n    ```\n\n### Hacker Mindset:\nWhen writing a stealthy script, redirect **everything** to `/dev/null`. A quiet script is a hidden script."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Silence a Command",
+            "content": "Run a command that would normally produce errors silently.",
+            "codeSnippet": "ls /nonexistent 2> /dev/null\necho \"Exit code: $?\"",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "/dev/null Purpose 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What happens when you write data to `/dev/null`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It is saved to a special hidden file.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It is immediately discarded.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "An error occurs.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`/dev/null` is a null device that discards all data written to it.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "The Tee Junction: `tee` 🔀",
+            "content": "# Write to File AND Terminal Simultaneously\n\nWhat if you want to **see** the output on your screen while **also** saving it to a log file?\n\nPipes (`|`) consume the output and send it to another command. Redirection (`>`) sends it only to a file.\n\n**`tee`** reads from stdin and writes to **both** stdout (the screen) **and** a file.\n\n**Basic Usage:**\n```bash\ncommand | tee output.log\n```\n\n### Append Instead of Overwrite:\n```bash\ncommand | tee -a output.log\n```\n\n### Use with sudo (The Classic Fix):\nRemember the `sudo echo > file` permission problem from Chapter 5? `tee` solves it!\n```bash\necho \"nameserver 8.8.8.8\" | sudo tee /etc/resolv.conf\n```\n\n### Analogy: The Plumbing T-Junction 🚰\nWater (data) flows through the pipe. `tee` splits the stream: one path goes to the sink (terminal), the other goes to a bucket (file)."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Use tee",
+            "content": "See output on screen and save it to a file.",
+            "codeSnippet": "echo \"Hello Cybron!\" | tee greeting.log\ncat greeting.log",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Process Substitution: `<( )` and `>( )` 🧪",
+            "content": "# Treat Command Output as a File\n\nThis is a Bash superpower. It allows you to use the output of a command **where a filename is expected**.\n\n**Syntax:**\n- `<(command)` : Creates a temporary named pipe that contains the output of `command`.\n\n### Example 1: Compare Two Directory Listings Without Temp Files\n```bash\ndiff <(ls /dir1) <(ls /dir2)\n```\n`diff` normally expects two filenames. Process substitution feeds it the live output of two `ls` commands.\n\n### Example 2: Feed Command Output to a While Loop\n```bash\nwhile read line; do\n    echo \"Processing: $line\"\ndone < <(grep \"ERROR\" app.log)\n```\nThis avoids the subshell variable scope issue when using `grep ... | while read`.\n\n### Output Process Substitution: `>( )`\nSends data to a command as if it were a file.\n```bash\necho \"Compressing on the fly...\"\ntar -czf >(ssh user@host \"cat > backup.tar.gz\") /home/user\n```\nThis is advanced but demonstrates the immense power of combining redirection with networking."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Tee vs Process Sub 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "Which command allows you to write to a protected file with sudo using a pipe?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "sudo echo \"data\" > /etc/file",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "echo \"data\" | sudo tee /etc/file",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "echo \"data\" > sudo /etc/file",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`tee` runs with sudo privileges, so it can write to the protected file.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## `exec` for Permanent Redirection\n\nYou can redirect **all subsequent output** in a script using `exec`.\n\n```bash\nexec > output.log 2>&1\n```\n\nEvery `echo` and command after this line will automatically write to `output.log`. Use `exec > /dev/tty` to restore normal terminal output."
+        }
+    ]
+}

@@ -1,0 +1,107 @@
+{
+    "id": "l6",
+    "chapterId": "ch_8",
+    "title": "Command Substitution & Arithmetic",
+    "description": "Capture command output into variables and perform calculations within your scripts.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Advanced Data",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "Capturing Command Output 📸",
+            "content": "# Using the Result of a Command as Data\n\nOften you need to take the output of a command (like `date`, `whoami`, `ls`) and store it in a variable.\n\nThere are two syntaxes for **Command Substitution**:\n\n1.  **Backticks** (Old style, avoid if possible):\n    ```bash\n    NOW=`date`\n    ```\n\n2.  **`$()` Syntax** (Modern, preferred, nestable):\n    ```bash\n    NOW=$(date)\n    FILES=$(ls /etc)\n    ```\n\n### Example: Get Current User and Date for Logging\n```bash\n#!/bin/bash\nCURRENT_USER=$(whoami)\nTIMESTAMP=$(date +\"%Y-%m-%d %H:%M:%S\")\necho \"[$TIMESTAMP] Script started by $CURRENT_USER\"\n```\n\nThis is how you 'return' string values from functions as well! Just `echo` the result inside the function and capture it with `$()`."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "code",
+            "title": "Command Substitution",
+            "content": "Capture the output of a command.",
+            "codeSnippet": "TODAY=$(date)\necho \"Today is: $TODAY\"\nFILE_COUNT=$(ls | wc -l)\necho \"This directory has $FILE_COUNT items.\"",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Syntax Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "Which is the preferred syntax for command substitution?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "`command`",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "$(command)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "${command}",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`$()` is modern, nestable, and easier to read.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "Arithmetic in Bash 🧮",
+            "content": "# Doing Math\n\nBash is not a math powerhouse, but it can handle integer arithmetic.\n\n**Syntax:** `$(( expression ))`\n\n### Operators:\n- `+` : Addition\n- `-` : Subtraction\n- `*` : Multiplication\n- `/` : Integer Division (truncates decimal)\n- `%` : Modulo (remainder)\n- `**` : Exponentiation\n\n**Examples:**\n```bash\nRESULT=$((5 + 3))       # 8\nCOUNT=$((COUNT + 1))    # Increment\nREMAINDER=$(( 10 % 3 )) # 1\nPOWER=$(( 2 ** 10 ))    # 1024\n```\n\n### Common Use Case: Port Scanning Loop Counter\n```bash\nTOTAL_PORTS=1000\nSCANNED=0\nfor PORT in {1..1000}\ndo\n    # scan logic...\n    SCANNED=$((SCANNED + 1))\n    echo \"Progress: $SCANNED / $TOTAL_PORTS\"\ndone\n```"
+        },
+        {
+            "id": "s_l6_5",
+            "type": "code",
+            "title": "Simple Math",
+            "content": "Perform arithmetic in Bash.",
+            "codeSnippet": "A=10\nB=3\nSUM=$((A + B))\nPRODUCT=$((A * B))\nDIV=$((A / B))\nMOD=$((A % B))\necho \"$A + $B = $SUM\"\necho \"$A * $B = $PRODUCT\"\necho \"$A / $B = $DIV (remainder $MOD)\"",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l6_6",
+            "type": "quiz",
+            "title": "Arithmetic Operation 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "multiple_choice",
+                "question": "What is the value of `$(( 17 % 5 ))`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "3",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "2",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "5",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "17 divided by 5 is 3 with a remainder of 2. The modulo operator `%` returns the remainder.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_7",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Floating Point Math\n\nBash cannot handle decimals. For floating point math (e.g., `3.14 * 2`), use the `bc` command.\n\n```bash\necho \"scale=2; 10 / 3\" | bc\n```\n\nThis outputs `3.33`. `scale` defines decimal precision."
+        }
+    ]
+}

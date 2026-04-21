@@ -1,0 +1,105 @@
+{
+    "id": "l4",
+    "chapterId": "ch_3",
+    "title": "Deleting Files and Directories: `rm` and `rmdir`",
+    "description": "The art of digital destruction. Handle with extreme care.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Deletion",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "warning",
+            "title": "☠️ THE DANGER ZONE ☠️",
+            "content": "# There is NO Recycle Bin in the Linux Terminal\n\nWhen you delete a file using the command line, it is **GONE**. Immediately. It does not go to the Trash folder. Data recovery is difficult and sometimes impossible.\n\n**Read this slide twice.**\n\nProceed with caution."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Removing Files: `rm` 🗑️",
+            "content": "# Remove Command\n\n`rm` stands for **Remove**.\n\n**Basic Usage:**\n```bash\nrm filename.txt\n```\n\nThis deletes the file `filename.txt` forever.\n\n### Analogy: The Paper Shredder 🔥\nIt's not like crumpling paper into a bin where you can fish it out. It's like feeding it through a high-security cross-cut shredder."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "code",
+            "title": "Delete a Test File",
+            "content": "Create a dummy file and then delete it safely.",
+            "codeSnippet": "touch test_delete_me.txt\nls -l test_delete_me.txt\nrm test_delete_me.txt\nls -l test_delete_me.txt",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_4",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "true_false",
+                "question": "Files deleted with `rm` can be restored from the Trash folder in the GUI.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. The terminal's `rm` command bypasses the graphical trash system. Deletion is permanent.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Removing Empty Directories: `rmdir` 📁",
+            "content": "# Remove Directory\n\n`rmdir` is the **safe** way to delete folders.\n\n**Requirement:** The folder MUST be **completely empty**.\n\n```bash\nrmdir EmptyFolder\n```\n\nIf there are files or subfolders inside, `rmdir` will **refuse to run** and throw an error: `Directory not empty`.\n\nThis is a **safety feature**. It prevents you from accidentally deleting a folder full of important files without realizing it."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "The Nuclear Option: `rm -rf` 💣",
+            "content": "# Recursive Force Delete\n\nTo delete a folder **AND everything inside it**, you must use the `rm` command with two specific flags:\n\n```bash\nrm -rf FolderName\n```\n\n*   **`-r`**: **Recursive**. Goes into every subfolder and deletes everything.\n*   **`-f`**: **Force**. Never prompts for confirmation. Just does it.\n\n### ⚠️ CRITICAL WARNING ⚠️\n`sudo rm -rf /` is a command you will see in memes. **NEVER RUN THIS**. It tells the system to delete the entire hard drive, including the operating system, without asking questions.\n\n`rm -rf` is powerful but extremely dangerous. Double-check your spelling before hitting Enter."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "Safety Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "You have a folder called 'Project' with 100 files inside. You want to delete it all. Which command is correct?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "rmdir Project",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "rm -rf Project",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "rm Project",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`rmdir` fails because the folder is not empty. `rm` alone fails because it's a directory. `rm -rf` recursively deletes the folder and all contents.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_8",
+            "type": "tip",
+            "title": "The Safer Way 🛡️",
+            "content": "## Use `rm -ri`\n\nIf you are deleting a large folder and want to be sure, use the **interactive** flag with recursive:\n\n```bash\nrm -ri Project\n```\n\nThis will prompt you `descend into directory 'Project'?` and `remove file 'X'?` for every single item. It's slow, but it prevents massive accidental deletions."
+        }
+    ]
+}

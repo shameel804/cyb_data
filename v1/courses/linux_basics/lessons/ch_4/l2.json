@@ -1,0 +1,109 @@
+{
+    "id": "l2",
+    "chapterId": "ch_4",
+    "title": "The Beginning and The End: `head` and `tail`",
+    "description": "Extract the first or last lines of a file. Essential for log analysis.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "File Viewing",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Just a Taste: `head` 👆",
+            "content": "# First 10 Lines\n\n`head` does exactly what it sounds like. It prints the **first** part of a file.\n\nBy default, it shows the **first 10 lines**.\n\n```bash\nhead /var/log/syslog\n```\n\n### Why is this useful?\nLog files can be thousands of lines. Sometimes you just need to see the most recent entries (which are at the **bottom**) or the file header. `head` gives you a clean snapshot of the top."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "See `head` in Action",
+            "content": "Generate a numbered list and view the first few lines.",
+            "codeSnippet": "seq 1 100 > numbers.txt\nhead numbers.txt",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Controlling the Output: `-n` 🎛️",
+            "content": "# Specify Line Count\n\n10 lines not enough? Too many? Use the `-n` option to specify exactly how many lines you want.\n\n```bash\nhead -n 5 filename.txt\n```\n\nOr the shorthand (no `-n`):\n```bash\nhead -5 filename.txt\n```\n\nBoth give you the first 5 lines."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "fill_blank",
+                "question": "To display the first 20 lines of `access.log`, the command is `head -_____ 20 access.log`.",
+                "options": [
+                    "l",
+                    "n",
+                    "c",
+                    "f"
+                ],
+                "correctAnswer": "n",
+                "explanation": "The `-n` flag stands for 'number of lines'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "The Trailing Edge: `tail` 👇",
+            "content": "# Last 10 Lines\n\n`tail` is the opposite of `head`. It prints the **last 10 lines** of a file.\n\n```bash\ntail /var/log/syslog\n```\n\nThis is **THE MOST IMPORTANT COMMAND** for log analysis. Most logs append new events to the bottom. `tail` lets you see what just happened."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "code",
+            "title": "Try `tail`",
+            "content": "View the last 5 lines of the numbers file we created.",
+            "codeSnippet": "tail -5 numbers.txt",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Live Monitoring: `tail -f` 👁️",
+            "content": "# Follow Mode (Real-Time Hacking)\n\nThis is where the magic happens. The **`-f`** flag stands for **follow**.\n\n```bash\ntail -f /var/log/apache2/access.log\n```\n\nInstead of exiting after printing the last 10 lines, `tail -f` stays open. It watches the file and prints **new lines as they are written**.\n\n### Scenario: The Hacker's Watchtower 🛡️\n1. You suspect someone is brute-forcing your SSH server.\n2. You run `tail -f /var/log/auth.log`.\n3. You see login attempts scrolling live.\n4. You block the IP instantly.\n\n**To exit `tail -f`:** Press `Ctrl + C`."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "quiz",
+            "title": "Scenario Challenge 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "You want to see new SSH attacks as they happen. Which command do you use?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "head /var/log/auth.log",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "tail /var/log/auth.log",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "tail -f /var/log/auth.log",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "`-f` continuously monitors the file for new additions in real-time.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Negative Line Numbers (Advanced)\n\nYou can use negative numbers to exclude lines from the end.\n\n`head -n -5 file.txt` -> Print everything **except** the last 5 lines.\n\n`tail -n +20 file.txt` -> Print starting from line 20 to the end.\n\nThese are less common but powerful for scripting."
+        }
+    ]
+}

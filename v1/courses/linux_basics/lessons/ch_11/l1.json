@@ -1,0 +1,104 @@
+{
+    "id": "l1",
+    "chapterId": "ch_11",
+    "title": "The Timekeeper: What is Cron?",
+    "description": "Meet the cron daemon—the silent scheduler that runs tasks at specified times.",
+    "xpReward": 20,
+    "estimatedMinutes": 5,
+    "section": "Cron Fundamentals",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "What is Cron? ⏰",
+            "content": "# The Silent Scheduler\n\n**Cron** is a time-based job scheduler in Unix-like operating systems. It is a **daemon** (background service) that wakes up every minute, checks if any tasks are scheduled for that exact minute, and executes them.\n\n### Analogy: The Alarm Clock Factory 🏭\nImagine a giant room with thousands of alarm clocks (cron jobs). A single worker (the cron daemon) walks through the room every minute. If an alarm is ringing *right now*, the worker runs the associated task.\n\n### Why is Cron Essential for Hackers?\n- **Automation**: Run daily backups, log rotation, system updates.\n- **Persistence**: Make a backdoor phone home every 5 minutes.\n- **Reconnaissance**: Schedule scans to run at 3 AM when the network is quiet.\n\nCron is the original \"set it and forget it\" tool."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "The Cron Ecosystem 🌳",
+            "content": "# Where Are Jobs Stored?\n\nCron jobs can be defined in several places:\n\n1.  **User Crontabs**: Each user has their own file, managed with `crontab -e`. Stored in `/var/spool/cron/crontabs/`.\n2.  **System Crontabs**: `/etc/crontab` and files in `/etc/cron.d/`. These can specify which user runs the job.\n3.  **Periodic Directories**: `/etc/cron.hourly/`, `/etc/cron.daily/`, `/etc/cron.weekly/`, `/etc/cron.monthly/`. Scripts placed here are run automatically via `run-parts`.\n\n### For This Chapter:\nWe focus on **User Crontabs** (`crontab -e`). This is the standard way for hackers and admins to schedule personal tasks without root privileges."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "code",
+            "title": "Check if Cron is Running",
+            "content": "Verify that the cron daemon is active on your system.",
+            "codeSnippet": "systemctl status cron",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "How often does the cron daemon check for jobs to run?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Every second",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Every minute",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Every hour",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Cron wakes up every minute to evaluate the crontab files. It cannot schedule tasks with sub-minute precision.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Your First Cron Job: Editing the Crontab ✏️",
+            "content": "# The `crontab -e` Command\n\nTo create or edit your personal cron jobs, use:\n\n```bash\ncrontab -e\n```\n\n**First Time?** You will be asked to choose an editor. **Choose `nano`** (usually option 1 or 2) for simplicity.\n\n### Basic Anatomy of a Cron Job Line:\n```\n* * * * * command_to_run\n```\n\nThe five asterisks represent **Minute, Hour, Day of Month, Month, Day of Week**. We will decode these in Lesson 2.\n\n### Other Useful Commands:\n- `crontab -l` : **List** your current cron jobs.\n- `crontab -r` : **Remove** all your cron jobs. (Use with caution!)"
+        },
+        {
+            "id": "s_l1_6",
+            "type": "warning",
+            "title": "⚠️ No Output by Default!",
+            "content": "## Where Did My Echo Go?\n\nIf you put `echo \"Hello\"` in a cron job, you will **NOT** see it on your terminal screen. Cron is a background daemon with no attached terminal.\n\nBy default, cron tries to **email** the output to the user. If email is not configured (which it usually isn't on a fresh install), the output is lost.\n\n**Solution:** Always redirect output to a file (Lesson 3)."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "Crontab Management 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "Which command lists your currently scheduled cron jobs?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "crontab -e",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "crontab -l",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "crontab -r",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-l` stands for 'list'. `-e` is edit, `-r` is remove.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

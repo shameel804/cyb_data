@@ -1,0 +1,110 @@
+{
+    "id": "l1",
+    "chapterId": "ch_7",
+    "title": "Digital Addresses: IP Fundamentals",
+    "description": "Understand IPv4, IPv6, public vs private addresses, and the loopback interface.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Network Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "What is an IP Address? 📬",
+            "content": "# The Digital Postal Address\n\nEvery device on a network needs a unique identifier to send and receive data. This is the **IP Address** (Internet Protocol Address).\n\n### Analogy: Street Addresses 🏠\n- **IP Address**: The street address of a house.\n- **MAC Address**: The physical coordinates of the house (we'll skip this for now).\n\nWhen you visit a website, your computer sends packets to the server's IP address, and the server replies to your IP address.\n\n### Two Versions Coexist:\n1.  **IPv4**: `192.168.1.1` (32-bit, ~4.3 billion addresses). **Running out!**\n2.  **IPv6**: `2001:0db8:85a3:0000:0000:8a2e:0370:7334` (128-bit, practically infinite)."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "IPv4 Structure and Subnet Masks 🧩",
+            "content": "# Breaking Down `192.168.1.100`\n\nAn IPv4 address is a 32-bit number, usually written as four **octets** (8-bit numbers) separated by dots.\n\nEach octet ranges from **0 to 255**.\n\n### Network vs Host Portion\nA **Subnet Mask** tells you which part of the IP identifies the **network** (the neighborhood) and which part identifies the **host** (the specific house).\n\nExample: `192.168.1.100 / 255.255.255.0`\n- **Network Portion**: `192.168.1.0` (The street)\n- **Host Portion**: `100` (The house number)\n\n**CIDR Notation (Slash):** `192.168.1.100/24` means the first 24 bits are the network. This is the same as mask `255.255.255.0`."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the maximum value for a single octet in an IPv4 address?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "128",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "255",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "1024",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "An octet is 8 bits, so values range from 0 to 255 (2^8 - 1).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Public vs Private IP Addresses 🌐🏠",
+            "content": "# Who Can See What?\n\nBecause IPv4 addresses are scarce, we use **Network Address Translation (NAT)** to share one public IP among many devices.\n\n### Public IP Address\n- Routable on the **global internet**.\n- Assigned by your ISP.\n- Unique worldwide.\n- **Find yours:** `curl ifconfig.me`\n\n### Private IP Address (RFC 1918)\n- Only routable within your **local network** (home/office).\n- Not directly reachable from the internet.\n- **Ranges to know:**\n  - `10.0.0.0/8` (10.x.x.x)\n  - `172.16.0.0/12` (172.16.x.x - 172.31.x.x)\n  - `192.168.0.0/16` (192.168.x.x)\n\n### Analogy: Office Phone System ☎️\n- **Public IP**: The main company phone number.\n- **Private IP**: Internal extension numbers (e.g., x1234)."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Find Your IPs",
+            "content": "Use `ip addr` or the older `ifconfig` to see your local addresses.",
+            "codeSnippet": "ip addr show | grep inet",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Private Range Identification 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "Which of the following is a private IP address?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "8.8.8.8",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "192.168.1.1",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "1.1.1.1",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "192.168.x.x is in the reserved private range.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "Special Addresses: Loopback and Broadcast 📢",
+            "content": "# Talking to Yourself\n\n- **Loopback Address**: `127.0.0.1` (also known as **localhost**).\n  - Always points back to **your own machine**.\n  - Used for testing network services without exposing them to the network.\n  - Example: Running a web server locally at `http://127.0.0.1:8080`.\n\n- **Broadcast Address**: The last IP in a subnet (e.g., `192.168.1.255`).\n  - Sends data to **all** hosts on the local network simultaneously."
+        },
+        {
+            "id": "s_l1_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## IPv6 Shortcuts\n\nIPv6 addresses are long, but you can compress them:\n- Leading zeros omitted: `:0001:` becomes `:1:`.\n- Consecutive zero blocks replaced with `::` (once per address).\n\n`2001:0db8:0000:0000:0000:ff00:0042:8329` becomes `2001:db8::ff00:42:8329`."
+        }
+    ]
+}

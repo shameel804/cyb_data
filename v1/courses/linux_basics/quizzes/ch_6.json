@@ -1,0 +1,252 @@
+{
+    "id": "quiz_ch_6",
+    "chapterId": "ch_6",
+    "title": "Chapter 6 Quiz: Process Domination",
+    "description": "Test your knowledge of process management, signals, and job control.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the difference between a program and a process?",
+            "options": [
+                "A program is running; a process is stored on disk.",
+                "A program is stored on disk; a process is a running instance in memory.",
+                "There is no difference.",
+                "A program is a daemon; a process is a script."
+            ],
+            "correctAnswer": 1,
+            "explanation": "A program is static code on disk; a process is the executing instance."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "The first user-space process started by the kernel (init/systemd) always has PID 1.",
+            "correctAnswer": true,
+            "explanation": "True. PID 1 is reserved for the init process."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which command displays a real-time, updating view of processes?",
+            "options": [
+                "ps aux",
+                "top",
+                "pstree",
+                "ls -l /proc"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`top` provides a live, updating display."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "To run a command in the background immediately upon starting it, you append the character `_____`.",
+            "options": [
+                "&",
+                "*",
+                "#",
+                "@"
+            ],
+            "correctAnswer": "&",
+            "explanation": "Appending `&` runs the command in the background."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What is the default signal sent by the `kill` command?",
+            "options": [
+                "SIGKILL (9)",
+                "SIGTERM (15)",
+                "SIGINT (2)",
+                "SIGHUP (1)"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`kill` defaults to SIGTERM (15), which politely asks the process to terminate."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "A process in state 'Z' (Zombie) is actively consuming CPU and RAM.",
+            "correctAnswer": false,
+            "explanation": "False. Zombies have released all resources but retain a process table entry waiting for the parent to reap them."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Inside `top`, which key sorts processes by CPU usage?",
+            "options": [
+                "c",
+                "P",
+                "M",
+                "K"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Uppercase `P` sorts by CPU."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "You need to force-kill a process that is ignoring SIGTERM. Which signal number is SIGKILL?",
+            "options": [
+                "1",
+                "2",
+                "9",
+                "15"
+            ],
+            "correctAnswer": 2,
+            "explanation": "SIGKILL is signal 9."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What does `kill -HUP 1234` typically do to a well-behaved daemon?",
+            "options": [
+                "Terminates it immediately.",
+                "Pauses it.",
+                "Reloads its configuration files.",
+                "Sends it to the background."
+            ],
+            "correctAnswer": 2,
+            "explanation": "Daemons often interpret SIGHUP as a request to reload configuration without restarting."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which command finds the PID of 'firefox'?",
+            "options": [
+                "which firefox",
+                "pidof firefox",
+                "whereis firefox",
+                "ls firefox"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`pidof` returns the PID of a running program by name."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "You have a suspended job (Stopped). Which command resumes it in the background?",
+            "options": [
+                "fg",
+                "bg",
+                "jobs -r",
+                "run &"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`bg` resumes a suspended job in the background."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is the purpose of the `nohup` command?",
+            "options": [
+                "Prevents a process from being killed by SIGHUP when the terminal closes.",
+                "Stops a process from using the CPU.",
+                "Runs a process with maximum priority.",
+                "Hides a process from `ps`."
+            ],
+            "correctAnswer": 0,
+            "explanation": "`nohup` makes a process immune to the HUP signal, allowing it to survive terminal closure."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What does `ps aux | grep [f]irefox` accomplish that `ps aux | grep firefox` does not?",
+            "options": [
+                "It is faster.",
+                "It excludes the grep command itself from the output.",
+                "It searches case-insensitively.",
+                "It shows the parent process ID."
+            ],
+            "correctAnswer": 1,
+            "explanation": "The bracket trick matches 'firefox' but `grep` sees `[f]irefox`, so it doesn't match its own command line."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "You press `Ctrl+Z` while a command is running. What happens?",
+            "options": [
+                "It is terminated.",
+                "It is suspended (stopped) and placed in the background.",
+                "It continues running in the background.",
+                "It is sent to the printer."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Ctrl+Z sends SIGTSTP, suspending the foreground process."
+        },
+        {
+            "id": "q15",
+            "type": "true_false",
+            "question": "`pkill` can kill processes based on the username that owns them.",
+            "correctAnswer": true,
+            "explanation": "True. `pkill -u username` kills all processes owned by that user."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What does the `disown` command do?",
+            "options": [
+                "Changes the owner of a process.",
+                "Removes a job from the shell's job table.",
+                "Logs out the current user.",
+                "Kills the current job."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`disown` removes the job from the shell's table, preventing SIGHUP from being sent when the shell exits."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "A process is stuck in State 'D'. What is the only way to remove it?",
+            "options": [
+                "kill -9 PID",
+                "kill -15 PID",
+                "Reboot the system",
+                "pkill -9 processname"
+            ],
+            "correctAnswer": 2,
+            "explanation": "State D (Uninterruptible Sleep) processes are stuck in kernel code, usually waiting for I/O. They cannot be killed by userspace signals."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which key quits the `top` program?",
+            "options": [
+                "Esc",
+                "q",
+                "Ctrl+C",
+                "x"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Press `q` to quit `top`."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "You want to see the process hierarchy (tree) using `ps`. Which option provides this?",
+            "options": [
+                "ps -e",
+                "ps aux",
+                "ps --forest",
+                "ps -t"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`ps aux --forest` displays parent-child relationships visually."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which terminal multiplexer is a modern alternative to `screen`?",
+            "options": [
+                "htop",
+                "tmux",
+                "nohup",
+                "disown"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`tmux` is a powerful terminal multiplexer that allows session detachment and reattachment."
+        }
+    ]
+}

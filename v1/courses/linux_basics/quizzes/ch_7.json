@@ -1,0 +1,246 @@
+{
+    "id": "quiz_ch_7",
+    "chapterId": "ch_7",
+    "title": "Chapter 7 Quiz: The Web of Deceit",
+    "description": "Test your knowledge of IP addressing, ports, and essential networking commands.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the purpose of an IP address?",
+            "options": [
+                "Identifies a specific service on a computer.",
+                "Identifies a network interface on a host.",
+                "Encrypts network traffic.",
+                "Translates domain names to numbers."
+            ],
+            "correctAnswer": 1,
+            "explanation": "An IP address uniquely identifies a device on a network."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "IPv6 addresses are 32 bits long.",
+            "correctAnswer": false,
+            "explanation": "False. IPv4 is 32 bits; IPv6 is 128 bits."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which of the following is a private IP address range?",
+            "options": [
+                "8.8.8.0/24",
+                "192.168.0.0/16",
+                "1.1.1.0/24",
+                "208.67.222.0/24"
+            ],
+            "correctAnswer": 1,
+            "explanation": "192.168.0.0/16 is reserved for private networks."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "The loopback address, which always points to the local machine, is `_____`.",
+            "options": [
+                "0.0.0.0",
+                "127.0.0.1",
+                "255.255.255.255",
+                "::1"
+            ],
+            "correctAnswer": "127.0.0.1",
+            "explanation": "127.0.0.1 is the IPv4 loopback address (localhost)."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which port is used by default for SSH (Secure Shell)?",
+            "options": [
+                "21",
+                "22",
+                "23",
+                "443"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Port 22 is the standard port for SSH."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "TCP is a connectionless protocol that does not guarantee delivery.",
+            "correctAnswer": false,
+            "explanation": "False. TCP is connection-oriented and reliable. UDP is connectionless."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "You want to test basic connectivity to `8.8.8.8` and measure latency. Which command?",
+            "options": [
+                "traceroute",
+                "ping",
+                "netstat",
+                "dig"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`ping` sends ICMP echo requests and measures round-trip time."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What does `ping -c 4` do?",
+            "options": [
+                "Sends 4 packets and stops.",
+                "Pings for 4 seconds.",
+                "Sends packets of 4 bytes.",
+                "Pings 4 different hosts."
+            ],
+            "correctAnswer": 0,
+            "explanation": "`-c` specifies the count of packets to send."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Which tool shows the path (routers) a packet takes to reach a destination?",
+            "options": [
+                "ping",
+                "traceroute",
+                "nslookup",
+                "ss"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`traceroute` (or `tracepath`) maps each hop."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "In `traceroute` output, what do three asterisks `* * *` usually indicate?",
+            "options": [
+                "The router is down.",
+                "The destination is unreachable.",
+                "No response from that hop (firewall).",
+                "The packet was corrupted."
+            ],
+            "correctAnswer": 2,
+            "explanation": "It means the probe timed out waiting for a response from that router."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which `netstat` option combination shows listening TCP/UDP ports with process names?",
+            "options": [
+                "-r",
+                "-i",
+                "-tulpn",
+                "-antp"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`-tulpn` = tcp, udp, listening, program, numeric."
+        },
+        {
+            "id": "q12",
+            "type": "true_false",
+            "question": "The `ss` command is a modern replacement for `netstat`.",
+            "correctAnswer": true,
+            "explanation": "True. `ss` provides similar functionality with better performance."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What does `0.0.0.0:80` indicate in `netstat` output?",
+            "options": [
+                "The service is listening on all network interfaces.",
+                "The service is only listening locally.",
+                "The service is not running.",
+                "The port is closed."
+            ],
+            "correctAnswer": 0,
+            "explanation": "`0.0.0.0` means the socket is bound to all available interfaces."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Which DNS tool is considered the modern, professional choice for detailed queries?",
+            "options": [
+                "nslookup",
+                "host",
+                "dig",
+                "whois"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`dig` provides comprehensive DNS information."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What `dig` command finds the IP address(es) for a domain with minimal output?",
+            "options": [
+                "dig domain.com",
+                "dig +short domain.com",
+                "dig -t A domain.com",
+                "dig -x domain.com"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`+short` provides just the answer section cleanly."
+        },
+        {
+            "id": "q16",
+            "type": "fill_blank",
+            "question": "To find the mail servers for a domain, you query for the `_____` record type.",
+            "options": [
+                "A",
+                "MX",
+                "CNAME",
+                "TXT"
+            ],
+            "correctAnswer": "MX",
+            "explanation": "MX (Mail Exchange) records specify mail servers."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which file can be used to manually override DNS resolution on a local Linux system?",
+            "options": [
+                "/etc/resolv.conf",
+                "/etc/hosts",
+                "/etc/hostname",
+                "/etc/network/interfaces"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`/etc/hosts` is checked before DNS queries."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "A failed `ping` always means the target host is offline.",
+            "correctAnswer": false,
+            "explanation": "False. Firewalls often block ICMP, making the host appear down."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What port does DNS typically use?",
+            "options": [
+                "53",
+                "80",
+                "443",
+                "22"
+            ],
+            "correctAnswer": 0,
+            "explanation": "DNS uses port 53 (both TCP and UDP)."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is the purpose of the Time To Live (TTL) field in IP packets?",
+            "options": [
+                "Measures latency in milliseconds.",
+                "Limits the lifespan of a packet to prevent infinite loops.",
+                "Encrypts the packet payload.",
+                "Identifies the sending application."
+            ],
+            "correctAnswer": 1,
+            "explanation": "TTL is decremented at each hop; when it reaches 0, the packet is discarded."
+        }
+    ]
+}

@@ -1,0 +1,110 @@
+{
+    "id": "l6",
+    "chapterId": "ch_5",
+    "title": "Changing Permissions: Octal Mode",
+    "description": "Master the numeric shorthand that professionals use for speed and precision.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "chmod Mastery",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "Numbers Instead of Letters 🔢",
+            "content": "# The Professional's Shorthand\n\nWhile symbolic mode (`u+x`) is great for learning, professionals use **Octal (Numeric) Mode** because it's faster and sets **all** permissions at once.\n\nEach permission (r, w, x) has a numeric value:\n- **Read (`r`) = 4**\n- **Write (`w`) = 2**\n- **Execute (`x`) = 1**\n- **No Permission (`-`) = 0**\n\nYou add these numbers together to represent a full triad (rwx).\n\n| Triad | Calculation | Value |\n| :--- | :--- | :--- |\n| `rwx` | 4 + 2 + 1 | **7** |\n| `rw-` | 4 + 2 + 0 | **6** |\n| `r-x` | 4 + 0 + 1 | **5** |\n| `r--` | 4 + 0 + 0 | **4** |\n| `-w-` | 0 + 2 + 0 | **2** |\n| `--x` | 0 + 0 + 1 | **1** |\n| `---` | 0 + 0 + 0 | **0** |"
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "Three-Digit Code: Owner, Group, Others",
+            "content": "# `chmod 755 filename`\n\nOctal mode uses **three digits** (or sometimes four).\n\n- **First Digit**: Permissions for **Owner** (User).\n- **Second Digit**: Permissions for **Group**.\n- **Third Digit**: Permissions for **Others**.\n\n### The Magic Numbers You Must Memorize:\n\n- **`7`** : Full control (read, write, execute).\n- **`6`** : Read and write (common for files).\n- **`5`** : Read and execute (common for directories and scripts).\n- **`4`** : Read only.\n- **`0`** : No access.\n\n### Common Examples:\n- **`755`** : Owner can do anything; Group and Others can read and execute.\n  - Used for: Directories and executable scripts.\n- **`644`** : Owner can read/write; Group and Others can read.\n  - Used for: Regular text files.\n- **`600`** : Owner can read/write; Group and Others get nothing.\n  - Used for: SSH private keys (`id_rsa`), sensitive config files.\n- **`777`** : Everyone can do everything. **DANGEROUS!** Never use this except for temporary testing."
+        },
+        {
+            "id": "s_l6_3",
+            "type": "code",
+            "title": "Try Octal Mode",
+            "content": "Create a file, set it to 644, then 755.",
+            "codeSnippet": "touch octaltest.txt\nchmod 644 octaltest.txt\nls -l octaltest.txt\nchmod 755 octaltest.txt\nls -l octaltest.txt",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l6_4",
+            "type": "quiz",
+            "title": "Octal Calculation 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "What permission string corresponds to `chmod 640 file.txt`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "-rw-r-----",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "-rwxr-x---",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "-rw-------",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Owner (6) = rw- ; Group (4) = r-- ; Others (0) = ---. Result: -rw-r-----.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "The Special Bits: SUID, SGID, Sticky Bit 🧙",
+            "content": "# The Fourth Digit\n\nSometimes you'll see commands like `chmod 4755`. The leading `4` is a **special permission**.\n\nThese are advanced but essential for hacking.\n\n### SUID (Set User ID) - Value `4`\nWhen set on an executable file, the program runs with the permissions of the **file owner**, not the user who launched it.\n\n**Example:** `/usr/bin/passwd` has SUID set (owned by root). A normal user can run `passwd` to change their password, and the program temporarily acts as root to edit `/etc/shadow`. Without SUID, users couldn't change their own passwords!\n\n**Finding SUID Files:**\n```bash\nfind / -perm -4000 2>/dev/null\n```\nThis is a classic **privilege escalation** technique. If a custom SUID binary has a bug, you can exploit it to become root.\n\n### SGID (Set Group ID) - Value `2`\nSimilar to SUID, but applies to the **Group**.\n- On a file: Runs with group permissions of the file.\n- On a directory: New files created inside inherit the directory's group.\n\n### Sticky Bit - Value `1`\nOnly relevant for directories (like `/tmp`). It prevents users from deleting files they don't own, even if they have Write permission on the directory."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "warning",
+            "title": "⚠️ SUID Security",
+            "content": "## The Hacker's Best Friend\n\nA world-writable file with the SUID bit set and owned by root is a massive security hole.\n\nNever leave custom SUID binaries lying around. Always audit your system with:\n```bash\nfind / -perm -4000 -type f 2>/dev/null\n```"
+        },
+        {
+            "id": "s_l6_7",
+            "type": "quiz",
+            "title": "Special Bits 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "multiple_choice",
+                "question": "What does the SUID bit do when set on an executable?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Makes the file hidden.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Runs the program with the owner's permissions.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Prevents the file from being deleted.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "SUID (Set User ID) executes the file with the privileges of the file owner, not the user running it.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Default Permissions: `umask`\n\nWhen you create a new file, Linux assigns default permissions (usually 664 for files, 775 for dirs).\n\nThe `umask` value subtracts from the maximum default. Check yours with `umask`. A `umask` of `022` means group/others lose Write permission."
+        }
+    ]
+}

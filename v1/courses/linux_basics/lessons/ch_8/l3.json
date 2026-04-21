@@ -1,0 +1,110 @@
+{
+    "id": "l3",
+    "chapterId": "ch_8",
+    "title": "Making Decisions: Conditionals",
+    "description": "Use `if`, `else`, and `test` to make your script react intelligently to different situations.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Flow Control",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Need for Logic 🧠",
+            "content": "# If This, Then That\n\nA script that runs the exact same way every time is a blunt instrument. A smart script checks conditions.\n\n- \"If the user provided an argument, use it. Otherwise, ask for input.\"\n- \"If the target is alive, scan it. Otherwise, skip it.\"\n\n### The `if` Statement Structure\n```bash\nif [ condition ]\nthen\n    # Commands if true\nelse\n    # Commands if false\nfi\n```\n\n**Critical:** The spaces around `[` and `]` are **mandatory**. `[` is actually a command (`test`)!"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Comparison Operators for Numbers 🔢",
+            "content": "# Testing Numeric Values\n\n| Operator | Meaning | Example |\n| :--- | :--- | :--- |\n| `-eq` | Equal to | `[ $NUM -eq 10 ]` |\n| `-ne` | Not equal to | `[ $NUM -ne 0 ]` |\n| `-gt` | Greater than | `[ $NUM -gt 5 ]` |\n| `-lt` | Less than | `[ $NUM -lt 100 ]` |\n| `-ge` | Greater or equal | `[ $NUM -ge 18 ]` |\n| `-le` | Less or equal | `[ $NUM -le 64 ]` |\n\n**Example:** Check if user provided exactly 2 arguments.\n```bash\nif [ $# -ne 2 ]\nthen\n    echo \"Usage: $0 <target> <port>\"\n    exit 1\nfi\n```"
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Numeric Test 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which operator checks if a variable is NOT equal to a value?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "-eq",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "-ne",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "-gt",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-ne` stands for 'not equal'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "String Comparisons 🔤",
+            "content": "# Testing Text\n\n| Operator | Meaning | Example |\n| :--- | :--- | :--- |\n| `=` | Strings are equal | `[ \"$USER\" = \"root\" ]` |\n| `!=` | Strings are not equal | `[ \"$MODE\" != \"stealth\" ]` |\n| `-z` | String is **empty** (zero length) | `[ -z \"$PASS\" ]` |\n| `-n` | String is **not empty** | `[ -n \"$NAME\" ]` |\n\n**Example:** Check if a variable is empty (user didn't provide input).\n```bash\nread -p \"Enter target: \" TARGET\nif [ -z \"$TARGET\" ]\nthen\n    echo \"Error: No target provided.\"\n    exit 1\nfi\n```\n\n**Always quote your string variables!** If `$TARGET` is empty, `[ -z $TARGET ]` becomes `[ -z ]`, which is a syntax error. `[ -z \"$TARGET\" ]` becomes `[ -z \"\" ]`, which is valid."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "String Empty Check",
+            "content": "Test if a variable is empty.",
+            "codeSnippet": "VAR=\"\"\nif [ -z \"$VAR\" ]; then echo \"VAR is empty\"; else echo \"VAR is set\"; fi",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "File Tests 📁",
+            "content": "# Checking the Filesystem\n\nThese are incredibly useful for scripts that manipulate files.\n\n| Test | True if... |\n| :--- | :--- |\n| `-f FILE` | FILE exists and is a **regular file**. |\n| `-d FILE` | FILE exists and is a **directory**. |\n| `-e FILE` | FILE **exists** (any type). |\n| `-r FILE` | FILE exists and is **readable**. |\n| `-w FILE` | FILE exists and is **writable**. |\n| `-x FILE` | FILE exists and is **executable**. |\n\n**Example:** Create an output directory if it doesn't exist.\n```bash\nif [ ! -d \"scans\" ]\nthen\n    mkdir scans\nfi\n```\n(The `!` means **NOT**)."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Multiple Conditions: `&&` and `||` 🔗",
+            "content": "# AND and OR Logic\n\n### AND (`&&`): Both must be true.\n```bash\nif [ $# -eq 1 ] && [ -f \"$1\" ]\nthen\n    echo \"File exists and we have 1 arg.\"\nfi\n```\n\n### OR (`||`): At least one must be true.\n```bash\nif [ \"$USER\" = \"root\" ] || [ \"$USER\" = \"admin\" ]\nthen\n    echo \"You have elevated privileges.\"\nfi\n```\n\n### Shorthand with `[[ ]]` (Bash Extended Test)\nUsing double brackets `[[ ]]` allows you to use `&&` and `||` *inside* the test itself without quoting issues.\n```bash\nif [[ $# -eq 1 && -f \"$1\" ]]\nthen\n    echo \"Valid file input.\"\nfi\n```"
+        },
+        {
+            "id": "s_l3_8",
+            "type": "quiz",
+            "title": "Conditional Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "Which file test checks if a directory exists?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "-f",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "-d",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "-e",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-d` returns true if the path is a directory.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_12",
+    "title": "Forensic Self-Audit",
+    "description": "Simulate an intrusion and then analyze the logs to see what evidence you left behind.",
+    "estimatedMinutes": 20,
+    "problemStatement": "You need to understand exactly what a defender would see. Perform a small 'malicious' action and then hunt for your own tracks.\n\n**Part 1: Generate Evidence**\n1. Open a terminal and ensure history is enabled.\n2. Run a command with `sudo`: `sudo ls /root` (this will fail but generate a log).\n3. Try to SSH to a fake host: `ssh fakeuser@localhost` (this will fail).\n4. Create a file called `passwords.txt` in your home directory: `echo 'admin:password123' > ~/passwords.txt`.\n\n**Part 2: Analyze Your Tracks**\n1. Check your `.bash_history` for the commands you just ran: `tail -5 ~/.bash_history`.\n2. Use `journalctl` to find your failed `sudo` attempt: `journalctl _COMM=sudo --since \"5 minutes ago\"`.\n3. Check the authentication log for the failed SSH attempt: `sudo grep \"fakeuser\" /var/log/auth.log`.\n4. Use `lastb` to see the failed login: `sudo lastb | head -5`.\n5. Find the file you created: `ls -l ~/passwords.txt`.\n\n**Part 3: Clean Up (Simulated)**\n1. Remove the history entry using `history -d` or clear it entirely.\n2. Delete the passwords file.\n3. Write down what steps a defender would need to take to find each piece of evidence. This exercise builds empathy for the Blue Team.",
+    "hints": [
+        "Use `history` to see line numbers, then `history -d <line_number>` to delete a specific entry.",
+        "The `auth.log` entries cannot be deleted without `sudo`.",
+        "This exercise demonstrates how much you can see without root."
+    ],
+    "expectedOutput": "List of discovered evidence and understanding of where logs reside.",
+    "solutionCode": "# Part 1: Generate evidence\nsudo ls /root\nssh fakeuser@localhost\n# (Press Ctrl+C after it hangs)\necho 'admin:password123' > ~/passwords.txt\n\n# Part 2: Analyze\ntail -5 ~/.bash_history\njournalctl _COMM=sudo --since \"5 minutes ago\"\nsudo grep \"fakeuser\" /var/log/auth.log\nsudo lastb | head -5\nls -l ~/passwords.txt\n\n# Part 3: Cleanup\nhistory -d $(history | tail -2 | head -1 | awk '{print $1}')  # Deletes the echo command\nrm ~/passwords.txt"
+}

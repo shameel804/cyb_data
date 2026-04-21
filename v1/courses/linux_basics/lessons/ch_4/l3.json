@@ -1,0 +1,110 @@
+{
+    "id": "l3",
+    "chapterId": "ch_4",
+    "title": "The Needle Finder: Introduction to `grep`",
+    "description": "Search for text patterns inside files. The hacker's most-used tool.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Search & Filter",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Global Regular Expression Print: `grep` 🔍",
+            "content": "# The Most Important Tool in Your Arsenal\n\n`grep` searches through text files and prints lines that match a pattern you provide.\n\n**Basic Syntax:**\n```bash\ngrep \"search term\" filename\n```\n\n### Analogy: The Metal Detector 🏖️\nImagine a beach full of sand (the file). You want to find the metal coins (your search term). `grep` is the metal detector that scans every grain and beeps only when it finds metal.\n\n**Example:**\n```bash\ngrep \"error\" /var/log/syslog\n```\nThis prints every line in `/var/log/syslog` that contains the word \"error\"."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Basic Search",
+            "content": "Create a sample file and find specific lines.",
+            "codeSnippet": "echo -e \"apple\nbanana\napple pie\norange\" > fruits.txt\ngrep \"apple\" fruits.txt",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What does `grep \"password\" file.txt` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Counts how many lines have the word 'password'.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Displays lines containing the word 'password'.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Replaces 'password' with '******'.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`grep` stands for Global Regular Expression Print. It prints matching lines.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Searching Multiple Files 📂",
+            "content": "# One Command, Many Targets\n\n`grep` can search through entire directories.\n\n```bash\ngrep \"TODO\" *.txt\n```\nThis searches all `.txt` files in the current directory for the word \"TODO\".\n\n**Recursive Search:**\nTo search inside subdirectories as well, use the **`-r`** flag (Recursive).\n\n```bash\ngrep -r \"password\" /home/user/Projects/\n```\nThis is how hackers find hardcoded credentials in source code dumps. It's incredibly powerful."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "warning",
+            "title": "⚠️ Case Sensitivity Matters",
+            "content": "## `Error` vs `error`\n\nBy default, `grep` is **case-sensitive**.\n\n*   `grep \"error\" log.txt` finds \"error\".\n*   It **will not** find \"Error\" or \"ERROR\".\n\nTo ignore case, use the **`-i`** flag (Ignore case).\n\n```bash\ngrep -i \"error\" log.txt\n```\n\nThis is a lifesaver when you're not sure how the text was capitalized."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Flag Identification 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "Which flag makes `grep` search through all files inside folders recursively?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "-i",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "-r",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "-f",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-r` stands for recursive. It dives into subdirectories.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Inverting the Match: `-v` 🔄",
+            "content": "# Find Lines That DO NOT Match\n\nSometimes finding what you're looking for is harder than excluding what you're NOT looking for.\n\nThe **`-v`** flag (Invert match) shows lines that **do not contain** the pattern.\n\n**Example:**\n```bash\ngrep -v \"#\" config.conf\n```\nThis displays the config file but hides all the comment lines (lines starting with `#`). It shows you only the active settings."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Piping into `grep`\n\nYou don't need a file! `grep` works perfectly with piped input.\n\n```bash\nps aux | grep firefox\n```\n\nThis checks if Firefox is running. We'll master pipes in Lesson 6."
+        }
+    ]
+}

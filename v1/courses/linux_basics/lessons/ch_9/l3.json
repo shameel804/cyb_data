@@ -1,0 +1,113 @@
+{
+    "id": "l3",
+    "chapterId": "ch_9",
+    "title": "Updating and Removing Software",
+    "description": "Keep your system patched and clean. Learn to upgrade, remove orphaned packages, and manage dependencies.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Package Management",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Keeping Software Fresh: `upgrade` vs `full-upgrade` 🔄",
+            "content": "# Applying the Actual Updates\n\nRemember: `apt update` only refreshes the list. To actually install newer versions of software, you need to **upgrade**.\n\n### `sudo apt upgrade`\n- Upgrades all installed packages to their latest versions.\n- **Never removes packages**. If an upgrade requires removing something, it will be **held back**.\n\n### `sudo apt full-upgrade` (or `dist-upgrade`)\n- Upgrades everything, **even if it means removing conflicting packages**.\n- Necessary for major system version upgrades (e.g., Ubuntu 22.04 to 24.04).\n\n**Hacker Routine:** You should run this weekly to patch security vulnerabilities.\n```bash\nsudo apt update && sudo apt upgrade -y\n```"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Upgrade System",
+            "content": "Simulate an upgrade (list what would be done) without actually doing it.",
+            "codeSnippet": "sudo apt upgrade --dry-run",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Upgrade Types 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which command will NEVER remove an existing package?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "sudo apt full-upgrade",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "sudo apt upgrade",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "sudo apt dist-upgrade",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`apt upgrade` is conservative and will hold back packages rather than remove dependencies.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Removing Software: `remove` vs `purge` 🗑️",
+            "content": "# Getting Rid of Bloat\n\nUnused tools take up space and, more importantly, **increase attack surface**. If you don't need it, remove it.\n\n### `sudo apt remove package_name`\n- Deletes the binaries and libraries.\n- **Leaves behind configuration files** in `/etc/`.\n\n### `sudo apt purge package_name`\n- Deletes the binaries AND **configuration files**.\n- This is the clean way to uninstall. Always use `purge` unless you plan to reinstall later and want to keep settings.\n\n### Remove Unnecessary Dependencies:\nWhen you install a tool, it pulls in libraries. When you remove the tool, those libraries might become **orphaned** (no longer needed).\n\n```bash\nsudo apt autoremove\n```\nThis safely removes all automatically installed packages that are no longer required. **Run this monthly to save disk space.**"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Check for Cruft",
+            "content": "See what orphaned packages are taking up space.",
+            "codeSnippet": "sudo apt autoremove --dry-run",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Removal Options 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "You want to completely wipe `apache2` including its config files. Which command?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "sudo apt remove apache2",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "sudo apt purge apache2",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "sudo apt delete apache2",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`purge` removes the package and its associated configuration files.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "The APT Cache: Clean It Up 🧹",
+            "content": "# Free Up Gigabytes of Space\n\nEvery time you `apt install`, the downloaded `.deb` file is stored in `/var/cache/apt/archives/`. Over time, this cache can grow to **multiple gigabytes**.\n\n### `sudo apt clean`\n- Deletes **all** cached `.deb` files.\n- Frees up maximum space.\n\n### `sudo apt autoclean`\n- Deletes only **obsolete** cached files (old versions you'll never use).\n- Keeps the current version in cache.\n\n**Hacker Tip:** If you are on a live USB with limited space, `apt clean` is a lifesaver.\n\n### Bonus: List All Installed Packages\n```bash\napt list --installed\n```\nOr search for a specific one:\n```bash\napt list --installed | grep nmap\n```"
+        },
+        {
+            "id": "s_l3_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Holding Packages Back\n\nSometimes an update breaks your custom tool. You can 'pin' or 'hold' a package to prevent it from being upgraded.\n\n```bash\nsudo apt-mark hold metasploit-framework\n```\n\nTo unhold:\n```bash\nsudo apt-mark unhold metasploit-framework\n```"
+        }
+    ]
+}

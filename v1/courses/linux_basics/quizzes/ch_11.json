@@ -1,0 +1,246 @@
+{
+    "id": "quiz_ch_11",
+    "chapterId": "ch_11",
+    "title": "Chapter 11 Quiz: Cron Jobs",
+    "description": "Test your mastery of scheduling tasks, cron syntax, and persistence techniques.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary purpose of the cron daemon?",
+            "options": [
+                "Manage user accounts.",
+                "Execute scheduled tasks at specified times.",
+                "Monitor system logs.",
+                "Manage network connections."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Cron is a time-based job scheduler."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "Cron can schedule tasks with sub-second precision.",
+            "correctAnswer": false,
+            "explanation": "False. Cron's granularity is one minute."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which command opens your personal crontab file for editing?",
+            "options": [
+                "crontab -l",
+                "crontab -e",
+                "crontab -r",
+                "crontab -edit"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-e` stands for 'edit'."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "In the five-field cron expression, the first field represents the _____.",
+            "options": [
+                "Minute",
+                "Hour",
+                "Day",
+                "Month"
+            ],
+            "correctAnswer": "Minute",
+            "explanation": "The order is: Minute Hour DayOfMonth Month DayOfWeek."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What does the cron schedule `0 9 * * 1` mean?",
+            "options": [
+                "Every day at 9:00 AM.",
+                "Every Monday at 9:00 AM.",
+                "Every 9th of the month at 1:00 AM.",
+                "Every hour at minute 9."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Minute 0, Hour 9, Day of Week 1 (Monday)."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "The schedule `*/5 * * * *` runs a job every 5 hours.",
+            "correctAnswer": false,
+            "explanation": "False. `*/5` in the first field means every 5 minutes. For every 5 hours, you would use `0 */5 * * *`."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Which special string runs a job once at system startup?",
+            "options": [
+                "@daily",
+                "@reboot",
+                "@startup",
+                "@hourly"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`@reboot` is triggered by the cron daemon at system boot."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Why is it recommended to use absolute paths for commands in crontab?",
+            "options": [
+                "It makes the command run faster.",
+                "Cron runs with a minimal PATH environment.",
+                "Relative paths are not allowed in crontab.",
+                "It encrypts the command."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Cron's PATH is limited. Absolute paths ensure the executable is found."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Which file contains the system-wide cron log entries?",
+            "options": [
+                "/var/log/cron.log",
+                "/var/log/syslog",
+                "/var/cron/log",
+                "/etc/cron.log"
+            ],
+            "correctAnswer": 1,
+            "explanation": "On most Linux distributions, cron logs to syslog."
+        },
+        {
+            "id": "q10",
+            "type": "fill_blank",
+            "question": "To append both stdout and stderr from a cron job to a log file, you add `>> log.txt _____` at the end of the command.",
+            "options": [
+                "2>&1",
+                "1>&2",
+                "&>",
+                ">>"
+            ],
+            "correctAnswer": "2>&1",
+            "explanation": "`2>&1` redirects stderr to wherever stdout is currently pointing."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What does setting `MAILTO=\"\"` at the top of a crontab file do?",
+            "options": [
+                "Sends output to the root user.",
+                "Disables email notifications for cron output.",
+                "Changes the email server.",
+                "Sends output to a file."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Empty MAILTO suppresses the default email behavior."
+        },
+        {
+            "id": "q12",
+            "type": "true_false",
+            "question": "Environment variables defined in `~/.bashrc` are available to cron jobs.",
+            "correctAnswer": false,
+            "explanation": "False. Cron does not source user profile files. Define variables in the crontab itself."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "You want a job to run on the 1st and 15th of every month at 3:30 AM. Which schedule?",
+            "options": [
+                "30 3 1,15 * *",
+                "30 3 1-15 * *",
+                "30 3 */15 * *",
+                "30 3 1 15 *"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Comma separates specific days: `1,15`."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is the purpose of escaping the `%` character in a cron command?",
+            "options": [
+                "To use it as a wildcard.",
+                "To prevent it from being interpreted as a newline.",
+                "To make it invisible.",
+                "To escape the cron syntax."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`%` has special meaning in cron; it is converted to a newline unless escaped with `\\%`."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Which of the following is a suspicious indicator of a malicious cron job?",
+            "options": [
+                "Running daily at 2:00 AM.",
+                "Using absolute paths.",
+                "Running every minute with obfuscated commands.",
+                "Logging output to a file."
+            ],
+            "correctAnswer": 2,
+            "explanation": "High frequency combined with obfuscation is a strong IoC (Indicator of Compromise)."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "A cron job that redirects output to `/dev/null` leaves no forensic evidence of its execution.",
+            "correctAnswer": false,
+            "explanation": "False. The execution is still logged in `/var/log/syslog` by the cron daemon."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Where are user crontab files physically stored on a typical Linux system?",
+            "options": [
+                "/home/user/.crontab",
+                "/etc/cron.d/",
+                "/var/spool/cron/crontabs/",
+                "/var/lib/cron/"
+            ],
+            "correctAnswer": 2,
+            "explanation": "User crontabs are stored in the spool directory."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which command lists all currently active systemd timers?",
+            "options": [
+                "systemctl list-units",
+                "systemctl list-timers",
+                "crontab -l",
+                "timers list"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`systemctl list-timers` shows scheduled systemd timer units."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "You need to debug a cron job that fails silently. What is the first step?",
+            "options": [
+                "Reboot the system.",
+                "Check /var/log/syslog for CRON entries.",
+                "Reinstall the cron daemon.",
+                "Delete and recreate the crontab."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Syslog contains the execution status and any errors produced by the cron daemon."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is the primary advantage of using systemd timers over cron for persistence?",
+            "options": [
+                "They are faster.",
+                "They are more precise.",
+                "They are less commonly audited by defenders.",
+                "They do not require root."
+            ],
+            "correctAnswer": 2,
+            "explanation": "Systemd timers are more complex and often overlooked during forensic analysis compared to crontabs."
+        }
+    ]
+}

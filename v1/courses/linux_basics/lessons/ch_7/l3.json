@@ -1,0 +1,104 @@
+{
+    "id": "l3",
+    "chapterId": "ch_7",
+    "title": "Are You There? The `ping` Command",
+    "description": "Send ICMP echo requests to test connectivity and discover live hosts.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Network Reconnaissance",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Sonar Ping: `ping` 📡",
+            "content": "# Is That Host Alive?\n\n`ping` is the simplest network troubleshooting tool. It sends an **ICMP Echo Request** packet to a target and waits for an **ICMP Echo Reply**.\n\n**Usage:**\n```bash\nping google.com\n```\n\n### What it tells you:\n1.  **Connectivity**: Is the target reachable?\n2.  **Latency**: How long does it take? (Round Trip Time in ms).\n3.  **Packet Loss**: Are packets being dropped? (Sign of network issues).\n\n### Analogy: Submarine Sonar 🌊\nA submarine sends out a 'ping' sound wave. If it hears an echo, it knows there's an object out there."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Ping a Website",
+            "content": "Send 4 ping packets to Google's DNS server.",
+            "codeSnippet": "ping -c 4 8.8.8.8",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Decoding `ping` Output 🔍",
+            "content": "# What Do Those Lines Mean?\n\n```\n64 bytes from 8.8.8.8: icmp_seq=1 ttl=117 time=14.3 ms\n```\n\n- **`64 bytes`** : Size of the reply packet.\n- **`8.8.8.8`** : The IP that replied.\n- **`icmp_seq=1`** : Sequence number. If you see gaps, you have packet loss.\n- **`ttl=117`** : **Time To Live**. Decreases by 1 for every router hop. Indicates the approximate distance. Initial TTL is usually 64, 128, or 255.\n- **`time=14.3 ms`** : Round Trip Time. The lower the better."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "quiz",
+            "title": "Output Decoding 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What does `time=25.5 ms` in a ping response indicate?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The packet took 25.5 milliseconds to return.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The target is 25.5 miles away.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The packet was 25.5 bytes in size.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Time is the Round Trip Time (RTT) latency in milliseconds.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Ping Options and Firewall Evasion 🛡️",
+            "content": "# `ping` is Often Blocked\n\nMany servers and firewalls block ICMP Echo Requests to prevent ping flood attacks (DoS) and hide their presence.\n\n**Useful Options:**\n- **`-c COUNT`** : Stop after sending COUNT packets. (Without this, ping runs forever! Press `Ctrl+C` to stop).\n- **`-i INTERVAL`** : Wait INTERVAL seconds between packets.\n- **`-s SIZE`** : Change the packet size.\n\n### The Hacker's View:\nA failed ping (`Destination Host Unreachable` or 100% packet loss) does **NOT** mean the host is down. It likely means a firewall is blocking ICMP. Always confirm with other tools (e.g., try a TCP connection on a common port like 80 or 443)."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## `ping` Sweep\n\nWant to find all live hosts on your local network quickly?\n\n```bash\nfor i in {1..254}; do ping -c 1 192.168.1.$i | grep \"64 bytes\" & done\n```\n\nThis sends one ping to every IP in the subnet and lists the ones that reply."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Troubleshooting Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "You `ping google.com` and get 100% packet loss. What is the MOST likely explanation?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Google's website is down worldwide.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Your internet is down, OR a firewall is blocking ICMP.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "You typed the command wrong.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Google rarely goes down completely. ICMP blocking by firewalls is extremely common.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

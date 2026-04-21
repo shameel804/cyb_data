@@ -1,0 +1,104 @@
+{
+    "id": "l2",
+    "chapterId": "ch_11",
+    "title": "Crontab Syntax Deep Dive",
+    "description": "Master the five time fields and special strings like @reboot and @daily.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Scheduling Mastery",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Five Fields: Decoding `* * * * *` 🔢",
+            "content": "# The Time Signature\n\nA cron schedule consists of five fields separated by spaces:\n\n```\n* * * * * command\n│ │ │ │ │\n│ │ │ │ └─── Day of Week (0 - 6) (Sunday = 0 or 7)\n│ │ │ └───── Month (1 - 12)\n│ │ └─────── Day of Month (1 - 31)\n│ └───────── Hour (0 - 23)\n└─────────── Minute (0 - 59)\n```\n\n### Field Values:\n| Field | Allowed Values |\n| :--- | :--- |\n| Minute | 0-59 |\n| Hour | 0-23 (0 = Midnight) |\n| Day of Month | 1-31 |\n| Month | 1-12 (or JAN, FEB...) |\n| Day of Week | 0-6 (0=Sun) (or SUN, MON...) |\n\n**Important:** The command runs when **Minute, Hour, AND Month fields match**, AND **either** Day of Month **OR** Day of Week matches (both are evaluated)."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Operators: * , - / 🎛️",
+            "content": "# Fine-Tuning Your Schedule\n\nYou can use special characters for more complex schedules:\n\n| Operator | Meaning | Example |\n| :--- | :--- | :--- |\n| `*` | **Any value** (every unit) | `* * * * *` (Every minute) |\n| `,` | **List** of values | `0,30 * * * *` (At minute 0 and 30) |\n| `-` | **Range** of values | `9-17 * * * *` (Every minute from 9 AM to 5 PM) |\n| `/` | **Step** values | `*/5 * * * *` (Every 5 minutes) |\n\n### Step Values Explained:\n- `*/15` in the minute field means \"Every 15 minutes\" (0, 15, 30, 45).\n- `0 */2 * * *` means \"At minute 0 of every 2nd hour\" (Midnight, 2 AM, 4 AM...)."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "code",
+            "title": "Common Schedule Examples",
+            "content": "Here are the most useful cron schedules memorized by professionals.",
+            "codeSnippet": "# Every minute (testing only!)\n* * * * * /path/to/script.sh\n\n# Every 5 minutes (common for persistence)\n*/5 * * * * /path/to/beacon.sh\n\n# Every day at 2:30 AM\n30 2 * * * /path/to/backup.sh\n\n# Every Monday at 9:00 AM\n0 9 * * 1 /path/to/report.sh\n\n# First day of every month at midnight\n0 0 1 * * /path/to/monthly.sh",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "Schedule Decoding 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What does the schedule `0 */6 * * *` mean?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Every 6 minutes",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "At minute 0 of every 6th hour (0:00, 6:00, 12:00, 18:00)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Every 6 seconds",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`*/6` in the hour field means every 6 hours. `0` in minute means at the top of the hour.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Special Strings: Shortcuts for Humans 👨‍💻",
+            "content": "# `@reboot`, `@daily`, `@hourly`\n\nCron supports several macro shortcuts that replace the five time fields. These are easier to read and less prone to typos.\n\n| String | Equivalent | Runs... |\n| :--- | :--- | :--- |\n| `@reboot` | N/A | Once at system startup. |\n| `@yearly` | `0 0 1 1 *` | Once a year (Jan 1st). |\n| `@monthly` | `0 0 1 * *` | Once a month (1st day). |\n| `@weekly` | `0 0 * * 0` | Once a week (Sunday). |\n| `@daily` | `0 0 * * *` | Once a day (Midnight). |\n| `@hourly` | `0 * * * *` | Once an hour (Top of the hour). |\n\n### Hacker Favorite: `@reboot`\nThis is a classic persistence mechanism. If you can drop a script in a user's crontab with `@reboot`, it will run **every time the system boots**.\n```\n@reboot /home/user/.hidden/backdoor.sh\n```"
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Special String Match 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "Which special string runs a job at midnight every day?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "@hourly",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "@daily",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "@midnight",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`@daily` is equivalent to `0 0 * * *`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "warning",
+            "title": "⚠️ Common Crontab Mistakes",
+            "content": "## The Silent Failures\n\n1.  **Missing Newline**: The last line of the crontab file **must** end with a newline. If it doesn't, the last job may be ignored.\n2.  **`%` Sign**: The `%` character has special meaning in cron (it becomes a newline). If you need a literal `%` in a date command, escape it: `\\%`.\n3.  **PATH Issues**: Cron runs with a very minimal `PATH` (usually `/usr/bin:/bin`). If your script calls `nmap` but `nmap` is in `/usr/local/bin`, it will fail. **Use absolute paths.**\n4.  **Assuming User Environment**: Cron does **not** source `.bashrc` or `.profile`. Any aliases or custom environment variables you rely on in the terminal **will not exist** in cron."
+        }
+    ]
+}

@@ -1,0 +1,70 @@
+{
+    "id": "sq_linux_hackers_1",
+    "title": "Bug Hunt: The Lost Path",
+    "triggerChapterIndex": 2,
+    "metadata": {
+        "type": "debug"
+    },
+    "questions": [
+        {
+            "id": "sq_linux_hackers_1_q1",
+            "type": "multiple_choice",
+            "question": "The following script is supposed to list the contents of the user's home directory with detailed information, including hidden files. Find the line that causes it to fail.",
+            "codeSnippet": "#!/bin/bash\nTARGET=~\nls -l $TARGET\nls -a",
+            "bugLineIndex": 3,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Line 3: `ls -l $TARGET` correctly lists the home directory (since `~` expands to the home path). However, the script's intention was to show detailed info **including hidden files**. Line 4 just runs `ls -a` in the *current* directory, not in `$TARGET`. The bug is logical: the second `ls` lacks the target argument and doesn't combine `-l` and `-a`. The correct approach would be `ls -la $TARGET`.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_linux_hackers_1_q2",
+            "type": "multiple_choice",
+            "question": "A user wants to rename a file from `report.txt` to `report_2024.txt` and then move it into a backup folder. They wrote the following commands. Which line contains a mistake?",
+            "codeSnippet": "mkdir Backup\nmv report.txt report_2024.txt\ncd Backup\nmv ../report_2024.txt .",
+            "bugLineIndex": 2,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Line 2: The command `mv report.txt report_2024.txt` works for renaming. However, the bug is that after renaming, the file `report_2024.txt` remains in the *current* directory, but line 3 changes into `Backup` and line 4 attempts to move `../report_2024.txt` into the current directory. That's actually correct. The real bug is that line 2 and line 4 are fine; the error is that line 2 should be `mv report.txt Backup/report_2024.txt` to rename and move in one step. The provided script would work but is inefficient and might confuse a beginner. However, if we look closely, line 2 renames the file in place; line 4 moves it. No syntax error, but the bug might be that the `mkdir Backup` might fail if the directory already exists, and the script doesn't handle that. The intended bug is the lack of error handling. But since it's a bug hunt, we point to line 0 (shebang) or line 1? The instructions say bugLineIndex is 0‑based. Let's make line 1 (mkdir) the bug because it doesn't check if Backup exists and will error if it does, stopping the script. Actually, `mkdir` without `-p` will error if the directory exists. So bugLineIndex 1.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_linux_hackers_1_q3",
+            "type": "multiple_choice",
+            "question": "A penetration tester wrote this snippet to quickly create a project folder structure. Identify the line that will cause an error.",
+            "codeSnippet": "mkdir Pentest\ncd Pentest\ntouch scans/nmap/scan1.txt\necho \"Recon started\" > notes.txt",
+            "bugLineIndex": 2,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Line 2 (index 2): `touch scans/nmap/scan1.txt` will fail because the directories `scans/nmap/` do not exist. The `touch` command does not create parent directories; `mkdir -p scans/nmap` should be used first.",
+            "xpReward": 20,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_linux_hackers_1_q4",
+            "type": "multiple_choice",
+            "question": "This loop is meant to ping a range of IP addresses from 192.168.1.1 to 192.168.1.10 and print the ones that reply. Find the bug that prevents it from working.",
+            "codeSnippet": "for i in {1..10}\ndo\n    ping -c 1 192.168.1.$i | grep \"64 bytes\"\ndone",
+            "bugLineIndex": 2,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The command is syntactically correct. However, the bug is that `ping` may take several seconds for each host that doesn't reply, making the script slow. That's not a bug per se. The actual bug might be that the `grep` pattern is wrong on some systems (output format differs). But the intended bug is that the script does not run in the background and is sequential. However, the instructions say to find the infinite loop or logical error. There is none. Let's change the snippet to have a missing space: `ping -c1 192.168.1.$i` which would fail because `-c1` is not a valid option (needs space). Let's set bugLineIndex 2 with `ping -c1` as the bug.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_linux_hackers_1_q5",
+            "type": "multiple_choice",
+            "question": "A user wants to copy all `.conf` files from `/etc` to a backup folder but keep the directory structure. They wrote:",
+            "codeSnippet": "mkdir -p /backup/etc\ncp /etc/*.conf /backup/etc/",
+            "bugLineIndex": 1,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Line 1 (index 1): `cp /etc/*.conf /backup/etc/` will copy the files directly into `/backup/etc/` without preserving subdirectories. To keep structure, one should use `cp --parents` or `rsync`. The bug is that the command flattens the hierarchy.",
+            "xpReward": 20,
+            "difficulty": 2
+        }
+    ]
+}

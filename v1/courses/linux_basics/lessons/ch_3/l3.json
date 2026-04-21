@@ -1,0 +1,119 @@
+{
+    "id": "l3",
+    "chapterId": "ch_3",
+    "title": "Copying and Moving: `cp` and `mv`",
+    "description": "Duplicate files and relocate them anywhere in the filesystem.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Manipulation",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Photocopier: `cp` 🖨️",
+            "content": "# Copy Command\n\n`cp` stands for **Copy**. It makes a duplicate of a file or folder.\n\n**Syntax:**\n```bash\ncp [options] source destination\n```\n\n### Basic File Copy:\n```bash\ncp important.txt backup.txt\n```\nThis creates `backup.txt` which is an exact clone of `important.txt`. Both files now exist independently.\n\n### Analogy: Photocopying a Document 📄\nYou put the original (`important.txt`) on the glass, press the button, and a new piece of paper (`backup.txt`) comes out. The original is still there, untouched."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Copy a File",
+            "content": "First create a file, then copy it.",
+            "codeSnippet": "echo \"Top Secret Data\" > secret.txt\ncp secret.txt secret_backup.txt\nls -l",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "After running `cp fileA fileB`, how many files exist?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "1 (Only fileB)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "2 (Both fileA and fileB)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "0 (Original is deleted)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`cp` duplicates the file. The original `fileA` remains untouched.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Copying to a Different Folder 📂",
+            "content": "# Preserve the Name, Change the Location\n\nIf you want to copy a file into a folder but keep the same name, just give the folder as the destination.\n\n```bash\ncp notes.txt /home/user/Backups/\n```\n\nThis creates `/home/user/Backups/notes.txt`.\n\n### Copying a Folder (Directories)\n`cp` alone will **NOT** copy a folder. If you try `cp MyFolder Backup`, you'll get an error: `omitting directory`.\n\nTo copy a folder and **everything inside it**, you must use the **`-r`** flag (Recursive).\n\n```bash\ncp -r MyFolder BackupFolder\n```"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "warning",
+            "title": "⚠️ Overwrite Warning",
+            "content": "## `cp` is Ruthless\n\nIf `backup.txt` already exists, `cp` will **silently overwrite it** without asking!\n\nTo protect yourself, use the **`-i`** flag (Interactive).\n\n```bash\ncp -i original.txt backup.txt\n```\n\nIf `backup.txt` exists, Linux will ask: `cp: overwrite 'backup.txt'? (y/n)`\n\n**Always use `-i` when copying important data.**"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "The Mover: `mv` 🚚",
+            "content": "# Move Command\n\n`mv` stands for **Move**. It serves two distinct purposes:\n\n1.  **Moving** a file from one location to another.\n2.  **Renaming** a file (which is technically moving it within the same folder to a new name).\n\n**Syntax:**\n```bash\nmv source destination\n```\n\n### Example 1: Move to a Folder\n```bash\nmv report.txt ~/Documents/\n```\nThe file `report.txt` is now **gone** from the current directory and is living in `~/Documents/`.\n\n### Example 2: Rename a File\n```bash\nmv old_name.txt new_name.txt\n```\nThis changes the name of the file."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "code",
+            "title": "Rename a File",
+            "content": "Create a file, then rename it using `mv`.",
+            "codeSnippet": "touch draft.txt\nmv draft.txt final_version.txt\nls -l",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_8",
+            "type": "quiz",
+            "title": "Move vs Copy 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "What happens to the original file after a successful `mv` command?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It remains in place.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It is deleted (removed from source location).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It is hidden.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`mv` *moves* the file. The original reference is removed from the old location. (Note: `cp` leaves the original).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## `mv -i` for Safety\n\nJust like `cp`, `mv` will silently overwrite destination files. Use `mv -i` to get a confirmation prompt before destroying the target file."
+        }
+    ]
+}

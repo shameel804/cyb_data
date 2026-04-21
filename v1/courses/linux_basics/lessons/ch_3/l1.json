@@ -1,0 +1,102 @@
+{
+    "id": "l1",
+    "chapterId": "ch_3",
+    "title": "Creating Empty Files: `touch`",
+    "description": "Learn to create blank files instantly. The foundation of file manipulation.",
+    "xpReward": 20,
+    "estimatedMinutes": 5,
+    "section": "File Creation",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Magic Wand: `touch` ✨",
+            "content": "# What Does `touch` Do?\n\nDespite its gentle name, `touch` is a powerful command. It has two main jobs:\n\n1.  **Create an empty file** if the file doesn't exist yet.\n2.  **Update the timestamp** of a file to the current time if it *does* exist.\n\n### Basic Usage:\n```bash\ntouch filename.txt\n```\n\nIf `filename.txt` doesn't exist, Linux creates a **zero-byte** file (completely empty). If it does exist, Linux updates its 'Last Modified' date to right now.\n\n### Analogy: The Notary Stamp 📜\nImagine a notary public who stamps a document with today's date. If you hand them a blank piece of paper, they stamp it and now you have a dated document. If you hand them an old contract, they just update the date stamp."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "code",
+            "title": "Create Your First File",
+            "content": "Let's create a new file named `my_first_file.txt` in your current directory.",
+            "codeSnippet": "touch my_first_file.txt",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What does `touch existing_file.txt` do if the file already exists?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Deletes the file.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Opens the file for editing.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Updates the file's modification timestamp.",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "If the file exists, `touch` simply updates the access and modification timestamps to the current time without changing the file's content.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Creating Multiple Files at Once 📦",
+            "content": "# Batch Creation\n\nYou don't have to run `touch` over and over. You can create multiple files in one command.\n\n```bash\ntouch file1.txt file2.txt file3.log\n```\n\nThis creates three separate empty files in a single line.\n\n### Pro Tip: Use Spaces to Separate\nJust list all the filenames you want, separated by spaces. This works with most file commands."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Try Batch Creation",
+            "content": "Run this command to create three log files at once. Then use `ls` to verify they appeared.",
+            "codeSnippet": "touch access.log error.log debug.log\nls -l *.log",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_6",
+            "type": "warning",
+            "title": "⚠️ Watch Your Extensions",
+            "content": "## `.txt` vs `.log` vs `.conf`\n\nIn Linux, file extensions like `.txt` or `.jpg` are **not mandatory**. They are purely for human convenience.\n\nA file named `secrets` with no extension can be opened just fine. However, using standard extensions helps other programs recognize the file type and helps *you* stay organized.\n\n**Best Practice:** Always use extensions (`report.txt`, `script.sh`, `config.conf`)."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "Timestamp Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "Running `touch` on an existing file will erase all the text inside it.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. `touch` is completely safe for existing files. It only updates the timestamp; the content remains untouched.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

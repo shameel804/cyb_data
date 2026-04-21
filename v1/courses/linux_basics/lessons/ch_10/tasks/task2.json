@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_10",
+    "title": "Generate Configuration Files with Heredocs",
+    "description": "Use here documents to create a structured config file from within a Bash script.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You are writing an automated deployment script that needs to generate an Nginx server block configuration file. The configuration must be generated dynamically based on variables in your script.\n\n**Requirements:**\n1. Write a script named `gen_nginx_config.sh` that accepts two arguments: `DOMAIN` and `PORT`.\n2. Validate that both arguments are provided. If not, print usage and exit.\n3. Use a **here document** to create a file named `/tmp/$DOMAIN.conf` with the following template (variables should be expanded):\n   ```nginx\n   server {\n       listen PORT;\n       server_name DOMAIN www.DOMAIN;\n       root /var/www/DOMAIN;\n       \n       location / {\n           try_files $uri $uri/ =404;\n       }\n   }\n   ```\n4. After creating the file, display its contents using `cat`.\n5. Ensure the script has proper error handling: if the file creation fails, exit with an error message.\n\n**Bonus:** Use a here document with `sudo tee` to write the file directly to `/etc/nginx/sites-available/` (requires root).\n\n**Hints:**\n- Variables inside the heredoc will be expanded unless you quote the delimiter (e.g., `<< 'EOF'`). We *want* expansion here.\n- Use `cat << EOF > /tmp/$DOMAIN.conf`.\n- Check `$?` after the redirection to ensure success.",
+    "hints": [
+        "Heredoc syntax: `cat << EOF > /path/file` then content, then `EOF` on its own line.",
+        "Variable expansion occurs automatically inside unquoted heredocs.",
+        "For bonus: `cat << EOF | sudo tee /etc/nginx/sites-available/$DOMAIN.conf`"
+    ],
+    "expectedOutput": "Configuration file created and displayed.",
+    "solutionCode": "#!/bin/bash\n\nif [ $# -ne 2 ]; then\n    echo \"Usage: $0 <domain> <port>\"\n    exit 1\nfi\n\nDOMAIN=$1\nPORT=$2\n\ncat << EOF > /tmp/${DOMAIN}.conf\nserver {\n    listen ${PORT};\n    server_name ${DOMAIN} www.${DOMAIN};\n    root /var/www/${DOMAIN};\n\n    location / {\n        try_files \\$uri \\$uri/ =404;\n    }\n}\nEOF\n\nif [ $? -eq 0 ]; then\n    echo \"Configuration created: /tmp/${DOMAIN}.conf\"\n    cat /tmp/${DOMAIN}.conf\nelse\n    echo \"Error creating configuration file.\"\n    exit 1\nfi"
+}

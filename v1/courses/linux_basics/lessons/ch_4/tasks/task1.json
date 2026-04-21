@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_4",
+    "title": "Log File Investigation",
+    "description": "Use `grep`, `head`, and `tail` to analyze a sample access log.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You are analyzing a web server log (`access.log`) to identify potential security issues.\n\n**Setup:** Create a sample log file with the following command:\n```bash\necho -e '192.168.1.1 - - [10/Oct/2023:13:55:36] \"GET /index.html HTTP/1.1\" 200 2326\n192.168.1.100 - - [10/Oct/2023:13:56:01] \"GET /admin HTTP/1.1\" 404 209\n192.168.1.1 - - [10/Oct/2023:13:56:20] \"GET /login.php HTTP/1.1\" 200 445\n192.168.1.200 - - [10/Oct/2023:13:57:10] \"GET /wp-admin HTTP/1.1\" 404 209\n192.168.1.1 - - [10/Oct/2023:13:58:00] \"POST /login.php HTTP/1.1\" 401 521' > access.log\n```\n\n**Tasks:**\n1. View the first 3 lines of the file using `head`.\n2. View the last 2 lines of the file using `tail`.\n3. Find all lines containing `404` (Page Not Found errors).\n4. Find all lines that start with the IP address `192.168.1.1`. (Hint: Use `^`).\n5. Count how many times `login.php` was accessed. (Use `grep -c` or pipe to `wc -l`).",
+    "hints": [
+        "For line count, use `head -n 3 access.log`.",
+        "For IP start, use `grep '^192.168.1.1' access.log`.",
+        "Count with `grep -c 'login.php' access.log`."
+    ],
+    "expectedOutput": "Sequential command results.",
+    "solutionCode": "head -n 3 access.log\ntail -n 2 access.log\ngrep '404' access.log\ngrep '^192.168.1.1' access.log\ngrep -c 'login.php' access.log"
+}

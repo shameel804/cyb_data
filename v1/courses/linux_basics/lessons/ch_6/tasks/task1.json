@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_6",
+    "title": "Hunt and Terminate a Rogue Process",
+    "description": "Identify a CPU-hogging process using `ps` and `top`, then terminate it using the appropriate signal.",
+    "estimatedMinutes": 15,
+    "problemStatement": "A malicious or buggy script named 'cpuhog.sh' is consuming 100% of one CPU core. You need to find it and stop it safely.\n\n**Setup (Simulate the rogue process):**\nRun this command in a **separate terminal window or tab** to create a CPU-intensive background job:\n```bash\nwhile true; do :; done &\n```\nThis creates an infinite loop that will max out a CPU core.\n\n**Tasks (in your main terminal):**\n1. Use `ps aux` piped to `head` to see the top processes. Identify the line with the `bash` process running the infinite loop (look for `while true` or high CPU).\n2. Note its PID.\n3. Alternatively, use `top` (press `q` to quit) to see which process is at the top of the CPU list.\n4. Use `kill` to send a **SIGTERM** to the PID. Verify if the process stopped. (It might ignore TERM for a shell loop).\n5. If it did not stop, use `kill -9` to force kill it.\n6. Verify it is gone using `ps -p PID` or by checking `top` again.\n\n**Bonus:** Use `pgrep -f \"while true\"` to find the PID, then `pkill -f \"while true\"` to kill it in one command.",
+    "hints": [
+        "Look for 'bash' or 'while' in the `ps aux` output.",
+        "SIGTERM is `kill PID`. SIGKILL is `kill -9 PID`.",
+        "Use `pgrep -f \"while true\"` to find the PID dynamically."
+    ],
+    "expectedOutput": "Process successfully terminated and no longer visible in process list.",
+    "solutionCode": "ps aux | head -5\n# Note the PID, e.g., 1234\nkill 1234\n# If still running...\nkill -9 1234\nps -p 1234  # Should show no such process\n# Or one-liner:\npkill -f \"while true\""
+}

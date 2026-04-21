@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_4",
+    "title": "Build a Report Pipeline",
+    "description": "Chain commands to filter logs, count entries, and save a report.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Using the same `access.log` from Task 1, you need to generate a summary report for the security team.\n\n**Requirements:**\n1. Use a **single pipeline** (multiple commands connected by `|`) to extract all `404` errors, take only the **last 2** of those errors, and save them to a file called `last_404s.txt`.\n2. Verify the contents of `last_404s.txt` using `cat`.\n3. Count the total number of `404` errors and save **only the number** to a file called `error_count.txt`. (Hint: `grep -c` prints just a number, redirect it).\n4. Display the contents of `error_count.txt`.\n\n**Expected Pipeline Logic:**\n`grep '404' access.log | tail -n 2 > last_404s.txt`",
+    "hints": [
+        "The first pipeline: `grep '404' access.log | tail -n 2 > last_404s.txt`",
+        "The second command: `grep -c '404' access.log > error_count.txt`",
+        "Use `cat` to view the files."
+    ],
+    "expectedOutput": "last_404s.txt contains the last two 404 lines; error_count.txt contains '2'.",
+    "solutionCode": "grep '404' access.log | tail -n 2 > last_404s.txt\ncat last_404s.txt\ngrep -c '404' access.log > error_count.txt\ncat error_count.txt"
+}

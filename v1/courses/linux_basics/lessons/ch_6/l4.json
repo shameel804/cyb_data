@@ -1,0 +1,110 @@
+{
+    "id": "l4",
+    "chapterId": "ch_6",
+    "title": "Digital Execution: `kill`, `pkill`, and Signals",
+    "description": "Terminate misbehaving processes gracefully or forcefully. Master the art of sending signals.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Process Control",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "More Than Just Murder: Signals 📡",
+            "content": "# `kill` Sends Messages, Not Just Bullets\n\nDespite its violent name, the `kill` command's primary job is to **send a signal** to a process. Signals are software interrupts.\n\n**Basic Syntax:**\n```bash\nkill [signal] PID\n```\n\n### Analogy: The Waiter Tapping Your Shoulder 👨‍🍳\n- You are the process, eating dinner.\n- The waiter (kernel) taps your shoulder (sends a signal).\n- You can **choose** to ignore it, finish your meal, or drop your fork and leave immediately.\n\nThere are over 60 signals. We only need to know a few."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "The Essential Signals 🛑",
+            "content": "# Know These Four\n\n| Signal Name | Number | Action |\n| :--- | :--- | :--- |\n| **SIGTERM** | **15** | **Polite Request**: \"Please save your work and shut down.\" The process can catch this and clean up. **Default signal** if none specified. |\n| **SIGKILL** | **9** | **The Guillotine**: Kernel terminates process immediately. Process has **no chance** to react or save data. **Last resort.** |\n| **SIGINT** | **2** | **Ctrl+C Interrupt**: The gentle 'stop what you're doing' sent when you press `Ctrl+C` in terminal. |\n| **SIGHUP** | **1** | **Hang Up**: Originally sent when modem hung up. Now used to tell daemons to **reload configuration files** without restarting. |\n\n### Sending a Signal:\n```bash\nkill -15 1234   # Gracefully terminate PID 1234\nkill -9 1234    # Force kill PID 1234 (Nuclear option)\nkill -HUP 1234  # Reload config for PID 1234\n```"
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Signal Selection 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which signal should you try FIRST to stop a misbehaving web browser?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "SIGKILL (9)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "SIGTERM (15)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "SIGHUP (1)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Always start with SIGTERM (15). It allows the program to save its state. Use SIGKILL (9) only if it ignores TERM.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Finding PIDs to Kill: `pgrep` and `pidof` 🔎",
+            "content": "# Don't Parse `ps aux` Manually\n\nYou need the PID to use `kill`. Instead of squinting at `ps aux | grep firefox`, use dedicated tools:\n\n### `pidof` (Simple)\nFinds the PID of a running program by exact name.\n```bash\npidof firefox\n# Output: 1234 5678\n```\n\n### `pgrep` (Powerful)\nSearches for processes based on name or other attributes. Supports regex!\n```bash\npgrep firefox\npgrep -u cybron   # Find all processes owned by user 'cybron'\npgrep -f \"python script.py\" # Match full command line\n```\n\n**Kill with `pgrep` in one line:**\n```bash\nkill $(pgrep firefox)\n```"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Killing by Name: `pkill` and `killall` 💣",
+            "content": "# Skip the PID Entirely\n\nWhy find the PID first? Just kill by name!\n\n### `pkill` (Preferred)\nUses the same matching logic as `pgrep`.\n```bash\npkill firefox      # Sends SIGTERM to all processes named 'firefox'\npkill -9 firefox   # Force kill\n```\n\n### `killall` (Caution!)\nMatches **exact** process name. Very dangerous on other Unix systems (Solaris `killall` kills EVERYTHING). On Linux it's safe, but `pkill` is more flexible.\n```bash\nkillall firefox\n```\n\n**⚠️ Extreme Caution:** `pkill` with a vague pattern can kill system processes. `pkill -9 ap` would kill `apache2`, `apport`, `aptd`... potentially crashing the system. Always check with `pgrep` first!"
+        },
+        {
+            "id": "s_l4_6",
+            "type": "code",
+            "title": "Practice Safe Killing",
+            "content": "Create a dummy process, find its PID, and terminate it gracefully.",
+            "codeSnippet": "sleep 300 &\nSLEEP_PID=$!\nps -p $SLEEP_PID\nkill $SLEEP_PID\nps -p $SLEEP_PID",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "Kill Strategy 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "You want to terminate all instances of 'chrome'. What is the safest one-liner?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "pkill chrome",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "pkill -9 chrome",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "killall -9 chrome",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Start with `pkill` (SIGTERM). Avoid `-9` unless necessary.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_8",
+            "type": "warning",
+            "title": "⚠️ The Unkillable Process (State D)",
+            "content": "# When `kill -9` Fails\n\nSometimes `kill -9` does **nothing**. The process is likely in **State D (Uninterruptible Sleep)**.\n\nThis usually happens when the process is waiting for a **broken hard drive** or **stuck NFS network share**.\n\n- **Cause**: Kernel bug or hardware failure.\n- **Solution**: You **cannot** kill State D processes from userspace. The only fix is to **reboot** the machine (and fix the underlying storage issue)."
+        }
+    ]
+}

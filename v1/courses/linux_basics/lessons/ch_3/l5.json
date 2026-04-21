@@ -1,0 +1,104 @@
+{
+    "id": "l5",
+    "chapterId": "ch_3",
+    "title": "Safe Practices and Wildcards",
+    "description": "Avoid disasters with interactive deletion and bulk operations using wildcards.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Advanced Safety",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Star of the Show: The Asterisk `*` ⭐",
+            "content": "# Wildcards: Selecting Multiple Files\n\nSometimes you want to delete *all* `.txt` files, or copy *all* `.jpg` photos. Typing every name is exhausting.\n\nEnter the **Wildcard** character: `*` (asterisk).\n\nIt means **'match anything'**.\n\n### Examples:\n*   **`*.txt`**: All files ending in `.txt`.\n*   **`report*`**: All files starting with `report` (e.g., `report1.doc`, `report-final.pdf`).\n*   **`*.*`**: All files that have a dot in the name (not very useful, but valid).\n*   **`*`**: **EVERY SINGLE FILE AND FOLDER** in the current directory."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Wildcard in Action: Copying",
+            "content": "Copy all text files from current directory to a backup folder.",
+            "codeSnippet": "mkdir backup\ncp *.txt backup/\nls backup/",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Wildcard Matching 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Which pattern matches files named 'data1.csv', 'data2.csv', and 'data_backup.csv'?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "data*.csv",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "data?.csv",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "*.data",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`data*.csv` means 'start with data, then anything, then end with .csv'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "warning",
+            "title": "⚠️ Danger: `rm *`",
+            "content": "# The Nuclear Keyboard Slip\n\nImagine you want to delete all `.tmp` files:\n\n`rm *.tmp`\n\nWhat if you accidentally hit the **Spacebar** before the asterisk?\n\n`rm * .tmp`\n\n**TRANSLATION:** Delete **EVERYTHING** in the current folder (`*`), and then also delete the file `.tmp`.\n\nYou have just wiped out your entire current directory.\n\n### The Golden Rule of `rm`:\n**ALWAYS** run `ls` with the same pattern FIRST to see what you are about to delete.\n\n```bash\nls *.tmp   # Check what matches\nrm *.tmp   # Only run this if the list looks correct\n```"
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "The Question Mark Wildcard `?` ❓",
+            "content": "# Match Exactly One Character\n\nWhile `*` matches **zero or more** characters, `?` matches **exactly one** character.\n\n### Example:\nYou have files: `file1.txt`, `file2.txt`, `file10.txt`.\n\n*   **`ls file?.txt`**: Matches `file1.txt` and `file2.txt` (only one character after 'file').\n*   **`ls file*.txt`**: Matches all three (any number of characters after 'file').\n\nThis is useful for structured file naming (like logs: `access.log.1`, `access.log.2`)."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Safety Protocol 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "What is the safest way to use a wildcard with `rm`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Just type rm *.txt and hope for the best.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Use `ls` with the same pattern first to preview.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Always use `rm -rf *` for speed.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Previewing with `ls` allows you to see exactly which files the shell will expand the wildcard to include.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "tip",
+            "title": "Alias to the Rescue 🚀",
+            "content": "## Make `rm` Always Ask\n\nMany Linux distributions automatically set an **alias** that makes `rm` behave like `rm -i` (interactive) by default.\n\nYou can check if you have this safety net by typing:\n```bash\nalias rm\n```\nIf it says `alias rm='rm -i'`, you are protected. You will be prompted before deleting every file.\n\nTo override this safety and force delete anyway (DANGER), you use `\\rm` or `rm -f`."
+        }
+    ]
+}

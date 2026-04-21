@@ -1,0 +1,113 @@
+{
+    "id": "l3",
+    "chapterId": "ch_2",
+    "title": "What's Here? The `ls` Command",
+    "description": "List the contents of directories. Your eyes in the dark.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Navigation Basics",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Turning on the Lights 💡",
+            "content": "# `ls` = List\n\nYou know where you are (`pwd`). Now you need to know what's around you.\n\nThe command is `ls`.\n\n```bash\nls\n```\n\n### What it does:\nIt lists the files and folders inside your **current working directory**.\n\n### Analogy: The Flashlight 🔦\nImagine you're in a dark room (the terminal). `ls` is a flashlight that reveals everything sitting on the floor around you."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Try It",
+            "content": "Run `ls` in your home directory. You'll likely see folders like `Desktop`, `Documents`, `Downloads`, `Pictures`.",
+            "codeSnippet": "ls",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What does `ls` do if you run it with no arguments?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Lists the contents of the root directory.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Lists the contents of your current directory.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Logs you out of the system.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "By default, `ls` targets the current working directory (where you are standing).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Looking Elsewhere 👀",
+            "content": "# You Can Peek Into Other Rooms\n\nYou don't have to be *in* a folder to see what's inside it. You can give `ls` an **argument**.\n\n```bash\nls /etc\n```\n\nThis command says: \"Show me the contents of the `/etc` folder.\"\n\nThis is incredibly powerful. You can spy on any directory you have permission to read without moving from your spot."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "The Power of Options: `ls -l` 📋",
+            "content": "# Getting the Details\n\nPlain `ls` just gives you names. That's like looking at a bookshelf and only seeing the color of the book spines.\n\nWe want the **metadata**. We want the *details*.\n\nUse the `-l` option (that's a lowercase 'L' for **L**ong).\n\n```bash\nls -l\n```\n\n### What you'll see:\n`-rw-r--r-- 1 cybron cybron  4096 Oct 26 10:30 secret_plans.txt`\n\nLet's decode this monster line by line (we'll master permissions in Chapter 5):\n\n1.  **`-rw-r--r--`**: Permissions (who can read/write).\n2.  **`1`**: Number of links.\n3.  **`cybron`**: Owner of the file.\n4.  **`cybron`**: Group owner.\n5.  **`4096`**: Size in bytes.\n6.  **`Oct 26 10:30`**: Last modified date.\n7.  **`secret_plans.txt`**: The file name."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Option Identification 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "Which `ls` option shows the file size, permissions, and modification date?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "-a",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "-h",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "-l",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "`-l` stands for 'long listing format'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Human Readable Sizes: `ls -lh`",
+            "content": "# Bytes vs. Kilobytes\n\n4096 bytes is hard for a human brain to parse quickly. Is that a big file or a small file?\n\nCombine `-l` with `-h` (Human readable).\n\n```bash\nls -lh\n```\n\n**Output before:** `4096`\n**Output after:** `4.0K`\n\nMuch better! Options can be combined: `ls -l -h` is the same as `ls -lh`."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "code",
+            "title": "Try a Long Human Listing",
+            "content": "Run this command to see your files in a detailed, easy-to-read format.",
+            "codeSnippet": "ls -lh",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        }
+    ]
+}

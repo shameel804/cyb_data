@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_7",
+    "title": "DNS Investigation",
+    "description": "Use `dig` and `nslookup` to investigate domain records and identify email servers.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You are performing passive reconnaissance on the domain `example.com` (a safe, legal test domain).\n\n**Tasks:**\n1. Use `nslookup` to find the IP address of `example.com`. Then query the same against Google's public DNS (`8.8.8.8`).\n2. Use `dig` to find the **A record** (IPv4 address) for `example.com`. Use `+short` for clean output.\n3. Use `dig` to find the **MX records** (Mail Exchange) for `example.com`. Identify the primary mail server.\n4. Use `dig` to find the **NS records** (Name Servers) for `example.com`.\n5. Perform a **reverse DNS lookup** on the IP address you found in step 2 using `dig -x`. Does it resolve back to `example.com`?\n\n**Bonus:** Try the same queries on `google.com` and observe the difference in complexity and infrastructure.\n\n**Expected Insights:**\n- Understanding how to query specific DNS record types.\n- Recognizing that the IP for `example.com` is often different from its mail servers.\n- Seeing the authoritative nameservers.",
+    "hints": [
+        "`dig example.com MX` for mail servers.",
+        "`dig example.com NS` for nameservers.",
+        "`dig -x 1.2.3.4` for reverse lookup."
+    ],
+    "expectedOutput": "IP address, mail server hostname, nameservers, and reverse lookup result.",
+    "solutionCode": "nslookup example.com\nnslookup example.com 8.8.8.8\ndig +short example.com\ndig example.com MX\ndig example.com NS\ndig -x 93.184.216.34"
+}

@@ -1,0 +1,317 @@
+{
+    "id": "quiz_ch_8",
+    "chapterId": "ch_8",
+    "title": "Chapter 8 Quiz: The Forge",
+    "description": "Test your mastery of Bash scripting fundamentals and automation.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the purpose of the shebang `#!/bin/bash` at the start of a script?",
+            "options": [
+                "It is a comment describing the script.",
+                "It specifies which interpreter should execute the script.",
+                "It makes the script executable.",
+                "It imports a library."
+            ],
+            "correctAnswer": 1,
+            "explanation": "The shebang tells the system to use /bin/bash to run the script."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "Spaces are allowed around the equals sign when assigning a variable in Bash.",
+            "correctAnswer": false,
+            "explanation": "False. `VAR=value` is correct; `VAR = value` will cause an error."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which command reads user input into a variable?",
+            "options": [
+                "echo",
+                "read",
+                "input",
+                "get"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`read` captures input from the user."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "To access the value of a variable named `TARGET`, you prefix it with the character `_____`.",
+            "options": [
+                "$",
+                "&",
+                "#",
+                "@"
+            ],
+            "correctAnswer": "$",
+            "explanation": "Use `$TARGET` to dereference the variable."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "In a script, what does `$#` represent?",
+            "options": [
+                "The script's PID.",
+                "The number of arguments passed to the script.",
+                "The last argument passed.",
+                "All arguments as a single string."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`$#` expands to the number of positional parameters."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which conditional check tests if two numbers are equal?",
+            "options": [
+                "-eq",
+                "-ne",
+                "-gt",
+                "-lt"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`-eq` stands for 'equal'."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Which string test checks if a variable is empty (zero length)?",
+            "options": [
+                "-n",
+                "-z",
+                "-e",
+                "-s"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-z` returns true if the string length is zero."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What does the `-f` file test check?",
+            "options": [
+                "File is a directory.",
+                "File exists and is a regular file.",
+                "File is executable.",
+                "File is not empty."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-f` checks for existence and that it's a regular file (not a directory or device)."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What is the correct syntax for a `for` loop iterating over numbers 1 to 5?",
+            "options": [
+                "for (i=1; i<=5; i++)",
+                "for i in {1..5}",
+                "for i in 1-5",
+                "foreach i (1..5)"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Bash uses `for i in {1..5}`."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What does `break` do inside a loop?",
+            "options": [
+                "Pauses the loop.",
+                "Exits the loop completely.",
+                "Skips to the next iteration.",
+                "Restarts the loop from the beginning."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`break` terminates the innermost loop."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "Functions in Bash can return string values using the `return` keyword.",
+            "correctAnswer": false,
+            "explanation": "False. `return` returns an integer exit status. To return a string, use `echo` and command substitution."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What keyword makes a variable local to a function?",
+            "options": [
+                "local",
+                "private",
+                "set",
+                "my"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`local VAR=value` restricts the variable's scope to the function."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which syntax correctly performs command substitution?",
+            "options": [
+                "$(command)",
+                "`command`",
+                "Both A and B",
+                "${command}"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Both backticks and `$()` work, but `$()` is preferred."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is the result of `$(( 7 % 3 ))`?",
+            "options": [
+                "2",
+                "1",
+                "3",
+                "0"
+            ],
+            "correctAnswer": 1,
+            "explanation": "7 divided by 3 is 2 with a remainder of 1. `%` returns the remainder."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Which special variable contains the exit status of the last command?",
+            "options": [
+                "$#",
+                "$@",
+                "$?",
+                "$$"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`$?` holds the return code. 0 usually means success."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "You want to run a script every Monday at 6:00 AM. Which cron schedule is correct?",
+            "options": [
+                "0 6 * * 1",
+                "6 0 * * 1",
+                "0 6 1 * *",
+                "* 6 * * 0"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Minute 0, Hour 6, Day of Week 1 (Monday)."
+        },
+        {
+            "id": "q17",
+            "type": "fill_blank",
+            "question": "To make a script file executable, you use the command `chmod _____ script.sh`.",
+            "options": [
+                "+x",
+                "+r",
+                "+w",
+                "755"
+            ],
+            "correctAnswer": "+x",
+            "explanation": "`chmod +x` adds execute permission."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "What is the purpose of `> /dev/null 2>&1` in a script?",
+            "options": [
+                "Logs output to a file named null.",
+                "Discards both standard output and standard error.",
+                "Redirects output to a device driver.",
+                "Sends output to the network."
+            ],
+            "correctAnswer": 1,
+            "explanation": "It silences all output from the command."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "Cron jobs run with the full user environment, including PATH and aliases.",
+            "correctAnswer": false,
+            "explanation": "False. Cron runs with a minimal environment. Use absolute paths."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which option to `read` hides the user's input (useful for passwords)?",
+            "options": [
+                "-p",
+                "-s",
+                "-h",
+                "-t"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-s` stands for silent mode."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "What does the `[[ ]]` construct offer over `[ ]`?",
+            "options": [
+                "It's faster.",
+                "It allows pattern matching and logical operators without quoting issues.",
+                "It works on older shells.",
+                "It doesn't require spaces."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`[[ ]]` is a Bash keyword that handles empty variables gracefully and supports `&&`/`||` inside."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "Which loop is best for reading a file line by line?",
+            "options": [
+                "for line in $(cat file)",
+                "while read line; do ... done < file",
+                "until read line; do ... done",
+                "read -r line < file"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The `while read` loop is the correct idiom for processing lines."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "You want to stop script execution immediately if any command fails. Which setting?",
+            "options": [
+                "set -e",
+                "set -x",
+                "set -u",
+                "set -o pipefail"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`set -e` (errexit) exits the script on non-zero status."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "What command shows your current crontab entries?",
+            "options": [
+                "crontab -e",
+                "crontab -l",
+                "crontab -r",
+                "cron -list"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`crontab -l` lists the current user's crontab."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "In the ping sweeper script, why is `&` used in the backgrounding enhancement?",
+            "options": [
+                "To run the ping command as a background process.",
+                "To redirect output.",
+                "To append to a file.",
+                "To indicate a logical AND."
+            ],
+            "correctAnswer": 0,
+            "explanation": "`&` at the end of a command runs it in the background, allowing the loop to continue immediately."
+        }
+    ]
+}

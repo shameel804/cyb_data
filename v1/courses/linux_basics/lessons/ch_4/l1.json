@@ -1,0 +1,104 @@
+{
+    "id": "l1",
+    "chapterId": "ch_4",
+    "title": "Peeking Inside: `cat` and `less`",
+    "description": "Learn to dump file contents to the screen and navigate large files like a pro.",
+    "xpReward": 20,
+    "estimatedMinutes": 6,
+    "section": "File Viewing",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Quick Look: `cat` 🐱",
+            "content": "# Concatenate and Display\n\n`cat` is short for **concatenate**. Its primary job is to read one or more files and spit their contents out to the terminal screen.\n\n**Basic Usage:**\n```bash\ncat filename.txt\n```\n\nThis prints the entire file to your terminal instantly.\n\n### Analogy: The Speed Reader 📖\nImagine unrolling an entire scroll as fast as possible in front of your face. That's `cat`. Great for short files, overwhelming for long ones.\n\n### Multiple Files:\n```bash\ncat file1.txt file2.txt\n```\nThis will print `file1.txt` immediately followed by `file2.txt` as if they were one long document (hence 'concatenate')."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "code",
+            "title": "Try `cat`",
+            "content": "Create a small file and view it with `cat`.",
+            "codeSnippet": "echo \"Line 1\nLine 2\nLine 3\" > test.txt\ncat test.txt",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What does `cat long_log.txt` do to a file with 50,000 lines?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Shows the first page and waits for you to press space.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Floods the screen with all 50,000 lines as fast as possible.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Opens a text editor.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`cat` dumps the entire file content to standard output without pausing.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Smart Pager: `less` 📜",
+            "content": "# Read, Don't Flood\n\nFor large files, you need **`less`**. `less` opens the file in a 'pager'—a special viewing mode that lets you scroll at your own pace.\n\n**Usage:**\n```bash\nless /var/log/syslog\n```\n\n### Analogy: The E-Reader 📱\n`less` is like opening a book on a Kindle. You turn pages one at a time. You can search. You can jump to the end. And when you're done, you close the book.\n\n### Why is it called `less`?\nIt's a pun! The original pager was called `more`. `less` was created to be better than `more`. The motto: **\"Less is more.\"**"
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Navigating Inside `less` 🕹️",
+            "content": "# Keyboard Shortcuts (No Mouse!)\n\nOnce inside `less`, the mouse stops working. Master these keys:\n\n| Key | Action |\n| :--- | :--- |\n| `↓` / `j` | Scroll down one line |\n| `↑` / `k` | Scroll up one line |\n| `Space` / `f` | Go forward one full page |\n| `b` | Go back one full page |\n| `g` | Jump to the **beginning** of the file |\n| `G` (Shift+g) | Jump to the **end** of the file |\n| `/search_term` | Search **forwards** for text |\n| `?search_term` | Search **backwards** for text |\n| `n` | Go to **next** search match |\n| `N` | Go to **previous** search match |\n| `q` | **Quit** and return to terminal |"
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## `less` is also a Super `cat`\n\nIf you pipe output into `less`, you can scroll through any command's output!\n\n```bash\nls -la /etc | less\n```\n\nThis is crucial when `ls` outputs hundreds of files. We'll cover pipes (`|`) later in this chapter."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "Navigation Test 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "You are inside `less` and want to jump to the very bottom of a long file. What key do you press?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "g",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "G",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Spacebar",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Lowercase `g` goes to the beginning. Uppercase `G` (Shift+g) goes to the end.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

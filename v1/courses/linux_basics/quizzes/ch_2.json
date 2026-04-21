@@ -1,0 +1,246 @@
+{
+    "id": "quiz_ch_2",
+    "chapterId": "ch_2",
+    "title": "Chapter 2 Quiz: Pathfinder",
+    "description": "Test your knowledge of the Linux filesystem and navigation commands.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the top-level directory in Linux called?",
+            "options": [
+                "/home",
+                "/root",
+                "/",
+                "C:\\"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The root directory is represented by a single forward slash `/`."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "The `cd` command with no arguments takes you to the root directory.",
+            "correctAnswer": false,
+            "explanation": "False. `cd` with no arguments takes you to your Home directory."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which command shows the full path of your current working directory?",
+            "options": [
+                "ls",
+                "pwd",
+                "cd .",
+                "echo $PATH"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`pwd` stands for Print Working Directory."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "You want to see the file size in 'human-readable' format (e.g., 4.0K). Which option do you use with `ls`?",
+            "options": [
+                "-a",
+                "-l",
+                "-h",
+                "-s"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The `-h` flag stands for 'human-readable'."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which of these paths is an Absolute Path?",
+            "options": [
+                "Documents/work",
+                "./work",
+                "/home/user/work",
+                "../user/work"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Absolute paths always start with a `/`."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What does `ls -a` do?",
+            "options": [
+                "Shows file sizes.",
+                "Shows all files, including hidden ones.",
+                "Shows files in alphabetical order.",
+                "Shows files in a long list format."
+            ],
+            "correctAnswer": 1,
+            "explanation": "The `-a` flag means 'all'. It reveals files starting with a dot."
+        },
+        {
+            "id": "q7",
+            "type": "fill_blank",
+            "question": "To move up one directory level, you use the command `cd _____`.",
+            "options": [
+                "..",
+                "--up",
+                "up",
+                "."
+            ],
+            "correctAnswer": "..",
+            "explanation": "`..` represents the parent directory."
+        },
+        {
+            "id": "q8",
+            "type": "true_false",
+            "question": "In Linux, a file named `.config` is a hidden file.",
+            "correctAnswer": true,
+            "explanation": "True. Any file or directory starting with a dot is hidden by default."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What does the tilde `~` character represent in a path?",
+            "options": [
+                "The root directory",
+                "The previous directory",
+                "The user's Home directory",
+                "The system temp directory"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`~` is a shortcut for `/home/your_username`."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "If you are in `/var/log` and run `cd ~/Downloads`, where do you end up?",
+            "options": [
+                "/var/log/Downloads",
+                "/Downloads",
+                "/home/your_username/Downloads",
+                "/var/log/~/Downloads"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The `~` shortcut expands to your home directory, regardless of current location."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which directory contains system configuration files?",
+            "options": [
+                "/bin",
+                "/home",
+                "/etc",
+                "/tmp"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`/etc` holds configuration files."
+        },
+        {
+            "id": "q12",
+            "type": "true_false",
+            "question": "You can delete any file in `/usr` safely as a normal user.",
+            "correctAnswer": false,
+            "explanation": "False. `/usr` contains system software. Modifying it requires admin privileges and can break the system."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What is the purpose of the `-l` option for `ls`?",
+            "options": [
+                "List only directories",
+                "Show a long listing format with permissions",
+                "List files in reverse order",
+                "Show file icons"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-l` provides a detailed list including permissions, owner, size, and date."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What command toggles you back to the last directory you were in?",
+            "options": [
+                "cd ..",
+                "cd --",
+                "cd -",
+                "cd /last"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`cd -` changes to the previous working directory."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "You are in `/home/user/Documents`. What is the relative path to `/home/user/Pictures`?",
+            "options": [
+                "Pictures",
+                "../Pictures",
+                "/home/user/Pictures",
+                "./Pictures"
+            ],
+            "correctAnswer": 1,
+            "explanation": "You must go up one level (`..`) to `/home/user` and then down into `Pictures`."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "The command `ls /` will show the contents of the root directory.",
+            "correctAnswer": true,
+            "explanation": "True. The argument `/` tells `ls` to target the root of the filesystem."
+        },
+        {
+            "id": "q17",
+            "type": "fill_blank",
+            "question": "To see hidden files and detailed information together, you would run `ls -_____`.",
+            "options": [
+                "al",
+                "la",
+                "lh",
+                "ha"
+            ],
+            "correctAnswer": "la",
+            "explanation": "Combining flags: `ls -l -a` can be written as `ls -la`."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which directory is the personal storage space for a regular user named 'bob'?",
+            "options": [
+                "/root",
+                "/usr/bob",
+                "/home/bob",
+                "/bob"
+            ],
+            "correctAnswer": 2,
+            "explanation": "User home directories are located in `/home/[username]`."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What does the `.` (single dot) represent?",
+            "options": [
+                "The parent directory",
+                "The home directory",
+                "The current directory",
+                "A hidden file"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`.` is a reference to the current working directory."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Why might a hacker be interested in the `/var/log` directory?",
+            "options": [
+                "It contains user passwords.",
+                "It contains system and application logs.",
+                "It contains the Linux kernel.",
+                "It contains temporary files that are deleted on reboot."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`/var/log` stores log files which can reveal what commands were run and what connections were made to the system."
+        }
+    ]
+}

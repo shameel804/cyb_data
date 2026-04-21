@@ -1,0 +1,31 @@
+{
+    "id": "project2",
+    "title": "Automated Network Mapper & Logger",
+    "description": "Create a cron‑driven reconnaissance tool that periodically scans a target subnet, logs discovered hosts and open ports, and manages log rotation with stealth in mind.",
+    "difficulty": "Intermediate",
+    "estimatedHours": "4-6",
+    "problemStatement": "# Project 2: Automated Network Mapper & Logger\n\nYou are performing long‑term reconnaissance on an internal network. You need a tool that runs automatically every night, scans for live hosts, checks for common open ports on those hosts, and maintains a clean, rotating log archive. The tool must be stealthy enough to avoid detection by basic network monitoring.\n\n## Learning Objectives\n- Write a Bash script with command-line argument parsing and validation.\n- Use `nmap` or fallback to raw Bash TCP probes for port scanning.\n- Schedule tasks with `cron` using `crontab -e`.\n- Implement log rotation and archiving with `tar` and `find`.\n- Apply redirection to separate normal output from errors and log files.\n- Practice OPSEC by randomizing scan timing and using innocuous process names.\n\n## Functional Requirements\n\n### 1. The Scanner Script (`netmapper.sh`)\n- Accept two arguments: a subnet in CIDR notation (e.g., `192.168.1.0/24`) and an output directory (default: `~/netmap_logs`).\n- Validate that the subnet argument is provided; if not, print usage and exit.\n- Create the output directory if it does not exist.\n\n### 2. Host Discovery\n- Perform a ping sweep on the subnet. You may use `nmap -sn <subnet>` if installed, or a Bash loop with `ping -c 1 -W 1` for portability.\n- Save the list of live IP addresses to a temporary file.\n\n### 3. Port Scanning\n- For each live IP, scan a predefined set of common ports: **22 (SSH), 80 (HTTP), 443 (HTTPS), 445 (SMB), 3306 (MySQL), 3389 (RDP), 8080 (HTTP‑alt)**.\n- For each port, attempt a TCP connection using Bash's built‑in `/dev/tcp` or `timeout nc -zv`. If `nmap` is available, you may use it, but the script must work without it.\n- Record open ports in a structured log file named `scan_YYYYMMDD.log` inside the output directory.\n  - Format: `[timestamp] IP:PORT is OPEN`\n- Ensure the scan introduces a random delay between hosts (1–5 seconds) to avoid triggering IDS/IPS rate limits.\n\n### 4. Log Management & Rotation\n- At the end of each scan, compress the day's log file with `gzip` (e.g., `scan_20250115.log.gz`).\n- Keep only the last **7 days** of compressed logs; delete older ones using `find` with `-mtime +7`.\n- Maintain a symlink named `latest` that points to the most recent compressed log file.\n\n### 5. Stealth Enhancements\n- Copy the script to an inconspicuous location like `~/.cache/systemd-network-helper.sh`.\n- The cron job should run at a semi‑random time each day (e.g., between 01:00 and 04:00). You can achieve this by wrapping the cron command with `sleep $((RANDOM % 10800))`.\n- Redirect all output (stdout and stderr) to `/dev/null` in the cron job to avoid generating mail or syslog noise (the script itself will still write its own log files).\n- Ensure the script's process name appears innocuous in `ps` by using `exec -a` or renaming the script.\n\n### 6. Scheduling with Cron\n- Provide instructions for adding the cron job. The crontab entry should look like:\n  ```\n  0 1 * * * /bin/sleep $((RANDOM \\% 10800)) && /home/user/.cache/systemd-network-helper.sh 192.168.1.0/24\n  ```\n\n## Example Directory Structure After Several Runs\n```\n~/netmap_logs/\n├── scan_20250115.log.gz\n├── scan_20250116.log.gz\n├── scan_20250117.log.gz\n└── latest -> scan_20250117.log.gz\n```\n\n## Hints\n- To scan a port with pure Bash: `timeout 1 bash -c \"echo >/dev/tcp/$IP/$PORT\" 2>/dev/null && echo \"$IP:$PORT is OPEN\"`.\n- Use `date +%Y%m%d` for the date stamp.\n- To rename the process in `ps`, use: `exec -a [new_name] bash script.sh`.\n- Remember to make the script executable and test it manually before adding to cron.\n\n## Deliverables\n- The `netmapper.sh` script.\n- The exact crontab line used.\n- A sample log file showing discovered hosts and open ports (redact actual IPs if necessary).",
+    "requirements": [
+        "Accepts subnet CIDR and optional output directory as arguments",
+        "Validates input and creates output directory",
+        "Performs host discovery via ping sweep or nmap",
+        "Scans specified common ports on live hosts using TCP connect",
+        "Randomizes delay between hosts (1-5 seconds)",
+        "Logs open ports with timestamps to daily log file",
+        "Compresses daily log with gzip",
+        "Maintains only last 7 days of compressed logs",
+        "Creates 'latest' symlink to most recent log",
+        "Script placed in stealthy location with innocuous name",
+        "Cron job includes random sleep to vary execution time",
+        "All output to terminal suppressed in cron job"
+    ],
+    "hints": [
+        "Use `ping -c 1 -W 1 $IP > /dev/null 2>&1` to test host alive.",
+        "For pure Bash port scanning, the `/dev/tcp` pseudo-device is your friend.",
+        "To avoid `nmap` dependency, implement both methods and check if `nmap` exists.",
+        "Use `find \"$OUT_DIR\" -name \"scan_*.log.gz\" -mtime +7 -delete` for cleanup.",
+        "Remember to escape the `%` in cron if you use `$(date +%Y%m%d)` directly in the crontab; better to generate the filename inside the script.",
+        "Test the cron environment by running `env -i HOME=$HOME PATH=/usr/bin:/bin bash script.sh`."
+    ],
+    "expectedOutput": "A functional script that can be scheduled via cron to perform automated network reconnaissance and log management with stealth features."
+}

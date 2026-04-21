@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_8",
+    "title": "Automate a Backup with Cron",
+    "description": "Write a backup script and schedule it to run daily using cron.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You need to automatically back up your `/home/user/Documents` folder every night to a compressed archive.\n\n**Part 1: Write the Backup Script (`backup.sh`)**\n1. Define source (`~/Documents`) and destination (`~/Backups`) directories.\n2. Create the destination directory if it doesn't exist (`mkdir -p`).\n3. Generate a timestamp using `date +%Y%m%d_%H%M%S`.\n4. Create a tar.gz archive of the source directory with the timestamp in the filename.\n   ```bash\n   tar -czf \"$DEST/backup_$TIMESTAMP.tar.gz\" -C \"$HOME\" \"Documents\"\n   ```\n5. Print a success message: \"Backup created: filename.tar.gz\"\n6. **Bonus:** Delete backups older than 7 days to save space.\n   ```bash\n   find \"$DEST\" -name \"backup_*.tar.gz\" -mtime +7 -delete\n   ```\n\n**Part 2: Schedule with Cron**\n1. Make the script executable: `chmod +x backup.sh`.\n2. Edit your crontab: `crontab -e`.\n3. Add an entry to run the script every day at 2:00 AM.\n   ```\n   0 2 * * * /home/cybron/backup.sh >> /home/cybron/backup.log 2>&1\n   ```\n4. Verify the entry with `crontab -l`.\n\n**Deliverable:** Paste the contents of your `backup.sh` and the crontab line.",
+    "hints": [
+        "Use absolute paths in the crontab entry.",
+        "Test the script manually first: `./backup.sh`.",
+        "Check cron logs if it doesn't run: `grep CRON /var/log/syslog`."
+    ],
+    "expectedOutput": "Script creates timestamped backups; cron runs it daily.",
+    "solutionCode": "#!/bin/bash\n\nSOURCE=\"$HOME/Documents\"\nDEST=\"$HOME/Backups\"\nTIMESTAMP=$(date +%Y%m%d_%H%M%S)\n\nmkdir -p \"$DEST\"\n\ntar -czf \"$DEST/backup_$TIMESTAMP.tar.gz\" -C \"$HOME\" \"Documents\"\n\nif [ $? -eq 0 ]; then\n    echo \"Backup created: $DEST/backup_$TIMESTAMP.tar.gz\"\nelse\n    echo \"Backup failed!\"\n    exit 1\nfi\n\n# Delete backups older than 7 days\nfind \"$DEST\" -name \"backup_*.tar.gz\" -mtime +7 -delete\n\n# Crontab entry:\n# 0 2 * * * /home/cybron/backup.sh >> /home/cybron/backup.log 2>&1"
+}
