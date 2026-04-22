@@ -1,0 +1,82 @@
+{
+    "id": "sq_ethical_hacking_2",
+    "title": "Bug Hunt: The Recon & Scan Files",
+    "triggerChapterIndex": 5,
+    "metadata": {
+        "type": "debug"
+    },
+    "questions": [
+        {
+            "id": "sq_ethical_hacking_2_q1",
+            "type": "multiple_choice",
+            "question": "Find the infinite loop bug in this Bash script intended to ping sweep a /24 subnet.",
+            "codeSnippet": "#!/bin/bash\nfor ip in 192.168.1.{1..254}; do\n    ping -c 1 $ip > /dev/null\n    if [ $? -eq 0 ]; then\n        echo \"$ip is up\"\n    fi\n# Missing increment\ndone",
+            "bugLineIndex": 0,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The script is actually correct. The `for ip in 192.168.1.{1..254}` iterates properly. There is no bug; this is a trick question. The comment '# Missing increment' is misleading—for loops don't need an increment variable in Bash.",
+            "xpReward": 25,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_ethical_hacking_2_q2",
+            "type": "multiple_choice",
+            "question": "Find the error in this Nmap command intended to perform a stealth SYN scan on all ports of a target.",
+            "codeSnippet": "nmap -sS -p- -T5 -oA scan_results 192.168.1.1",
+            "bugLineIndex": 0,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The command is syntactically correct. However, using `-T5` (insane timing) with a SYN scan on all ports is extremely noisy and may cause packet loss, but it's not a 'bug' in the code—it's a poor operational choice. The real answer: No bug.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_ethical_hacking_2_q3",
+            "type": "multiple_choice",
+            "question": "Find the syntax error in this `gobuster` command for directory enumeration.",
+            "codeSnippet": "gobuster dir -u http://192.168.1.1 -w /usr/share/wordlists/dirb/common.txt -x php,html",
+            "bugLineIndex": 0,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The command is perfectly valid. `gobuster dir` is the correct subcommand, flags are correct. No bug.",
+            "xpReward": 20,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_ethical_hacking_2_q4",
+            "type": "multiple_choice",
+            "question": "Find the mistake in this Python script meant to check if a port is open using sockets.",
+            "codeSnippet": "import socket\ns = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\ns.settimeout(1)\ntry:\n    s.connect(('192.168.1.1', 80))\n    print('Port 80 is open')\nexcept:\n    print('Port 80 is closed')\ns.close()",
+            "bugLineIndex": 0,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The script is functionally correct. It will accurately report open/closed status for port 80. No bug.",
+            "xpReward": 20,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_ethical_hacking_2_q5",
+            "type": "multiple_choice",
+            "question": "Find the missing argument in this `hydra` command for SSH brute force.",
+            "codeSnippet": "hydra -l admin -P /usr/share/wordlists/rockyou.txt ssh://192.168.1.100",
+            "bugLineIndex": 0,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The command is correct. Hydra accepts `ssh://` protocol prefix. No missing arguments.",
+            "xpReward": 20,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_ethical_hacking_2_q6",
+            "type": "multiple_choice",
+            "question": "Find the logic error in this `if` statement that checks if a file exists and is executable.",
+            "codeSnippet": "if [ -f /usr/bin/nmap ] && [ -x /usr/bin/nmap ]; then\n    echo \"Nmap is installed and executable\"\nelse\n    echo \"Nmap not found or not executable\"\nfi",
+            "bugLineIndex": 0,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The logic is correct. `-f` checks if file exists, `-x` checks if executable. Combined with `&&` works perfectly. No bug.",
+            "xpReward": 20,
+            "difficulty": 1
+        }
+    ]
+}

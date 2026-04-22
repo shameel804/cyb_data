@@ -1,0 +1,79 @@
+{
+    "id": "l3",
+    "chapterId": "ch_12",
+    "title": "Crafting Technical Findings & Evidence 🔬",
+    "description": "Write clear, reproducible vulnerability descriptions with proper evidence.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Reporting",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Anatomy of a Finding 📐",
+            "content": "# Consistency is Key\n\nEvery vulnerability finding in the technical section must follow a **predictable structure**. This allows the IT team to process them efficiently.\n\n**Standard Fields:**\n1.  **Finding ID & Title**: `FIN-01: SQL Injection in Login Form`\n2.  **CVE / CWE Reference**: `CVE-2021-XXXX` or `CWE-89`\n3.  **CVSS v3.1 Score**: `9.8 (Critical)`\n4.  **Affected Host(s)**: `https://app.acme.com/login (10.0.0.5)`\n5.  **Description**: What is the vulnerability? (1-2 sentences).\n6.  **Impact**: What happens if exploited? (Data loss? RCE?).\n7.  **Evidence**: Screenshot of the exploit working. **Crucial for credibility.**\n8.  **Remediation**: Step-by-step fix. Be specific."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Writing Good Remediation Advice 🛠️",
+            "content": "# Don't Be Vague\n\nBad remediation advice is worse than no advice.\n\n| ❌ Bad (Vague) | ✅ Good (Actionable) |\n| :--- | :--- |\n| \"Sanitize user input.\" | \"Use parameterized queries (prepared statements) for all database interactions. Specifically, replace the string concatenation in `login.php` line 42 with `mysqli_prepare()`.\" |\n| \"Update the server.\" | \"Upgrade Apache HTTP Server from version 2.4.49 to version 2.4.58 or later. On Ubuntu, run: `sudo apt update && sudo apt upgrade apache2`.\" |\n| \"Harden the configuration.\" | \"Set the registry key `HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\RestrictAnonymous` to `1` to prevent anonymous SID enumeration.\" |\n\n**Where to Find Remediation:**\n- Vendor security advisories.\n- OWASP Cheat Sheets.\n- CIS Benchmarks."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Remediation Quality 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which of the following is an example of **actionable** remediation advice?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "\"Improve password security.\"",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "\"Configure the Group Policy Object 'Default Domain Policy' -> 'Password Policy' to set 'Minimum password length' to 14 characters.\"",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "\"Use stronger encryption.\"",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "\"Fix the vulnerability.\"",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Specific, precise instructions allow the IT team to implement the fix without guesswork.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Evidence: Screenshots and Logs 📸",
+            "content": "# Proof of Exploitation\n\nWithout evidence, a finding is just an opinion. Provide **irrefutable proof**.\n\n**What Makes a Good Screenshot?**\n1.  **Context**: Show the **command you ran** and the **output**.\n2.  **Highlighting**: Draw a red box around the key part (e.g., `root#`, `1=1`, `PHPSESSID`).\n3.  **Timestamp**: Include the system clock or date command.\n4.  **Anonymization**: Blur any real customer PII or passwords (unless it's a test account).\n\n**Bad Screenshot**: A tiny, cropped terminal window showing only `#`.\n**Good Screenshot**: Full window showing `whoami`, `hostname`, and `ip addr` to prove you are on the target machine.\n\n**Log Snippets:**\nFor web requests, use **Burp Suite Repeater** screenshots showing the raw request/response. This allows the developer to **replay** the attack and verify the fix."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Example Finding: vsftpd Backdoor 💻",
+            "content": "How to document the vsftpd 2.3.4 exploit from Chapter 7.",
+            "codeSnippet": "## Finding: FIN-01 - vsftpd 2.3.4 Backdoor (CVE-2011-2523)\n\n**CVSS Score:** 10.0 (Critical)\n**Affected Host:** 192.168.56.101 (TCP/21)\n\n**Description:**\nThe target is running vsftpd version 2.3.4, which contains a known backdoor triggered by sending a smiley face `:)` in the username field.\n\n**Impact:**\nA remote, unauthenticated attacker can execute arbitrary commands with **root privileges**, leading to complete system compromise.\n\n**Evidence:**\n[SCREENSHOT: Nmap output showing version, Metasploit session showing 'uid=0(root)']\n\n**Remediation:**\nImmediately remove vsftpd 2.3.4. Install the latest version of vsftpd from the official Ubuntu repositories:\n`sudo apt update && sudo apt install vsftpd`",
+            "codeLanguage": "markdown",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_6",
+            "type": "warning",
+            "title": "The 'False Positive' Trap ⚠️",
+            "content": "## Never Report Unverified Scans\n\nIf Nessus flags something but you can't verify it manually, **do not** put it in the report as a confirmed finding. You can add an appendix note: *\"Automated scanning suggested X, but manual verification was inconclusive due to backporting. Recommend IT team review.\"* Reporting a false positive destroys your credibility."
+        }
+    ]
+}

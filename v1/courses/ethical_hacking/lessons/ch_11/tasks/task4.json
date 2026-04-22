@@ -1,0 +1,14 @@
+{
+    "id": "task4",
+    "chapterId": "ch_11",
+    "title": "Windows Situational Awareness",
+    "description": "Perform internal enumeration on a Windows target (optional lab).",
+    "estimatedMinutes": 20,
+    "problemStatement": "# Objective\nPractice situational awareness commands on a Windows system. (If you have a Windows VM in your lab, use it; otherwise, you can run these on your Kali host using PowerShell Core or review the commands).\n\n## Commands to Run and Document Output\nRun the following commands and note what information each provides:\n\n1.  `whoami /all`\n2.  `systeminfo | findstr /B /C:\"OS Name\" /C:\"OS Version\" /C:\"System Type\"`\n3.  `ipconfig /all`\n4.  `netstat -ano | findstr LISTENING`\n5.  `tasklist /svc`\n6.  `net user`\n7.  `net localgroup Administrators`\n8.  `cmdkey /list`\n\n## Deliverable\nA brief summary of the key findings from each command (e.g., \"User is 'bob', has SeImpersonatePrivilege. System is Windows 10 Pro 19045. Listening ports: 445, 3389. Cached credentials found for TERMSRV/192.168.1.100.\")",
+    "hints": [
+        "Use `whoami /priv` to check for dangerous privileges like SeImpersonatePrivilege.",
+        "`cmdkey /list` shows stored credentials for network resources."
+    ],
+    "expectedOutput": "A concise summary of the system's security posture.",
+    "solutionCode": "# Example summary:\n# User: CORP\\jsmith (Standard User)\n# Privileges: SeImpersonatePrivilege (Enabled) -> Potato attack possible.\n# OS: Windows 10 Enterprise 22H2\n# Listening Ports: 445 (SMB), 3389 (RDP)\n# Running Services: MSSQLSERVER, WinRM\n# Local Admins: Administrator, CORP\\Domain Admins\n# Cached Creds: TERMSRV/dc01.corp.local\n# Overall: Host is domain-joined. Potential RDP lateral movement target. MSSQL service may have stored credentials."
+}

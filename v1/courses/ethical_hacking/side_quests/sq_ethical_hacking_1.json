@@ -1,0 +1,106 @@
+{
+    "id": "sq_ethical_hacking_1",
+    "title": "The Foundations Gauntlet",
+    "triggerChapterIndex": 2,
+    "metadata": {
+        "type": "prediction"
+    },
+    "questions": [
+        {
+            "id": "sq_ethical_hacking_1_q1",
+            "type": "code_output",
+            "question": "You run the command `ping -c 1 192.168.1.1` on a Linux machine and see: `64 bytes from 192.168.1.1: icmp_seq=1 ttl=64 time=1.2 ms`. What operating system is the target most likely running?",
+            "codeSnippet": "ping -c 1 192.168.1.1",
+            "correctOutput": "Linux",
+            "correctAnswer": "Linux",
+            "options": [],
+            "explanation": "A TTL of 64 indicates a Linux/Unix-like system. Windows typically uses 128, and network devices often use 255.",
+            "xpReward": 25,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_ethical_hacking_1_q2",
+            "type": "code_output",
+            "question": "You run `nmap -sS -p 80 10.0.0.5` and see `80/tcp open http`. What does the `-sS` flag do?",
+            "codeSnippet": "nmap -sS -p 80 10.0.0.5",
+            "correctOutput": "Performs a TCP SYN scan (stealth scan)",
+            "correctAnswer": "Performs a TCP SYN scan (stealth scan)",
+            "options": [],
+            "explanation": "`-sS` is a SYN scan, which sends a SYN packet and analyzes the response without completing the full TCP handshake.",
+            "xpReward": 25,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_ethical_hacking_1_q3",
+            "type": "code_output",
+            "question": "A file has permissions `-rwxr-xr--`. What is the octal (numeric) representation of these permissions?",
+            "codeSnippet": "ls -l script.sh\n# Output: -rwxr-xr-- 1 kali kali 4096 Oct 26 10:30 script.sh",
+            "correctOutput": "754",
+            "correctAnswer": "754",
+            "options": [],
+            "explanation": "Owner: rwx=7, Group: r-x=5, Others: r--=4. Combined: 754.",
+            "xpReward": 25,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_ethical_hacking_1_q4",
+            "type": "code_output",
+            "question": "You are in the directory `/home/kali/Documents`. What command would take you to the parent directory `/home/kali`?",
+            "codeSnippet": "pwd\n# Output: /home/kali/Documents",
+            "correctOutput": "cd ..",
+            "correctAnswer": "cd ..",
+            "options": [],
+            "explanation": "`cd ..` moves up one directory level.",
+            "xpReward": 20,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_ethical_hacking_1_q5",
+            "type": "code_output",
+            "question": "Which DNS record type specifies the mail server for a domain?",
+            "codeSnippet": "dig example.com ???",
+            "correctOutput": "MX",
+            "correctAnswer": "MX",
+            "options": [],
+            "explanation": "MX (Mail Exchanger) records define where email should be delivered.",
+            "xpReward": 25,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_ethical_hacking_1_q6",
+            "type": "code_output",
+            "question": "You run `ps aux | grep apache` and see multiple processes. What is the purpose of the `| grep apache` part?",
+            "codeSnippet": "ps aux | grep apache",
+            "correctOutput": "Filters the output to show only lines containing 'apache'",
+            "correctAnswer": "Filters the output to show only lines containing 'apache'",
+            "options": [],
+            "explanation": "The pipe `|` sends output to `grep`, which filters for matching patterns.",
+            "xpReward": 20,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_ethical_hacking_1_q7",
+            "type": "code_output",
+            "question": "What is the primary difference between a White Hat and a Black Hat hacker?",
+            "codeSnippet": "",
+            "correctOutput": "Authorization and intent",
+            "correctAnswer": "Authorization and intent",
+            "options": [],
+            "explanation": "White Hats have written permission to test security and aim to improve it; Black Hats act without authorization for malicious purposes.",
+            "xpReward": 20,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_ethical_hacking_1_q8",
+            "type": "code_output",
+            "question": "You need to find all files on a Linux system that have the SUID bit set. Which command would you use?",
+            "codeSnippet": "",
+            "correctOutput": "find / -perm -4000 2>/dev/null",
+            "correctAnswer": "find / -perm -4000 2>/dev/null",
+            "options": [],
+            "explanation": "SUID files run with the owner's privileges. `-perm -4000` searches for this bit.",
+            "xpReward": 30,
+            "difficulty": 3
+        }
+    ]
+}

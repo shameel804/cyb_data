@@ -1,0 +1,70 @@
+{
+    "id": "l1",
+    "chapterId": "ch_11",
+    "title": "Post-Exploitation Fundamentals 🎯",
+    "description": "Understand the goals and mindset after gaining initial access.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "You're In. Now What? 🤔",
+            "content": "# Phase 5 and Beyond: Post-Exploitation\n\nCongratulations! You've popped a shell. You have a command prompt on a target machine. But the job is far from over.\n\n**Post-Exploitation** encompasses all actions taken after gaining initial access. It's where you transition from *\"getting in\"* to *\"achieving the objective.\"*\n\n**Analogy**: Exploitation was picking the lock and opening the front door. Post-exploitation is **searching the house** for the jewelry box, finding the hidden safe, and maybe using the back door to enter the neighbor's house.\n\n**The Post-Exploitation Loop:**\n1.  **Orient**: Where am I? What user am I? What network is this?\n2.  **Escalate**: Can I get higher privileges (root/admin)?\n3.  **Persist**: Will my access survive a reboot?\n4.  **Explore**: What other systems can I reach?\n5.  **Exfiltrate**: Where is the valuable data?\n6.  **Clean**: Erase evidence of my presence."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Post-Exploitation Priority 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "You have just gained a shell as a limited user 'www-data' on a Linux web server. What is typically the FIRST thing you should do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Start scanning the entire internet.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Delete all log files immediately.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Perform situational awareness: whoami, hostname, ip addr, uname -a.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Launch a DDoS attack.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Before taking any action, you must understand your context. Situational awareness prevents mistakes.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "The Attacker's Shopping List 📋",
+            "content": "# What Are We Looking For?\n\nIn a penetration test or red team engagement, the post-exploitation phase is driven by the **engagement objectives**. Common goals include:\n\n- **Domain Dominance**: Compromise the Domain Controller (Active Directory).\n- **Data Exfiltration**: Locate and extract sensitive files (PII, source code, financials).\n- **Persistence**: Demonstrate the ability to maintain long-term access.\n- **Impact**: Simulate ransomware deployment or service disruption (ONLY with explicit permission).\n\n**Key Data Targets:**\n- **Credentials**: Passwords in memory (Mimikatz), stored creds (browser password managers), SSH keys.\n- **Intellectual Property**: Source code repositories, design documents.\n- **Network Maps**: Internal IP schemes, VLAN information."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Stealth vs. Speed 🥷 vs. ⚡",
+            "content": "# The Operational Balance\n\nPost-exploitation actions are **noisy**. Scanning internal networks, dumping credentials, and moving laterally generate logs.\n\n**Stealth Approach (Red Team / APT Simulation):**\n- Use **living-off-the-land** binaries (LOLBins) – tools already present on the system (PowerShell, WMI, certutil).\n- Move slowly, blend in with normal traffic.\n- Goal: Remain undetected for weeks/months.\n\n**Speed Approach (Penetration Test):**\n- Time is limited (usually 1-2 weeks).\n- Focus on **finding the critical path** to the Domain Admin or crown jewels quickly.\n- Goal: Prove impact, document it, and move on.\n\n**This Chapter**: We'll cover techniques for both, with an emphasis on understanding the underlying mechanics."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "warning",
+            "title": "The Clean Desk Policy 🧹",
+            "content": "## Always Document Your Steps\n\nIn a real engagement, you must track **every file you create, every registry key you modify, and every account you add**. At the end of the test, you need to provide a **cleanup script** to the client to revert all changes. Leaving backdoors in a production network is **unethical and illegal**."
+        }
+    ]
+}

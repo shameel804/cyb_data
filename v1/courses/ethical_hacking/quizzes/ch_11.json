@@ -1,0 +1,240 @@
+{
+    "id": "quiz_ch_11",
+    "chapterId": "ch_11",
+    "title": "Chapter 11 Quiz",
+    "description": "Test your knowledge of post-exploitation, persistence, privilege escalation, pivoting, and cleanup.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary goal of the Post-Exploitation phase?",
+            "options": [
+                "To gain initial access to the target.",
+                "To achieve the engagement objectives after gaining a foothold.",
+                "To scan for open ports.",
+                "To patch vulnerabilities."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Post-exploitation focuses on what you do after getting a shell."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which of the following is NOT a common Linux persistence mechanism?",
+            "options": [
+                "Cron job",
+                "SSH authorized_keys",
+                "Registry Run Key",
+                ".bashrc backdoor"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Registry Run Keys are a Windows persistence mechanism, not Linux."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "Horizontal Privilege Escalation involves gaining access to a different user account at the same privilege level.",
+            "correctAnswer": true,
+            "explanation": "True. Horizontal movement accesses peer accounts, often due to misconfigurations."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "The command `sudo -l` on Linux is used to list the ______ privileges of the current user.",
+            "options": [
+                "SUID",
+                "sudo",
+                "cron",
+                "group"
+            ],
+            "correctAnswer": "sudo",
+            "explanation": "`sudo -l` lists the allowed (and forbidden) commands the user may run with sudo."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which Metasploit module type is commonly used for post-exploitation tasks like persistence and hash dumping?",
+            "options": [
+                "exploit",
+                "auxiliary",
+                "post",
+                "payload"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The `post/` directory contains modules for post-exploitation actions."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the purpose of the 'BloodHound' tool?",
+            "options": [
+                "To brute force passwords.",
+                "To map Active Directory attack paths and find the shortest route to Domain Admin.",
+                "To dump SAM hashes.",
+                "To create reverse shells."
+            ],
+            "correctAnswer": 1,
+            "explanation": "BloodHound visualizes relationships in AD and identifies privilege escalation and lateral movement paths."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "Pass-the-Hash (PtH) requires the cleartext password of the user.",
+            "correctAnswer": false,
+            "explanation": "False. PtH uses the NTLM hash directly for authentication."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "You have a shell on a Linux web server and want to scan the internal network 10.0.1.0/24. Which tool combination allows this without installing software on the pivot host?",
+            "options": [
+                "Nmap only",
+                "Chisel (on Kali and pivot) + Proxychains",
+                "Hydra and Medusa",
+                "John the Ripper"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Chisel creates a SOCKS tunnel, and Proxychains forces Nmap traffic through it."
+        },
+        {
+            "id": "q9",
+            "type": "fill_blank",
+            "question": "The Linux command to find all files with the SUID bit set is `find / -perm -______ -type f 2>/dev/null`.",
+            "options": [
+                "4000",
+                "2000",
+                "1000",
+                "u=s"
+            ],
+            "correctAnswer": "u=s",
+            "explanation": "`-perm -u=s` finds files where the setuid bit is set for the user."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which Windows command clears the Security event log?",
+            "options": [
+                "net stop eventlog",
+                "wevtutil cl Security",
+                "del C:\\Windows\\System32\\winevt\\Logs\\Security.evtx",
+                "logman stop Security"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`wevtutil cl Security` clears the Security log. It is very suspicious."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "Encrypting data before exfiltration can help bypass Data Loss Prevention (DLP) systems.",
+            "correctAnswer": true,
+            "explanation": "True. Encryption hides the content, making it harder for DLP to identify sensitive data."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is the purpose of the `-L` flag in SSH port forwarding?",
+            "options": [
+                "Remote port forwarding (expose local port to remote).",
+                "Local port forwarding (access remote service locally).",
+                "Dynamic port forwarding (SOCKS proxy).",
+                "Login with a specific username."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-L` forwards a local port to a remote address via the SSH server."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "You find the file `C:\\Windows\\Panther\\Unattend.xml` on a Windows host. Why is this interesting for privilege escalation?",
+            "options": [
+                "It contains the system's encryption keys.",
+                "It may contain a plaintext administrator password used during automated installation.",
+                "It is a backdoor.",
+                "It lists all installed software."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Unattend.xml files often contain Base64-encoded passwords for local admin accounts."
+        },
+        {
+            "id": "q14",
+            "type": "true_false",
+            "question": "LinPEAS and WinPEAS are automated enumeration scripts that help identify privilege escalation vectors.",
+            "correctAnswer": true,
+            "explanation": "True. They are part of the PEASS-ng suite and are essential tools."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Which tool is commonly used to dump credentials from LSASS memory on Windows?",
+            "options": [
+                "Nmap",
+                "Hydra",
+                "Mimikatz",
+                "Burp Suite"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Mimikatz extracts plaintext passwords, hashes, and Kerberos tickets from memory."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What is 'timestomping'?",
+            "options": [
+                "Deleting log files.",
+                "Changing the timestamp of a file to match legitimate files and evade forensic analysis.",
+                "Dumping credentials.",
+                "Scanning for open ports."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Timestomping modifies file creation/modification times to hide malicious files."
+        },
+        {
+            "id": "q17",
+            "type": "true_false",
+            "question": "A 'Golden Ticket' in Active Directory allows an attacker to impersonate any user indefinitely.",
+            "correctAnswer": true,
+            "explanation": "True. It's forged using the KRBTGT account hash."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which built-in Windows command can be used to download files from a web server while evading some application whitelisting?",
+            "options": [
+                "wget",
+                "curl",
+                "certutil",
+                "ftp"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`certutil` is a trusted Microsoft binary often used for file transfers."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "You are pivoting and run `proxychains nmap -sT -Pn 10.0.1.50`. Why is `-sT` (TCP Connect scan) used instead of `-sS` (SYN scan)?",
+            "options": [
+                "SYN scans are faster.",
+                "SOCKS proxies generally only support full TCP connections, not raw packet crafting.",
+                "TCP Connect scans are stealthier.",
+                "SYN scans require root."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Proxychains works at the socket layer. It cannot forward raw SYN packets."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is the most important step to include in a penetration test report regarding post-exploitation?",
+            "options": [
+                "The list of tools used.",
+                "The exact time of the attack.",
+                "Detailed cleanup instructions for all persistence mechanisms and files created.",
+                "The attacker's IP address."
+            ],
+            "correctAnswer": 2,
+            "explanation": "Providing a cleanup plan is essential for ethical closure of the engagement."
+        }
+    ]
+}

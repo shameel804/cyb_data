@@ -1,0 +1,70 @@
+{
+    "id": "l2",
+    "chapterId": "ch_12",
+    "title": "Writing the Executive Summary 👔",
+    "description": "Translate technical risks into business impact for C-level decision makers.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Reporting",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Know Your Audience 🎯",
+            "content": "# Two Readers, One Report\n\n**1. The C-Suite / VP (Reads: Executive Summary)**\n- **Time**: 5 minutes.\n- **Cares About**: Money, Reputation, Compliance Fines, Data Breach Headlines.\n- **Does NOT Care About**: The difference between XSS and CSRF.\n- **Language**: Risk, Impact, Dollars, \"Sensitive Data.\"\n\n**2. The IT Admin / Developer (Reads: Technical Findings)**\n- **Time**: 30 minutes per finding.\n- **Cares About**: Exact vulnerable versions, specific config changes, code patches.\n- **Hates**: Vague remediation like \"Apply security updates.\"\n\n**Golden Rule**: The Executive Summary is **not** a summary of the technical work. It's a summary of the **business risk**."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Translating Tech to Risk 🌉",
+            "content": "# The Hacker's Dictionary\n\n| Technical Finding | Business Impact Statement |\n| :--- | :--- |\n| **SQL Injection** | \"An attacker could extract the entire customer database, including PII and credit card information, leading to regulatory fines and loss of customer trust.\" |\n| **Weak Domain Admin Password** | \"Compromise of a single account could grant an attacker full control over every server, workstation, and email inbox in the organization.\" |\n| **Unpatched Critical Vulnerability** | \"A publicly known exploit exists for this software version, allowing any internet user to take over the server within seconds.\" |\n| **Exposed RDP** | \"This provides a direct gateway for ransomware actors to deploy file-encrypting malware across the network.\" |\n\n**Formula**: `[Vulnerability] allows [attacker] to [action] resulting in [business consequence]`."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Business Translation 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "You found an exposed S3 bucket containing 50,000 scanned driver's licenses. Which sentence belongs in the Executive Summary?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "\"The S3 bucket 'backup-2023' had a misconfigured ACL allowing 'AuthenticatedUsers' READ access.\"",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "\"A misconfiguration resulted in the public exposure of 50,000 customer identity documents, creating a significant legal and reputational liability.\"",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "\"AWS S3 buckets should be configured with Block Public Access enabled.\"",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "\"The bucket policy JSON did not restrict principal access.\"",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Executives need to know the **impact** (legal/reputational liability), not the technical details of ACLs.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "The Executive Summary Structure 📋",
+            "content": "# A Template for Success\n\n**Paragraph 1: The Overall Assessment**\n*\"Acme Corp's external security posture is rated **Critical Risk**. During this assessment, the team identified multiple vulnerabilities that allow a remote attacker to gain full administrative control of the primary web server and internal network without any user interaction.\"*\n\n**Paragraph 2: The Attack Narrative**\n*\"Using publicly available information, the team identified an unpatched vulnerability in the corporate VPN gateway. Exploitation of this flaw provided an initial foothold. From there, weak internal segmentation allowed movement to the Domain Controller, resulting in complete compromise of the Windows domain.\"*\n\n**Paragraph 3: Top Risks & Immediate Actions**\n- **1. Patch VPN Gateway (Critical)** : Prevents immediate remote takeover.\n- **2. Enforce Multi-Factor Authentication (Critical)** : Prevents credential reuse attacks.\n- **3. Segment Internal Network (High)** : Contains breaches.\n\n**Conclusion Sentence**: *\"With the remediation of the Critical findings detailed in this report, Acme Corp can significantly reduce its exposure to opportunistic and targeted cyber threats.\"*"
+        },
+        {
+            "id": "s_l2_5",
+            "type": "tip",
+            "title": "Pro Tip: The Risk Matrix 🚀",
+            "content": "## Visualizing Risk\n\nInclude a simple **Risk Heat Map** or **Table** in the Exec Summary.\n\n| Severity | Count |\n| :--- | :--- |\n| Critical | 2 |\n| High | 5 |\n| Medium | 12 |\n| Low | 8 |\n\nThis gives immediate context. \"We found 2 Critical issues (fix immediately) and 5 High issues (fix within 30 days).\""
+        }
+    ]
+}

