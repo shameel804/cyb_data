@@ -1,0 +1,62 @@
+{
+    "id": "l5",
+    "chapterId": "ch_1",
+    "title": "Your Defensive Arsenal",
+    "description": "Meet the tools of the trade.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Tools",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The SOC Workstation 🖥️",
+            "content": "# Your Toolbelt\n\nYou won't be using just one program. You'll pivot between 3-4 tools for every investigation.\n\n1.  **The SIEM Interface:** Where the alert pops up. You'll write queries like:\n    *   `index=windows EventCode=4625` (Search for failed logins).\n2.  **VirusTotal:** The Google of Malware. Paste a suspicious IP or file hash to see if it's known bad.\n3.  **The Ticketing System:** (Jira, ServiceNow). Where you log your findings.\n4.  **Internal Wiki:** The company's knowledge base for past incidents."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Splunk Search Preview",
+            "content": "Don't panic if this looks alien. This is the language of the SIEM. We'll master it later.",
+            "codeSnippet": "index=main sourcetype=WinEventLog:Security EventCode=4625 \n| stats count by user, src_ip \n| where count > 10",
+            "codeLanguage": "spl",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "The Sandbox 🏖️",
+            "content": "# Detonating Safely\n\nWhat if you find a suspicious file attachment named `Invoice_URGENT.exe`? **DO NOT DOUBLE-CLICK IT ON YOUR WORK PC!**\n\nSOC teams use **Sandboxes**. A sandbox is a virtual, isolated computer that we allow to get infected on purpose.\n\n*   **How it works:** Upload the file to the sandbox tool (e.g., Any.Run, Joe Sandbox).\n*   **Output:** It records everything the malware does (Files created, Registry changes, Network connections).\n*   **Result:** You get a report showing exactly how dangerous it is **without risking the real company.**"
+        },
+        {
+            "id": "s_l5_4",
+            "type": "quiz",
+            "title": "Tool Match 🛠️",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "You see an alert for a connection to IP address `185.142.53.21`. You don't recognize it. Where do you check first?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The Sandbox",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "VirusTotal",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Microsoft Word",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "VirusTotal is the fastest way to check the reputation of an IP or domain.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

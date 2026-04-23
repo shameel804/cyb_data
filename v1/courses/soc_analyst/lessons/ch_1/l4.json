@@ -1,0 +1,59 @@
+{
+    "id": "l4",
+    "chapterId": "ch_1",
+    "title": "The Attacker's Playbook",
+    "description": "Understanding the Cyber Kill Chain.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Core Concepts",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Cyber Kill Chain ⛓️",
+            "content": "# A Model of Attack\n\nDeveloped by Lockheed Martin, the **Cyber Kill Chain** describes the 7 steps an attacker must take to achieve their objective. If we **break the chain** at any point, we stop the attack!\n\n1.  **Reconnaissance:** Attacker researches the target. (LinkedIn, scanning for open ports).\n2.  **Weaponization:** Attacker couples exploit code with a payload (e.g., Malicious PDF).\n3.  **Delivery:** Attacker sends the weapon. (Email, USB drop).\n4.  **Exploitation:** The malicious code triggers. (User clicks link).\n5.  **Installation:** Malware installs a backdoor on the victim's PC.\n6.  **Command & Control (C2):** The malware 'phones home' to the attacker for instructions.\n7.  **Actions on Objectives:** Attacker achieves goal. (Steal data, encrypt files)."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Chain Check 🔗",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "An employee receives a phishing email with a link to a fake login page. Which phase of the Kill Chain is this?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Reconnaissance",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Delivery",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Command & Control",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! The weapon (the email) is being transported to the target. Exploitation happens *after* they click it.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Left of Boom vs. Right of Boom 💥",
+            "content": "# The SOC's Goal\n\nIn military terms, **\"Boom\"** is when the attacker detonates the exploit and gets inside.\n\n*   **Left of Boom:** Phases 1-3 (Recon, Weaponize, Deliver).\n    *   *Goal:* **PREVENT** the attack. Block the IP, filter the email.\n    *   *This is the best place to be, but it's hard because the attacker hasn't done anything 'malicious' on your network yet.*\n\n*   **Right of Boom:** Phases 4-7 (Exploit, Install, C2, Actions).\n    *   *Goal:* **DETECT** and **RESPOND**. They are inside. Find them fast.\n    *   *This is where the SOC spends 90% of its time.*"
+        },
+        {
+            "id": "s_l4_4",
+            "type": "warning",
+            "title": "Where We Shine 🛡️",
+            "content": "## Breaking the Chain at C2\n\nThe **Command & Control (C2)** phase is the **Achilles' Heel** of many attackers. Why? Because the malware *has to talk out to the internet*.\n\nIt needs to beacon home. **This creates network traffic.**\n\n**Analogy:** The burglar is inside the bank vault, but he's texting his boss outside. We can see the cell signal even if we can't see him in the dark.\n\n**SOC Focus:** Detecting **Beaconing** (regular, timed outbound connections) is a Tier 1 superpower."
+        }
+    ]
+}

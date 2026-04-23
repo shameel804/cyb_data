@@ -1,0 +1,65 @@
+{
+    "id": "l3",
+    "chapterId": "ch_1",
+    "title": "The Tier 1 Analyst Mindset",
+    "description": "How to think like a junior analyst and win the day.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Roles",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "A Day in the Life ☕",
+            "content": "# The Morning Shift\n\nYou sit down, log in, and see **The Queue**.\n\nIt might look like this:\n1.  **Alert:** Multiple Failed Logins for user 'jsmith'.\n2.  **Alert:** Connection to known Malware IP address.\n3.  **Alert:** Suspicious PowerShell command detected.\n4.  **Alert:** User logged in from *Florida*, then *Germany* 10 minutes later.\n\n**Your Job (Tier 1):** Triage these alerts in **5-10 minutes** each. Determine if it's **Malicious** (Escalate!) or **Benign** (Close with notes)."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "The Art of Triage 🩺",
+            "content": "# Is This Bad?\n\nYou don't need to know *exactly* what the attacker is doing at this stage. You just need to spot **indicators of compromise (IOCs)**.\n\n**Ask these 3 questions for EVERY alert:**\n\n1.  **The Asset:** Is this a critical server containing customer data, or just Bob's test laptop in the lab?\n    *   *If it's the critical server -> HIGH URGENCY.*\n2.  **The User:** Is this the CEO, or an intern?\n    *   *If it's the CEO -> HIGH URGENCY (Potential spear-phishing target).*\n3.  **The Reputation:** Is this IP address known for hosting malware?\n    *   *Use Threat Intelligence tools (VirusTotal) to check.*"
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Triage Drill 📝",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "You get an alert: 'Suspicious outbound connection to IP 5.5.5.5'. This IP is listed as a known Command & Control server. What do you do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Ignore it. The firewall probably blocked it.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Wait until tomorrow to see if it happens again.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Immediately investigate the source computer. Escalate if confirmed.",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Known bad IP + Connection Established = Almost certainly a compromised machine. This is a 'True Positive' and needs immediate Tier 2 attention.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "False Positives: The Bane of SOC 🚫",
+            "content": "# The Boy Who Cried Wolf\n\n**False Positive:** The alarm went off, but **nothing is wrong**.\n\n*   *Example:* A user has 'Caps Lock' on and types their password wrong 3 times. The SIEM screams **\"BRUTE FORCE ATTACK!\"**. You check the logs, see the user logged in successfully on the 4th try. You close the alert as **False Positive - User Error**.\n\n**True Positive:** The alarm went off, and **something IS wrong**.\n\n**Your Goal:** Reduce noise. If you can accurately identify false positives quickly, you save the Tier 2 team hours of time. **This is a super valuable skill.**"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "tip",
+            "title": "Analyst Hygiene 🧼",
+            "content": "## Document Everything!\n\n> *\"If it isn't in the ticket, it didn't happen.\"*\n\nAlways add a comment when closing an alert.\n*   **Bad Comment:** *\"False positive.\"*\n*   **Good Comment:** *\"False positive. 3 failed logins followed by 1 success within 10 seconds from same source IP. Likely Caps Lock issue. User: jsmith. IP: 192.168.1.100.\"*\n\nThe second comment proves you did your job and provides context for the next analyst."
+        }
+    ]
+}

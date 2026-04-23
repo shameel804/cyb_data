@@ -1,0 +1,299 @@
+{
+    "id": "quiz_ch_1",
+    "chapterId": "ch_1",
+    "title": "Chapter 1 Mastery Quiz",
+    "description": "Test your foundational knowledge of the SOC, the Kill Chain, and the Analyst Mindset.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which of the following BEST describes the 'Defender's Dilemma'?",
+            "options": [
+                "Attackers have faster computers than defenders.",
+                "Defenders must protect against all possible threats, while attackers only need to find one weakness.",
+                "Defenders must know how to code, but attackers don't.",
+                "Attackers have unlimited funding."
+            ],
+            "correctAnswer": 1,
+            "explanation": "The asymmetry of cybersecurity means defenders have a much harder job protecting a vast attack surface."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which pillar of the CIA Triad is violated if a database is wiped clean by a hacker?",
+            "options": [
+                "Confidentiality",
+                "Integrity",
+                "Availability",
+                "Authentication"
+            ],
+            "correctAnswer": 2,
+            "explanation": "If data is gone, authorized users cannot access it. That's a loss of Availability."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "A Tier 1 SOC Analyst is primarily responsible for performing deep memory forensics and reverse engineering malware.",
+            "correctAnswer": false,
+            "explanation": "False. Deep forensics and reversing are Tier 2/3 tasks. Tier 1 focuses on initial triage and alert validation."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "In the SOC, the centralized tool that collects and correlates logs from across the entire organization is called a _____.",
+            "options": [
+                "EDR",
+                "Firewall",
+                "SIEM",
+                "Sandbox"
+            ],
+            "correctAnswer": "SIEM",
+            "explanation": "SIEM stands for Security Information and Event Management. It's the 'brain' of the SOC."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "An employee receives a suspicious email with an attachment. The email is stopped by the spam filter. Which phase of the Cyber Kill Chain has been successfully broken?",
+            "options": [
+                "Reconnaissance",
+                "Delivery",
+                "Exploitation",
+                "Command & Control"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The spam filter prevents the weapon from reaching the target, thus breaking the Delivery phase."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "A 'False Positive' is an alert that correctly identifies malicious activity.",
+            "correctAnswer": false,
+            "explanation": "False. A False Positive is an alarm with no actual threat behind it (benign activity flagged as bad)."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "You see a login from 'Jane' in New York, and 15 minutes later a login from 'Jane' in Moscow. What is the most logical Tier 1 conclusion?",
+            "options": [
+                "Jane is definitely a Russian spy.",
+                "The SIEM clock is wrong.",
+                "This is 'Impossible Travel' and requires investigation.",
+                "Jane must be using a VPN."
+            ],
+            "correctAnswer": 2,
+            "explanation": "While a VPN is possible, 'Impossible Travel' is a high-fidelity alert that must be investigated for credential theft. Escalate to Tier 2 to confirm."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which phase of the Cyber Kill Chain is often considered the 'Achilles Heel' for attackers because it generates outbound network traffic?",
+            "options": [
+                "Weaponization",
+                "Delivery",
+                "Installation",
+                "Command & Control (C2)"
+            ],
+            "correctAnswer": 3,
+            "explanation": "C2 traffic must exit the network to reach the attacker's server, making it detectable by firewalls and proxies."
+        },
+        {
+            "id": "q9",
+            "type": "true_false",
+            "question": "A 'Runbook' is a high-level strategy document, whereas a 'Playbook' is the specific step-by-step technical guide.",
+            "correctAnswer": false,
+            "explanation": "False. It's the other way around. Playbook = Strategy. Runbook = Steps."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which of the following is NOT a typical tool used by a SOC Analyst?",
+            "options": [
+                "VirusTotal",
+                "Splunk / SIEM",
+                "Metasploit (Active Exploitation Framework)",
+                "A Sandbox Environment"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Metasploit is an offensive tool used for penetration testing (Red Team). While Blue Teams might use it in a lab to replicate attacks, it's not a standard daily driver for a defender."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What does EDR stand for?",
+            "options": [
+                "Email Detection Response",
+                "Endpoint Detection and Response",
+                "External Data Repository",
+                "Encrypted Data Relay"
+            ],
+            "correctAnswer": 1,
+            "explanation": "EDR is software that monitors endpoint devices (laptops, servers) for suspicious behavior."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Why is documentation ('closing notes') critically important in a SOC?",
+            "options": [
+                "Because the manager is strict.",
+                "To provide context for future analysts and meet compliance/legal requirements.",
+                "To fill up hard drive space.",
+                "It is not important; speed is all that matters."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Documentation ensures continuity. If an alert re-opens 3 months later, the next analyst needs to know why it was closed the first time."
+        },
+        {
+            "id": "q13",
+            "type": "fill_blank",
+            "question": "A(n) _____ is a known, quantifiable piece of forensic data that indicates malicious activity, such as a specific IP address or file hash.",
+            "options": [
+                "Indicator of Compromise (IOC)",
+                "False Positive",
+                "Alert",
+                "Bug"
+            ],
+            "correctAnswer": "Indicator of Compromise (IOC)",
+            "explanation": "IOCs are the 'fingerprints' left behind by attackers."
+        },
+        {
+            "id": "q14",
+            "type": "true_false",
+            "question": "In the context of the Kill Chain, 'Actions on Objectives' is the first step an attacker takes.",
+            "correctAnswer": false,
+            "explanation": "False. Actions on Objectives (stealing data, destroying systems) is the FINAL step."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What is the primary purpose of a Security Sandbox?",
+            "options": [
+                "To safely browse the dark web.",
+                "To detonate suspicious files in an isolated environment to observe their behavior.",
+                "To host the company's public website.",
+                "To store backup data."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Sandboxes allow analysts to safely execute malware without risking the production network."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "A user types their password incorrectly three times because Caps Lock is on. The SIEM generates a 'Brute Force' alert. This is an example of a:",
+            "options": [
+                "True Positive",
+                "False Negative",
+                "False Positive",
+                "Runbook"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The alert fired, but no actual attack occurred. This is a classic False Positive."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which two pillars of the CIA Triad are most impacted by Ransomware?",
+            "options": [
+                "Confidentiality & Authentication",
+                "Integrity & Availability",
+                "Availability & Encryption",
+                "Confidentiality & Authorization"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Ransomware changes files (Integrity) and prevents you from using them (Availability)."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "What is the main difference between 'Left of Boom' and 'Right of Boom' defense strategies?",
+            "options": [
+                "Left of Boom uses Linux; Right of Boom uses Windows.",
+                "Left of Boom focuses on Prevention; Right of Boom focuses on Detection and Response.",
+                "Left of Boom is cheaper than Right of Boom.",
+                "There is no difference."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Left of Boom stops the attack before it succeeds. Right of Boom mitigates the damage after the compromise."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "Tier 1 Analysts should attempt to reverse engineer complex malware before escalating to Tier 2.",
+            "correctAnswer": false,
+            "explanation": "False. Tier 1 should triage and escalate. Spending hours on reversing a single sample will cause other alerts to be missed."
+        },
+        {
+            "id": "q20",
+            "type": "fill_blank",
+            "question": "The process of determining the severity and validity of an alert is called _____.",
+            "options": [
+                "Triage",
+                "Hunting",
+                "Weaponization",
+                "Exfiltration"
+            ],
+            "correctAnswer": "Triage",
+            "explanation": "Triage is the prioritization and initial assessment of an incident."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "You suspect a file is malware but don't have access to a commercial Sandbox. What is a safe, free alternative to get a second opinion on the file's hash?",
+            "options": [
+                "Double-click it on a spare laptop.",
+                "Search for the file hash on Google.",
+                "Upload the file hash (not the file) to VirusTotal.",
+                "Email it to the whole team to see what happens."
+            ],
+            "correctAnswer": 2,
+            "explanation": "VirusTotal accepts hashes. Searching for the hash reveals if others have seen it. NEVER execute unknown files."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "Which team in a cybersecurity exercise is responsible for defending the network?",
+            "options": [
+                "Red Team",
+                "Purple Team",
+                "Blue Team",
+                "White Team (Referees)"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Blue Team defends. Red Team attacks. Purple Team integrates both for better learning."
+        },
+        {
+            "id": "q23",
+            "type": "true_false",
+            "question": "The Cyber Kill Chain states that attackers always follow the 7 steps in exact linear order without skipping phases.",
+            "correctAnswer": false,
+            "explanation": "False. It's a model. Sophisticated attackers often skip phases or combine them to evade detection."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "An analyst sees a high volume of outbound network connections on port 443 (HTTPS) to a single IP address every 5 minutes. This pattern is known as:",
+            "options": [
+                "Surfing the web",
+                "Beaconing",
+                "Phishing",
+                "ARP Poisoning"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Beaconing is periodic communication from malware to a C2 server. Regular intervals are a huge red flag."
+        },
+        {
+            "id": "q25",
+            "type": "fill_blank",
+            "question": "A written set of step-by-step instructions for handling a specific security incident is called a _____.",
+            "options": [
+                "Playbook",
+                "Runbook",
+                "Novel",
+                "Policy"
+            ],
+            "correctAnswer": "Runbook",
+            "explanation": "Runbooks are the technical 'how-to' guides."
+        }
+    ]
+}

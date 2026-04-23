@@ -1,0 +1,71 @@
+{
+    "id": "l2",
+    "chapterId": "ch_1",
+    "title": "Anatomy of a SOC",
+    "description": "The three pillars of the Security Operations Center.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Core Concepts",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "What is a SOC? 🏢",
+            "content": "# Security Operations Center\n\nA **SOC** is a centralized team of people, processes, and technology that monitors and improves an organization's security posture.\n\n**Analogy:** Think of the SOC as the **Mission Control** room for a space launch. You have huge screens showing telemetry (logs), flight controllers (analysts) watching for anomalies, and strict procedures (playbooks) for when something goes wrong.\n\n**Goal:** To prevent, detect, analyze, and respond to cybersecurity incidents."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Pillar 1: People 👥",
+            "content": "# The SOC Team Roles\n\nNot everyone in a SOC does the same job. It's a tiered structure.\n\n*   **Tier 1 Analyst (Alert Triager):** The first line of defense. They monitor the queue, dismiss obvious false positives, and escalate interesting events. **(This is where you start!)**\n*   **Tier 2 Analyst (Incident Responder):** They take the escalations from Tier 1. They perform deeper forensic analysis to determine the root cause and scope of the attack.\n*   **Tier 3 Analyst (Threat Hunter):** Proactive experts. They don't wait for alerts; they hunt for stealthy attackers hiding in the network.\n*   **SOC Manager:** Handles scheduling, reporting to executives, and ensuring the team isn't burnt out."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Tier Check 📋",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Who is primarily responsible for identifying a 'False Positive' and closing the ticket?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Tier 3 Threat Hunter",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Tier 1 Analyst",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The SOC Manager",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Tier 1 analysts filter the noise. It's their job to quickly confirm if an alert is just a benign error or something worth looking at deeper.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Pillar 2: Process 📋",
+            "content": "# Playbooks and Runbooks\n\nImagine a fire alarm goes off. You don't want people running around screaming. You want a clear plan.\n\n*   **Playbook:** A high-level strategy. *\"If we get a Phishing alert, we do X, Y, Z.\"*\n*   **Runbook:** The specific, step-by-step instructions. *\"1. Open the email gateway. 2. Search for recipient. 3. Click 'Purge Email'.\"*\n\n**Without process, a SOC is just chaos.** It ensures consistency and that evidence is preserved correctly for legal reasons."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "warning",
+            "title": "Process Pitfall ⚠️",
+            "content": "## The Danger of Checklist Mentality\n\nWhile processes are crucial, attackers constantly change tactics. If you follow a runbook blindly without **thinking**, you might miss a new type of attack that falls just outside the script.\n\nAlways ask: *Does this make sense?*"
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Pillar 3: Technology 🖥️",
+            "content": "# The SOC Stack\n\nWe will learn these tools in depth later. For now, know the categories:\n\n*   **SIEM (Security Information and Event Management):** The **Brain**. It collects logs from everything (Windows PCs, Firewalls, Web Servers) and correlates them. *(e.g., Splunk, Elastic, Sentinel)*.\n*   **EDR (Endpoint Detection and Response):** The **Eyes on the Ground**. Software installed on laptops/servers that records every process and network connection. *(e.g., CrowdStrike, Defender for Endpoint)*.\n*   **Firewall / IDS:** The **Border Patrol**. Checks traffic entering and leaving the network."
+        }
+    ]
+}
