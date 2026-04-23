@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_4",
+    "title": "Design a Spear Phish",
+    "description": "Create a targeted phishing email using real OSINT and psychological principles.",
+    "estimatedMinutes": 20,
+    "problemStatement": "# Scenario: The Finance Spear Phish\n\nYou are a Red Teamer targeting **Global Logistics Inc.** Your goal is to get the **Accounts Payable team** to click a link and enter their Office 365 credentials.\n\n**OSINT Data:**\n- Company uses **SAP Concur** for expense management.\n- The AP Manager is **Linda Park** (LinkedIn: 8 years at company).\n- Company recently migrated to **Microsoft 365** (from a job posting).\n- End of month is approaching (urgent invoice processing).\n\n**Task:** Write the complete phishing email that would be sent to **Linda Park**.\n\n**Requirements:**\n1. **Subject Line:** Must incorporate a Cialdini weapon.\n2. **Body:** 3-4 sentences max. Include a personalized element.\n3. **Link/Button:** Use a plausible lookalike domain (e.g., `microsoft-365-login.com`).\n4. **Psychology:** Identify which weapon(s) you used after the email.\n\n**Output Format:**\n```\nSubject: [Your Subject]\n\nBody:\n[Your email body text with link/button]\n\n// Weapons used: [List]\n```",
+    "hints": [
+        "Hint 1: Use the time pressure of 'Month End' for Scarcity.",
+        "Hint 2: Mention 'SAP Concur' specifically to show insider knowledge (Authority/Liking).",
+        "Hint 3: Personalize with the manager's name.",
+        "Hint 4: The link should be a button labeled something like 'Verify Access'."
+    ],
+    "expectedOutput": "Subject: URGENT: Concur Expense Integration Issue - Action Required by EOD\n\nBody:\nHi Linda,\n\nWe're seeing a sync failure between Concur and the new M365 tenant that is impacting invoice approval for month-end close. Please verify your O365 credentials below to re-establish the connection before 4 PM today to avoid payment delays.\n\n[ Verify O365 Access ](https://microsoft-365-login.com/verify)\n\nThanks,\nIT Infrastructure Team\n\n// Weapons used: Scarcity (EOD deadline), Authority (IT Team, M365 migration), Familiarity (Concur reference)",
+    "solutionCode": "Subject: URGENT: Concur Invoice Sync Failure - Action Required by 5 PM\n\nBody:\nLinda,\n\nWe've identified a sync error between SAP Concur and the new M365 tenant affecting invoice processing. Please validate your credentials to prevent payment delays during month-end.\n\n[ Verify Office 365 Access ](https://microsoft-365-login.com)\n\nIT Operations\n\n// Weapons: Scarcity (Deadline), Authority (IT Ops, M365 migration), Consistency (Month-end process pressure)"
+}

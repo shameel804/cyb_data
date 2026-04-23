@@ -1,0 +1,120 @@
+{
+    "id": "l2",
+    "chapterId": "ch_11",
+    "title": "Operational Security (OPSEC) Fundamentals",
+    "description": "Deep dive into identifying critical information, analyzing threats, and applying countermeasures.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "OPSEC Foundations",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Step 1: Identify Critical Information 📋",
+            "content": "# What Are You Protecting?\n\n**Critical Information** is any data that would cause harm to you or the engagement if discovered.\n\n**Categories in Red Teaming:**\n\n| Category | Examples | Consequence of Leak |\n| :--- | :--- | :--- |\n| **Personal Identity** | Real name, home address, personal email | Legal liability, doxxing |\n| **Infrastructure** | C2 server IPs, phishing domain registrant | Blocked, sinkholed, burned |\n| **Tools & Payloads** | Custom malware source code, zero-day exploits | Signatures created, patched |\n| **Operational Details** | Dates/times of engagement, target list | Ambush by Blue Team |\n| **Client Information** | The fact that Client X hired you | Reputational damage to client |\n\n**Exercise:** List the top 5 pieces of critical information for *your* next engagement."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Critical Information Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "You are running a vishing campaign. Which of the following is considered critical information?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The target's office phone number",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The burner VoIP number you are calling from",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The name of the target's manager",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The company's main address",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Your source phone number is critical because it can be traced, blocked, or used to identify your service provider.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Step 2: Analyze Threats 🕵️",
+            "content": "# Who is Looking for You?\n\n**Internal Threats (The Blue Team):**\n- **SOC Analysts:** Reviewing SIEM alerts, email gateway logs.\n- **Incident Responders:** Investigating suspicious activity.\n- **Threat Hunters:** Proactively searching for anomalies.\n- **Security Awareness:** Employees reporting suspicious calls/emails.\n\n**External Threats:**\n- **Law Enforcement:** If engagement crosses legal boundaries (bad).\n- **Security Researchers:** May discover and blog about your C2 infrastructure.\n- **Competitors:** Unlikely, but possible in industrial espionage scenarios.\n\n**Capabilities of a Mature Blue Team:**\n- **24/7 Monitoring:** Someone is always watching.\n- **EDR Telemetry:** Every process, network connection, and file write is logged.\n- **Threat Intelligence Feeds:** They subscribe to lists of known-bad IPs and domains.\n\n**The Takeaway:** Assume the Blue Team is **competent** and **curious**."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Step 3: Analyze Vulnerabilities 🔓",
+            "content": "# Where Are Your Weak Spots?\n\n**Common Red Team OPSEC Vulnerabilities:**\n\n| Vulnerability | Example | How It's Exploited |\n| :--- | :--- | :--- |\n| **Infrastructure Reuse** | Same C2 domain used for Client A and Client B | Blue Team shares intel; domain burned |\n| **Tool Signature** | Default Cobalt Strike Beacon configuration | EDR detects default named pipes |\n| **Temporal Patterns** | Calling only between 9-10 AM | Blue Team notices pattern, hunts |\n| **Metadata Leakage** | Word doc author = \"RedTeam_Operator\" | Analyst checks properties, laughs |\n| **Payment Trail** | Domain paid with personal PayPal | Forensic accountant traces identity |\n\n**Vulnerability Assessment Checklist:**\n- [ ] Is my C2 infrastructure **unique per client**?\n- [ ] Have I **customized** my payload artifacts?\n- [ ] Am I **randomizing** my activity times?\n- [ ] Have I **scrubbed metadata** from all deliverables?\n- [ ] Did I use **anonymous payment** for all purchases?"
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "Vulnerability Analysis 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "You send a phishing email with a Word document attached. A Blue Team analyst checks the document properties and sees 'Author: John Hacker'. This is an example of:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Infrastructure reuse",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Metadata leakage vulnerability",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Temporal pattern",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Tool signature",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Unscrubbed metadata provides clues to the attacker's identity or tooling. Always sanitize document properties.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Step 4 & 5: Assess Risk & Apply Countermeasures 🛡️",
+            "content": "# The Mitigation Plan\n\n**Risk Matrix (Simplified):**\n\n| Vulnerability | Likelihood | Impact | Risk Level | Countermeasure |\n| :--- | :--- | :--- | :--- | :--- |\n| Personal Credit Card for Domain | High | High | **Critical** | Use Prepaid Card / Crypto |\n| Default C2 Beacon Config | Medium | High | **High** | Customize Malleable C2 Profile |\n| Calling from Home IP | Low | High | **Medium** | Use VPN or Cellular Hotspot |\n| Using Real LinkedIn to Recon | High | Medium | **High** | Create Sock Puppet Account |\n\n**Countermeasure Implementation:**\n- **Financial:** Prepaid debit cards (purchased with cash), Monero (XMR) cryptocurrency.\n- **Network:** VPNs (double-hop), dedicated cloud VPS jump boxes, cellular hotspots.\n- **Identity:** Burner accounts, AI-generated photos, separate browser profiles.\n- **Technical:** Payload obfuscation, custom C2 profiles, living-off-the-land binaries.\n\n**Pro Tip:** Document your OPSEC measures. If the engagement is audited, you can demonstrate due diligence."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "code",
+            "title": "Sanitizing Document Metadata (PowerShell) 🧹",
+            "content": "A quick PowerShell script to clear metadata from Office files before sending:",
+            "codeSnippet": "# Remove personal metadata from all .docx files in folder\n$files = Get-ChildItem -Path \".\\payloads\\\" -Filter \"*.docx\"\nforeach ($file in $files) {\n    $doc = $file.FullName\n    # Use Word COM object to remove properties\n    $word = New-Object -ComObject Word.Application\n    $word.Visible = $false\n    $document = $word.Documents.Open($doc)\n    $document.RemoveDocumentInformation(99) # wdRemoveDocInfoAll\n    $document.Save()\n    $document.Close()\n    $word.Quit()\n    Write-Host \"Sanitized: $($file.Name)\"\n}",
+            "codeLanguage": "powershell",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_8",
+            "type": "warning",
+            "title": "The Human Element in OPSEC 👤",
+            "content": "## Don't Be Your Own Worst Enemy\n\n**Common Social OPSEC Failures:**\n- **Bragging:** Telling friends/colleagues about the 'cool hack' you did. (They talk).\n- **Social Media:** Posting about being 'busy with a big Red Team project.'\n- **Conferences:** Giving a talk that includes screenshots of the client's internal network (anonymized poorly).\n- **Resumes/LinkedIn:** Listing specific client names and TTPs used against them.\n\n**The Rule:** **Compartmentalization.**\n- Your Red Team life and your personal life are **separate**.\n- Use a **pseudonym** for public-facing research and conference talks.\n- Never discuss ongoing engagements **period**."
+        }
+    ]
+}

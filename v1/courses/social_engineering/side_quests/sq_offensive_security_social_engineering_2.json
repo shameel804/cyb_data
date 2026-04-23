@@ -1,0 +1,94 @@
+{
+    "id": "sq_offensive_security_social_engineering_2",
+    "title": "Phishing & Vishing Debug",
+    "triggerChapterIndex": 5,
+    "metadata": {
+        "type": "debug"
+    },
+    "questions": [
+        {
+            "id": "sq_offsec_se_2_q1",
+            "type": "multiple_choice",
+            "question": "Find the bug in this phishing email HTML that would alert a security-conscious user.",
+            "codeSnippet": "<html>\n<body>\n<p>Dear User,</p>\n<p>Your account has been limited. <a href=\"http://paypal.com.verify-id3245.com/login\">Click here</a> to restore access.</p>\n<p>Thank you,<br>PayPal Security</p>\n</body>\n</html>",
+            "bugLineIndex": 3,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The bug is on line 3: the link text displays 'http://paypal.com' but the actual href points to 'verify-id3245.com'. This mismatched anchor text is a major red flag that should be checked by hovering.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_offsec_se_2_q2",
+            "type": "multiple_choice",
+            "question": "Find the operational security (OPSEC) flaw in this vishing script.",
+            "codeSnippet": "Attacker: Hi, this is Mark from IT. I'm calling from my personal cell because the office phones are down.\nTarget: Okay... what's this about?\nAttacker: We need to verify your VPN token. Can you read me the 6-digit code?",
+            "bugLineIndex": 0,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The bug is on line 0: 'calling from my personal cell' is a major red flag. Legitimate IT would never use a personal phone, and it provides a traceable number.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_offsec_se_2_q3",
+            "type": "multiple_choice",
+            "question": "Identify the mistake in this physical tailgating attempt.",
+            "codeSnippet": "Attacker approaches secure door carrying a large box.\nEmployee badges in and holds door.\nAttacker: 'Thanks, man. I work on the 5th floor.'\nEmployee: 'Sure, no problem.'",
+            "bugLineIndex": 2,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The bug is on line 2: voluntarily stating 'I work on the 5th floor' is unnecessary detail that could be contradicted later. A simple 'Thanks' is sufficient.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_offsec_se_2_q4",
+            "type": "multiple_choice",
+            "question": "Find the error in this caller ID spoofing configuration.",
+            "codeSnippet": "SIP INVITE message:\nFrom: \"IT Help Desk\" <sip:5551234567@attacker-ip>\nP-Asserted-Identity: \"IT Help Desk\" <sip:5551234567@attacker-ip>\nRemote-Party-ID: <sip:anonymous@anonymous.invalid>",
+            "bugLineIndex": 2,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The bug is on line 2: the Remote-Party-ID is set to anonymous, which may cause the target's phone to display 'Unknown' instead of the spoofed number.",
+            "xpReward": 20,
+            "difficulty": 3
+        },
+        {
+            "id": "sq_offsec_se_2_q5",
+            "type": "multiple_choice",
+            "question": "What's wrong with this USB baiting label strategy?",
+            "codeSnippet": "USB drive label: 'CONFIDENTIAL: Q4 Layoff Plan'\nPlacement: In the company cafeteria, on a table.",
+            "bugLineIndex": 1,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The bug is on line 1: 'CONFIDENTIAL' labels may make employees more cautious, and a cafeteria table is high-traffic but might be cleaned. Better label: 'HR Staffing Review' and placement near HR offices.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_offsec_se_2_q6",
+            "type": "multiple_choice",
+            "question": "Find the social engineering flaw in this email subject line and body combination.",
+            "codeSnippet": "Subject: URGENT!!! Your account will be DELETED in 24 hours!!!\nBody: Dear user, click this link immediately to avoid permanent loss of access to all corporate systems.",
+            "bugLineIndex": 0,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The bug is on line 0: excessive exclamation marks, all-caps, and extreme urgency are classic spam triggers that email filters detect and users have been trained to ignore.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_offsec_se_2_q7",
+            "type": "multiple_choice",
+            "question": "Identify the mistake in this vishing call handling a challenge.",
+            "codeSnippet": "Target: 'Wait, what's your name again? Who's your manager?'\nAttacker: 'I'm the Senior IT Director, and I don't answer to you. Now give me the code.'",
+            "bugLineIndex": 1,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The bug is on line 1: becoming aggressive and pulling rank when challenged is a huge red flag. A better response is calm deflection or offering to call back.",
+            "xpReward": 20,
+            "difficulty": 2
+        }
+    ]
+}

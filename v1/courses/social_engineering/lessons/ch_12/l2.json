@@ -1,0 +1,146 @@
+{
+    "id": "l2",
+    "chapterId": "ch_12",
+    "title": "Campaign Planning & Scoping",
+    "description": "Learn to define objectives, establish rules of engagement, and build a comprehensive campaign plan.",
+    "xpReward": 35,
+    "estimatedMinutes": 9,
+    "section": "Planning",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Campaign Plan 📋",
+            "content": "# Fail to Plan, Plan to Fail\n\n**Definition:** A Campaign Plan is a **living document** that outlines the strategy, tactics, timeline, and resources for a Red Team engagement.\n\n**Why It's Essential:**\n- **Alignment:** Ensures the team and client agree on objectives and scope.\n- **Resource Management:** Tracks domains, IPs, burner phones, and personas.\n- **Contingency:** Provides fallback options when primary tactics fail.\n- **Legal Protection:** Documents adherence to the Rules of Engagement.\n\n**Core Components of a Campaign Plan:**\n1.  Objectives & Success Criteria\n2.  Rules of Engagement (RoE) Summary\n3.  Target Intelligence (OSINT Synthesis)\n4.  Attack Narrative (The Story)\n5.  Resource Inventory\n6.  Timeline and Milestones\n7.  Contingency Plans"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Campaign Plan Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Why is a formal Campaign Plan important for a Red Team engagement?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It's required by law",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It aligns the team, manages resources, provides contingency, and documents adherence to scope",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It guarantees success",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It's a substitute for the Letter of Authorization",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. The plan is the operational blueprint that keeps the engagement organized, ethical, and effective.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Step 1: Define Objectives 🎯",
+            "content": "# What Does 'Win' Look Like?\n\n**Objectives must be SMART:**\n- **Specific:** *\"Obtain a copy of the Q3 Financial Forecast document.\"*\n- **Measurable:** *\"Exfiltrate the file and provide a screenshot.\"*\n- **Achievable:** Within the engagement timeframe and scope.\n- **Relevant:** Aligned with client risk concerns.\n- **Time-bound:** *\"By the end of Week 2.\"*\n\n**Example Capstone Objective:**\n> *\"The Red Team will simulate a cybercriminal group targeting **Nexus Financial**. The primary objective is to gain unauthorized access to sensitive customer PII (Personally Identifiable Information) stored on the internal file server. Success is defined as exfiltrating a sample of non-sensitive test data from the target share and providing a screenshot of directory listing.\"*\n\n**Secondary Objectives:**\n- Demonstrate the effectiveness of social engineering against multiple layers (email, phone, physical).\n- Evade detection by the Security Operations Center (SOC) for at least 48 hours."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Step 2: Rules of Engagement (RoE) 🛡️",
+            "content": "# The Legal and Ethical Guardrails\n\n**The RoE defines what you CANNOT do.** This is as important as what you can do.\n\n| RoE Section | Typical Constraints |\n| :--- | :--- |\n| **Targets** | Specific IP ranges, email domains, physical locations. Excludes executives' homes. |\n| **Techniques** | No denial-of-service. No destruction of data. No exploitation of vulnerabilities that could cause system instability. |\n| **Data Handling** | Any captured PII must be redacted in reports. All data destroyed within 30 days. |\n| **Emergency Stop** | A codeword that immediately halts all offensive activity (e.g., \"Red Rover, Red Rover, Cease Fire\"). |\n| **Contacts** | Primary and secondary POCs for escalation. |\n\n**Never deviate from the RoE.** If a golden opportunity arises that is outside scope, **document it as an observation** but do not exploit it."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "RoE Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "During a Red Team engagement, you discover an internet-facing server with a known critical vulnerability. Exploiting it is NOT listed in the approved techniques. What should you do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Exploit it quietly; it's too good to pass up",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Document the finding in the report as an observation without exploiting it",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Call the client POC and ask for verbal permission to exploit it",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Ignore it",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Scope is sacred. Report the vulnerability as an observation. The client can choose to have it tested in a separate follow-up engagement.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Step 3: Target Intelligence Synthesis 🕵️",
+            "content": "# Distilling the OSINT\n\n**You've gathered a mountain of data (Ch 2, 3). Now, create a **Target Profile**.**\n\n**Example Capstone Profile: Nexus Financial**\n- **Employees:** 450, located primarily in Chicago HQ.\n- **Tech Stack (from job postings):** Microsoft 365, Okta for MFA, Salesforce, Cisco VPN.\n- **Key Personnel:**\n  - **CFO: Sarah Jenkins** (Target for Whaling).\n  - **IT Manager: David Chen** (Possible help desk contact).\n  - **New Hires in Accounting:** 3 identified on LinkedIn (Vulnerable to vishing).\n- **Physical Layout:** Multi-tenant building. Security guard at main lobby. Loading dock in rear.\n- **Security Culture:** Moderate. Employees post about security training on social media.\n\n**Key Insight for SE Campaign:**\n- **Phishing:** Use Okta/M365 themes.\n- **Vishing:** Impersonate IT Help Desk; target new hires.\n- **Physical:** Loading dock is a potential tailgating vector."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Step 4: The Attack Narrative (Storyboard) 📖",
+            "content": "# The Sequence of Events\n\n**Capstone Narrative for Nexus Financial:**\n\n**Phase 1: Reconnaissance (Days 1-3)**\n- OSINT on LinkedIn, job boards, social media.\n- Google dorking for exposed documents.\n- Passive network reconnaissance (Shodan).\n\n**Phase 2: Initial Access - Multi-Vector (Days 4-7)**\n- **Vector A (Spear Phishing):** Send maldoc (fake Salesforce report) to 50 employees. Goal: 5-10 credential captures or beacon callbacks.\n- **Vector B (Vishing):** Call new hires in Accounting. Pretext: *\"IT Help Desk verifying Okta setup.\"* Goal: Obtain MFA token or password reset.\n- **Vector C (Physical):** Attempt tailgating at loading dock during morning coffee run. Goal: Place rogue device or access unlocked workstation.\n\n**Phase 3: Pivot & Escalate (Days 8-10)**\n- Use any obtained credentials to access VPN/Email.\n- Search internal file shares for 'Passwords' or 'Sensitive Data'.\n\n**Phase 4: Objective Achievement (Days 11-12)**\n- Locate and exfiltrate sample of PII test data.\n- Document access path with screenshots.\n\n**Phase 5: Cleanup & Reporting (Days 13-14)**\n- Remove persistence. Generate report. Conduct readout."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "quiz",
+            "title": "Attack Narrative 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "multiple_choice",
+                "question": "Why is it beneficial to plan multiple initial access vectors (A, B, C) rather than relying on just one?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It's required by the RoE",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It increases the probability of success and provides fallback if one vector fails",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It makes the report longer",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It confuses the Blue Team",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Real adversaries use multiple avenues. Redundancy ensures at least one vector succeeds, and it tests the organization's defenses more comprehensively.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

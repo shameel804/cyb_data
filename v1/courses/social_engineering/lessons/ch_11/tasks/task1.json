@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_11",
+    "title": "OPSEC Vulnerability Assessment",
+    "description": "Identify OPSEC failures in a given Red Team scenario and propose countermeasures.",
+    "estimatedMinutes": 15,
+    "problemStatement": "# Objective: OPSEC Analysis\n\nRead the following Red Team scenario and identify **three specific OPSEC failures**. For each failure, state which OPSEC step was violated and propose a countermeasure.\n\n**Scenario:**\nA Red Team operator, Alex, is conducting a phishing campaign against 'OmniCorp'. Alex registers the domain `omnicorp-secure.com` using their personal Gmail account and pays with a personal credit card. They use their home internet connection (no VPN) to log into the GoPhish admin panel and launch the campaign. During the engagement, Alex takes a screenshot of a successful credential capture and posts it in a private Slack channel with colleagues, saying *\"OmniCorp credentials coming in hot!\"* but accidentally includes part of the target's email address in the screenshot.\n\n**Task:**\nIdentify 3 OPSEC failures. For each:\n1. Describe the failure.\n2. Which OPSEC step was violated? (Identify, Analyze Threats, Analyze Vulnerabilities, Assess Risk, Apply Countermeasures).\n3. What is the correct countermeasure?\n\n**Output Format:**\nFailure 1: [Description] | Violated Step: [Step] | Countermeasure: [Action]\nFailure 2: [Description] | Violated Step: [Step] | Countermeasure: [Action]\nFailure 3: [Description] | Violated Step: [Step] | Countermeasure: [Action]",
+    "hints": [
+        "Hint 1: Look at how the domain was registered and paid for.",
+        "Hint 2: Look at how the operator accessed the phishing infrastructure.",
+        "Hint 3: Look at how the operator communicated with colleagues."
+    ],
+    "expectedOutput": "Failure 1: Registered domain with personal email and paid with personal credit card. | Violated Step: Apply Countermeasures | Countermeasure: Use anonymous email (ProtonMail) and prepaid debit card or cryptocurrency.\nFailure 2: Accessed GoPhish admin panel from home IP without VPN. | Violated Step: Apply Countermeasures | Countermeasure: Always use a VPN (or dedicated VPS jump box) when accessing attack infrastructure.\nFailure 3: Posted screenshot with target email address in Slack. | Violated Step: Identify Critical Information / Apply Countermeasures | Countermeasure: Never share target-specific PII on non-client-approved channels. Redact sensitive data before sharing internally.",
+    "solutionCode": "1. Domain registration with personal info: Failure to Apply Countermeasures for financial anonymity. Use prepaid card/crypto.\n2. Home IP connection to C2: Failure to Apply Countermeasures for network anonymity. Use VPN.\n3. Leaking target email in chat: Failure to Identify Critical Information (PII). Redact all screenshots."
+}

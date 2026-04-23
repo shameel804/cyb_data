@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_9",
+    "title": "Digital Elicitation Script Crafting",
+    "description": "Create a sequence of LinkedIn messages to elicit specific technical information from a target.",
+    "estimatedMinutes": 20,
+    "problemStatement": "# Scenario: The LinkedIn Elicitation\n\nYou are a Red Teamer posing as a **Technology Journalist** writing an article on *'The Future of Financial Tech Stacks'*. Your target is **David Kim**, a Senior Infrastructure Engineer at **Apex Trading**.\n\n**Your Intelligence Goal:** Discover the following:\n1. What **firewall vendor** Apex Trading uses.\n2. Whether they use **on-prem Active Directory** or **Azure AD**.\n3. What **MFA solution** they use.\n\n**Task:** Write a sequence of **three LinkedIn messages** (your initial outreach, and two follow-ups) designed to elicit this information naturally. Do not ask directly. Use the techniques from this chapter.\n\n**Constraints:**\n- Keep the tone professional and friendly.\n- Do not use fear or urgency.\n- Use at least **two different elicitation techniques** across the messages.\n\n**Output Format:**\n```\nMessage 1 (Initial Outreach):\n[Your message text]\n// Technique used: [Name]\n\nMessage 2 (Follow-up after target responds positively):\n[Your message text]\n// Technique used: [Name]\n\nMessage 3 (Final follow-up):\n[Your message text]\n// Technique used: [Name]\n```",
+    "hints": [
+        "Hint 1: Start with a compliment and a low-stakes, open-ended question about industry trends.",
+        "Hint 2: Use a deliberate false statement about 'most firms moving to Azure AD' to trigger a correction.",
+        "Hint 3: Use feigned ignorance about MFA: 'Is everyone using those hardware keys now, or still the phone apps?'"
+    ],
+    "expectedOutput": "Message 1 (Initial Outreach):\nHi David, I came across your profile while researching infrastructure trends in the trading sector. I'm writing a piece on how firms are balancing security and speed. Would you be open to sharing some general insights on the challenges you face? Nothing proprietary, just high-level trends!\n// Technique used: Open-Ended Question, Liking (Compliment)\n\nMessage 2 (Follow-up after target responds positively):\nThanks for the insights, David! That's really helpful context. One trend I'm seeing is a big shift from traditional perimeter firewalls to cloud-native solutions. I'm guessing you guys are mostly Palo Alto or Fortinet on that front?\n// Technique used: Bracketing / Deliberate False Statement (to trigger correction)\n\nMessage 3 (Final follow-up):\nLast one, I promise! On the authentication side, it seems like everyone is either going passwordless with hardware keys or sticking with the mobile app push notifications. What's the general sentiment in your world? Just trying to gauge if the 'death of the password' is real or hype.\n// Technique used: Bracketing / Open-Ended Question",
+    "solutionCode": "Message 1: Open-ended rapport building. Message 2: Bracketing/Presupposition to elicit firewall vendor. Message 3: Feigned ignorance to elicit MFA solution and AD type (implied by 'passwordless' context)."
+}

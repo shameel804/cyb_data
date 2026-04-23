@@ -1,0 +1,117 @@
+{
+    "id": "l6",
+    "chapterId": "ch_10",
+    "title": "Advanced Techniques & Ethical Use",
+    "description": "Explore VBA stomping, template injection, and understand the legal boundaries of maldoc deployment.",
+    "xpReward": 40,
+    "estimatedMinutes": 9,
+    "section": "Advanced & Ethics",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "VBA Stomping 👟",
+            "content": "# Destroying the Evidence\n\n**What is VBA Stomping?**\n- A technique to **remove the VBA source code** from the document **after** it has been compiled to **P-Code** (pseudo-code).\n- The macro still executes (because the compiled P-Code remains), but the **source code is gone**.\n- This significantly hinders static analysis and AV scanning.\n\n**How It Works:**\n1.  Write your malicious macro in the VBA Editor.\n2.  Use a tool (e.g., `EvilClippy`, `OfficePurge`) to **stomp** the document.\n3.  The tool modifies the Office file structure, removing the `vbaProject.bin` source streams while preserving the compiled performance cache.\n\n**Effect:**\n- **Analyst sees:** \"No macros\" (or corrupted VBA project).\n- **Office executes:** The macro perfectly.\n\n**Limitations:**\n- P-Code is version-dependent. Stomped macros may only work on the same Office version they were compiled on.\n- Advanced AV can still detect suspicious P-Code patterns."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "quiz",
+            "title": "VBA Stomping 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "What is the primary purpose of VBA Stomping?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To make the macro run faster",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To remove the VBA source code while preserving executable P-Code, hindering analysis",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To bypass AMSI",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To convert the macro to JavaScript",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Stomping deletes the readable source code, making static analysis much harder, while the compiled P-Code still runs.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_3",
+            "type": "text",
+            "title": "Template Injection 🧬",
+            "content": "# The Remote Payload Pull\n\n**What is Template Injection?**\n- A technique where a **seemingly benign document** (e.g., a `.docx` with no macros) is configured to load a **remote template** (`.dotm`) from the internet.\n- The remote template **contains the malicious macros**.\n\n**How It Works:**\n1.  Create a **clean document** (`.docx`) with no macros.\n2.  Modify its internal `settings.xml.rels` file to point the template to a **remote URL**: `http://c2-server.com/evil_template.dotm`.\n3.  Send the clean `.docx` to the target.\n4.  When opened, Word silently downloads and applies the remote template, executing its macros.\n\n**Advantages:**\n- **Initial document is clean:** Passes email gateway scans.\n- **Payload lives remotely:** Can be changed or taken down after engagement.\n- **Bypasses MOTW?** The downloaded template may have MOTW, but the user already opened the 'clean' document.\n\n**Tool:** `remoteinjector` or manual XML editing."
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "Other Advanced Evasion Tactics 🛠️",
+            "content": "# The Arms Race Continues\n\n- **Calling Windows API Directly:** VBA can declare and call native WinAPI functions (`VirtualAlloc`, `CreateThread`) to execute shellcode entirely in memory without `Shell` or PowerShell. This bypasses command-line monitoring.\n- **Excel 4.0 Macros (XLM):** Legacy macro language that predates VBA. Still supported in modern Excel. Often overlooked by security tools. Can call WinAPI.\n- **DDE (Dynamic Data Exchange):** Legacy Windows feature that allows Office to execute commands. `{ DDEAUTO c:\\\\windows\\\\system32\\\\cmd.exe \"/k calc.exe\" }`. Still works in some configurations.\n- **Hiding Macros in Obscure Places:** Macros can reside in `ThisDocument`, Modules, Class Modules, or even **UserForms**.\n\n**The Meta-Lesson:** Defense evasion is a **continuous research topic**. What works today may be patched tomorrow. Stay informed via threat intelligence and Red Team blogs."
+        },
+        {
+            "id": "s_l6_5",
+            "type": "quiz",
+            "title": "Template Injection 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "multiple_choice",
+                "question": "What is the key advantage of a Template Injection attack over a standard macro-enabled document?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The initially sent document contains no macros and appears clean to scanners",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It works on Mac computers",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It doesn't require the user to enable macros",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It encrypts the payload",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. The `.docx` file is macro-free and will pass static analysis. The malicious code is only pulled when the document is opened by the target.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_6",
+            "type": "warning",
+            "title": "Ethical Deployment of Maldocs ⚖️",
+            "content": "# The Highest-Risk Engagement Type\n\n**Maldocs are **weaponized code**. They are treated as **malware** by law and security tools.**\n\n**Mandatory Red Team Protocols:**\n1.  **Explicit Authorization:** The SOW must specifically authorize 'Custom Malware Development' or 'Macro-based Payload Delivery'.\n2.  **Non-Destructive Payloads:** Use beacons that only establish C2 and profile the system. **Never** deploy ransomware, wipers, or data exfiltration tools.\n3.  **Controlled C2:** Your command and control server must be secure, monitored, and capable of issuing a **global kill switch**.\n4.  **Scoped Targeting:** Only send maldocs to **authorized email addresses** within the **authorized time window**.\n5.  **Immediate Disclosure:** If a payload accidentally infects a system outside scope, **immediately notify the client POC**.\n\n**Legal Reality:** Deploying a maldoc without authorization is a **federal crime** (CFAA violation) carrying severe penalties."
+        },
+        {
+            "id": "s_l6_7",
+            "type": "text",
+            "title": "Cleanup and Reporting 📊",
+            "content": "# Leaving No Trace\n\n**Post-Engagement Responsibilities:**\n1.  **Terminate C2 Sessions:** Gracefully exit any active beacons.\n2.  **Remove Persistence:** If any persistence mechanism was installed (e.g., scheduled task), provide a **removal script** to the client.\n3.  **Document Everything:** Provide a detailed report including:\n    - Document filenames and lures used.\n    - Payload behavior and C2 infrastructure.\n    - Success metrics (how many users enabled macros).\n    - **Remediation Recommendations:**\n        - Disable Office macros for all users who do not absolutely require them.\n        - Implement ASR rules to block Office child processes.\n        - Deploy attack surface reduction policies.\n        - Conduct user awareness training specific to macro-enabled documents.\n\n**The Goal:** Prove the risk exists, then help the client **fix it**."
+        },
+        {
+            "id": "s_l6_8",
+            "type": "tip",
+            "title": "The Future of Maldocs 🔮",
+            "content": "## Beyond VBA\n\nMicrosoft is aggressively moving away from VBA:\n- **Default Block:** Macros from the internet are now blocked by default with no UI to enable them.\n- **XLM Macros:** Also being restricted.\n\n**Emerging Attack Vectors:**\n- **Office Add-ins (COM Add-ins):** Web-based add-ins that can execute JavaScript.\n- **PDF JavaScript:** Malicious JavaScript embedded in PDFs.\n- **OneNote Attachments:** Embedding malicious files inside OneNote notebooks.\n- **LNK Files:** Shortcut files that execute PowerShell commands.\n\n**The Core Principle Remains Unchanged:** Social engineer the user to **interact** with your content. The technology changes, but **human psychology does not**."
+        }
+    ]
+}

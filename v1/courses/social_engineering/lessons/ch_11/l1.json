@@ -1,0 +1,111 @@
+{
+    "id": "l1",
+    "chapterId": "ch_11",
+    "title": "Introduction to Defense Evasion & OPSEC",
+    "description": "Understand the critical importance of staying invisible before, during, and after a social engineering engagement.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "OPSEC Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Silent Operator 🥷",
+            "content": "# Why Stealth Matters\n\nIn previous chapters, we focused on **getting in**. Now we focus on **not getting caught**.\n\n**Analogy:** A burglar who leaves muddy footprints, a signed confession, and a selfie at the crime scene is a **terrible burglar**. The same applies to social engineering.\n\n**Defense Evasion** is the art of avoiding detection by:\n- **Blue Teams** (internal security)\n- **EDR / AV Software**\n- **Security Analysts** reviewing logs\n- **The Target** (after the fact)\n\n**The Goal:** Complete the engagement without triggering alerts, investigations, or panic. The target should only know you were there when you hand them the **final report**."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Stealth Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the primary goal of defense evasion in a Red Team engagement?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To destroy evidence of the attack",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To complete objectives without triggering alerts or detection",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To make the attack faster",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To bypass all security controls permanently",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. The Red Team simulates a stealthy adversary. Detection during the engagement reduces the learning value and may cause unnecessary incident response.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "What is OPSEC? 🔐",
+            "content": "# Operational Security\n\n**Definition:** OPSEC is a systematic process that identifies **critical information** and determines if **adversaries** can observe and exploit that information.\n\n**The OPSEC Five-Step Process:**\n1.  **Identify Critical Information:** What data would burn you if discovered? (Real identity, C2 server IPs, tool signatures).\n2.  **Analyze Threats:** Who is looking for you? (Blue Team, EDR, Email Filters, Suspicious Employees).\n3.  **Analyze Vulnerabilities:** Where are you exposed? (Metadata in documents, voice signature, payment methods).\n4.  **Assess Risk:** What is the likelihood and impact of exposure?\n5.  **Apply Countermeasures:** What actions will reduce the risk? (VPNs, burner phones, sanitized files).\n\n**Mantra:** *\"Am I leaving a trail? Can this be traced back to me or my team?\"*"
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "OPSEC Definition Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "You register a lookalike domain for phishing. Using your personal credit card to pay for it is a failure of which OPSEC step?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Identify Critical Information",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Analyze Threats",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Apply Countermeasures",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Assess Risk",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. You failed to apply the countermeasure of using anonymous payment (prepaid card, crypto). Your real name is now linked to the phishing domain.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "The Three Phases of OPSEC in SE 📅",
+            "content": "# Before, During, After\n\n**Phase 1: Pre-Engagement OPSEC**\n- Setting up anonymous infrastructure (burner emails, domains, C2 servers).\n- Sanitizing documents and payloads.\n- Avoiding OSINT leakage about the *real* you.\n\n**Phase 2: Active Engagement OPSEC**\n- Using VPNs and proxies to mask origin IP.\n- Avoiding calling from traceable numbers.\n- Minimizing log generation on target systems.\n\n**Phase 3: Post-Engagement OPSEC**\n- Securely destroying engagement data (burner phones, payloads).\n- Removing persistence mechanisms.\n- Ensuring the final report does not expose sensitive Red Team TTPs (Tactics, Techniques, and Procedures) publicly.\n\n**Failure at any phase can compromise the mission and your career.**"
+        },
+        {
+            "id": "s_l1_6",
+            "type": "warning",
+            "title": "The 'Oops' That Burns You 🔥",
+            "content": "## Real-World OPSEC Failures\n\n- **Metadata in Photos:** Posting a selfie from 'the office' with GPS coordinates embedded. (EXIF data).\n- **LinkedIn Viewing:** Looking at the target's profile from your **real** LinkedIn account. (They see who viewed them).\n- **Reused Infrastructure:** Using the same C2 domain for multiple clients. (Blue Teams share intel).\n- **Personal Phone Calls:** Calling a target from your personal cell number because you 'forgot' to use the burner app.\n\n**The Lesson:** OPSEC is **discipline**, not technology. One moment of laziness can undo months of work."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "tip",
+            "title": "The OPSEC Mindset 🧠",
+            "content": "## Paranoia is a Feature, Not a Bug\n\n**Default Assumption:** Everything you do is being **logged, monitored, and analyzed**.\n\n**Questions to Ask Yourself:**\n- *\"If this email was leaked to the press, would it trace back to me?\"*\n- *\"If the Blue Team reverse-engineers this payload, what will they find?\"*\n- *\"Is there a less noisy way to achieve the same objective?\"*\n\n**The Goal is NOT to be perfect.** Perfect OPSEC is impossible. The goal is to raise the **cost and difficulty** of attribution high enough that the defender **gives up** or **misses you entirely**."
+        }
+    ]
+}

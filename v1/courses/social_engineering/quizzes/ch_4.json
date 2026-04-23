@@ -1,0 +1,305 @@
+{
+    "id": "quiz_ch_4",
+    "chapterId": "ch_4",
+    "title": "Chapter 4 Quiz: Phishing Dynamics",
+    "description": "Test your knowledge of email spoofing, phishing content creation, landing pages, and advanced MFA bypass techniques.",
+    "passingScore": 70,
+    "xpReward": 150,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What percentage of cyber attacks are estimated to begin with a phishing email?",
+            "options": [
+                "50%",
+                "75%",
+                "91%",
+                "25%"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Over 90% of breaches start with a phishing email. It's the primary initial access vector."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which email authentication method tells receiving servers what to do (quarantine or reject) if SPF or DKIM checks fail?",
+            "options": [
+                "SPF",
+                "DKIM",
+                "DMARC",
+                "SMTP"
+            ],
+            "correctAnswer": 2,
+            "explanation": "DMARC (Domain-based Message Authentication, Reporting & Conformance) defines the policy (`p=reject` or `p=quarantine`)."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "Display Name Spoofing is effective because mobile email clients often hide the actual sender email address.",
+            "correctAnswer": true,
+            "explanation": "True. On a small screen, users see 'PayPal Support' but not the `@paypal-fake.com` address."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "You receive an email with the sender name 'IT Help Desk' but the actual address is 'support@acmecorp-support.com'. What technique is this?",
+            "options": [
+                "Direct SMTP Spoofing",
+                "Lookalike Domain",
+                "DKIM Replay",
+                "Homograph Attack"
+            ],
+            "correctAnswer": 1,
+            "explanation": "It's a lookalike domain (`acmecorp-support.com`). The attacker owns this domain, so SPF/DKIM passes."
+        },
+        {
+            "id": "q5",
+            "type": "fill_blank",
+            "question": "The email header that allows an attacker to redirect replies to a malicious address is called ______.",
+            "options": [
+                "Reply-To",
+                "Return-Path",
+                "X-Forwarded-For",
+                "Sender"
+            ],
+            "correctAnswer": "Reply-To",
+            "explanation": "The 'Reply-To' header overrides the default reply address. Users think they are replying to the legitimate sender."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which Cialdini weapon is most directly triggered by a subject line like 'ACTION REQUIRED: Your password expires in 2 hours'?",
+            "options": [
+                "Reciprocity",
+                "Scarcity",
+                "Liking",
+                "Social Proof"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Scarcity (limited time). The user feels they must act now or lose access."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What is the primary goal of including a fake 'Unsubscribe' link in a phishing email footer?",
+            "options": [
+                "To comply with CAN-SPAM laws",
+                "To add legitimacy and bypass spam filters",
+                "To trick the user into unsubscribing",
+                "To track if the email was opened"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Legitimate marketing emails have unsubscribe links. Their presence reduces suspicion and improves deliverability scores."
+        },
+        {
+            "id": "q8",
+            "type": "true_false",
+            "question": "It is better to embed images directly in a phishing email as attachments rather than hosting them on a remote server.",
+            "correctAnswer": false,
+            "explanation": "False. Embedded attachments increase file size and spam score. Hosting images remotely (or using legitimate CDN links) is stealthier."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "When cloning a login page for credential harvesting, which HTML element must be modified to send data to the attacker's server?",
+            "options": [
+                "<form action='...'>",
+                "<input type='text'>",
+                "<button type='submit'>",
+                "<img src='...'>"
+            ],
+            "correctAnswer": 0,
+            "explanation": "The 'action' attribute of the `<form>` tag tells the browser where to POST the username and password."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Why is an SSL certificate (HTTPS) essential for a modern phishing landing page?",
+            "options": [
+                "It encrypts the stolen credentials",
+                "It prevents the 'Not Secure' warning in the browser",
+                "It makes the site load faster",
+                "It's required by law"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Without HTTPS, Chrome shows a glaring red warning. With HTTPS (even from Let's Encrypt), the user sees the green lock icon and feels safe."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What is the purpose of 'Redirect Chain' or hiding the phishing page behind a long random URL path (e.g., `/a7f3k9m2/login`)?",
+            "options": [
+                "To make the link look more secure",
+                "To evade automated security crawlers (Google Safe Browsing)",
+                "To track which email campaign the user came from",
+                "To improve SEO"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Crawlers scan the root of domains. By hiding the phish deep, you prevent bots from flagging your domain."
+        },
+        {
+            "id": "q12",
+            "type": "true_false",
+            "question": "Adversary-in-the-Middle (AitM) phishing tools like Evilginx steal the user's password directly from the login form.",
+            "correctAnswer": false,
+            "explanation": "False. They steal the **authenticated session cookie** after the user successfully logs in and completes MFA. The password passes through but the cookie is the real prize."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "An attacker repeatedly attempts to log in with a valid password, causing the user's phone to receive dozens of MFA push notifications. The attacker then calls pretending to be IT support. This attack is called:",
+            "options": [
+                "SIM Swapping",
+                "MFA Fatigue / Push Bombing",
+                "Token Replay Attack",
+                "Pass-the-Hash"
+            ],
+            "correctAnswer": 1,
+            "explanation": "MFA Fatigue exploits the user's annoyance and desire to stop the notifications, tricking them into approving a fraudulent login."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Why is QR Code Phishing (Quishing) effective at bypassing corporate security controls?",
+            "options": [
+                "QR codes are encrypted",
+                "Users scan the code with their personal phone, bypassing corporate web filters",
+                "QR codes are too small for antivirus to scan",
+                "Email filters cannot detect images"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The user's personal mobile device is outside the corporate perimeter. No URL filtering, no endpoint detection."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Which of the following is NOT a recommended technique for improving phishing email deliverability?",
+            "options": [
+                "Warming up the sending IP address",
+                "Using a valid SPF record for the sending domain",
+                "Sending 10,000 emails simultaneously from a new domain",
+                "Including an unsubscribe link"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Sending a massive blast from a brand new domain is a major spam signal. Volume should be increased gradually (warming)."
+        },
+        {
+            "id": "q16",
+            "type": "fill_blank",
+            "question": "The tool commonly used to automate credential harvesting with a cloned website in Kali Linux is the ______.",
+            "options": [
+                "Social-Engineer Toolkit (SET)",
+                "Metasploit",
+                "Burp Suite",
+                "Wireshark"
+            ],
+            "correctAnswer": "Social-Engineer Toolkit (SET)",
+            "explanation": "SET has a dedicated 'Credential Harvester' module for cloning sites and capturing POST data."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What is the 'Golden Ticket' in the context of an Evilginx attack?",
+            "options": [
+                "The user's password hash",
+                "The MFA recovery code",
+                "The authenticated session cookie",
+                "The user's browser fingerprint"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The session cookie allows the attacker to impersonate the user without needing a password or MFA prompt."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "Smishing (SMS Phishing) is generally less effective than email phishing because people are more suspicious of text messages.",
+            "correctAnswer": false,
+            "explanation": "False. SMS open rates are over 98%. People trust text messages more than email and have fewer defenses on their phones."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "You are writing a spear phishing email. According to the lesson, what is the optimal placement for the malicious link?",
+            "options": [
+                "At the very bottom of the email after a long story",
+                "Above the fold (visible without scrolling)",
+                "In the middle of a paragraph of text",
+                "As an attachment only"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The user should not have to scroll. The call to action must be immediately visible."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is the purpose of geofencing a phishing landing page?",
+            "options": [
+                "To track where the victim is located",
+                "To only serve the phishing content to IP addresses in the target country, reducing exposure to scanners",
+                "To display a localized version of the login page",
+                "To comply with GDPR"
+            ],
+            "correctAnswer": 1,
+            "explanation": "By showing a 404 to IPs outside the target region (e.g., Russia, China), you reduce the chance of security researchers or automated crawlers flagging your site."
+        },
+        {
+            "id": "q21",
+            "type": "true_false",
+            "question": "Using a URL shortener like Bitly is a common technique to hide a malicious domain in an SMS phishing message.",
+            "correctAnswer": true,
+            "explanation": "True. The user can't see the destination until they click, and some SMS gateways block known bad domains but allow shorteners."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "Which of the following is a 'Whaling' attack?",
+            "options": [
+                "Sending a fake Amazon reset email to 10,000 people",
+                "Sending a fake legal subpoena to the CEO",
+                "Sending a fake invoice to the Accounts Payable department",
+                "Leaving infected USB drives in the parking lot"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Whaling targets high-value executives (C-Suite). Spear phishing targets specific departments or individuals."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "In a Red Team phishing campaign, what is the most important document to have BEFORE sending any emails?",
+            "options": [
+                "A list of target passwords",
+                "The signed Scope of Work (SOW) and Authorization Letter",
+                "A backup of the phishing server",
+                "A burner phone"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Without explicit written authorization, phishing is a federal crime. The SOW defines exactly who can be targeted."
+        },
+        {
+            "id": "q24",
+            "type": "fill_blank",
+            "question": "The practice of slowly increasing email sending volume from a new domain to build a positive reputation with email providers is called ______.",
+            "options": [
+                "IP Warming",
+                "Domain Aging",
+                "Reputation Building",
+                "Throttling"
+            ],
+            "correctAnswer": "IP Warming",
+            "explanation": "Warming the IP/domain prevents immediate spam classification."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "An email contains a link that says 'https://www.microsoft.com'. When you hover over it, the actual link is 'https://www.micr0soft.com/login'. What is this technique called?",
+            "options": [
+                "URL Spoofing",
+                "Link Masking / Mismatched Anchor Text",
+                "Pharming",
+                "Cross-Site Scripting"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The displayed text (anchor text) differs from the actual `href` link. This is a classic phishing technique."
+        }
+    ]
+}

@@ -1,0 +1,128 @@
+{
+    "id": "l2",
+    "chapterId": "ch_4",
+    "title": "Email Spoofing & Impersonation",
+    "description": "Master the technical art of making your email look like it came from someone else.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Technical Tactics",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The 'From' Field Lie 📧",
+            "content": "# How Email Really Works\n\nEmail is **inherently insecure**. It was designed in the 1970s for a trusted network of academics. It's like a postcard—anyone can write any return address they want.\n\n**The Simple Mail Transfer Protocol (SMTP)** does not natively verify the sender. This means:\n- I can send an email to you with `From: bill.gates@microsoft.com`\n- The receiving server has to **trust me** or use extra checks.\n\n**The Protection Layer:**\nTo fix this, three security standards were bolted on later:\n1. **SPF (Sender Policy Framework):** Lists which IP addresses are allowed to send email for a domain.\n2. **DKIM (DomainKeys Identified Mail):** Cryptographically signs emails to prove they haven't been tampered with.\n3. **DMARC (Domain-based Message Authentication, Reporting & Conformance):** Tells the receiving server what to do if SPF or DKIM fails (quarantine or reject)."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Email Auth Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which email authentication method uses cryptographic signatures to verify the email content hasn't been altered?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "SPF",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "DKIM",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "DMARC",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "SMTP",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. DKIM adds a digital signature header. The receiving server uses the sender's public DNS key to verify the signature.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Bypassing Authentication (The Loopholes) 🕳️",
+            "content": "# Why Spoofing Still Works in 2026\n\nIf a domain has **strict DMARC** (`p=reject`), you **cannot** spoof that domain from an external server. Emails from `@paypal.com` will bounce if sent from your laptop.\n\n**BUT**, attackers have workarounds:\n\n1.  **Lookalike Domains (Typosquatting):**\n    - Real: `@microsoft.com`\n    - Fake: `@micr0soft.com` (zero instead of 'o')\n    - Fake: `@microsoft-support.com`\n    - *These domains are owned by the attacker, so SPF/DKIM/DMARC **pass perfectly**.*\n\n2.  **Display Name Spoofing:**\n    - The email client shows **\"Bill Gates\" <bill.gates@gmail.com>**.\n    - On mobile, you only see **\"Bill Gates\"**. You don't see the `@gmail.com` part.\n    - This is the **#1 most effective phishing technique**."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "Spoofing Technique 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "You receive an email on your iPhone. The sender name is 'PayPal Support'. The actual email address is 'service@paypal-verification.net'. Which technique is being used?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Direct SMTP Spoofing",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Display Name Spoofing with a Lookalike Domain",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "DKIM Replay Attack",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "SMTP Relay Hijacking",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. The friendly 'From' name tricks the user. The domain is a lookalike owned by the attacker, so SPF/DKIM passes.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Checking Email Headers 🔍",
+            "content": "You can verify a suspicious email by looking at the raw headers (usually 'Show Original' in Gmail).\n\nLook for these key lines:",
+            "codeSnippet": "Authentication-Results: mx.google.com;\n       spf=pass (google.com: domain of service@paypal-verification.net designates 192.0.2.1 as permitted sender) smtp.mailfrom=service@paypal-verification.net;\n       dkim=pass header.i=@paypal-verification.net;\n       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=paypal-verification.net\n\nReturn-Path: <service@paypal-verification.net>\nFrom: \"PayPal Support\" <service@paypal-verification.net>",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Lookalike Domain Generation 🏭",
+            "content": "# Crafting the Perfect Fake Domain\n\nTools like **dnstwist** or **URLCrazy** automate the generation of deceptive domains.\n\n**Common Substitution Techniques:**\n- **Homoglyphs (IDN Homograph Attack):** Replacing Latin 'a' with Cyrillic 'а' (they look identical).\n- **Character Omission:** `googe.com` (missing 'l')\n- **Character Insertion:** `paypall.com`\n- **Transposition:** `paypla.com`\n- **Hyphenation:** `pay-pal.com`\n- **TLD Swap:** `paypal.co` instead of `.com`\n\n**Pro Tip:** For Red Team phishing, **register your lookalike domains** BEFORE the engagement starts. You need time for DNS propagation and to set up email security (SPF/DKIM) for your fake domain to improve deliverability."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "warning",
+            "title": "The Reply-To Trick ↩️",
+            "content": "## A Subtle but Deadly Header\n\nEven if you can't spoof the `From:` address due to DMARC, you can set a **`Reply-To:`** header.\n\n**Email Headers:**\n```\nFrom: \"IT Help Desk\" <it-helpdesk@company.com> (Spoofed, might fail DMARC)\nReply-To: attacker@fake-domain.com\n```\n\n**Scenario:**\n1. User receives email from `it-helpdesk@company.com` (looks legit).\n2. User thinks: *\"Wait, I should verify this. I'll reply and ask.\"*\n3. User clicks **Reply**.\n4. The email is sent to **`attacker@fake-domain.com`** , not the real IT desk.\n5. Attacker responds: *\"Yes, this is legitimate. Please proceed.\"*\n\n**Result:** The user's **own action** validated the scam."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "quiz",
+            "title": "Reply-To Attack 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "true_false",
+                "question": "True or False: Setting a 'Reply-To' header is a way to bypass strict DMARC policies because the 'From' address can be a legitimate domain you don't control.",
+                "options": [],
+                "explanation": "True. If you set 'From: ceo@legit.com' and 'Reply-To: attacker@evil.com', and 'legit.com' has weak SPF, it might land in the inbox. Even if it goes to spam, users who reply will be communicating with you directly.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,299 @@
+{
+    "id": "quiz_ch_10",
+    "chapterId": "ch_10",
+    "title": "Chapter 10 Quiz: Macros & Maldocs",
+    "description": "Test your knowledge of malicious document creation, VBA macros, payload delivery, and defense evasion.",
+    "passingScore": 70,
+    "xpReward": 200,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is a 'Maldoc'?",
+            "options": [
+                "A document that contains spelling errors",
+                "A malicious document containing embedded code designed to execute when opened",
+                "A corrupted file that crashes Word",
+                "A document with a virus signature"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A maldoc is a weaponized Office document that uses macros or exploits to execute malicious code."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "Modern versions of Microsoft Office allow macros to run automatically without any user interaction.",
+            "correctAnswer": false,
+            "explanation": "False. Macros are disabled by default. The user must click 'Enable Content' to allow execution. This is why social engineering is critical."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which VBA subroutine name is used to automatically execute code when an Excel workbook is opened?",
+            "options": [
+                "AutoOpen()",
+                "Workbook_Open()",
+                "Document_Open()",
+                "Main()"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`Workbook_Open()` is the standard event handler for Excel workbooks. `Document_Open()` is for Word."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What is the purpose of the `vbHide` parameter in the VBA `Shell` function?",
+            "options": [
+                "It hides the VBA code from the user",
+                "It runs the shell command with a hidden window, making execution stealthier",
+                "It bypasses antivirus",
+                "It encrypts the command"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`vbHide` (value 0) hides the command prompt or PowerShell window, preventing the user from seeing the execution."
+        },
+        {
+            "id": "q5",
+            "type": "fill_blank",
+            "question": "The interface in Windows that allows antivirus software to scan script content (PowerShell, VBA) before execution is called ______.",
+            "options": [
+                "AMSI",
+                "MOTW",
+                "ASR",
+                "WDAC"
+            ],
+            "correctAnswer": "AMSI",
+            "explanation": "AMSI (Antimalware Scan Interface) provides deep script content inspection."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is 'Mark-of-the-Web' (MOTW)?",
+            "options": [
+                "A digital signature for macros",
+                "An NTFS stream that flags files downloaded from the internet, applying stricter security",
+                "A browser extension",
+                "A type of firewall"
+            ],
+            "correctAnswer": 1,
+            "explanation": "MOTW is a Zone.Identifier alternate data stream that tells Windows and Office the file came from an untrusted source."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "Delivering a maldoc inside a .zip or .iso file is a common technique to bypass Mark-of-the-Web.",
+            "correctAnswer": true,
+            "explanation": "True. Extracting from archives or mounting ISOs can prevent MOTW from being applied, depending on the OS version and tool."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "A Word document shows only a blurry image and the text: 'Enable macros to decrypt and view this secure document.' This is an example of:",
+            "options": [
+                "VBA Stomping",
+                "A social engineering lure",
+                "Template Injection",
+                "AMSI bypass"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The blurry image and instruction are a lure designed to trick the user into clicking 'Enable Content'."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Which payload delivery method leaves NO file written to the target's disk?",
+            "options": [
+                "Embedded executable dropper",
+                "PowerShell download cradle using IEX (Invoke-Expression)",
+                "Saving a VBS script to %TEMP% and executing it",
+                "Using Shell to run calc.exe"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`IEX` executes the script content directly in memory. No disk write occurs."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is the primary advantage of a two-stage payload (VBA downloader + remote payload)?",
+            "options": [
+                "It works offline",
+                "It keeps the macro small, less suspicious, and allows updating the payload",
+                "It bypasses the need for user interaction",
+                "It is undetectable"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A small downloader is easier to obfuscate and maintain. The heavy lifting is done by the remote second stage."
+        },
+        {
+            "id": "q11",
+            "type": "fill_blank",
+            "question": "The technique of removing VBA source code from a document while preserving the compiled P-Code is called ______.",
+            "options": [
+                "VBA Stomping",
+                "Code Stripping",
+                "Macro Purging",
+                "Obfuscation"
+            ],
+            "correctAnswer": "VBA Stomping",
+            "explanation": "Stomping deletes the source code streams, leaving only the executable P-Code, hindering static analysis."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "In a Template Injection attack, where does the malicious macro code reside?",
+            "options": [
+                "Inside the initially sent .docx file",
+                "On a remote server, loaded as a template when the document opens",
+                "In the email body",
+                "In a hidden worksheet"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The clean document loads a remote template (`.dotm`) containing the malicious macros, bypassing initial email scans."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "Checking if a computer is domain-joined to 'ACME' before executing a payload is a form of sandbox evasion.",
+            "correctAnswer": true,
+            "explanation": "True. Sandboxes are typically not domain-joined. This check ensures the payload only executes on the corporate network."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Which of the following is NOT a recommended Red Team practice when deploying maldocs?",
+            "options": [
+                "Having explicit written authorization for custom code execution",
+                "Using non-destructive payloads with a kill switch",
+                "Deploying ransomware to demonstrate impact",
+                "Providing remediation recommendations in the final report"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Ransomware is destructive and illegal. Red Team payloads must be non-destructive and reversible."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What does the VBA `CreateObject(\"WScript.Shell\")` function allow you to do?",
+            "options": [
+                "Create a new Excel worksheet",
+                "Execute system commands and scripts",
+                "Send an email",
+                "Encrypt a file"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The `WScript.Shell` object provides access to the Windows shell, allowing command execution."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "A maldoc uses the command: `powershell -WindowStyle Hidden -ExecutionPolicy Bypass -Command ...` What is the purpose of `-ExecutionPolicy Bypass`?",
+            "options": [
+                "To hide the PowerShell window",
+                "To bypass the PowerShell execution policy restriction",
+                "To run the command faster",
+                "To encrypt the command"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-ExecutionPolicy Bypass` ignores any restrictions on script execution set by Group Policy or local settings."
+        },
+        {
+            "id": "q17",
+            "type": "true_false",
+            "question": "Adding fake metadata (author, company) to a maldoc's properties can increase its credibility.",
+            "correctAnswer": true,
+            "explanation": "True. Blank or suspicious metadata is a red flag. Plausible details add verisimilitude."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which ASR (Attack Surface Reduction) rule specifically targets maldoc behavior?",
+            "options": [
+                "Block executable content from email client and webmail",
+                "Block Office applications from creating child processes",
+                "Block credential stealing from LSASS",
+                "Block JavaScript or VBScript from launching downloaded content"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The rule 'Block Office applications from creating child processes' prevents Office from spawning PowerShell, CMD, or WMI, breaking many maldoc attacks."
+        },
+        {
+            "id": "q19",
+            "type": "fill_blank",
+            "question": "The legacy Excel macro language that predates VBA and is still supported is called ______ Macros.",
+            "options": [
+                "Excel 4.0 (XLM)",
+                "Excel 5.0",
+                "Basic",
+                "LotusScript"
+            ],
+            "correctAnswer": "Excel 4.0 (XLM)",
+            "explanation": "XLM macros are an older, often overlooked attack surface in Excel."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "You want your VBA macro to download a PowerShell script and execute it. Which object is commonly used for the download?",
+            "options": [
+                "MSXML2.XMLHTTP",
+                "Net.WebClient",
+                "Scripting.FileSystemObject",
+                "Excel.Application"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`Net.WebClient` is a .NET class used in PowerShell for downloading data from URLs."
+        },
+        {
+            "id": "q21",
+            "type": "true_false",
+            "question": "String concatenation obfuscation (e.g., 'pow' + 'ershell') is a reliable way to permanently bypass all AV detection.",
+            "correctAnswer": false,
+            "explanation": "False. It may bypass simple static signatures, but behavioral detection and AMSI will still observe the executed command."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "What is the primary social engineering challenge with modern maldocs?",
+            "options": [
+                "Writing the VBA code",
+                "Convincing the user to click 'Enable Content' and potentially 'Unblock' the file",
+                "Finding a C2 server",
+                "Compiling the payload"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The technical aspects are straightforward. The human element—convincing the user to bypass multiple security warnings—is the hardest part."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "An Excel file has all sheets hidden except one that says 'Enable Macros to View Payroll Data'. This lure exploits:",
+            "options": [
+                "Fear",
+                "Curiosity and Greed",
+                "Urgency",
+                "Reciprocity"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The promise of sensitive payroll data triggers curiosity and potential financial interest (greed)."
+        },
+        {
+            "id": "q24",
+            "type": "true_false",
+            "question": "Deploying a maldoc as part of a Red Team engagement without explicit, written authorization for custom code execution is acceptable if the payload is non-destructive.",
+            "correctAnswer": false,
+            "explanation": "False. Any execution of custom code on a client system requires explicit authorization. The SOW must specifically cover 'malware development' or 'custom payload delivery'."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "Which of the following is a legitimate, safe Red Team payload for a maldoc proof-of-concept?",
+            "options": [
+                "A PowerShell script that opens Notepad with a security awareness message",
+                "A keylogger that sends keystrokes to a C2 server",
+                "A reverse shell that grants full system access",
+                "A ransomware simulator that encrypts a test folder"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Opening Notepad with a harmless message proves the execution chain without causing harm or data loss."
+        }
+    ]
+}

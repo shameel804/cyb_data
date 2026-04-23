@@ -1,0 +1,125 @@
+{
+    "id": "l4",
+    "chapterId": "ch_7",
+    "title": "Defense, Detection & Ethical Use",
+    "description": "Learn how to protect your organization from USB drops and the ethical boundaries of testing.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Defense & Ethics",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Defending Against USB Drops 🛡️",
+            "content": "# Technology + Training + Policy\n\n**Defense-in-Depth for USB Attacks:**\n\n| Layer | Control | Effectiveness |\n| :--- | :--- | :--- |\n| **Physical** | Security guards challenge strangers | Low (drives are tiny) |\n| **Endpoint** | Disable USB ports via GPO | High (but impacts productivity) |\n| **Endpoint** | Allow only **encrypted** or **company-approved** USB devices | Medium (BadUSB mimics approved IDs) |\n| **Endpoint** | **Device Control Software** (e.g., CrowdStrike, Carbon Black) | High (blocks HID spoofing) |\n| **Network** | Monitor for unusual outbound connections (C2 beaconing) | Medium |\n| **Human** | **Security Awareness Training** | High (stops the plug-in) |\n\n**The Golden Rule:** **Train employees to NEVER plug in found USB drives.**"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Defense Strategy 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What is the SINGLE most effective defense against USB drop attacks?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Antivirus software",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Disabling USB ports entirely",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Training employees to never plug in found USB drives",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Firewalls",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Technical controls can fail (BadUSB bypasses many). A human who refuses to plug in the drive is the strongest defense.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Technical Controls Deep Dive ⚙️",
+            "content": "# Beyond 'Don't Click'\n\n**Group Policy (Windows):**\n- `Computer Configuration > Administrative Templates > System > Device Installation > Device Installation Restrictions`\n- **Policy:** *Prevent installation of removable devices.*\n- **Policy:** *Allow installation of devices that match specific Device IDs* (allow only company-issued encrypted drives).\n\n**Endpoint Detection and Response (EDR):**\n- Modern EDR solutions (CrowdStrike, SentinelOne) can detect **HID spoofing** behavior.\n- **Signature:** A 'keyboard' typing 1000 words per minute is not human. EDR can block the process.\n- **Behavior:** A USB device that registers as a **keyboard** and a **storage device** simultaneously is suspicious.\n\n**Network Detection:**\n- Monitor for **unusual DNS requests** or **HTTP beacons** to newly registered domains.\n- USB payloads often 'phone home' to a C2 server. Egress filtering and DNS sinkholing can block this."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "The 'Found USB' Policy 📋",
+            "content": "# What Should Employees Actually Do?\n\n**Company Policy Must Be Clear and Simple:**\n\n1.  **DO NOT PLUG IT IN.** (This is the only rule that matters).\n2.  **DO NOT HAND IT TO A COWORKER** to plug in. (They will just plug it in).\n3.  **Place it in a 'Security Drop Box'** or **call the IT Security Team**.\n4.  The Security Team will analyze the drive in a **sandboxed, air-gapped environment**.\n\n**Training Simulation:**\nRun your **own Red Team USB drop** and track who plugs it in. Use this data to **educate**, not **punish**. Fear of punishment leads to hiding incidents. Transparency leads to reporting.\n\n**Phrase for Training:** *\"Finding a USB drive is like finding a syringe in the parking lot. You wouldn't pick it up and test it on yourself. You'd call a professional.\"*"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "quiz",
+            "title": "Employee Response 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "An employee finds a USB drive in the elevator. What is the CORRECT action according to best practices?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Plug it into their computer to find the owner",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Give it to the receptionist",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Take it home to check on a personal laptop",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Do not plug it in; report to IT Security for safe analysis",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Correct. The only safe action is to treat it as hazardous material and let professionals handle it.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "Red Team Reporting on USB Drops 📊",
+            "content": "# How to Document a Successful Drop\n\n**The Report Should Include:**\n1.  **Executive Summary:** *\"Out of 20 USB drives dropped, 9 were plugged into corporate assets within 4 hours.\"*\n2.  **Methodology:** Label used, placement locations, payload type (non-malicious 'phone home').\n3.  **Evidence:** Screenshots of the 'phone home' logs showing computer names and timestamps.\n4.  **Root Cause Analysis:** Why did employees plug them in? (Curiosity? Helpfulness? Lack of training?)\n5.  **Remediation Recommendations:**\n    - Enhanced Security Awareness Training (specific module on USB baiting).\n    - Technical controls (disable USB mass storage for non-essential personnel).\n    - Clear 'Found Device' policy.\n\n**Never Name and Shame:**\nThe report should present **aggregate statistics**, not a list of individuals who failed. The goal is to fix the **system**, not punish the **human**."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "warning",
+            "title": "Legal Recap & Ethics ⚖️",
+            "content": "# The Bright Red Line\n\n**DO:**\n- Use non-malicious payloads that 'phone home'.\n- Operate under a signed **Letter of Authorization**.\n- Target **corporate-owned assets** only.\n- Destroy or sanitize drives after the engagement.\n\n**DO NOT:**\n- Deploy malware that exfiltrates data, encrypts files, or establishes persistence.\n- Target personal devices of employees.\n- Drop drives in **public spaces** outside company property (e.g., a public sidewalk) – this may violate local laws.\n- Use **USB Killer** devices.\n- Leave drives that could be found by **children** (e.g., near a daycare center on company property).\n\n**When in doubt, ask your legal team and the client's point of contact.**"
+        },
+        {
+            "id": "s_l4_8",
+            "type": "quiz",
+            "title": "Ethical Boundaries 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "true_false",
+                "question": "True or False: It is acceptable to drop USB drives in a public coffee shop that is frequented by target company employees, even if the shop is not on company property.",
+                "options": [],
+                "explanation": "False. This is a legal gray area at best. The SOW typically covers **company property only**. Dropping drives off-property may be considered public endangerment or computer fraud. Stick to the parking lot and office premises.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

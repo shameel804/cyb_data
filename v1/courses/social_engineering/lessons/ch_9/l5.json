@@ -1,0 +1,117 @@
+{
+    "id": "l5",
+    "chapterId": "ch_9",
+    "title": "Elicitation in Digital Channels",
+    "description": "Applying elicitation techniques over email, chat, and social media with asynchronous precision.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Digital Elicitation",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Written Word's Advantage ✍️",
+            "content": "# Why Digital Elicitation is Powerful\n\n**Email, chat, and social media provide unique advantages for elicitation:**\n- **Time to Think:** You can carefully craft each response. No awkward pauses.\n- **Record:** You have a written transcript to review and analyze later.\n- **Plausible Deniability:** *\"Oh, I misunderstood. I thought you meant...\"*\n- **Scalability:** You can engage multiple targets simultaneously.\n\n**The Challenge:** No tone of voice, no body language. You rely **entirely on words**.\n\n**Digital Channels for Elicitation:**\n- **LinkedIn Messaging:** Professional context.\n- **Corporate Chat (Slack/Teams):** If you gain internal access.\n- **Email:** Asynchronous, formal.\n- **Twitter/X DMs:** Casual, public context.\n- **Forum Posts / Reddit:** Anonymity, community knowledge."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "Digital Elicitation Advantage 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is a key advantage of digital elicitation over in-person or phone elicitation?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It's always faster",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "You have time to carefully craft responses and there's a written record",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "You can read body language",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It's impossible to detect",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. The asynchronous nature allows for careful phrasing, and the transcript is valuable for analysis.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Elicitation via LinkedIn Messaging 💼",
+            "content": "# Professional Curiosity\n\n**Context:** You're a 'recruiter' or 'industry peer' reaching out.\n\n**Example Conversation Flow:**\n\n**You (Initial Message):**\n> *\"Hi [Name], I saw your profile and noticed you're a Senior Engineer at [Target]. I'm researching the [Industry] tech stack for an article. Would you be open to a quick chat about the tools you guys use? Nothing proprietary, just general trends!\"*\n\n**Target's Likely Response (Helpful/Flattered):**\n> *\"Sure, happy to help. We mainly use AWS for cloud, Terraform for IaC, and Datadog for monitoring.\"*\n\n**Your Follow-Up (Elicitation via Presupposition):**\n> *\"Interesting! I've heard some firms in your space are moving to Azure. I guess with your existing **Active Directory** integration, that would be a smoother path?\"*\n\n**Target's Correction/Confirmation:**\n> *\"Actually, we're still heavily on-prem with AD. That's why we're sticking with AWS—better hybrid support.\"*\n\n**Information Gained:**\n- Cloud provider: AWS\n- Infrastructure as Code: Terraform\n- Monitoring: Datadog\n- Identity: On-prem Active Directory (not Azure AD)."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Elicitation via Email (Asynchronous) 📧",
+            "content": "# The Long Game\n\n**Scenario:** You're corresponding with a target over email, perhaps after an initial phishing contact or as a 'vendor'.\n\n**Technique: The Innocent Clarification**\n\n**You:**\n> *\"Thanks for the info. Quick question on the attached spec—it mentions a 'secure token.' Is that a physical key fob or the mobile app version? Just want to make sure our compatibility testing matches your environment.\"*\n\n**Target:**\n> *\"It's the mobile app (Duo). The fobs were phased out last year.\"*\n\n**Information Gained:** MFA vendor is **Duo Mobile**.\n\n**Why This Works in Email:**\n- It's a **technical, low-stakes question**.\n- It demonstrates **diligence** on your part.\n- It's **easier to answer** than to explain why you shouldn't answer.\n\n**Advanced Technique: The Deliberate Error in an Email Chain**\n- In a reply, slightly misquote a previous statement.\n- *\"Per your last email, you mentioned the VPN uses port 443.\"*\n- The target will likely correct you: *\"No, I said port 8443.\"*\n- You now know the VPN port."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "quiz",
+            "title": "Email Elicitation Technique 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "In an email, you write: 'You mentioned the server is running Windows Server 2019, correct?' The target actually runs 2022. This is an example of:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Open-ended questioning",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Deliberate False Statement",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Bracketing",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Echoing",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. You've intentionally made an incorrect statement to trigger a correction that reveals the true information.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Elicitation in Internal Chat (Slack/Teams) 💬",
+            "content": "# If You Gain a Foothold\n\n**Scenario:** You've compromised a low-level account and have access to the corporate Slack.\n\n**Technique: The Newbie Question**\n\n**You (in #general or #it-help):**\n> *\"Hey all, new here. Quick question—is the Wi-Fi password the same as the guest network or do we have a separate internal one? Trying to get my phone connected.\"*\n\n**Helpful Employee:**\n> *\"Welcome! Internal is 'AcmeSecureWifi2025'. Guest is different.\"*\n\n**Information Gained:** Internal Wi-Fi password.\n\n**Technique: The 'Shared Pain' Elicitation**\n> *\"Is the VPN super slow for everyone today, or is it just me? Takes like 20 seconds to connect.\"*\n\n**Responses:**\n> *\"Yeah, it's been bad since they pushed that Palo Alto update.\"*\n\n**Information Gained:** Firewall vendor is **Palo Alto**.\n\n**Crucial OPSEC Note:** If you're doing this from a compromised account, the Blue Team can see it. Keep it **boring** and **plausible**."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "tip",
+            "title": "Analyzing Digital Exchanges 🔍",
+            "content": "## Reading Between the Lines\n\n**What's NOT said is as important as what IS said.**\n\n| Target's Response | Possible Meaning |\n| :--- | :--- |\n| *\"I'd rather not discuss that over email.\"* | The topic is sensitive. **Flag it for a phone call.** |\n| *\"Let me check with my manager.\"* | You've hit a security boundary. The manager may be more security-aware. |\n| *\"We use the standard stack.\"* | Vague, deflective. They're being cautious. Build more rapport before probing deeper. |\n| *\"I can't remember off the top of my head.\"* | They might be deflecting, or they genuinely don't know. Offer an easy out: *\"No worries, just curious!\"* |\n\n**Digital Elicitation is a Marathon:** Don't expect to get the crown jewels in the first exchange. Build trust over multiple interactions."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "warning",
+            "title": "Digital OPSEC for Elicitation 🕵️",
+            "content": "## Don't Get Caught by Metadata\n\n**When engaging digitally:**\n- **Email Headers:** Reveal your IP, client, and sometimes location. Use a **VPN** and **webmail**.\n- **LinkedIn Profile Views:** If you're viewing profiles before messaging, they see who viewed them. Use a **Sock Puppet account**.\n- **Typing Patterns:** In real-time chat, your typing speed and style can be analyzed. Keep responses **consistent** with your persona.\n- **Link Previews:** If you send a link, chat apps generate a preview that can reveal the destination. Use a **URL shortener** or redirector.\n\n**The Rule:** Assume every digital interaction is **logged, monitored, and potentially reviewed by security.** Make it look **innocuous**."
+        }
+    ]
+}

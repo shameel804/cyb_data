@@ -1,0 +1,120 @@
+{
+    "id": "l2",
+    "chapterId": "ch_5",
+    "title": "Caller ID Spoofing & Setup",
+    "description": "Master the technical tools to disguise your identity and build a vishing lab.",
+    "xpReward": 35,
+    "estimatedMinutes": 9,
+    "section": "Technical Setup",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Incoming Call Display Lie 📲",
+            "content": "# How Caller ID Works (and How It's Broken)\n\nCaller ID is **not** authenticated by the phone network. It's a **self-reported field** sent during call setup.\n\n**Analogy:** It's like writing a **return address** on an envelope. You can write **'The White House, 1600 Pennsylvania Ave'** and the post office will still deliver the letter. The recipient sees that return address and **trusts** it.\n\n**The Technology:**\n- **POTS (Plain Old Telephone Service):** Uses **SS7 signaling**. Attacker sends a `Calling Party Number` field with any value.\n- **VoIP (SIP):** The `From` header in the SIP INVITE message can be set to any number.\n\n**The Result:** You can make your victim's phone display **'IT Help Desk'** or **'Corporate Security'** or even the victim's **own office number**."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Caller ID Spoofing 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Why is Caller ID spoofing technically possible?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Phone companies don't care about security",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The caller ID field is self-reported and not cryptographically verified",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Hackers have cracked the SS7 encryption",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "All phone numbers are public anyway",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. The legacy phone network trusts the sender to provide their own number. There is no authentication mechanism like SPF/DKIM for calls.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Tools for Spoofing: The Easy Way 🧰",
+            "content": "# Commercial Spoofing Services\n\n**Disclaimer:** These services are **legal** for Red Team use with authorization. They are **illegal** for fraud.\n\n| Service | Features | Best For |\n| :--- | :--- | :--- |\n| **SpoofCard** | Web/mobile app, voice changer, call recording (check laws) | Quick, one-off calls |\n| **SpoofTel** | Desktop VoIP, SMS spoofing | Long engagements |\n| **Burner Apps** | Secondary real numbers (Hushed, Burner) | Maintaining a consistent fake identity |\n\n**How They Work:**\n1.  You sign up (use anonymous payment methods).\n2.  You enter the **number to call** and the **number to display**.\n3.  The service bridges the call. The target sees the spoofed number."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "DIY VoIP Spoofing (Advanced) 💻",
+            "content": "For full control, set up your own **Asterisk** or **FreeSWITCH** server with a SIP trunk provider that allows custom caller ID.\n\n**Basic SIP INVITE modification (Pseudocode):**",
+            "codeSnippet": "INVITE sip:target@example.com SIP/2.0\nVia: SIP/2.0/UDP your-server-ip:5060\nFrom: \"IT Help Desk\" <sip:5551234567@your-server-ip>;tag=abc123\nTo: <sip:target-number@your-server-ip>\nCall-ID: 123456@your-server-ip\nCSeq: 1 INVITE\nContact: <sip:attacker@your-server-ip>\nP-Asserted-Identity: \"IT Help Desk\" <sip:5551234567@your-server-ip>\nRemote-Party-ID: \"IT Help Desk\" <sip:5551234567@your-server-ip>\n\n// The P-Asserted-Identity and Remote-Party-ID headers control what the target sees.",
+            "codeLanguage": "sip",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "tip",
+            "title": "Choosing the Number to Spoof 🎯",
+            "content": "## What Number Inspires Trust?\n\n- **Internal Extension (Best):** Spoof the company's **main switchboard number** or a known **IT Help Desk number**. *\"Oh, it's coming from inside the building!\"*\n- **Executive Office:** Spoof the CEO's office line. *\"The CEO's assistant is calling me!\"*\n- **Vendor Partner:** Spoof a known vendor (e.g., Microsoft Support main line).\n- **Local Area Code:** Spoof a number with the same area code as the target. It feels 'local'.\n\n**Never Spoof:**\n- 911 or emergency services (Highly illegal, immediate trace).\n- The target's own number (This is creepy and triggers immediate suspicion)."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Spoofing Choice 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "You are targeting employees at 'Acme Corp' in Dallas (area code 214). Which spoofed caller ID is MOST likely to get the phone answered?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A 1-800 number",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Acme Corp's main Dallas switchboard number (214-555-1000)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A blocked/private number",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A New York area code number",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Spoofing the company's own internal number signals 'internal call' and bypasses the 'unknown caller' suspicion.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Setting Up Your Vishing Lab 🎧",
+            "content": "# Beyond the Phone\n\n**Hardware Checklist:**\n- **Quality Headset:** Background noise is the enemy. Use a noise-canceling microphone.\n- **Secondary Device:** Laptop/Tablet open to your **Pretext Bible** and OSINT dossier.\n- **Voice Modulator (Optional):** Software like **Clownfish** or **Voicemod** can change pitch/gender. Useful for maintaining anonymity if your real voice is known, but it can sound 'robotic' and suspicious.\n\n**Software Checklist:**\n- **Virtual Machine:** Isolate your vishing tools from your personal OS.\n- **VPN:** Route your VoIP traffic through a VPN to mask your real IP.\n- **Note-Taking App:** Real-time logging of information gained."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "warning",
+            "title": "Burner Phones & SIMs 📱",
+            "content": "## Physical Anonymity\n\nFor high-sensitivity Red Team engagements (or if you're concerned about callback tracing), use a **physical burner phone**.\n\n**Process:**\n1.  Purchase a **prepaid SIM card** with **cash** from a retailer far from your home/office.\n2.  Activate it with **fake information** (use a random name/address generator).\n3.  Use a **cheap unlocked phone** (never your personal device).\n4.  **Destroy the SIM** and phone after the engagement.\n\n**Why?** Even if the target traces the call back to the burner number, it leads to a dead end."
+        }
+    ]
+}

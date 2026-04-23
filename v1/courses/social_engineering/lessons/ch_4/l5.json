@@ -1,0 +1,152 @@
+{
+    "id": "l5",
+    "chapterId": "ch_4",
+    "title": "Advanced Phishing Techniques",
+    "description": "Bypass MFA, execute adversary-in-the-middle attacks, and use QR codes and SMS.",
+    "xpReward": 35,
+    "estimatedMinutes": 9,
+    "section": "Advanced Tactics",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The MFA Problem 🛡️",
+            "content": "# Multi-Factor Authentication is Annoying (For Attackers)\n\nIn the past, stealing a password was enough. Today, **MFA** (Duo, Microsoft Authenticator, Google Authenticator) stops 99% of automated credential stuffing.\n\n**But Social Engineering is not automated.**\n\n**The Goal of Advanced Phishing:** Steal the **Session Cookie** or the **MFA Token** in **real-time**.\n\n**Two Main Techniques:**\n1.  **Adversary-in-the-Middle (AitM) / Proxy Phishing:** You sit between the user and the real website. You relay everything.\n2.  **MFA Fatigue / Push Bombing:** You annoy the user until they click 'Approve'."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Adversary-in-the-Middle (AitM) 🔄",
+            "content": "# The Perfect Proxy\n\n**Tool of Choice:** **Evilginx2** or **Modlishka**.\n\n**How It Works:**\n1.  User clicks link: `https://login-acme.com` (Your Evilginx server).\n2.  Evilginx connects to the **real** `login.microsoftonline.com` and fetches the real login page.\n3.  User sees the **real** Microsoft page. They type password.\n4.  Evilginx sends password to Microsoft.\n5.  Microsoft sends back **MFA Prompt** (Push notification to user's phone).\n6.  User approves the push.\n7.  Microsoft sends the **Session Cookie** (the 'Golden Ticket') to the browser.\n8.  **Evilginx intercepts this cookie and saves it.**\n\n**Result:** You have the **Session Cookie**. You don't need the password or MFA ever again. You can import the cookie into your browser and you are **logged in as the user**."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "AitM Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is the primary asset stolen in an Evilginx / AitM phishing attack?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The user's password",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The user's MFA seed code",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The authenticated session cookie",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The user's browser history",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. The session cookie allows the attacker to skip the entire login process, including MFA. It's a 'Golden Ticket'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "MFA Fatigue / Push Bombing 📲",
+            "content": "# The 'Annoy Them Until They Approve' Attack\n\n**Scenario:** You already have the user's **valid password** (from a previous breach or a standard phish). But you hit the MFA wall.\n\n**The Attack:**\n1.  You attempt to log in with the valid password repeatedly.\n2.  The user's phone gets **10, 20, 50 MFA push notifications**.\n3.  You call the user: *\"Hi, this is Microsoft Support. We're seeing a flood of MFA requests hitting your account from a known attacker. **Whatever you do, DO NOT APPROVE THEM.** Actually, to stop them, I need you to click 'Approve' on the **next** one you see so my system can flag the attacker's IP. Then I'll block them.\"*\n4.  User clicks 'Approve'.\n5.  You are logged in."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "quiz",
+            "title": "MFA Fatigue 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "MFA Fatigue attacks rely on which combination of psychological weapons?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Reciprocity and Liking",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Authority (Fake IT) and Consistency (User wants to help stop the attack)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Scarcity and Social Proof",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "All of the above",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. The attacker poses as authority (IT Support) and uses the user's desire to be helpful/consistent (stopping the 'bad guy') to get them to click 'Approve'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "QR Code Phishing (Quishing) 📱",
+            "content": "# Bypass the Email Filter Entirely\n\n**The Problem:** Email security products scan **links** and **attachments**. They strip URLs.\n\n**The Solution:** Embed a **QR Code** as an image in the email body.\n\n**Scenario:**\nEmail Body: *\"Please scan this QR code with your mobile device to verify your MFA settings. This is required for all remote employees.\"*\n\n**Why It Works:**\n1.  The user pulls out their **personal phone**.\n2.  The personal phone is **NOT on the corporate VPN**. It is **NOT protected by the corporate web filter**.\n3.  The user scans the code and is taken to a phishing page on their mobile browser.\n4.  Mobile browsers make it **much harder to see the full URL**. The user is more likely to be fooled."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "SMS Phishing (Smishing) 💬",
+            "content": "# The Trusted Channel\n\nPeople get hundreds of emails a day. They get maybe 10 texts. **SMS has a 98% open rate.**\n\n**Technique:**\nSend a text from a spoofed number or a short code:\n*\"ACME CORP: Your payroll deposit for 5/15 has been suspended due to invalid tax info. Update here immediately: [bit.ly/3xyz]\"*\n\n**Why It's Deadly:**\n- **Urgency:** Payroll is sacred.\n- **Trust:** Users trust SMS more than email.\n- **Mobile UI:** On a phone, you can't hover over a link to see where it goes.\n\n**Pro Tip:** Use **URL Shorteners** (Bitly, TinyURL) to hide the malicious domain. Some SMS gateways block known phishing domains. Shorteners help bypass this."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "quiz",
+            "title": "Quishing & Smishing 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_3",
+                "type": "multiple_choice",
+                "question": "Why are QR code phishing (Quishing) attacks often more successful than traditional link-based phishing?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "QR codes are cooler",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "They force the user onto a mobile device which often bypasses corporate web filters and URL preview",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "QR codes can't be scanned by security software",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Users trust QR codes more than emails",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. The shift to mobile removes many security layers (hover link preview, corporate proxy blocks) and makes the URL harder to inspect.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_9",
+            "type": "warning",
+            "title": "Legal & Ethical Boundaries for Advanced Phishing ⚖️",
+            "content": "## AitM and MFA Bypass - The High Risk Zone\n\n**Critical Reminder:**\nTools like Evilginx are **powerful**. They also **intercept real-time traffic** to **real Microsoft/Google servers**.\n\n**In a Red Team Engagement:**\n- **Must be explicitly authorized in the SOW.** (Phishing is one thing; MFA bypass is another level).\n- **Data Handling:** You are collecting **Session Cookies** which give you **full access** to the user's email, files, and potentially admin panels. This data must be **encrypted at rest** and **destroyed** after the engagement.\n- **No Personal Accounts:** Never proxy traffic for `@gmail.com` accounts. Corporate accounts **only**.\n\n**Golden Rule:** If you wouldn't be comfortable explaining exactly how you did it to a judge, **don't do it**."
+        }
+    ]
+}

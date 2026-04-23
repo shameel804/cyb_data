@@ -1,0 +1,90 @@
+{
+    "id": "l1",
+    "chapterId": "ch_7",
+    "title": "Introduction to Baiting & USB Drops",
+    "description": "Understand the psychology of baiting and why USB drops have a terrifyingly high success rate.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Baiting Fundamentals",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "What is Baiting? 🪤",
+            "content": "# The Digital Cheese in the Mousetrap\n\n**Baiting** is a social engineering attack where the attacker offers something **enticing** or **curious** to the victim, hoping they will take an action that compromises security.\n\n**Analogy:** You wouldn't eat a random sandwich you found on a park bench. But if that sandwich had a note saying *\"FREE: Made fresh this morning!\"* your curiosity and greed might override your caution.\n\n**Digital Baiting Examples:**\n- **USB Drop:** Leaving an infected USB drive in a parking lot or lobby.\n- **Free Software/Movie Download:** *\"Download the full version of Photoshop for free!\"* (Contains malware).\n- **Gift Card Scam:** *\"You've won a $100 Amazon gift card! Click here to claim.\"*\n\n**This Chapter Focus:** The **USB Drop Attack** – the physical bait that bypasses firewalls entirely."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Baiting Definition Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which of the following is NOT an example of baiting?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Leaving a USB drive labeled 'Confidential Payroll' in the parking lot",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Sending a phishing email with a fake invoice attachment",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Offering a free movie download that contains malware",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Dropping a CD-ROM labeled 'Q4 Layoff List' in the break room",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Phishing is a different attack vector. Baiting specifically involves offering something tangible or desirable to entice the victim to act.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "The Curiosity Gap 🧠",
+            "content": "# Why We Can't Resist a 'Lost' USB Drive\n\n**The Psychological Trap:**\n1.  **Curiosity:** *\"What's on this? Whose is it? Maybe it's important!\"*\n2.  **Helpfulness:** *\"I should find the owner. I'll just plug it in to see if there's a name on a file.\"*\n3.  **Greed/Malice:** *\"Confidential Salary Info? I have to see this.\"*\n\n**The University Study:** Researchers dropped **297 USB drives** around a college campus. **45%** were plugged into a computer. **98%** of those who plugged them in did so **within the first 6 hours**.\n\n**The Corporate Reality:** In a 2023 study, **78%** of employees who found a 'lost' USB drive in their office parking lot plugged it into their **work computer**.\n\n**The Lesson:** Curiosity kills the cat. And the corporate network."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "Curiosity Psychology 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "True or False: Most people who find a USB drive will plug it in to try and identify the owner out of a sense of helpfulness.",
+                "options": [],
+                "explanation": "True. The 'Good Samaritan' instinct is a powerful driver. People genuinely want to return lost property. Attackers exploit this altruism.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Real-World Case Study: Stuxnet 🐛",
+            "content": "# The USB Drive That Sabotaged a Nuclear Program\n\n**Stuxnet (2010):** One of the most sophisticated cyber weapons ever created.\n\n**Target:** Iran's Natanz nuclear enrichment facility.\n**The Problem:** The facility was **air-gapped** – completely disconnected from the internet. Hackers couldn't reach it.\n\n**The Solution:** **Baiting.**\n1.  Intelligence agencies (allegedly US/Israel) infected USB drives with Stuxnet.\n2.  These drives were **dropped in parking lots** or given to **unwitting contractors**.\n3.  An employee found a drive, plugged it into a computer **inside the air-gapped facility**.\n4.  Stuxnet spread silently, eventually destroying over 1,000 centrifuges.\n\n**The Takeaway:** No network is truly 'air-gapped' if humans are involved."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "warning",
+            "title": "Red Team Scope & Authorization ⚖️",
+            "content": "## The USB Drop is a High-Risk Engagement\n\n**Critical Considerations:**\n- **Malware Deployment:** Dropping a USB with **actual malware** (RATs, keyloggers) requires **explicit, written authorization** detailing the payload.\n- **Data Exfiltration:** Never use a USB drop to **steal data** from the target. This is illegal.\n- **Proof of Concept:** Most Red Team USB drops use a **non-malicious payload** that simply 'phones home' to a server, logging that the drive was plugged in. This proves the vulnerability without risking damage.\n\n**The 'Safe' Payload Example:**\nA Rubber Ducky script that opens Notepad and types: *\"This is a Red Team security test. Please contact IT Security.\"*\n\n**Always have a 'break glass' plan.** If the payload runs wild, you must be able to remotely kill the connection or have a point of contact ready to remediate."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "tip",
+            "title": "The Baiting Kill Chain ⛓️",
+            "content": "## From Drop to Compromise\n\n1.  **Reconnaissance:** Identify high-traffic areas, target employee habits, and security culture.\n2.  **Weaponization:** Prepare the USB payload (Rubber Ducky, BadUSB, or autorun).\n3.  **Labeling:** Craft the **bait label** that triggers curiosity or helpfulness.\n4.  **Placement:** Deploy the drive in a strategic location (parking lot, elevator, break room).\n5.  **Monitoring:** Wait for the 'phone home' signal or retrieve the device later.\n6.  **Analysis:** Document the success rate and recommend defenses."
+        }
+    ]
+}

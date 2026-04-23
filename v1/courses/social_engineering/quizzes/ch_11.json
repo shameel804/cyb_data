@@ -1,0 +1,266 @@
+{
+    "id": "quiz_ch_11",
+    "chapterId": "ch_11",
+    "title": "Chapter 11 Quiz: Defense Evasion & Reporting",
+    "description": "Test your knowledge of OPSEC, technical evasion techniques, and professional Red Team reporting.",
+    "passingScore": 70,
+    "xpReward": 150,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What does OPSEC stand for?",
+            "options": [
+                "Open Source Security",
+                "Operational Security",
+                "Offensive Penetration Security",
+                "Organized Protection Security"
+            ],
+            "correctAnswer": 1,
+            "explanation": "OPSEC = Operational Security, the process of protecting critical information from adversaries."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which of the following is the FIRST step in the OPSEC process?",
+            "options": [
+                "Apply Countermeasures",
+                "Analyze Threats",
+                "Identify Critical Information",
+                "Assess Risk"
+            ],
+            "correctAnswer": 2,
+            "explanation": "You must first identify what information is critical to protect before you can analyze threats against it."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "Using a personal credit card to purchase a phishing domain is an OPSEC best practice because it's convenient.",
+            "correctAnswer": false,
+            "explanation": "False. This creates a direct financial trail to your real identity. Use prepaid cards or cryptocurrency."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What is a 'LOLBin'?",
+            "options": [
+                "A type of malware",
+                "A legitimate, signed Microsoft binary that can be abused for malicious purposes",
+                "A phishing tool",
+                "A Linux-based attack"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Living Off the Land Binaries (LOLBins) are trusted system tools like powershell.exe or certutil.exe that attackers use to blend in."
+        },
+        {
+            "id": "q5",
+            "type": "fill_blank",
+            "question": "The process of gradually increasing email sending volume from a new domain to build reputation is called ______.",
+            "options": [
+                "Domain Warming",
+                "IP Rotation",
+                "Email Throttling",
+                "Reputation Bypass"
+            ],
+            "correctAnswer": "Domain Warming",
+            "explanation": "Warming up a domain gradually prevents it from being immediately flagged as spam."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which LOLBin can be used to download a file from a URL?",
+            "options": [
+                "calc.exe",
+                "notepad.exe",
+                "certutil.exe",
+                "mspaint.exe"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`certutil.exe` has a `-urlcache` flag that can fetch remote files."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "C2 traffic that mimics legitimate web browsing (e.g., mimicking Google Analytics requests) is an example of a 'Malleable C2 Profile'.",
+            "correctAnswer": true,
+            "explanation": "True. Malleable C2 profiles transform beacon traffic to look like normal HTTP traffic, evading network detection."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What is the primary purpose of 'Sleep' and 'Jitter' in C2 communication?",
+            "options": [
+                "To make the payload run faster",
+                "To randomize the timing of beacon check-ins and avoid predictable patterns",
+                "To encrypt the traffic",
+                "To compress the data"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Randomized intervals (jitter) make it harder for network traffic analysis to identify a beaconing pattern."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Unscrubbed document metadata (e.g., 'Author: RedTeam_Operator') is a violation of which OPSEC step?",
+            "options": [
+                "Identify Critical Information",
+                "Apply Countermeasures",
+                "Analyze Threats",
+                "Assess Risk"
+            ],
+            "correctAnswer": 1,
+            "explanation": "You failed to apply the countermeasure of sanitizing metadata. The author name is critical information."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Who is the primary audience for the Executive Summary of a Red Team report?",
+            "options": [
+                "SOC Analysts",
+                "C-Suite Executives",
+                "Penetration Testers",
+                "Software Developers"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The Executive Summary is for non-technical leadership who need to understand business risk."
+        },
+        {
+            "id": "q11",
+            "type": "fill_blank",
+            "question": "The section of a Red Team report that tells a chronological story of the intrusion is called the ______.",
+            "options": [
+                "Attack Narrative",
+                "Executive Summary",
+                "Findings Appendix",
+                "Methodology"
+            ],
+            "correctAnswer": "Attack Narrative",
+            "explanation": "The Attack Narrative provides a timeline and story of how the Red Team achieved their objectives."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which of the following is an example of a 'People' focused remediation recommendation?",
+            "options": [
+                "Deploy FIDO2 hardware tokens",
+                "Implement network segmentation",
+                "Conduct quarterly vishing simulations for all employees",
+                "Enable ASR rules in Defender"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Training and simulations target human behavior (People), while the other options are Technology controls."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "It is acceptable to send the encrypted Red Team report and the decryption password in the same email for convenience.",
+            "correctAnswer": false,
+            "explanation": "False. This defeats the purpose of encryption. Use out-of-band password delivery (phone, Signal, separate email)."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is 'Domain Fronting'?",
+            "options": [
+                "Registering a lookalike domain",
+                "Routing C2 traffic through a CDN to appear as if it's going to a legitimate domain",
+                "Spoofing the sender domain in an email",
+                "Using a parked domain for phishing"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Domain fronting uses CDNs (like CloudFront) to hide the true destination of C2 traffic."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "In a finding write-up, what should follow the 'Description' of the vulnerability?",
+            "options": [
+                "Executive Summary",
+                "Impact Statement",
+                "Remediation Recommendation",
+                "Evidence Screenshot"
+            ],
+            "correctAnswer": 1,
+            "explanation": "After describing the finding, you must state the potential business impact to give it context."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "Using a Discord webhook for data exfiltration is a stealthy technique because traffic to `discord.com` is common and rarely blocked.",
+            "correctAnswer": true,
+            "explanation": "True. Legitimate service abuse is a highly effective evasion technique."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "A Blue Team analyst notices that a Word document's properties show 'Company: Evil Corp'. This is an example of:",
+            "options": [
+                "Network detection",
+                "Metadata leakage",
+                "Behavioral analysis",
+                "Signature detection"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Metadata in the document properties revealed information about the attacker's tooling or identity."
+        },
+        {
+            "id": "q18",
+            "type": "fill_blank",
+            "question": "The five steps of the OPSEC process are: Identify Critical Information, Analyze Threats, Analyze Vulnerabilities, Assess Risk, and ______.",
+            "options": [
+                "Apply Countermeasures",
+                "Report Findings",
+                "Execute Attack",
+                "Review Logs"
+            ],
+            "correctAnswer": "Apply Countermeasures",
+            "explanation": "The final step is taking action to mitigate the identified risks."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "Why is it important to 'redact' or blur sensitive information (like PII) in report screenshots?",
+            "options": [
+                "It makes the report smaller",
+                "It's a legal and ethical requirement to protect individual privacy",
+                "It looks more professional",
+                "It's required by the OPSEC process"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Protecting the privacy of employees (even those who clicked) is an ethical and often legal requirement (GDPR, CCPA)."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is the recommended tone for a Red Team readout meeting?",
+            "options": [
+                "Adversarial and accusatory",
+                "Collaborative and constructive",
+                "Technical and dry",
+                "Humorous and lighthearted"
+            ],
+            "correctAnswer": 1,
+            "explanation": "You are a partner helping them improve. A collaborative tone ensures they are receptive to the findings."
+        },
+        {
+            "id": "q21",
+            "type": "true_false",
+            "question": "OPSEC only matters during the active engagement phase, not before or after.",
+            "correctAnswer": false,
+            "explanation": "False. OPSEC is critical during Pre-Engagement (setup), Active Engagement, and Post-Engagement (cleanup)."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "Which of the following is NOT a recommended countermeasure for protecting your real identity during a Red Team engagement?",
+            "options": [
+                "Using a VPN",
+                "Using a burner phone",
+                "Posting about the engagement on Twitter with client name redacted",
+                "Using prepaid debit cards"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Discussing an ongoing or recent engagement on social media is a major OPSEC violation, even with names redacted."
+        }
+    ]
+}

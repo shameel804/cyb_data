@@ -1,0 +1,146 @@
+{
+    "id": "l4",
+    "chapterId": "ch_12",
+    "title": "Objective Achievement & Post-Exploitation",
+    "description": "From initial foothold to mission completion. Lateral movement and simulated data exfiltration.",
+    "xpReward": 40,
+    "estimatedMinutes": 10,
+    "section": "Objective Achievement",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "You're In. Now What? 🚪",
+            "content": "# The Post-Exploitation Mindset\n\n**Initial access is just the beginning.** The real work starts now.\n\n**Capstone Status: Nexus Financial**\n- **Access Obtained:** Valid credentials for `asmith@nexusfinancial.com` via Evilginx.\n- **Access Level:** Standard user. Can access email, OneDrive, and corporate VPN.\n\n**The Objective:** Locate and exfiltrate a sample of customer PII from the internal file server.\n\n**The Challenge:**\n- You are a **standard user**. You likely don't have direct access to the PII share.\n- You must **escalate privileges** or **move laterally** to a more privileged account.\n- You must do this **without triggering EDR alerts**.\n\n**Post-Exploitation Phases:**\n1.  Situational Awareness (Recon on the internal network).\n2.  Privilege Escalation (Get admin).\n3.  Lateral Movement (Access other machines).\n4.  Objective Completion.\n5.  Cleanup."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Post-Exploitation Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Why is initial access with standard user credentials often insufficient for achieving a Red Team objective?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Standard users can't access the internet",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Sensitive data and systems are typically restricted to privileged accounts or specific groups",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Standard accounts expire quickly",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It's against the RoE to use standard accounts",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. The objective data is likely protected by access controls. Escalation or lateral movement is necessary.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Situational Awareness (Internal Recon) 🔭",
+            "content": "# Mapping the Battlefield from the Inside\n\n**Goal:** Understand the network, identify potential targets, and find misconfigurations.\n\n**Low-Noise Recon Commands (Living Off the Land):**\n\n| Command | Information Gained |\n| :--- | :--- |\n| `whoami /all` | Current user privileges and group membership. |\n| `net user /domain` | List of domain users. |\n| `net group \"Domain Admins\" /domain` | Who are the admins? (Target list). |\n| `net view \\\\fileserver` | What file shares are accessible? |\n| `dir \\\\fileserver\\Finance\\*.*` | Can you read the Finance share? |\n\n**Capstone Discovery:**\n- `asmith` is a member of the **'Accounting'** group.\n- The share `\\\\FS01\\Accounting` is readable.\n- Inside the share, there is a file named `IT_Support_Contacts.xlsx`.\n- The file contains a list of service account credentials, including one for **`svc_backup`** with the note: *\"Used for nightly backups of all file servers. Domain Admin.\"*"
+        },
+        {
+            "id": "s_l4_4",
+            "type": "warning",
+            "title": "The Golden Ticket 🎫",
+            "content": "## Finding Credentials in Files\n\n**This is extremely common.** Employees store passwords in Excel, Word, and text files on network shares.\n\n**The Discovery:**\n`svc_backup` / `Summer2024!Backup`\n\n**The Risk:** These credentials have **Domain Admin** privileges. This is a **catastrophic security failure**.\n\n**Red Team Action:**\n1.  **Do NOT** use these credentials for lateral movement yet. (Using DA creds from a standard workstation is noisy).\n2.  **Validate** the credentials silently using a tool like `NetExec` (formerly CrackMapExec) against the Domain Controller over SMB.\n3.  **If valid**, you have effectively **'won'** the domain. You can now access any system.\n\n**For the Capstone Objective:** We only need to access the PII share. Using the `svc_backup` account, we can map the restricted `\\\\FS01\\CustomerData` share and copy a sample file."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "quiz",
+            "title": "Credential Discovery 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "You find a file named 'passwords.txt' on an open file share containing Domain Admin credentials. What is the appropriate Red Team next step?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Immediately log into the Domain Controller",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Validate the credentials silently and document the finding; use them only if necessary to achieve the objective",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Delete the file to protect the client",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Email the credentials to the client POC",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Validation confirms the risk. Using DA creds directly is noisy. The objective may be achievable with lower privileges. Document the finding regardless.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Objective Completion: Exfiltration Simulation 📤",
+            "content": "# Proving Access Without Stealing Data\n\n**The Objective:** Exfiltrate a sample of customer PII.\n\n**The Ethical Red Team Approach:**\n- **DO NOT** exfiltrate real customer PII. This is a data breach and a legal nightmare.\n- **INSTEAD:** Create a **canary file** or locate a **test file** in the target share.\n\n**Capstone Action:**\n1.  Map the `CustomerData` share using `svc_backup` credentials.\n2.  Locate a file named `test_data.csv` (clearly marked as test/sample data).\n3.  Copy the file to the compromised workstation.\n4.  Exfiltrate the file via encrypted C2 channel.\n5.  **Screenshot:** The directory listing of `CustomerData` showing real filenames (redacted) and the successful copy of `test_data.csv`.\n\n**Alternative Proof (If no test data exists):**\n- Take a screenshot of the directory listing showing the **file names and dates**.\n- This proves you had **READ access** to the sensitive share without actually taking the data.\n\n**This is the industry standard for ethical data exfiltration simulation.**"
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Cleanup & Egress 🧹",
+            "content": "# Leaving No Trace\n\n**Before ending the engagement:**\n1.  **Remove Persistence:** Delete any scheduled tasks, registry run keys, or services you created.\n2.  **Delete Dropped Files:** Remove any executables or scripts from disk.\n3.  **Clear Logs (If Authorized):** Some RoEs allow clearing specific event logs to simulate a stealthy adversary. **Do not do this unless explicitly authorized.**\n4.  **Terminate C2 Sessions:** Gracefully exit beacons.\n5.  **Retrieve Physical Devices:** Collect any dropped devices (USB, Pineapple).\n\n**Final Action:** Send an encrypted message to the client POC: *\"Engagement complete. No active implants remain. Ready for debrief.\"*\n\n**Documentation:** Your notes from the entire engagement are now the raw material for the **Final Report**."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "quiz",
+            "title": "Ethical Exfiltration 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "multiple_choice",
+                "question": "You have access to a share containing real customer PII. You need to prove exfiltration capability. What is the correct action?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Download one real record to prove access",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Take a screenshot of the directory listing and, if available, exfiltrate a clearly marked 'test' file",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Encrypt the data and demand a ransom (simulated)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Do nothing; just report you had access",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Screenshots and test data prove the vulnerability without creating a real data breach. This is the ethical standard.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

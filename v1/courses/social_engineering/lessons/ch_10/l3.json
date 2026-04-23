@@ -1,0 +1,120 @@
+{
+    "id": "l3",
+    "chapterId": "ch_10",
+    "title": "Crafting the Convincing Lure",
+    "description": "Design the visual and psychological elements that trick users into clicking 'Enable Content'.",
+    "xpReward": 40,
+    "estimatedMinutes": 9,
+    "section": "Content Creation",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The 'Enable Content' Problem 🟨",
+            "content": "# Overcoming the Yellow Bar of Death\n\nWhen a user opens a document with macros, they see:\n\n> **SECURITY WARNING** Macros have been disabled. **[Enable Content]**\n\n**The Challenge:** Convincing the user to click that button.\n\n**Psychological Levers to Pull (Cialdini Review):**\n- **Curiosity:** *\"This content is protected. Enable macros to view.\"*\n- **Urgency:** *\"Invoice requires immediate approval. Enable macros to see details.\"*\n- **Authority:** *\"This document is from the IT Security team. Enable macros to verify compliance.\"*\n- **Fear:** *\"Your account has been flagged. Enable macros to review the security alert.\"*\n\n**The Lure Content:** The visible part of the document (what they see **before** enabling macros) must **sell** the click."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Enable Content Psychology 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "A Word document opens and displays only a blurry image and the text: 'This document is protected. Enable macros to decrypt and view contents.' Which psychological trigger is primary?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Fear",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Curiosity",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Authority",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Reciprocity",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. The promise of hidden, protected information triggers intense curiosity. Users want to see what's 'inside'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Classic Lure Templates 📋",
+            "content": "# Proven to Work\n\n| Pretext | Document Type | Lure Content | Target |\n| :--- | :--- | :--- | :--- |\n| **Fake Invoice** | Word/Excel | Blurred invoice image. *\"Enable macros to view invoice details.\"* | Accounts Payable |\n| **Resume/CV** | Word | *\"This document was created in an older version of Word. Enable macros for compatibility.\"* | HR, Recruiters |\n| **Urgent Security Update** | Word | *\"Your account requires verification. Enable macros to complete the process.\"* | General Staff |\n| **Protected Report** | Excel | All cells hidden except one: *\"This workbook is protected. Enable macros to unlock.\"* | Finance, Management |\n| **Fax/Scanned Document** | Word | Blurry scanned image. *\"Enable macros to improve image quality.\"* | Anyone |"
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "Excel Lure: Hiding All Sheets 📊",
+            "content": "You can hide all worksheets except a single 'lure' sheet that instructs the user to enable macros. When macros are enabled, the VBA code unhides the real content (or proceeds with the attack).",
+            "codeSnippet": "Private Sub Workbook_Open()\n    ' Unhide the real sheets\n    Sheets(\"Confidential Data\").Visible = xlSheetVisible\n    Sheets(\"Lure\").Visible = xlSheetHidden\n    \n    ' Then execute payload\n    Call RunPayload\nEnd Sub",
+            "codeLanguage": "vba",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Word Lure: Blurry Images & Text 🖼️",
+            "content": "# The 'Decryption' Trick\n\n**Method:**\n1.  Insert a **blurry screenshot** of a fake invoice or confidential report.\n2.  Add a text box with the message: *\"SECURE DOCUMENT: Content is encrypted. Enable Macros to decrypt and view.\"*\n3.  Add a fake 'Microsoft Office' logo or security badge for authority.\n\n**Why it works:**\n- It mimics legitimate **Rights Management** or **Encryption** prompts that users have seen before.\n- It creates a **puzzle** that the user wants to solve.\n- The blurry image is **intriguing** but **unreadable**.\n\n**VBA Component:** When macros are enabled, the VBA replaces the blurry image with a clear one (or just proceeds with the payload while showing a fake 'Decrypting...' progress bar)."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Lure Design 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "An Excel file opens with all sheets hidden except one that says: 'This workbook is protected. Enable macros to view content.' This lure is effective because:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It triggers curiosity and mimics legitimate document protection features",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It scares the user",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It automatically enables macros",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It uses advanced encryption",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Many legitimate business documents use workbook protection. Users are conditioned to click 'Enable' to access content.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Filename and Subject Line Synergy 📨",
+            "content": "# The One-Two Punch\n\n**The Email Subject Line:**\n- *\"URGENT: Invoice #44532 - Action Required\"*\n- *\"Resume: Senior Developer Candidate - John Smith\"*\n- *\"Confidential: Q3 Earnings Report - Internal Only\"*\n\n**The Attachment Filename:**\n- `Invoice_44532.docm` (`.docm` = Macro-Enabled Document)\n- `John_Smith_Resume.docm`\n- `Q3_Report_Confidential.xlsm` (`.xlsm` = Macro-Enabled Workbook)\n\n**The Cognitive Alignment:**\nThe email creates **expectation**. The filename confirms it. The lure content reinforces it. The user's brain is primed to click **'Enable Content'** because they *want* to see the invoice/resume/report.\n\n**Pro Tip:** Use **double extensions** sparingly. `Invoice.pdf.exe` is blocked. `Invoice_44532.docm` is a legitimate Office format."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "tip",
+            "title": "Adding Legitimacy with Metadata 📝",
+            "content": "## The Devil is in the Details\n\nRight-click the file -> Properties -> Details. Add plausible metadata:\n- **Authors:** Match the sender name (e.g., \"Accounts Payable Dept\")\n- **Company:** Target company name or your fake vendor name\n- **Last Saved By:** Plausible username\n- **Content Created:** A date within the last week\n\n**Why?**\nSome security tools and curious users check document properties. Blank or suspicious metadata is a red flag. Filling it out adds a layer of **Verisimilitude**."
+        }
+    ]
+}

@@ -1,0 +1,120 @@
+{
+    "id": "l3",
+    "chapterId": "ch_4",
+    "title": "Crafting the Perfect Phish",
+    "description": "Master the art of subject lines, body copy, and visual design to maximize click rates.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Content Creation",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Subject Line: Make or Break 📨",
+            "content": "# You Have 3 Seconds\n\nThe average user spends **3 seconds** deciding whether to open an email. The subject line is everything.\n\n**The Psychology of a Good Subject Line:**\n\n| Trigger | Example Subject Line | Weapon |\n| :--- | :--- | :--- |\n| **Urgency** | \"ACTION REQUIRED: Your password expires in 2 hours\" | Scarcity |\n| **Fear** | \"Unusual sign-in attempt detected on your account\" | Fear/Amygdala |\n| **Curiosity** | \"Your 2025 Bonus Statement (Confidential)\" | Scarcity/Curiosity |\n| **Greed** | \"You've been selected for a $50 Amazon gift card\" | Reciprocity |\n| **Familiarity** | \"Re: Q4 Budget Discussion - Follow Up\" | Consistency |\n| **Authority** | \"Message from the Office of the CFO\" | Authority |"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Subject Line Analysis 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Subject: 'FW: Invoice #44532 - Payment Overdue'. Which psychological triggers are combined?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Curiosity and Greed",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Familiarity (FW:), Urgency (Overdue), and Authority (Invoice)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Fear and Scarcity",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Liking and Reciprocity",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. 'FW:' implies it's part of an ongoing conversation. 'Overdue' creates urgency. 'Invoice' implies financial authority.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "The Body: Keep It Simple, Stupid 📝",
+            "content": "# Don't Write a Novel\n\nPhishing emails are **not** marketing emails. You don't need to explain the product. You need **one action**.\n\n**The Formula for a High-Conversion Phish Body:**\n\n1.  **Context (1 sentence):** *\"As part of our ongoing security upgrades...\"*\n2.  **The Problem (1 sentence):** *\"We've detected that your multi-factor authentication settings are incomplete.\"*\n3.  **The Consequence (1 sentence):** *\"If not updated by 5 PM today, your VPN access will be temporarily suspended.\"*\n4.  **The Call to Action (Button/Link):** **[ Update Security Settings ]**\n\n**Golden Rule:** The user should **never** have to scroll to find the link. The link should be **above the fold**."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "Example: Effective Phish Body 🎯",
+            "content": "Subject: Important: VPN Authentication Update Required",
+            "codeSnippet": "Dear [Employee Name],\n\nAs part of our migration to Azure AD, we are requiring all employees to re-validate their VPN tokens. This is a one-time process.\n\nAccounts that have not been validated by **5:00 PM EST today** will be temporarily locked out of the corporate network until validated by the Help Desk (24-48 hour turnaround).\n\nPlease complete the validation now:\n\n[ Validate VPN Access ](https://vpn-acmecorp-auth.com)\n\nThank you,\nIT Infrastructure Team\n*This is an automated message. Please do not reply.*",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "tip",
+            "title": "Visual Design & Branding 🎨",
+            "content": "## Cloning the Look and Feel\n\n**Nothing screams 'SCAM' like a plain text email with a blurry logo.**\n\n**Pro Techniques:**\n1.  **Steal the Real Email:** Sign up for the service you are impersonating. Get their **actual** welcome email. Right-click -> Inspect Element. Copy the **HTML structure**.\n2.  **Host Images Remotely:** Do NOT embed images as attachments. Host them on your phishing server or use legitimate image URLs (e.g., pulling the real Microsoft logo from Microsoft's own CDN). This improves deliverability.\n3.  **Match the Footer:** Real companies have 'Unsubscribe' links and privacy policies in the footer. **Add them.** Use `#` as the link target. It adds **Verisimilitude**."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Phish Body Analysis 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "Why is it effective to include a fake 'Unsubscribe' link and a 'Privacy Policy' link in the footer of a phishing email?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It's required by law",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It makes the email look more legitimate and bypasses spam filters",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It tricks the user into clicking more links",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It helps with tracking",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Legitimate marketing emails always have these. Their presence reduces suspicion and some spam filters flag emails that lack a physical address or unsubscribe link.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "warning",
+            "title": "Grammar and Spelling Check 🧐",
+            "content": "# The Myth of 'Bad Grammar is a Filter'\n\n**Old Wisdom:** \"Phishing emails have bad spelling to filter out smart people.\"\n**Modern Reality:** AI tools like ChatGPT write **flawless** English.\n\n**BUT...** Sometimes a **small, deliberate error** can increase rapport.\n- *\"Sorry for the typo, typing this on my phone.\"* (Humanizes the sender).\n\n**The Real Risk:** Obvious **Grammar Nazi Triggers** (Your/You're, There/Their/They're). If you use these wrong, you lose the educated targets. Use **Grammarly** or AI to proofread **EVERY** phish you send."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "text",
+            "title": "Personalization Tokens 🔖",
+            "content": "# Dear [FIRSTNAME]\n\nModern phishing frameworks (like **GoPhish** or **Evilginx**) support mail merge.\n\n**Instead of:** *\"Dear User,\"*\n**Use:** *\"Dear Susan,\"*\n\n**How to get the data:**\n- Scrape LinkedIn for the email format (`susan.miller@company.com`).\n- Use a tool like **Hunter.io** to verify the format.\n- Upload a CSV with `First Name, Last Name, Email` to your phishing platform.\n\n**Result:** Open rates **increase by 29%** when the email includes the recipient's first name. (Source: Campaign Monitor)."
+        }
+    ]
+}

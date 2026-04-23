@@ -1,0 +1,111 @@
+{
+    "id": "l1",
+    "chapterId": "ch_6",
+    "title": "The Physical Perimeter",
+    "description": "Understand the layers of physical security and why humans are the weakest link.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Physical Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Beyond the Firewall 🧱",
+            "content": "# The Forgotten Attack Surface\n\nOrganizations spend **millions** on network security—firewalls, IDS/IPS, EDR. But what happens if an attacker **walks in the front door**?\n\n**Analogy:** You install a $10,000 deadbolt on your front door but leave the **window wide open**. Physical security is that window.\n\n**Physical Bypass (Definition):** Gaining unauthorized physical access to a facility, secure area, or device through social engineering and low-tech methods.\n\n**Common Goals of Physical Intrusion:**\n- Planting a rogue device (Rubber Ducky, Wi-Fi Pineapple, Keylogger)\n- Stealing physical documents or hardware\n- Accessing an unlocked workstation\n- Photographing whiteboards/sensitive screens\n- Simply proving the vulnerability exists (Red Team objective)"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Physical Security Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Why do companies often underinvest in physical security compared to network security?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Physical security is too expensive",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "They assume a locked door and a security guard are sufficient deterrents",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Physical attacks never happen",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It's not required by compliance regulations",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. There's a cognitive bias that 'bad guys are on the internet, not in the lobby.' This complacency is exactly what we exploit.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "The Layers of Physical Security 🧅",
+            "content": "# Defense in Depth (Physical Edition)\n\nJust like network security, physical security uses layers. Each layer is a potential bypass point.\n\n| Layer | Examples | SE Bypass Method |\n| :--- | :--- | :--- |\n| **Perimeter** | Fences, Gates, Parking Lot | Walk in during shift change |\n| **Building Envelope** | Doors, Windows, Locks | Tailgating, Propped door |\n| **Lobby/Reception** | Security Desk, Visitor Logs | Fake appointment, Delivery |\n| **Internal Barriers** | Badge Readers, Mantraps | Piggybacking, 'Lost Badge' |\n| **Asset Level** | Locked cabinets, Cable locks | Shoulder surfing, Distraction |\n\n**Our Focus:** The **human elements** that control access at each layer."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Psychology of the Door 🚪",
+            "content": "# Why Holding the Door is Instinctive\n\n**The Politeness Norm:** In most cultures, holding a door open for someone behind you is considered **good manners**. Letting it slam in their face is **rude**.\n\n**The Security Conflict:**\n- **Security Policy:** *Never let anyone tailgate. Challenge unknown persons.*\n- **Social Norm:** *Be polite. Don't be confrontational.*\n\n**The Result:** Social Norm **wins** 9 times out of 10. The employee feels more anxiety about being perceived as **rude** than about the **security risk**.\n\n**The Attacker's Leverage:** We exploit this **cognitive dissonance**."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "quiz",
+            "title": "Door Psychology 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "An employee badges into a secure door. A stranger behind them says, 'Oh, can you hold that? Thanks!' The employee holds the door. Which psychological principle is the PRIMARY driver?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Fear of losing their job",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Social Norm of Politeness",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Desire to help a coworker",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Laziness",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. The employee defaults to the social script of 'holding the door' rather than the security script of 'challenge the stranger'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_6",
+            "type": "warning",
+            "title": "Legal & Ethical Boundaries ⚖️",
+            "content": "## Trespassing vs. Authorized Testing\n\n**Critical Distinction:**\n- **Criminal Trespassing:** Entering a property without permission with intent to commit a crime.\n- **Red Team Physical Intrusion:** Entering a property with a **signed authorization letter** that explicitly permits physical entry testing.\n\n**The 'Get Out of Jail Free' Letter:**\nBefore you even park your car near the target, you **must** have:\n1.  A **Letter of Authorization (LoA)** on company letterhead, signed by an executive with authority.\n2.  The **scope** clearly defined (e.g., \"Test perimeter doors at 123 Main St between Oct 1-5\").\n3.  A **point of contact (POC)** who can verify the engagement if you are detained.\n\n**Never, ever, ever test physical security without this.**"
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "The Pre-Engagement Recon 🕵️",
+            "content": "# Observe Before You Act\n\n**Drive-By / Walk-By Recon:**\n- **When?** Peak hours (8-9 AM, 12-1 PM, 5-6 PM).\n- **What to look for?**\n  - Smoking areas (Propped open doors!)\n  - Delivery entrances (Less scrutiny)\n  - Badge design (Take a mental picture or discreet photo)\n  - Uniforms of vendors (Cintas, Aramark, UPS)\n  - Security guard behavior (Are they on their phone?)\n\n**Google Maps / Street View Recon:**\n- Check for **loading docks**, **side entrances**, and **smoking shelters** before you even leave your house."
+        }
+    ]
+}

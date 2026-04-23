@@ -1,0 +1,17 @@
+{
+    "id": "task1",
+    "chapterId": "ch_4",
+    "title": "Analyze the Phish",
+    "description": "Deconstruct a phishing email to identify technical tricks and psychological triggers.",
+    "estimatedMinutes": 15,
+    "problemStatement": "# Objective: Phish Forensics\n\nExamine the following phishing email (headers and body) and answer the questions below.\n\n**Email Headers (Excerpt):**\n```\nFrom: \"PayPal Service\" <service@paypal-account-verification.com>\nReply-To: noreply@paypal.com\nReturn-Path: <bounce@paypal-account-verification.com>\n```\n\n**Email Body:**\n```\nSubject: [URGENT] We've limited your PayPal account\n\nDear Customer,\n\nWe noticed unusual activity on your PayPal account. To protect your funds, we have temporarily limited certain features.\n\nYou have 24 hours to verify your information before your account is permanently suspended.\n\nClick here to Restore Access: [Verify Account](https://www.paypal.com.verify-id3245.com/login)\n\nThank you,\nPayPal Security Team\n```\n\n**Questions:**\n1. What domain is the email **actually** from?\n2. What is the technical term for the `From:` address trick?\n3. If a user clicks 'Reply' in their email client, where will the reply go?\n4. Identify **two** Cialdini weapons used in the email body.\n5. What is the actual phishing link domain? (Ignore the displayed text).\n\n**Output Format:**\n1. [Answer]\n2. [Answer]\n3. [Answer]\n4. [Answer1, Answer2]\n5. [Answer]",
+    "hints": [
+        "Hint 1: Look at the domain in the email headers after the '@' symbol.",
+        "Hint 2: The 'From' name is 'PayPal Service' but the actual address is different.",
+        "Hint 3: Check the 'Reply-To' header.",
+        "Hint 4: Look for time pressure (Scarcity) and fear triggers.",
+        "Hint 5: The link text shows 'paypal.com' but the actual href ends in '.com/...' - what is the true domain?"
+    ],
+    "expectedOutput": "1. paypal-account-verification.com\n2. Display Name Spoofing / Lookalike Domain\n3. noreply@paypal.com (The Reply-To header overrides the From address)\n4. Scarcity, Fear\n5. verify-id3245.com",
+    "solutionCode": "1. paypal-account-verification.com\n2. Display Name Spoofing with Lookalike Domain\n3. noreply@paypal.com\n4. Scarcity (24 hours), Fear (account suspension)\n5. verify-id3245.com"
+}

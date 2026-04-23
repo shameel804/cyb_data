@@ -1,0 +1,99 @@
+{
+    "id": "l3",
+    "chapterId": "ch_8",
+    "title": "Supporting Artifacts & Digital Footprint",
+    "description": "Build the infrastructure that makes your fake persona 'real': LinkedIn, email, domains, and more.",
+    "xpReward": 40,
+    "estimatedMinutes": 10,
+    "section": "Operational Security",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Digital Paper Trail 🌐",
+            "content": "# If It's Not on Google, It Doesn't Exist\n\nIn 2026, the first thing a suspicious target does is **Google your name**.\n\n**What They Expect to Find:**\n- LinkedIn profile with a professional photo.\n- Company website listing you as an employee.\n- Maybe a Twitter/X account with industry-related posts.\n- A few conference speaker bios or blog posts (optional, advanced).\n\n**What Raises Red Flags:**\n- **Zero online presence.** Everyone has *something*.\n- **A brand new LinkedIn profile** with 2 connections.\n- **A company website** that looks like a template from 1999.\n\n**The Goal:** Create a **minimum viable digital footprint** that survives a **10-minute Google search**."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Digital Footprint Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Why is a brand new LinkedIn profile with few connections a red flag?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "LinkedIn doesn't allow new profiles",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Real professionals have established networks and activity history",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It's against LinkedIn's terms of service",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It's not a red flag",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. A profile with a join date of 'this month' and few connections screams 'burner account'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Building a Fake LinkedIn Profile 👔",
+            "content": "# The Long Game\n\n**Timeline:** You cannot create a convincing LinkedIn profile overnight. You need **aged accounts**.\n\n**Method 1: Purchase Aged Accounts (Gray Area)**\n- Some underground markets sell LinkedIn accounts created years ago.\n- **Risk:** Account may be reclaimed or flagged. Violates LinkedIn ToS.\n\n**Method 2: Grow It Organically (Best for Red Team)**\n- **Start 3-6 months before the engagement.**\n- **Step 1:** Create the account with your fake name and AI-generated photo.\n- **Step 2:** Add **500+ connections** slowly. Use LinkedIn's 'People You May Know' and connect with **random professionals** in the same industry. Accept all incoming requests.\n- **Step 3:** Post **generic industry content** once a week. (Use ChatGPT to write bland posts about 'The Future of Project Management').\n- **Step 4:** Join **industry groups** and occasionally comment: *\"Great insights!\"*\n\n**Result:** After 6 months, your profile looks like a **real, slightly boring professional**. It passes the 'sniff test'."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Creating the Fake Company Website 🏢",
+            "content": "# A Plausible Storefront\n\n**Domain Registration:**\n- Use **privacy-protected WHOIS** (standard with most registrars).\n- Choose a **.com** or **.io** domain that sounds like a real consulting firm or tech company.\n- Example: `Apex-Solutions.com` or `Crestview-Consulting.com`.\n\n**Website Content:**\n- Use a **static site generator** (Hugo, Jekyll) or a simple WordPress template.\n- **Pages Needed:**\n  - **Home:** Generic corporate mission statement.\n  - **About Us:** Vague history ('Founded in 2018').\n  - **Team:** List your fake persona as 'Senior Project Manager' with the AI photo.\n  - **Contact:** A **contact form** (emails go to your burner email) and a **phone number** (burner VoIP).\n- **SSL Certificate:** **Essential.** Use Let's Encrypt.\n\n**The 'Under Construction' Trap:** A website that says 'Under Construction' or has placeholder text is **worse than no website**. It screams 'fake'."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "quiz",
+            "title": "Company Website Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "True or False: A simple, professional-looking static website with an SSL certificate is sufficient for a fake company's online presence.",
+                "options": [],
+                "explanation": "True. It doesn't need to be complex. It just needs to exist and look legitimate on first glance.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Email and Phone Infrastructure 📧📞",
+            "content": "# Making Contact Seamless\n\n**Email:**\n- **DO NOT** use `david.chen.consulting@gmail.com`.\n- **DO** use your fake domain: `david.chen@apex-solutions.com`.\n- Set up **Google Workspace** or **Microsoft 365** for your domain. This gives you a professional email interface and calendar.\n- **SPF/DKIM/DMARC:** Configure these to ensure emails don't go to spam.\n\n**Phone:**\n- Use a **VoIP service** (Google Voice, Burner, Twilio) with a number in the **appropriate area code**.\n- **Voicemail:** Record a professional greeting: *\"You've reached David Chen at Apex Solutions. Please leave a message.\"*\n- **Call Forwarding:** Forward the VoIP number to your **burner phone** (or a softphone app) so you can answer live.\n\n**Business Cards (In-Person Engagements):**\n- Print 10-20 cards at a local print shop or online (Vistaprint).\n- Include name, title, email, phone, and fake company logo.\n- Handing over a **tangible card** is a powerful trust signal."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "code",
+            "title": "DNS Records for Email Deliverability 📡",
+            "content": "Example SPF/DKIM/DMARC records to ensure your fake domain passes email authentication:",
+            "codeSnippet": "; SPF Record (TXT)\nv=spf1 include:_spf.google.com ~all\n\n; DKIM (provided by Google Workspace/M365)\n; Add the generated DKIM key as a TXT record\n\n; DMARC Record (TXT)\n_dmarc.apex-solutions.com. IN TXT \"v=DMARC1; p=none; rua=mailto:postmaster@apex-solutions.com\"",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_8",
+            "type": "warning",
+            "title": "OPSEC for Digital Artifacts 🕵️",
+            "content": "## Don't Cross the Streams\n\n**Critical Rules:**\n- **NEVER** log into your fake persona accounts from your **real IP address**. Use a **VPN** or a dedicated **cellular hotspot**.\n- **NEVER** use the same browser profile for real and fake identities. Use **separate browsers** (e.g., Firefox for fake persona, Chrome for real) or **browser profiles**.\n- **NEVER** pay for domain registration or services with a **personal credit card**. Use **prepaid debit cards** purchased with cash, or **cryptocurrency**.\n- **ALWAYS** use a **password manager** (Bitwarden, KeePass) to keep fake persona credentials separate and secure.\n\n**The 'Oops' Moment:** If you accidentally send an email from your real account to the target, **the engagement is over**. You've burned your identity and possibly exposed the Red Team."
+        }
+    ]
+}

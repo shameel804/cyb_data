@@ -1,0 +1,111 @@
+{
+    "id": "l1",
+    "chapterId": "ch_12",
+    "title": "The Red Team Mindset",
+    "description": "Understand the core philosophy of Red Teaming: adversarial simulation vs. compliance testing.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Capstone Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "What is a Red Team? 🔴",
+            "content": "# Beyond the Penetration Test\n\nA **Red Team** is an independent group that **simulates real-world adversaries** to test an organization's **detection and response capabilities**.\n\n**Analogy:**\n- **Penetration Test:** A fire inspector checks that all your smoke detectors and sprinklers meet code. They tell you *\"You have a fire extinguisher, good.\"*\n- **Red Team:** Someone **lights a controlled fire** in the wastebasket and sees if the alarm goes off, if the sprinklers work, and **how long it takes** for the fire department to arrive.\n\n**The Red Team Mindset:**\n- **Goal-Oriented:** Not *\"Find vulnerabilities,\"* but *\"Achieve X objective (e.g., access the CEO's email).\"*\n- **Stealth-Focused:** Avoid detection for as long as possible.\n- **Holistic:** Attack people, process, and technology in combination."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Red Team vs. Pentest 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the primary difference between a penetration test and a Red Team engagement?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Pentests are legal; Red Teams are not",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Pentests find vulnerabilities; Red Teams test detection and response against a specific objective",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Pentests use automated tools; Red Teams do not",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "There is no difference",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. A pentest provides a list of vulnerabilities. A Red Team tests how well the organization can detect and stop a determined adversary from achieving a specific goal.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "The Adversary Simulation Model 🎭",
+            "content": "# Think Like the Threat\n\n**Red Teaming is method acting for security.** You adopt the **Tactics, Techniques, and Procedures (TTPs)** of a specific threat actor.\n\n**Common Emulated Threats:**\n- **Nation-State (APT):** Patient, well-funded, stealthy. Uses zero-days, custom malware, and deep OSINT.\n- **Cybercriminal (Ransomware Gang):** Loud, fast, financially motivated. Uses phishing, exploits, and living-off-the-land.\n- **Insider Threat:** Has legitimate access. Motivated by grievance or greed.\n\n**The Red Teamer's Question:** *\"If I were [Threat Actor], how would I get in, achieve my goal, and get out without being caught?\"*\n\n**This entire course has been building your toolkit to answer that question.**"
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Social Engineering Red Team Pyramid 🔺",
+            "content": "# Layered Attack Strategy\n\nA mature Red Team integrates Social Engineering into a broader kill chain.\n\n1.  **Reconnaissance (Ch 2, 3):** OSINT to identify targets, technologies, and human vulnerabilities.\n2.  **Initial Access (Ch 4, 5, 6, 7, 10):** Phishing, vishing, physical bypass, USB drops, or maldocs.\n3.  **Persistence & Privilege Escalation:** Using initial foothold to gain higher access.\n4.  **Lateral Movement:** Moving from the compromised user's machine to more valuable targets.\n5.  **Objective Achievement:** Stealing the target data, disrupting operations, or proving access.\n6.  **Exfiltration & Cleanup:** Getting the data out and covering tracks.\n\n**Social Engineering is the *spark* that ignites the entire fire.**"
+        },
+        {
+            "id": "s_l1_5",
+            "type": "quiz",
+            "title": "Red Team Pyramid 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "In the Red Team kill chain, where does a vishing call to the Help Desk for a password reset typically fit?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Reconnaissance",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Initial Access",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Lateral Movement",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Exfiltration",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Gaining valid credentials via vishing provides the initial foothold (Initial Access) into the environment.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "The Red Teamer's Oath ⚖️",
+            "content": "# Ethics and Professionalism\n\n**This is not a game. You hold real power.**\n\n1.  **Authorization Above All:** Never act without a signed **Letter of Authorization** and **Rules of Engagement**.\n2.  **Minimize Harm:** Avoid disrupting business operations or causing emotional distress to employees.\n3.  **Protect Data:** Any data accessed during the engagement is **confidential**. Destroy it after the report is delivered.\n4.  **Educate, Don't Humiliate:** The goal is to make the client **stronger**, not to prove you are smarter.\n5.  **Continuous Learning:** The threat landscape evolves daily. Stay informed, stay sharp.\n\n**Mantra:** *\"I am a professional simulating a threat to improve security. I am not the threat.\"*"
+        },
+        {
+            "id": "s_l1_7",
+            "type": "tip",
+            "title": "The Capstone Challenge 🏆",
+            "content": "## Putting It All Together\n\nThis chapter is the **final exam**. We will walk through a **complete, simulated Red Team campaign** from planning to reporting.\n\nBy the end of this chapter, you will understand how to:\n- Scope and plan a full-cycle social engineering operation.\n- Chain together techniques from every previous chapter.\n- Adapt when the plan fails.\n- Document and report your findings like a professional.\n\n**Let's begin the capstone.**"
+        }
+    ]
+}

@@ -1,0 +1,273 @@
+{
+    "id": "quiz_ch_7",
+    "chapterId": "ch_7",
+    "title": "Chapter 7 Quiz: USB Drop Attacks & Baiting",
+    "description": "Test your knowledge of USB attack vectors, baiting psychology, deployment strategies, and defense mechanisms.",
+    "passingScore": 70,
+    "xpReward": 150,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the psychological principle that makes USB drop attacks so effective?",
+            "options": [
+                "Fear of missing out",
+                "Curiosity and the desire to be helpful",
+                "Anger and revenge",
+                "Boredom"
+            ],
+            "correctAnswer": 1,
+            "explanation": "People are naturally curious and want to help return lost property. Attackers exploit these positive human traits."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "A USB Rubber Ducky requires the user to double-click a file to execute the payload.",
+            "correctAnswer": false,
+            "explanation": "False. The Rubber Ducky emulates a keyboard and types commands automatically upon connection. No user interaction required beyond plugging it in."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "What is the key difference between a Rubber Ducky and a BadUSB device?",
+            "options": [
+                "Rubber Ducky is faster",
+                "BadUSB can function as a normal storage drive AND a malicious device simultaneously",
+                "Rubber Ducky works on Mac, BadUSB does not",
+                "There is no difference"
+            ],
+            "correctAnswer": 1,
+            "explanation": "BadUSB reprograms a real flash drive's firmware, allowing it to act as storage while secretly performing malicious actions. Rubber Ducky is a dedicated HID emulator."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "A USB drive labeled 'CONFIDENTIAL: Q4 Layoff Plan' is designed to trigger which combination of emotions?",
+            "options": [
+                "Helpfulness and Greed",
+                "Fear and Curiosity",
+                "Boredom and Apathy",
+                "Joy and Excitement"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Fear of being on the list and curiosity about who else is on the list create a powerful urge to open the drive."
+        },
+        {
+            "id": "q5",
+            "type": "fill_blank",
+            "question": "The real-world cyber weapon that used USB drops to sabotage Iran's nuclear program was called ______.",
+            "options": [
+                "Stuxnet",
+                "Flame",
+                "Duqu",
+                "Mirai"
+            ],
+            "correctAnswer": "Stuxnet",
+            "explanation": "Stuxnet was introduced into the air-gapped Natanz facility via infected USB drives."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which of the following is NOT a recommended Red Team payload for a USB drop?",
+            "options": [
+                "A Rubber Ducky script that opens Notepad with a warning message",
+                "A 'phone home' script that logs computer name and IP",
+                "A ransomware executable that encrypts user files",
+                "A macro-enabled document that displays a security awareness message"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Ransomware is destructive and illegal. Red Team payloads must be non-malicious and reversible."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "It is safe to use a USB Killer device during an authorized Red Team engagement to demonstrate hardware destruction risks.",
+            "correctAnswer": false,
+            "explanation": "False. USB Killers destroy property. This is a crime and never authorized in standard Red Team testing."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Where is the LEAST effective place to drop a USB drive for a corporate attack?",
+            "options": [
+                "Parking lot near executive spaces",
+                "Break room table",
+                "Inside a locked server room",
+                "Elevator floor"
+            ],
+            "correctAnswer": 2,
+            "explanation": "If you can access a locked server room, you already have physical access. The purpose of a drop is to get an insider to carry the device inside. A locked room defeats that."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What is the purpose of placing a USB drive in a small ziplock bag with a note saying 'Found this in the parking lot. Is it yours? - Security'?",
+            "options": [
+                "To keep the drive clean",
+                "To add legitimacy and trigger the 'helpfulness' instinct",
+                "To protect it from rain",
+                "To hide the USB label"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The note adds a layer of social proof and frames the finder as a 'good Samaritan,' increasing the likelihood they will plug it in to identify the owner."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which Windows Group Policy can prevent USB mass storage devices from being installed?",
+            "options": [
+                "Prevent access to drives from My Computer",
+                "Device Installation Restrictions",
+                "Disable Command Prompt",
+                "Hide specified control panel items"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Device Installation Restrictions can block specific device classes (like USB storage) or allow only approved device IDs."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "Modern EDR solutions can detect HID spoofing attacks by analyzing typing speed and device behavior.",
+            "correctAnswer": true,
+            "explanation": "True. A 'keyboard' that types 1000 words per minute is a clear anomaly that behavioral EDR can block."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "You want to target the IT department with a USB drop. Which label is MOST likely to pique their interest?",
+            "options": [
+                "Employee Handbook 2025",
+                "Network_Diagram_Secure.pdf",
+                "Cafeteria Menu",
+                "Holiday Party Photos"
+            ],
+            "correctAnswer": 1,
+            "explanation": "IT staff are naturally curious about network documentation. A label suggesting sensitive network info will be hard to resist."
+        },
+        {
+            "id": "q13",
+            "type": "fill_blank",
+            "question": "The technique of sending an email or voicemail to a target alerting them that a USB drive with their name on it has been 'found' is called a ______.",
+            "options": [
+                "Dead Drop",
+                "Spear Phish",
+                "Pretext Call",
+                "Watering Hole"
+            ],
+            "correctAnswer": "Dead Drop",
+            "explanation": "A 'Dead Drop' pre-conditions the target to expect the drive and primes them to trust it."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is the recommended employee action upon finding a USB drive in the office?",
+            "options": [
+                "Plug it into a conference room computer to see what's on it",
+                "Take it to IT Security without plugging it in",
+                "Throw it in the trash",
+                "Ask a coworker to check it on their machine"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Do not plug it in. Treat it as hazardous and let security professionals handle it in a sandbox."
+        },
+        {
+            "id": "q15",
+            "type": "true_false",
+            "question": "In a Red Team report, it is best practice to list the names of employees who plugged in the USB drives to ensure individual accountability.",
+            "correctAnswer": false,
+            "explanation": "False. Reporting should focus on aggregate statistics and systemic weaknesses, not public shaming. The goal is education, not punishment."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What is the 'Autorun' feature, and why is it less relevant today?",
+            "options": [
+                "It automatically runs programs on USB insertion; it's been disabled by default since Windows 7",
+                "It automatically updates drivers; it's still a major threat",
+                "It runs antivirus scans; it's required for security",
+                "It formats USB drives; it's a feature of MacOS"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Autorun was a major vector in the past, but modern Windows disables it for USB drives. It may still be active on legacy systems."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which of the following is a 'safe' Red Team payload for a USB drop?",
+            "options": [
+                "A keylogger that emails logs to the attacker",
+                "A script that opens a webpage explaining the security test",
+                "A RAT (Remote Access Trojan) for persistent access",
+                "A wiper that deletes temporary files"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A non-malicious notification script proves the vulnerability without causing harm or persisting on the system."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "Branding a USB drive with the target company's logo significantly decreases the chance it will be plugged in because employees are more suspicious of official-looking devices.",
+            "correctAnswer": false,
+            "explanation": "False. Official branding increases trust and the desire to 'return' the device, leading to higher plug-in rates."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is the primary reason USB drop attacks are effective against 'air-gapped' networks?",
+            "options": [
+                "USB drives can bypass firewalls",
+                "Humans bridge the air gap by physically carrying the drive inside",
+                "Air-gapped systems have weaker security",
+                "USB drives are immune to antivirus"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The human is the bridge. An employee finds a drive outside and carries it into the secure area."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "You are planning a USB drop at a financial firm. According to the lesson, which time of day is BEST for placement?",
+            "options": [
+                "Late at night when no one is around",
+                "Early morning before employees arrive",
+                "During lunch hour when foot traffic is high",
+                "Weekends"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Early morning ensures the drive is found during the workday when employees are most likely to plug it in immediately. Night drops might be cleaned by janitorial staff."
+        },
+        {
+            "id": "q21",
+            "type": "fill_blank",
+            "question": "The component of a USB drive that can be reprogrammed to change the device's behavior is called the ______.",
+            "options": [
+                "Firmware",
+                "Driver",
+                "Controller",
+                "Partition"
+            ],
+            "correctAnswer": "Firmware",
+            "explanation": "BadUSB attacks reprogram the firmware chip on the USB controller."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "What is the purpose of including a 'phone home' script in a Red Team USB payload?",
+            "options": [
+                "To steal data",
+                "To prove that the drive was plugged in and from which computer",
+                "To install a backdoor",
+                "To encrypt files"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The 'phone home' is a beacon that logs the computer name and IP, providing evidence for the Red Team report."
+        },
+        {
+            "id": "q23",
+            "type": "true_false",
+            "question": "Novelty USB drives (shaped like toys or keys) are less effective than standard drives because people see them as junk.",
+            "correctAnswer": false,
+            "explanation": "False. Novelty drives often trigger higher curiosity and are more likely to be picked up. However, some may be discarded if perceived as low-quality."
+        }
+    ]
+}

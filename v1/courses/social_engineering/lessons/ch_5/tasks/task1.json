@@ -1,0 +1,17 @@
+{
+    "id": "task1",
+    "chapterId": "ch_5",
+    "title": "Vishing Script Analysis",
+    "description": "Deconstruct a sample vishing call to identify techniques, weapons of influence, and potential weaknesses.",
+    "estimatedMinutes": 15,
+    "problemStatement": "# Objective: Vishing Forensics\n\nRead the following vishing call transcript between an attacker and a target named **Sarah**.\n\n**Call Transcript:**\n\n**Attacker:** Hi, is this Sarah? This is Mike from IT Support. How's your day going?\n\n**Sarah:** It's okay... busy. What's this about?\n\n**Attacker:** I'll be quick. We had a glitch with the VPN update last night and a few accounts got flagged. Yours is one of them. If we don't clear the flag, you might get locked out when you try to log in tomorrow.\n\n**Sarah:** Oh. Okay. What do you need?\n\n**Attacker:** Just need you to read me the 6-digit code from your Duo app. I'll match it against the backend log and clear the error. Takes ten seconds.\n\n**Sarah:** I don't know... I usually don't give that out.\n\n**Attacker:** Totally get it. We've had a lot of phishing warnings lately. Look, I'm not asking for your password. Just the token code so I can clear the ticket. My manager is riding me to close these out before end of day. If you want, I can email you the ticket number and you can call the main help desk later?\n\n**Sarah:** No, it's fine. The code is 4-8-2-9-1-7.\n\n**Attacker:** 4-8-2-9-1-7. Got it. You're all set. Have a great rest of your day, Sarah.\n\n**Sarah:** Thanks, you too.\n\n---\n\n**Questions:**\n1. Identify the **pretext role** the attacker is using.\n2. Identify **two** Cialdini weapons used in the call (with examples).\n3. What **objection handling** technique did the attacker use when Sarah expressed doubt?\n4. What is the **Exit/Cool Down** phrase used by the attacker?\n5. What is a potential weakness in this script?\n\n**Output Format:**\n1. [Role]\n2. [Weapon 1: Example], [Weapon 2: Example]\n3. [Technique]\n4. [Phrase]\n5. [Weakness]",
+    "hints": [
+        "Hint 1: The attacker says 'I'm Mike from IT Support.'",
+        "Hint 2: Look for 'busy... what's this about?' and the response.",
+        "Hint 3: The attacker acknowledges the phishing warnings and offers an alternative.",
+        "Hint 4: The last line before hanging up.",
+        "Hint 5: Consider the attacker's reliance on the target not actually wanting to call back."
+    ],
+    "expectedOutput": "1. IT Help Desk / IT Support\n2. Reciprocity ('I'll be quick' - Concession), Scarcity ('locked out tomorrow' - Time pressure)\n3. Reverse Psychology / Offering an easy out ('I can email you the ticket number...')\n4. 'You're all set. Have a great rest of your day, Sarah.'\n5. Relies on the target's laziness; if Sarah actually asked for the ticket number, the attacker would need to provide a plausible fake.",
+    "solutionCode": "1. IT Support / Help Desk\n2. Reciprocity (Concession: 'I'll be quick'), Scarcity (Lockout threat: 'might get locked out tomorrow')\n3. Reverse Psychology / Providing an inconvenient alternative\n4. 'You're all set. Have a great rest of your day, Sarah.'\n5. If target insists on email or callback, the pretext may collapse without proper infrastructure (fake ticket system, burner number voicemail)."
+}

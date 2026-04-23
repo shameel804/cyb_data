@@ -1,0 +1,90 @@
+{
+    "id": "l1",
+    "chapterId": "ch_10",
+    "title": "Introduction to Maldocs & Macros",
+    "description": "Understand why malicious documents remain one of the most effective initial access vectors.",
+    "xpReward": 35,
+    "estimatedMinutes": 7,
+    "section": "MalDoc Fundamentals",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "What is a Maldoc? 📎",
+            "content": "# The Weaponized Office Document\n\nA **Malicious Document (Maldoc)** is a seemingly benign file (Word, Excel, PowerPoint, or PDF) that contains embedded code designed to execute when the document is opened.\n\n**Analogy:** A trojan horse. The document is the wooden horse—it looks like a gift (invoice, report, resume). Inside is the payload (malware, backdoor, credential harvester).\n\n**Why Maldocs are Devastating:**\n- **Trusted File Type:** Users expect to receive `.docx` and `.xlsx` files. They don't expect them to be dangerous.\n- **Bypasses Email Filters:** Unlike `.exe` attachments (which are blocked), Office documents are often allowed.\n- **Social Engineering Synergy:** A well-crafted document with a compelling pretext (Chapter 2 & 3) has an extremely high click-through rate."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Maldoc Definition Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Why are malicious Office documents more effective than attaching a `.exe` file to a phishing email?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": ".exe files are larger",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Email gateways often block .exe attachments but allow Office documents",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Users trust .exe files more",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Office documents execute faster",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Most email security appliances block executable attachments by default, but Office documents are considered business-essential and are allowed.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "The Macro: Your Secret Weapon ⚙️",
+            "content": "# Automating Malice\n\n**Definition:** A **Macro** is a piece of code written in **Visual Basic for Applications (VBA)** that automates tasks within Microsoft Office.\n\n**Legitimate Use:**\n- *\"I wrote a macro to format this report automatically.\"*\n- *\"This spreadsheet calculates commissions with a macro.\"*\n\n**Malicious Use:**\n- *\"When the user opens this document, the macro silently downloads and runs malware.\"*\n\n**The Social Engineering Hook:** The user sees a yellow security bar: *\"Macros have been disabled. Enable Content.\"* Your job is to make them **want** to click that button.\n\n**Key Insight:** The user **chooses** to enable the macro. They are **bypassing their own security**. This is pure social engineering."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "Macro Concept Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "True or False: A malicious macro can execute automatically without any user interaction.",
+                "options": [],
+                "explanation": "False. In modern Office versions, macros are disabled by default. The user must click 'Enable Content' for the macro to run. This is why social engineering the click is critical.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "The Maldoc Kill Chain ⛓️",
+            "content": "# From Email to Compromise\n\n1.  **Reconnaissance:** Identify target, craft pretext (e.g., \"Invoice\", \"Resume\", \"Urgent Report\").\n2.  **Weaponization:** Create the malicious document with VBA macro.\n3.  **Delivery:** Attach to email, upload to file share, or drop via USB.\n4.  **Exploitation:** User opens document, sees lure content, and clicks **'Enable Content'**.\n5.  **Installation:** Macro executes, downloading and running the final payload (RAT, Beacon, etc.).\n6.  **Command & Control:** Attacker gains persistent access to the target network.\n7.  **Actions on Objective:** Data theft, lateral movement, ransomware deployment.\n\n**This chapter focuses on Steps 2, 4, and 5.**"
+        },
+        {
+            "id": "s_l1_6",
+            "type": "warning",
+            "title": "Legal & Ethical Boundaries ⚖️",
+            "content": "## Maldocs are Actual Malware\n\n**Critical Distinction:**\n- **Phishing Email:** Asks for credentials. No code execution on target.\n- **Maldoc:** **Executes code** on the target's computer. This is **malware deployment**.\n\n**Red Team Authorization Requirements:**\n- **Explicit written consent** to deploy **custom code** on target systems.\n- **Scope limitations:** Which machines? What payload? What C2 infrastructure?\n- **Safe payload design:** Non-destructive, reversible, with a 'kill switch'.\n\n**Never deploy a maldoc without explicit, signed authorization detailing the exact payload behavior.**"
+        },
+        {
+            "id": "s_l1_7",
+            "type": "tip",
+            "title": "Modern Office Defenses 🛡️",
+            "content": "## What We're Up Against\n\nMicrosoft has significantly hardened Office against macros:\n- **Mark-of-the-Web (MOTW):** Files downloaded from the internet are flagged. Macros are blocked by default.\n- **AMSI (Antimalware Scan Interface):** Scans macro content at runtime.\n- **Defender ASR Rules:** *\"Block Office applications from creating child processes\"* (e.g., PowerShell).\n\n**Our Challenge:** We must bypass these defenses using **social engineering** (convincing the user to unblock the file) and **technical evasion** (Lesson 5).\n\n**The Good News:** Many organizations disable these protections due to legacy macro reliance or poor configuration."
+        }
+    ]
+}

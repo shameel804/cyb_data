@@ -1,0 +1,149 @@
+{
+    "id": "l5",
+    "chapterId": "ch_10",
+    "title": "Bypassing Defenses",
+    "description": "Techniques to evade Mark-of-the-Web, AMSI, Windows Defender, and sandbox detection.",
+    "xpReward": 45,
+    "estimatedMinutes": 11,
+    "section": "Evasion Tactics",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Defense Stack 🛡️",
+            "content": "# What's Trying to Stop You\n\n| Defense Layer | Description | Bypass Strategy |\n| :--- | :--- | :--- |\n| **Mark-of-the-Web (MOTW)** | Flags files downloaded from internet | Social engineering user to 'Unblock' |\n| **Macro Security Settings** | Disables macros by default | Social engineering 'Enable Content' |\n| **AMSI** | Scans PowerShell/VBA content at runtime | Obfuscation, reflection, memory patching |\n| **Windows Defender AV** | Signature and behavior-based detection | Custom payloads, packers, LOLBins |\n| **ASR Rules** | Blocks Office apps from spawning processes | Alternative execution methods (WMI, COM) |\n| **Sandbox/Analysis** | Detonates files in virtual environment | Environment checks, time delays |"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "Defense Layers 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is the primary purpose of Mark-of-the-Web (MOTW)?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To encrypt the file",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To flag files downloaded from the internet and apply stricter security policies",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To speed up file downloads",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To scan for viruses",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. MOTW is an NTFS alternate data stream that tells Windows and Office the file came from an untrusted zone.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Bypassing Mark-of-the-Web (MOTW) 🏷️",
+            "content": "# The 'Unblock' Social Engineering Trick\n\n**The Problem:** Files downloaded from the internet or email have MOTW. Office blocks macros in these files **even if the user clicks 'Enable Content'** (they get a second, scarier warning).\n\n**The Solution:** Convince the user to **remove the MOTW**.\n\n**Lure Content:**\n*\"This document originated from the internet. To view protected content:\n1. Right-click the file and select **Properties**.\n2. Check the box **'Unblock'** at the bottom.\n3. Click **Apply** and **OK**.\n4. Reopen the document and Enable Macros.\"*\n\n**Alternative (Container Formats):**\n- Deliver the maldoc inside a **`.zip`**, **`.iso`**, or **`.7z`** archive.\n- Files extracted from archives **may not inherit MOTW** depending on the extraction tool and Windows version.\n- **`.iso` mounting is particularly effective** (Windows 10/11 often doesn't apply MOTW to mounted ISO contents)."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "quiz",
+            "title": "MOTW Bypass 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "Which file delivery method is LEAST likely to result in the maldoc having Mark-of-the-Web applied?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Direct email attachment",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Download from a web link",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Extracted from a mounted .ISO file",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Saved from OneDrive",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Files extracted from mounted ISO images often bypass MOTW, a technique heavily abused by malware distributors.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "AMSI Bypass Techniques 🧬",
+            "content": "# Antimalware Scan Interface\n\n**What is AMSI?**\n- A Windows interface that allows AV/EDR to scan **script content** (PowerShell, VBA, JavaScript) **before** execution.\n- It sees your `IEX(New-Object Net.WebClient)...` command and can block it.\n\n**VBA-Level AMSI Bypass (Memory Patching):**\nAdvanced VBA can patch the `AmsiScanBuffer` function in memory to always return `AMSI_RESULT_CLEAN`.\n\n**Simpler Techniques:**\n1.  **Obfuscation:** Break strings, use concatenation, Base64 encode commands.\n    - `\"pow\" + \"ers\" + \"hell\"` instead of `\"powershell\"`.\n2.  **Reflection:** Use .NET reflection to load assemblies without triggering AMSI.\n3.  **LOLBins:** Use trusted Windows binaries (`mshta`, `rundll32`, `wmic`) that are less scrutinized.\n\n**PowerShell-Level Bypass:**\n- Use `-Command \"[Ref].Assembly.GetType(...)\"` to patch AMSI in memory from within PowerShell.\n\n**Note:** AMSI bypass is a cat-and-mouse game. Techniques are frequently patched."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "code",
+            "title": "Simple String Obfuscation Example 🥷",
+            "content": "Breaking up strings to evade static signature detection:",
+            "codeSnippet": "Private Sub Workbook_Open()\n    Dim strPart1 As String, strPart2 As String, strPart3 As String\n    Dim strFull As String\n    \n    strPart1 = \"pow\"\n    strPart2 = \"ers\"\n    strPart3 = \"hell\"\n    \n    strFull = strPart1 & strPart2 & strPart3 & \".exe -WindowStyle Hidden -Command Write-Host 'Hello'\"\n    \n    Shell strFull, vbHide\nEnd Sub",
+            "codeLanguage": "vba",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Sandbox and VM Detection 🖥️",
+            "content": "# Don't Detonate in the Analyst's Lab\n\n**Goal:** Prevent your payload from executing if it's in a **sandbox** or **virtual machine**.\n\n**Common Checks:**\n- **Low screen resolution:** `GetSystemMetrics(SM_CXSCREEN) < 1024` (Common in sandboxes).\n- **Low disk space:** Sandboxes often have small virtual disks.\n- **Lack of user interaction:** Check `GetLastInputInfo` (If no mouse/keyboard activity for hours, it's a sandbox).\n- **VM Artifacts:** Check for VMware/VirtualBox registry keys or processes.\n- **Domain vs. Workgroup:** Target is likely domain-joined. Sandbox is likely workgroup.\n\n**Implementation:**\n```vba\nIf Not IsSandbox() Then\n    Call RunPayload\nElse\n    ' Do nothing, or display fake error\nEnd If\n```\n\n**Important:** Overly aggressive sandbox evasion can actually **flag** the document as suspicious. Use subtle checks."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "quiz",
+            "title": "Evasion Techniques 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_3",
+                "type": "multiple_choice",
+                "question": "You want your VBA macro to only execute if the computer is a member of the 'ACME' domain. This is an example of:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "AMSI bypass",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Sandbox evasion",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "String obfuscation",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Process hollowing",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Checking the domain membership ensures the payload only executes on the intended corporate network, not in a generic sandbox.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

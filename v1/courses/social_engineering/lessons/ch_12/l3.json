@@ -1,0 +1,140 @@
+{
+    "id": "l3",
+    "chapterId": "ch_12",
+    "title": "Execution & Adaptability",
+    "description": "Running the campaign, handling real-world obstacles, and pivoting when the plan changes.",
+    "xpReward": 40,
+    "estimatedMinutes": 10,
+    "section": "Execution",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Fog of War 🌫️",
+            "content": "# No Plan Survives First Contact\n\n**Reality Check:** Your beautiful campaign plan will encounter **friction**.\n\n**Common Execution Obstacles:**\n- Phishing emails land in spam (poor deliverability).\n- Target for vishing is on vacation (auto-reply).\n- Loading dock door is locked and monitored (physical vector fails).\n- Blue Team detects your C2 beacon within hours (fast response).\n\n**The Red Teamer's Superpower: Adaptability.**\n\n**Mindset Shift:**\n- **From:** *\"This isn't working. The engagement is failing.\"*\n- **To:** *\"This vector is blocked. What does that tell me about their defenses? How can I pivot?\"*\n\n**Adaptability is not improvisation.** It's having **pre-planned contingencies** and the **technical skill** to switch gears."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Adaptability Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Your primary phishing domain gets blacklisted by the email gateway after the first 10 emails. What is the BEST immediate response?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Stop the phishing campaign entirely",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Switch to a pre-warmed backup domain and continue the campaign with the remaining targets",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Complain to the client",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Keep sending from the blacklisted domain",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Contingency planning includes having backup infrastructure ready. Switching domains allows the operation to continue while preserving stealth.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Scenario: The Phishing Vector Adapts 🎣",
+            "content": "# Capstone Execution: Week 1\n\n**Planned:** Send 50 spear-phishing emails with Salesforce-themed maldoc.\n\n**Reality:**\n- Email gateway blocks 40 emails (quarantine). 10 reach inboxes.\n- 3 users open the document. 0 enable macros. (Defender ASR rules block the macro).\n- **Result:** Phishing vector yields **zero initial access**.\n\n**Adaptation Strategy:**\n1.  **Analyze Failure:** The target has strong email filtering and endpoint controls. Direct maldocs are not viable.\n2.  **Pivot to Lower-Tech:** Switch to a **Credential Harvesting** page (Evilginx) mimicking Okta login. No macros required. Deliver via a **vishing call** instead of email.\n3.  **Vishing Script Adaptation:** *\"Hi, this is IT. We're seeing a sync error with your Okta account. Can you log in to the portal I'm about to text you to verify your settings?\"*\n4.  **Text Message (Smishing):** Send link to `okta-nexus.com` (Evilginx server).\n\n**Outcome:** Vishing + Smishing bypasses email filters and endpoint controls. 2 out of 5 called employees provide credentials + MFA token via Evilginx."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "quiz",
+            "title": "Phishing Pivot 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "The Red Team pivoted from email maldocs to vishing + smishing with a credential harvester. What was the key insight driving this pivot?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Email was too slow",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The target had strong email filtering and endpoint controls that blocked the maldoc vector",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Vishing is always better",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The client requested a change",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. The pivot addressed the specific defenses encountered. Adaptability is about finding the path of least resistance.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Scenario: The Physical Vector Adapts 🚪",
+            "content": "# Capstone Execution: Day 5\n\n**Planned:** Tailgate via loading dock during morning delivery window.\n\n**Reality:**\n- Loading dock is staffed by a vigilant security guard checking all IDs.\n- No deliveries are being accepted without prior notification.\n- **Result:** Physical vector fails on first attempt.\n\n**Adaptation Strategy:**\n1.  **Analyze Failure:** The loading dock is a hardened entry point. The main lobby is also guarded.\n2.  **Pivot to Alternative Entry:** Observe employees. They exit via a **side door near the smoking area** and prop it open with a rock while they smoke.\n3.  **New Entry Plan:** Wait for a smoker to exit. Enter through the propped door. Walk confidently with a laptop bag (Gray Man).\n4.  **Internal Movement:** If challenged: *\"Left my badge at my desk. Just grabbing coffee.\"*\n\n**Outcome:** Successfully gained internal access. Located an empty conference room with an unlocked network port. Plugged in a **Wi-Fi Pineapple** to establish covert external access."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Maintaining Stealth During Execution 🥷",
+            "content": "# The Silent Operator's Checklist\n\n**During Active Engagement:**\n- **C2 Check-ins:** Use long sleep times (e.g., 8 hours) with jitter to reduce network noise.\n- **Living Off the Land:** Use `net`, `whoami`, `dir` for recon, not `Mimikatz` (highly detected).\n- **Avoid Peak Hours:** Perform noisy actions (scanning, file transfers) during lunch or after hours.\n- **Monitor Blue Team Activity:** Are they responding? If you see your C2 domain being sinkholed, **abort that channel**.\n- **Log Everything:** Timestamp every action. This is critical for the Attack Narrative in the report.\n\n**If You Suspect Detection:**\n- **Do not panic.**\n- **Reduce activity.** Go silent for 24-48 hours.\n- **Switch C2 channels** if possible.\n- **Prepare a graceful exit** (cleanup script)."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Stealth Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "multiple_choice",
+                "question": "Your C2 beacon is set to check in every 60 seconds. A Blue Team analyst notices this predictable pattern. What should you have configured instead?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Faster check-ins",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Sleep time with jitter (randomized intervals)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "No sleep time",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Encrypted traffic only",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Jitter randomizes the beacon interval, making it much harder to distinguish from normal user traffic patterns.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

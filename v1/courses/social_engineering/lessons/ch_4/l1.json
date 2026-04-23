@@ -1,0 +1,111 @@
+{
+    "id": "l1",
+    "chapterId": "ch_4",
+    "title": "What is Phishing?",
+    "description": "Learn the definition, scale, and psychology behind the most common cyber attack vector.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Phishing Fundamentals",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Hook in the Water 🎣",
+            "content": "# Phishing: A Definition\n\n**Phishing** is the fraudulent practice of sending emails or messages purporting to be from reputable companies or individuals in order to induce individuals to reveal personal information, such as passwords and credit card numbers.\n\n**Analogy:** Imagine casting a wide net with shiny lures. Some fish ignore it. Others are curious. A few bite. That's phishing.\n\n**Scale of the Problem:**\n- **91%** of all cyber attacks begin with a phishing email. (Source: Deloitte)\n- **$17,700** is lost every minute due to phishing attacks. (Source: RiskIQ)\n- **3.4 billion** phishing emails are sent every day.\n\n**Why It Works:** Phishing targets the **human**, not the technology. Firewalls don't stop users from typing their password into a fake login page."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Phishing Definition Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the primary reason phishing is so effective despite advanced email security filters?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Hackers are better at coding",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It targets human psychology, not technical vulnerabilities",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Antivirus software is outdated",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Passwords are too weak",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Phishing exploits human trust, curiosity, fear, and cognitive biases. Technology can't patch human nature.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Types of Phishing 📂",
+            "content": "# From Spray-and-Pray to Precision Strike\n\nPhishing comes in many flavors. Understanding the spectrum helps you craft effective campaigns.\n\n| Type | Target | Example |\n| :--- | :--- | :--- |\n| **Mass Phishing** | Everyone | \"Your Amazon account has been locked!\" |\n| **Spear Phishing** | Specific Individual/Dept | \"Hi Jane, please review this contract from Vendor X.\" |\n| **Whaling** | C-Suite Executives | \"Urgent wire transfer request from the CEO.\" |\n| **Smishing** | SMS Text Message | \"Your package delivery failed. Update info: [link]\" |\n| **Vishing** | Voice Call | \"This is Microsoft Support. Your PC is infected.\" |\n| **Quishing** | QR Code | Scan this QR code for the menu... (malicious URL) |"
+        },
+        {
+            "id": "s_l1_4",
+            "type": "tip",
+            "title": "Spear Phishing vs. Whaling 🎯",
+            "content": "## Precision Matters\n\n- **Spear Phishing:** You research Jane, a mid-level accountant. You know she uses **SAP Concur**. You send an email: *\"Action Required: Concur Expense Report Rejected - Please Correct.\"* Jane clicks because it's **relevant** to her job.\n\n- **Whaling:** You target the **CEO**. You spoof an email from the company's law firm: *\"Confidential: Pending Litigation Strategy - For Your Eyes Only.\"* The CEO is curious and clicks.\n\n**Key Difference:** Spear phishing uses **contextual relevance**. Whaling uses **authority and secrecy**. Both rely heavily on **OSINT** (Chapter 2)."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "quiz",
+            "title": "Phishing Types 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "You send a tailored email to the Head of Finance, referencing a specific merger deal they are working on. This is an example of:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Mass Phishing",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Spear Phishing",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Smishing",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Quishing",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Spear phishing is targeted and uses specific, researched details to increase credibility.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "The Phishing Kill Chain ⛓️",
+            "content": "# From Email to Compromise\n\nA successful phishing attack follows a predictable path:\n\n1.  **Reconnaissance (OSINT):** Find target email addresses and contextual info.\n2.  **Weaponization:** Craft the email and prepare the malicious payload (link or attachment).\n3.  **Delivery:** Send the email (bypassing spam filters).\n4.  **Exploitation:** User clicks link or opens attachment.\n5.  **Installation:** Malware installs OR credentials are entered into fake portal.\n6.  **Command & Control (C2):** Attacker gains persistent access.\n7.  **Actions on Objective:** Data theft, ransomware, lateral movement.\n\n**Our Focus in This Chapter:** Steps 2, 3, and 4. Making the bait irresistible."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "warning",
+            "title": "Red Team Note ⚠️",
+            "content": "## Authorization is Mandatory\n\nIn a Red Team engagement, phishing is **only permitted** against email addresses listed in the **Scope of Work (SOW)** .\n\n- **DO NOT** phish personal Gmail accounts of employees.\n- **DO NOT** phish third-party vendors without explicit written permission from your client AND the vendor.\n\n**Golden Rule:** The target organization must own the email infrastructure you are testing. Phishing `@acmecorp.com` is in scope. Phishing `employee@gmail.com` is a **federal crime**."
+        }
+    ]
+}
