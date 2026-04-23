@@ -1,0 +1,305 @@
+{
+    "id": "quiz_ch_2",
+    "chapterId": "ch_2",
+    "title": "Chapter 2 Quiz: OSINT & Pretexting",
+    "description": "Test your knowledge of open source intelligence gathering and pretext construction.",
+    "passingScore": 70,
+    "xpReward": 150,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What does OSINT stand for?",
+            "options": [
+                "Open System Intelligence",
+                "Open Source Intelligence",
+                "Operational Security Intelligence",
+                "Online Social Intelligence"
+            ],
+            "correctAnswer": 1,
+            "explanation": "OSINT = Open Source Intelligence. It refers to information collected from publicly available sources."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "OSINT gathering requires a warrant or special legal permission because it involves accessing private company data.",
+            "correctAnswer": false,
+            "explanation": "False. OSINT uses only publicly accessible information. No hacking or bypassing of authentication is required. That's why it's legal."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "What is a 'Sock Puppet' account?",
+            "options": [
+                "An account used to test software vulnerabilities",
+                "A fake online identity used to conduct OSINT without revealing your real identity",
+                "A type of email spam filter",
+                "A compromised employee account"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A Sock Puppet is a burner/fake account used for OPSEC to prevent the target from knowing you are scouting them."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which Google search operator would you use to find PDF files containing the word 'confidential' on a specific website?",
+            "options": [
+                "site:target.com filetype:pdf intitle:confidential",
+                "site:target.com filetype:pdf confidential",
+                "inurl:target.com pdf confidential",
+                "target.com confidential pdf"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`site:` limits to the domain, `filetype:` specifies the extension, and the keyword `confidential` is the search term. Option A is also valid but overly specific."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "You want to find all subdomains and login portals for 'megacorp.com' using Google. Which query is best?",
+            "options": [
+                "megacorp login",
+                "site:megacorp.com inurl:login",
+                "inurl:megacorp.com",
+                "filetype:php megacorp"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`inurl:login` finds URLs containing the word 'login', which often points to portal pages on various subdomains."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is Shodan primarily used for?",
+            "options": [
+                "Searching for people's email addresses",
+                "Searching for internet-connected devices and open ports",
+                "Searching deleted tweets",
+                "Searching the Dark Web"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Shodan scans IP addresses and identifies devices (IoT, servers, webcams) and their open ports/banners."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "A job posting asking for '5 years of Azure Sentinel experience' is useless for a social engineer because it's just HR text.",
+            "correctAnswer": false,
+            "explanation": "False. It's extremely useful. It tells you exactly what SIEM (Security Information and Event Management) tool the company uses for logging. You know what not to trip."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "You find a photo posted by an employee in the office. What can EXIF data reveal?",
+            "options": [
+                "The employee's password",
+                "The GPS coordinates where the photo was taken",
+                "The employee's browsing history",
+                "The brand of the employee's phone"
+            ],
+            "correctAnswer": 1,
+            "explanation": "EXIF metadata often includes GPS coordinates if location services were enabled on the camera. This can reveal the exact building or office location."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "According to the lesson, what is the 'Know-It-All Trap'?",
+            "options": [
+                "Pretending to know the CEO personally",
+                "Being too technically accurate and scaring the target into transferring you to a real expert",
+                "Knowing the target's birthday",
+                "Using too many acronyms"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Weaponized Incompetence is often better. Sounding too smart can intimidate a non-technical user and make them escalate the call to someone who *can* verify your lies."
+        },
+        {
+            "id": "q10",
+            "type": "fill_blank",
+            "question": "The three pillars of a solid pretext are Identity, Authority, and _______.",
+            "options": [
+                "Objective",
+                "Software",
+                "Timing",
+                "Luck"
+            ],
+            "correctAnswer": "Objective",
+            "explanation": "You must know exactly what action you want the target to take (the Objective) before you call."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What is the 'Pretext Bible'?",
+            "options": [
+                "A religious text",
+                "A document containing all the consistent details of your fake identity (name, manager, ID)",
+                "A list of passwords found in breaches",
+                "A script for leaving voicemails"
+            ],
+            "correctAnswer": 1,
+            "explanation": "It's your cheat sheet. If you forget your fake name mid-call, you're done. The Bible keeps you consistent."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is 'The Pinch'?",
+            "options": [
+                "When the target gives you their password",
+                "The moment the target expresses doubt or asks a challenging verification question",
+                "The end of the call",
+                "The initial contact phase"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The Pinch is the critical moment of friction. How you handle it determines success or failure."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "If you are caught in a lie during a vishing call, the best strategy is to argue with the target and insist you are correct.",
+            "correctAnswer": false,
+            "explanation": "False. You abort cleanly. Arguing escalates the situation and guarantees the target will report you, burning your operational security."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "You want to find employees who are 'New Hires' because they are easier targets. Which platform is best for identifying recent job changes?",
+            "options": [
+                "Twitter",
+                "LinkedIn",
+                "Instagram",
+                "Reddit"
+            ],
+            "correctAnswer": 1,
+            "explanation": "LinkedIn is built around professional networking and job announcements. Look for 'started a new position' posts."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "An employee tweets: '@CompanyIT My VPN token is locked AGAIN. Ticket #12345.' What is the most valuable piece of intel in that tweet?",
+            "options": [
+                "That the IT department is slow",
+                "The valid ticket number #12345",
+                "The employee's username",
+                "That they use a VPN"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The ticket number provides instant credibility. You can reference a 'real' ticket in your pretext."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "During a Red Team engagement, you find the target's personal Gmail password in a breach database. What is the ethical/legal use of this data?",
+            "options": [
+                "Log into the Gmail account",
+                "Use it to log into their work account (password reuse)",
+                "Analyze the password pattern for future guessing attacks against the corporate network",
+                "Email them a warning"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Accessing personal accounts is illegal. Using the *pattern* (e.g., 'Summer2021!') to inform corporate password attacks is standard tradecraft, provided the corporate attack is authorized."
+        },
+        {
+            "id": "q17",
+            "type": "fill_blank",
+            "question": "The tactic of playing ambient office noise or having a fake child crying in the background to make a call sound more authentic is an example of adding ______ to your pretext.",
+            "options": [
+                "Noise",
+                "Verisimilitude",
+                "Echo",
+                "Static"
+            ],
+            "correctAnswer": "Verisimilitude",
+            "explanation": "Verisimilitude means the appearance of being true or real. Messy details make the story believable."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "Multi-stage pretexting (calling once just to confirm a hostname, then calling back the next day to 'fix' it) is a waste of time.",
+            "correctAnswer": false,
+            "explanation": "False. It's highly effective. The first harmless call 'preloads' trust. The target remembers the friendly interaction and is less suspicious the second time."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What does the tool 'theHarvester' do?",
+            "options": [
+                "Cracks password hashes",
+                "Scrapes emails, names, and subdomains from search engines",
+                "Creates phishing emails",
+                "Spoofs caller ID"
+            ],
+            "correctAnswer": 1,
+            "explanation": "theHarvester is a classic OSINT tool for gathering email addresses and domain information from public sources like Google and Bing."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Why is a 'New Hire' considered a prime target for social engineering?",
+            "options": [
+                "They have the most access",
+                "They are eager to please and don't know standard procedures yet",
+                "They are usually the CEO",
+                "They work from home"
+            ],
+            "correctAnswer": 1,
+            "explanation": "New hires are in 'learning mode.' They are afraid to push back or question authority because they want to make a good impression. This makes them highly compliant."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "You are targeting a company. You see a news article that they just acquired a smaller competitor. What is the security implication?",
+            "options": [
+                "Their security is better now",
+                "Mergers create chaos in IT integration, making impersonation easier",
+                "They have more money",
+                "Their stock price went up"
+            ],
+            "correctAnswer": 1,
+            "explanation": "M&A activity creates confusion. People from the acquired company don't know who the legitimate IT staff are. It's a perfect window for vishing."
+        },
+        {
+            "id": "q22",
+            "type": "true_false",
+            "question": "Google Dorking is illegal in most countries.",
+            "correctAnswer": false,
+            "explanation": "False. It uses public search indexes. It is legal, though it may violate a company's terms of service for Google (which is a civil matter, not criminal)."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "What is the purpose of the 'Exit Strategy' in a pretext?",
+            "options": [
+                "To get the password faster",
+                "To leave the target feeling positive and un-suspicious after the interaction",
+                "To upload malware",
+                "To confirm the target's phone number"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A clean exit prevents the target from reflecting on the call and realizing they were scammed. It extends the time before detection."
+        },
+        {
+            "id": "q24",
+            "type": "fill_blank",
+            "question": "If a target says 'Wait, we use Okta, not Duo,' this is an example of being caught in ______.",
+            "options": [
+                "The Pinch",
+                "The Loop",
+                "The Exit",
+                "The OSINT"
+            ],
+            "correctAnswer": "The Pinch",
+            "explanation": "The Pinch is the moment of doubt or verification."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "You need to find the specific brand of firewall a company uses. According to the OSINT lesson, which of the following is LEAST likely to help?",
+            "options": [
+                "Searching employee LinkedIn profiles for certifications",
+                "Checking the company's job postings",
+                "Looking at the company's 'About Us' mission statement",
+                "Searching for technical presentations given by employees at conferences"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The mission statement rarely includes technical infrastructure details. LinkedIn, job postings, and conference talks are goldmines for tech stack details."
+        }
+    ]
+}

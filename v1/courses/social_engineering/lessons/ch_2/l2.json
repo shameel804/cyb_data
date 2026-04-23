@@ -1,0 +1,128 @@
+{
+    "id": "l2",
+    "chapterId": "ch_2",
+    "title": "Google Dorking & Search Operators",
+    "description": "Unlock the hidden internet with advanced Google search queries.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Reconnaissance",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "What is Google Dorking? 🕳️",
+            "content": "# Searching Smarter, Not Harder\n\n**Google Dorking** (or Google Hacking) uses advanced search operators to find information that isn't easily visible through normal browsing.\n\n**Analogy:** Google is a flashlight. Normal search is shining it at the front door of a website. Dorking is shining it into the **basement windows** and **air vents**.\n\n**Common Targets Found with Dorks:**\n- Open directories full of PDFs (`intitle:index.of`)\n- Login portals for admin panels (`inurl:admin`)\n- Exposed configuration files (`filetype:env`)\n- Webcam feeds (`inurl:view/index.shtml`)"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Dorking Legality 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "true_false",
+                "question": "Google Dorking is illegal because it accesses hidden parts of websites.",
+                "options": [],
+                "explanation": "False. Dorking only uses Google's public index. You are not bypassing any authentication or exploiting a vulnerability. You are just using the search engine very precisely.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Essential Google Operators 🛠️",
+            "content": "# The Swiss Army Knife of Search\n\n| Operator | Function | Example (Target: Acme Corp) |\n| :--- | :--- | :--- |\n| `site:` | Limit search to one domain | `site:acmecorp.com` |\n| `filetype:` | Search for specific file extensions | `filetype:pdf confidential` |\n| `intitle:` | Find pages with text in the title tag | `intitle:\"index of\"` |\n| `inurl:` | Find pages with text in the URL | `inurl:admin` |\n| `-` | Exclude a term (Minus sign) | `site:acmecorp.com -www` |\n| `*` | Wildcard (fill in the blank) | `\"Powered by * vBulletin\"` |"
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Real-World Dork Examples 🧪",
+            "content": "Here are some practical dorks you might use against a target:",
+            "codeSnippet": "// Find PDFs on the target site containing the word 'password'\n// Query: site:target.com filetype:pdf password\n\n// Find login portals (often overlooked subdomains)\n// Query: site:target.com inurl:login\n\n// Find exposed directory listings\n// Query: intitle:\"index of\" site:target.com\n\n// Find backup files (.bak) that may contain source code\n// Query: site:target.com filetype:bak",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "Operator Challenge 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "You want to find Excel spreadsheets on 'megacorp.com' that might contain the word 'budget' or 'salary'. Which query is most effective?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "site:megacorp.com filetype:xlsx budget OR salary",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "megacorp excel budget",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "inurl:megacorp budget.xlsx",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "site:megacorp.com filetype:doc budget",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! The `OR` operator (or `|`) is essential for combining similar keywords. Option 4 is wrong because it looks for Word docs, not Excel.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "warning",
+            "title": "The Google Hacking Database (GHDB) 📖",
+            "content": "## Don't Reinvent the Wheel\n\nSecurity researchers have been cataloging these dorks for years. The **Google Hacking Database (GHDB)** is a collection of thousands of pre-built queries.\n\n**Where to find it:** Search for *'Exploit-DB Google Hacking Database'*.\n\n**Categories include:**\n- **Files containing passwords**\n- **Vulnerable servers**\n- **Network devices**\n- **Web server detection**\n\n**Usage:** Replace `site:example.com` with `site:your-target.com` and run the dork.\n\n**Warning:** Running `intitle:\"webcamXP\"` might show you live cameras. **Do not interact with them. It's weird and likely illegal if you watch them.**"
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Beyond Google: Specialized Search Engines 🔭",
+            "content": "# The Deep Web (Not Dark Web)\n\nGoogle only indexes about 4% of the internet. To find more, use specialized engines:\n\n- **Shodan.io:** Searches for **devices** (Webcams, Industrial Control Systems, Refrigerators).\n- **Censys.io:** Searches for **SSL Certificates and Domains**.\n- **Hunter.io:** Finds **email address formats** for a company.\n\n**Example:** Searching Shodan for `org:'Acme Corp'` might show you their exposed firewall login page before you even visit their website."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "quiz",
+            "title": "Search Engine Match 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "multiple_choice",
+                "question": "You need to find the IP address and open ports of a company's VPN gateway. Which tool is designed specifically for this?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Google",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Hunter.io",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Shodan",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Wayback Machine",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Shodan scans the entire internet IP space and logs banners (software versions). It's the go-to for infrastructure discovery.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

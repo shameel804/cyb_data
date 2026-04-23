@@ -1,0 +1,111 @@
+{
+    "id": "l4",
+    "chapterId": "ch_1",
+    "title": "Anatomy of an Attack",
+    "description": "The 4-Phase Lifecycle of every successful social engineering operation.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Frameworks",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Social Engineering Kill Chain ⛓️",
+            "content": "# 4 Phases to Compromise\n\nUnlike a drive-by download which is instant, Social Engineering is a **process**. Think of it like fishing vs. hunting.\n\n1.  **Reconnaissance (OSINT):** Finding the target's interests, fears, and workflow. *Who does Bob report to? What software does HR use?*\n2.  **Pretexting (The Mask):** Designing the **character** you will play and the **story** you will tell.\n3.  **Engagement (The Hook):** The actual phone call, email, or in-person interaction.\n4.  **Exit & Reporting:** Getting out cleanly without burning your cover or alerting the target."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Phase 1: Reconnaissance 🔍",
+            "content": "## You Can't Manipulate What You Don't Understand\n\n**Goal:** Collect **Open Source Intelligence (OSINT)**.\n\n*   **Company:** LinkedIn (Names, Titles, Tenure). Glassdoor (Complaints about IT, Software used).\n*   **Individual:** Twitter/X (Political leanings, Hobbies). Instagram (Dog's name, Coffee order).\n\n**The Gold Nugget:** Finding out the target uses **ServiceNow** for IT tickets. Why? Because now you can say: *\"Hi, I'm calling from ServiceNow support...\"* and it sounds **legit**."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Recon Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "You are targeting 'Finance Inc.' You see a job posting for a 'Workday Payroll Specialist' on their site. How does this help you?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "You know their hiring budget.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "You can apply for the job.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "You now know their HR/Payroll software is Workday. Perfect for pretexting.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "You can email the HR manager about the job.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! Knowing the specific software name ('Workday') adds massive credibility to your pretext. You sound like an insider.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Phase 2: Pretexting 🎭",
+            "content": "## The Method Actor Approach\n\nYou are not 'lying.' You are **acting**. Great actors do research.\n\n**Elements of a Good Pretext:**\n*   **Character:** Who are you? (IT Intern, Fire Inspector, Recruiter).\n*   **Story:** Why are you here? (Firewall update, Annual inspection, Amazing job offer).\n*   **Goal:** What is the *minimum* info you need to get? (Click a link, Open a door, Read a number).\n\n**The Golden Rule of Pretexting:**\n> **KISS: Keep It Simple, Stupid.**\n\n*   **Bad Pretext:** \"I'm a CIA operative working with the NSA on a zero-day...\"\n*   **Good Pretext:** \"I'm new in Accounting and locked out of the shared drive. Can you reset it for me?\""
+        },
+        {
+            "id": "s_l4_5",
+            "type": "warning",
+            "title": "Phase 3: Engagement 📞",
+            "content": "## The Moment of Truth\n\nThis is the high-stress part. You are improvising while maintaining character.\n\n**Tactical Tips for Voice Engagement:**\n*   **Assume Authority:** Don't ask *\"Can you help me?\"* Say *\"I need you to verify something for me.\"*\n*   **Mirroring:** Match the target's speech rate and energy. If they talk slow, you talk slow.\n*   **The 'Yes Ladder':** Get them saying 'Yes' to small, obvious things. *\"Is this the Finance Department?\"* *\"Yes.\"* *\"Are you the person who handles vendor payments?\"* *\"Yes.\"* *\"Great, I have a change request for you...\"* (The brain is now in 'Yes' mode)."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Pretext Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "Which pretext is likely MOST effective for getting a password reset from a busy Help Desk agent?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "\"I'm a senior VP and I'm furious! Reset my account NOW.\"",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "\"Hi, it's Sarah... look, I'm so sorry, I'm trying to get this report out before the 5 PM deadline and my brain is just fried. I forgot my VPN password again. Can you help me out real quick?\"",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "\"I'm from Microsoft security services.\"",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "\"I need to speak to your manager.\"",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Option 2 uses **Vulnerability** and **Shared Pain**. The Help Desk agent relates to the stress. They want to help 'Sarah' succeed. Option 1 (Anger) often triggers *more* security checks.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Phase 4: The Exit 🚪",
+            "content": "## Burn the Bridge... Quietly\n\nNever just hang up after getting the password. You need a **Cool Down**.\n\n*   **Reinforce the Lie:** *\"Thanks so much for the new password. I'm logging in now... Yep, I'm in! You're a lifesaver. Have a great rest of your shift!\"*\n*   **Why?** If you just hang up, the target's brain goes: *\"Huh, that was abrupt... Wait a minute...\"*\n*   **The Forgetting Curve:** If you end the call on a positive, human note, the target will forget the interaction within **20-30 minutes**. If you end weirdly, they remember it all day and might report you."
+        }
+    ]
+}

@@ -1,0 +1,105 @@
+{
+    "id": "l1",
+    "chapterId": "ch_2",
+    "title": "What is OSINT?",
+    "description": "Learn the definition, legality, and power of Open Source Intelligence gathering.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Reconnaissance",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Definition of OSINT 📚",
+            "content": "# Open Source Intelligence (OSINT)\n\n**OSINT** is the collection and analysis of information gathered from **publicly available sources**.\n\nThink of it as **detective work without a warrant**. Everything you find is already out there, waiting to be connected.\n\n**Key Distinction:**\n- **Illegal Hacking:** Breaking into a private server to steal employee data.\n- **OSINT (Legal):** Reading the employee's public LinkedIn profile where they posted: *\"Just passed my **Cisco CCNA**! Our network uses **ASA Firewalls** and **AnyConnect VPN**.\"*\n\nThat second option just handed you the blueprint to their network perimeter—**legally**."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "OSINT Legality Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "You find a file named 'passwords.txt' indexed by Google on a company's public-facing server. You open it and see a list of credentials. Is this OSINT?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Yes, because it's on the public internet",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "No, it's a security misconfiguration. Accessing it might be unauthorized.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Yes, Google indexed it, so it's fair game",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "No, because it's a text file",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. OSINT is about collecting information *intended* for public consumption (or inadvertently exposed but not actively exploited). Accessing a clearly private file, even if publicly accessible due to error, can cross legal boundaries in many jurisdictions. Ethical OSINT means knowing when to **stop**.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "The OSINT Cycle 🔄",
+            "content": "# Four Steps to Intelligence\n\nProfessional OSINT gathering follows a structured process:\n\n1.  **Planning & Direction:** *What do I need to know?* (e.g., What VPN does Acme Corp use?)\n2.  **Collection:** *Gathering raw data.* (Scraping LinkedIn, searching job boards, Google dorking.)\n3.  **Processing & Analysis:** *Connecting the dots.* (Oh, three employees mention 'Palo Alto' on their resumes. That's the firewall vendor.)\n4.  **Dissemination:** *Using the intel.* (Crafting a pretext: *\"Hi, I'm from Palo Alto support...\"*)\n\n**Pro Tip:** 90% of beginners fail at Step 1. They just search randomly. **Always have a specific target question.**"
+        },
+        {
+            "id": "s_l1_4",
+            "type": "tip",
+            "title": "The Sock Puppet Account 👤",
+            "content": "## Never OSINT from Your Personal Account\n\n**Rule #1 of OSINT:** **Burner Accounts Only.**\n\nYou do **NOT** want your real LinkedIn profile showing up in \"People Also Viewed\" while you're stalking your target's employees.\n\n- Create a **Sock Puppet**: A fake online identity with a neutral photo, a plausible job history, and a Gmail address that isn't `johnsmith123`.\n- **Why?** OPSEC (Operational Security). You want to be a ghost. If the target gets suspicious and checks who viewed their profile, they see `Business Analyst at Consulting Inc.`—not `John Doe, Red Team Lead`."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "quiz",
+            "title": "OSINT Cycle Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "You are targeting 'TechCorp'. You find a job posting for a 'Citrix Administrator'. According to the OSINT Cycle, what is the correct NEXT step?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Immediately call the company pretending to be Citrix support",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Post the job listing on Twitter",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Analyze the data: TechCorp likely uses Citrix for remote access. Log this for Pretexting.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Apply for the job to get inside",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct! You must process and analyze the raw data (the job post) before you act on it. Rushing to engage (Step 4) without analysis leads to sloppy pretexts.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_6",
+            "type": "warning",
+            "title": "The Ethical Boundary 🛑",
+            "content": "## When OSINT Becomes Stalking\n\nIn a Red Team engagement, you have **written permission** to simulate an attacker's behavior.\n\n**However:** Even with a contract, you do **NOT**:\n- Access the target's personal email (even if password is public).\n- Break into their car to get a laptop.\n- Threaten or harass family members.\n\n**The Rule:** If it's **publicly indexed** and you can see it without circumventing a login page, it's usually in bounds. If you have to guess a password or exploit a vulnerability to see it, it's **Intrusion**, not OSINT."
+        }
+    ]
+}

@@ -1,0 +1,105 @@
+{
+    "id": "l4",
+    "chapterId": "ch_2",
+    "title": "Corporate & Financial OSINT",
+    "description": "Digging into job boards, SEC filings, and breach data for the corporate blueprint.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Reconnaissance",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Job Postings: The Technical Manual 📄",
+            "content": "# We're Hiring! (And Leaking Our Stack)\n\nA company's **Careers Page** is a goldmine of technical details.\n\n**Example Job Ad:** *\"Seeking Senior Network Engineer with **7+ years of Palo Alto Panorama** experience and expert knowledge of **Cisco ISE** for NAC.\"*\n\n**Translation for the Attacker:**\n1.  **Firewall:** Palo Alto (Not Fortinet, Not Checkpoint).\n2.  **Network Access Control:** Cisco ISE.\n3.  **Attack Vector:** Craft a phishing email about a \"Palo Alto Critical Update\" or a vishing call about \"Cisco ISE Guest Portal Registration.\"\n\n**Always search:** `site:company.com \"years of experience\" \"engineer\"`"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Job Ad Intel 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "You find a job posting for a 'Salesforce Marketing Cloud Administrator'. What is the immediate tactical takeaway?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The company is about to go bankrupt",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The company uses Salesforce for email marketing, making it a potential vector for spoofed emails",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The company's website is built on Salesforce",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The company has a strict no-phishing policy",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Knowing the specific marketing platform allows you to craft emails that mirror legitimate Salesforce templates. Users are conditioned to trust that 'look and feel'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "SEC Filings & Investor Relations 📊",
+            "content": "## The Legally Required Leak\n\nPublic companies must file reports with the SEC (Securities and Exchange Commission). These are **legal documents** that often contain **cybersecurity risk factors** and **critical vendor names**.\n\n**Key Documents:**\n- **10-K (Annual Report):** Look for *\"Item 1A. Risk Factors\"* -> *\"We rely on **Microsoft Azure** for cloud hosting. An outage would be catastrophic.\"* **Boom. You know their cloud provider.**\n- **8-K (Current Report):** Announcements of **Mergers & Acquisitions**. This is prime time. When two companies merge, **security is chaos**. People don't know who belongs where. Perfect for impersonation."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "tip",
+            "title": "Breach Databases & Paste Sites 💀",
+            "content": "## The Ghost of Credentials Past\n\nThis is the **darker gray area** of OSINT. Services like **Have I Been Pwned** and **Dehashed** aggregate credentials from public data breaches.\n\n**Why this matters for SE:**\nYou find that `jsmith@acmecorp.com` was in the **LinkedIn 2012 Breach** with the password `Summer2021!`.\n\n**Do you log in?** **NO. (Illegal.)**\n**Do you use it?** **YES.** You now know:\n1.  John reuses passwords.\n2.  John uses seasons and years.\n3.  John's current password is probably `Spring2025!`.\n\n**Vishing Script:** *\"Hi John, I'm seeing you're using a seasonal password pattern. We're banning that next week. Can you update it to something more complex? What did you have in mind?\"* (You are **eliciting** the new password structure)."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "quiz",
+            "title": "Breach Data Ethics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "During a sanctioned Red Team, you find an employee's personal Gmail password in a public breach dump. What is the proper action?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Log into their Gmail to see if they email themselves work passwords",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Note the password pattern (e.g., 'Summer2021!') to use in password guessing against the corporate VPN",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Email the employee and tell them to change their password",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Ignore it; it's not work-related",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Accessing the personal Gmail is a **federal crime (CFAA violation)**. Analyzing the *pattern* of the password for use against corporate assets is standard Red Team tradecraft, provided it's within scope.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Exif Data & Document Metadata 📎",
+            "content": "## The Ghost in the File\n\nWhen you take a photo or save a Word doc, **hidden data (metadata)** is attached.\n\n- **Photos (EXIF):** GPS coordinates of where the picture was taken. (Employee posts a selfie in the office -> You get the exact building coordinates and sometimes the floor).\n- **Documents (Properties):** Author name, Company name, **Internal Server Paths** (`\\CORP-FS01\\Marketing\\budget.xlsx`).\n\n**Tool:** `exiftool` (Command line).\n\n**Defense Tip:** Always scrub metadata from files you send out to targets. You don't want them right-clicking and seeing *\"Author: RedTeam_Pwner\"*."
+        }
+    ]
+}

@@ -1,0 +1,84 @@
+{
+    "id": "l6",
+    "chapterId": "ch_2",
+    "title": "Advanced Pretext Management",
+    "description": "Handling the pinch, maintaining consistency, and knowing when to abort.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Pretexting",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "The Pretext Bible 📖",
+            "content": "# Consistency is Credibility\n\nYou will be asked questions. You cannot hesitate. You need a **Pretext Bible**.\n\nThis is a simple text file or OneNote page you keep open during the engagement with the following **canned answers**:\n\n| Question | Canned Answer |\n| :--- | :--- |\n| **Name?** | Alex Miller |\n| **Department?** | Infrastructure Support (Third Floor) |\n| **Manager?** | Sarah Jenkins (She's in meetings all day) |\n| **Employee ID?** | I'm a contractor, we use T-IDs. Mine is T-8872. |\n| **Callback Number?** | 555-0199 (Goes to a voicemail that says \"You've reached the Acme NOC...\") |\n\n**Rule:** If you have to *invent* a detail on the fly, **WRITE IT DOWN** immediately. If they call back tomorrow and ask for 'Alex Miller' and you say 'Who?', you're burned."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "The 'Pinch' and How to Escape 🤏",
+            "content": "# When They Push Back\n\n**The Pinch:** The moment the target expresses doubt or asks a specific verification question.\n*Example:* *\"Wait, I thought we used Okta for MFA, not Duo.\"*\n\n**Do NOT Argue.** You will lose.\n\n**Tactic 1: The Fumble and Redirect**\n*\"Oh... Okta? *[sound of typing]* Huh. You're right. Let me check the asset tag on your machine... *[pause]* ...Ugh, I'm so sorry. I was looking at the wrong ticket. Sarah from Accounting has Duo. You're on Okta. My bad. Thanks for catching that. Have a good one.\"* **CLICK.**\n\n**Tactic 2: The Technical Jargon Blizzard**\n*\"Ah, yeah, no, Duo is just the front-end push, but the back-end sync is tied to the Okta SAML assertion. It's a known issue with the hybrid cloud connector. Look, I don't want to take up your time with the architecture diagram. Just trust me, the code will verify the connection.\"*\n- **Result:** They are confused. They nod along. They give you the code."
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "The Pinch Response 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "Target: 'I need to verify this request. What's the ticket number?' You don't have a valid ticket number. What is the best tactic?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Say 'Ticket number 554321' confidently",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Say 'I'll have to check the system, let me call you back' and abort",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Insist it's urgent and bypass the ticket system",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Pretend the line is breaking up",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. **Never guess a ticket number.** If they check it, you are caught lying. Aborting cleanly with a promise to call back preserves the pretext. You can try again later with a different employee who is less strict.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "warning",
+            "title": "Burning the Pretext 🔥",
+            "content": "## Knowing When to Walk Away\n\nEgo is the enemy. If a target is **highly suspicious** or **security-aware**, **ABORT**.\n\n**Signs to Abort:**\n- They ask for a badge number or employee ID and demand to verify it.\n- They put you on hold to \"Check with their manager.\"\n- They say: *\"This sounds like a phishing call. I'm reporting this.\"*\n\n**Exit Strategy:**\n*\"You know what, this connection is terrible. Let me get back to a landline and call you from the NOC. Sorry for the hassle.\"* **CLICK.**\n\n**Why this is okay:** In a Red Team, your **access** is secondary to your **stealth**. If you burn a pretext, the company might send out a **Security Alert Email** warning everyone about 'Alex from IT.' That ruins the rest of the engagement for your entire team. **Live to phish another day.**"
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "Multi-Stage Pretexting 🪜",
+            "content": "# The Long Con\n\nSometimes you don't get the password on the first call. You just want to **plant a seed**.\n\n**Call 1 (Today):** *\"Hi, this is Alex from IT. We're doing a software audit. Can you just confirm you're running Windows 11? ... Great. And your hostname is `JDOE-LT`? ... Perfect. That's all I needed. Have a good one.\"*\n- **Intel Gained:** Hostname confirmed. Trust established. **No suspicious action taken.**\n\n**Call 2 (Tomorrow):** *\"Hi Jane, it's Alex again from the audit. Hey, thanks for helping yesterday. We found a missing patch on `JDOE-LT`. I need to push a quick update. It'll take 2 minutes, but it will log you out. Is now a bad time?\"*\n\n**Result:** Jane remembers the **nice, harmless call** from yesterday. She now trusts 'Alex' implicitly. This is called **Preloading Trust**."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "quiz",
+            "title": "Stealth vs. Success 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "true_false",
+                "question": "If a target becomes suspicious, it's better to push harder and insist you are who you say you are. The worst they can do is hang up.",
+                "options": [],
+                "explanation": "False. The worst they can do is **report the incident**, triggering an organization-wide alert. That burns your entire operation. A clean abort is always preferred over a hostile confrontation.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,90 @@
+{
+    "id": "l3",
+    "chapterId": "ch_2",
+    "title": "Social Media Intelligence (SOCMINT)",
+    "description": "Mining Facebook, LinkedIn, Twitter, and Instagram for actionable intelligence.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Reconnaissance",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Gold Mine 🥇",
+            "content": "# People Can't Stop Oversharing\n\nSocial media is the **number one source** for pretexting data. Employees volunteer information about their work life, software stack, and personal stressors daily.\n\n**The Mindset:** You are not looking for passwords. You are looking for **context** and **leveragable information**.\n\n- *Context:* Knowing the company just had **RIFs (Reduction in Force/Layoffs)**. You can then call as HR: *\"We need to verify your banking details to ensure your severance goes through smoothly.\"* \n- *Leverage:* Knowing the CEO's **dog's name**. You can say: *\"Hey, this is Rex's vet. We have an emergency with his records.\"*"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "LinkedIn: The Corporate Org Chart 👔",
+            "content": "## Who Works Where and With What?\n\nLinkedIn is the **Holy Grail** for SE Recon.\n\n**What to Extract:**\n1.  **Org Structure:** Who is the CFO? Who is the IT Manager? Who is the **New Hire** (most vulnerable)?\n2.  **Technology Stack:** Search for employees with skills in `Citrix`, `Salesforce`, `Workday`, `Cisco`.\n3.  **Job Changes:** People who just started a new job are **desperate to please**. They will follow instructions from 'IT' without question because they don't want to look incompetent.\n\n**Technique:** Look for posts like *\"Excited to announce I'm starting at Acme Corp next Monday as a Financial Analyst!\"* -> **Target Acquired.**"
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "LinkedIn Intel 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "You see a LinkedIn post: 'Just finished configuring our new **Duo MFA** rollout. Long weekend ahead!' What critical info did the employee just leak?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The employee's password",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The company uses Duo Security for Multi-Factor Authentication",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The employee is going on vacation",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The company network is down",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Now you know they use Duo. You can craft a vishing call: 'Hi, I'm calling from Duo Support. We're seeing an error on your token sync...'",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Twitter/X: Real-Time Sentiment 🐦",
+            "content": "## Complaints and Brags\n\nTwitter is **unfiltered** and **immediate**.\n\n**What to Search:**\n- `\"I work at [Company]\"`\n- `\"[Company] IT sucks\"` (Indicates frustration with tech—ripe for 'Tech Support' scams.)\n- `@[Company] help` (Public support requests reveal account usernames.)\n\n**Example:** User tweets: *\"@AcmeCorpIT My VPN token is locked AGAIN. Can someone please fix this? Ticket #12345.\"*\n- **Intel Gained:** Employee name, that the company uses VPN tokens, and a valid **Ticket Number**. You can now call the Help Desk and say *\"I'm following up on Ticket #12345...\"* **Instant credibility.**"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "tip",
+            "title": "Instagram & Facebook: Personal Life 🏖️",
+            "content": "## The 'In' for Rapport Building\n\nPeople put **gates and firewalls** around their work data, but leave their **personal lives wide open**.\n\n**Use Case:** You need to call a target and build trust in the first 5 seconds.\n\n**Recon:** Instagram shows target at **Wrigley Field** wearing a Cubs hat. Facebook shows they are a member of **'Chicago Dog Lovers'**.\n\n**The Call:** *\"Hey, this is Mark from IT. ...* (hears dog barking in background) *... Oh, is that a lab? I've got a golden retriever myself, total handful. Hey, quick question about your laptop...\"*\n\n**Result:** The target's brain subconsciously categorizes you as **'Friend'** or **'Ingroup'** because of the shared interest. The firewall drops."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "SOCMINT Ethics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "During a Red Team engagement, it is acceptable to friend request the target's teenage daughter to get more information about the family.",
+                "options": [],
+                "explanation": "False. **ABSOLUTELY FALSE.** This is a massive ethical breach and likely illegal harassment. Red Team activities must stay within the **professional boundary** of the target company. Family members are **OFF LIMITS** unless explicitly scoped (which is almost never).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Tools for SOCMINT Collection 🧰",
+            "content": "# Automating the Grind\n\nDoing this manually is slow. Use tools (responsibly):\n\n- **theHarvester:** Command-line tool that scrapes emails and names from search engines.\n- **Sherlock:** Finds a specific username across 300+ social networks.\n- **LinkedIn Scraper (Manual with Sock Puppet):** Even just looking at profiles yields the 'People Also Viewed' suggestions—which is **free org chart data**.\n\n**Golden Tip:** Use the **Wayback Machine (archive.org)** to see what an employee's LinkedIn profile looked like **before** they sanitized it for their current job. Old resumes often list **exact software versions** and **internal project names**."
+        }
+    ]
+}

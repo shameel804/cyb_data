@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_2",
+    "title": "Google Dorking Lab",
+    "description": "Practice constructing advanced search queries to find specific file types and directories.",
+    "estimatedMinutes": 15,
+    "problemStatement": "# Objective: OSINT Query Building\n\nYou are tasked with gathering intelligence on **Cyberdyne Systems** (fictional target). Do not actually search the internet; answer based on the operators taught.\n\n**Scenario:** You suspect Cyberdyne has left some internal documents exposed on their webserver. You want to find:\n1. Any PDF files on `cyberdyne.com` that mention the word 'project'.\n2. Any directory listings (index pages) on `cyberdyne.com`.\n3. Any Excel spreadsheets on `cyberdyne.com` that contain the word 'salary' or 'payroll'.\n\n**Task:** Write the exact Google search query string for each scenario.\n\n**Expected Output:** \n1. `[Your Query 1]`\n2. `[Your Query 2]`\n3. `[Your Query 3]`",
+    "hints": [
+        "Hint 1: Use `site:` to restrict the domain.",
+        "Hint 2: Use `filetype:` for file extensions.",
+        "Hint 3: Use `OR` or `|` to combine keywords."
+    ],
+    "expectedOutput": "1. site:cyberdyne.com filetype:pdf project\n2. intitle:\"index of\" site:cyberdyne.com\n3. site:cyberdyne.com filetype:xlsx salary OR payroll",
+    "solutionCode": "1. site:cyberdyne.com filetype:pdf project\n2. intitle:\"index of\" site:cyberdyne.com\n3. site:cyberdyne.com filetype:xlsx salary OR payroll"
+}

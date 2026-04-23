@@ -1,0 +1,100 @@
+{
+    "id": "l3",
+    "chapterId": "ch_1",
+    "title": "The CIA Triad for Humans",
+    "description": "Applying the classic security model to human behavior and information leakage.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Recap: The CIA Triad 📐",
+            "content": "# The Holy Trinity of InfoSec\n\nEvery security control you've ever seen exists to protect one of three things:\n\n*   **C - Confidentiality:** Keeping secrets *secret*. (Encryption, Passwords).\n*   **I - Integrity:** Ensuring data isn't *tampered with*. (Checksums, Signatures).\n*   **A - Availability:** Ensuring systems are *online* when needed. (Redundant power, DDoS protection).\n\n**The Human Twist:** Social Engineering attacks **all three**, but through the person, not the machine."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Human Confidentiality 🤫",
+            "content": "## Can You Keep a Secret?\n\n**Technical Control:** AES-256 Encryption. Unbreakable.\n**Human Bypass:** \"Hey, I'm from the audit team. We have a file corruption issue. Can you read me the first 4 digits of the encryption key to verify it matches?\"\n\n**Common Targets for Human Confidentiality Breach:**\n*   **Passwords:** Sticky notes under keyboards or in `passwords.txt` on the Desktop.\n*   **PII (Personally Identifiable Information):** Social Security Numbers, Birthdays, Mother's Maiden Name.\n*   **Trade Secrets:** The \"Secret Sauce\" recipe mentioned loudly at the bar."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Confidentiality Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "A criminal calls a hospital pretending to be a doctor and asks for a patient's room number and test results. Which leg of the CIA triad is being attacked?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Integrity",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Availability",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Confidentiality",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "All of the above",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. The attacker is trying to access private data (Confidentiality).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Human Integrity ✍️",
+            "content": "## Altering the Truth\n\n**Technical Control:** Digital Signatures verify a file hasn't changed.\n**Human Bypass:** *Pretexting.* Changing the 'story' so the target changes their *own* data.\n\n**Example: The Fake Invoice Scam**\n1.  Attacker calls Accounts Payable: \"Hi, this is Mark from VendorCorp. We just updated our banking details. Can you change the routing number for next week's payment?\"\n2.  **Result:** The *data* (bank routing number) has been tampered with *by the authorized user* (the employee). The system integrity is fine, the *process* integrity is broken."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Human Availability 🚫",
+            "content": "## Distraction and Denial\n\n**Technical Control:** Load Balancers keep websites up during traffic spikes.\n**Human Bypass:** \"Sorry, I'm swamped. Can you call me back tomorrow?\"\n\n**The Social Denial of Service (DoS):**\nIf you need to keep a Security Guard occupied so you can slip a device into a USB port, you don't *attack* the guard. You **talk to him.**\n\n*   A long, complicated story about needing directions to a fake meeting.\n*   Pretending to be lost and flustered.\n*   **Result:** The human 'system' is 100% utilized on *your* task. The door is unmonitored. Availability of the guard's attention is **zero**."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Integrity & Availability 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "A 'Tech Support' scammer convinces an elderly man to install remote desktop software and then 'repair' his computer by deleting a specific folder. This is an attack on:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Confidentiality only",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Integrity (the man's files are deleted/changed)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Availability of the scammer's time",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correct. While they might steal info (Confidentiality), the act of deleting folders or changing settings is an attack on **Integrity**.",
+                "xpReward": 10
+            }
+        }
+    ]
+}
