@@ -1,0 +1,111 @@
+{
+    "id": "l3",
+    "chapterId": "ch_1",
+    "title": "The IR Lifecycle (High-Level) 🔄",
+    "description": "Preparation, Detection, Containment, Eradication, Recovery, Lessons Learned.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Concepts",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Six-Step Dance 🕺",
+            "content": "# NIST SP 800-61 Framework\n\nIncident Response isn't chaotic. It follows a **lifecycle**. Think of it like a hospital's emergency room protocol.\n\n**The 6 Phases:**\n\n1.  **Preparation** 🛠️\n2.  **Detection & Analysis** 🔎\n3.  **Containment** ⛔\n4.  **Eradication** 🧹\n5.  **Recovery** 🏥\n6.  **Post-Incident Activity** 📝\n\nLet's do a high-level flyover of each. Subsequent chapters will dive **deep** into each one."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Phase 1: Preparation 🛠️",
+            "content": "### What happens BEFORE the fire?\n\nThis is where you earn your paycheck. If you skip this, you will fail when the alarm rings.\n\n**Key Activities:**\n- **Policies:** What is allowed on the corporate laptop?\n- **Playbooks:** Step-by-step guide for 'Ransomware' vs 'Data Theft'.\n- **Tools:** Firewall logs, Endpoint Detection (EDR) agents installed.\n- **People:** Who do you call at 3:00 AM? (The On-Call List).\n- **Out-of-Band Communication:** What if email is compromised? (Signal, Slack, WhatsApp groups)."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Preparation Pop Quiz 📋",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which of these is a 'Preparation' phase activity?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Deleting a malicious file from a server.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Creating an out-of-band WhatsApp group for the CSIRT.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Analyzing a suspicious PowerShell command in a log.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Writing the Lessons Learned report.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Creating communication channels BEFORE an incident is critical preparation. The other options occur during or after an incident.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Phases 2-4: The Active Response 🚒",
+            "content": "### 2. Detection & Analysis\n- **Analogy:** The Smoke Detector goes off.\n- **Action:** You look at the security cameras (logs) to see if there's a real fire or just burnt toast.\n- **Challenge:** **False Positives.** 99% of alerts are noise.\n\n### 3. Containment\n- **Analogy:** Closing the fire doors to stop the flames spreading.\n- **Action:** **Short-term:** Disconnect infected machine from network. **Long-term:** Block attacker's IP address at the firewall.\n- **Goal:** Stop the bleeding. **Do NOT turn off the computer yet** (you'll lose evidence!).\n\n### 4. Eradication & Recovery\n- **Analogy:** Removing the burnt wiring and fixing the wall.\n- **Action:** Remove malware, patch the vulnerability, restore data from clean backups.\n- **Challenge:** Making sure the attacker didn't leave a **Backdoor** to come back later."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "warning",
+            "title": "🔥 The Common Mistake",
+            "content": "## Don't skip to Eradication!\n\n**Novice:** 'I see malware! Delete! Delete! Reimage!'\n\n**Expert:** 'I see malware. Let's capture memory and network traffic first, **then** contain it, **then** delete it.'\n\n*Skipping to Eradication destroys the evidence needed to prove what happened or catch the attacker.*"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Phase 6: Post-Incident (The Aftermath) 📝",
+            "content": "### 6. Post-Incident Activity (Lessons Learned)\n\n**The most skipped step in IT.**\n\nThis is a **Blameless Post-Mortem** meeting.\n\n**Questions Asked:**\n- What went well? (Celebrate wins!)\n- What went wrong? (Process failure, not 'Bob is stupid'.)\n- What do we change so this **never** happens again?\n\n**Output:** A report with **Action Items** (e.g., 'Enable MFA on all admin accounts within 30 days')."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Order of Operations 📅",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "During which phase would you hold a 'Blameless Post-Mortem' meeting?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Containment",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Post-Incident Activity",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Detection",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Eradication",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Post-Incident Activity (Phase 6) is specifically reserved for reviewing what happened and improving for the future.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

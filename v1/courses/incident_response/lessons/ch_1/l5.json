@@ -1,0 +1,70 @@
+{
+    "id": "l5",
+    "chapterId": "ch_1",
+    "title": "Mindset of a Responder 🧠",
+    "description": "Stay calm, document everything, and trust but verify.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Practical Tips",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The 3 Pillars of IR Mindset 🏛️",
+            "content": "# Calm. Precise. Documented.\n\nBefore we move to the technical chapters, let's lock in the **mental framework**.\n\n**1. Stay Calm (The Sniper Mindset)**\n- Panic leads to mistakes. Mistakes lead to evidence destruction.\n- *Breath in... Breath out...* You are the expert. You've got this.\n\n**2. Document Everything 📝**\n- **The Timelog:** Your best friend in court.\n- *What time did you notice the alert?*\n- *What command did you run?*\n- *Why did you run it?*\n- **Format:** `[2026-04-20 14:32:00 UTC] Observed process `cmd.exe` spawning from `winword.exe`. Initiated memory capture using WinPMEM.`"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "tip",
+            "title": "Pro Tip: The Notebook 📒",
+            "content": "## Keep a Physical Notebook\n\nWhen systems are compromised, you cannot trust the computer to save your notes. Attackers often delete logs or encrypt files.\n\n**Keep a paper notebook and pen handy.** Write down times, IP addresses, and hash values.\n\n*This is not 'old school'. This is 'forensically sound'.*"
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Trust but Verify 🔎",
+            "content": "### 3. Trust but Verify\n\nJust because a tool says 'Clean' doesn't mean it's clean.\nJust because a user says 'I didn't click anything' doesn't mean they didn't click anything.\n\n- **Correlate Data:** Does the Firewall log match the Endpoint log?\n- **Timestamp Skew:** Is the clock on the server 10 minutes fast? That changes the timeline of the attack.\n\n**Critical Thinking Example:**\n*Tool Alert:* 'Malicious File Detected: C:\\Windows\\Temp\\bad.exe'\n*Action:* Quarantine the file.\n*Verification:* Did the file execute? Did it create any child processes? **Always ask 'What else did this thing do?'** "
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "Example: Documenting Commands 💻",
+            "content": "When documenting commands run on a live system, note the **intent** and the **exact syntax**.\n\n**Good Documentation Example:**\n```bash\n# [2026-04-20 14:35 UTC] Checking network connections to identify potential C2 traffic.\nnetstat -anob | findstr :443\n```\n\n**Bad Documentation Example:**\n```bash\n# looked at network stuff\n```\n\nWhy is the good one better? It shows **exactly** what you did and **why**. This protects you if questioned later."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "quiz",
+            "title": "Mindset Check ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "You just discovered a critical server is infected with ransomware. What is the FIRST thing you should do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Immediately shut down the server to stop the encryption.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Take a deep breath and note the exact time in your log.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Call your boss and yell 'The sky is falling!'",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Run a quick antivirus scan to see what variant it is.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "While containment is urgent, panicking and shutting down destroys volatile evidence (memory). Document the time, notify the team, then execute the containment playbook (likely network isolation first).",
+                "xpReward": 10
+            }
+        }
+    ]
+}
