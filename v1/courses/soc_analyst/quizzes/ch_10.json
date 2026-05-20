@@ -1,0 +1,305 @@
+{
+    "id": "quiz_ch_10",
+    "chapterId": "ch_10",
+    "title": "Chapter 10 Mastery Quiz",
+    "description": "Test your knowledge of the Incident Response lifecycle and the PICERL framework.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary difference between an 'Alert' and an 'Incident'?",
+            "options": [
+                "Alerts are always false positives; incidents are always true positives.",
+                "An alert is a potential security issue; an incident is a confirmed security breach.",
+                "Incidents come from EDR; alerts come from SIEM.",
+                "There is no difference."
+            ],
+            "correctAnswer": 1,
+            "explanation": "An incident is a confirmed violation. An alert is just a notification that requires investigation."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "The 'C' in PICERL stands for 'Containment'.",
+            "correctAnswer": true,
+            "explanation": "True. PICERL = Preparation, Identification, Containment, Eradication, Recovery, Lessons Learned."
+        },
+        {
+            "id": "q3",
+            "type": "fill_blank",
+            "question": "The _____ is responsible for documenting the detailed timeline of events during an incident.",
+            "options": [
+                "Incident Commander",
+                "Scribe",
+                "Network Lead",
+                "CEO"
+            ],
+            "correctAnswer": "Scribe",
+            "explanation": "The Scribe captures actions, decisions, and timestamps for the post-mortem and legal record."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which phase of PICERL involves building playbooks and assembling the CSIRT contact list?",
+            "options": [
+                "Identification",
+                "Containment",
+                "Preparation",
+                "Lessons Learned"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Preparation happens BEFORE an incident occurs."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "You have confirmed a ransomware infection on a single workstation. What is the BEST immediate containment action using a modern EDR?",
+            "options": [
+                "Pull the network cable from the wall.",
+                "Shut down the computer gracefully.",
+                "Use the EDR 'Network Isolation' feature.",
+                "Do nothing and watch it spread."
+            ],
+            "correctAnswer": 2,
+            "explanation": "EDR isolation stops network traffic while preserving remote forensic access."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Why is it dangerous to run a full antivirus scan on a compromised host during the early stages of an incident?",
+            "options": [
+                "It uses too much CPU.",
+                "It can destroy forensic evidence by altering file timestamps and quarantining files.",
+                "It alerts the attacker.",
+                "It is not dangerous."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Scanning modifies the file system, potentially destroying the 'crime scene' before it is imaged."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What is the recommended eradication strategy for a compromised Domain Controller?",
+            "options": [
+                "Delete the malware files and keep using it.",
+                "Run a strong antivirus sweep.",
+                "Rebuild the server from a known-clean golden image or backup.",
+                "Rename the Administrator account."
+            ],
+            "correctAnswer": 2,
+            "explanation": "Domain Controllers are too critical and complex to 'clean'. Rebuilding is the only way to guarantee trust."
+        },
+        {
+            "id": "q8",
+            "type": "true_false",
+            "question": "Recovery involves restoring systems to normal operation AND verifying that they are clean.",
+            "correctAnswer": true,
+            "explanation": "True. Verification monitoring is a key part of recovery."
+        },
+        {
+            "id": "q9",
+            "type": "fill_blank",
+            "question": "A meeting held after an incident to discuss what went well, what went wrong, and how to improve is called a _____.",
+            "options": [
+                "Post-Mortem",
+                "Pre-Brief",
+                "Stand-up",
+                "All-Hands"
+            ],
+            "correctAnswer": "Post-Mortem",
+            "explanation": "The Post-Mortem is the primary mechanism for the 'Lessons Learned' phase."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is the primary characteristic of a 'Blameless Culture' in Incident Response?",
+            "options": [
+                "No one is ever held accountable for mistakes.",
+                "The focus is on fixing systemic process failures rather than punishing individuals.",
+                "Only managers can make mistakes.",
+                "Analysts are encouraged to hide their errors."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Blameless culture encourages honesty and reporting, leading to faster fixes and improved security."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "An attacker has stolen a user's Office 365 credentials. Which containment action is MOST critical?",
+            "options": [
+                "Disable the user's account and revoke OAuth tokens.",
+                "Change the user's password only.",
+                "Block the user's IP address.",
+                "Send a warning email to the user."
+            ],
+            "correctAnswer": 0,
+            "explanation": "Disabling the account and revoking tokens immediately terminates the attacker's active sessions."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is the purpose of a 'Tabletop Exercise' (TTX) in the Preparation phase?",
+            "options": [
+                "To test backups.",
+                "To walk through an incident scenario without affecting real systems to identify process gaps.",
+                "To clean malware from a test server.",
+                "To train users on phishing."
+            ],
+            "correctAnswer": 1,
+            "explanation": "TTXs validate the IR plan and team readiness in a low-pressure environment."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "Volatile evidence, like RAM contents, should be collected AFTER non-volatile evidence, like hard drive images.",
+            "correctAnswer": false,
+            "explanation": "False. Volatile evidence is lost on reboot; it must be collected FIRST (Order of Volatility)."
+        },
+        {
+            "id": "q14",
+            "type": "fill_blank",
+            "question": "The 'I' in PICERL stands for _____.",
+            "options": [
+                "Investigation",
+                "Identification",
+                "Isolation",
+                "Intelligence"
+            ],
+            "correctAnswer": "Identification",
+            "explanation": "Identification is the phase of detecting and declaring an incident."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "During an incident, who has the authority to approve taking critical business systems offline for containment?",
+            "options": [
+                "Tier 1 Analyst",
+                "Incident Commander",
+                "Scribe",
+                "Any IT staff member"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The Incident Commander balances security risk with business impact and makes the final call."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What is the risk of pulling the network cable on a compromised host (hard disconnect) versus using EDR Isolation?",
+            "options": [
+                "Hard disconnect prevents remote forensic collection.",
+                "EDR Isolation is slower.",
+                "Hard disconnect alerts the user.",
+                "There is no risk."
+            ],
+            "correctAnswer": 0,
+            "explanation": "Physical disconnection cuts off the analyst's ability to remotely investigate or image the memory."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which document contains the specific step-by-step technical procedures for handling a Ransomware incident?",
+            "options": [
+                "IR Policy",
+                "IR Plan",
+                "Ransomware Playbook",
+                "CSIRT Contact List"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Playbooks provide tactical, step-by-step guides for specific threat scenarios."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "Once a system is recovered and put back online, no further monitoring is required.",
+            "correctAnswer": false,
+            "explanation": "False. Recovered systems should be placed under intensive monitoring to detect any missed persistence or re-infection."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "A user reports they 'clicked a link but didn't enter credentials.' What is the appropriate SOC response?",
+            "options": [
+                "Do nothing.",
+                "Reset the user's password and clear browser cache as a precaution.",
+                "Escalate to Legal.",
+                "Shut down the user's computer."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Even without entered credentials, drive-by downloads or session hijacking are possible. Password reset is a safe, low-cost precaution."
+        },
+        {
+            "id": "q20",
+            "type": "fill_blank",
+            "question": "A(n) _____ is a detailed chronological record of all actions and events during an incident.",
+            "options": [
+                "Timeline",
+                "Playbook",
+                "Policy",
+                "Alert"
+            ],
+            "correctAnswer": "Timeline",
+            "explanation": "The timeline is the Scribe's primary output, essential for post-mortem analysis."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "Which phase of PICERL directly feeds back into the Preparation phase, creating a continuous improvement loop?",
+            "options": [
+                "Containment",
+                "Eradication",
+                "Lessons Learned",
+                "Recovery"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Lessons Learned identifies gaps that are addressed by updating Preparation materials and controls."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "Why should the Final Incident Report be reviewed by Legal Counsel?",
+            "options": [
+                "To check grammar.",
+                "To ensure it is protected under Attorney-Client Privilege and doesn't create unnecessary liability.",
+                "To make it longer.",
+                "Legal doesn't need to review it."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Legal review protects sensitive findings from being discoverable in potential future lawsuits."
+        },
+        {
+            "id": "q23",
+            "type": "true_false",
+            "question": "Out-of-band communication methods (like Signal or a separate conference bridge) are unnecessary if you have corporate email.",
+            "correctAnswer": false,
+            "explanation": "False. Attackers often compromise email/Slack. You need a separate communication channel to coordinate the response."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "What is an 'Immutable Backup'?",
+            "options": [
+                "A backup that is encrypted.",
+                "A backup that cannot be modified or deleted for a specified retention period, even by administrators.",
+                "A backup stored on tape.",
+                "A backup of the operating system."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Immutability protects backups from ransomware that tries to delete or encrypt them."
+        },
+        {
+            "id": "q25",
+            "type": "fill_blank",
+            "question": "The process of determining how many systems or users are affected by an incident is called _____.",
+            "options": [
+                "Scoping",
+                "Containment",
+                "Triage",
+                "Recovery"
+            ],
+            "correctAnswer": "Scoping",
+            "explanation": "Scoping defines the extent of the breach, which determines the severity and response resources required."
+        }
+    ]
+}

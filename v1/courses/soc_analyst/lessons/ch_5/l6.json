@@ -1,0 +1,82 @@
+{
+    "id": "l6",
+    "chapterId": "ch_5",
+    "title": "Incident Investigation Workflow",
+    "description": "Step-by-step guide to using the SIEM during an active alert.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Operations",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "The Alert Fires 🔔",
+            "content": "# You've Got a Ticket\n\n**Scenario:** An alert pops up in your queue: *\"Potential Malicious PowerShell Execution - Host: FIN-WS01\"*\n\n**Your SIEM Investigation Workflow:**\n\n1.  **Read the Alert Details:** What exactly triggered? Usually, the alert provides a link to the raw event(s).\n2.  **Expand the Time Window:** The alert looked at 5 minutes. Expand your search to **+/- 1 hour** around the event to see context.\n3.  **Identify the Victim:** Hostname, Username, Source IP.\n4.  **Pivot on the Victim:** Search for **everything** this user/host did in the last 24 hours."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "code",
+            "title": "Step 1: The Pivot Search 🔀",
+            "content": "Using the hostname `FIN-WS01`, run these searches in order:",
+            "codeSnippet": "# 1. Network Connections (Firewall/Proxy)\nindex=network src_ip=FIN-WS01 earliest=-24h\n| stats values(dest_ip) as Destinations, count by dest_port\n\n# 2. Process Execution (Windows/Sysmon)\nindex=endpoint host=FIN-WS01 EventCode=4688 earliest=-24h\n| table _time, ProcessName, CommandLine\n\n# 3. Authentication (Windows Security)\nindex=windows host=FIN-WS01 EventCode=4624 earliest=-24h\n| table _time, TargetUserName, LogonType, IpAddress",
+            "codeLanguage": "splunk",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Investigation Step 🕵️",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "You see the host `FIN-WS01` connected to IP `185.142.53.21` on port 443. What should you do next in the SIEM?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Block the IP on the firewall immediately.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Search for that destination IP (`185.142.53.21`) across ALL internal hosts to see if anyone else talked to it.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Close the ticket as 'False Positive'.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Finding other victims (lateral movement) is critical. Blocking an IP is a containment step, but you need to find the scope of the breach first.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "Step 2: Correlating with Threat Intel 🧠",
+            "content": "# Is That IP Known Bad?\n\nIn a mature SOC, the SIEM automatically enriches logs with Threat Intelligence feeds. You'll see a field like `threat_category` or `reputation`.\n\nIf not automated, **manually check**:\n*   Copy the suspicious IP `185.142.53.21`.\n*   Open **VirusTotal** (or internal Threat Intel Platform).\n*   If multiple vendors flag it as **C2 / Malware**, **confidence increases**.\n*   Document the VT link in your ticket notes.\n\n**Pro Tip:** A clean VirusTotal result does **NOT** guarantee safety. New infrastructure is clean for the first few hours."
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "Step 3: Time-Based Baselining 📅",
+            "content": "# Is This Normal for This User?\n\nCompare today's activity against the **7-day baseline**.\n\n*   **Normal:** User `jsmith` runs `PowerShell` scripts from `C:\\Scripts\\` every morning at 8 AM.\n*   **Alert:** User `jsmith` runs an **encoded** PowerShell command from `C:\\Users\\jsmith\\Downloads\\` at 3 AM.\n\n**SIEM Query for Baselining:**\n`index=windows User=jsmith EventCode=4688 earliest=-7d | stats count by ProcessName`\n\nIf `powershell.exe` has never appeared in the last 7 days, **this is a high-fidelity alert**."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "code",
+            "title": "Step 4: The Raw Log Dive (Desperation Mode) 🔬",
+            "content": "If dashboards and pre-built searches don't answer your question, you must go **raw**.\n\nSearch for everything from that host in a 10-minute window **unsorted**.\n\n`index=* host=FIN-WS01 earliest=\"03/10/2026:03:00:00\" latest=\"03/10/2026:03:10:00\"`\n\nScroll through the raw events. Look for:\n- File deletions (`EventID 4663`).\n- Service installs (`EventID 7045`).\n- Strange scheduled tasks (`EventID 4698`).\n\nThis is slow but sometimes necessary.",
+            "codeLanguage": "splunk",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_7",
+            "type": "tip",
+            "title": "The Analyst's Mantra 📝",
+            "content": "## If You Didn't Write It Down, It Didn't Happen\n\nAs you pivot through the SIEM, constantly **copy/paste** interesting events into the ticket.\n\n*   **Evidence 1:** `2026-03-10 03:05:22` - Event ID 4688 - `powershell.exe -enc JABjAGwAaQBlAG4AdAA...`\n*   **Evidence 2:** `2026-03-10 03:06:15` - Firewall Log - `ALLOW FIN-WS01 -> 185.142.53.21:443`\n\nThis provides the **audit trail** for Tier 2/Tier 3 and proves you did your job."
+        }
+    ]
+}

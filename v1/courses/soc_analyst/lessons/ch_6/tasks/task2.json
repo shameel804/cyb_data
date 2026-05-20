@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_6",
+    "title": "Proxy Log Investigation",
+    "description": "Trace a user's web activity and determine if a malware download occurred.",
+    "estimatedMinutes": 15,
+    "problemStatement": "### Scenario\nAn alert triggered for user `asmith` visiting a suspicious newly registered domain. You pull the proxy logs for this user for the relevant 10-minute window.\n\n```\nTime     | Method | URL                                           | Status | MIME Type                    | Bytes Out\n---------|--------|-----------------------------------------------|--------|------------------------------|-----------\n09:30:01 | GET    | http://mail.google.com                         | 200    | text/html                    | 500\n09:31:15 | GET    | http://secure-docs-acme.xyz/invoice_4567.html  | 200    | text/html                    | 800\n09:31:22 | GET    | http://secure-docs-acme.xyz/update.exe         | 200    | application/x-msdownload     | 2,500\n09:31:30 | POST   | http://secure-docs-acme.xyz/submit.php         | 200    | application/x-www-form-urlencoded | 450\n09:32:00 | GET    | http://cnn.com                                 | 200    | text/html                    | 600\n```\n\n### Questions\n1.  What is the **initial access vector**? (How did the user get to the malicious site?)\n2.  What specific file was downloaded? What is the risk?\n3.  What does the `POST` request to `submit.php` likely represent?\n4.  Is this a True Positive or False Positive? Justify.",
+    "hints": [
+        "Look at the sequence of events: HTML page -> EXE download -> POST.",
+        "Consider what happens after an EXE is executed (it often 'calls home' with system information)."
+    ],
+    "expectedOutput": "1. The user likely clicked a link in a phishing email or ad that led to the fake 'secure-docs' site. 2. 'update.exe' was downloaded - this is likely malware. 3. The POST request is likely the installed malware 'phoning home' with victim data (exfiltration). 4. True Positive. The behavioral chain is clear: lure -> download -> callback.",
+    "solutionCode": "N/A"
+}

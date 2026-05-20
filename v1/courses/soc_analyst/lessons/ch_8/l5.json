@@ -1,0 +1,74 @@
+{
+    "id": "l5",
+    "chapterId": "ch_8",
+    "title": "Malicious Attachments and Sandboxing",
+    "description": "Identify dangerous file types and analyze attachments without getting infected.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Investigation",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Files That Bite Back 📎",
+            "content": "# Dangerous Attachment Types\n\nAttackers use specific file types to execute code. You MUST recognize these immediately.\n\n| Extension | Risk Level | Why It's Dangerous |\n| :--- | :--- | :--- |\n| `.exe`, `.msi` | **CRITICAL** | Direct executable. |\n| `.docm`, `.xlsm` | **HIGH** | Office Macros. |\n| `.iso`, `.img`, `.vhd` | **HIGH** | Mounts as drive, bypasses Mark-of-the-Web (MOTW). |\n| `.js`, `.vbs`, `.ps1` | **HIGH** | Scripts that execute when double-clicked. |\n| `.lnk` | **HIGH** | Shortcut file that can run hidden commands. |\n| `.html`, `.htm` | **MEDIUM** | Phishing page or redirect to malicious site. |\n| `.pdf` | **MEDIUM** | Can contain embedded JavaScript exploits. |\n| `.zip`, `.7z`, `.rar` | **ENCRYPTED** | Contains one of the above; Password in email body. |"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "The Sandbox: Detonate Safely 💣",
+            "content": "# Dynamic Analysis\n\nNever open an attachment on your work PC. Use a **Sandbox**.\n\n**What a Sandbox Does:**\n1.  Executes the file in an **isolated virtual machine**.\n2.  Records **all system changes** (Files created, Registry modified, Processes launched).\n3.  Captures **network traffic** (C2 connections).\n4.  Provides a **verdict** (Malicious / Suspicious / Clean).\n\n**Popular Sandbox Tools:**\n*   **Joe Sandbox** (Commercial, highly detailed).\n*   **Any.Run** (Interactive, community-driven).\n*   **VirusTotal** (Quick hash lookup, basic sandboxing for smaller files).\n*   **Hybrid Analysis** (Free, Falcon Sandbox)."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Attachment Risk 🚨",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "An email contains a password-protected `.zip` file and the password in the email body. Why do attackers do this?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To save space.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To bypass email gateway scanning (the scanner can't see inside encrypted ZIPs).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To make it easier for the user.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Encrypted archives prevent automated scanning. The gateway has to let it through, relying on the user not to open it (which they do).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Static Analysis: File Hashes and Strings 🔬",
+            "content": "# Quick Triage Without Execution\n\nEven without a sandbox, you can gather valuable intel.\n\n**1. File Hash (MD5, SHA256):**\n*   Right-click file -> Properties -> File Hashes (or use `Get-FileHash` in PowerShell).\n*   **Copy the SHA256 hash.**\n*   **Paste into VirusTotal.**\n*   If **10+ vendors** flag it as malicious, you have your answer in seconds.\n*   *Note: A clean VT result does NOT guarantee safety. New malware is undetected.*\n\n**2. Strings Analysis:**\n*   Use the `strings` command (Linux) or `Strings.exe` (Sysinternals) to extract readable text from the binary.\n*   Look for:\n    *   URLs (`http://evil.com`)\n    *   IP Addresses\n    *   PowerShell commands\n    *   Suspicious file paths (`C:\\Windows\\Temp\\payload.exe`)\n\n**This is a fast way to find C2 servers without running the malware.**"
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Analyzing a Malicious Office Document (Macro)",
+            "content": "Most malicious Word/Excel files use **VBA Macros**. You can extract them safely using `oledump.py`.",
+            "codeSnippet": "# Tool: oledump.py (Python script)\npython oledump.py suspicious.docm\n\n# Output shows streams. Look for 'M' (Macro) flag.\n# A3: M 1234 'VBA/ThisDocument'\n\n# Extract the macro code:\npython oledump.py -s A3 -v suspicious.docm\n\n# Look for:\n# - Shell(\"powershell.exe -enc ...\")\n# - CreateObject(\"WScript.Shell\").Run \"cmd.exe /c ...\"\n# - URLDownloadToFile",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_6",
+            "type": "tip",
+            "title": "The QR Code Attack 🧑‍💻",
+            "content": "## Quishing (QR Code Phishing)\n\nAttackers now embed **QR codes** in email attachments (PDFs, images) to bypass URL scanning.\n\n**Workflow:**\n1.  User scans QR code with their **personal phone**.\n2.  Phone browser opens phishing link (bypassing corporate proxy!).\n\n**Analyst Response:**\n*   Use a **QR Code Decoder** website (upload image) to extract the URL safely.\n*   Never scan with your personal phone camera."
+        }
+    ]
+}

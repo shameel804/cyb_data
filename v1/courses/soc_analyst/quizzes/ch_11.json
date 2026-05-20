@@ -1,0 +1,305 @@
+{
+    "id": "quiz_ch_11",
+    "chapterId": "ch_11",
+    "title": "Chapter 11 Mastery Quiz",
+    "description": "Test your knowledge of Cyber Threat Intelligence, the MITRE ATT&CK framework, and CTI application in the SOC.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What does the acronym CTI stand for?",
+            "options": [
+                "Cyber Threat Intelligence",
+                "Critical Technology Infrastructure",
+                "Command and Telemetry Interface",
+                "Common Threat Indicator"
+            ],
+            "correctAnswer": 0,
+            "explanation": "CTI stands for Cyber Threat Intelligence—evidence-based knowledge about adversaries."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "A list of malicious IP addresses is an example of Strategic Threat Intelligence.",
+            "correctAnswer": false,
+            "explanation": "False. IP addresses are Tactical Intelligence. Strategic intelligence focuses on high-level trends and actor motivations."
+        },
+        {
+            "id": "q3",
+            "type": "fill_blank",
+            "question": "In the MITRE ATT&CK framework, the columns represent _____, which are the adversary's high-level goals.",
+            "options": [
+                "Tactics",
+                "Techniques",
+                "Procedures",
+                "Sub-techniques"
+            ],
+            "correctAnswer": "Tactics",
+            "explanation": "Tactics represent the 'why' (e.g., Initial Access, Persistence). Techniques represent the 'how'."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "An attacker uses a malicious Word document to deliver a payload. Which ATT&CK Tactic and Technique best describe the document itself?",
+            "options": [
+                "Execution (T1204.002)",
+                "Initial Access (T1566.001 - Spearphishing Attachment)",
+                "Defense Evasion (T1027)",
+                "Command and Control (T1071)"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The attachment is the mechanism for gaining initial access into the environment."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "According to the Pyramid of Pain, which type of indicator is HARDEST for an attacker to change?",
+            "options": [
+                "IP Addresses",
+                "File Hashes",
+                "Domain Names",
+                "Tactics, Techniques, and Procedures (TTPs)"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Changing TTPs requires an attacker to fundamentally alter their methodology and retool."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the primary purpose of a Threat Intelligence Platform (TIP)?",
+            "options": [
+                "To encrypt network traffic.",
+                "To aggregate, deduplicate, score, and contextualize threat feeds.",
+                "To replace the firewall.",
+                "To train employees on phishing."
+            ],
+            "correctAnswer": 1,
+            "explanation": "A TIP manages the IOC firehose and adds value before pushing to security controls."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "An intelligence report states: 'APT29 frequently uses compromised cloud storage URLs for C2.' This is an example of what level of intelligence?",
+            "options": [
+                "Tactical",
+                "Operational",
+                "Strategic",
+                "Technical"
+            ],
+            "correctAnswer": 1,
+            "explanation": "This describes a specific TTP (behavior), which is Operational Intelligence."
+        },
+        {
+            "id": "q8",
+            "type": "true_false",
+            "question": "When you receive a new IOC from a threat feed, you should immediately block it on the perimeter firewall without any further validation.",
+            "correctAnswer": false,
+            "explanation": "False. Blind blocking can disrupt legitimate services. Always validate context and relevance first."
+        },
+        {
+            "id": "q9",
+            "type": "fill_blank",
+            "question": "The MITRE ATT&CK technique ID for 'PowerShell' is _____.",
+            "options": [
+                "T1059.001",
+                "T1003.001",
+                "T1566.001",
+                "T1486"
+            ],
+            "correctAnswer": "T1059.001",
+            "explanation": "T1059 is Command and Scripting Interpreter; .001 is PowerShell."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which ATT&CK Tactic includes techniques like 'LSASS Memory Dumping' and 'NTDS.dit Extraction'?",
+            "options": [
+                "Discovery",
+                "Credential Access",
+                "Exfiltration",
+                "Persistence"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Credential Access focuses on stealing account credentials from the operating system or memory."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What is the benefit of mapping a SIEM alert to an ATT&CK Technique ID?",
+            "options": [
+                "It makes the alert look more technical.",
+                "It provides a standardized context for severity, investigation, and gap analysis.",
+                "It is required for compliance.",
+                "It increases the alert volume."
+            ],
+            "correctAnswer": 1,
+            "explanation": "ATT&CK mapping creates a common language and enables detection coverage tracking."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "A threat actor group that is primarily motivated by **financial gain** and deploys ransomware is classified as:",
+            "options": [
+                "Nation-State (APT)",
+                "Hacktivist",
+                "Cybercriminal (eCrime)",
+                "Insider Threat"
+            ],
+            "correctAnswer": 2,
+            "explanation": "eCrime groups are financially motivated."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What is 'Detection Gap Analysis' in the context of ATT&CK?",
+            "options": [
+                "Finding missing antivirus signatures.",
+                "Comparing the TTPs of a relevant threat actor against your existing SIEM detection rules.",
+                "Analyzing network latency.",
+                "Testing firewall rules."
+            ],
+            "correctAnswer": 1,
+            "explanation": "It identifies which adversary behaviors you can detect and which you are blind to."
+        },
+        {
+            "id": "q14",
+            "type": "true_false",
+            "question": "Threat Hunting is a reactive process triggered by a SIEM alert.",
+            "correctAnswer": false,
+            "explanation": "False. Threat Hunting is proactive—searching for threats that have evaded existing automated alerts."
+        },
+        {
+            "id": "q15",
+            "type": "fill_blank",
+            "question": "The Traffic Light Protocol (TLP) marking _____ indicates information is shareable within the security community but not publicly.",
+            "options": [
+                "RED",
+                "AMBER",
+                "GREEN",
+                "CLEAR"
+            ],
+            "correctAnswer": "GREEN",
+            "explanation": "TLP:GREEN allows community-wide sharing but restricts public disclosure."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "The free tool provided by MITRE to visualize defensive coverage of ATT&CK techniques is called:",
+            "options": [
+                "ATT&CK Navigator",
+                "MITRE Mapper",
+                "Threat Graph",
+                "Tactic Viewer"
+            ],
+            "correctAnswer": 0,
+            "explanation": "ATT&CK Navigator is the web-based tool for creating and overlaying heatmaps."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "An analyst reads a report that 'FIN12' uses a specific registry key `HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\Backup` for persistence. What type of indicator is this registry key?",
+            "options": [
+                "Network IOC",
+                "Host Artifact",
+                "TTP",
+                "File Hash"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A specific file path or registry key is a Host Artifact (Level 4 on Pyramid of Pain)."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which phase of the Intelligence Cycle involves turning raw data into a finished report?",
+            "options": [
+                "Collection",
+                "Processing",
+                "Analysis & Production",
+                "Dissemination"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Analysis & Production is where value is added to the raw data."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "Operational-level Threat Intelligence is typically presented to the Board of Directors.",
+            "correctAnswer": false,
+            "explanation": "False. Strategic intelligence is for the Board. Operational intelligence is for SOC managers and threat hunters."
+        },
+        {
+            "id": "q20",
+            "type": "fill_blank",
+            "question": "The combination of Adversary, Capability, Infrastructure, and Victim is known as the _____ Model.",
+            "options": [
+                "Diamond",
+                "Kill Chain",
+                "Pyramid",
+                "ATT&CK"
+            ],
+            "correctAnswer": "Diamond",
+            "explanation": "The Diamond Model analyzes the relationships between these four core features."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "What is the primary risk of 'IOC Fatigue'?",
+            "options": [
+                "Running out of disk space.",
+                "Analysts ignoring high-fidelity alerts because they are buried in low-fidelity IOC matches.",
+                "The firewall crashing.",
+                "Increased licensing costs."
+            ],
+            "correctAnswer": 1,
+            "explanation": "IOC fatigue desensitizes analysts and leads to missed true positives."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "A CISO wants to know if they should budget for additional ransomware protection next year. Which level of CTI would best inform this decision?",
+            "options": [
+                "Tactical",
+                "Operational",
+                "Strategic",
+                "Technical"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Strategic intelligence informs high-level risk and investment decisions."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "In the ATT&CK framework, 'T1566.001' refers to:",
+            "options": [
+                "PowerShell",
+                "Spearphishing Attachment",
+                "Scheduled Task",
+                "LSASS Dumping"
+            ],
+            "correctAnswer": 1,
+            "explanation": "T1566 is Phishing; .001 is Spearphishing Attachment."
+        },
+        {
+            "id": "q24",
+            "type": "true_false",
+            "question": "Behavioral detection rules based on TTPs (e.g., 'Word spawning PowerShell') are more resilient to attacker evasion than hash-based detection.",
+            "correctAnswer": true,
+            "explanation": "True. Changing a hash is easy; changing the entire attack flow is hard."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "What does STIX/TAXII provide for Cyber Threat Intelligence?",
+            "options": [
+                "Encryption for email.",
+                "A standardized language and protocol for automated sharing of threat intelligence.",
+                "A type of firewall.",
+                "A malware sandbox."
+            ],
+            "correctAnswer": 1,
+            "explanation": "STIX is the structured language; TAXII is the transport protocol for sharing CTI."
+        }
+    ]
+}

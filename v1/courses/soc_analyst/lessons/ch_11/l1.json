@@ -1,0 +1,74 @@
+{
+    "id": "l1",
+    "chapterId": "ch_11",
+    "title": "What is Cyber Threat Intelligence?",
+    "description": "Understanding the three levels of CTI and the intelligence lifecycle.",
+    "xpReward": 30,
+    "estimatedMinutes": 6,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Beyond IOCs: The Bigger Picture 🧠",
+            "content": "# Cyber Threat Intelligence (CTI)\n\n**Definition:** CTI is **evidence-based knowledge** about adversaries—their motivations, intentions, and capabilities—that is **analyzed and refined** to provide context for decision-making.\n\n**It's NOT just a feed of bad IP addresses.**\n\n**Analogy:** A feed of bad IPs is like a **'Wanted' poster** with just a name and a blurry photo. CTI is the **full case file**—it tells you *who* the criminal is, *how* they operate, *what* tools they use, and *why* they might target your industry.\n\n**Goal of CTI:** Enable the SOC to shift from **reactive** (responding to alerts) to **proactive** (hunting for specific adversary behaviors before they trigger an alert)."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "The Three Levels of Intelligence 📊",
+            "content": "# Strategic, Operational, Tactical\n\nIntelligence is consumed differently at different levels of the organization.\n\n| Level | Audience | Questions Answered | Example |\n| :--- | :--- | :--- | :--- |\n| **Strategic** | CISO, Board of Directors | *\"Which adversary groups target our industry? Should we invest in ransomware defense or DDoS protection?\"* | Report: *\"FIN7 increasingly targeting retail POS systems.\"* |\n| **Operational** | SOC Manager, Threat Hunters | *\"How does this specific adversary operate? What TTPs do they use?\"* | ATT&CK Mapping: *\"They use PowerShell (T1059.001) and scheduled tasks (T1053.005) for persistence.\"* |\n| **Tactical** | Tier 1/2 Analysts, Firewalls | *\"What specific IP addresses, domains, or file hashes should I block RIGHT NOW?\"* | IOC Feed: `185.142.53.21`, `evil.com`, `SHA256: abc123...` |\n\n**Analyst Note:** Tactical IOCs expire in **hours/days**. Operational TTPs remain valid for **months/years**."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "CTI Level Check 📋",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "A report detailing that a specific APT group uses 'Spearphishing Attachment' and 'PowerShell' to gain initial access is an example of which level of intelligence?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Strategic",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Operational",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Tactical",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Operational intelligence focuses on adversary TTPs (the 'how') rather than just the 'what' (Tactical IOCs) or 'why' (Strategic).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Intelligence Cycle 🔄",
+            "content": "# From Raw Data to Actionable Insight\n\nIntelligence isn't magic. It follows a disciplined process.\n\n1.  **Planning & Direction:** *\"What do we need to know?\"* (e.g., *\"What threats target our new cloud ERP system?\"*)\n2.  **Collection:** Gather raw data from sources (OSINT, commercial feeds, internal logs, dark web monitoring).\n3.  **Processing:** Filter, normalize, and translate data into a usable format.\n4.  **Analysis & Production:** The hard part. Correlate data, apply analytical rigor, and produce a **finished intelligence product** (report, briefing).\n5.  **Dissemination:** Deliver the intelligence to the right people in the right format.\n6.  **Feedback:** Did the intelligence help? What do you need next? (Feeds back to Step 1).\n\n**As a SOC Analyst:** You are primarily a **consumer** of CTI (Steps 5 & 6), but you also contribute raw data back to the cycle (Step 2) through your investigations."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Sources of Threat Intelligence",
+            "content": "Where does the data come from?",
+            "codeSnippet": "Internal Sources:\n- SIEM Alerts and Logs (Your own incident data is the BEST intel).\n- Firewall/Proxy Deny Logs.\n- EDR Telemetry.\n- Honeypots / Deception Technology.\n\nExternal Sources (Open Source - OSINT):\n- AlienVault OTX (Open Threat Exchange).\n- Abuse.ch (URLhaus, ThreatFox).\n- VirusTotal Intelligence.\n- MITRE ATT&CK Groups.\n\nCommercial Sources:\n- CrowdStrike Falcon Intelligence.\n- Mandiant Advantage.\n- Recorded Future.",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Intelligence vs. Information 💡",
+            "content": "## The Value is in the Analysis\n\n> *\"A list of 10,000 bad IPs is information. Knowing which 3 of those IPs are actively targeting your specific industry RIGHT NOW is intelligence.\"*\n\nContext is everything. Always ask: **Is this relevant to US?**"
+        }
+    ]
+}

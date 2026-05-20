@@ -1,0 +1,76 @@
+{
+    "id": "l3",
+    "chapterId": "ch_12",
+    "title": "Deploying Your SIEM",
+    "description": "Install and configure Splunk Free or Elastic Stack to collect and analyze logs.",
+    "xpReward": 40,
+    "estimatedMinutes": 9,
+    "section": "Core Tools",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Installing Splunk Enterprise (Free) 🧠",
+            "content": "# The Brain of the Lab\n\nWe'll install Splunk on the **Ubuntu-SIEM** VM. Splunk Free is limited to **500 MB/day** of log ingestion, which is plenty for a home lab.\n\n**Step 1: Download Splunk**\n*   On your **host machine**, go to [splunk.com](https://www.splunk.com) -> Free Splunk -> Linux `.deb` package.\n*   Transfer the `.deb` file to the Ubuntu VM using `scp` or a shared folder.\n\n**Step 2: Install on Ubuntu**\n```bash\nsudo dpkg -i splunk-9.x.x-xxxxxx-linux-2.6-amd64.deb\n```\n\n**Step 3: Start Splunk and Enable Boot Start**\n```bash\nsudo /opt/splunk/bin/splunk start --accept-license\n# Enter an admin username and password when prompted.\n\nsudo /opt/splunk/bin/splunk enable boot-start\n```\n\n**Step 4: Access Splunk Web**\n*   Open a browser on your **host machine**.\n*   Navigate to `http://192.168.56.102:8000` (replace with your Ubuntu VM's IP).\n*   Log in with the admin credentials.\n\n**You now have a working SIEM!**"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Splunk Architecture: Forwarders and Indexers 🏛️",
+            "content": "# How Logs Get Into Splunk\n\n1.  **Universal Forwarder (UF):** A lightweight agent installed on **Windows/Linux endpoints** that reads log files and sends them to Splunk.\n2.  **Indexer:** The main Splunk server that **receives**, **parses**, and **stores** the data.\n3.  **Search Head:** The web interface you use to search the data.\n\n**In our free lab, the Indexer and Search Head are the same single Splunk instance.** We just need to install the **Universal Forwarder** on our Windows Victim VM.\n\n**Step 5: Install Universal Forwarder on Windows Victim**\n*   Download the Universal Forwarder `.msi` from Splunk.\n*   Install with default settings.\n*   During install, you'll be prompted for the **Receiving Indexer**.\n    *   **Hostname or IP:** `192.168.56.102` (Your Ubuntu VM IP).\n    *   **Port:** `9997` (Default Splunk TCP input port)."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Splunk Components 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What component of Splunk is responsible for receiving and storing data?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Universal Forwarder",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Indexer",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Search Head",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The Indexer processes incoming data and writes it to disk. The Search Head queries the Indexers.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "Configuring Splunk to Receive Data",
+            "content": "On the Splunk Server, we must enable a **Data Input** to listen for forwarders.\n\n**Splunk Web GUI:**\n1.  Go to **Settings** -> **Forwarding and receiving** -> **Configure receiving**.\n2.  Click **New Receiving Port**.\n3.  Port: `9997`. Click **Save**.\n\n**Verify Forwarder Connection:**\n*   On Windows VM, open Services (`services.msc`).\n*   Find **SplunkForwarder** service. Ensure it is **Running**.\n*   In Splunk Web, search: `index=_internal host=Win10-Victim`\n*   If you see results, the forwarder is connected!\n\n**Configuring Inputs on Windows (inputs.conf):**\n*   The Universal Forwarder needs to know **which logs** to send.\n*   Navigate to `C:\\Program Files\\SplunkUniversalForwarder\\etc\\system\\local\\`.\n*   Create a file named `inputs.conf` with the following content to send Windows Security and Sysmon logs:",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Sample inputs.conf for Windows Victim",
+            "content": "Create this file on the Windows VM to forward critical security logs.",
+            "codeSnippet": "# Windows Security Log\n[WinEventLog://Security]\ndisabled = 0\nindex = windows\nsourcetype = WinEventLog:Security\n\n# Sysmon Operational Log\n[WinEventLog://Microsoft-Windows-Sysmon/Operational]\ndisabled = 0\nindex = windows\nsourcetype = XmlWinEventLog:Microsoft-Windows-Sysmon/Operational\n\n# Windows System Log\n[WinEventLog://System]\ndisabled = 0\nindex = windows\nsourcetype = WinEventLog:System\n\n# PowerShell Operational Log\n[WinEventLog://Microsoft-Windows-PowerShell/Operational]\ndisabled = 0\nindex = windows\nsourcetype = XmlWinEventLog:Microsoft-Windows-PowerShell/Operational",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Installing Sysmon on Windows Victim 🛡️",
+            "content": "## Essential Visibility\n\n1.  Download **Sysmon** from Microsoft Sysinternals.\n2.  Download a community configuration file (e.g., **SwiftOnSecurity/sysmon-config**).\n3.  Install via **Admin Command Prompt**:\n    ```cmd\n    sysmon64.exe -accepteula -i sysmonconfig-export.xml\n    ```\n4.  Restart the Splunk Forwarder service.\n\nNow you're logging **Process Creation (Event ID 1)**, **Network Connections (Event ID 3)** , and more!"
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_5",
+    "title": "Build a Detection Rule",
+    "description": "Design a correlation rule for detecting PowerShell download cradles.",
+    "estimatedMinutes": 15,
+    "problemStatement": "### Scenario\nAttackers often use PowerShell to download malware from the internet using commands like `Invoke-WebRequest` or `System.Net.WebClient`.\n\nYou need to design a **Correlation Rule** to detect this behavior.\n\n### Task\nProvide the **pseudo-code** or **SPL query** for the rule, and answer the following questions:\n\n1.  **Search Query:** Write a query that looks for **PowerShell process creation events** (Windows Event ID 4688 or Sysmon Event ID 1) where the **Command Line** contains **download indicators**.\n    - *Indicators to include:* `Invoke-WebRequest`, `IWR`, `System.Net.WebClient`, `DownloadFile`, `DownloadString`, `Start-BitsTransfer`.\n2.  **Time Window:** What is a reasonable time window for this rule? (e.g., Real-time per event, or 5-minute aggregate?)\n3.  **Suppression:** Name **ONE** legitimate use case where this might generate a False Positive, and how you would tune the rule to exclude it.\n4.  **Severity:** What severity would you assign to this alert (Low, Medium, High, Critical)? Justify your answer.",
+    "hints": [
+        "Use regex or multiple `OR` conditions to catch different download methods.",
+        "Consider that software update scripts might legitimately use `Invoke-WebRequest`."
+    ],
+    "expectedOutput": "A completed rule design document with the four sections answered.",
+    "solutionCode": "1. index=windows (EventCode=4688 OR EventID=1) ProcessName=powershell.exe (CommandLine=\"*Invoke-WebRequest*\" OR CommandLine=\"*IWR*\" OR CommandLine=\"*WebClient*\" OR CommandLine=\"*DownloadFile*\" OR CommandLine=\"*DownloadString*\" OR CommandLine=\"*Start-BitsTransfer*\")\n2. Real-time per event (no aggregation needed for this specific behavior).\n3. False Positive: IT automation scripts that download software installers from internal repositories. Tuning: Exclude if `CommandLine` contains `*internal-update-server.acme.com*`.\n4. High Severity. Direct download and execution of remote code is a primary malware delivery mechanism."
+}

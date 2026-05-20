@@ -1,0 +1,80 @@
+{
+    "id": "l2",
+    "chapterId": "ch_8",
+    "title": "Anatomy of an Email Header",
+    "description": "Learn to read and interpret raw email headers to trace the true sender.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Technical Analysis",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Envelope vs. The Letter 📨",
+            "content": "# What the User Sees is a Lie\n\n**Display Name:** `PayPal Security <security@paypal.com>` (This can be **ANYTHING** the sender wants. Easily spoofed.)\n\n**Email Header:** The **hidden technical data** that shows the true path the email took. This is where the truth lies.\n\n**How to View Headers:**\n*   **Outlook:** Double-click email -> File -> Properties -> **Internet Headers**.\n*   **Gmail:** Three dots -> **Show Original**.\n*   **Office 365 Web:** Three dots -> View -> **View Message Details**.\n\n**Analogy:** The Display Name is the return address written in crayon on the envelope. The Headers are the **postal service barcodes and routing stamps** on the back."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Key Header Fields to Analyze",
+            "content": "When you open the raw headers, look for these specific lines.",
+            "codeSnippet": "1. Return-Path (or MAIL FROM):\n   The 'envelope sender'. Where bounces go. Hard to spoof if DMARC is enforced.\n   \n2. Received: (Read from BOTTOM to TOP!)\n   Each mail server adds a 'Received' stamp. The first stamp at the BOTTOM is the origin.\n   \n3. Authentication-Results:\n   Summary of SPF, DKIM, DMARC checks. (spf=pass/fail, dkim=pass/fail).\n   \n4. Reply-To:\n   Where replies go. Often different from 'From' in phishing.\n   \n5. Message-ID:\n   Unique identifier. Can sometimes reveal the sending infrastructure (e.g., `@evilserver.local`).",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Header Reading 📖",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "To find the originating IP address of an email, you should read the 'Received' headers from...",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Top to bottom (First stamp is origin).",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Bottom to top (Last stamp at bottom is origin).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Only the 'From' field matters.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Email hops accumulate headers. The first (bottom) 'Received' header is the initial handoff from the sending server.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Sample Header Analysis (Legitimate)",
+            "content": "Let's trace a real email from `alerts@amazon.com`.",
+            "codeSnippet": "Received: from a13-19.smtp-out.amazonses.com (54.240.13.19) by...\nReceived: from internal-mail-router...\nAuthentication-Results: spf=pass smtp.mailfrom=amazonses.com; dkim=pass header.d=amazon.com;\nReturn-Path: <0101017f2e3b0c6f-abc123@amazonses.com>\nFrom: \"Amazon.com\" <alerts@amazon.com>\n\n# Analysis:\n# - Origin IP: 54.240.13.19 (Amazon SES infrastructure - Legit).\n# - SPF/DKIM: Pass.\n# - Return-Path: Matches Amazon's email service (SES).",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Sample Header Analysis (Phishing)",
+            "content": "User reports an email from 'Microsoft Security'.",
+            "codeSnippet": "Received: from vps12345.dreamhost.com (173.236.128.45) by...\nReceived: from User (localhost [127.0.0.1]) by vps12345.dreamhost.com...\nAuthentication-Results: spf=softfail smtp.mailfrom=dreamhost.com; dkim=none;\nReturn-Path: <hacker@dreamhost.com>\nFrom: \"Microsoft Security\" <secure@microsoft-security-alerts.com>\n\n# Analysis:\n# - Origin IP: 173.236.128.45 (Dreamhost VPS - NOT Microsoft).\n# - SPF: Softfail.\n# - DKIM: None.\n# - Display Name: Fake Microsoft.\n# VERDICT: Definite Phishing.",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_6",
+            "type": "tip",
+            "title": "Use Header Analyzers 🛠️",
+            "content": "## Don't Read Raw Headers Manually\n\nUse free online tools to parse headers into a readable table:\n*   **MXToolbox Email Header Analyzer**\n*   **Google Admin Toolbox Messageheader**\n\nThese tools highlight the **originating IP** and **SPF/DKIM status** automatically. **Always check the originating IP against AbuseIPDB or VirusTotal.**"
+        }
+    ]
+}

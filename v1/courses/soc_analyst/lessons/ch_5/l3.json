@@ -1,0 +1,89 @@
+{
+    "id": "l3",
+    "chapterId": "ch_5",
+    "title": "Searching and Query Languages",
+    "description": "Master Splunk SPL and KQL to hunt for threats.",
+    "xpReward": 40,
+    "estimatedMinutes": 10,
+    "section": "Core Skills",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Search Bar is Your Weapon ⚔️",
+            "content": "# Query Languages 101\n\nEvery SIEM has its own language, but they all share the same **pipeline logic**:\n\n1.  **Filter:** Reduce the haystack. (e.g., `index=windows`)\n2.  **Transform:** Manipulate data. (e.g., Calculate statistics)\n3.  **Aggregate:** Group results. (e.g., Count by user)\n\nWe will cover **Splunk SPL** and **Microsoft KQL** as they are the industry standards.\n\n> **Note:** These examples are logical representations. Specific syntax varies by SIEM version."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Splunk SPL Basics (Part 1)",
+            "content": "SPL is a **pipeline**. Data flows from left to right through the pipe `|` operator.",
+            "codeSnippet": "# Basic Filter\nindex=windows EventCode=4625 user=Administrator\n\n# Pipe to 'stats' (Group and Count)\nindex=windows EventCode=4625 \n| stats count by user, src_ip\n\n# Pipe to 'sort' (Order results)\nindex=windows EventCode=4625 \n| stats count by user \n| sort -count\n\n# The minus sign (-) sorts descending (most failed logins first).",
+            "codeLanguage": "splunk",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_3",
+            "type": "code",
+            "title": "Splunk SPL Basics (Part 2) - Evaluation & Time",
+            "content": "You can create new fields and filter by time.",
+            "codeSnippet": "# Create a new field 'len_user' using 'eval'\nindex=windows EventCode=4625\n| eval len_user = len(user)\n| where len_user > 10\n| table user, src_ip, len_user\n\n# Time Range Modifiers (Critical!)\nindex=windows EventCode=4625 earliest=-24h latest=now\nindex=windows EventCode=4625 earliest=\"03/10/2026:00:00:00\"",
+            "codeLanguage": "splunk",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_4",
+            "type": "quiz",
+            "title": "SPL Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "In Splunk, what does the `| stats count by user` command do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Filters events to only show 'user'.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Groups events by 'user' and counts how many events per user.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Deletes the 'user' field.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`stats` performs aggregation. `count by X` creates a frequency table.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Microsoft KQL (Kusto Query Language)",
+            "content": "KQL is used in Azure Sentinel and Microsoft Defender. It's **pipe-based** but reads differently.",
+            "codeSnippet": "# Basic Filter (Table first)\nSecurityEvent\n| where EventID == 4625\n| where Account contains \"Admin\"\n\n# Aggregation (Summarize)\nSecurityEvent\n| where EventID == 4625\n| summarize Count = count() by Account, IpAddress\n| order by Count desc\n\n# Time Filter\nSecurityEvent\n| where TimeGenerated > ago(24h)\n| where EventID == 4625",
+            "codeLanguage": "kql",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_6",
+            "type": "code",
+            "title": "Advanced Hunting: Sub-Searches and Joins",
+            "content": "Sometimes you need to ask: 'Show me all workstations that had a malware alert AND also connected to a suspicious IP.'",
+            "codeSnippet": "# Splunk Example: Subsearch\nindex=endpoint sourcetype=sysmon EventID=1 \n[ search index=network dest_ip=185.142.53.21 \n  | fields src_ip \n  | rename src_ip as dest_ip ]\n| table dest_ip, Image, CommandLine\n\n# This finds process creation events (Sysmon ID 1) on any host\n# that appears in the subsearch results (hosts that talked to bad IP).",
+            "codeLanguage": "splunk",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_7",
+            "type": "tip",
+            "title": "Pro Tip: Wildcards and Regex 🚀",
+            "content": "## Finding Needles in Haystacks\n\n*   **Wildcard:** `*` matches any characters.\n    *   `user=*admin*` -> Finds `admin`, `administrator`, `sysadmin`.\n*   **Regular Expressions (Regex):** Powerful pattern matching.\n    *   `| regex CommandLine=\"(?i).*-enc.*\"`\n    *   This finds PowerShell commands with `-enc` (case-insensitive).\n\n**Caution:** Leading wildcards (`*admin`) are **very slow** in large datasets. Use them sparingly."
+        }
+    ]
+}

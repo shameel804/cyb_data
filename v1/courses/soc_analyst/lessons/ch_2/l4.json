@@ -1,0 +1,68 @@
+{
+    "id": "l4",
+    "chapterId": "ch_2",
+    "title": "Social Media Intelligence",
+    "description": "LinkedIn, Twitter, and Facebook for recon and defense.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Techniques",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Human Element 👤",
+            "content": "# People Are the Weakest Link (and Best OSINT Source)\n\nYou can patch a server. You can't patch a human's habit of oversharing.\n\n**SOCIMINT (Social Media Intelligence)** is the analysis of social media for security purposes.\n\n**Key Platforms for Defenders:**\n*   **LinkedIn:** Job titles, org charts, tech stack (e.g., *\"Experience with LogRhythm SIEM\"*).\n*   **Twitter:** Real-time complaints about systems being down (e.g., *\"Ugh, the VPN is acting up again today.\"*).\n*   **GitHub:** Source code leaks, hardcoded passwords (we'll cover this more in Ch 6).\n*   **Instagram/TikTok:** **Badge photos.** Attackers LOVE seeing an employee badge in a selfie. They can clone RFID badges from a photo."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "LinkedIn Reconnaissance",
+            "content": "# Mapping the Org Chart\n\nAn attacker wants to know:\n1.  **Who works in IT/Security?** *(To avoid them or target them specifically).*\n2.  **Who is the CEO/CFO?** *(Target for Whale Phishing / Wire Fraud).*\n3.  **Who is new?** *(New hires are less likely to question a weird email from 'HR').*\n\n**Defensive Insight:** Search LinkedIn for people claiming to be **CISO of [Your Company]** when you don't have one. That's a fake profile used for social engineering."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Scenario: Badge Photo 📸",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "You see a new employee post an excited selfie on Instagram: 'First day at Acme Corp! #NewJob'. The photo clearly shows their access badge. What is the primary security risk?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The employee will be embarrassed.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "An attacker can zoom in, see the badge layout, and clone an RFID card to enter the building.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It violates Instagram's terms of service.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "High-res photos allow attackers to identify the badge manufacturer and potentially clone the low-frequency RFID/HID cards used for physical access.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "Twitter Advanced Search",
+            "content": "Twitter's search bar is surprisingly powerful for OSINT.",
+            "codeSnippet": "Search: \"Acme Corp VPN\" lang:en since:2024-01-01 -filter:retweets\n\n# This finds English tweets mentioning Acme Corp VPN this year, excluding retweets.\n# You might find users complaining about specific connection issues.",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "warning",
+            "title": "Ethical Boundaries 🛑",
+            "content": "## Do Not Stalk\n\nAs a SOC analyst, you are **not** law enforcement. You are **not** HR.\n\n*   **Okay:** Monitoring public tweets about the company's **technology** stack or **service outages**.\n*   **Not Okay:** Scrolling through an employee's private Facebook photos to see where they live or if their kids play soccer.\n\n**If you find a serious security leak from an employee (e.g., they posted a password in a public GitHub repo), report it to your manager or the Security Awareness team. Do NOT contact the employee directly.**"
+        }
+    ]
+}

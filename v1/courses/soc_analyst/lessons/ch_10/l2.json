@@ -1,0 +1,74 @@
+{
+    "id": "l2",
+    "chapterId": "ch_10",
+    "title": "Preparation: The Foundation of IR",
+    "description": "Building policies, assembling the CSIRT, and preparing tools and playbooks.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "PICERL Phase 1",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Calm Before the Storm 🌤️",
+            "content": "# Why Preparation is the Most Important Phase\n\nYou **cannot** figure out how to respond to ransomware **while** the ransomware is actively encrypting your file servers.\n\n**Preparation** ensures that when the alarm rings, everyone knows their job, the tools are ready, and the decisions have already been made.\n\n**Key Preparation Deliverables:**\n1.  **Incident Response Policy:** High-level executive mandate. *\"We WILL respond to incidents. Here is the authority.\"*\n2.  **Incident Response Plan (IRP):** The strategic document outlining phases, roles, and communication.\n3.  **Playbooks / Runbooks:** Specific, step-by-step procedures for common incidents (e.g., *\"Ransomware Playbook\"*, *\"Phishing Playbook\"*).\n4.  **CSIRT (Computer Security Incident Response Team):** The list of people and their 24/7 contact info."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "The CSIRT Contact Card 📇",
+            "content": "# Who You Gonna Call?\n\nEvery analyst should have a laminated card (or secure note) with this info.\n\n| Role | Name | Office | Mobile |\n| :--- | :--- | :--- | :--- |\n| Incident Commander | Jane Doe | 555-1234 | 555-5678 |\n| Network Lead | John Smith | 555-1235 | 555-5679 |\n| Server Lead | Mike Jones | 555-1236 | 555-5680 |\n| Legal Counsel | Sarah Lee | 555-1237 | 555-5681 |\n| PR / Comms | Dave Brown | 555-1238 | 555-5682 |\n\n**Out-of-Band Communication:** If the corporate email/Slack is compromised, how do you communicate? **Have a Signal/WhatsApp group or a conference bridge number ready.**"
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Prep Check 📋",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What is the primary difference between an Incident Response Policy and a Playbook?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Policy is high-level authority; Playbook is specific technical steps.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Playbook is for executives; Policy is for analysts.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "There is no difference.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Policy grants authority and sets scope. Playbooks provide the tactical 'how-to' for specific threats.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Example Playbook Snippet: Ransomware",
+            "content": "A playbook prevents panic. It should be a checklist.",
+            "codeSnippet": "# RANSOMWARE PLAYBOOK - PHASE 1: IDENTIFICATION\n\n[ ] Analyst receives alert from EDR (CrowdStrike/Defender).\n[ ] Analyst confirms detection is NOT a false positive (Sandbox/Intel).\n[ ] Analyst identifies affected hostname(s) and user(s).\n[ ] Analyst notifies Incident Commander (IC).\n[ ] IC declares 'Severity 1 - Ransomware Incident'.\n[ ] Bridge line opened. Scribe begins timeline.\n\n# PHASE 2: CONTAINMENT\n[ ] Network Lead disables switch port for affected host(s).\n[ ] Server Lead disables AD account for affected user(s).\n...",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Tooling and Access 🔧",
+            "content": "# Sharpening the Axe\n\nPreparation ensures you **have** the tools and **can log in** to them when the crisis hits.\n\n**Critical Pre-Incident Setup:**\n1.  **Jump Host / Privileged Access Workstation (PAW):** A secure, dedicated machine for IR actions. **Never investigate malware from your daily-driver laptop.**\n2.  **Credential Vault:** Break-glass accounts for Domain Admin, Firewall, Cloud Console. **NOT tied to normal SSO/MFA that might be compromised.**\n3.  **Forensic Toolkits Ready:** USB drives with Velociraptor, KAPE, FTK Imager. VM templates ready to deploy.\n4.  **Log Retention Confirmed:** Can you actually access logs from 90 days ago? (Test this **before** the incident).\n\n**Analogy:** A firefighter doesn't wait for a fire to check if the truck has water and the hose is connected."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "warning",
+            "title": "The Silent Killer: Assumptions ⚠️",
+            "content": "## You Don't Have Access\n\nIn a real incident, you will discover:\n*   The backup system requires a Java applet that no longer works.\n*   The firewall admin is on vacation in a remote cabin with no cell service.\n*   The 'Break Glass' account password expired 6 months ago and no one noticed.\n\n**Preparation includes regular **Tabletop Exercises** (TTX). Walk through a fake incident **without** touching real systems. You'll find these gaps **before** the attackers do.**"
+        }
+    ]
+}

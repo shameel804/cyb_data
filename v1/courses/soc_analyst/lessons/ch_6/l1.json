@@ -1,0 +1,74 @@
+{
+    "id": "l1",
+    "chapterId": "ch_6",
+    "title": "The Log Analysis Mindset",
+    "description": "How to approach raw logs systematically and spot the needle in the haystack.",
+    "xpReward": 30,
+    "estimatedMinutes": 6,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Welcome to the Trenches ⛑️",
+            "content": "# Log Analysis: The Core Skill\n\nIn Chapter 5, we learned how to **search** in a SIEM. But knowing the syntax is only half the battle. Knowing **what to look for** in the sea of text is the other half.\n\n**Log Analysis** is the process of reviewing event records to:\n1.  **Validate** alerts (True Positive vs. False Positive).\n2.  **Scope** the incident (What else did this IP/User do?).\n3.  **Contextualize** the finding (Is this normal for this user?).\n\n**Analogy:** A SIEM query is like a metal detector. Log analysis is knowing the difference between a gold coin, a rusty nail, and a bottle cap just by the sound and depth reading."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "The Triage Mindset 🧠",
+            "content": "# 5 Questions to Answer in 5 Minutes\n\nWhen you open a ticket, you have limited time. Don't get lost in the details. Answer these five questions in order:\n\n1.  **WHAT happened?** (The alert description. e.g., *Connection to Malicious IP*)\n2.  **WHO** is involved? (Source IP, Username, Hostname)\n3.  **WHEN** did it happen? (Timestamp. Check for off-hours activity!)\n4.  **WHERE** did it go? (Destination IP/Port/Country)\n5.  **HOW OFTEN** did it happen? (Is this a single blip or a 10-minute sustained connection?)\n\nIf you can answer these five questions, you can make an informed **Escalate** or **Close** decision."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Triage Check ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "You see a single connection to a suspicious IP on port 443, but it lasted only 2 seconds and sent 200 bytes. Which 'W' question is most critical to answer next?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "WHAT exactly was the payload? (Impossible with HTTPS)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "HOW OFTEN did this connection occur in the last 24 hours?",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "WHERE is the user sitting physically?",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A single short connection could be a false positive (ad tracker, CDN). Repeated connections every 5 minutes (beaconing) are a true positive.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Normal vs. Abnormal 📊",
+            "content": "# Baselining in Your Head\n\nYou can't rely on the SIEM for everything. You need to develop a **mental baseline**.\n\n*   **Port 53 (DNS):** Every machine talks to the DNS server constantly. That's normal. But if a machine talks to **8.8.8.8 directly** (bypassing corporate DNS), that's **abnormal**.\n*   **Port 445 (SMB):** Normal between file servers and workstations **internally**. **NEVER** normal outbound to the internet.\n*   **Port 3389 (RDP):** Normal for IT admins. **Abnormal** for the Marketing intern at 3 AM from a foreign country.\n\n**Pattern:** Attackers rely on you being too busy to notice the subtle anomalies. **Be suspicious of the unfamiliar.**"
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Reading Raw Logs: Splunk Table View",
+            "content": "When you remove all the pretty dashboards, logs are just rows and columns. Learn to scan them fast.",
+            "codeSnippet": "_time               src_ip          dest_ip         dest_port   action\n2026-03-15 08:00:01 192.168.1.105   8.8.8.8         53          allowed\n2026-03-15 08:00:02 192.168.1.105   142.250.185.46  443         allowed\n2026-03-15 08:00:03 192.168.1.105   185.142.53.21   445         blocked <-- WAIT! SMB outbound? Investigate!\n2026-03-15 08:00:04 192.168.1.105   104.16.124.96   443         allowed",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Pro Tip: Action Field Matters 🚀",
+            "content": "## Allowed vs. Blocked\n\n**Blocked traffic** is usually just **noise** (someone scanning you). Unless it's a massive flood (DDoS), a single blocked packet is low priority.\n\n**Allowed traffic** to a suspicious destination is **evidence of compromise**. The firewall **let it through**. That means the connection succeeded. **Prioritize ALLOW events over DENY events.**"
+        }
+    ]
+}

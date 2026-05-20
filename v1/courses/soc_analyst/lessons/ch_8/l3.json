@@ -1,0 +1,71 @@
+{
+    "id": "l3",
+    "chapterId": "ch_8",
+    "title": "SPF, DKIM, and DMARC Demystified",
+    "description": "Master email authentication protocols and spot spoofing attempts.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Authentication",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Three Pillars of Email Trust 🏛️",
+            "content": "# SPF, DKIM, and DMARC\n\nThese three technologies work together to prevent attackers from sending emails pretending to be you (or pretending to be Microsoft/Google).\n\n| Acronym | Stands For | Analogy |\n| :--- | :--- | :--- |\n| **SPF** | Sender Policy Framework | **Approved Sender List:** *\"Only these IP addresses can send mail from my domain.\"* |\n| **DKIM** | DomainKeys Identified Mail | **Tamper-Proof Seal:** *\"This letter has a cryptographic signature proving it came from me and wasn't changed.\"* |\n| **DMARC** | Domain-based Message Authentication, Reporting & Conformance | **The Policy Enforcer:** *\"If SPF or DKIM fail, here's what to do with the email (Quarantine/Reject).\"* |"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "SPF: The Guest List 📋",
+            "content": "# Sender Policy Framework\n\n**How it works:**\n1.  Receiving server sees email from `billing@acme.com`.\n2.  Server looks up the **SPF Record** for `acme.com` (a TXT record in DNS).\n3.  Record says: `v=spf1 ip4:192.0.2.10 include:spf.protection.outlook.com -all`\n4.  **Check:** Did this email come from IP `192.0.2.10` or an Outlook server?\n5.  If **YES** -> `spf=pass`. If **NO** -> `spf=fail`.\n\n**SPF Record Breakdown:**\n*   `v=spf1`: Version.\n*   `ip4:192.0.2.10`: Allow this specific IP.\n*   `include:spf.protection.outlook.com`: Allow Microsoft's email servers.\n*   `-all`: **HARD FAIL** - Reject everything else.\n*   `~all`: **SOFT FAIL** - Accept but mark as suspicious.\n\n**Analyst Note:** If you see `spf=softfail` or `spf=fail` for an email claiming to be from a major brand (Microsoft, PayPal), it's a **strong phishing indicator**."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "SPF Check 📝",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "An email from 'service@paypal.com' has `spf=fail` in the headers. What does this mean?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The email is definitely safe.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The sending IP is not authorized by PayPal to send email on their behalf.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The email is encrypted.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "SPF fail means the IP address that sent the email is not listed in PayPal's SPF record. This is a clear sign of spoofing.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "DKIM: The Wax Seal 🔏",
+            "content": "# DomainKeys Identified Mail\n\n**How it works:**\n1.  Sending server **cryptographically signs** the email body and selected headers with a **private key**.\n2.  Receiving server looks up the **public key** in the sender's DNS (`selector._domainkey.acme.com`).\n3.  Receiving server verifies the signature.\n\n**Why SPF is not enough:** SPF breaks when emails are **forwarded** (mailing lists, auto-forward rules). DKIM survives forwarding because the signature is part of the email itself.\n\n**Analyst Note:** Attackers **rarely** have valid DKIM signatures for the domains they spoof. `dkim=none` or `dkim=fail` for a major brand = **Phishing**.\n\n**Wait, what if both pass?** A sophisticated attacker might compromise a legitimate email account or use a trusted third-party service (e.g., SendGrid). That's why **user reporting** and **URL/link analysis** are still essential."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "DMARC: The Enforcement Policy 👮",
+            "content": "# Domain-based Message Authentication, Reporting & Conformance\n\n**DMARC tells receiving servers what to DO when SPF/DKIM fail.**\n\n**DMARC Policy Tags (p=):**\n*   `p=none`: **Monitor mode.** Do nothing, just send me a report. (Used for testing).\n*   `p=quarantine`: **Put in Spam/Junk folder.**\n*   `p=reject`: **Block the email entirely.** (Strongest protection).\n\n**Example DMARC Record for `acme.com`:**\n`v=DMARC1; p=reject; rua=mailto:dmarc-reports@acme.com; pct=100`\n\n**Analyst Workflow:**\n1.  Open email headers.\n2.  Look for `Authentication-Results: ... dmarc=fail (p=reject)`.\n3.  If it failed DMARC but still landed in the user's Inbox, **your email gateway is misconfigured**. Escalate to Email Security Team.\n4.  If `dmarc=pass`, the email is **technically authenticated**. It might still be a malicious email from a **compromised legitimate account**."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "warning",
+            "title": "The 'Compromised Account' Blind Spot 🎭",
+            "content": "## Authentication is Not a Silver Bullet\n\nIf an attacker steals the password to `ceo@acme.com` and logs into Office 365 to send emails:\n*   **SPF:** PASS (Sent from Microsoft's authorized IPs).\n*   **DKIM:** PASS (Signed by Microsoft).\n*   **DMARC:** PASS.\n\n**The headers will look PERFECT.** This is why **User and Entity Behavior Analytics (UEBA)** is critical—detecting anomalous login locations or unusual sending patterns."
+        }
+    ]
+}

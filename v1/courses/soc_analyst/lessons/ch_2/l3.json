@@ -1,0 +1,77 @@
+{
+    "id": "l3",
+    "chapterId": "ch_2",
+    "title": "Google Dorking Mastery",
+    "description": "Advanced search operators for finding exposed data.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Techniques",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Google Hacking / Dorking 🔎",
+            "content": "# Beyond 'I'm Feeling Lucky'\n\nGoogle indexes **trillions** of web pages. Most people use 1% of its power. **Dorking** is using advanced search operators to find **exactly** what you're looking for—often things that were never meant to be public.\n\n**Why this works for Defenders:** You can find your company's **exposed login portals, backup files (.sql, .bak), and configuration files** that have been accidentally indexed by Google.\n\n**Important:** Google Dorking is **NOT illegal**. You are simply viewing cached public information. However, *accessing* the files you find might be illegal if they contain private data. Use this **only for authorized security assessments**."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Essential Operators: The Toolkit 🛠️",
+            "content": "Memorize these commands. They are the foundation of Google Dorking.",
+            "codeSnippet": "1. site:example.com\n   Limits results to a specific website.\n\n2. filetype:pdf (or xlsx, doc, sql, log, bak)\n   Finds specific file types.\n\n3. intitle:\"Index of\"\n   Finds open directory listings of web servers.\n\n4. inurl:admin\n   Finds pages with 'admin' in the URL (potential login panels).\n\n5. - (Minus Sign)\n   Excludes terms. e.g., jobs -linkedin",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Operator Match 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "You want to find PDF files on 'example.com' that contain the word 'confidential'. Which dork is correct?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "confidential filetype:pdf site:example.com",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "site:example.com has:confidential and type:pdf",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "example.com pdf confidential",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The syntax is: search term + filetype: + site:. Order doesn't matter much, but this is the standard format.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "Real-World Dork: Exposed Databases",
+            "content": "This is a classic example of what an attacker looks for. DO NOT click on these links if you find them. Just note the URL.",
+            "codeSnippet": "intitle:\"index of\" \"database.sql\" OR \"backup.sql\"",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Case Study: Finding Login Portals",
+            "content": "# VPN and Remote Access\n\nDuring COVID-19, many companies rushed to set up remote access and **misconfigured** it. Attackers used dorks like:\n\n`inurl:/remote/login intitle:\"FortiGate\"`\n\nThis searches for Fortinet firewall login pages. \n\n**Defensive Action:** As a SOC analyst, you should run these dorks against your **own company domain** (`site:mycompany.com`) once a month. If you find an exposed admin panel, you report it to the network team **immediately** before a real attacker finds it."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Google Alerts 🚨",
+            "content": "## Automated Monitoring\n\nYou don't have to manually run dorks every day. Set up **Google Alerts** for:\n*   `site:yourcompany.com filetype:sql`\n*   `site:yourcompany.com \"password\"`\n\nGoogle will email you whenever it indexes new content matching that query. **Free defensive monitoring!**"
+        }
+    ]
+}

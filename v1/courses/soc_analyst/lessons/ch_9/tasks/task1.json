@@ -1,0 +1,14 @@
+{
+    "id": "task1",
+    "chapterId": "ch_9",
+    "title": "Static Analysis of a Suspicious EXE",
+    "description": "Use hashes, strings, and PE analysis to triage a sample without executing it.",
+    "estimatedMinutes": 20,
+    "problemStatement": "### Scenario\nYou receive a suspicious file named `Invoice_45892.exe` from a user. You cannot run it yet. Perform static analysis using the following simulated outputs.\n\n### Simulated Outputs\n\n**File Hash (SHA256):**\n`e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`\n\n**Strings Output (Excerpt):**\n```\n!This program cannot be run in DOS mode.\nRich\n.text\n`.data\nGetProcAddress\nLoadLibraryA\nWinExec\nURLDownloadToFileA\nhttp://update-server.ddns.net/payload.exe\nC:\\Users\\Public\\svchost.exe\nSoftware\\Microsoft\\Windows\\CurrentVersion\\Run\nBackupManager\n```\n\n**PE-bear Entropy:**\n- .text section entropy: 6.2\n- .data section entropy: 3.1\n\n**PE-bear Imports:**\n- KERNEL32.dll: LoadLibraryA, GetProcAddress, WinExec\n- URLMON.dll: URLDownloadToFileA\n- ADVAPI32.dll: RegSetValueExA\n\n### Questions\n1.  Based on the hash, is this file known on VirusTotal? (Assume you check and it returns 5/72 detections). What does this imply?\n2.  What malicious behaviors can you infer from the **strings** and **imports**?\n3.  Is the file likely packed? Why or why not?\n4.  What IOCs would you extract for blocking?",
+    "hints": [
+        "Look for network indicators (URLs) and persistence mechanisms (Registry).",
+        "Entropy above 7.0 usually indicates packing; here it's lower."
+    ],
+    "expectedOutput": "1. Low detection ratio suggests it may be a new variant or packed, but the behavioral indicators confirm it's malicious.\n2. Downloads a file from 'update-server.ddns.net', saves it to Public folder as svchost.exe, executes it, and adds persistence via Run key named 'BackupManager'.\n3. Not heavily packed (entropy 6.2). The strings are mostly readable.\n4. IOCs: URL 'http://update-server.ddns.net/payload.exe', file path 'C:\\Users\\Public\\svchost.exe', registry key 'BackupManager'.",
+    "solutionCode": "N/A"
+}

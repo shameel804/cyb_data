@@ -1,0 +1,73 @@
+{
+    "id": "l2",
+    "chapterId": "ch_12",
+    "title": "Setting Up the Virtual Environment",
+    "description": "Install VirtualBox, create Windows and Linux VMs, and configure networking.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Infrastructure",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Virtualization 101 💻",
+            "content": "# Your Computer Within a Computer\n\n**Virtualization** allows you to run multiple operating systems simultaneously on your physical hardware.\n\n**Hypervisor Options:**\n*   **VirtualBox (Free):** Cross-platform, easy to use. **Recommended for this course.**\n*   **VMware Workstation Player (Free):** Slightly better performance, but fewer features in free version.\n*   **Hyper-V (Windows Pro/Enterprise):** Built into Windows, excellent performance.\n\n**Installation Steps (VirtualBox):**\n1.  Download VirtualBox from [virtualbox.org](https://www.virtualbox.org).\n2.  Download the **Extension Pack** (enables USB 2.0/3.0, RDP).\n3.  Install VirtualBox and the Extension Pack.\n\n**Analogy:** VirtualBox is the **landlord**. Each VM is a **tenant** renting space (CPU, RAM, Disk) in your computer."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Creating Your First VM: Windows 10/11 🪟",
+            "content": "# The Victim Workstation\n\n**Step 1: Get Windows ISO**\n*   Download Windows 10/11 ISO from Microsoft's official site (Evaluation versions are free for 90 days).\n\n**Step 2: Create VM in VirtualBox**\n*   Click **New**.\n*   Name: `Win10-Victim`\n*   Type: Microsoft Windows, Version: Windows 10 (64-bit).\n*   Memory: **4096 MB (4 GB)** minimum. 8 GB recommended.\n*   Hard Disk: **Create a virtual hard disk now** -> VDI -> **Dynamically allocated** -> **50 GB**.\n\n**Step 3: Mount ISO and Install**\n*   Go to **Settings** -> **Storage** -> Click Empty CD icon -> Choose Virtual Optical Disk File -> Select your Windows ISO.\n*   Start the VM and complete Windows installation (choose 'I don't have a product key' and 'Windows 10 Pro').\n\n**Step 4: Install Guest Additions**\n*   After Windows boots, click **Devices** -> **Insert Guest Additions CD image**.\n*   Run the installer inside the VM. This enables **shared clipboard, drag-and-drop, and better video performance**."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "VM Settings ⚙️",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Why is 'Dynamically allocated' disk recommended over 'Fixed size' for a home lab?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It's faster.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It only uses space on your physical drive as the VM actually needs it, saving disk space.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It's required for Windows 11.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Dynamic allocation grows the virtual disk file as data is written, preventing the immediate consumption of 50 GB.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Creating a Linux VM: Ubuntu Server 🐧",
+            "content": "# The SIEM / Log Collector Host\n\n**Step 1: Download Ubuntu Server ISO**\n*   Go to [ubuntu.com/download/server](https://ubuntu.com/download/server).\n\n**Step 2: Create VM**\n*   Name: `Ubuntu-SIEM`\n*   Type: Linux, Version: Ubuntu (64-bit).\n*   Memory: **4096 MB** (Splunk needs RAM!).\n*   Hard Disk: **80 GB** dynamically allocated.\n\n**Step 3: Install Ubuntu Server**\n*   Mount the ISO and boot.\n*   Follow the text-based installer.\n*   **Important:** During setup, install the **OpenSSH server** package. This allows you to connect remotely from your host terminal.\n*   Create a user account (e.g., `socanalyst`).\n\n**Step 4: Post-Installation**\n*   After reboot, log in.\n*   Run `sudo apt update && sudo apt upgrade -y` to patch the system.\n*   Install Guest Additions for Linux (more complex; see VirtualBox manual)."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Configuring the Isolated Lab Network 🔒",
+            "content": "We need all VMs to talk to each other but **NOT** to your home network or the internet (unless via a controlled gateway).\n\n**VirtualBox Network Modes:**\n- **NAT:** VM can access internet, but host and other VMs cannot access it easily. Not ideal.\n- **Host-Only:** Creates a private network between your **host PC** and **all VMs**. VMs can talk to each other and the host. **No internet access.** **Best for safe lab.**\n- **Internal Network:** Only VMs on the same named network can talk. No host access. Good for deep isolation.\n\n**Recommended Setup: Host-Only Network**\n1.  Go to **File** -> **Tools** -> **Network Manager** (or Preferences -> Network).\n2.  Click **Host-Only Networks** tab -> **Create**.\n3.  Default is `192.168.56.0/24` with DHCP enabled.\n4.  For each VM, go to **Settings** -> **Network** -> **Adapter 1** -> **Attached to: Host-Only Adapter**.\n\nNow all VMs get IPs like `192.168.56.101`, `192.168.56.102`, etc.",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_6",
+            "type": "tip",
+            "title": "Snapshots: Your 'Save Game' Feature 💾",
+            "content": "## Before You Break Anything, Take a Snapshot\n\n**Snapshots** capture the exact state of a VM at a moment in time. You can revert to it instantly.\n\n**Workflow:**\n1.  Install OS and all base tools (Sysmon, Splunk Forwarder).\n2.  **Take Snapshot:** Name it `Base Install - Clean`.\n3.  Run malware / simulate attack.\n4.  **Revert to Snapshot:** VM is perfectly clean again in seconds.\n\n**Always take a snapshot before installing questionable software or running malware.**"
+        }
+    ]
+}

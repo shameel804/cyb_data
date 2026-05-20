@@ -1,0 +1,68 @@
+{
+    "id": "l6",
+    "chapterId": "ch_4",
+    "title": "Sysmon: The SOC Analyst's Best Friend",
+    "description": "Advanced Windows logging with Sysmon for deep visibility.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Advanced Logging",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "Sysmon: The Upgrade You Need 🚀",
+            "content": "# System Monitor (Sysmon)\n\n**Sysmon** is a free tool from Microsoft's Sysinternals suite. Once installed, it becomes a **driver** that monitors the system at the kernel level and writes detailed events to the **Windows Event Log** (`Applications and Services Logs/Microsoft/Windows/Sysmon/Operational`).\n\n**Why is Sysmon better than standard Windows Logging?**\n\n| Feature | Windows Default | Sysmon |\n| :--- | :--- | :--- |\n| Process Creation | Event ID 4688 (Limited) | Event ID 1 (Hashes, Parent info, GUID) |\n| Network Connections | Limited to Firewall | Event ID 3 (Links Process to IP) |\n| File Creation | Not logged by default | Event ID 11 (FileCreate) |\n| Registry Changes | Not logged by default | Event ID 13 (Registry Value Set) |\n| Process Injection | **Impossible to see** | Event ID 8 (CreateRemoteThread) |"
+        },
+        {
+            "id": "s_l6_2",
+            "type": "code",
+            "title": "Sysmon Event ID 1: The Ultimate Process Log",
+            "content": "This is the most important Sysmon event. It gives you a SHA256 hash of the executable.",
+            "codeSnippet": "EventID: 1 (Process Create)\nImage: C:\\Windows\\System32\\cmd.exe\nCommandLine: cmd.exe /c whoami\nParentImage: C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE\nParentCommandLine: \"C:\\Program Files...\\WINWORD.EXE\" /n \"C:\\Users\\jsmith\\Documents\\malicious.docm\"\nHashes: SHA256=ABC123...\n\n# See the difference? We now know WORD spawned CMD. We have the exact document name. We have the hash to check on VirusTotal.",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Sysmon Superpower 🦸",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "Which Sysmon Event ID specifically logs when a process tries to inject code into another process (a technique used for credential theft)?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Event ID 1",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Event ID 3",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Event ID 8",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Event ID 8 (CreateRemoteThread) is the definitive event for detecting process injection.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "Sysmon Event ID 3: Network Connections 🔌",
+            "content": "# Linking Processes to IPs\n\nStandard Windows logs don't easily tell you **which process** made a specific outbound connection. Sysmon Event ID 3 does.\n\n**Field:** `Image` (The process that made the connection).\n**Field:** `DestinationIp`.\n**Field:** `DestinationPort`.\n\n**Use Case:**\n1.  Firewall alert: `192.168.1.101` connected to malicious IP `185.142.53.21`.\n2.  Query Sysmon Event ID 3 for `DestinationIp=185.142.53.21`.\n3.  Result: `Image: C:\\Users\\jsmith\\AppData\\Local\\Temp\\dropper.exe`.\n\n**Now you know exactly which file caused the alert!**"
+        },
+        {
+            "id": "s_l6_5",
+            "type": "tip",
+            "title": "Sysmon Configuration ⚙️",
+            "content": "## It's Only as Good as the Config\n\nSysmon is a sensor. It doesn't alert by itself. You need a **configuration file** (XML) that tells it what to look for and what to ignore (exclude).\n\n**Popular Community Configs:**\n*   **SwiftOnSecurity Sysmon Config:** The industry standard starter config. It filters out noise and highlights suspicious events.\n*   **Olaf Hartong Sysmon-Modular:** Advanced, granular configuration.\n\n**Pro Tip:** A poorly configured Sysmon that logs **everything** will fill your SIEM storage and cost you a fortune. **Exclusions are just as important as inclusions.**"
+        }
+    ]
+}

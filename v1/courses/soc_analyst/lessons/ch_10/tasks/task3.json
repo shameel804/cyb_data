@@ -1,0 +1,14 @@
+{
+    "id": "task3",
+    "chapterId": "ch_10",
+    "title": "Lessons Learned Action Items",
+    "description": "Analyze a post-mortem summary and propose actionable improvements.",
+    "estimatedMinutes": 15,
+    "problemStatement": "### Scenario\nYou are reviewing the Post-Mortem summary from a recent Ransomware incident.\n\n**Key Findings from Post-Mortem:**\n1.  The initial phishing email bypassed the Secure Email Gateway because it used a legitimate compromised SharePoint link.\n2.  The user clicked the link and entered credentials into a fake Office 365 login page.\n3.  The attacker used those credentials to log into the corporate VPN (no MFA required for VPN access).\n4.  The attacker moved laterally using RDP (port 3389) from the initial workstation to the file server.\n5.  The SIEM had a rule for 'Impossible Travel', but it was disabled 3 months ago due to 'too many false positives' and never re-enabled.\n6.  Backups were available, but restoring 10 TB of data took 48 hours due to network bandwidth limitations.\n\n### Task\nBased on these findings, propose **FIVE specific Action Items** that should be added to the Lessons Learned tracker.\n\nEach Action Item should have:\n- **Action Item Description** (e.g., \"Implement X to prevent Y\")\n- **Owner Team** (e.g., SOC, Network, Security Engineering)\n\n### Example\n- **Action Item:** Enable MFA for all VPN connections.\n- **Owner:** Network Team",
+    "hints": [
+        "Look for the root cause of each failure point.",
+        "Focus on process/tooling changes, not blaming the user."
+    ],
+    "expectedOutput": "Sample Action Items:\n1. Action: Enforce MFA for all remote access VPN connections. Owner: Network Team.\n2. Action: Review and re-enable SIEM 'Impossible Travel' rule with tuning for legitimate business travel. Owner: SOC/Detection Engineering.\n3. Action: Implement network segmentation to restrict RDP (3389) traffic between user workstations and servers. Owner: Network Security.\n4. Action: Conduct user awareness training focused on O365 credential phishing and verifying SharePoint links. Owner: Security Awareness Team.\n5. Action: Evaluate backup infrastructure bandwidth and implement faster recovery options (e.g., local cache appliances). Owner: Infrastructure Team.",
+    "solutionCode": "N/A"
+}

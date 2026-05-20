@@ -1,0 +1,73 @@
+{
+    "id": "l3",
+    "chapterId": "ch_10",
+    "title": "Identification: Declaring the Incident",
+    "description": "Detecting, validating, and triaging events to determine if an incident is occurring.",
+    "xpReward": 40,
+    "estimatedMinutes": 9,
+    "section": "PICERL Phase 2",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Most Critical Decision Point 🚦",
+            "content": "# To Escalate or Not to Escalate\n\n**Identification** is the phase where we move from *\"Hmm, that's weird\"* to *\"Battle stations!\"*\n\n**Sub-Phases:**\n1.  **Detection:** The SIEM/EDR fires an alert. Or a user calls the helpdesk screaming.\n2.  **Validation / Triage:** Is this a False Positive or a True Positive? (Use the skills from Chapters 6, 7, 8, 9).\n3.  **Scoping:** How many systems/users are affected? Is it just one laptop or the entire domain?\n4.  **Declaration:** Formal announcement that an **Incident** is in progress.\n\n**Analogy:** You see smoke coming from the kitchen (Detection). You walk in and see flames in the trash can (Validation). You check the walls and ceiling for fire spread (Scoping). You pull the fire alarm and shout \"FIRE!\" (Declaration)."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Sources of Identification 📡",
+            "content": "# How Incidents Are Discovered\n\n| Source | Speed | Accuracy | Example |\n| :--- | :--- | :--- | :--- |\n| **EDR / AV Alert** | Fast | High | \"Cobalt Strike Beacon Detected\" |\n| **SIEM Correlation** | Fast | Medium | \"Impossible Travel Alert\" |\n| **Threat Intelligence Feed** | Medium | High | \"Your CEO's password found on Dark Web\" |\n| **User Report** | Slow | Low (User Error) / High (Phish) | \"My computer is acting funny\" |\n| **Law Enforcement / Third Party** | Slow | High | \"FBI notified us of your outbound C2 traffic\" |\n\n**Analyst Note:** If a **user** reports ransomware, you are already **hours behind** the attacker. Rely on **technical detections** for early warning."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Scoping Question 🔬",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "You confirm malware on Workstation A. What is the most important 'scoping' question to ask next?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "\"Who is the user of Workstation A?\"",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "\"Did Workstation A communicate laterally with any other internal hosts?\"",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "\"What color is Workstation A?\"",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Finding patient zero is step one. Finding out if they spread the infection (lateral movement) determines if this is a minor incident or a major breach.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Declaring an Incident: Severity Levels 🚨",
+            "content": "# Speak the Same Language\n\nMost organizations use a Severity matrix (S1 - S4). This dictates **who** responds and **how fast**.\n\n| Severity | Definition | Example | Response SLA |\n| :--- | :--- | :--- | :--- |\n| **S1 - Critical** | Active threat to life/safety OR widespread encryption of critical systems. | Ransomware on Domain Controller. | **IMMEDIATE (All hands on deck)** |\n| **S2 - High** | Confirmed malware on user endpoint OR targeted phishing campaign. | Single user clicked link and executed malware. | 15 mins - 1 hour |\n| **S3 - Medium** | Suspicious activity warranting investigation. | Multiple failed logins from unusual location. | 4 hours |\n| **S4 - Low** | Routine alert, likely false positive. | Single blocked port scan. | 24 hours |\n\n**Analyst Role:** You recommend a severity. The **Incident Commander** approves it."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "The Initial Incident Notification Template",
+            "content": "When you declare an incident, you must send a clear, concise notification to the CSIRT.\n\n**Template:**\n```\nINCIDENT DECLARATION - S2 HIGH\n\nTime Declared: 2026-03-25 14:32 UTC\nDeclared By: [Analyst Name]\nIncident Commander: [IC Name]\n\nSummary:\nEDR detected 'Cobalt Strike Beacon' on host FIN-WS01 (User: jsmith).\nHost has beaconed to IP 185.142.53.21 every 60 seconds for last 2 hours.\nProxy logs confirm 15 MB outbound POST request to same IP.\n\nImmediate Actions Taken:\n- Host isolated via EDR console.\n- User account disabled in AD.\n\nBridge Information: Zoom ID 123-456-789\nDocumentation Link: [Wiki/Ticket URL]\n```",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_6",
+            "type": "warning",
+            "title": "The Temptation to Skip Validation 🛑",
+            "content": "## 'It's Probably Nothing'\n\n**Confirmation Bias** kills IR. You see an alert from a trusted employee, and you think *\"Oh, that's just Bob testing something.\"*\n\n**Never assume.** Always follow the evidence. If the evidence says it's malicious, **declare the incident**. It is **always** better to stand down a false alarm than to miss the first hour of a real breach because you were second-guessing yourself.\n\n> *\"Better to be embarrassed for 5 minutes than breached for 5 months.\"*"
+        }
+    ]
+}

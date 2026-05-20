@@ -1,0 +1,14 @@
+{
+    "id": "task1",
+    "chapterId": "ch_10",
+    "title": "Classify the Incident Severity",
+    "description": "Review scenarios and assign appropriate severity levels (S1-S4) with justification.",
+    "estimatedMinutes": 15,
+    "problemStatement": "### Scenario\nYou are the Tier 1 Analyst on duty. For each of the following situations, assign a **Severity Level (S1, S2, S3, or S4)** and provide a **one-sentence justification**.\n\n**Incident A:**\nEDR alerts: 'Cobalt Strike Beacon Detected' on the workstation of a Finance intern. The beacon has been active for 2 hours. Proxy logs show no large data uploads yet.\n\n**Incident B:**\nUser reports: 'I can't open any of my files. They all end in `.encrypted` and there's a text file on my desktop asking for Bitcoin.'\n\n**Incident C:**\nSIEM alert: 'Multiple Failed Logins (Event ID 4625) for User `jsmith` from IP `203.0.113.5`'. Count is 12 failures in 5 minutes. No successful logon yet.\n\n**Incident D:**\nThreat Intel Report: 'A database of 1 million usernames and hashed passwords from your company has been posted for sale on a Dark Web forum.'\n\n**Severity Definitions Reference:**\n- S1: Critical - Widespread active encryption, domain compromise, confirmed data breach of sensitive data.\n- S2: High - Confirmed malware on user endpoint, targeted phishing success, suspected lateral movement.\n- S3: Medium - Suspicious activity, failed brute force attempts, potential policy violation.\n- S4: Low - Noise, false positive likely, informational.",
+    "hints": [
+        "Consider the 'confirmed' vs 'potential' nature of each incident.",
+        "Ransomware execution is always S1."
+    ],
+    "expectedOutput": "A: S2 (High). Confirmed post-exploitation framework beacon on endpoint.\nB: S1 (Critical). Active ransomware encryption confirmed on at least one endpoint.\nC: S3 (Medium). Brute force attempt detected but not yet successful.\nD: S1 (Critical). Confirmed data breach of sensitive credentials.",
+    "solutionCode": "N/A"
+}

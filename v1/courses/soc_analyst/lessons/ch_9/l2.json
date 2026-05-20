@@ -1,0 +1,77 @@
+{
+    "id": "l2",
+    "chapterId": "ch_9",
+    "title": "Static Analysis: The Art of Not Running It",
+    "description": "Hashes, strings, PE headers, and detecting packed malware without execution.",
+    "xpReward": 40,
+    "estimatedMinutes": 9,
+    "section": "Static Analysis",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Static Analysis: Safe and Fast 🔒",
+            "content": "# Looking Without Touching\n\n**Static Analysis** examines the file's properties, structure, and contents **without executing** the code.\n\n**Three Pillars of Static Analysis:**\n1.  **Fingerprinting:** Hashes (MD5, SHA1, SHA256), File Type Identification.\n2.  **String Extraction:** Embedded URLs, IPs, commands, mutex names.\n3.  **PE Structure Analysis:** Imported DLLs, exported functions, entropy (packer detection).\n\n**Goal:** Extract **Indicators of Compromise (IOCs)** in under 5 minutes."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "1. Fingerprinting the File 🔑",
+            "content": "Calculate hashes to identify known malware.",
+            "codeSnippet": "# Windows PowerShell\nGet-FileHash -Algorithm SHA256 .\\malware.exe\n\n# Linux / Mac\nsha256sum malware.exe\n\n# Output: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\n\n# Paste hash into VirusTotal (vt). If 40+ vendors flag it, analysis done.",
+            "codeLanguage": "powershell",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Hash Hunt 🔍",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "You calculate a SHA256 hash and VirusTotal returns '0/72' detections. What does this mean?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The file is definitely safe.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The file is unknown or very new; further analysis is required.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "VirusTotal is broken.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Zero detections could mean it's a new custom sample or a packed variant. Never trust 'clean' as 'safe'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "2. Strings Analysis 📝",
+            "content": "# Reading the Malware's Mind\n\nExecutable files contain **human-readable strings** embedded in the binary. Attackers often leave clues.\n\n**How to Extract:**\n*   **Windows:** `strings.exe malware.exe` (Sysinternals)\n*   **Linux:** `strings malware.exe`\n*   **FLOSS (FireEye Labs Obfuscated String Solver):** For packed/obfuscated strings.\n\n**What to Look For:**\n*   **URLs:** `http://evil.com/payload.exe`, `https://c2-server.xyz`\n*   **IP Addresses:** `185.142.53.21`\n*   **Commands:** `cmd.exe /c`, `powershell -enc`\n*   **Registry Paths:** `HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run`\n*   **Mutex Names:** `Global\\EvilMutex123` (Unique marker to ensure only one instance runs).\n*   **Suspicious APIs:** `URLDownloadToFile`, `CreateRemoteThread`, `NtUnmapViewOfSection`"
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "3. PE Structure Analysis 🏗️",
+            "content": "The Portable Executable (PE) format is the blueprint of a Windows executable. Tools like **PE-bear** or **pestudio** visualize this.",
+            "codeSnippet": "# Key Sections to Examine in PE-bear/pestudio:\n\n1. Imports (DLLs and Functions):\n   - Look for suspicious APIs:\n     - Kernel32.dll: CreateProcess, VirtualAlloc, WriteProcessMemory\n     - Wininet.dll: InternetOpenUrl, InternetReadFile\n     - Advapi32.dll: CreateService, RegSetValueEx\n\n2. Sections:\n   - .text (Code), .data (Data), .rsrc (Resources).\n   - High Entropy (>7.0) in .text or .data = PACKED / ENCRYPTED.\n\n3. Timestamp:\n   - Is the compile time from the future? (Anti-analysis). Is it from 1992? (Forged).",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_6",
+            "type": "warning",
+            "title": "Packed Malware: The Static Analysis Killer 🧱",
+            "content": "## When Strings and Imports Are Empty\n\n**Packing** compresses or encrypts the real malware code. When you run `strings`, you see **nothing but gibberish**. When you check imports, you see only `LoadLibrary` and `GetProcAddress` (used to dynamically resolve APIs at runtime).\n\n**Indicators of Packing:**\n*   **High Entropy (>7.0)** in code sections.\n*   **Few Imports.**\n*   **Section Names:** `.UPX0`, `.UPX1` (UPX packer), `.petite`, `.aspack`.\n*   **Virtual Size >> Raw Size** (Section expands in memory).\n\n**How to Handle Packed Malware:**\n1.  Use **Detect It Easy (DIE)** to identify the packer.\n2.  If it's a known packer (UPX), try to **unpack** it: `upx -d malware.exe`.\n3.  If it's custom, **switch to Dynamic Analysis** (Lesson 3)."
+        }
+    ]
+}

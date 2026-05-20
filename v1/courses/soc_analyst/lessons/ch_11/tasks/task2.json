@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_11",
+    "title": "Perform a Detection Gap Analysis",
+    "description": "Compare a threat actor's TTPs against a list of existing SIEM rules to identify gaps.",
+    "estimatedMinutes": 15,
+    "problemStatement": "### Scenario\nYour organization is in the retail sector. Your CTI team has identified **FIN7 (G0046)** as a top threat. You have the following list of **existing SIEM detection rules** (simplified):\n\n- **Rule 1:** PowerShell spawning from Microsoft Office (T1059.001)\n- **Rule 2:** Registry Run Key Modification (T1547.001)\n- **Rule 3:** LSASS Memory Access (T1003.001)\n- **Rule 4:** Outbound SMB Traffic (T1021.002)\n\n### Task\nReview the **top 10 techniques** used by FIN7 (listed below) and identify **THREE priority detection gaps** where you have **NO coverage**.\n\n**FIN7 Top Techniques (from MITRE ATT&CK):**\n1. T1566.001 - Spearphishing Attachment (Covered? No direct rule, but email gateway blocks.)\n2. T1059.001 - PowerShell (Covered by Rule 1? Yes.)\n3. T1547.001 - Registry Run Keys (Covered by Rule 2? Yes.)\n4. T1053.005 - Scheduled Task (Covered? **?**)\n5. T1003.001 - LSASS Dumping (Covered by Rule 3? Yes.)\n6. T1021.002 - SMB Lateral Movement (Covered by Rule 4? Yes.)\n7. T1047 - Windows Management Instrumentation (WMI) (Covered? **?**)\n8. T1562.001 - Disable Windows Defender (Covered? **?**)\n9. T1070.004 - File Deletion (Covered? **?**)\n10. T1486 - Data Encrypted for Impact (Ransomware) (Covered by EDR behavioral rules.)\n\n### Questions\n1.  Identify **THREE techniques** from this list where the SOC appears to have **no explicit SIEM detection rule**.\n2.  For one of those gaps, write a brief **recommendation** for what the detection rule should look for.",
+    "hints": [
+        "Look for techniques that aren't mentioned in the 'existing rules' list.",
+        "Consider which techniques are commonly used for persistence or evasion."
+    ],
+    "expectedOutput": "1. Three gaps: T1053.005 (Scheduled Task), T1047 (WMI), T1562.001 (Disable Defender).\n2. Recommendation for T1053.005: Create alert for 'schtasks /create' command line activity, especially when parent process is a script interpreter or Office application.",
+    "solutionCode": "N/A"
+}

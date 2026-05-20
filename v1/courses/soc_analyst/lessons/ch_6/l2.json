@@ -1,0 +1,77 @@
+{
+    "id": "l2",
+    "chapterId": "ch_6",
+    "title": "Firewall Log Deep Dive",
+    "description": "Decoding ASA, Palo Alto, and FortiGate logs to identify reconnaissance and data exfiltration.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Network Logs",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Firewall: First Line of Defense 🧱",
+            "content": "# What a Firewall Log Tells You\n\nA firewall sits at the perimeter. It sees **every** packet crossing the boundary (unless encrypted).\n\n**Key Fields in Firewall Logs:**\n*   **Action:** `allow`, `deny`, `drop`, `reset`.\n*   **Bytes Sent / Received:** Critical for detecting **Data Exfiltration**.\n*   **Duration:** How long the session lasted.\n*   **Application (Next-Gen Firewalls):** Not just port 443, but `ssl` vs `facebook` vs `teamviewer`.\n\n**Analyst Focus:** You are hunting for **outbound** `allow` events that look weird."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Sample Logs: Cisco ASA",
+            "content": "ASA logs use `%ASA-6-302013` (Built connection) and `%ASA-6-302014` (Teardown).",
+            "codeSnippet": "# Connection Built\nMar 15 08:00:01 ASA-01 : %ASA-6-302013: Built outbound TCP connection 12345 for INSIDE:192.168.1.105/54321 (192.168.1.105/54321) to OUTSIDE:185.142.53.21/445 (185.142.53.21/445)\n\n# Connection Teardown (Check Duration and Bytes!)\nMar 15 08:05:30 ASA-01 : %ASA-6-302014: Teardown TCP connection 12345 for INSIDE:192.168.1.105/54321 to OUTSIDE:185.142.53.21/445 duration 0:05:29 bytes 45123456",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "ASA Log Quiz 📝",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "In the ASA teardown log above, what is the most concerning data point?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The duration is 5 minutes.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The bytes sent is 45 MB (45,123,456 bytes).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The connection ID is 12345.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "45 MB of data leaving the network on port 445 (SMB) is a massive data exfiltration event. Duration is secondary to volume.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Sample Logs: Palo Alto Networks",
+            "content": "PAN logs are rich and include `app` and `threat` fields.",
+            "codeSnippet": "2026-03-15 08:00:01,TRAFFIC,end,1,192.168.1.105,185.142.53.21,443,web-browsing,allow,bytes_sent=45000,bytes_received=5000\n\n# Key Field: 'app' = 'web-browsing'. \n# If it says 'ssl' but the destination is a random IP, it's suspicious.\n# If it says 'teamviewer' and it's not IT, it's suspicious.",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Hunting Reconnaissance Scans 🔍",
+            "content": "# The 'One-to-Many' Pattern\n\n**Indicator:** A single internal host (`src_ip`) connecting to **many** external IPs on the **same destination port** in a short time.\n\n**Why it happens:**\n1.  **Malware spreading:** Worm trying to infect random internet hosts.\n2.  **Scanning:** Compromised host being used as a pivot to scan the internet.\n3.  **P2P/File Sharing:** BitTorrent uses random high ports.\n\n**SIEM Query to Find Scanners:**\n```sql\nindex=firewall action=allowed src_ip=192.168.*\n| stats dc(dest_ip) as unique_dest by src_ip, dest_port\n| where unique_dest > 50\n| sort -unique_dest\n```\n\nIf a workstation touches 50 different IPs on port 445 within an hour, it's either **ransomware spreading** or a **vulnerability scanner**."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "warning",
+            "title": "The 'Beacon' Pattern 🚨",
+            "content": "## Low and Slow Data Theft\n\n**Indicator:** A connection that occurs at **regular intervals** (e.g., exactly every 5 minutes, 30 minutes, or 8 hours).\n\n**Detection Query:**\n```sql\nindex=firewall src_ip=192.168.1.105 dest_ip=185.142.53.21\n| bucket _time span=5m\n| stats count by _time\n| sort _time\n```\nIf the graph shows a flat line of `count=1` every 5 minutes like clockwork, that is **Command and Control (C2) beaconing**. Human traffic is bursty and random. C2 is **precise**."
+        }
+    ]
+}

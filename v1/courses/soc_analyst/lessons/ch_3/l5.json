@@ -1,0 +1,74 @@
+{
+    "id": "l5",
+    "chapterId": "ch_3",
+    "title": "DNS: The Attacker's Playground",
+    "description": "How DNS works and how attackers abuse it.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Application Layer",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "DNS 101: The Phone Book 📞",
+            "content": "# Domain Name System\n\n**Function:** Translates human-readable names (`google.com`) to machine-readable IP addresses (`142.250.185.46`).\n\n**The Process (Simplified):**\n1.  User types `google.com`.\n2.  PC asks the **Recursive DNS Server** (usually your ISP or `8.8.8.8`).\n3.  If the Recursive Server doesn't know, it asks the **Root Servers**, then the **TLD Servers** (`.com`), then the **Authoritative Server** for `google.com`.\n4.  Answer: `142.250.185.46`.\n5.  PC connects to the IP.\n\n**Security Implication:** DNS is **almost never blocked** by firewalls (Port 53 UDP/TCP). This makes it a **perfect covert channel** for attackers."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "DNS Tunneling 🔦",
+            "content": "# Hiding Data in Plain Sight\n\n**DNS Tunneling** is a technique where attackers encapsulate non-DNS traffic (like C2 commands or stolen data) inside DNS queries.\n\n**How it works:**\n1.  Malware on victim PC wants to send stolen passwords.\n2.  It cannot use normal HTTP because the proxy blocks it.\n3.  It encodes the password string and sends a DNS query for: `stolen-data-passwords123.badguy.com`.\n4.  The request goes to the attacker's **Authoritative DNS Server**.\n5.  The attacker reads the subdomain (`stolen-data-passwords123`) and extracts the data.\n\n**Detection for Analysts:**\n*   **High Volume of DNS TXT/MX queries.**\n*   **Extremely long, random-looking subdomains.** *(e.g., `aGVsbG93b3JsZHRoaXNpc2F0ZXN0.badguy.com`)*\n*   **Queries to newly registered domains (NRDs).**"
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "DNS Tunneling Clue 🕵️",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "You see 10,000 DNS queries in one hour from a single workstation for subdomains like `x7g2h.badguy[.]com` and `a9b3k.badguy[.]com`. What is the MOST likely explanation?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The user is playing an online game.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "DNS Tunneling / Data Exfiltration.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Normal Windows Update behavior.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The volume and the random subdomain structure are classic signatures of DNS tunneling.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "DNS Log Analysis",
+            "content": "This is what you'll see in your SIEM (Splunk/Elastic) when investigating DNS.",
+            "codeSnippet": "Query: workstation01 (10.0.0.55) -> 8.8.8.8\nType: A\nDomain: www.google.com\nResponse: 142.250.185.46\n--- SUSPICIOUS ---\nQuery: workstation01 (10.0.0.55) -> 8.8.8.8\nType: TXT\nDomain: dG9wLXNlY3JldC5ldmlsLm5ldA==.evil.com\nResponse: (No such name) or (TXT Record with data)",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Domain Generation Algorithms (DGAs) 🤖",
+            "content": "# The Cat and Mouse Game\n\nIf the defender blocks `badguy.com`, the malware dies. So attackers use **DGAs**.\n\n**How it works:** Malware contains an algorithm that generates **thousands of potential C2 domain names every day** based on a seed (e.g., the current date).\n\n*   Monday: `xkcd123xyz.com`\n*   Tuesday: `qwerty456abc.net`\n\nThe attacker only registers **one** of them. The defender has to block **all** of them (impossible).\n\n**Detection for Analysts:** **NXDOMAIN** responses. If a workstation queries 500 domains and 499 return `NXDOMAIN` (Non-Existent Domain), that machine is likely infected with DGA malware."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "tip",
+            "title": "Defensive DNS 🔒",
+            "content": "## Sinkholing\n\nOrganizations use **Cisco Umbrella** or **Quad9** as DNS resolvers. These services block requests to known malicious domains **at the DNS layer**.\n\n*   **Sinkholing:** When a user tries to visit `evil.com`, the DNS resolver returns a fake IP address (e.g., `10.10.10.10`) instead of the real IP. The connection fails, and an alert is generated in the SOC."
+        }
+    ]
+}

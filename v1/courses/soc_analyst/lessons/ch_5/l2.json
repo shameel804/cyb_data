@@ -1,0 +1,68 @@
+{
+    "id": "l2",
+    "chapterId": "ch_5",
+    "title": "Log Ingestion and Parsing",
+    "description": "How logs get from endpoints into the SIEM and become searchable.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Data Pipeline",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Garbage In, Garbage Out 🗑️",
+            "content": "# The Importance of Proper Parsing\n\nIf the SIEM doesn't understand the log format, it can't extract the `src_ip` or `username`. You'll end up searching raw text which is **slow and inaccurate**.\n\n**Parsing** is the process of teaching the SIEM how to read a specific log format.\n\n**Common Log Formats:**\n*   **Syslog (RFC 5424/3164):** Standard for network devices, Linux.\n*   **Windows Event Log (XML):** Structured but verbose.\n*   **JSON:** Modern applications, cloud services (AWS CloudTrail, Azure Activity Log).\n*   **CEF (Common Event Format):** ArcSight standard, used by many security tools.\n*   **Key-Value Pairs:** `src=1.1.1.1 dst=2.2.2.2 action=blocked`"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Normalization: Speaking the Same Language 🗣️",
+            "content": "Different devices call the source IP different things.\n- Firewall: `src`\n- Windows: `IpAddress`\n- Proxy: `client_ip`\n\n**Normalization** maps these vendor-specific fields to a **common schema**.\n\nAfter normalization, you can search for `source_ip=192.168.1.100` across **all** log sources simultaneously.",
+            "codeSnippet": "# Before Normalization\nFirewall Log:    src=192.168.1.100\nWindows Log:     Network Address: 192.168.1.100\nProxy Log:       client_ip: 192.168.1.100\n\n# After Normalization (Common Information Model)\nsource_ip=192.168.1.100",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Parsing Puzzle 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Why is field normalization critical in a SIEM?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It reduces disk space.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It allows you to search for the same concept (e.g., source IP) across logs from different vendors.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It encrypts the logs.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Normalization creates a unified view, enabling cross-device correlation.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Data Onboarding Challenges 🚧",
+            "content": "# Why Some Logs Are Missing\n\nAs a junior analyst, you might notice that some data is just **not there**. Common reasons:\n\n1.  **Agent Not Installed:** The server team forgot to put the forwarder on the new VM.\n2.  **Firewall Blocking:** The agent can't reach the SIEM on port 9997/TCP.\n3.  **Parsing Error:** The log format changed (e.g., vendor update) and the SIEM regex no longer matches. The events are **dropped** or appear as `unknown`.\n4.  **Licensing Limits:** SIEMs are expensive. You are limited to **X GB per day**. If you exceed it, logs are truncated or dropped.\n\n**Analyst Skill:** Recognizing **gaps in visibility**. If you know the network team **should** be sending VPN logs, but you can't find them, that's a **security gap** you must report."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "warning",
+            "title": "Time Synchronization Matters! ⏰",
+            "content": "## The NTP Problem\n\nCorrelation relies on **timestamps**. If Server A's clock is 5 minutes fast and Firewall B's clock is 2 minutes slow, a 7-minute attack sequence might appear **out of order** or **not correlated at all**.\n\n**Always check the `_time` field.** If you see logs from the future or the distant past, the source device has NTP (Network Time Protocol) issues. This breaks **everything** in the SIEM."
+        }
+    ]
+}

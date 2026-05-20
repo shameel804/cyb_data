@@ -1,0 +1,74 @@
+{
+    "id": "l6",
+    "chapterId": "ch_10",
+    "title": "Lessons Learned and Post-Incident Activity",
+    "description": "Conducting post-mortems, improving security posture, and closing the loop.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "PICERL Phase 6",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "The Most Skipped Phase 🥱",
+            "content": "# Why Lessons Learned Matters\n\nAfter a long, exhausting incident, everyone wants to just **move on**. **This is a critical mistake.**\n\n**Without a post-mortem, you are doomed to repeat the exact same incident.**\n\n**The Goal of Lessons Learned:**\n*   Identify **what went well** (so we keep doing it).\n*   Identify **what went wrong** (so we fix it).\n*   Identify **gaps in visibility** (so we buy tools/logs).\n*   Identify **gaps in process** (so we update playbooks).\n\n**Analogy:** The incident is the **exam**. Lessons Learned is **reviewing the wrong answers** so you pass next time."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "The Post-Mortem Meeting Structure 📋",
+            "content": "# Blameless Culture is Mandatory\n\n**Rule:** This meeting is **NOT** about blaming individuals. It is about **fixing systemic issues**. If people fear punishment, they will hide mistakes.\n\n**Attendees:** Incident Commander, Technical Analysts, Scribe, System Owners, Management.\n\n**Agenda:**\n1.  **Timeline Review:** Walk through the **Scribe's notes** minute-by-minute.\n    *   *When did we detect it? When did we contain it? Where were the delays?*\n2.  **Root Cause Analysis (RCA):** *Why did this happen?*\n    *   *Was it a missing patch? A user clicked a link? A misconfigured firewall?*\n3.  **What Went Well?** *Celebrate the wins!* (e.g., *\"EDR isolated the host in 30 seconds.\"*)\n4.  **What Could Be Improved?** *Constructive criticism.* (e.g., *\"Took 4 hours to find the firewall admin.\"*)\n5.  **Action Items:** Assign **specific owners** and **due dates** to fix the identified gaps."
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Post-Mortem Focus 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "During a post-mortem, an analyst says, 'I should have escalated this faster. It's my fault.' What is the appropriate response from the Incident Commander?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "\"Yes, you're fired.\"",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "\"Why did the process/training not prepare you to escalate faster? Let's fix the process.\"",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Ignore the comment and move on.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A blameless culture focuses on improving the system (process/training) that led to the individual's action.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "code",
+            "title": "Sample Action Items from Lessons Learned",
+            "content": "Convert observations into trackable tasks.",
+            "codeSnippet": "| ID | Action Item                               | Owner      | Due Date   | Status |\n|----|-------------------------------------------|------------|------------|--------|\n| 1  | Implement MFA for all VPN access          | Network    | 2026-04-15 | Open   |\n| 2  | Update Ransomware Playbook with EDR steps | SOC Lead   | 2026-04-01 | Closed |\n| 3  | Conduct phishing training for Finance dept| Security   | 2026-04-30 | Open   |\n| 4  | Ingest DNS logs into SIEM                 | SIEM Admin | 2026-05-01 | Open   |",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "The Final Report 📄",
+            "content": "# Documentation for Eternity\n\nCreate a **Final Incident Report**. This is an executive summary and a technical deep-dive combined.\n\n**Sections:**\n*   **Executive Summary:** 1 paragraph for C-Level. *\"What happened, impact, and cost?\"*\n*   **Timeline of Events:** The Scribe's detailed log.\n*   **Root Cause Analysis:** Technical explanation of the breach.\n*   **Indicators of Compromise (IOCs):** List of IPs, Hashes, Domains for blocking/sharing.\n*   **Actions Taken:** Summary of Containment, Eradication, Recovery.\n*   **Recommendations:** The Action Items.\n\n**This document is legally protected under **Attorney-Client Privilege** if written at the direction of Legal Counsel.** Always loop in Legal before finalizing."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "tip",
+            "title": "Closing the Loop: The PICERL Cycle 🔄",
+            "content": "## Back to Preparation\n\n**Lessons Learned feeds directly back into Preparation.**\n\n1.  Post-Mortem finds gap: *\"We couldn't see PowerShell logs.\"*\n2.  Action Item created: *\"Enable Script Block Logging.\"*\n3.  **Preparation Phase:** Script Block Logging is enabled.\n4.  **Next Incident:** Analyst sees the malicious PowerShell command instantly.\n\n**This is how a SOC matures. Every incident makes you stronger.**"
+        }
+    ]
+}

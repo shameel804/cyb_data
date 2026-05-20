@@ -1,0 +1,65 @@
+{
+    "id": "l1",
+    "chapterId": "ch_2",
+    "title": "What is OSINT?",
+    "description": "Introduction to Open Source Intelligence.",
+    "xpReward": 20,
+    "estimatedMinutes": 5,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Spying Without Spying 🕵️",
+            "content": "# OSINT: Open Source Intelligence\n\n**Definition:** Information collected from **publicly available sources** that is analyzed to produce actionable intelligence.\n\n**Crucial Distinction:** OSINT is **NOT** hacking. You are **not** breaking into systems. You are **not** guessing passwords. You are reading information that is freely available on the internet.\n\n**Analogy:** Imagine you want to rob a bank (hypothetically!). Hacking would be picking the lock. OSINT would be **watching the bank from the coffee shop across the street** to see when the guards change shifts, what uniforms the employees wear, and what kind of safe the manager talks about on his public Facebook page."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "Sources of OSINT 📚",
+            "content": "# Where Does This Data Come From?\n\nThe internet is a giant library of clues. Here are the main sections:\n\n1.  **The Surface Web (Clearnet):** What search engines index. News sites, company 'About Us' pages, public blogs, Twitter feeds.\n2.  **The Deep Web:** Content **not** indexed by Google (requires login or specific URL). Employee portals, private forums, archived meeting minutes.\n3.  **Public Records:** Government databases (FEC filings, SEC Edgar for financials, Patent filings).\n4.  **Geospatial (GEOINT):** Satellite imagery (Google Earth), traffic cameras, even live webcams.\n\n> **Key Insight:** *Attackers spend up to 80% of their time on OSINT before launching a single exploit.*"
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "OSINT Check ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which of the following is considered an OSINT source?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A leaked password database from the Dark Web.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A photo of an employee badge posted on Instagram.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The contents of a corporate email inbox accessed via stolen credentials.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The Instagram photo is publicly accessible (unless the account is private and you aren't following). The Dark Web leak and email inbox involve unauthorized access.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Why Does the SOC Care? 🛡️",
+            "content": "# From Reconnaissance to Detection\n\n**Red Team (Attacker) Use Case:**\n*   Find employee email format (e.g., `first.last@company.com`).\n*   Find software versions in public job postings (*\"Seeking Apache Struts Developer\"* -> Implies vulnerable tech).\n*   Find VPN gateway URLs exposed in old forum posts.\n\n**Blue Team (Defender) Use Case:**\n*   **External Attack Surface Management:** Find *your own* exposed databases before the bad guys do.\n*   **Brand Monitoring:** Detect typosquatting domains used for phishing.\n*   **Threat Intelligence:** Monitor hacker forums (lurking) to see if your company is being discussed."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "tip",
+            "title": "Legal vs. Ethical ⚖️",
+            "content": "## The Golden Rule\n\n> *\"Just because you can see it doesn't mean you can use it maliciously.\"*\n\nAs a defender, your job is to **identify risk and protect**. Using OSINT to scrape employee emails for a phishing test is acceptable. Using OSINT to stalk an employee's home address is **unacceptable** and likely illegal.\n\n**Stay within the bounds of your employer's Acceptable Use Policy.**"
+        }
+    ]
+}

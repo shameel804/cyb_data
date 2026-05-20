@@ -1,0 +1,74 @@
+{
+    "id": "l3",
+    "chapterId": "ch_11",
+    "title": "Tactical Intelligence: IOCs and Feeds",
+    "description": "Working with indicators, understanding Pyramid of Pain, and avoiding IOC fatigue.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Tactical CTI",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Indicators of Compromise (IOCs) 📍",
+            "content": "# The Breadcrumbs Attackers Leave Behind\n\n**IOC:** A piece of forensic data that identifies potentially malicious activity on a system or network.\n\n**Common IOC Types:**\n*   **Network:** IP addresses, Domain names, URLs, JA3/S hashes.\n*   **Host:** File hashes (MD5, SHA256), File paths, Registry keys, Mutex names.\n*   **Behavioral:** Patterns like \"PowerShell spawning from Word\" (This is actually a TTP, but sometimes logged as an IOC).\n\n**Tactical Use:** IOCs are fed into **blocklists** (Firewalls, Proxies, EDR) to automatically prevent connections or executions.\n\n**Critical Limitation:** IOCs have a **short shelf life**. Attackers change IPs and recompile malware constantly."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "The Pyramid of Pain (Revisited) 🔺",
+            "content": "# Where to Aim Your Defenses\n\nWe touched on this in Chapter 4. Let's solidify it with a CTI lens.\n\n| Level | Indicator Type | Attacker Pain | Example |\n| :--- | :--- | :--- | :--- |\n| 1 | **Hash Values** | Trivial | Change one byte in the file. |\n| 2 | **IP Addresses** | Easy | Switch VPN or use a new VPS. |\n| 3 | **Domain Names** | Simple | Register a new domain (costs $2). |\n| 4 | **Network/Host Artifacts** | Annoying | Change User-Agent string, change mutex name. |\n| 5 | **Tools** | Challenging | Stop using Mimikatz; write custom credential dumper. |\n| 6 | **TTPs (Behaviors)** | **PAINFUL** | Change entire attack methodology. Learn new skills. |\n\n**CTI Strategy:** **Automate** the blocking of Levels 1-3 (Low-hanging fruit). **Focus analyst time** on detecting and hunting for Levels 4-6 (TTPs)."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Pyramid of Pain 📐",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Blocking the JA3 hash of a Cobalt Strike beacon forces the attacker to do what?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Nothing; JA3 hash cannot be changed.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Reconfigure or recompile their C2 malleable profile (Annoying).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Change their IP address.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Changing the JA3 hash requires modifying the Cobalt Strike profile, which takes effort (Level 4: Network Artifact).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "IOC Feeds and Threat Intelligence Platforms (TIPs) 📡",
+            "content": "# Managing the Firehose\n\nSubscribing to raw IOC feeds without context leads to **IOC Fatigue** (blocking everything, including legitimate CDNs like Cloudflare).\n\n**Types of Feeds:**\n*   **Open Source (Free):** AlienVault OTX, Abuse.ch URLhaus. *Quality varies. Requires filtering.*\n*   **Commercial (Paid):** CrowdStrike, Mandiant, Recorded Future. *Higher fidelity, more context.*\n*   **Industry ISACs:** Information Sharing and Analysis Centers. (e.g., FS-ISAC for Finance). *Highly relevant to YOUR sector.*\n\n**Threat Intelligence Platform (TIP):**\nSoftware that aggregates feeds, **deduplicates**, **scores** (Confidence Level), and **contextualizes** IOCs before pushing them to your security tools.\n\n**Analyst Workflow:** Never manually add a feed to a firewall. Use a TIP or the built-in TI feature of your EDR/SIEM."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Operationalizing an IOC in the SOC",
+            "content": "When you receive a high-confidence IOC report, follow this workflow:",
+            "codeSnippet": "1. Validate Relevance:\n   - Does this IOC target our industry? (Check report context).\n   - Is the IOC format correct? (Defang URLs before clicking).\n\n2. Retrospective Hunt (SIEM Query):\n   index=network dest_ip=\"185.142.53.21\" earliest=-90d\n   \n   # If you find hits from the PAST 90 days, you have an active incident!\n\n3. Proactive Block (Firewall/Proxy):\n   - Add to blocklist with comment: \"CTI: FIN7 C2 Server - TLP:AMBER\"\n\n4. Detection Rule (SIEM):\n   - Create an alert that triggers if this IOC is seen again in the FUTURE.",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_6",
+            "type": "warning",
+            "title": "The Danger of Blind Blocking 🚫",
+            "content": "## You Can Break the Internet\n\n**Example:** A threat feed marks `8.8.8.8` (Google DNS) as malicious because a malware sample used it for DNS resolution. If you blindly block `8.8.8.8`, you break internet access for everyone using Google DNS.\n\n**Always verify the **context** of the IOC. Is it a **C2 server** (Block it!) or a **resolver/redirector** (Be careful!)?"
+        }
+    ]
+}

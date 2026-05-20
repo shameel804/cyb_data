@@ -1,0 +1,311 @@
+{
+    "id": "quiz_ch_5",
+    "chapterId": "ch_5",
+    "title": "Chapter 5 Mastery Quiz",
+    "description": "Test your knowledge of SIEM architecture, query languages, correlation rules, and investigation workflows.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What does the acronym SIEM stand for?",
+            "options": [
+                "Security Information and Event Management",
+                "System Integration and Error Monitoring",
+                "Secure Internet Email Messaging",
+                "Software Inventory and Execution Management"
+            ],
+            "correctAnswer": 0,
+            "explanation": "SIEM stands for Security Information and Event Management."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "A SIEM's primary function is just to store logs for compliance purposes.",
+            "correctAnswer": false,
+            "explanation": "False. While log storage is a feature, a SIEM's core value is real-time correlation, alerting, and investigation."
+        },
+        {
+            "id": "q3",
+            "type": "fill_blank",
+            "question": "The process of mapping vendor-specific field names (e.g., 'src', 'client_ip') to a common field name (e.g., 'source_ip') is called _____.",
+            "options": [
+                "Indexing",
+                "Normalization",
+                "Parsing",
+                "Encryption"
+            ],
+            "correctAnswer": "Normalization",
+            "explanation": "Normalization ensures consistent field naming across different log sources."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which Splunk command is used to perform statistical aggregations like count, sum, or average?",
+            "options": [
+                "where",
+                "eval",
+                "stats",
+                "table"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The `stats` command is used for grouping and calculating statistics."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "You need to find events containing the string 'admin' in the 'user' field. Which Splunk search is correct?",
+            "options": [
+                "user=*admin*",
+                "user=%admin%",
+                "user=\"admin\"",
+                "user contains admin"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Asterisks are wildcards in Splunk. `user=*admin*` finds 'admin', 'administrator', 'sysadmin', etc."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the purpose of the pipe character `|` in Splunk SPL and KQL?",
+            "options": [
+                "To separate different searches.",
+                "To pass the results of one command as input to the next command.",
+                "To indicate a comment.",
+                "To search for literal pipe characters in logs."
+            ],
+            "correctAnswer": 1,
+            "explanation": "The pipe creates a pipeline, chaining commands together."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "In KQL (Azure Sentinel), which operator is used to filter rows based on a condition?",
+            "options": [
+                "filter",
+                "where",
+                "search",
+                "find"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`where` is the standard filter operator in KQL."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What is 'Alert Fatigue' in a SOC context?",
+            "options": [
+                "Analysts getting tired from working too many hours.",
+                "Analysts becoming desensitized to alerts due to a high volume of false positives.",
+                "The SIEM server overheating.",
+                "An attacker flooding the SIEM with fake alerts."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Alert fatigue leads to missed true positive incidents."
+        },
+        {
+            "id": "q9",
+            "type": "true_false",
+            "question": "It is a best practice to suppress all alerts originating from a vulnerability scanner IP address.",
+            "correctAnswer": false,
+            "explanation": "False. Suppress only specific, expected events from scanners. Suppressing all traffic creates a blind spot if the scanner is compromised."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which visualization type is best for showing the volume of failed logins over the past 7 days?",
+            "options": [
+                "Pie Chart",
+                "Timechart (Line/Area Graph)",
+                "Single Value Stat",
+                "World Map"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Timecharts display trends and changes over time intervals."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "You see a flat line (zero events) on the SIEM's 'Events Per Second' dashboard. What is the most likely explanation?",
+            "options": [
+                "The network is perfectly secure.",
+                "Log collection has stopped working (outage or attack).",
+                "It's a holiday weekend.",
+                "The dashboard is broken."
+            ],
+            "correctAnswer": 1,
+            "explanation": "A sudden drop to zero indicates a failure in the logging pipeline, which is a critical operational issue."
+        },
+        {
+            "id": "q12",
+            "type": "fill_blank",
+            "question": "A saved search that runs on a schedule and triggers an alert when conditions are met is called a _____ Rule.",
+            "options": [
+                "Suppression",
+                "Correlation",
+                "Indexing",
+                "Parsing"
+            ],
+            "correctAnswer": "Correlation",
+            "explanation": "Correlation rules are the backbone of SIEM detection."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What is the primary benefit of 'Risk-Based Alerting' (RBA)?",
+            "options": [
+                "It reduces licensing costs.",
+                "It combines multiple low-fidelity signals to create high-fidelity alerts, reducing noise.",
+                "It encrypts alerts.",
+                "It sends alerts faster."
+            ],
+            "correctAnswer": 1,
+            "explanation": "RBA helps prioritize alerts that represent a chain of suspicious behavior rather than isolated events."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "During an investigation, you find Host A connected to a suspicious IP. What is the next logical SIEM pivot?",
+            "options": [
+                "Reboot Host A.",
+                "Search for connections to that same suspicious IP from any OTHER internal hosts.",
+                "Delete the firewall log.",
+                "Assume Host A is the only victim."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Determining the scope of compromise (lateral movement) is a critical investigation step."
+        },
+        {
+            "id": "q15",
+            "type": "true_false",
+            "question": "In Splunk, a leading wildcard search (e.g., `*admin`) is fast and efficient for large datasets.",
+            "correctAnswer": false,
+            "explanation": "False. Leading wildcards force a full index scan and can severely impact search performance."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What is the function of a 'subsearch' in Splunk?",
+            "options": [
+                "To search a different index.",
+                "To use the results of one search as input criteria for another search.",
+                "To archive old logs.",
+                "To run a search in the background."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Subsearches allow dynamic filtering based on the output of another query."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Why is accurate time synchronization (NTP) critical for a SIEM?",
+            "options": [
+                "To make dashboards look pretty.",
+                "Correlation rules rely on timestamps to link events; skewed clocks break the sequence.",
+                "To reduce disk space.",
+                "It is not important."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Correlation depends on accurate ordering of events."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "You need to find all Windows Security Event ID 4625 (Failed Logon) events from the last 24 hours. Which Splunk time modifier is correct?",
+            "options": [
+                "latest=-24h",
+                "earliest=-24h",
+                "range=24h",
+                "time>=-24h"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`earliest=-24h` specifies the start of the time range. `latest=now` is implied."
+        },
+        {
+            "id": "q19",
+            "type": "fill_blank",
+            "question": "In Splunk, the `eval` command is used to create or modify _____.",
+            "options": [
+                "Indexes",
+                "Fields",
+                "Alerts",
+                "Dashboards"
+            ],
+            "correctAnswer": "Fields",
+            "explanation": "`eval` calculates expressions and assigns the result to a new or existing field."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is a common indicator that a SIEM is not parsing logs correctly?",
+            "options": [
+                "Alerts are firing too frequently.",
+                "Events appear with a sourcetype of 'unknown' or 'generic_single_line'.",
+                "The dashboard loads slowly.",
+                "There are too many events."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Unparsed logs lack extracted fields, making them difficult to search and correlate."
+        },
+        {
+            "id": "q21",
+            "type": "true_false",
+            "question": "Sequence-based correlation rules are generally less computationally expensive than simple threshold rules.",
+            "correctAnswer": false,
+            "explanation": "False. Sequence rules require the SIEM to maintain state across multiple events and time windows, which is resource-intensive."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "In KQL, which command is used to group and aggregate data similar to Splunk's `stats`?",
+            "options": [
+                "summarize",
+                "group by",
+                "aggregate",
+                "stats"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`summarize` is the primary aggregation operator in KQL."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "What is the 'CIM' (Common Information Model) in the context of SIEM?",
+            "options": [
+                "A type of encryption.",
+                "A standardized schema for normalizing security data across different vendors.",
+                "A hardware component of the SIEM server.",
+                "A query language."
+            ],
+            "correctAnswer": 1,
+            "explanation": "The CIM defines a consistent set of field names and tags for security events."
+        },
+        {
+            "id": "q24",
+            "type": "fill_blank",
+            "question": "The technique of refining detection rules by adding exceptions to reduce false positives is called _____.",
+            "options": [
+                "Suppression",
+                "Tuning",
+                "Parsing",
+                "Indexing"
+            ],
+            "correctAnswer": "Tuning",
+            "explanation": "Tuning improves the signal-to-noise ratio of alerts."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "During a SIEM investigation, what is the value of expanding the time window beyond the initial alert trigger?",
+            "options": [
+                "It makes the search run slower.",
+                "It provides context and reveals what happened immediately before and after the detected event.",
+                "It is required for compliance.",
+                "It changes the alert severity."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Context is key. The alert is just a snapshot; expanding the time window reveals the full story."
+        }
+    ]
+}

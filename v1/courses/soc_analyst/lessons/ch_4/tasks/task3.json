@@ -1,0 +1,14 @@
+{
+    "id": "task3",
+    "chapterId": "ch_4",
+    "title": "Process Tree Investigation",
+    "description": "Analyze a given process tree and identify the malicious parent-child anomaly.",
+    "estimatedMinutes": 10,
+    "problemStatement": "### Scenario\nYou are investigating an alert from a workstation. The EDR provides the following process creation timeline (simplified).\n\n```\nTime    | Parent Process           | Child Process\n--------|--------------------------|---------------------------\n10:01 AM| explorer.exe             | OUTLOOK.EXE\n10:02 AM| OUTLOOK.EXE              | WINWORD.EXE\n10:02 AM| WINWORD.EXE              | cmd.exe\n10:03 AM| cmd.exe                  | powershell.exe\n10:03 AM| powershell.exe           | rundll32.exe\n10:04 AM| rundll32.exe             | (Network connection to 185.142.53.21:443)\n```\n\n### Questions\n1.  Identify **TWO** suspicious parent-child relationships in this chain.\n2.  What likely triggered this chain? (Hint: Look at the first parent).\n3.  What is the final outcome of this chain?\n4.  If you could isolate one Event ID (from Windows Logs) to investigate further, which would it be?",
+    "hints": [
+        "Remember that Office applications (Outlook, Word) should never spawn command shells (cmd.exe).",
+        "PowerShell spawning rundll32.exe with a network connection is a common way to load shellcode."
+    ],
+    "expectedOutput": "1. WINWORD.EXE -> cmd.exe (Macro execution). powershell.exe -> rundll32.exe (LOLBin execution). 2. A malicious email attachment or link opened in Outlook that launched a Word document with macros. 3. Code execution and likely establishing a C2 connection to the attacker's IP. 4. Event ID 4688 (Process Creation) to see the full command line arguments.",
+    "solutionCode": "N/A"
+}

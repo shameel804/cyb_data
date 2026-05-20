@@ -1,0 +1,65 @@
+{
+    "id": "l1",
+    "chapterId": "ch_8",
+    "title": "Why Email is the #1 Threat Vector",
+    "description": "Understanding why attackers love email and how the SOC defends against it.",
+    "xpReward": 30,
+    "estimatedMinutes": 6,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Front Door to the Organization 🚪",
+            "content": "# Email: The Universal Attack Vector\n\nAccording to almost every cybersecurity report, **over 90% of malware infections** and **successful data breaches** start with a single email.\n\n**Why Attackers Love Email:**\n1.  **Direct Access to Users:** It bypasses perimeter firewalls and goes straight to the weakest link—the human.\n2.  **Cost Effective:** Sending 1 million phishing emails costs pennies.\n3.  **Difficult to Filter Perfectly:** Legitimate business emails look a lot like phishing emails.\n\n**Analogy:** You can build a 50-foot concrete wall around your building, but if the front desk receptionist lets in a 'delivery person' without checking their ID, the wall is useless. **Email is the front desk.**"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "Types of Malicious Emails 📧",
+            "content": "# Beyond Just 'Phishing'\n\nAs an analyst, you need to categorize what you see:\n\n1.  **Phishing (Credential Harvesting):**\n    *   *Goal:* Steal username/password/MFA token.\n    *   *Lure:* \"Your password is expiring. Click here to keep it.\" (Links to fake login page).\n2.  **Malware Delivery (Maldoc / Dropper):**\n    *   *Goal:* Infect the computer with malware (Ransomware, RAT).\n    *   *Lure:* \"Attached is the invoice you requested.\" (Contains malicious `.docm` or `.iso` file).\n3.  **Business Email Compromise (BEC) / CEO Fraud:**\n    *   *Goal:* Trick finance into wiring money.\n    *   *Lure:* \"Urgent: Please pay this invoice by end of day. -CEO.\" (Often **no attachment or link**, just a spoofed display name).\n4.  **Spam / Graymail:**\n    *   *Goal:* Annoyance, advertising. (Not directly malicious but consumes SOC time)."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Email Threat Check ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "An email from 'IT Support' asks you to verify your account by replying with your username and password. What type of attack is this?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Malware Delivery",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Credential Phishing",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Spam",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Requesting credentials via email reply is a classic credential harvesting technique.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Email Security Stack 🛡️",
+            "content": "# How Organizations Defend Email\n\nAs a SOC analyst, you'll work with these tools:\n\n1.  **Secure Email Gateway (SEG):**\n    *   *Examples:* Mimecast, Proofpoint, Microsoft Defender for Office 365.\n    *   *Function:* Scans inbound/outbound emails for malware links, attachments, and impersonation. **Blocks or Quarantines** suspicious emails.\n2.  **Phishing Report Button:**\n    *   *Function:* Allows users to report suspicious emails directly to the SOC with one click. **This is your primary source of alerts.**\n3.  **DMARC / SPF / DKIM:**\n    *   *Function:* Technical standards to prevent domain spoofing. (Covered in Lesson 3).\n4.  **Sandbox:**\n    *   *Function:* Detonates suspicious attachments in a safe virtual environment."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "warning",
+            "title": "The Human Factor 🧑‍💼",
+            "content": "## Why Users Click\n\nAttackers use **urgency** (\"Your account will be deleted in 1 hour!\") and **familiarity** (\"Important message from HR\") to bypass rational thought.\n\n**Your role is NOT to shame the user.** Your role is to **contain the threat** and **educate** them calmly.\n\n> *\"Thank you for reporting this. You did the right thing.\"*"
+        }
+    ]
+}

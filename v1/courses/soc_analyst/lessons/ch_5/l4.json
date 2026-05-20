@@ -1,0 +1,74 @@
+{
+    "id": "l4",
+    "chapterId": "ch_5",
+    "title": "Correlation Rules and Alerts",
+    "description": "Turn raw data into actionable alerts with detection logic.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Detection Engineering",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "From Search to Alert 🚨",
+            "content": "# Correlation Rules\n\nA **Correlation Rule** is a saved search that runs automatically on a schedule (e.g., every 5 minutes) and triggers an alert if specific conditions are met.\n\n**Analogy:** It's a **tripwire**. You set it up once, and it watches the data stream 24/7.\n\n**Components of a Rule:**\n1.  **Search Query:** What are we looking for?\n2.  **Time Window:** Look back 5 minutes, 1 hour?\n3.  **Threshold:** Trigger if count > 10.\n4.  **Suppression:** Ignore if it's from a known scanner IP.\n5.  **Action:** Create ticket, send email, run script."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Example Rule: Brute Force Detection 🔑",
+            "content": "This is the most basic and essential rule in any SOC.",
+            "codeSnippet": "Search Query (SPL):\nindex=windows sourcetype=\"WinEventLog:Security\" EventCode=4625 \n| bucket _time span=5m\n| stats count by ComputerName, user, src_ip\n| where count > 10\n\n# Logic:\n# Look at the last 5 minutes of failed logins.\n# If any combination of (Computer, User, IP) has more than 10 failures,\n# GENERATE ALERT.",
+            "codeLanguage": "splunk",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Rule Logic Check 📋",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Why is a 'threshold' (count > 10) important in a brute force rule?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To make the search run faster.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To reduce false positives from users occasionally mistyping their password.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It is required by law.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A single 4625 is normal. Ten 4625s in 5 minutes is almost certainly an attack.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Sequence-Based Correlation 🔗",
+            "content": "# Connecting the Dots Over Time\n\nSimple threshold rules miss complex attacks. **Sequence Rules** detect a series of events occurring in a specific order.\n\n**Example: Pass-the-Hash Detection**\n1.  Event ID 4624 (Logon) using Logon Type 3 (Network).\n2.  **Followed by** Event ID 4672 (Special Privileges Assigned).\n3.  **Followed by** Event ID 5140 (Network Share Accessed).\n\nIf this sequence happens within **1 minute** from the **same Account Name** and **different Source Workstation**, it's a strong indicator of lateral movement.\n\n**Challenge:** Sequence rules are computationally expensive and require the SIEM to maintain **state** across events."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Alert Fatigue and Tuning ⚖️",
+            "content": "# The Silent Killer of SOCs\n\n**Alert Fatigue:** When analysts receive so many **False Positive** alerts that they start ignoring or missing **True Positives**.\n\n**Tuning is the process of refining rules to reduce noise.**\n\n**Tuning Techniques:**\n1.  **Whitelisting:** Add exceptions.\n    *   *Rule:* Alert on `cmd.exe` spawning from `winword.exe`.\n    *   *Exception:* UNLESS the `CommandLine` contains `\"AcmeCorpApprovedMacro.vbs\"`.\n2.  **Risk-Based Alerting (RBA):** Instead of alerting on the event itself, assign a **risk score** to the user/device. Only alert when the **cumulative score** crosses a threshold.\n    *   *Failed Login (Low Risk) + Unusual GeoIP (Medium Risk) + New Device (High Risk) = **CRITICAL ALERT.***\n\n**Analyst Responsibility:** You **MUST** provide feedback on alerts. If an alert is false, document **why** so the detection engineer can tune it."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "warning",
+            "title": "The Suppression Trap 🕳️",
+            "content": "## Don't Hide the Intruder\n\nBe very careful with **Suppression Rules** (e.g., \"Ignore all alerts from IP 10.0.0.50 because it's the vulnerability scanner\").\n\nIf an attacker compromises the scanner box, they will **bypass all your detections** because you whitelisted that IP.\n\n**Best Practice:** Suppress only specific **Event IDs** from scanner IPs, not **all traffic**."
+        }
+    ]
+}

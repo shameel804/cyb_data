@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_7",
+    "title": "Analyze a SYN Scan PCAP",
+    "description": "Identify the attacker and the open ports from a provided scan log.",
+    "estimatedMinutes": 15,
+    "problemStatement": "### Scenario\nYou receive a PCAP snippet showing suspicious activity targeting your web server (`192.168.1.50`). Below is a simplified text representation of the packet list.\n\n```\nNo. Time      Source           Destination      Protocol Info\n1   0.000000  203.0.113.99     192.168.1.50     TCP      44444 → 22 [SYN] Seq=0 Win=1024\n2   0.000012  203.0.113.99     192.168.1.50     TCP      44444 → 23 [SYN] Seq=0 Win=1024\n3   0.000025  203.0.113.99     192.168.1.50     TCP      44444 → 80 [SYN] Seq=0 Win=1024\n4   0.000030  192.168.1.50     203.0.113.99     TCP      80 → 44444 [SYN, ACK] Seq=0 Ack=1 Win=8192\n5   0.000036  203.0.113.99     192.168.1.50     TCP      44444 → 80 [RST] Seq=1 Win=0\n6   0.000038  203.0.113.99     192.168.1.50     TCP      44444 → 443 [SYN] Seq=0 Win=1024\n7   0.000042  192.168.1.50     203.0.113.99     TCP      443 → 44444 [RST, ACK] Seq=0 Ack=1 Win=0\n8   0.000045  203.0.113.99     192.168.1.50     TCP      44444 → 3389 [SYN] Seq=0 Win=1024\n```\n\n### Questions\n1.  What is the **attacker's IP address**?\n2.  Which **ports are open** on the target server? How can you tell?\n3.  Which **ports are closed**? How can you tell?\n4.  What type of scan is this? (SYN scan, Connect scan, or UDP scan?)\n5.  Is there any data transferred? How do you know?",
+    "hints": [
+        "A SYN-ACK response indicates an open port.",
+        "A RST response to a SYN indicates a closed port.",
+        "Look at the flags in the 'Info' column."
+    ],
+    "expectedOutput": "1. 203.0.113.99\n2. Port 80 is open (responded with SYN-ACK).\n3. Port 443 and 3389 are closed (responded with RST). Port 22 and 23 may be filtered or dropped (no response shown).\n4. SYN scan (attacker sends SYN and then RST without completing handshake).\n5. No data transferred (packet length 0, no PSH flag, connection reset).",
+    "solutionCode": "N/A"
+}

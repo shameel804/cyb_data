@@ -1,0 +1,14 @@
+{
+    "id": "task1",
+    "chapterId": "ch_5",
+    "title": "Write Your First SPL Query",
+    "description": "Write Splunk queries to analyze Windows authentication logs.",
+    "estimatedMinutes": 20,
+    "problemStatement": "### Scenario\nYou are given access to a Splunk instance with a sample index named `win_sec_logs`. You need to answer the following investigative questions using **Splunk SPL**.\n\n### Dataset Context\n- **Index:** `win_sec_logs`\n- **Sourcetype:** `WinEventLog:Security`\n- **Key Fields:** `EventCode`, `Account_Name`, `Workstation_Name`, `Source_Network_Address`, `Logon_Type`\n\n### Questions (Write the SPL query for each):\n\n1.  Find all **Failed Logon** events (`EventCode=4625`) for the **Administrator** account in the last **24 hours**.\n2.  For the same time period, show the **top 10 source IPs** (`Source_Network_Address`) with the most failed logins. Include the count.\n3.  Find any **successful logons** (`EventCode=4624`) that occurred **immediately after** a failed login from the **same IP address**. (Hint: Use `transaction` or think about searching for both codes and grouping by IP).\n    - *Simplified Logic:* Show the sequence of events for a given IP where a 4625 is followed by a 4624 within 5 minutes.\n4.  Create a **timechart** showing the count of failed logins per **hour** over the last 7 days.",
+    "hints": [
+        "For Question 3, `transaction Source_Network_Address startswith=EventCode=4625 endswith=EventCode=4624 maxspan=5m` is a valid approach.",
+        "Remember the `earliest` and `latest` modifiers."
+    ],
+    "expectedOutput": "Four separate SPL queries written in plain text.",
+    "solutionCode": "1. index=win_sec_logs sourcetype=WinEventLog:Security EventCode=4625 Account_Name=Administrator earliest=-24h\n2. index=win_sec_logs sourcetype=WinEventLog:Security EventCode=4625 earliest=-24h | stats count by Source_Network_Address | sort -count | head 10\n3. index=win_sec_logs sourcetype=WinEventLog:Security (EventCode=4625 OR EventCode=4624) earliest=-24h | transaction Source_Network_Address startswith=EventCode=4625 endswith=EventCode=4624 maxspan=5m | table _time, Source_Network_Address, Account_Name, EventCode\n4. index=win_sec_logs sourcetype=WinEventLog:Security EventCode=4625 earliest=-7d | timechart span=1h count"
+}

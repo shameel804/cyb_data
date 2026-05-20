@@ -1,0 +1,14 @@
+{
+    "id": "task3",
+    "chapterId": "ch_8",
+    "title": "Attachment Triage and Sandboxing",
+    "description": "Determine if a suspicious attachment is malicious using VirusTotal and sandbox reports.",
+    "estimatedMinutes": 15,
+    "problemStatement": "### Scenario\nA user reports an email with an attached file named `Invoice_45892.iso`. The email body says: \"Please double-click to view your invoice.\"\n\n### Task\n1.  Why is the `.iso` file extension concerning?\n2.  You calculate the **SHA256 hash** of the file: `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.\n    Where would you check this hash?\n3.  You submit the file to **Joe Sandbox**. The report shows:\n    - **Process Created:** `rundll32.exe`\n    - **Network Connections:** `185.142.53.21:443` (TLS with JA3 hash `a0e9f5d64349fb1319c0c5c3cd631c8b`)\n    - **Files Dropped:** `C:\\Users\\Public\\svchost.exe`\n    \n    What is your verdict? Justify using specific evidence from the report.\n4.  What actions should be taken?",
+    "hints": [
+        "Recall the dangers of ISO files from Lesson 5.",
+        "The JA3 hash `a0e9f5d6...` is a known indicator from Chapter 7."
+    ],
+    "expectedOutput": "1. ISO files mount as drives, bypassing Windows Mark-of-the-Web security warnings and often contain hidden malicious payloads.\n2. VirusTotal (or other threat intelligence platform).\n3. Malicious. Evidence: Rundll32 execution (LOLBin), C2 connection to known malicious IP, JA3 hash matches Cobalt Strike beacon, dropped executable in Public folder.\n4. Escalate to Tier 2, isolate host, block destination IP, add file hash to AV/EDR blocklist, search for other users who received the email.",
+    "solutionCode": "N/A"
+}

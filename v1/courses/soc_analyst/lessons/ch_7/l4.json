@@ -1,0 +1,68 @@
+{
+    "id": "l4",
+    "chapterId": "ch_7",
+    "title": "Spotting Reconnaissance Scans",
+    "description": "Identify SYN scans, connect scans, and host discovery sweeps in PCAP.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Threat Hunting",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Pre-Attack Phase 🗺️",
+            "content": "# Reconnaissance in Packets\n\nBefore an attacker launches an exploit, they need to **map the network**. This generates distinct traffic patterns.\n\n**Three Classic Scan Types in PCAP:**\n\n1.  **SYN Scan (Half-Open / Stealth):**\n    *   Attacker sends **SYN**.\n    *   If port open: Victim replies **SYN-ACK**. Attacker sends **RST** (never completes handshake).\n    *   *Filter:* `tcp.flags.syn == 1 && tcp.flags.ack == 0`\n\n2.  **TCP Connect Scan:**\n    *   Attacker completes **full 3-way handshake**, then immediately sends **RST/FIN**.\n    *   *Filter:* Look for short duration connections (SYN -> SYN-ACK -> ACK -> RST).\n\n3.  **UDP Scan:**\n    *   Attacker sends **UDP packet** to various ports.\n    *   If port closed: Victim replies **ICMP Port Unreachable**.\n    *   *Filter:* `icmp.type == 3 && icmp.code == 3`"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Visualizing a SYN Scan in Wireshark",
+            "content": "The pattern is unmistakable: a flood of `[SYN]` packets to **incrementing ports**.",
+            "codeSnippet": "No.  Time      Source          Destination     Protocol Info\n1    0.000000  10.0.0.5        192.168.1.100   TCP      12345 → 22 [SYN]\n2    0.000015  10.0.0.5        192.168.1.100   TCP      12345 → 23 [SYN]\n3    0.000029  10.0.0.5        192.168.1.100   TCP      12345 → 80 [SYN]\n4    0.000031  192.168.1.100   10.0.0.5        TCP      80 → 12345 [SYN, ACK]\n5    0.000045  10.0.0.5        192.168.1.100   TCP      12345 → 80 [RST]     <-- Port 80 open, but attacker resets.\n6    0.000046  10.0.0.5        192.168.1.100   TCP      12345 → 443 [SYN]\n...",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Scan Identification 🔎",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "You see a burst of `[SYN]` packets from `203.0.113.5` to a single internal host on ports 22, 23, 80, 443, 3389, all within 1 second. What is this?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A user browsing the web.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A port scan (SYN scan).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A file download.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Rapid SYN packets to multiple ports on the same host is the definition of a vertical port scan.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Host Discovery (Ping Sweeps) 📡",
+            "content": "# Finding Live Targets\n\nBefore port scanning, attackers need to know **which IPs are alive**.\n\n**ARP Sweep (Internal Network):**\n*   Attacker sends **ARP Requests** for every IP in the subnet.\n*   *Filter:* `arp.opcode == 1` (who-has).\n*   *Pattern:* Hundreds of identical `Who has 192.168.1.X?` packets.\n\n**ICMP Ping Sweep (External/Internal):**\n*   Attacker sends **ICMP Echo Request** (Type 8) to many IPs.\n*   *Filter:* `icmp.type == 8`.\n*   *Pattern:* Sequential or random pings to a range of IPs.\n\n**TCP Ping Sweep:**\n*   Attacker sends **SYN** to common ports (80, 443, 445) across many IPs.\n*   If any IP replies with **SYN-ACK** (or RST), the host is alive.\n*   *Pattern:* One source IP connecting to **many destination IPs** on the **same port**."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "warning",
+            "title": "False Positives in Scanning 🧐",
+            "content": "## Not Every Scan is Malicious\n\n**Legitimate Scanners in Your Network:**\n*   **Vulnerability Scanners (Nessus, Qualys):** Perform regular scans of the entire IP space. **Whitelist these IPs.**\n*   **Asset Management (Axonius, ServiceNow Discovery):** Probes for new devices.\n*   **P2P / BitTorrent:** Uses random high ports and connects to many peers. Looks like a scan but is just file sharing.\n\n**How to Tell the Difference:**\n*   **Malicious Scan:** External IP -> Internal IP. Random timing.\n*   **Internal Scan:** Internal Scanner IP -> Internal IPs. Scheduled timing (e.g., every Sunday at 2 AM)."
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_8",
+    "title": "Header Analysis Challenge",
+    "description": "Analyze raw email headers to determine the true sender and authenticity.",
+    "estimatedMinutes": 20,
+    "problemStatement": "### Scenario\nA user reports a suspicious email claiming to be from 'DocuSign'. You extract the following raw headers (simplified for the exercise).\n\n```\nReceived: from mail-wm1-f44.google.com (209.85.128.44) by mx.company.com...\nReceived: by mail-wm1-f44.google.com with SMTP id xyz...\nReceived: from vps.digitalocean.com (167.99.123.45) by mail-wm1-f44.google.com...\nAuthentication-Results: mx.company.com; spf=softfail smtp.mailfrom=vps.digitalocean.com; dkim=none;\nFrom: \"DocuSign\" <dse@docusign.net>\nReturn-Path: <attacker@vps.digitalocean.com>\nSubject: Completed: Please review and sign document\n```\n\n### Questions\n1.  What is the **originating IP address** of this email? (Hint: Read Received headers bottom-up).\n2.  What does `spf=softfail` and `dkim=none` indicate?\n3.  Is this email legitimate? Why or why not?\n4.  What action would you take regarding this email?",
+    "hints": [
+        "Look at the 'Received' chain. The bottom-most Received header is the first hop.",
+        "DocuSign would not send email from a DigitalOcean VPS IP.",
+        "Remember to check the Return-Path."
+    ],
+    "expectedOutput": "1. Originating IP: 167.99.123.45 (DigitalOcean VPS).\n2. SPF softfail means the IP is not authorized; DKIM none means no signature. Both indicate spoofing.\n3. Not legitimate. It's a phishing email spoofing DocuSign.\n4. Purge the email from other user inboxes, block the sender domain/IP, and close the ticket as Confirmed Phishing.",
+    "solutionCode": "N/A"
+}

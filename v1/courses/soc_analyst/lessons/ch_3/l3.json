@@ -1,0 +1,74 @@
+{
+    "id": "l3",
+    "chapterId": "ch_3",
+    "title": "TCP/IP: The Language of the Internet",
+    "description": "The three-way handshake, flags, and connection states.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Core Protocols",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "TCP vs. UDP 🚚",
+            "content": "# Two Ways to Send Data\n\n**TCP (Transmission Control Protocol)**\n*   **Analogy:** Certified Mail with Return Receipt.\n*   **Connection-Oriented:** Must establish a connection (Handshake) before sending data.\n*   **Reliable:** Packets are numbered and acknowledged. Lost packets are resent.\n*   **Security Implication:** **Stateful firewalls track these connections.** Anomalies in handshakes are big red flags.\n\n**UDP (User Datagram Protocol)**\n*   **Analogy:** Throwing a paper airplane across the room.\n*   **Connectionless:** Just send it. No setup, no guarantee it arrives.\n*   **Fast but unreliable:** Used for streaming (Zoom) and DNS queries.\n*   **Security Implication:** Easy to spoof source IP addresses. **Amplification DDoS attacks** abuse UDP."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "The TCP 3-Way Handshake 🤝",
+            "content": "# SYN -> SYN-ACK -> ACK\n\nThis is **THE** most important networking concept for a SOC analyst. Every TCP connection starts this way.\n\n1.  **SYN:** Client -> Server. *\"Hey, I want to talk. Here is my starting sequence number.\"*\n2.  **SYN-ACK:** Server -> Client. *\"Okay, I hear you. Here is MY starting sequence number. Acknowledge please.\"*\n3.  **ACK:** Client -> Server. *\"Got it. Connection Established!\"*\n\n**Why this matters for Security:**\n*   **SYN Flood Attack:** Attacker sends thousands of **SYN** packets but never replies with the final **ACK**. The server keeps waiting, filling up its connection table until it crashes."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Handshake Check 🤝",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "You see a log entry: `TCP DENY SYN from 10.0.0.1 to 192.168.1.1 port 445`. What phase of the connection is this?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The connection is fully established.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The initial attempt to start a connection.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The connection is being torn down.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A `SYN` flag indicates the very first packet of the 3-way handshake. The firewall blocked it before it could start.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "TCP Flags Deep Dive 🚩",
+            "content": "Flags are like control bits in the TCP header. You'll see these in Wireshark and SIEM logs.",
+            "codeSnippet": "SYN - Synchronize (Start connection)\nACK - Acknowledgment (Confirm receipt)\nFIN - Finish (Graceful close)\nRST - Reset (ABRUPT close / Error)\nPSH - Push (Send data immediately)\nURG - Urgent (Process this packet first)\n\n# Malicious Pattern: SYN Flood\n# Suspicious Pattern: RST from an external IP (Port Scan rejection)",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Stateful Inspection Deep Dive",
+            "content": "# How Firewalls Know It's a Reply\n\nYour home router (and corporate firewall) uses a **State Table**.\n\nWhen your PC (10.0.0.1) sends a SYN to Google (8.8.8.8), the firewall records:\n*   `Internal: 10.0.0.1:54321 -> External: 8.8.8.8:443 [State: SYN_SENT]`\n\nWhen Google replies with a SYN-ACK from `8.8.8.8:443` to `10.0.0.1:54321`, the firewall checks the State Table. It sees the match and thinks: *\"Oh, this is a reply to an existing request. ALLOW.\"*\n\n**Security Event:** If Google's IP tries to send a **SYN** packet to your PC **without** you asking first, the firewall checks the table, sees **NO ENTRY**, and **BLOCKS/DROPS** it. This is why you can't just randomly connect to someone's PC behind a firewall."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Pro Tip: RST Packets 🚀",
+            "content": "## The Sound of a Closed Door\n\nIf you try to connect to a server on a **closed port**, the server replies with a **TCP RST (Reset)** packet.\n\n**Attacker Behavior:** Port Scanners (like Nmap) send SYNs to thousands of ports. If they get a SYN-ACK -> Port is Open. If they get a RST -> Port is Closed. If they get *nothing* -> Filtered (Firewall dropping traffic).\n\n**Defender Insight:** Seeing a burst of **inbound RST packets** or **outbound SYN packets to many ports** is a classic indicator of **Reconnaissance Scanning**."
+        }
+    ]
+}

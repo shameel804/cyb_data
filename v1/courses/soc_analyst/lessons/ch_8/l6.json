@@ -1,0 +1,80 @@
+{
+    "id": "l6",
+    "chapterId": "ch_8",
+    "title": "The Phishing Triage Playbook",
+    "description": "A repeatable workflow for handling user-reported phishing emails in under 10 minutes.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Workflow",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "Step 1: Initial Triage (1 min) ⏱️",
+            "content": "# The First 60 Seconds\n\nA user clicks **'Report Phish'** . The ticket lands in your queue.\n\n**Checklist:**\n- [ ] **Open the reported email preview** (in the secure gateway portal, NOT Outlook).\n- [ ] **Sender Address:** Is it from `@yourcompany.com` (internal) or external?\n- [ ] **Subject Line:** Does it contain urgency keywords? (`Urgent`, `Password Expired`, `Invoice`, `Action Required`)\n- [ ] **Body:** Is there a link or attachment?\n\n**Decision Point:**\n*   **Obvious Spam (Newsletter, Marketing):** Close as **False Positive - Spam**.\n*   **Contains Link/Attachment OR Impersonation:** Proceed to **Step 2**."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "Step 2: Header Analysis (2 min) 🔬",
+            "content": "# Was It Spoofed?\n\n1.  Copy the **Raw Headers**.\n2.  Paste into **MXToolbox Header Analyzer**.\n3.  Identify the **Originating IP**.\n4.  Check **Authentication-Results**:\n    *   `spf=fail`, `dkim=none/fail`, `dmarc=fail` for a major brand? -> **PHISHING CONFIRMED**.\n    *   `spf=pass`, `dkim=pass`? Could still be a **compromised legitimate account** (e.g., a vendor's Office 365 account hacked).\n\n**Action:**\n*   If **Spoofed (Failed Auth)** :\n    *   Search SIEM for **other recipients** of this same email (Search by Subject or Sender).\n    *   If found others, **Purge from Inboxes** (Soft Delete / Hard Delete).\n*   If **Compromised Legit Account** :\n    *   Alert the vendor (optional) and warn internal users not to trust that sender until resolved."
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Triage Decision ⚖️",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "A user reports an email from `amazon-payments@amazon.com` with SPF=pass, DKIM=pass, but the link goes to a weird domain. What is the likely scenario?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The email is safe because auth passed.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The sender's email account has been compromised (Account Takeover).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It's a false positive.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Valid authentication + malicious content = Compromised legitimate account. This is the hardest type to detect.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "Step 3: URL / Attachment Analysis (3 min) 🔗",
+            "content": "# What's the Payload?\n\n**If URL:**\n1.  Copy link, **Defang** it.\n2.  Submit to **URLScan.io**.\n3.  Review Screenshot:\n    *   Fake login page? -> **Credential Phishing**.\n    *   Blank page / 404? -> Likely taken down already, but still malicious intent.\n4.  Check domain age (Whois). Registered yesterday? -> **High Confidence Phish**.\n\n**If Attachment:**\n1.  Download attachment **ONLY to a secure analysis VM or directly to Sandbox**.\n2.  Calculate **SHA256 Hash**.\n3.  Check **VirusTotal**.\n4.  If unknown/clean, submit to **Joe Sandbox / Any.Run**.\n5.  Wait for sandbox report (5-10 mins).\n\n**Action:**\n*   If **Malicious Confirmed**: Block the sender domain, block the URL domain in the proxy, add file hash to AV blocklist."
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "Step 4: User Impact Assessment (2 min) 👥",
+            "content": "# Did They Click?\n\nThis is the **most critical question** for escalation.\n\n**How to find out:**\n1.  Query **Proxy Logs** for the user's IP around the email timestamp.\n2.  Look for the **malicious URL**.\n3.  If you see a `200 OK` response code and `POST` request... **they entered their password**.\n\n**Action Based on Click Status:**\n\n| User Action | SOC Response |\n| :--- | :--- |\n| **Did NOT click** | Close ticket. Thank user. No further action. |\n| **Clicked but did NOT enter credentials** | Low risk. Force a password reset anyway (best practice). Clear browser cache. |\n| **Clicked AND entered credentials** | **ESCALATE TO INCIDENT RESPONSE.** Revoke sessions, reset password, check for mailbox rules, check for MFA bypass. |"
+        },
+        {
+            "id": "s_l6_6",
+            "type": "code",
+            "title": "Template: Phishing Ticket Close Notes",
+            "content": "Always use a standard format for phishing tickets.",
+            "codeSnippet": "--- PHISHING TRIAGE REPORT ---\nAnalyst: [Name]\nDate: 2026-03-20\n\nREPORTED BY: jsmith@company.com\nSENDER: security@paypal.com (SPOOFED)\nSUBJECT: Your account has been limited\n\nFINDINGS:\n- SPF: FAIL (Originating IP: 185.142.53.21 - Hosting Provider)\n- DKIM: NONE\n- URL: hxxps://paypal[.]login-secure[.]xyz (URLScan shows fake PayPal login)\n- ATTACHMENT: None\n- USER CLICK: NO (Proxy logs show no access to malicious domain)\n\nACTION TAKEN:\n- Blocked sender domain: login-secure[.]xyz\n- Blocked URL category in proxy\n- Searched and purged email from 3 other recipients\n- User educated: No click.\n\nVERDICT: CONFIRMED PHISHING. RESOLVED.",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_7",
+            "type": "tip",
+            "title": "Post-Incident: Inbox Rules 🔄",
+            "content": "## Check for Hidden Forwarding Rules\n\nIf the user **entered credentials**, the attacker likely logged into their O365 account.\n\n**Step:** Check for **Inbox Rules** created in the last 24 hours.\n*   Attackers create rules like: *\"If email contains 'Invoice', move to 'Deleted Items' AND forward to hacker@gmail.com.\"*\n*   This allows them to intercept financial emails without the user knowing.\n\n**Query:** `Search-MailboxAuditLog` or use the O365 Security Center."
+        }
+    ]
+}

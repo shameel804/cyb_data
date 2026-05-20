@@ -1,0 +1,68 @@
+{
+    "id": "l5",
+    "chapterId": "ch_6",
+    "title": "The Tier 1 Triage Playbook",
+    "description": "A repeatable workflow for analyzing any network-based alert in under 10 minutes.",
+    "xpReward": 30,
+    "estimatedMinutes": 6,
+    "section": "Workflow",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The 5-Step Playbook 📋",
+            "content": "# Standard Operating Procedure (SOP)\n\nWhen an alert fires, don't panic. Follow this **exact** workflow every time.\n\n**Step 1: Initial Assessment (30 sec)**\n*   Read the alert title and description.\n*   Identify the **Source** (IP/Hostname/User) and **Destination** (IP/Domain).\n*   *Check:* Is this a known false positive? (e.g., `*.microsoft.com` traffic flagged as suspicious). If yes, document and close.\n\n**Step 2: Context Gathering (2 min)**\n*   Query the **Proxy Logs** for that source IP around that time. *What URL did they visit?*\n*   Query the **DNS Logs** for that source IP. *Did they resolve that domain?*\n*   Query the **Firewall Logs** for that source IP. *Was the connection allowed? How much data?*"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "The Playbook (Continued) 📋",
+            "content": "# Step 3: Frequency Analysis (2 min)\n*   Search for the **Destination IP/Domain** over the **last 7 days**.\n*   *Question:* Has this host (or ANY host) talked to this destination before?\n*   *If YES (and it's normal):* Likely a false positive (e.g., new software phoning home).\n*   *If NO (First Time Seen):* **Increase Suspicion.**\n\n**Step 4: Threat Intelligence Check (1 min)**\n*   Copy the Destination IP/Domain.\n*   Paste into **VirusTotal** or your internal Threat Intel Platform.\n*   *Question:* Do 5+ vendors flag it as Malicious?\n*   *If YES:* **Escalate to Tier 2.**\n*   *If NO:* Proceed to Step 5.\n\n**Step 5: Decision (1 min)**\n*   **Escalate:** If any of the following are true:\n    *   Destination is confirmed malicious.\n    *   Large data upload (Bytes Out > 10 MB).\n    *   Beaconing pattern detected.\n    *   Suspicious User-Agent or DNS Tunneling detected.\n*   **Close as False Positive:** If normal business traffic.\n*   **Close as Benign (Informational):** If suspicious but not confirmed malicious (e.g., blocked scan)."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Playbook Scenario 🎭",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Alert: 'Connection to Newly Registered Domain' from user jwilson to 'cloud-storage-backup[.]xyz'. Proxy shows a POST request with 50MB uploaded. VirusTotal shows 0 detections. What is the correct decision?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Close as False Positive because VirusTotal is clean.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Escalate to Tier 2. The behavior (large POST to NRD) is malicious regardless of VT score.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Ignore it and wait for a second alert.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "VirusTotal lags behind new threats. The behavioral indicators (NRD + Large Upload) are sufficient for escalation.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "Template Ticket Notes 📝",
+            "content": "Always use a standard format for your closing notes. This makes auditing easy.",
+            "codeSnippet": "--- ALERT TRIAGE NOTES ---\nAnalyst: [Your Name]\nDate: 2026-03-15\n\n1. ALERT: Suspicious SMB Traffic (Port 445)\n2. SOURCE: 192.168.1.105 (jwilson / SALES-PC01)\n3. DESTINATION: 185.142.53.21 (VirusTotal: 8/94 malicious)\n4. TIMELINE: Single connection at 02:34 UTC. Duration: 45 seconds. Bytes Out: 2.5 MB.\n5. BASELINE: First time seen connecting to this IP in 30 days.\n6. DECISION: ESCALATED to Tier 2. Behavior is consistent with data exfiltration.\n7. EVIDENCE: [Link to Splunk Search]",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_5",
+            "type": "tip",
+            "title": "Continuous Improvement 🔄",
+            "content": "## Closing the Loop\n\nIf you close an alert as a **False Positive**, you MUST provide feedback to the **Detection Engineering** team.\n\n*   *Example:* \"This alert fired because a developer was using `curl` to test an internal API. Please add an exception for source IP `10.0.0.55` OR User-Agent `curl/7.68.0` for destination `internal-api.acme.com`.\"\n\n**This feedback reduces alert fatigue for the ENTIRE team.**"
+        }
+    ]
+}

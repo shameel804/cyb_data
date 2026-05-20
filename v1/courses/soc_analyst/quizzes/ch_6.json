@@ -1,0 +1,305 @@
+{
+    "id": "quiz_ch_6",
+    "chapterId": "ch_6",
+    "title": "Chapter 6 Mastery Quiz",
+    "description": "Test your log analysis skills across firewalls, proxies, DNS, and the triage workflow.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "In firewall logs, which field is most important for detecting data exfiltration?",
+            "options": [
+                "Source Port",
+                "Destination IP",
+                "Bytes Sent",
+                "Protocol"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Bytes Sent indicates the volume of data leaving the network, a key indicator of data theft."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "Blocked (DENY) traffic is generally a higher priority for investigation than ALLOWED traffic.",
+            "correctAnswer": false,
+            "explanation": "False. Blocked traffic means the firewall stopped it. Allowed traffic to a malicious destination means the connection succeeded and is an active compromise."
+        },
+        {
+            "id": "q3",
+            "type": "fill_blank",
+            "question": "A connection that occurs at precise, regular intervals (e.g., every 5 minutes) is characteristic of _____ behavior.",
+            "options": [
+                "Scanning",
+                "Beaconing",
+                "Tunneling",
+                "Phishing"
+            ],
+            "correctAnswer": "Beaconing",
+            "explanation": "Command and Control (C2) beacons are often scheduled precisely to check in."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which log source provides the FULL URL visited by a user, including the path and parameters?",
+            "options": [
+                "Firewall Log",
+                "DNS Log",
+                "Proxy Log",
+                "NetFlow Data"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Proxy logs operate at Layer 7 (Application) and can see the full HTTP request."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "You see a proxy log with `http_method=POST`, `mime_type=application/octet-stream`, and `bytes_out=25000000`. What is the likely activity?",
+            "options": [
+                "Loading a web page",
+                "Streaming video",
+                "Uploading a large file (Potential Exfiltration)",
+                "Checking email"
+            ],
+            "correctAnswer": 2,
+            "explanation": "POST method with large bytes out indicates data being sent to a server. The MIME type suggests an arbitrary file."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "A User-Agent string of `python-requests/2.28.1` in a proxy log is suspicious because:",
+            "options": [
+                "It indicates the user is browsing with Chrome.",
+                "It indicates a script or automated tool is making web requests, not a human browser.",
+                "It is a known malware signature.",
+                "Python is not installed on Windows."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Python requests library is often used in malware download cradles or data exfiltration scripts."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What does a high ratio of `NXDOMAIN` responses to `NOERROR` responses for a single client indicate?",
+            "options": [
+                "The DNS server is working correctly.",
+                "The client is likely infected with DGA malware trying random domains.",
+                "The user is typing URLs incorrectly.",
+                "The network is down."
+            ],
+            "correctAnswer": 1,
+            "explanation": "DGA malware generates many non-existent domains to find its C2 server."
+        },
+        {
+            "id": "q8",
+            "type": "true_false",
+            "question": "DNS queries for TXT records from a regular workstation are common and benign.",
+            "correctAnswer": false,
+            "explanation": "False. Workstations rarely query TXT records. High volume of TXT queries is suspicious and often indicates tunneling or data exfiltration."
+        },
+        {
+            "id": "q9",
+            "type": "fill_blank",
+            "question": "In firewall log analysis, the pattern of a single internal host connecting to many external IPs on the same port is called a 'One-to-Many' pattern and indicates _____ activity.",
+            "options": [
+                "Beaconing",
+                "Scanning",
+                "Tunneling",
+                "Streaming"
+            ],
+            "correctAnswer": "Scanning",
+            "explanation": "Scanning involves probing many targets, creating a one-to-many connection pattern."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "In the Tier 1 Triage Playbook, what is the first step?",
+            "options": [
+                "Check VirusTotal.",
+                "Escalate to Tier 2.",
+                "Initial Assessment: Read the alert and identify Source/Destination.",
+                "Query DNS logs."
+            ],
+            "correctAnswer": 2,
+            "explanation": "Always start with a quick orientation to understand the scope of the alert."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Why is it important to filter out corporate DNS server IPs when hunting for DNS anomalies?",
+            "options": [
+                "DNS servers don't generate logs.",
+                "DNS servers make a huge volume of legitimate queries, which would drown out client anomalies.",
+                "It's illegal to monitor DNS server logs.",
+                "DNS servers use a different protocol."
+            ],
+            "correctAnswer": 1,
+            "explanation": "The DNS server acts as a recursive resolver; its traffic is noisy and normal. We focus on client queries."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "You see a Cisco ASA log with `%ASA-6-302014` and `duration 0:00:01 bytes 450`. The connection was to a suspicious IP on port 445. What is the best assessment?",
+            "options": [
+                "Definite data exfiltration.",
+                "Likely a scan or failed connection attempt (low volume, short duration).",
+                "Normal SMB traffic.",
+                "Ransomware encryption in progress."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Low bytes and short duration indicate the connection was likely torn down quickly. Exfiltration requires sustained, high-volume connections."
+        },
+        {
+            "id": "q13",
+            "type": "fill_blank",
+            "question": "In proxy logs, an HTTP status code of 200 indicates _____, while 403 indicates _____. ",
+            "options": [
+                "Success / Forbidden",
+                "Redirect / Error",
+                "Not Found / Success",
+                "Forbidden / Success"
+            ],
+            "correctAnswer": "Success / Forbidden",
+            "explanation": "200 OK means the request succeeded. 403 Forbidden means the server blocked access."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is the primary value of checking a domain's 'age' (registration date) during a phishing investigation?",
+            "options": [
+                "Older domains are more trustworthy.",
+                "Newly registered domains (less than 24 hours old) are a strong indicator of phishing infrastructure.",
+                "It determines the website's popularity.",
+                "It helps identify the hosting provider."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Attackers frequently register domains immediately before launching a campaign to avoid reputation blocklists."
+        },
+        {
+            "id": "q15",
+            "type": "true_false",
+            "question": "If VirusTotal shows 0/94 detections for a suspicious IP, the connection is definitely safe.",
+            "correctAnswer": false,
+            "explanation": "False. New malicious infrastructure or targeted attacks may not be flagged by any vendor yet. Behavior analysis takes precedence."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which of the following is NOT typically found in a firewall log?",
+            "options": [
+                "Source IP",
+                "Destination Port",
+                "HTTP URL Path",
+                "Bytes Sent"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Basic firewalls (Layer 3/4) do not see the URL path. That requires a Next-Gen Firewall or a Proxy."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "During a proxy log investigation, you see a request for `http://evil.com/payload.exe` with status `200` and MIME type `application/x-msdownload`. What is the most immediate concern?",
+            "options": [
+                "The user visited a malicious website.",
+                "An executable file was successfully downloaded from a malicious domain.",
+                "The website is down.",
+                "The user has a slow internet connection."
+            ],
+            "correctAnswer": 1,
+            "explanation": "The combination of a suspicious domain, success status, and executable MIME type confirms a malware download."
+        },
+        {
+            "id": "q18",
+            "type": "fill_blank",
+            "question": "In DNS tunneling, data is often encoded using _____ to fit within the allowed character set of a domain name.",
+            "options": [
+                "Base64",
+                "HTML",
+                "UTF-8",
+                "Binary"
+            ],
+            "correctAnswer": "Base64",
+            "explanation": "Base64 encoding is commonly used to convert binary data into alphanumeric strings for subdomains."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "According to the Triage Playbook, what is the correct action if an alert is determined to be a False Positive?",
+            "options": [
+                "Delete the alert.",
+                "Close the ticket with detailed notes explaining why it's benign.",
+                "Ignore it.",
+                "Escalate it anyway to be safe."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Documentation of false positives helps tune future alerts and provides an audit trail."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is the 'Beaconing' pattern in network traffic?",
+            "options": [
+                "A single, large burst of traffic.",
+                "Small, periodic connections at consistent intervals.",
+                "Traffic that is all blocked by the firewall.",
+                "Random, unpredictable traffic spikes."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Beaconing is the hallmark of malware checking in with its command server."
+        },
+        {
+            "id": "q21",
+            "type": "true_false",
+            "question": "When investigating a firewall alert, you should prioritize investigating the source port over the destination port.",
+            "correctAnswer": false,
+            "explanation": "False. The destination port tells you the service being accessed (e.g., 445 for SMB). The source port is ephemeral and random."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "Which log source would be BEST for determining if a user clicked on a link in a phishing email?",
+            "options": [
+                "DNS Log",
+                "Proxy Log",
+                "Firewall Log",
+                "NetFlow"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The proxy log shows the exact URL visited, confirming the click."
+        },
+        {
+            "id": "q23",
+            "type": "fill_blank",
+            "question": "A query in a SIEM that searches for `index=firewall action=allowed src_ip=192.168.1.105 earliest=-30d` is an example of a _____ search to establish normal behavior.",
+            "options": [
+                "Correlation",
+                "Baseline",
+                "Tunneling",
+                "Beaconing"
+            ],
+            "correctAnswer": "Baseline",
+            "explanation": "Baselining helps determine if an event is normal or anomalous for a specific asset or user."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "In the context of log analysis, what does 'Pivot' mean?",
+            "options": [
+                "To create a chart.",
+                "To use information from one log source to search another log source.",
+                "To delete a log.",
+                "To change the time zone."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Pivoting is the core investigative technique of following a trail of evidence across different data sources."
+        },
+        {
+            "id": "q25",
+            "type": "true_false",
+            "question": "An analyst should always spend at least 30 minutes investigating every single alert, regardless of initial assessment.",
+            "correctAnswer": false,
+            "explanation": "False. Tier 1 triage requires speed. Many alerts can be dismissed in 2-3 minutes if they are obvious false positives. Deep dive is for Tier 2."
+        }
+    ]
+}

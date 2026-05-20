@@ -1,0 +1,75 @@
+{
+    "id": "l6",
+    "chapterId": "ch_7",
+    "title": "Data Exfiltration and Malware Signatures",
+    "description": "Spot large file transfers, DNS tunneling, and common malware traffic patterns.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Threat Hunting",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "The Great Escape 📤",
+            "content": "# Detecting Data Exfiltration in PCAP\n\n**Exfiltration** is the unauthorized transfer of data from inside to outside.\n\n**PCAP Indicators:**\n1.  **Asymmetric Traffic:** High **Bytes Out** (upload) compared to **Bytes In** (download).\n    *   *Normal HTTP:* Small GET request, large HTML response.\n    *   *Exfiltration:* Large POST request, small 200 OK response.\n2.  **Unusual Protocols on Standard Ports:**\n    *   Port 53 (DNS) carrying **TXT records with long strings**.\n    *   Port 80 (HTTP) carrying **binary data** not HTML.\n    *   Port 443 (HTTPS) but **JA3 hash is unknown/malicious**.\n3.  **Volume Over Time:** A steady trickle of data (5 MB every 10 minutes) is harder to spot than a single 1 GB spike."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "code",
+            "title": "Spotting Large Transfers: Statistics Menu",
+            "content": "Wireshark's **Statistics** menu is your friend for finding data hogs.\n\n**Step 1:** **Statistics** -> **Endpoints**.\n*   Click the **IPv4** tab.\n*   Sort by **Tx Bytes** (Transmitted Bytes).\n*   Look for **internal IPs** sending massive amounts of data to a **single external IP**.\n\n**Step 2:** **Statistics** -> **Conversations**.\n*   Click the **TCP** tab.\n*   Sort by **Bytes**.\n*   Look for a conversation with **high bytes A->B** but **low bytes B->A**.\n*   Right-click -> **Apply as Filter** -> **Selected** -> **A <-> B**.\n*   Then **Follow TCP Stream** to see the data.",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Exfiltration Clues 🔍",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "In Wireshark's Conversation statistics, you see: `192.168.1.105 -> 185.142.53.21 : Bytes = 50 MB`, and `185.142.53.21 -> 192.168.1.105 : Bytes = 2 KB`. What does this indicate?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The user is watching a 4K video.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A large amount of data is being uploaded (Potential Exfiltration).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The user is downloading a game.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Asymmetric traffic with high upload volume is the hallmark of data exfiltration.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "Common Malware Traffic Patterns 🦠",
+            "content": "# Know Your Enemy's Packet\n\nDifferent malware families have **distinct network signatures**.\n\n| Malware Family | PCAP Signature |\n| :--- | :--- |\n| **Emotet (Epoch 4/5)** | HTTP POST to specific URI patterns (`/gp/`, `/ga/`) with encoded data. |\n| **Trickbot** | TLS traffic with specific **JA3 hash**. Often uses custom `Subject` fields in TLS certs. |\n| **Cobalt Strike (Default Beacon)** | HTTP GET with `Cookie: ...` containing Base64 data. JA3 hash `a0e9f5d6...`. |\n| **Qakbot (Qbot)** | HTTPS POST with large amounts of binary data. Distinctive TLS certificate issuer `Qakbot CA`. |\n| **IcedID** | HTTP GET with long URI containing encoded system info. |\n\n**Analyst Workflow:**\n1.  See suspicious TLS traffic.\n2.  Extract **JA3 hash**.\n3.  Google `JA3 hash a0e9f5d64349fb1319c0c5c3cd631c8b`.\n4.  Result: *\"Cobalt Strike Beacon\"*. **Escalate immediately.**"
+        },
+        {
+            "id": "s_l6_5",
+            "type": "code",
+            "title": "Extracting Transferred Files from PCAP 📎",
+            "content": "If you see an HTTP download of a suspicious `.exe`, you can **carve** the file out of the PCAP.\n\n**Method 1: Wireshark UI**\n1.  **File** -> **Export Objects** -> **HTTP**.\n2.  Select the file (e.g., `malware.exe`) and click **Save**.\n\n**Method 2: Command Line (Foremost / Tcpflow)**\n```bash\ntcpflow -r capture.pcap\n# Outputs all TCP streams into separate files.\nfile 192.168.001.105.49152-185.142.053.021.00080\n# Might output: 'PE32 executable (GUI) Intel 80386, for MS Windows'\n```",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_6",
+            "type": "tip",
+            "title": "The PCAP Playbook Summary 📚",
+            "content": "## Tier 1 PCAP Triage Checklist\n\nWhen you open a PCAP related to an alert:\n\n1.  **Filter:** `ip.addr == <suspicious_ip>`.\n2.  **Conversations:** Check byte asymmetry.\n3.  **IO Graph:** Check for beaconing periodicity.\n4.  **Export Objects (HTTP):** Look for downloaded executables.\n5.  **Follow TCP Stream:** View the raw data (look for passwords, commands).\n6.  **JA3 Hash:** If TLS, extract and check reputation.\n\n**If you find any of these, escalate with a timestamped screenshot of the Wireshark view.**"
+        }
+    ]
+}

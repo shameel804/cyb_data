@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_12",
+    "title": "First Detection: Port Scan",
+    "description": "Perform an Nmap scan and document the detection in Splunk.",
+    "estimatedMinutes": 30,
+    "problemStatement": "### Scenario\nYour lab is running. Now it's time to generate an attack and detect it.\n\n### Attack (Kali Linux VM)\n1.  Ensure Kali is on the same Host-Only network.\n2.  Ping the Windows Victim IP to confirm connectivity.\n3.  Run an Nmap SYN scan: `sudo nmap -sS <Windows_IP> -p 1-1000`\n\n### Detection (Splunk)\n1.  Wait 2-3 minutes for logs to forward.\n2.  Search Splunk for Windows Filtering Platform events or Sysmon Event ID 3.\n3.  Create a search that identifies the scan: look for a single source IP connecting to many distinct destination ports.\n\n### Documentation\nTake screenshots of:\n1.  The Nmap command running in Kali.\n2.  The Splunk search query you used.\n3.  The Splunk results table showing the source IP and high count of distinct ports.\n\n### Questions\n- What is the source IP of the scanner?\n- How many distinct ports were scanned?\n- How would you tune a detection rule to avoid alerting on legitimate vulnerability scanners in a real network?",
+    "hints": [
+        "Use `stats dc(Dest_Port)` to count distinct ports.",
+        "Filter by `EventCode=5156` (Windows Filtering Platform) or `EventID=3` (Sysmon)."
+    ],
+    "expectedOutput": "Screenshots and answers: Source IP is Kali VM IP. Distinct ports count will be high (e.g., 1000). Tuning: Whitelist known scanner IP addresses.",
+    "solutionCode": "index=windows (EventCode=5156 OR EventID=3) Source_Address=<Kali_IP> | stats dc(Dest_Port) as UniquePorts by Source_Address"
+}

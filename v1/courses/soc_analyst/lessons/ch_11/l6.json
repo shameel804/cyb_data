@@ -1,0 +1,73 @@
+{
+    "id": "l6",
+    "chapterId": "ch_11",
+    "title": "Applying CTI in the SOC",
+    "description": "Detection gap analysis, threat hunting, and alert enrichment with ATT&CK.",
+    "xpReward": 40,
+    "estimatedMinutes": 9,
+    "section": "Application",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "CTI-Driven Detection Engineering 🛠️",
+            "content": "# Closing the Gaps\n\n**Workflow:**\n1.  **Identify Relevant Threats:** Use Strategic CTI to determine top 3-5 threat actors targeting your industry.\n2.  **Extract TTPs:** For each actor, pull their ATT&CK Technique list from MITRE.\n3.  **Gap Analysis:** Map your **existing SIEM rules** against those techniques. Use the ATT&CK Navigator.\n4.  **Prioritize:** Focus on building detections for the **top 5 missing techniques** used by your most relevant actor.\n\n**Example:**\nIf FIN7 uses `T1036.005` (Match Legitimate Name or Location) and you have **zero** detections for it, you create a rule to look for `powershell.exe` running from `C:\\Windows\\Temp\\` or `svchost.exe` running from the wrong folder.\n\n**This transforms SIEM rule creation from 'guessing' to 'data-driven defense'.**"
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "Threat Hunting: Proactive Defense 🔍",
+            "content": "# Finding Evil Before It Alerts\n\n**Threat Hunting** is the proactive search for adversaries who have **evaded existing detections**.\n\n**CTI-Driven Hunting Hypothesis:** *\"Given that FIN7 uses WMI (`T1047`) for lateral movement, and we have poor logging for WMI, is there an alternative way to detect their movement?\"*\n\n**Hunt Plan:**\n1.  **Hypothesis:** FIN7 lateral movement will generate SMB traffic (`T1021.002`) **before** or **after** WMI execution.\n2.  **Query:** Search for unusual SMB connections (port 445) between workstations that don't normally talk.\n3.  **Data Source:** Firewall East-West logs or NetFlow.\n4.  **Analysis:** Review the 10 most unusual pairs of communicating workstations.\n\n**If you find a hit, you've just discovered a breach that all your automated alerts missed.**"
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Threat Hunting 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "What is the primary difference between a SIEM Alert and a Threat Hunt?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Alerts are automated; Hunts are manual, proactive investigations based on a hypothesis.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Hunts are for low-level events; Alerts are for critical events.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "There is no difference.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Alerts fire automatically. Hunting is a human-led exploration to find unknown threats.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "code",
+            "title": "Alert Enrichment with ATT&CK Context",
+            "content": "When you triage an alert, add ATT&CK context to your notes.\n\n**Instead of:**\n*\"Alert: Suspicious PowerShell command detected on SALES-PC01.\"*\n\n**Write:**\n*\"Alert: Suspicious PowerShell execution ( **ATT&CK T1059.001** ). Parent process was `winword.exe` ( **T1566.001** ). This combination is a known TTP for FIN7 ( **G0046** ). Confidence increased to High.\"*\n\n**This instantly communicates the severity and context to Tier 2/Tier 3.**",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "Measuring CTI Effectiveness 📏",
+            "content": "# Metrics That Matter\n\nHow do you know if your CTI program is working?\n\n| Bad Metric | Good Metric |\n| :--- | :--- |\n| \"We ingested 1 million IOCs this month.\" | \"We **blocked** 500 connections to **high-confidence** C2 servers.\" |\n| \"We read 20 threat reports.\" | \"We **mapped 3 new TTPs** to ATT&CK and **built 2 new detection rules** based on them.\" |\n| \"Our firewall blocklist is huge.\" | \"**Zero** confirmed incidents originated from IPs/Domains that were **already in our blocklist**.\" |\n\n**Focus on Outcomes, Not Volume.**"
+        },
+        {
+            "id": "s_l6_6",
+            "type": "tip",
+            "title": "The Future: Automated CTI ⚡",
+            "content": "## MISP and STIX/TAXII\n\n**MISP (Malware Information Sharing Platform):** An open-source threat intelligence platform used to store, share, and correlate IOCs.\n**STIX/TAXII:** Standardized languages and protocols for sharing CTI automatically between organizations and tools.\n\nIn mature SOCs, TAXII feeds flow directly into the SIEM/TIP. When a new FIN7 IP is published, it's blocked on the firewall **within seconds**, without any human clicking a button.\n\n**This is the goal. Automation.**"
+        }
+    ]
+}

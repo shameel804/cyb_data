@@ -1,0 +1,73 @@
+{
+    "id": "l2",
+    "chapterId": "ch_11",
+    "title": "MITRE ATT&CK Framework Deep Dive",
+    "description": "Master the matrix: Tactics, Techniques, Procedures, and how to navigate ATT&CK.",
+    "xpReward": 40,
+    "estimatedMinutes": 9,
+    "section": "Frameworks",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "ATT&CK: The Common Language of Adversaries 🗣️",
+            "content": "# Adversarial Tactics, Techniques, and Common Knowledge\n\n**MITRE ATT&CK** is a **globally-accessible knowledge base** of adversary tactics and techniques based on **real-world observations**.\n\n**Why it's a Game-Changer:** Before ATT&CK, we said: *\"The attacker used some PowerShell and created a scheduled task.\"* With ATT&CK, we say: *\"The attacker used **T1059.001 (PowerShell)** and **T1053.005 (Scheduled Task)**.\"*\n\n**Benefits of a Common Taxonomy:**\n1.  **Precise Communication:** Everyone knows exactly what `T1566.001` (Spearphishing Attachment) means.\n2.  **Detection Engineering:** We can map our SIEM rules to specific techniques to find **coverage gaps**.\n3.  **Threat Hunting:** We can hunt for specific techniques used by a known adversary group."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "The ATT&CK Matrix Structure 🏛️",
+            "content": "# Tactics (Columns) and Techniques (Cells)\n\nThe Enterprise ATT&CK Matrix is organized by **Tactics** (the adversary's goal) and **Techniques** (how they achieve it).\n\n| Tactic (The 'Why') | Definition | Example Technique |\n| :--- | :--- | :--- |\n| **Reconnaissance** | Gathering info to plan future ops. | T1595 (Active Scanning) |\n| **Resource Development** | Establishing infrastructure. | T1583 (Acquire Infrastructure) |\n| **Initial Access** | Getting into your network. | T1566 (Phishing) |\n| **Execution** | Running malicious code. | T1059.001 (PowerShell) |\n| **Persistence** | Staying in the network. | T1053.005 (Scheduled Task) |\n| **Privilege Escalation** | Getting higher permissions. | T1068 (Exploitation for Priv Esc) |\n| **Defense Evasion** | Avoiding detection. | T1027 (Obfuscated Files) |\n| **Credential Access** | Stealing account names/passwords. | T1003 (OS Credential Dumping) |\n| **Discovery** | Figuring out your environment. | T1018 (Remote System Discovery) |\n| **Lateral Movement** | Moving to other systems. | T1021.001 (RDP) |\n| **Collection** | Gathering data of interest. | T1560 (Archive Collected Data) |\n| **Command and Control** | Communicating with attacker servers. | T1071.001 (Web Protocols) |\n| **Exfiltration** | Stealing data. | T1048 (Exfiltration Over Alt Protocol) |\n| **Impact** | Destroying or manipulating data. | T1486 (Data Encrypted for Impact) |"
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "ATT&CK Taxonomy 📚",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "An attacker uses RDP to move from Workstation A to Server B. Which ATT&CK Tactic does this fall under?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Initial Access",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Lateral Movement",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Command and Control",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Lateral Movement covers techniques used to move through the environment after initial access.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Techniques, Sub-Techniques, and Procedures 🔬",
+            "content": "# The Granularity of ATT&CK\n\n**Technique ID Format:** `T1234.005`\n*   **T1234:** The parent Technique (e.g., `T1059` - Command and Scripting Interpreter).\n*   **.005:** The Sub-Technique (e.g., `T1059.005` - Visual Basic).\n\n**Procedure:** The **specific implementation** of a technique by a particular malware family or threat group.\n\n**Example: Credential Dumping**\n*   **Technique:** `T1003` - OS Credential Dumping.\n*   **Sub-Technique:** `T1003.001` - LSASS Memory.\n*   **Procedure (APT29):** Uses a custom version of **Mimikatz** executed via a Word macro.\n*   **Procedure (FIN7):** Uses a PowerShell script to dump credentials and save them to `C:\\Windows\\Temp\\log.txt`.\n\n**Analyst Insight:** IOCs (hashes) change daily. **Procedures** change slowly. **Techniques** are stable for years."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Navigating ATT&CK: The Group Pages",
+            "content": "One of the most powerful features is the **Group** pages (e.g., `G0007` for APT28, `G0046` for FIN7).\n\nVisit `attack.mitre.org/groups/G0046/` to see:\n- Associated software (Malware used).\n- **Techniques Used (List of TXXXX IDs).**\n- References to public threat reports.\n\n**SOC Application:**\nIf your industry is targeted by FIN7, you can export the list of techniques they use and **compare it against your SIEM detection rules**.\n\n*Do we have a detection for T1059.001 (PowerShell)? Yes.*\n*Do we have a detection for T1036.005 (Match Legitimate Name or Location)? Maybe not.*\n**ACTION: Create a detection rule for T1036.005!**",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_6",
+            "type": "tip",
+            "title": "ATT&CK Navigator 🗺️",
+            "content": "## Visualizing Your Coverage\n\nUse the free **ATT&CK Navigator** tool (web-based).\n1.  Select the techniques used by a threat group (e.g., FIN7).\n2.  Color the cells **RED**.\n3.  Overlay a second layer of **YOUR** existing SIEM detections. Color them **GREEN**.\n\n**The remaining RED cells are your **detection gaps**. This is a powerful, data-driven way to justify new security projects to management.**"
+        }
+    ]
+}

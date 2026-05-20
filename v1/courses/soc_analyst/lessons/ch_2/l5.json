@@ -1,0 +1,77 @@
+{
+    "id": "l5",
+    "chapterId": "ch_2",
+    "title": "Domain & DNS Reconnaissance",
+    "description": "Whois, subdomain enumeration, and DNS records.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Techniques",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Internet's Phone Book 📖",
+            "content": "# Domain Name System (DNS)\n\nComputers talk via IP addresses (`142.250.185.46`). Humans remember names (`google.com`). **DNS translates names to numbers.**\n\nAs a defender, DNS is a goldmine of OSINT. By querying public DNS records, you can map out a company's entire public infrastructure **without ever sending a single packet to their firewall.**\n\n**Common Record Types:**\n*   **A Record:** Domain -> IPv4 Address.\n*   **MX Record:** Mail server address.\n*   **TXT Record:** Text notes (often contains security info like **SPF/DKIM** settings).\n*   **CNAME:** Alias for another domain."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Using 'nslookup' / 'dig'",
+            "content": "You can query DNS from any command line. This is 100% passive and legal.",
+            "codeSnippet": "# Windows (Command Prompt)\nnslookup -type=MX google.com\n\n# Linux / Mac (Terminal)\ndig google.com MX\n\n# Output tells you: \n# google.com mail is handled by 10 smtp.google.com.\n# This tells us Google uses their own mail servers (Gmail).",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "DNS Check 📡",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "You query the MX record for a company and see 'company-com.mail.protection.outlook.com'. What does this tell you?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "They host their own email server in the basement.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "They use Microsoft Office 365 / Exchange Online for email.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "They use Google Workspace (Gmail).",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The 'protection.outlook.com' domain is a clear indicator of Microsoft's email filtering and hosting service.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Subdomain Discovery 🌐",
+            "content": "# Finding the Hidden Doors\n\nA company might secure `www.company.com` and `vpn.company.com`. But what about `dev.company.com`, `test.company.com`, or `portal.company.com`?\n\nThese subdomains often host **staging servers** with weaker security, default passwords, or old software. Finding these is a primary OSINT goal.\n\n**Tools for the Job (Passive):**\n*   **crt.sh:** Searches Certificate Transparency logs. Every time an SSL certificate is issued for `*.company.com`, it's logged publicly.\n*   **SecurityTrails:** Historical DNS data. See what IP a domain pointed to 5 years ago.\n\n**Example crt.sh query:** `%.example.com`"
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Whois Lookup 📋",
+            "content": "Whois tells you **who owns a domain**. This often reveals the internal IT contact's email and phone number.",
+            "codeSnippet": "# Linux Terminal\nwhois example.com\n\n# Look for:\n# - Registrant Email: tech@example.com\n# - Registrant Phone: +1.5551234567\n\n# This is a goldmine for social engineering attacks.\n# Defenders: Ensure your domain uses WHOIS Privacy Protection!",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_6",
+            "type": "tip",
+            "title": "Certificate Transparency 🏆",
+            "content": "## The Defender's Advantage\n\n**crt.sh** is the single most important OSINT tool for defenders. Attackers use it to find new subdomains. **You should use it first.**\n\nSet up a monitor for `%.yourcompany.com`. When a new subdomain appears (`newapp.yourcompany.com`), ask the dev team: *\"Is this supposed to be public? Is it secured?\"*\n\nCatching this **before** an attacker does is the essence of External Attack Surface Management."
+        }
+    ]
+}

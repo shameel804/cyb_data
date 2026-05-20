@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_11",
+    "title": "Map an Attack Narrative to ATT&CK",
+    "description": "Given a detailed attack description, identify the relevant ATT&CK Technique IDs.",
+    "estimatedMinutes": 20,
+    "problemStatement": "### Scenario\nRead the following incident narrative from a security vendor report:\n\n> *'The attacker gained initial access via a phishing email containing a malicious ISO file named 'Shipping_Update.iso'. When the user double-clicked the ISO, it mounted as a drive and contained an LNK file. The LNK file executed a hidden PowerShell command that downloaded a Cobalt Strike beacon from `hxxps://cdn-cloud[.]xyz/update.png`. The beacon established persistence by creating a scheduled task named 'GoogleUpdateTask'. The attacker then used 'net view' to discover other workstations and moved laterally using RDP (Remote Desktop Protocol) with credentials dumped from LSASS memory using Mimikatz.'*\n\n### Task\nIdentify the **ATT&CK Technique ID (TXXXX.XXX)** for each stage of the attack described. Use the MITRE ATT&CK website if needed.\n\n1.  Initial Access via ISO file.\n2.  User executed LNK file.\n3.  PowerShell downloaded Cobalt Strike.\n4.  Scheduled Task for persistence.\n5.  Discovery of remote systems.\n6.  Credential Dumping from LSASS.\n7.  Lateral Movement via RDP.\n\nProvide the **Technique ID** and **Technique Name** for each.",
+    "hints": [
+        "ISO/LNK files are often under 'User Execution'.",
+        "PowerShell download is 'Ingress Tool Transfer' or 'Command and Scripting Interpreter'.",
+        "LSASS dumping is 'OS Credential Dumping'."
+    ],
+    "expectedOutput": "1. T1566.001 (Spearphishing Attachment) or T1204.002 (Malicious File)\n2. T1204.002 (User Execution: Malicious File)\n3. T1059.001 (PowerShell) and T1105 (Ingress Tool Transfer)\n4. T1053.005 (Scheduled Task/Job: Scheduled Task)\n5. T1018 (Remote System Discovery)\n6. T1003.001 (OS Credential Dumping: LSASS Memory)\n7. T1021.001 (Remote Services: Remote Desktop Protocol)",
+    "solutionCode": "N/A"
+}

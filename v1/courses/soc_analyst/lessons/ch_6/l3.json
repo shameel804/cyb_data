@@ -1,0 +1,77 @@
+{
+    "id": "l3",
+    "chapterId": "ch_6",
+    "title": "Proxy Log Analysis",
+    "description": "Uncovering phishing clicks, malware callbacks, and shadow IT in web traffic.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Network Logs",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Proxy: The SOC's Eyes on the Web 🌐",
+            "content": "# Why Proxies Are Superior to Firewalls for Web Traffic\n\nA **Web Proxy** (e.g., Zscaler, Bluecoat, Squid) terminates the HTTP/HTTPS connection and **inspects the content** (if SSL decryption is on).\n\n**Proxy Log Goldmine Fields:**\n*   **URL:** The **FULL PATH**. `http://evil.com/malicious.doc` vs just `evil.com`.\n*   **HTTP Method:** `GET` (view) vs `POST` (upload data).\n*   **User-Agent:** Browser or Script?\n*   **HTTP Status Code:** `200` (Success), `403` (Blocked), `302` (Redirect).\n*   **MIME Type:** `application/x-msdownload` (EXE file downloaded!).\n*   **Bytes Sent:** How much data the user uploaded (Exfiltration)."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Anatomy of a Proxy Log",
+            "content": "This is a typical log line from a Squid proxy or similar.",
+            "codeSnippet": "timestamp: 2026-03-15T08:15:22Z\nsrc_ip: 192.168.1.105\nuser: jwilson\nhttp_method: POST\nurl: http://malware-c2.com/upload.php\nstatus: 200\nbytes_out: 15200000  <-- 15 MB uploaded!\nuser_agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)\nmime_type: application/octet-stream",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Proxy Log Red Flags 🚩",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "You see a proxy log entry with `http_method=POST`, `url=http://192.168.1.50:8080/data`, and `bytes_out=5000000`. What is the most likely activity?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "User watching a YouTube video.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Data exfiltration via HTTP POST to an internal IP (lateral movement or misconfigured internal server).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Normal Windows Update.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A POST with a large byte count indicates data being sent from the client to a server. If the URL is an IP address rather than a domain, it's highly suspicious.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Detecting Phishing Clicks 🎣",
+            "content": "# The 'Newly Registered Domain' Pattern\n\nPhishing sites are often set up hours before the email campaign.\n\n**Indicator:** A user visits a domain that was **registered very recently** (e.g., less than 24 hours old).\n\n**SIEM Query Logic:**\n1.  Extract the domain from the URL (`www.example.com`).\n2.  Enrich it with WHOIS data (automated by the SIEM).\n3.  Alert if `domain_age_days < 1` AND `category` is not `Parked`.\n\n**Analyst Action:** If you see a user visiting `secure-login-acme-corp[.]xyz`, check if that domain was registered today. If yes, **immediate containment (reset user password, isolate host).**"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Hunting Malware Downloads 🦠",
+            "content": "Search for users downloading executable files from suspicious locations.",
+            "codeSnippet": "index=proxy mime_type IN (\"application/x-msdownload\", \"application/x-dosexec\", \"application/vnd.ms-cab-compressed\")\n| search NOT url=\"*microsoft.com*\" NOT url=\"*google.com*\" NOT url=\"*update.microsoft.com*\"\n| table _time, user, src_ip, url",
+            "codeLanguage": "splunk",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_6",
+            "type": "warning",
+            "title": "User-Agent Anomalies 🤖",
+            "content": "## Bots Don't Lie\n\nAttackers using scripts (Python requests, PowerShell Invoke-WebRequest) often **forget to spoof the User-Agent**.\n\n*   **Suspicious User-Agents:**\n    *   `python-requests/2.28.1`\n    *   `curl/7.68.0`\n    *   `PowerShell`\n    *   `Go-http-client/1.1`\n\nIf you see a **PowerShell** User-Agent in the proxy logs, it means someone (or some malware) is using PowerShell to surf the web/download files. **Investigate immediately.**"
+        }
+    ]
+}

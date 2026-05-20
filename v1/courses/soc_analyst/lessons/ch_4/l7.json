@@ -1,0 +1,59 @@
+{
+    "id": "l7",
+    "chapterId": "ch_4",
+    "title": "Introduction to EDR",
+    "description": "How Endpoint Detection and Response platforms work.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Tools",
+    "slides": [
+        {
+            "id": "s_l7_1",
+            "type": "text",
+            "title": "Beyond Antivirus 🛡️",
+            "content": "# Endpoint Detection and Response (EDR)\n\n**Antivirus (AV)** is like a bouncer at the door checking a **list of known bad guys** (signature-based). If the bad guy wears a fake mustache (new malware), AV lets him in.\n\n**EDR** is like a **security camera system + forensic investigator**. It **records everything** happening on the endpoint. Even if the bad guy gets in, EDR records his movements and alerts the SOC.\n\n**Core EDR Capabilities:**\n1.  **Continuous Data Collection:** (Like Sysmon on steroids).\n2.  **Behavioral Analytics:** *\"This process is acting weird... it's reading the SAM file (passwords)! BLOCK IT!\"*\n3.  **Remote Response:** Isolate the host from the network, kill processes, collect forensic artifacts."
+        },
+        {
+            "id": "s_l7_2",
+            "type": "text",
+            "title": "EDR Telemetry vs. Raw Logs 📊",
+            "content": "# The Difference in the SOC\n\nAs an analyst, you rarely open `Event Viewer` on a server. You use the **EDR Console**.\n\n| Action | Raw Windows Log | EDR Console View |\n| :--- | :--- | :--- |\n| Investigate Alert | Search Splunk for Event ID 4688 | Click 'Process Tree' -> See graphical parent-child chain. |\n| Network Connection | Check firewall logs | See process name + DNS query + Reputation Score. |\n| File Analysis | Unknown | EDR automatically detonates file in sandbox and returns verdict. |\n\n**Popular EDR Tools:**\n*   CrowdStrike Falcon\n*   Microsoft Defender for Endpoint (MDE)\n*   SentinelOne\n*   Palo Alto Cortex XDR"
+        },
+        {
+            "id": "s_l7_3",
+            "type": "quiz",
+            "title": "EDR vs AV 🆚",
+            "content": "",
+            "quizData": {
+                "id": "q_l7_1",
+                "type": "multiple_choice",
+                "question": "What is the primary advantage of EDR over traditional Antivirus?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "EDR is cheaper.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "EDR provides visibility into process behavior and allows for remote response, not just file blocking.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "EDR uses smaller update files.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "EDR provides the 'D' (Detection) and 'R' (Response) capabilities that traditional signature-based AV lacks.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l7_4",
+            "type": "text",
+            "title": "The SOC Analyst EDR Workflow",
+            "content": "# Daily Life with EDR\n\n1.  **Alert Triage:** You get an alert in the EDR console: *\"Suspicious PowerShell Execution Detected.\"*\n2.  **Timeline Analysis:** The EDR shows you a visual timeline:\n    *   Outlook opened an attachment.\n    *   Word spawned PowerShell.\n    *   PowerShell downloaded `payload.exe`.\n    *   `payload.exe` connected to `badguy.com`.\n3.  **Verdict:** **TRUE POSITIVE.**\n4.  **Response (One-Click):** Click **'Isolate Host'**. The machine is immediately cut off from the network, stopping the attacker from moving laterally.\n\nThis is the power of modern endpoint security. **Mastering the concepts in this chapter (Events, Processes, Command Lines) is what makes you proficient with any EDR tool.**"
+        }
+    ]
+}

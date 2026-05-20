@@ -1,0 +1,77 @@
+{
+    "id": "l4",
+    "chapterId": "ch_6",
+    "title": "DNS Log Forensics",
+    "description": "Detecting tunneling, DGA malware, and data exfiltration through DNS queries.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Network Logs",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "DNS: The Blind Spot Buster 🔦",
+            "content": "# Why DNS Logs Are Crucial\n\nWe touched on DNS in Chapter 3. Now let's operationalize it. DNS queries happen **before** the TCP connection. If you see a DNS query for `evil.com`, you can **predict** the firewall connection that will follow.\n\n**Key DNS Log Fields:**\n*   **Query:** The domain requested (e.g., `www.google.com`).\n*   **Record Type:** `A` (IPv4), `AAAA` (IPv6), `TXT`, `MX`, `CNAME`.\n*   **Response Code:** `NOERROR` (Exists), `NXDOMAIN` (Does not exist), `SERVFAIL`.\n*   **Answer:** The IP address returned."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Detecting DNS Tunneling (High Volume / Long Strings)",
+            "content": "Remember: Tunneling sends data inside the subdomain.\n\n**SIEM Query to Detect Tunneling:**",
+            "codeSnippet": "index=dns sourcetype=query\n| eval query_len = len(query)\n| search query_len > 52  // Suspiciously long subdomain\n| stats count, values(query) as samples by src_ip\n| where count > 20  // High volume of long queries\n| sort -count",
+            "codeLanguage": "splunk",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Tunneling Triage 🚇",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "You see `query=\"aGVsbG93b3JsZHRoaXNpc2F0ZXN0.badguy.com\"` from host 192.168.1.105. What is the most immediate concern?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The user is visiting a weird website.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Data is being exfiltrated via DNS tunneling.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The DNS server is misconfigured.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The long string before the domain is likely Base64-encoded data. This is the hallmark of DNS tunneling.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Detecting DGA Malware (High NXDOMAIN Rate) 🤖",
+            "content": "# The Sound of a Machine Looking for Its Master\n\n**Domain Generation Algorithms (DGAs)** generate thousands of random domains. Only one works. The rest return `NXDOMAIN`.\n\n**Indicator:** A single host has a **high ratio** of `NXDOMAIN` responses to `NOERROR` responses.\n\n**SIEM Query:**\n```sql\nindex=dns src_ip=192.168.*\n| eval is_nxdomain = if(response_code==\"NXDOMAIN\", 1, 0)\n| stats count, sum(is_nxdomain) as nx_count by src_ip\n| eval nx_ratio = nx_count / count\n| where count > 100 AND nx_ratio > 0.8\n```\n**Interpretation:** If 80% of a host's DNS queries fail, it's either a broken application or **DGA malware**."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Suspicious Record Types (TXT and MX)",
+            "content": "Attackers use `TXT` records for C2 because they can carry arbitrary text data.\n\n**Query for TXT Record Abuse:**",
+            "codeSnippet": "index=dns query_type=TXT\n| stats count, values(query) by src_ip, dest_ip\n| where count > 5  // More than 5 TXT queries from a single host is unusual\n| sort -count",
+            "codeLanguage": "splunk",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "Baseline for DNS Servers 📊",
+            "content": "## Don't Alert on the DNS Server Itself!\n\nRemember: Your corporate DNS servers (`10.0.0.53`) will make **tons** of queries to the internet (root hints, forwarding). **Do not alert on the DNS server IPs!**\n\nAlways filter your searches to **client IPs** (e.g., `src_ip!=10.0.0.53`)."
+        }
+    ]
+}

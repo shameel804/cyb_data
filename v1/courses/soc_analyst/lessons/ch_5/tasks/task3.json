@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_5",
+    "title": "Investigate a Simulated Alert",
+    "description": "Follow the SIEM investigation workflow to triage a provided alert scenario.",
+    "estimatedMinutes": 15,
+    "problemStatement": "### Scenario\nYou receive the following alert from the SIEM:\n\n> **Alert Name:** Suspicious Outbound SMB Traffic\n> **Severity:** High\n> **Host:** SALES-PC01 (192.168.1.105)\n> **User:** jwilson\n> **Destination IP:** 203.0.113.99\n> **Destination Port:** 445 (SMB)\n> **Bytes Sent:** 2.5 GB\n> **Time:** 2026-03-15 02:34:22 UTC\n\n### Task\nOutline your **SIEM investigation steps** in order. For each step, provide:\n1.  The specific query you would run (pseudo-SPL or plain English logic).\n2.  What you are hoping to find.\n\n### Example Step:\n**Step 1:** Expand time window to +/- 2 hours for host `SALES-PC01`.\n**Query:** `index=network host=SALES-PC01 earliest=-2h@m latest=+2h@m`\n**Goal:** See if other suspicious connections occurred around this event.\n\n### Minimum Requirements\n- At least **5 distinct investigation steps**.\n- Include at least one pivot to **Process Logs** (Endpoint).\n- Include at least one pivot to **Threat Intelligence**.",
+    "hints": [
+        "Remember to check other hosts connecting to that same destination IP.",
+        "Check the process that initiated the SMB connection on the endpoint (Sysmon Event ID 3).",
+        "Check VirusTotal for the destination IP."
+    ],
+    "expectedOutput": "A numbered list of 5+ investigation steps with queries and goals.",
+    "solutionCode": "N/A"
+}

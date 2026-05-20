@@ -1,0 +1,68 @@
+{
+    "id": "l2",
+    "chapterId": "ch_3",
+    "title": "The OSI Model Demystified",
+    "description": "7 layers of networking, explained for security analysts.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The 7-Layer Cake 🍰",
+            "content": "# Open Systems Interconnection (OSI) Model\n\nThis is a **conceptual model** that standardizes how computers communicate. You don't need to memorize it perfectly, but you **MUST** know which security tools operate at which layers.\n\n**Mnemonic:** **P**lease **D**o **N**ot **T**hrow **S**ausage **P**izza **A**way.\n\n1.  **P**hysical - Cables, Wi-Fi signals.\n2.  **D**ata Link - MAC Addresses, Switches.\n3.  **N**etwork - IP Addresses, Routers.\n4.  **T**ransport - TCP/UDP Ports, Reliability.\n5.  **S**ession - Managing connections (NetBIOS, RPC).\n6.  **P**resentation - Encryption (SSL/TLS), File Formats (JPEG).\n7.  **A**pplication - HTTP, DNS, SMTP (What the user sees)."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "The Security View of OSI 🔍",
+            "content": "# Layer 3 & 4 are Gold for SOC\n\nAs a SOC analyst, 80% of your network alerts will concern **Layer 3 (Network)** and **Layer 4 (Transport)**.\n\n*   **Layer 3 (IP Addresses):** *Is `10.0.0.50` talking to `185.142.53.21`?* (That IP is known bad!)\n*   **Layer 4 (Ports):** *Is it on port `445` (SMB)?* (That's file sharing - why is that going out to the internet?)\n\n**Layer 7 (Application):** Crucial for web filtering and detecting malware beacons.\n*   *Example:* A connection to `google.com` on port 443 is normal. A connection to `evil.org` on port 443 is bad. You can only tell the difference at **Layer 7** (the URL)."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Layer Match 🔗",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "At which OSI layer does a **Firewall** primarily operate when filtering traffic based on **IP address and Port number**?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Layer 1 (Physical)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Layer 3 and Layer 4 (Network/Transport)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Layer 7 (Application)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Basic firewalls filter based on Source/Destination IP (L3) and Port (L4). Next-Gen Firewalls also look at L7.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Encapsulation Analogy 📦",
+            "content": "Data travels down the layers (adding headers) and up the layers (removing headers).",
+            "codeSnippet": "Application: [HTTP Data: GET /index.html]\nTransport:    [TCP Header + [HTTP Data]]\nNetwork:      [IP Header  + [TCP Header + [HTTP Data]]]\nData Link:    [Ethernet   + [IP Header  + [TCP Header + [HTTP Data]]]",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "warning",
+            "title": "The TCP/IP Model ⚠️",
+            "content": "## Simpler is Sometimes Better\n\nIn the real world, we often refer to the **TCP/IP Model**, which is just a compressed version of OSI:\n\n*   **Application Layer** (OSI 5-7)\n*   **Transport Layer** (OSI 4)\n*   **Internet Layer** (OSI 3)\n*   **Network Access Layer** (OSI 1-2)\n\nDon't get hung up on the difference. Just know that when someone says **\"Layer 7 Attack\"**, they mean an attack targeting the application logic (like a SQL injection)."
+        }
+    ]
+}

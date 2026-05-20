@@ -1,0 +1,74 @@
+{
+    "id": "l3",
+    "chapterId": "ch_7",
+    "title": "TCP Deep Dive in Wireshark",
+    "description": "Analyze the three-way handshake, flags, retransmissions, and connection resets.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Protocol Analysis",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Handshake in Wireshark 🤝",
+            "content": "# Visualizing SYN -> SYN-ACK -> ACK\n\nLet's look at a normal connection to a web server.\n\n1.  **Packet 1: Client -> Server**\n    *   `SYN` flag set. `Seq=0` (relative).\n    *   *Info:* `54789 → 80 [SYN] Seq=0 Win=64240 Len=0`\n2.  **Packet 2: Server -> Client**\n    *   `SYN, ACK` flags set. `Seq=0 Ack=1`.\n    *   *Info:* `80 → 54789 [SYN, ACK] Seq=0 Ack=1 Win=65535 Len=0`\n3.  **Packet 3: Client -> Server**\n    *   `ACK` flag set. `Seq=1 Ack=1`.\n    *   *Info:* `54789 → 80 [ACK] Seq=1 Ack=1 Win=64240 Len=0`\n\n**Analyst Insight:** If you only see **Packets 1 and 2** but **no Packet 3**, the connection is a **Half-Open Scan** or the client firewall dropped the final ACK."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "TCP Flags in Wireshark Display Filters",
+            "content": "You can filter for specific flag combinations.",
+            "codeSnippet": "# SYN only (Scanning)\ntcp.flags.syn == 1 && tcp.flags.ack == 0\n\n# SYN-ACK only (Server response to scan)\ntcp.flags.syn == 1 && tcp.flags.ack == 1\n\n# RST packets (Connection refused / Scan result)\ntcp.flags.reset == 1\n\n# FIN packets (Graceful close)\ntcp.flags.fin == 1",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Flag Check 🚩",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "In Wireshark, you see a packet from an external IP to your internal server with `[RST, ACK]` flags. What does this likely indicate?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A successful file transfer.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The external host is rejecting a connection attempt (port closed).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The three-way handshake is starting.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "RST (Reset) is used to abruptly terminate or reject a connection. A RST in response to a SYN means 'Port Closed'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "TCP Retransmissions and Drops 📉",
+            "content": "# Signs of Network Trouble (or Evasion)\n\n**Retransmission:** A packet is sent, but the ACK is not received in time. The sender **resends** the packet.\n*   *Color in Wireshark:* **Black background with red text.**\n*   *Normal:* Occasional retransmission due to network congestion.\n*   *Suspicious:* **Many** retransmissions from a **single host** to a **single external IP**. This could be:\n    1.  A **C2 server** that is slow to respond (maybe it's a low-power VPS).\n    2.  An attacker using **TCP segmentation** to evade IDS.\n\n**TCP Zero Window:** The receiver says \"Stop sending! My buffer is full!\"\n*   *Malicious Use:* Rare, but can be used in DoS attacks.\n\n**Filter for Retransmissions:** `tcp.analysis.retransmission`"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "The TCP Teardown (FIN vs RST) 👋",
+            "content": "# How Conversations End Matters\n\n**Graceful Close (FIN):**\n*   Client: `FIN, ACK` -> *\"I'm done sending data.\"*\n*   Server: `ACK`\n*   Server: `FIN, ACK` -> *\"I'm done too.\"*\n*   Client: `ACK`\n*   *Normal Behavior:* Web browsing, completed downloads.\n\n**Abrupt Close (RST):**\n*   Client or Server sends `RST`. Connection **immediately** terminated.\n*   *Common Causes:* Firewall blocking traffic, application crash, or **port scanning**.\n\n**Hunting Tip:** A **RST** sent immediately after a **SYN-ACK** is a classic sign of a **TCP Connect Scan** (e.g., Nmap `-sT`). The attacker completes the handshake just to see if the port is open, then immediately tears it down."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Sequence Numbers and ACKs 🔢",
+            "content": "## Tracking Data Flow\n\nWireshark uses **Relative Sequence Numbers** by default (starts at 0). This makes it easy to see how much data has been transferred.\n\n*   **Next Sequence Number:** The sequence number of the **next** packet that side expects to send.\n*   **Acknowledgment Number:** The sequence number the sender expects to receive **next**.\n\n**Security Insight:** If you see `[TCP Previous segment not captured]` in the Info column, it means **packets are missing from your capture**. You might be missing the **exact packet containing the exploit** due to packet loss or SPAN port congestion."
+        }
+    ]
+}

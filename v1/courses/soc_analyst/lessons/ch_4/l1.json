@@ -1,0 +1,59 @@
+{
+    "id": "l1",
+    "chapterId": "ch_4",
+    "title": "Why Endpoints Matter",
+    "description": "The endpoint as the attacker's playground.",
+    "xpReward": 20,
+    "estimatedMinutes": 5,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Final Frontier 🖥️",
+            "content": "# Endpoint: Where Code Executes\n\nIn Chapter 3, we watched traffic flow across the **network**. But all that traffic starts and ends somewhere: **The Endpoint**.\n\nAn **endpoint** is any device that connects to the network: Laptops, Desktops, Servers, even IoT devices.\n\n**Why This Matters to SOC:**\n*   A phishing email is just text until the user **clicks the link** (Endpoint action).\n*   Ransomware is just a file until it **executes on the hard drive** (Endpoint action).\n\n> **Analogy:** Network monitoring tells you *that* a burglar entered the house. Endpoint monitoring tells you *what they stole, which rooms they visited, and exactly how they got in.*"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "Endpoint Data Sources 📋",
+            "content": "# What We Can See\n\nModern endpoints generate a massive amount of telemetry. As a SOC analyst, you'll query these sources:\n\n1.  **Windows Event Logs:** Built-in. Records logins, service starts, application crashes.\n    *   *Security Log:* Authentication attempts (Success/Failure).\n    *   *System Log:* Driver loads, service failures.\n    *   *Application Log:* Application-specific errors.\n2.  **Sysmon (System Monitor):** An add-on from Microsoft. **Goldmine**. Records process creation, network connections, file changes.\n3.  **PowerShell Logs:** Records every command typed in PowerShell.\n4.  **Linux Logs:** `/var/log/auth.log`, `/var/log/syslog`, `bash_history`.\n5.  **EDR Telemetry:** Commercial tools (CrowdStrike, Defender for Endpoint) that collect and analyze all of the above in real-time."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Data Source Check 📡",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "You want to know who logged into a Windows server at 3:00 AM. Which log source is BEST?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Windows System Log",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Windows Security Log",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Firewall Log",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The Windows Security Log records logon events (Event ID 4624). The System log is for hardware/driver events.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Pyramid of Pain 🔺",
+            "content": "# Making the Attacker's Life Hard\n\nThis famous model by David Bianco ranks indicators based on how hard they are for the attacker to change.\n\n1.  **Hash Values (Trivial):** Attacker changes one byte, hash changes.\n2.  **IP Addresses (Easy):** Attacker switches VPNs.\n3.  **Domain Names (Simple):** Attacker registers a new domain.\n4.  **Network/Host Artifacts (Annoying):** Attacker must recompile tools.\n5.  **Tools (Challenging):** Attacker must learn new software.\n6.  **TTPs - Tactics, Techniques, Procedures (PAINFUL):** Attacker must change their *behavior* and *methodology*.\n\n**Endpoint monitoring (Process behavior, Command lines)** helps us climb **HIGHER** on the Pyramid of Pain. Instead of blocking an IP (temporary), we detect the *behavior* (e.g., PowerShell downloading a file from the internet)."
+        }
+    ]
+}

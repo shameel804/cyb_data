@@ -1,0 +1,74 @@
+{
+    "id": "l4",
+    "chapterId": "ch_10",
+    "title": "Containment: Stop the Bleeding",
+    "description": "Short-term and long-term containment strategies to prevent further damage.",
+    "xpReward": 40,
+    "estimatedMinutes": 9,
+    "section": "PICERL Phase 3",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The First Priority: Limit Damage 🛡️",
+            "content": "# Short-Term vs. Long-Term Containment\n\n**Containment** buys you time to investigate and eradicate properly. It is **tactical triage**.\n\n**1. Short-Term Containment (Minutes):**\n*   **Goal:** Stop the **active** bleeding NOW.\n*   **Action:** Isolate a single host from the network. Disable a compromised user account. Block a malicious IP at the firewall.\n*   **Trade-off:** Disruptive to the user/business. But stops ransomware spread.\n\n**2. Long-Term Containment (Hours/Days):**\n*   **Goal:** Keep the attacker out while you finish forensics.\n*   **Action:** Implement network segmentation ACLs. Reset all passwords in the affected OU. Rebuild the golden image.\n*   **Trade-off:** More complex, takes time, but allows some business continuity.\n\n**Analogy:** Short-Term = **Tourniquet**. Long-Term = **Surgery to repair the artery**."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Network Containment: Pull the Plug? 🔌",
+            "content": "# The Great Debate\n\n**Option A: Physical Disconnect (Pull Network Cable)**\n*   **Pros:** 100% guaranteed to stop network traffic.\n*   **Cons:** Stops **all** forensics (can't remote in to image RAM). Attacker might have logic to **destroy evidence** if connection is lost.\n\n**Option B: EDR Network Isolation (Preferred)**\n*   **Pros:** Blocks all traffic **except** to the EDR cloud console. You can still remotely collect forensic artifacts and run commands.\n*   **Cons:** Requires the EDR agent to still be functioning.\n\n**Option C: Firewall Block (Quarantine VLAN)**\n*   **Pros:** Moves infected host to a restricted VLAN where only IR analysts can access it.\n*   **Cons:** Requires network team configuration; slow.\n\n**Tactical Decision:** For **Ransomware**, **Option B (EDR Isolation)** is the modern best practice. You stop the encryption but preserve the crime scene."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Containment Strategy 🛡️",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "You discover a compromised Domain Admin account. What is the BEST immediate containment action?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Change the password for the Domain Admin account.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Disable the Domain Admin account entirely.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Send an email asking the user to stop.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Changing the password might lock out the attacker, but if they have persistence (Golden Ticket), they can just re-authenticate. **Disabling the account** is the strongest immediate block.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "Common Containment Actions Matrix",
+            "content": "Keep this cheat sheet handy.",
+            "codeSnippet": "| Threat Type           | Immediate Containment Action                 |\n|-----------------------|----------------------------------------------|\n| Malware on Workstation| EDR Isolate Host                              |\n| Phished Credentials   | Disable User Account + Revoke OAuth Tokens   |\n| Ransomware Spreading  | Block SMB (445) Outbound at Firewall          |\n| C2 Beaconing          | Block Destination IP/Domain at Proxy         |\n| Data Exfiltration     | Block Destination IP + Suspend User Sessions  |\n| Web Shell on Server   | Disable App Pool / Stop IIS Service           |\n| DDoS Attack           | Engage Scrubbing Service / Null Route IP      |",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Preserving Evidence During Containment 🔬",
+            "content": "# The Forensic Balancing Act\n\nEverything you do changes the system. **Document it.**\n\n**Volatile Evidence (Captured FIRST):**\n*   **RAM Memory Dump:** (Use `winpmem`, `DumpIt`, or EDR Live Response). Captures running processes, network connections, and **encryption keys**.\n*   **ARP Cache / Netstat:** Who was the machine talking to right now?\n*   **Running Processes:** What is currently executing?\n\n**Non-Volatile Evidence (Captured SECOND):**\n*   **Disk Image:** (FTK Imager, `dd`). Full bit-for-bit copy of the hard drive.\n\n**Critical Rule:** If you are **not** a trained forensic examiner, **do not** attempt to collect memory yourself if it risks losing it. **Use the EDR's built-in 'Collect Forensic Artifacts' button.** It automates this process."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "warning",
+            "title": "The 'Do Not Touch' List 🚫",
+            "content": "## Actions That Destroy Evidence\n\n**NEVER DO THIS ON A COMPROMISED HOST:**\n*   ❌ Run a full system antivirus scan. (Moves/deletes files, alters timestamps).\n*   ❌ Reboot the machine. (Clears RAM, kills volatile evidence, triggers 'wiper' malware).\n*   ❌ Log in as Administrator and browse the folders. (Changes file access timestamps).\n*   ❌ Install software.\n\n**If you must reboot, pull the plug (hard shutdown) instead of graceful shutdown. Graceful shutdown allows malware to run 'cleanup' scripts.**"
+        }
+    ]
+}

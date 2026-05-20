@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_12",
+    "title": "Lab Setup Checklist",
+    "description": "Complete the initial setup of VirtualBox, VMs, and Splunk.",
+    "estimatedMinutes": 60,
+    "problemStatement": "### Scenario\nYou are building your home SOC lab from scratch. Complete the following checklist and document each step with a screenshot or note.\n\n### Setup Checklist\n\n- [ ] Install VirtualBox and Extension Pack.\n- [ ] Create a Host-Only Network in VirtualBox (`192.168.56.0/24`).\n- [ ] Create Windows 10/11 VM (4 GB RAM, 50 GB disk).\n- [ ] Install Windows and Guest Additions.\n- [ ] Create Ubuntu Server VM (4 GB RAM, 80 GB disk).\n- [ ] Install Ubuntu Server and OpenSSH.\n- [ ] Configure both VMs to use the Host-Only Network adapter.\n- [ ] Verify connectivity (Ping between VMs).\n- [ ] Install Splunk Enterprise on Ubuntu VM.\n- [ ] Install Splunk Universal Forwarder on Windows VM.\n- [ ] Configure receiving port 9997 on Splunk Server.\n- [ ] Configure `inputs.conf` on Windows Forwarder to send Security and Sysmon logs.\n- [ ] Install Sysmon on Windows VM with SwiftOnSecurity configuration.\n- [ ] Take a snapshot of both VMs named 'Base Install - Clean'.\n\n### Submission\nProvide a screenshot showing **Splunk Web** with a successful search for `index=windows` returning events from the Windows VM.",
+    "hints": [
+        "Use `ip a` on Ubuntu to find its IP address.",
+        "Use `ping` to test connectivity.",
+        "The Splunk forwarder may take a few minutes to appear in the Splunk Web search."
+    ],
+    "expectedOutput": "A screenshot of Splunk Web search results showing Windows Event Logs.",
+    "solutionCode": "N/A"
+}

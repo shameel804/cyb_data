@@ -1,0 +1,74 @@
+{
+    "id": "l1",
+    "chapterId": "ch_9",
+    "title": "The Malware Analysis Mindset",
+    "description": "Safe handling, lab setup, and the analyst's code of conduct.",
+    "xpReward": 30,
+    "estimatedMinutes": 6,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Why Analyze Malware? 🧐",
+            "content": "# Beyond the Alert\n\nIn previous chapters, we saw alerts: *\"Malicious file detected!\"* But what does the file **actually do**? Malware analysis answers:\n\n1.  **Capabilities:** Does it steal passwords? Encrypt files? Log keystrokes?\n2.  **Network Indicators:** What C2 servers does it contact? (Feed back to firewall/proxy blocks).\n3.  **Persistence:** How does it survive reboots? (Registry keys, Scheduled Tasks).\n4.  **Attribution:** Who might be behind it? (Advanced).\n\n**Analogy:** An alert tells you *there's a fire*. Malware analysis tells you *what started it, how fast it spreads, and what kind of extinguisher to use.*"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "The Golden Rules of Handling Malware 🧤",
+            "content": "# SAFETY FIRST. ALWAYS.\n\n**Rule 1: Assume it's live and dangerous.** Treat every sample like a loaded weapon.\n**Rule 2: Never analyze on your host OS.** Use a dedicated **Virtual Machine (VM)** or **Cloud Sandbox**.\n**Rule 3: Isolate the Network.** The VM should be **Host-Only** or **NAT with no internet** (unless you specifically need to let it call out to a fake internet).\n**Rule 4: Use a Renamed Extension.** If emailing a sample, ZIP it with the password `infected`.\n\n**Rule 0: NEVER double-click the file to \"see what happens.\"**"
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Safety Check ⚠️",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "You receive a suspicious `.exe` via email. What is the FIRST action you should take?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Double-click it to confirm it's malware.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Forward it to the entire SOC team for review.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Save it to a password-protected ZIP and move it to an isolated analysis VM.",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Safe handling prevents accidental execution. Password-protected ZIPs prevent email gateways from detonating it prematurely.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Setting Up Your Malware Lab 🖥️",
+            "content": "# The Analyst's Toolkit\n\nYou don't need a $10,000 license. Free tools are excellent.\n\n**Virtualization:**\n*   **VMware Workstation Player** or **VirtualBox** (Free).\n*   **OS:** Windows 10/11 VM (Snapshot before analysis!). **FLARE VM** (FireEye's free malware analysis VM with all tools pre-installed).\n\n**Fake Internet (INetSim):**\n*   Simulates DNS, HTTP, HTTPS services locally. The malware thinks it's online, but all traffic stays in your lab.\n\n**Snapshot Workflow:**\n1.  Take a **clean snapshot** of the VM.\n2.  Copy malware in, execute/analyze.\n3.  **Revert to snapshot** when done. VM is clean again."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Types of Malware Analysis",
+            "content": "Choose the right depth based on your SOC role.",
+            "codeSnippet": "1. Static Analysis (Fast, Safe)\n   - Examine file WITHOUT running it.\n   - Tools: Pestudio, PE-bear, Strings, VirusTotal.\n   - Goal: Extract IOCs (Hashes, URLs) in 5 mins.\n\n2. Dynamic Analysis (Interactive)\n   - Run the malware in a sandbox and watch.\n   - Tools: Procmon, Wireshark, Regshot, Any.Run.\n   - Goal: Observe behavior (Files created, C2 IPs).\n\n3. Code Analysis / Reverse Engineering (Deep)\n   - Disassemble the binary with IDA Pro / Ghidra.\n   - Goal: Understand exact logic. (Tier 3 / Malware Analyst role).",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Pro Tip: Use Online Sandboxes First 🚀",
+            "content": "## Don't Build a Lab for Every File\n\nFor 90% of SOC Tier 1/2 investigations, **VirusTotal** and **Any.Run** public submissions will give you the answer instantly. **Only build a lab if the sample is unique, targeted, or doesn't run in cloud sandboxes.**"
+        }
+    ]
+}

@@ -1,0 +1,305 @@
+{
+    "id": "quiz_ch_8",
+    "chapterId": "ch_8",
+    "title": "Chapter 8 Mastery Quiz",
+    "description": "Test your knowledge of email headers, authentication protocols, and phishing investigation.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What percentage of malware infections typically start with a phishing email?",
+            "options": [
+                "Around 10%",
+                "Around 50%",
+                "Over 90%",
+                "Less than 1%"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Email is the primary initial access vector for most cyber attacks."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "The 'From' display name in an email is a reliable indicator of the true sender.",
+            "correctAnswer": false,
+            "explanation": "False. The display name can be set to anything and is easily spoofed."
+        },
+        {
+            "id": "q3",
+            "type": "fill_blank",
+            "question": "To find the originating IP address of an email, you should read the 'Received' headers from _____ to _____.",
+            "options": [
+                "Top to Bottom",
+                "Bottom to Top",
+                "Left to Right",
+                "Right to Left"
+            ],
+            "correctAnswer": "Bottom to Top",
+            "explanation": "The first 'Received' header (at the bottom) shows the initial handoff from the sender's infrastructure."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What does SPF stand for in email authentication?",
+            "options": [
+                "Secure Phishing Filter",
+                "Sender Policy Framework",
+                "Simple Protocol Format",
+                "Sender Protection Firewall"
+            ],
+            "correctAnswer": 1,
+            "explanation": "SPF stands for Sender Policy Framework. It validates the sending server's IP address."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "An email from 'bank.com' has `spf=softfail` and `dkim=none`. What does this indicate?",
+            "options": [
+                "The email is definitely legitimate.",
+                "The email is likely spoofed/phishing.",
+                "The email is encrypted.",
+                "The user's password is expired."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Legitimate financial institutions enforce strict SPF/DKIM. Failures indicate spoofing."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the purpose of DKIM?",
+            "options": [
+                "To list allowed sending IP addresses.",
+                "To provide a cryptographic signature verifying the email was not tampered with and came from the claimed domain.",
+                "To encrypt the email body.",
+                "To report DMARC statistics."
+            ],
+            "correctAnswer": 1,
+            "explanation": "DKIM uses public-key cryptography to sign emails."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "A DMARC policy of `p=reject` means:",
+            "options": [
+                "Do nothing, just monitor.",
+                "Put the email in the spam folder.",
+                "Block the email entirely (do not deliver).",
+                "Forward the email to the SOC."
+            ],
+            "correctAnswer": 2,
+            "explanation": "`p=reject` is the strongest DMARC policy, instructing receiving servers to reject the message."
+        },
+        {
+            "id": "q8",
+            "type": "true_false",
+            "question": "If SPF, DKIM, and DMARC all pass, the email is definitely safe.",
+            "correctAnswer": false,
+            "explanation": "False. A compromised legitimate account will have perfect authentication but still send malicious content."
+        },
+        {
+            "id": "q9",
+            "type": "fill_blank",
+            "question": "To safely share a suspicious link without making it clickable, you should _____ it (e.g., `hxxps://evil[.]com`).",
+            "options": [
+                "Encrypt",
+                "Defang",
+                "Shorten",
+                "Archive"
+            ],
+            "correctAnswer": "Defang",
+            "explanation": "Defanging replaces `http` with `hxxp` and brackets the dots to prevent accidental navigation."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which tool provides a safe screenshot of a malicious website without visiting it from your corporate network?",
+            "options": [
+                "Ping",
+                "Nslookup",
+                "URLScan.io",
+                "Netstat"
+            ],
+            "correctAnswer": 2,
+            "explanation": "URLScan.io renders pages in a remote sandboxed environment."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What is the actual domain in this URL: `https://secure.paypal.com.login-verify.info/auth`?",
+            "options": [
+                "paypal.com",
+                "secure.paypal.com",
+                "login-verify.info",
+                "auth"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The domain is the part before the first single slash and after the last dot before the TLD. Here it's `login-verify.info`."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Why do attackers use password-protected ZIP files in phishing emails?",
+            "options": [
+                "To compress the file.",
+                "To bypass email gateway scanning (the scanner cannot see inside encrypted archives).",
+                "To protect user privacy.",
+                "Because it's required by law."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Encryption prevents automated analysis, forcing the gateway to deliver the file to the user."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What is the safest way to analyze a suspicious `.exe` attachment?",
+            "options": [
+                "Double-click it on your work PC.",
+                "Open it in Notepad.",
+                "Upload it to a sandbox (Joe Sandbox, Any.Run) for detonation.",
+                "Forward it to a colleague to test."
+            ],
+            "correctAnswer": 2,
+            "explanation": "Sandboxes execute malware in isolated environments to observe behavior safely."
+        },
+        {
+            "id": "q14",
+            "type": "true_false",
+            "question": "A clean VirusTotal report (0/94 detections) guarantees that a file is safe.",
+            "correctAnswer": false,
+            "explanation": "False. New or targeted malware may not be detected by any antivirus vendor yet."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What is 'Quishing'?",
+            "options": [
+                "Phishing using audio files.",
+                "Phishing using QR codes to bypass URL scanning.",
+                "A type of email encryption.",
+                "Phishing targeting executives."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Quishing (QR Code Phishing) tricks users into scanning a QR code with their mobile device, bypassing corporate security controls."
+        },
+        {
+            "id": "q16",
+            "type": "fill_blank",
+            "question": "The `strings` command is used for _____ analysis, extracting readable text from a binary file without executing it.",
+            "options": [
+                "Dynamic",
+                "Static",
+                "Heuristic",
+                "Behavioral"
+            ],
+            "correctAnswer": "Static",
+            "explanation": "Static analysis examines a file without running it."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "You determine a user clicked a phishing link but did NOT enter credentials. What is the appropriate SOC action?",
+            "options": [
+                "Do nothing.",
+                "Force a password reset and clear browser cache (precautionary).",
+                "Escalate to Incident Response as Critical.",
+                "Delete the user's account."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Even without credentials entered, the site could have exploited a browser vulnerability. Password reset is a safe, low-impact measure."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "A user entered credentials on a phishing site. What is the FIRST thing you should check for in their Office 365 account?",
+            "options": [
+                "New email signatures.",
+                "Inbox rules forwarding email externally.",
+                "Profile picture changes.",
+                "Deleted emails."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Attackers immediately create forwarding rules to maintain access and monitor communications."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is a 'Redirector' in the context of phishing URLs?",
+            "options": [
+                "A tool that blocks phishing sites.",
+                "A legitimate website used to redirect users to a malicious final destination.",
+                "A type of email header.",
+                "A DNS record."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Attackers abuse open redirects on trusted sites (Google, LinkedIn) to evade URL reputation filters."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "When reading email headers, the 'Return-Path' is more reliable than the 'From' address for identifying the true sender domain.",
+            "correctAnswer": true,
+            "explanation": "True. The Return-Path (MAIL FROM) is used for SPF checks and bounces. It's harder to spoof than the display 'From' address."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "Which file extension is considered HIGH risk due to its ability to mount as a drive and bypass Windows Mark-of-the-Web?",
+            "options": [
+                ".txt",
+                ".pdf",
+                ".iso",
+                ".jpg"
+            ],
+            "correctAnswer": 2,
+            "explanation": ".ISO and .IMG files mount as virtual drives, causing Windows to treat their contents as local/trusted, bypassing security warnings."
+        },
+        {
+            "id": "q22",
+            "type": "fill_blank",
+            "question": "The tool `oledump.py` is used to extract and analyze _____ from Microsoft Office documents.",
+            "options": [
+                "Images",
+                "Macros (VBA)",
+                "Text",
+                "Hyperlinks"
+            ],
+            "correctAnswer": "Macros (VBA)",
+            "explanation": "Oledump analyzes OLE structured storage files and extracts VBA macro streams."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "In the Phishing Triage Playbook, what is the primary purpose of Step 1 (Initial Triage)?",
+            "options": [
+                "To reset the user's password.",
+                "To quickly identify obvious spam and prioritize real threats.",
+                "To block the sender's IP.",
+                "To extract file hashes."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Initial triage separates the signal from the noise to manage analyst workload."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "Which email authentication protocol survives email forwarding (e.g., mailing lists) where SPF often fails?",
+            "options": [
+                "SPF",
+                "DKIM",
+                "DMARC",
+                "MX Record"
+            ],
+            "correctAnswer": 1,
+            "explanation": "DKIM signs the email body; the signature remains valid even if the email is forwarded, whereas SPF breaks when the sending IP changes."
+        },
+        {
+            "id": "q25",
+            "type": "true_false",
+            "question": "You should always educate and shame the user who clicked a phishing link to prevent future occurrences.",
+            "correctAnswer": false,
+            "explanation": "False. Shaming users discourages reporting. Educate calmly and thank them for reporting. Positive reinforcement improves security culture."
+        }
+    ]
+}

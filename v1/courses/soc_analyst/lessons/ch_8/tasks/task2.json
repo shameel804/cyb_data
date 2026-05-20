@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_8",
+    "title": "Phishing URL Investigation",
+    "description": "Use URLScan.io to safely analyze a suspicious link and document findings.",
+    "estimatedMinutes": 15,
+    "problemStatement": "### Scenario\nYou receive a reported email containing the link:\n\n`https://www.microsoft.com.secure-id7842.xyz/verify?user=jsmith`\n\n### Task\n1.  **Defang** the URL so it can be shared safely in a ticket.\n2.  Submit the **domain only** (`secure-id7842.xyz`) to **VirusTotal** and **URLScan.io** (if possible, or describe what you would look for).\n3.  Based on the domain name and structure, what brand is being impersonated?\n4.  If URLScan.io shows a **screenshot of a fake Office 365 login page**, what is your verdict?\n5.  What immediate defensive action should be taken?",
+    "hints": [
+        "The domain is `secure-id7842.xyz`. The `microsoft.com` part is a subdomain.",
+        "Check Whois for domain age if possible (e.g., `whois secure-id7842.xyz`)."
+    ],
+    "expectedOutput": "1. Defanged URL: hxxps://www.microsoft[.]com.secure-id7842[.]xyz/verify?user=jsmith\n2. VT likely shows clean/new domain. URLScan likely shows a Microsoft credential phishing page.\n3. Microsoft / Office 365.\n4. Confirmed Credential Phishing.\n5. Block domain in proxy/web gateway, add to blocklist, and purge email.",
+    "solutionCode": "N/A"
+}

@@ -1,0 +1,71 @@
+{
+    "id": "l1",
+    "chapterId": "ch_10",
+    "title": "What is Incident Response?",
+    "description": "Understanding the difference between an event, alert, and incident. Introduction to PICERL.",
+    "xpReward": 30,
+    "estimatedMinutes": 6,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The SOC's Ultimate Purpose 🎯",
+            "content": "# Why Are We Here?\n\nEverything we've learned—OSINT, networking, log analysis, malware triage—leads to this moment: **Incident Response**.\n\n**Incident Response (IR)** is the structured approach to addressing and managing the aftermath of a security breach or cyberattack. The goal is to handle the situation in a way that limits damage and reduces recovery time and costs.\n\n**Analogy:** If the SOC is the fire department, **Incident Response is the firefighting playbook**. It tells you who grabs the hose, who evacuates the building, and who talks to the press."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "Event vs. Alert vs. Incident ⚖️",
+            "content": "# The Escalation Ladder\n\nThese terms are NOT interchangeable. Knowing the difference defines your actions.\n\n| Term | Definition | Example | Action |\n| :--- | :--- | :--- | :--- |\n| **Event** | Any observable occurrence in a system or network. | A user logs in. A file is created. | Log it. No action required. |\n| **Alert** | An event that has been flagged as **potentially** malicious by a detection tool. | SIEM alert: *\"Multiple Failed Logins for Admin Account.\"* | **Triage** (Investigate, validate). |\n| **Incident** | A **confirmed** violation or imminent threat of violation of security policies, acceptable use policies, or standard security practices. | Confirmed ransomware execution. Data exfiltration to known C2 IP. | **RESPOND** (Activate IR Plan). |\n\n**Key Distinction:** An alert says *\"Something might be wrong.\"* An incident says *\"Something IS wrong. We are under attack.\"*"
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Classification Check ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "A user reports that they cannot access their files because they all have the extension '.encrypted' and a ransom note is on their desktop. This is an example of:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "An Event",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "An Alert",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "An Incident",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Ransomware execution with visible impact is a confirmed security breach, thus an Incident requiring immediate response.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The PICERL Model 🔄",
+            "content": "# The Six Phases of Incident Response\n\nMost frameworks (NIST, SANS) converge on a lifecycle model. We'll use **PICERL**:\n\n1.  **P - Preparation:** *\"Sharpen the axe before you need to chop wood.\"* (Playbooks, Tools, Team).\n2.  **I - Identification:** *\"Is this smoke or fire?\"* (Detection, Analysis, Declaration).\n3.  **C - Containment:** *\"Stop the bleeding.\"* (Isolate host, Block IP).\n4.  **E - Eradication:** *\"Remove the cancer.\"* (Delete malware, Close backdoors).\n5.  **R - Recovery:** *\"Return to normal life.\"* (Restore from backup, Re-image host).\n6.  **L - Lessons Learned:** *\"How did this happen, and how do we prevent it next time?\"* (Post-Mortem).\n\n**Note:** This is a **cycle**, not a straight line. Lessons Learned feeds back into Preparation."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Roles in Incident Response 👥",
+            "content": "# Who Does What?\n\nIR is a team sport. You need more than just technical analysts.\n\n*   **Incident Commander (IC):** The leader. Makes strategic decisions, coordinates communication, manages the timeline. *Usually a senior manager or lead analyst.*\n*   **Scribe / Documentation Lead:** Records **everything** in a timeline. *\"Who did what, when, and why?\"* Crucial for post-mortem and legal.\n*   **Technical Analysts (Tier 2/3):** Perform the deep-dive forensics, containment, and eradication tasks.\n*   **Communications Lead:** Handles internal updates (Executives) and external updates (Customers, Press, Legal). **Analysts should NEVER talk to the press.**\n*   **Legal Counsel:** Advises on breach notification laws, evidence preservation.\n\n**As a Tier 1 Analyst:** Your role is primarily **Identification** (Triage) and **Scribe** support."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "The Golden Rule of IR 👑",
+            "content": "## Don't Make It Worse\n\n> *\"First, do no harm.\"*\n\nBefore you act, ask:\n*   Will this alert the attacker? (Sometimes we **want** to catch them, sometimes we want to observe them quietly).\n*   Will this destroy forensic evidence? (Never run a full antivirus scan before taking a memory image).\n*   Will this disrupt business more than the attack itself? (Containing a single laptop is fine. Shutting down the entire e-commerce site is a business decision)."
+        }
+    ]
+}

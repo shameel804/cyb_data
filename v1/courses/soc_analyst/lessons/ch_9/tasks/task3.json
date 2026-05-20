@@ -1,0 +1,14 @@
+{
+    "id": "task3",
+    "chapterId": "ch_9",
+    "title": "Decode Obfuscated PowerShell",
+    "description": "Use CyberChef to decode a multi-layer obfuscated PowerShell command.",
+    "estimatedMinutes": 15,
+    "problemStatement": "### Scenario\nYou find the following PowerShell command in a SIEM log (Event ID 4104):\n\n```powershell\n$s = \")09-0-61-861::tsoh(etacol?xobniatrofsrorremotsuc/2v/nib/moc.elgoog.43tib.www//:sptth\";\nIEX ([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String(($s[-1..-($s.Length)] -join ''))))\n```\n\n### Tasks\n1.  Identify the **two obfuscation techniques** used in this script.\n2.  Manually reverse the string `$s` or use CyberChef to reverse it. What is the result?\n3.  The reversed string is a **Base64 encoded URL**. Decode it using CyberChef.\n4.  What is the final **malicious domain**?\n\n### CyberChef Workflow (Describe the steps)\n1.  Operation 1: _________\n2.  Operation 2: _________\n3.  Operation 3: _________",
+    "hints": [
+        "The string is reversed, then Base64 decoded.",
+        "After reversing, you should see a string that starts with 'aHR0cHM6Ly...' (Base64)."
+    ],
+    "expectedOutput": "1. String reversal and Base64 encoding.\n2. Reversed string: 'aHR0cHM6Ly93d3cuYml0Lm9yZy8yL2Jpbi9jdXN0b21lcnJvcnNmb3JtYWludGV4dC5wb2NhbC9ob3N0OjE2OC0xMC0wOQ=='\n3. Base64 decoded: 'https://www.bit[.]ly/2/bin/customerrorsformaintext.pocal/host:168-10-09'\n4. Malicious domain: bit.ly (URL shortener pointing to malicious site), or the suspicious domain 'pocal' (typosquat of 'local').",
+    "solutionCode": "N/A"
+}

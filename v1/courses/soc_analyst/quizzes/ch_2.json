@@ -1,0 +1,305 @@
+{
+    "id": "quiz_ch_2",
+    "chapterId": "ch_2",
+    "title": "Chapter 2 Mastery Quiz",
+    "description": "Test your knowledge of OSINT fundamentals, Google Dorking, and defensive reconnaissance.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What does OSINT stand for?",
+            "options": [
+                "Open System Intelligence",
+                "Open Source Intelligence",
+                "Operational Security Internet",
+                "Online Source Integration"
+            ],
+            "correctAnswer": 1,
+            "explanation": "OSINT is Open Source Intelligence—information gathered from publicly available sources."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "OSINT involves hacking into systems to retrieve data.",
+            "correctAnswer": false,
+            "explanation": "False. OSINT only uses publicly available information. No hacking or unauthorized access is involved."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which of the following is NOT a typical OSINT source?",
+            "options": [
+                "Public tweets",
+                "SEC.gov filings",
+                "Private encrypted emails",
+                "Google Maps satellite view"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Private encrypted emails require unauthorized access, making them out of scope for OSINT."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "The process of using one piece of found information (like a username) to discover associated accounts on other platforms is called _____.",
+            "options": [
+                "Triage",
+                "Pivoting",
+                "Dorking",
+                "Indexing"
+            ],
+            "correctAnswer": "Pivoting",
+            "explanation": "Pivoting is the core methodology of OSINT investigations."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "You want to find Excel spreadsheets on 'example.com' that contain the word 'budget'. Which Google Dork is correct?",
+            "options": [
+                "example.com excel budget",
+                "site:example.com filetype:xlsx budget",
+                "intitle:example.com budget xlsx",
+                "inurl:example budget type:xlsx"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The correct syntax is 'site:domain filetype:extension search_term'."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What does the Google Dork 'intitle:\"index of\" \"parent directory\"' typically find?",
+            "options": [
+                "Password protected pages",
+                "Open web server directory listings",
+                "PDF documents",
+                "Login portals"
+            ],
+            "correctAnswer": 1,
+            "explanation": "This dork finds misconfigured web servers that allow browsing of files and folders."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "Running Google Dorks against a company you do not own is illegal.",
+            "correctAnswer": false,
+            "explanation": "False. Searching Google is not illegal. However, accessing or downloading files you find might be unauthorized."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which social media platform is most valuable for mapping a company's internal technology stack (e.g., 'We use Splunk here')?",
+            "options": [
+                "TikTok",
+                "LinkedIn",
+                "Instagram",
+                "Facebook"
+            ],
+            "correctAnswer": 1,
+            "explanation": "LinkedIn profiles and job postings frequently mention specific software, vendors, and versions."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What is the primary security risk of an employee posting a high-resolution photo of their work ID badge online?",
+            "options": [
+                "It exposes their home address.",
+                "Attackers can clone the RFID/HID access card.",
+                "It shows their job title.",
+                "It is against company policy."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Badge photos reveal the layout and technology of access cards, allowing attackers to clone them for physical entry."
+        },
+        {
+            "id": "q10",
+            "type": "fill_blank",
+            "question": "The public database that logs every SSL/TLS certificate issued for a domain is called Certificate _____.",
+            "options": [
+                "Authority",
+                "Repository",
+                "Transparency",
+                "Registry"
+            ],
+            "correctAnswer": "Transparency",
+            "explanation": "Certificate Transparency logs are searchable via tools like crt.sh and reveal subdomains."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "You query an MX record and see 'aspmx.l.google.com'. What does this tell you about the target?",
+            "options": [
+                "They use Microsoft 365",
+                "They use Google Workspace (Gmail)",
+                "They host their own mail server",
+                "They have no email"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Google's mail servers indicate Google Workspace for business email."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is the primary defensive purpose of External Attack Surface Management (EASM)?",
+            "options": [
+                "To hack back against attackers.",
+                "To discover and inventory all internet-facing assets before attackers do.",
+                "To monitor employee social media usage.",
+                "To encrypt all outbound traffic."
+            ],
+            "correctAnswer": 1,
+            "explanation": "EASM helps organizations find 'shadow IT' and exposed services that they may have forgotten about."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "Whois lookups always reveal the personal contact information of the domain owner.",
+            "correctAnswer": false,
+            "explanation": "False. Many registrars offer 'Whois Privacy Protection' which masks the owner's details with generic proxy information."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "You discover a domain 'amaz0n-security[.]com' that is a perfect replica of your company's login page. What is this called?",
+            "options": [
+                "Dorking",
+                "Beaconing",
+                "Typosquatting",
+                "Spoofing"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Typosquatting relies on common misspellings or visual tricks (0 vs O) to trick users."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Which phase of the Cyber Kill Chain (from Chapter 1) is most directly supported by OSINT?",
+            "options": [
+                "Actions on Objectives",
+                "Command & Control",
+                "Reconnaissance",
+                "Exploitation"
+            ],
+            "correctAnswer": 2,
+            "explanation": "OSINT is the primary tool for the Reconnaissance phase, gathering information about the target."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "A developer accidentally commits code containing `AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY` to a public GitHub repo. What should a defender do FIRST?",
+            "options": [
+                "Email the developer and tell them they made a mistake.",
+                "Revoke/Invalidate the leaked key immediately via the AWS console.",
+                "Clone the repo to save the code.",
+                "Do nothing; it's public now."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Speed is critical. Attackers have bots that scan GitHub for keys in real-time. The key must be revoked within minutes."
+        },
+        {
+            "id": "q17",
+            "type": "fill_blank",
+            "question": "A(n) _____ is a domain registered with a slight, deceptive variation of a legitimate brand name for malicious purposes.",
+            "options": [
+                "Alias",
+                "Typosquat",
+                "Subdomain",
+                "MX Record"
+            ],
+            "correctAnswer": "Typosquat",
+            "explanation": "Typosquatting is a common technique used in phishing campaigns."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which DNS record type is used to find the IP address of a mail server?",
+            "options": [
+                "A",
+                "MX",
+                "TXT",
+                "CNAME"
+            ],
+            "correctAnswer": 1,
+            "explanation": "MX (Mail Exchange) records point to the servers responsible for handling email for the domain."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is the 'OSINT Cycle' step that involves removing irrelevant data and false positives?",
+            "options": [
+                "Collection",
+                "Processing",
+                "Analysis",
+                "Dissemination"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Processing is the filtering and normalization of raw data."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "As a SOC analyst, you should set up Google Alerts for `site:yourcompany.com filetype:sql`.",
+            "correctAnswer": true,
+            "explanation": "True. This is a free, automated way to detect accidental data exposure."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "Why is 'Confirmation Bias' dangerous in OSINT investigations?",
+            "options": [
+                "It makes the investigation take too long.",
+                "It causes the analyst to ignore evidence that contradicts their initial theory.",
+                "It requires too many tools.",
+                "It is illegal in most countries."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Confirmation bias leads to inaccurate conclusions and missed threats."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "A new employee posts on Twitter: 'Ugh, the old Cisco ASA is down again. Guess I'm working from the coffee shop.' What OSINT value does this provide to an attacker?",
+            "options": [
+                "The employee's coffee preference.",
+                "Confirmation of the company's firewall vendor and potential VPN reliability issues.",
+                "The employee's home address.",
+                "Nothing useful."
+            ],
+            "correctAnswer": 1,
+            "explanation": "This confirms the technology stack (Cisco ASA) and suggests that remote access might be unstable, making phishing lures about 'VPN updates' more effective."
+        },
+        {
+            "id": "q23",
+            "type": "fill_blank",
+            "question": "The 'C' in the CIA Triad stands for _____.",
+            "options": [
+                "Confidentiality",
+                "Continuity",
+                "Command",
+                "Control"
+            ],
+            "correctAnswer": "Confidentiality",
+            "explanation": "Review from Chapter 1: Confidentiality, Integrity, Availability."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "You want to search for tweets about 'Acme VPN' from the past month. Which search operator is correct?",
+            "options": [
+                "Acme VPN since:2025-01-01",
+                "Acme VPN filetype:tweet",
+                "site:twitter.com Acme VPN",
+                "Acme VPN lang:en"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Twitter's advanced search allows date range filters using 'since:YYYY-MM-DD'."
+        },
+        {
+            "id": "q25",
+            "type": "true_false",
+            "question": "Finding an exposed '.env' file on a web server via Google Dorking is a common way attackers find database passwords.",
+            "correctAnswer": true,
+            "explanation": "True. '.env' files often contain plaintext credentials for databases and APIs."
+        }
+    ]
+}

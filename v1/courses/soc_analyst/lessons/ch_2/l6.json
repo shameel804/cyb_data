@@ -1,0 +1,74 @@
+{
+    "id": "l6",
+    "chapterId": "ch_2",
+    "title": "Defensive OSINT",
+    "description": "Flip the script: Use OSINT to find your own leaks.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Application",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "External Attack Surface Management (EASM) 🗺️",
+            "content": "# Looking in the Mirror\n\n**Definition:** The continuous discovery, inventory, and monitoring of an organization's internet-facing assets.\n\n**The Problem:** Your company owns `company.com`. But someone in Marketing bought `company-app.com` on GoDaddy with a personal credit card and stood up a Wordpress site. **You don't know it exists. The attacker does.**\n\n**Your Job as a Defender:** Find these **shadow IT** assets and bring them under the security umbrella **before** they become the entry point for a ransomware gang."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "Step 1: Brand Monitoring 🔖",
+            "content": "# Typosquatting & Impersonation\n\nAttackers register domains that look like yours to trick your employees.\n*   `amaz0n.com` (Zero instead of O)\n*   `company-support.net`\n*   `cornpany.com` (rn looks like m)\n\n**Defensive Action:**\n1.  Use tools like **dnstwister.report** to generate a list of permutations of your domain.\n2.  Check if any of them are registered and hosting a website (especially a fake login page).\n3.  If you find one, report it to the domain registrar for abuse/takedown."
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Defensive Dork 🛡️",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "You are tasked with finding if your company's internal documents have been accidentally exposed on Google. Which search would you run first?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "site:yourcompany.com filetype:pdf 'confidential'",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "hack yourcompany.com password",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "site:linkedin.com 'yourcompany'",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "This specific dork searches your domain for PDF files containing the word 'confidential'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "code",
+            "title": "Step 2: GitHub Secret Scanning",
+            "content": "Developers often accidentally push API keys and passwords to public GitHub repositories.",
+            "codeSnippet": "Search GitHub for:\n\"yourcompany.com\" password\n\"yourcompany.com\" secret_key\n\"yourcompany.com\" api_key\n\n# Defenders: Use tools like GitGuardian or TruffleHog to automate this!",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "Step 3: The OSINT Report 📄",
+            "content": "# Weekly OSINT Briefing\n\nA mature SOC generates a weekly **External Threat Report** based on OSINT findings.\n\n**Format:**\n*   **New Domains Registered:** `acme-login[.]com` (Likely phishing) -> **Action:** Submit Takedown Request.\n*   **Exposed Files:** Found `backup.sql` on subdomain `legacy.acme.com`. -> **Action:** Escalate to Web Team for removal.\n*   **Leaked Credentials:** Found employee email in public breach database (HaveIBeenPwned). -> **Action:** Force password reset for that user.\n\nThis is how you transition from **reactive alert triage** to **proactive defense**."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "tip",
+            "title": "The SOC Superpower 🦸",
+            "content": "## Know What the Attacker Knows\n\n> *\"To defeat an enemy, you must know them. And in cybersecurity, you must know what they know about you.\"*\n\nEvery hour you spend on **Defensive OSINT** is an hour you've made the attacker's Reconnaissance phase harder. If they can't find a weakness in the first 80% of their campaign, they will move on to an easier target."
+        }
+    ]
+}

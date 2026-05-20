@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_7",
+    "title": "Wireshark Display Filter Challenge",
+    "description": "Write display filters to answer specific investigative questions.",
+    "estimatedMinutes": 20,
+    "problemStatement": "### Scenario\nYou have a large PCAP file from a suspected compromised host (`192.168.1.105`). Write the **exact Wireshark Display Filter** for each of the following investigative questions.\n\n### Questions & Filter Requests\n\n1.  Show **only traffic involving** the host `192.168.1.105`.\n2.  Show **only DNS queries** made **by** this host.\n3.  Show **only HTTP POST requests** sent **from** this host.\n4.  Show **TCP SYN packets only** sent **from** this host (potential scanning activity).\n5.  Show **TCP RST packets received** by this host (potential port scan rejections).\n6.  Show **all traffic** where the **destination port is 445 (SMB)** and the destination IP is **outside** the `192.168.0.0/16` range.\n7.  Show **packets with TCP retransmissions** involving this host.\n8.  Show **TLS Client Hello packets** (to extract JA3 hashes).",
+    "hints": [
+        "Use `ip.src` and `ip.dst` for directionality.",
+        "Use `tcp.flags.syn == 1`.",
+        "The filter for 'outside 192.168.0.0/16' is `!ip.dst == 192.168.0.0/16`.",
+        "TLS Client Hello filter: `tls.handshake.type == 1`."
+    ],
+    "expectedOutput": "A list of 8 Wireshark display filter strings.",
+    "solutionCode": "1. ip.addr == 192.168.1.105\n2. dns && ip.src == 192.168.1.105\n3. http.request.method == POST && ip.src == 192.168.1.105\n4. tcp.flags.syn == 1 && tcp.flags.ack == 0 && ip.src == 192.168.1.105\n5. tcp.flags.reset == 1 && ip.dst == 192.168.1.105\n6. tcp.dstport == 445 && !ip.dst == 192.168.0.0/16\n7. tcp.analysis.retransmission && ip.addr == 192.168.1.105\n8. tls.handshake.type == 1"
+}

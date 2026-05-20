@@ -1,0 +1,73 @@
+{
+    "id": "l4",
+    "chapterId": "ch_12",
+    "title": "Generating and Detecting Attacks",
+    "description": "Simulate attacks and practice detection: scanning, brute force, malware execution.",
+    "xpReward": 40,
+    "estimatedMinutes": 9,
+    "section": "Hands-On",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Attacker VM: Kali Linux 🐉",
+            "content": "# Your Red Team Toolbox\n\n**Kali Linux** is a Debian-based distribution with hundreds of pre-installed penetration testing tools.\n\n**Setup Kali VM:**\n1.  Download Kali Linux ISO (VirtualBox image available for easy import).\n2.  Create VM with 2-4 GB RAM.\n3.  **Network:** Set to **Host-Only Adapter** as well (same network as victims).\n4.  Boot Kali. Default credentials: `kali` / `kali`.\n\n**Important Safety Check:**\n- Verify Kali IP (`ip a`). It should be in `192.168.56.x`.\n- Ping the Windows Victim IP: `ping 192.168.56.101`.\n- If you get replies, your isolated lab network is working!\n\n**Now you can safely attack your victim VMs.**"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Exercise 1: Network Scanning Detection 📡",
+            "content": "# Simulating Reconnaissance\n\n**Goal:** Use Nmap from Kali to scan the Windows Victim, then detect the scan in Splunk.\n\n**Attack (Kali Terminal):**\n```bash\nsudo nmap -sS 192.168.56.101 -p 1-1000\n```\n*This performs a SYN scan on the first 1000 ports.*\n\n**Detection (Splunk Search):**\n*   Wait 1-2 minutes for logs to forward.\n*   Search for Sysmon Event ID 3 (Network Connections) OR Windows Firewall Logs.\n*   **Query:**\n    ```spl\n    index=windows host=Win10-Victim EventCode=5156\n    | stats count by Source_Address, Dest_Port\n    | where count > 10\n    ```\n    *Event ID 5156 is Windows Filtering Platform 'Allow' event.*\n*   **Analysis:** You should see a high count of unique destination ports from the Kali IP within a short time. This is a **Port Scan**."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Scan Detection 🔍",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which Splunk search would best detect a SYN scan against the Windows victim?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "index=windows EventCode=4624",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "index=windows EventCode=5156 | stats dc(Dest_Port) by Source_Address | where dc(Dest_Port) > 20",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "index=windows EventCode=4688",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A high count of distinct destination ports from a single source IP indicates scanning.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Exercise 2: Brute Force Detection 🔑",
+            "content": "# Simulating Password Spraying\n\n**Goal:** Use Hydra to attempt multiple RDP logins against the Windows Victim, then detect the failures.\n\n**Prerequisite:** Enable RDP on Windows Victim (System Properties -> Remote Desktop -> Enable).\n\n**Attack (Kali Terminal):**\n```bash\nhydra -l administrator -P /usr/share/wordlists/rockyou.txt rdp://192.168.56.101 -t 4\n```\n*This tries the 'administrator' account with a list of passwords.*\n\n**Detection (Splunk Search):**\n*   Windows Security Event ID **4625** (Failed Logon).\n*   **Query:**\n    ```spl\n    index=windows EventCode=4625\n    | stats count by Account_Name, Source_Network_Address\n    | where count > 10\n    ```\n*   **Analysis:** You'll see a spike in failed logins for 'Administrator' from the Kali IP. If you see **even one 4624 (Success)** after a series of 4625s, you've simulated a successful breach."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Exercise 3: Simulating Malware Execution (Atomic Red Team) 🧪",
+            "content": "**Atomic Red Team** is a library of simple tests mapped to MITRE ATT&CK. You can safely simulate adversary techniques.\n\n**Setup on Windows Victim:**\n1.  Open **PowerShell as Administrator**.\n2.  Run: `IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/redcanaryco/invoke-atomicredteam/master/install-atomicredteam.ps1')`\n3.  Install: `Install-AtomicRedTeam -getAtomics`\n\n**Simulate T1059.001 (PowerShell):**\n```powershell\nInvoke-AtomicTest T1059.001 -TestNumbers 1\n```\n*This executes a harmless PowerShell command that mimics a download cradle.*\n\n**Detection (Splunk Search):**\n*   Search for Sysmon Event ID 1 (Process Creation) with `powershell.exe` and the command line containing `DownloadString`.\n*   **Query:**\n    ```spl\n    index=windows EventID=1 ProcessName=powershell.exe CommandLine=*DownloadString*\n    | table _time, User, CommandLine\n    ```\n\n**This is how you safely build a detection portfolio!**",
+            "codeLanguage": "powershell",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "Building Your Portfolio 📁",
+            "content": "## From Lab to LinkedIn\n\nFor each exercise, create a **one-page PDF report** with:\n- **Title:** 'Detecting RDP Brute Force Attacks with Splunk'\n- **Screenshot 1:** The attack command (Hydra).\n- **Screenshot 2:** The raw Windows Event Log showing 4625.\n- **Screenshot 3:** Your Splunk search and results.\n- **Screenshot 4:** A brief analysis paragraph.\n\n**Publish these on GitHub, LinkedIn, or a personal blog.** This is tangible proof of your skills. It sets you apart from 99% of entry-level applicants.\n\n**Congratulations! You've built a working SOC lab and practiced real detection engineering. This is the beginning, not the end.**"
+        }
+    ]
+}

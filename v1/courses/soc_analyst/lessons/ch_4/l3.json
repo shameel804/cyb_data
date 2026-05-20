@@ -1,0 +1,62 @@
+{
+    "id": "l3",
+    "chapterId": "ch_4",
+    "title": "Processes and Parent-Child Relationships",
+    "description": "Understanding process trees to spot malicious behavior.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Windows",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Family Tree of Code 🌳",
+            "content": "# Parent -> Child\n\nEvery process (except the very first one) is started by another process.\n\n*   **Parent Process:** The launcher (e.g., `explorer.exe`).\n*   **Child Process:** The launched program (e.g., `notepad.exe`).\n\n**Normal Parent-Child Relationships:**\n*   `explorer.exe` (Windows Desktop) -> `chrome.exe` (User clicked icon).\n*   `winword.exe` (Microsoft Word) -> `cmd.exe` (Word macro running command prompt). **Wait! This is a HUGE red flag.**\n\n**Analogy:** If you see a mouse give birth to an elephant, you know something is wrong. Seeing Microsoft Word spawn PowerShell is similarly unnatural."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Suspicious Parent-Child Combos 👀",
+            "content": "Memorize these anomalies. They are high-fidelity indicators of compromise.",
+            "codeSnippet": "1. Microsoft Office (Word/Excel) -> cmd.exe / powershell.exe\n   (Macro Malware / Dropper)\n\n2. wmiprvse.exe (WMI Service) -> powershell.exe\n   (Remote WMI lateral movement)\n\n3. services.exe -> cmd.exe\n   (Service replacement / Persistence)\n\n4. lsass.exe -> ANY CHILD PROCESS\n   (Credential dumping - LSASS should not spawn children)\n\n5. svchost.exe -> powershell.exe\n   (Service hosting malicious script)",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Parent-Child Check 👨‍👦",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "You see a process tree: `outlook.exe` -> `powershell.exe` -> `rundll32.exe`. What is the MOST likely scenario?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The user is checking email.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A malicious email attachment or link has executed code.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Windows Update is running.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Email clients should never spawn scripting engines like PowerShell. This indicates code execution from a phishing email.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Process Hollowing & Injection 💉",
+            "content": "# Hiding Inside a Legit Process\n\nAttackers know we look for bad process names (`malware.exe`). So they use **Process Injection**.\n\n**Technique:** Malware starts a legitimate Windows process (e.g., `svchost.exe`) in a **SUSPENDED** state. It then hollows out the memory of that legitimate process and replaces it with malicious code.\n\n**Result:**\n*   Task Manager shows: `svchost.exe` (Looks normal!)\n*   Network Monitor shows: `svchost.exe` connecting to Russia (NOT normal!)\n\n**Detection:** EDR tools look for memory anomalies. But you can spot clues: **An instance of `svchost.exe` that has NO parent process or is running under the wrong user account (e.g., running as `jsmith` instead of `SYSTEM`).**"
+        }
+    ]
+}

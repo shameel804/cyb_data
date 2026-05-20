@@ -1,0 +1,68 @@
+{
+    "id": "l4",
+    "chapterId": "ch_3",
+    "title": "Ports & Protocols Every Analyst Must Memorize",
+    "description": "Your essential cheat sheet for triage.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Core Protocols",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Ports: The Apartment Numbers 🚪",
+            "content": "# IP Address = Street Address. Port = Apartment Number.\n\nA single server has one IP address (e.g., `192.168.1.10`) but runs many services: Web, Email, SSH.\n\n**Ports** tell the data which service to go to.\n\n*   Port **80**: Web Server (HTTP)\n*   Port **443**: Secure Web Server (HTTPS)\n*   Port **22**: Remote Shell (SSH)\n\n**Why you MUST memorize these:** As a Tier 1 analyst, you have **seconds** to decide if an alert is weird.\n*   *Alert:* Outbound connection on **Port 21**. *(FTP - File Transfer)*. Is that normal in your environment? Maybe not.\n*   *Alert:* Inbound connection on **Port 3389** from China. *(RDP - Remote Desktop)*. **HIGH PRIORITY ALERT.**"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "The Critical Ports List (Print This!) 🖨️",
+            "content": "Memorize these 20 ports for your first day in the SOC.",
+            "codeSnippet": "21  - FTP (File Transfer - Clear text password!) 🚨\n22  - SSH (Secure Shell - Encrypted Admin Access)\n23  - Telnet (Clear text remote access - NEVER USE) 🚨\n25  - SMTP (Email Sending)\n53  - DNS (Domain Name Resolution)\n80  - HTTP (Unencrypted Web)\n88  - Kerberos (Windows Authentication)\n110 - POP3 (Email Retrieval - Clear text)\n123 - NTP (Time Sync)\n137-139 - NetBIOS (Old Windows File Sharing)\n143 - IMAP (Email Retrieval)\n161 - SNMP (Network Management - Often misconfigured) 🚨\n389 - LDAP (Directory Services)\n443 - HTTPS (Encrypted Web)\n445 - SMB (Modern Windows File Sharing / Ransomware's favorite) 🚨\n514 - Syslog\n1433 - MS-SQL (Database)\n3306 - MySQL (Database)\n3389 - RDP (Remote Desktop) 🚨\n8080 - HTTP Proxy / Alt Web",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Port Pop Quiz 📝",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "You see massive outbound traffic from a workstation to a strange IP address on port **445**. What is the immediate concern?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The user is watching Netflix.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Ransomware is spreading or data is being stolen via Windows File Sharing.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Someone is checking their email.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Port 445 is SMB (Server Message Block), used by Windows for file sharing. Attackers use it for lateral movement and ransomware propagation.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "The Danger of RDP (Port 3389) 🚨",
+            "content": "# The SOC Nightmare\n\n**RDP (Remote Desktop Protocol)** allows someone to see and control a Windows computer screen remotely.\n\n**Why it's dangerous:**\n*   If an attacker steals a user's password, they can use RDP to log into that user's PC **as if they were sitting at the desk**.\n*   **Exposed RDP:** Port 3389 open to the **entire internet** is like leaving your front door unlocked with a sign saying \"Key under mat.\"\n\n**SOC Analyst Action:** If you see **inbound** connections to port 3389 from **external IPs** (especially foreign countries), **ESCALATE IMMEDIATELY**. This is a top-tier incident."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "warning",
+            "title": "Ports and Malware C2 🦠",
+            "content": "## Not Just Standard Ports\n\nWhile you must know standard ports, advanced malware often uses **uncommon high ports** (e.g., `54321`, `4444`) or **mimics standard ports** (e.g., using port 443 to hide encrypted C2 traffic within normal HTTPS noise).\n\n**This is why Layer 7 inspection (looking at the actual data) is critical.** Is it really HTTPS web traffic, or is it a Meterpreter reverse shell on port 443?"
+        }
+    ]
+}

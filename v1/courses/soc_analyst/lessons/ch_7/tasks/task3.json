@@ -1,0 +1,14 @@
+{
+    "id": "task3",
+    "chapterId": "ch_7",
+    "title": "Find the C2 Beacon",
+    "description": "Use IO Graph and JA3 hashes to locate beaconing traffic.",
+    "estimatedMinutes": 15,
+    "problemStatement": "### Scenario\nYou have a PCAP from a host suspected of beaconing to a C2 server. The traffic is encrypted with TLS. You extract the following JA3 hashes from the TLS Client Hello packets:\n\n- `cd08e31494f9531f560d64c695473da9` (User-Agent: Chrome)\n- `a0e9f5d64349fb1319c0c5c3cd631c8b` (User-Agent: Mozilla/5.0)\n- `b32309a26951912be7dba376398abc3b` (User-Agent: Microsoft-Delivery-Optimization/10.0)\n\n### Tasks\n1.  Research the JA3 hash `a0e9f5d64349fb1319c0c5c3cd631c8b`. What malware/tool is it associated with?\n2.  Given that this hash appeared every **60 seconds** in the PCAP (as seen in the IO Graph), what is your assessment?\n3.  What immediate action would you take as a Tier 1 analyst?\n\n### Bonus\nWrite a TShark command to extract all JA3 hashes from a PCAP file named `suspect.pcap`.",
+    "hints": [
+        "Search the hash on Google or https://sslbl.abuse.ch/ja3-fingerprints/",
+        "Cobalt Strike default beacon uses this JA3 hash."
+    ],
+    "expectedOutput": "1. Cobalt Strike (default beacon configuration).\n2. The host is infected with a Cobalt Strike beacon checking in every 60 seconds.\n3. Escalate to Tier 2 immediately. Recommend isolating the host.\nBonus: tshark -r suspect.pcap -Y \"tls.handshake.type == 1\" -T fields -e tls.handshake.ja3",
+    "solutionCode": "N/A"
+}

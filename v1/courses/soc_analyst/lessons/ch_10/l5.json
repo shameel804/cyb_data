@@ -1,0 +1,74 @@
+{
+    "id": "l5",
+    "chapterId": "ch_10",
+    "title": "Eradication and Recovery",
+    "description": "Removing the threat actor, eliminating malware, and restoring normal operations.",
+    "xpReward": 40,
+    "estimatedMinutes": 9,
+    "section": "PICERL Phases 4-5",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Eradication: Remove the Root Cause 🧹",
+            "content": "# More Than Just Deleting a File\n\n**Eradication** is the process of removing the attacker's presence and capabilities from the environment.\n\n**The Critical Distinction:** If you just delete `malware.exe`, the attacker still has a **backdoor** somewhere else. You must find **ALL** persistence mechanisms.\n\n**Eradication Checklist:**\n1.  **Remove Malware Artifacts:** Delete malicious files, registry keys, scheduled tasks.\n2.  **Remove Persistence:** Disable services, remove WMI subscriptions, clear startup folder.\n3.  **Close Attack Vectors:** Patch the vulnerability exploited. Reset **all** passwords (including service accounts).\n4.  **Block Indicators:** Add hashes and IPs to blocklists to prevent re-infection.\n\n**Analogy:** Eradication is the **exterminator** spraying the whole house, not just squishing the one roach you saw."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "To Rebuild or Not to Rebuild? 💻",
+            "content": "# The Golden Image Decision\n\n**Option A: Clean Up (Manual Removal)**\n*   **When:** Simple adware or low-sophistication malware. You have high confidence you found everything.\n*   **Risk:** High. You might miss a hidden backdoor.\n\n**Option B: Rebuild / Re-Image (Recommended)**\n*   **When:** Any malware involving a C2 beacon, credential theft, or hands-on-keyboard activity.\n*   **Process:** Wipe the hard drive, reinstall Windows from a known-clean source (golden image).\n*   **Risk:** Very Low. Guarantees removal of persistent malware.\n\n**Industry Standard:** **If a Domain Controller is compromised, do NOT clean it. Rebuild it from scratch.** The risk of missing a Kerberos Golden Ticket or Skeleton Key is too high."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Eradication Depth 🧼",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "You find and delete `malware.exe` from a workstation. However, you notice a Scheduled Task that runs `updater.exe` every hour. What is the correct eradication step?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Just delete malware.exe. The task will fail safely.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Delete the Scheduled Task as well.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Reboot the computer.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The Scheduled Task is the **persistence mechanism**. If you don't remove it, the attacker can easily drop a new `malware.exe` file later.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Recovery: Return to Business as Usual 📈",
+            "content": "# Bringing Systems Back Online Safely\n\n**Recovery** is the process of restoring affected systems to normal operation **and verifying they are clean**.\n\n**Recovery Steps:**\n1.  **Restore from Clean Backup:** Use backups taken **before** the infection date. **Verify** the backup is clean (scan with AV before mounting).\n2.  **Rebuild System:** Deploy new server/workstation from golden image.\n3.  **Patch and Harden:** Apply all missing security patches. **Change ALL passwords** for accounts that accessed the system.\n4.  **Monitoring Ramp-Up:** Place the recovered system under **intensive monitoring** for 24-48 hours. Watch for any signs of C2 traffic (Did we miss something?).\n5.  **User Communication:** Notify affected users that the system is back online.\n\n**Analogy:** Recovery is **moving back into the house after the exterminator left**. You still check under the beds for bugs for the first few nights."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Recovery Verification Script (Example)",
+            "content": "After restoring a web server, run a quick validation script.",
+            "codeSnippet": "# Check Web Service Status\nGet-Service W3SVC\n\n# Check Listening Ports (should be only 80, 443)\nnetstat -an | findstr LISTENING\n\n# Check for unexpected Scheduled Tasks\nGet-ScheduledTask | Where-Object {$_.TaskPath -notlike \"\\Microsoft\\*\"}\n\n# Check Recent Logons (Event ID 4624)\nGet-WinEvent -FilterHashtable @{LogName='Security'; ID=4624} -MaxEvents 10 | Format-Table TimeCreated, Message -AutoSize",
+            "codeLanguage": "powershell",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_6",
+            "type": "tip",
+            "title": "The 'Clean' Backup Trap 🎣",
+            "content": "## Attackers Reside in Backups Too\n\nSophisticated attackers compromise **backup systems** and wait. They sit dormant for **months** until the backup retention period has passed. Then, when you restore from 'clean' backup, you restore their **persistence**.\n\n**Mitigation:**\n*   **Immutable Backups:** Use backup solutions that prevent **anyone** (even admins) from deleting or modifying backup data for a set period.\n*   **Offline Backups (Air-Gapped):** Tapes or hard drives stored in a vault, not connected to the network."
+        }
+    ]
+}

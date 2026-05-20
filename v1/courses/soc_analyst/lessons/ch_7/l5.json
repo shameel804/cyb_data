@@ -1,0 +1,77 @@
+{
+    "id": "l5",
+    "chapterId": "ch_7",
+    "title": "Finding Command & Control Beacons",
+    "description": "Detect periodic callbacks, JA3/S hashes, and encrypted C2 patterns.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Threat Hunting",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Beaconing: The Heartbeat of Malware 💓",
+            "content": "# Regular Intervals = Compromise\n\n**Beaconing** is when malware periodically 'checks in' with its Command & Control (C2) server.\n\n**Characteristics in PCAP:**\n*   **Timing:** Connections at **predictable intervals**. (e.g., exactly 60 seconds, 5 minutes, 8 hours).\n*   **Size:** Small, consistent packet sizes (e.g., always 120 bytes out, 80 bytes in).\n*   **Protocol:** Often HTTPS (port 443) to blend in.\n\n**Wireshark Analysis:**\n1.  Use **Statistics** -> **IO Graph**.\n2.  Set Y-Axis to `Packets/Tick` or `Bytes/Tick`.\n3.  Look for **evenly spaced spikes**. A flat line with a bump every 60 seconds is **highly suspicious**.\n4.  Filter for the specific conversation and check `Time` column deltas."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Detecting Beacons with TShark (Command Line)",
+            "content": "TShark is the command-line version of Wireshark. It can be scripted to detect beacons.",
+            "codeSnippet": "# Extract timestamps of all packets in a conversation\ntshark -r capture.pcap -Y \"ip.addr==192.168.1.105 && ip.addr==185.142.53.21\" -T fields -e frame.time_epoch\n\n# Feed this into a script to calculate deltas.\n# If standard deviation of deltas is very small (e.g., < 1 second), it's a beacon.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Beacon Pattern 📡",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "You use the IO Graph in Wireshark and see a consistent spike of traffic every 10 minutes exactly. What is the most likely explanation?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A user checking email every 10 minutes.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Malware beaconing to C2.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Windows Update running.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Human activity is bursty and irregular. Precise periodicity indicates automated software (malware or benign update checker). Investigate the destination IP to confirm.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "JA3 and JA3S Fingerprinting 🖐️",
+            "content": "# Identifying Malware by Its TLS Handshake\n\nEven when traffic is encrypted with **TLS 1.3**, the **initial handshake** is in plaintext. This handshake contains the **list of supported cipher suites and extensions**.\n\n**JA3** is a **hash** of this handshake data. It acts like a **fingerprint** for the client application.\n\n**How Analysts Use JA3:**\n*   **Known Bad JA3 Hashes:** `a0e9f5d64349fb1319c0c5c3cd631c8b` (Example: Trickbot malware).\n*   **Known Good JA3 Hashes:** Chrome, Firefox, Outlook have their own stable hashes.\n\n**In Wireshark:**\n*   Find the **Client Hello** packet.\n*   Look for `ja3` and `ja3s` fields in the packet details (if you have a modern version or plugin).\n*   If the JA3 hash matches a known malware signature but the User-Agent says 'Chrome', you've caught a **C2 beacon**."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Extracting JA3 with TShark",
+            "content": "You can extract JA3 hashes from a PCAP with this command.",
+            "codeSnippet": "tshark -r capture.pcap -Y \"tls.handshake.type == 1\" -T fields -e tls.handshake.ja3\n\n# Output:\n# a0e9f5d64349fb1319c0c5c3cd631c8b\n# b32309a26951912be7dba376398abc3b\n\n# Paste the hash into https://ja3er.com/ to see if it's associated with malware.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "DNS Beacons (Low and Slow) 🐌",
+            "content": "# C2 Over DNS\n\nNot all beacons use TCP. Some use **DNS queries** to check in.\n\n**Pattern:** Every `N` minutes, the host sends a DNS query for a specific subdomain.\n*   `checkin-01-15-22.badguy.com`\n*   The response contains a **TXT record** with the C2 command (`sleep 3600` or `download http://...`).\n\n**PCAP Filter:** `dns.qry.name contains \"badguy.com\"`\n**Analysis:** Use `Statistics` -> `IO Graph` to see the periodicity of these DNS requests."
+        }
+    ]
+}

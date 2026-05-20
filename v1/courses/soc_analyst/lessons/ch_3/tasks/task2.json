@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_3",
+    "title": "Firewall Log Analysis",
+    "description": "Analyze a sample firewall log and identify suspicious traffic.",
+    "estimatedMinutes": 15,
+    "problemStatement": "### Scenario\nYou are reviewing the morning firewall logs for **Acme Corp**. Analyze the following log entries (simplified) and answer the questions.\n\n```\n10:05:22 ALLOW TCP 192.168.1.101:54321 -> 8.8.8.8:53 (DNS)\n10:05:23 ALLOW TCP 192.168.1.101:54322 -> 185.142.53.21:443 (HTTPS)\n10:06:45 DENY TCP 203.0.113.5:443 -> 192.168.1.101:54323 (INBOUND)\n10:07:10 ALLOW TCP 192.168.1.101:54324 -> 185.142.53.21:445 (SMB)\n10:10:01 ALLOW TCP 192.168.1.101:54325 -> 185.142.53.21:3389 (RDP)\n```\n\n### Questions\n1.  Which connection is **MOST suspicious** and why?\n2.  Why did the firewall **DENY** the inbound connection at 10:06:45?\n3.  If `185.142.53.21` is a known malicious IP, what does the traffic pattern (Port 445 and 3389) suggest the attacker is trying to do?",
+    "hints": [
+        "Remember that outbound SMB (445) and RDP (3389) are unusual.",
+        "Stateful firewalls only allow inbound traffic if it matches an existing outbound connection."
+    ],
+    "expectedOutput": "1. The outbound connection on port 445 (SMB) is highly suspicious because SMB is for internal file sharing, not internet communication. 2. The firewall denied it because there was no prior outbound request from `192.168.1.101` to `203.0.113.5`. 3. The attacker is likely trying to move laterally (SMB) or gain remote desktop control (RDP) of the compromised workstation.",
+    "solutionCode": "N/A"
+}

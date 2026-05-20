@@ -1,0 +1,299 @@
+{
+    "id": "quiz_ch_12",
+    "chapterId": "ch_12",
+    "title": "Chapter 12 Mastery Quiz",
+    "description": "Test your knowledge of building a home SOC lab, virtualization, SIEM deployment, and attack simulation.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary benefit of using a 'Host-Only' network adapter for your lab VMs?",
+            "options": [
+                "It provides the fastest internet speed.",
+                "It isolates the lab from your home network and the internet, preventing malware escape.",
+                "It allows VMs to get IP addresses from your home router.",
+                "It is required for Splunk to work."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Host-Only creates an isolated network segment, protecting your host and other devices."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "Splunk Universal Forwarder is installed on the SIEM server to receive data.",
+            "correctAnswer": false,
+            "explanation": "False. The Forwarder is installed on **endpoints** to **send** data to the SIEM server (Indexer)."
+        },
+        {
+            "id": "q3",
+            "type": "fill_blank",
+            "question": "The free version of Splunk Enterprise is limited to _____ MB of log ingestion per day.",
+            "options": [
+                "100",
+                "500",
+                "1000",
+                "Unlimited"
+            ],
+            "correctAnswer": "500",
+            "explanation": "Splunk Free has a 500 MB/day indexing limit, sufficient for a home lab."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which VirtualBox feature allows you to save the current state of a VM and revert to it later?",
+            "options": [
+                "Cloning",
+                "Snapshots",
+                "Export Appliance",
+                "Shared Folders"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Snapshots preserve the VM's state at a point in time for easy rollback."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "On Windows, which log contains Event ID 4625 (Failed Logon)?",
+            "options": [
+                "System Log",
+                "Application Log",
+                "Security Log",
+                "Sysmon Operational Log"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Authentication events are logged in the Windows Security Log."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the purpose of Sysmon in a home lab?",
+            "options": [
+                "To act as a firewall.",
+                "To provide detailed process creation and network connection telemetry for detection.",
+                "To replace Windows Event Log.",
+                "To run malware safely."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Sysmon enhances Windows logging with critical security events like Event ID 1 (Process Create) and Event ID 3 (Network Connect)."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "You should install Splunk Universal Forwarder on your Kali Linux attacker VM to monitor its attacks.",
+            "correctAnswer": false,
+            "explanation": "False. While you can, the primary goal is to monitor the **victim** systems to see how attacks look from the defender's perspective."
+        },
+        {
+            "id": "q8",
+            "type": "fill_blank",
+            "question": "The Splunk configuration file that tells the Universal Forwarder which logs to monitor is called _____.",
+            "options": [
+                "outputs.conf",
+                "inputs.conf",
+                "server.conf",
+                "props.conf"
+            ],
+            "correctAnswer": "inputs.conf",
+            "explanation": "`inputs.conf` defines data sources (files, event logs) for the forwarder to collect."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Which tool from Kali Linux is commonly used to perform network port scanning?",
+            "options": [
+                "Hydra",
+                "Nmap",
+                "Metasploit",
+                "Wireshark"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Nmap is the industry standard port scanner."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What does the Splunk search `index=windows EventCode=4625 | stats count by Account_Name` do?",
+            "options": [
+                "Shows successful logins.",
+                "Counts the number of failed login attempts per user account.",
+                "Lists all processes created.",
+                "Deletes the logs."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Event 4625 is failed logon. `stats count by Account_Name` groups the results and counts occurrences."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What is the default port that Splunk Indexers listen on for Universal Forwarder data?",
+            "options": [
+                "8000",
+                "8089",
+                "9997",
+                "443"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Port 9997 is the default Splunk TCP input port for forwarders. Port 8000 is the web interface."
+        },
+        {
+            "id": "q12",
+            "type": "true_false",
+            "question": "Atomic Red Team is a library of tests used to simulate adversary techniques safely.",
+            "correctAnswer": true,
+            "explanation": "True. Atomic Red Team provides portable, scripted tests mapped to MITRE ATT&CK."
+        },
+        {
+            "id": "q13",
+            "type": "fill_blank",
+            "question": "To detect a brute force attack in Splunk, you should search for a high count of Event ID _____ from a single source IP.",
+            "options": [
+                "4624",
+                "4625",
+                "4688",
+                "5156"
+            ],
+            "correctAnswer": "4625",
+            "explanation": "Multiple 4625 (Failed Logon) events indicate a brute force attempt."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is the purpose of the 'Guest Additions' in VirtualBox?",
+            "options": [
+                "To increase the VM's RAM.",
+                "To improve integration features like shared clipboard, drag-and-drop, and video performance.",
+                "To install additional malware.",
+                "To connect to the internet."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Guest Additions are drivers that enhance the VM experience."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Why is documentation considered the most valuable output of a home lab?",
+            "options": [
+                "It's required by VirtualBox.",
+                "It creates a portfolio that proves your practical skills to employers.",
+                "It replaces the need for a resume.",
+                "Splunk won't work without it."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Documentation demonstrates your methodology, analytical skills, and tool proficiency."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "Kali Linux should be connected to the same Host-Only network as the victim VMs for safe attack simulation.",
+            "correctAnswer": true,
+            "explanation": "True. This allows controlled attacks within the isolated lab environment."
+        },
+        {
+            "id": "q17",
+            "type": "fill_blank",
+            "question": "The Splunk component that provides the web-based search interface is called the _____.",
+            "options": [
+                "Indexer",
+                "Forwarder",
+                "Search Head",
+                "Deployment Server"
+            ],
+            "correctAnswer": "Search Head",
+            "explanation": "The Search Head handles user queries and visualization."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which of the following is a safe alternative to using real malware for testing detection rules?",
+            "options": [
+                "Atomic Red Team tests",
+                "Downloading ransomware from the dark web",
+                "Disabling antivirus and clicking phishing links",
+                "Using cracked software"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Atomic Red Team provides controlled, benign simulations of adversary techniques."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "You want to see which process made an outbound network connection on a Windows host. Which Sysmon Event ID provides this?",
+            "options": [
+                "Event ID 1",
+                "Event ID 3",
+                "Event ID 8",
+                "Event ID 11"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Sysmon Event ID 3 logs network connections and includes the process GUID and image path."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "It is safe to connect your home lab VMs directly to your home Wi-Fi network while running malware.",
+            "correctAnswer": false,
+            "explanation": "False. Always isolate lab environments. Malware can spread to other devices on the same network."
+        },
+        {
+            "id": "q21",
+            "type": "fill_blank",
+            "question": "The command `sudo /opt/splunk/bin/splunk enable boot-start` configures Splunk to _____.",
+            "options": [
+                "Start automatically when the system boots",
+                "Enable encryption",
+                "Open the firewall port",
+                "Create an index"
+            ],
+            "correctAnswer": "Start automatically when the system boots",
+            "explanation": "This ensures Splunk restarts after a VM reboot."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "What is the primary advantage of using a dynamically allocated virtual disk?",
+            "options": [
+                "Faster read/write speeds.",
+                "Saves physical disk space by growing the file only as needed.",
+                "Better compatibility with backups.",
+                "Required for Linux VMs."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Dynamic allocation prevents the immediate reservation of the full virtual disk size on the host drive."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "Which of the following is a legitimate source for a free Windows 10/11 ISO for lab use?",
+            "options": [
+                "A torrent site.",
+                "Microsoft's official Evaluation Center.",
+                "A random YouTube tutorial link.",
+                "Your work laptop's recovery partition."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Microsoft provides free evaluation copies for testing and development."
+        },
+        {
+            "id": "q24",
+            "type": "true_false",
+            "question": "Splunk Free includes user authentication and role-based access control.",
+            "correctAnswer": false,
+            "explanation": "False. Splunk Free has no authentication. Anyone with network access to port 8000 can access it. This is why isolation is critical."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "What is the final recommended step after completing a lab exercise and documenting your findings?",
+            "options": [
+                "Delete the VMs.",
+                "Revert the VMs to a clean snapshot to prepare for the next exercise.",
+                "Share the malware sample on social media.",
+                "Keep the compromised state running indefinitely."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Reverting ensures a clean, consistent baseline for future tests and prevents cross-contamination."
+        }
+    ]
+}

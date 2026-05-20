@@ -1,0 +1,77 @@
+{
+    "id": "l4",
+    "chapterId": "ch_8",
+    "title": "Phishing URL Analysis",
+    "description": "Safely investigate suspicious links and identify credential harvesting sites.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Investigation",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Link is the Lure 🎣",
+            "content": "# Why URLs are Dangerous\n\nClicking a phishing link can:\n1.  **Steal credentials** via a fake login page.\n2.  **Download malware** (drive-by download).\n3.  **Track your IP address** and browser fingerprint.\n\n**The Golden Rule for Analysts:** **NEVER CLICK THE LINK FROM YOUR WORKSTATION.** Not even in a VM on the corporate network.\n\n**Safe Analysis Methods:**\n1.  **URLScan.io:** Submit the URL. It renders a **screenshot** of the page using a remote sandboxed browser.\n2.  **Browserling / Any.Run:** Interactive remote browsers.\n3.  **Manual Defanging:** If you must share the link, **defang** it first."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Defanging URLs 🛡️",
+            "content": "Replace `http` with `hxxp` and `.` with `[.]` to prevent accidental clicks.",
+            "codeSnippet": "Original (DANGEROUS): https://login.paypal.com.secure-login.xyz/verify\nDefanged (SAFE):     hxxps://login.paypal[.]com.secure-login[.]xyz/verify\n\n# Also watch out for:\n# - IP address URLs: hxxp://192[.]168[.]1[.]1\n# - Data URIs: data:text/html,<script>alert(1)</script>\n# - URL Shorteners: bit[.]ly/xxxxxx (Use 'Preview' feature or expand with CheckShortURL).",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "URL Trickery 🎭",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "You receive a link: `https://www.paypal.com.security-update.info/login`. What is the actual domain?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "paypal.com",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "security-update.info",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "www.paypal.com",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The domain is the part right before the **first single slash** or the **last dot before the TLD**. Here, it's `security-update.info`. The `paypal.com` part is just a subdomain.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Using URLScan.io for Safe Browsing 🖥️",
+            "content": "# The SOC Analyst's Best Friend\n\n**URLScan.io** is a free service that scans a URL and provides:\n*   A **screenshot** of the landing page.\n*   The **final destination** after redirects.\n*   **DOM (HTML) content** of the page.\n*   **Indicators** (e.g., \"Login form detected\", \"Brand impersonation: Microsoft\").\n\n**Workflow for a Suspicious Link:**\n1.  Copy the link from the reported email.\n2.  Paste into **urlscan.io**.\n3.  Click **'Make it Public'** (if safe to share) or **'Private Scan'**.\n4.  Review the **screenshot**. Is it a fake Office 365 login page?\n5.  Check the **'Indicators'** tab. Does it say 'Phishing'?\n6.  Document the **URLScan.io report link** in your ticket.\n\n**This provides conclusive evidence without touching the malicious site.**"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Identifying Typosquatting Domains",
+            "content": "Attackers register domains that look similar to real ones.",
+            "codeSnippet": "Legitimate: microsoft.com\nPhishing:   micr0soft.com (Zero instead of 'o')\n            microsoft.net (Wrong TLD)\n            microsoft-security.com (Added hyphen)\n            rnicrosoft.com (RN looks like M)\n            microsoft.co (Different domain)\n\n# Tools to check domain reputation:\n# - VirusTotal (Check the domain, not the full URL)\n# - Whois (Look for newly registered domains - < 30 days old)",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "The Redirect Chain 🔗",
+            "content": "## Where Do You REALLY End Up?\n\nAttackers use legitimate services (Google, LinkedIn, YouTube) as **redirectors** to bypass URL filters.\n\n*Example:* `https://www.google.com/url?q=https://evil.com`\n\nA basic filter sees `google.com` and allows it. But the user ends up at `evil.com`.\n\n**Analysis:** Use URLScan.io or `curl -I` (from a cloud VM) to follow redirects and find the **final landing page**."
+        }
+    ]
+}

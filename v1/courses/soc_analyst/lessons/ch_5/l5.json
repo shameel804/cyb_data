@@ -1,0 +1,68 @@
+{
+    "id": "l5",
+    "chapterId": "ch_5",
+    "title": "Dashboards and Visualizations",
+    "description": "Build real-time monitoring views that impress management and find threats.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Visualization",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "A Picture is Worth a Thousand Logs 📈",
+            "content": "# Why Visualize?\n\nHumans are terrible at reading millions of raw log lines. We are **excellent** at spotting patterns in **charts and graphs**.\n\n**Dashboards** provide:\n1.  **Situational Awareness:** *\"Is the network quiet or on fire right now?\"*\n2.  **Trend Analysis:** *\"Failed logins have increased 500% this week. Something's up.\"*\n3.  **Executive Reporting:** *\"Here's a pretty pie chart showing we blocked 1M threats this month.\"*\n\n**Common SIEM Visualizations:**\n*   **Timechart:** Line/Area graph showing volume over time.\n*   **Pie Chart:** Distribution of top sources (Top 10 Users with Failed Logins).\n*   **Table:** Detailed list view (most useful for analysts).\n*   **World Map:** GeoIP location of inbound connections."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Creating a Timechart in Splunk",
+            "content": "The `timechart` command is your best friend for spotting spikes and gaps.",
+            "codeSnippet": "index=network sourcetype=fw action=blocked\n| timechart span=1h count by src_ip limit=5 useother=f\n\n# This creates a line graph of the top 5 blocked IPs over time.\n# Look for sudden spikes in blocks from a single IP -> Potential DDoS or scanning.",
+            "codeLanguage": "splunk",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Visualization Check 📊",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "You want to see how many failed logins occurred each hour for the past 24 hours. Which Splunk command is appropriate?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "stats count by hour",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "timechart span=1h count",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "top hour limit=24",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`timechart` buckets events by time interval. `stats count by date_hour` works but doesn't produce a visual line chart easily.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "The SOC 'Heads-Up Display' (HUD) 🖥️",
+            "content": "# Essential Dashboards for Tier 1\n\nEvery SOC should have these dashboards on the big screen TVs:\n\n1.  **Authentication Overview:**\n    *   Total Logons vs. Failed Logons.\n    *   Top Users with Failures.\n    *   **Watch for:** Red spikes in the failed logon chart.\n2.  **Network Traffic Overview:**\n    *   Top Talkers (Bytes out).\n    *   Connections to High-Risk Countries.\n    *   **Watch for:** Workstations sending massive data outbound.\n3.  **Endpoint Security Overview:**\n    *   Malware Detections (AV/EDR alerts).\n    *   Suspicious Process Executions.\n    *   **Watch for:** A single host with 10+ detections in an hour.\n4.  **SIEM Health:**\n    *   Events Per Second (EPS).\n    *   **Watch for:** A **drop** in EPS. If the line goes flat, logs have **stopped flowing**. This could be an outage... or an attacker DoS-ing the log collector."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "tip",
+            "title": "Drill-Down Capability 🪛",
+            "content": "## Click to Investigate\n\nA good dashboard isn't just a picture; it's an **interactive launchpad**.\n\nIf you see a spike in the 'Top Failed Logins' chart, you should be able to **click on the spike** and be taken directly to the raw log search for that exact time window.\n\n**This is the workflow:**\nDashboard (Identify Anomaly) -> Click (Drilldown to Search) -> Pivot (Investigate other logs) -> Alert (Escalate)."
+        }
+    ]
+}

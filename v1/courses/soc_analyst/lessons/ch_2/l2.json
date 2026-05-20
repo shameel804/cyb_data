@@ -1,0 +1,68 @@
+{
+    "id": "l2",
+    "chapterId": "ch_2",
+    "title": "The OSINT Mindset",
+    "description": "How analysts think about data aggregation.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Methodology",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Puzzle Analogy 🧩",
+            "content": "# Connecting Dots\n\nA single piece of OSINT is usually worthless. **John Smith works at Acme Corp.**\n\nBut when you aggregate:\n1.  **John Smith** works at Acme Corp as a **System Administrator**. (LinkedIn)\n2.  John posted on a tech forum 3 years ago asking how to configure **Cisco ASA Firewall version 9.8**. (Forum)\n3.  John's Twitter handle is `@johnny_sysad`. His recent tweet shows a **monitor with a command prompt open** and a partial hostname `SRV-DC01`. (Twitter)\n\n**Result:** You now know the target's job role, probable network hardware, and a critical server name. **That is actionable intelligence.**"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "The OSINT Cycle 🔄",
+            "content": "# A Structured Process\n\nDon't just Google randomly. Follow a cycle:\n\n1.  **Planning & Direction:** What are we trying to find out? *(e.g., \"What email system does Acme Corp use?\")*\n2.  **Collection:** Gather raw data. *(Check MX records, search for 'Acme Corp Outlook Web Access').*\n3.  **Processing:** Filter out the noise. *(Keep only verified, relevant URLs).*\n4.  **Analysis & Production:** Draw a conclusion. *(e.g., \"Acme uses Microsoft Office 365 based on the autodiscover record.\")*\n5.  **Dissemination:** Share the finding with the team."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Pivot Point 🔀",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "You find a user's unique avatar image on a niche forum. What is the best 'pivot' to find more about them?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Run the image through a reverse image search (Google Images / TinEye).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Email them directly and ask who they are.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Give up and move on.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Reverse image search can find other places that same avatar appears, potentially linking to their LinkedIn, GitHub, or other social media.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "The Pivot Technique 🔀",
+            "content": "OSINT is not linear. You find one piece of info (a username), and you **pivot** to find everything associated with it.",
+            "codeSnippet": "# Example Pivot Workflow (Mental Model)\nUsername: 'johndoe42' (Found on Reddit)\n    |\n    |--> Check GitHub: github.com/johndoe42 \n    |      (Finds real name: 'John Doe' and company email in commit)\n    |\n    |--> Check Twitter: twitter.com/johndoe42\n           (Finds location and recent vacation photos)",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "warning",
+            "title": "Bias Warning ⚠️",
+            "content": "## Confirmation Bias\n\nAs you gather OSINT, it's easy to find *exactly what you were looking for* and ignore contradictory evidence.\n\n*   **Bad Analyst:** *\"I found an open port! They are vulnerable!\"*\n*   **Good Analyst:** *\"I found an open port. However, the banner suggests it's a honeypot. Need to verify.\"*\n\nAlways ask: **What else could explain this data?**"
+        }
+    ]
+}

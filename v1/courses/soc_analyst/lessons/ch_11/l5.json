@@ -1,0 +1,74 @@
+{
+    "id": "l5",
+    "chapterId": "ch_11",
+    "title": "Strategic Intelligence and Threat Actors",
+    "description": "Understanding APT groups, motivations, and using intelligence to inform leadership.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "Strategic CTI",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The 'Who' and 'Why' 🤔",
+            "content": "# Strategic Threat Intelligence\n\n**Strategic CTI** answers the high-level questions executives care about:\n*   *\"Who is targeting us?\"*\n*   *\"Why are they targeting us?\"*\n*   *\"What is the potential business impact?\"*\n\n**Audience:** CISO, CIO, Board of Directors, Risk Management.\n\n**Format:** Briefings, trend reports, risk assessments. **Not** lists of IP addresses.\n\n**Analogy:** Tactical intel is *\"There's a pickpocket on 5th Avenue.\"* Strategic intel is *\"Organized crime rings are increasing pickpocketing in shopping districts during the holiday season. Our retail stores are at elevated risk.\"*"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Threat Actor Taxonomy 🎭",
+            "content": "# Who Are the Bad Guys?\n\nUnderstanding motivations helps predict targets and tactics.\n\n| Actor Type | Motivation | Typical Targets | Example |\n| :--- | :--- | :--- | :--- |\n| **Nation-State (APT)** | Espionage, Sabotage, Geopolitical Influence | Gov't, Defense, Critical Infrastructure, Tech IP | APT29 (Cozy Bear), APT41 |\n| **Cybercriminals (eCrime)** | **MONEY** | Anyone with money/data. Ransomware, BEC. | FIN7, LockBit, Conti |\n| **Hacktivists** | Ideology, Political Change, Revenge | Organizations they oppose. Defacement, DDoS. | Anonymous, Killnet |\n| **Insider Threat** | Financial Gain, Revenge, Negligence | Their own employer. Data theft, sabotage. | N/A |\n\n**Strategic Value:** If you are a **bank**, eCrime is your top threat. If you are a **defense contractor**, Nation-States are your top threat."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Actor Motivation 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "A threat actor group primarily deploys ransomware and demands payment in Bitcoin. Which category do they likely belong to?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Nation-State (APT)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Cybercriminal (eCrime)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Hacktivist",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Ransomware is a monetization tool, the hallmark of financially motivated eCrime groups.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Case Study: FIN7 (Carbanak) 🦈",
+            "content": "# A Profile in eCrime\n\n**Name:** FIN7 (MITRE ID: `G0046`)\n**Motivation:** Financial Gain.\n**Primary Industry Targets:** Hospitality, Restaurants, Retail (POS systems).\n**Notable TTPs:**\n- Spearphishing with malicious `.docm` files containing VBA macros.\n- Use of PowerShell Empire and Cobalt Strike.\n- Exfiltration of credit card track data.\n\n**Strategic Implication for a Retail Company:**\n1.  **Investment Focus:** Prioritize **Email Security Gateway** and **Endpoint Detection (EDR)** on POS terminals.\n2.  **Training:** Focus phishing training on **Finance and Store Operations** staff.\n3.  **Detection:** Tune SIEM to specifically hunt for FIN7-associated TTPs (e.g., `T1059.001` with parent `WINWORD.EXE`)."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "The Strategic Report: Executive Summary",
+            "content": "This is what you give to leadership. Keep it to one page.",
+            "codeSnippet": "THREAT ADVISORY: Increased FIN7 Activity Targeting Retail Sector\nDate: 2026-03-25\nTLP: GREEN\n\nEXECUTIVE SUMMARY:\nOver the past 30 days, multiple security vendors have observed a resurgence in FIN7 activity targeting large retail and hospitality chains. The group is utilizing sophisticated phishing lures related to supply chain logistics.\n\nRELEVANCE TO ACME CORP:\nGiven our 2,500 retail locations and use of POS systems, Acme Corp is a high-value target for this actor.\n\nRECOMMENDED ACTIONS:\n1. Conduct immediate phishing simulation focused on 'Shipping Delay' themes.\n2. Verify EDR agents are deployed to 100% of POS terminals.\n3. SOC to execute Threat Hunt for FIN7 TTPs (See Appendix A).\n\nCONFIDENCE: High (Based on Mandiant, CrowdStrike, and internal telemetry).",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_6",
+            "type": "tip",
+            "title": "TLP: Traffic Light Protocol 🚦",
+            "content": "## Marking Intelligence Appropriately\n\n*   **TLP:RED:** For the recipient's eyes only. No sharing.\n*   **TLP:AMBER:** Limited sharing within the recipient's organization (on a need-to-know basis).\n*   **TLP:GREEN:** Shareable within the wider security community, but not publicly.\n*   **TLP:CLEAR:** Public information.\n\n**Always respect TLP markings.** Violating them destroys trust with intelligence partners."
+        }
+    ]
+}

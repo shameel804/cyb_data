@@ -1,0 +1,14 @@
+{
+    "id": "task3",
+    "chapterId": "ch_12",
+    "title": "Brute Force Detection and Alerting",
+    "description": "Simulate RDP brute force and create a Splunk alert.",
+    "estimatedMinutes": 30,
+    "problemStatement": "### Scenario\nSimulate a brute force attack against RDP on the Windows Victim and create a Splunk alert that would notify the SOC.\n\n### Attack (Kali Linux)\n1.  Ensure RDP is enabled on Windows Victim.\n2.  Create a small wordlist file (`passwords.txt`) with 10 common passwords (e.g., 'password', '123456', 'admin').\n3.  Run Hydra: `hydra -l administrator -P passwords.txt rdp://<Windows_IP> -t 4`\n\n### Detection (Splunk)\n1.  Search for Event ID 4625 (Failed Logon).\n2.  Write a search that counts failed logins per source IP over a 5-minute window.\n\n### Create an Alert\n1.  Save the search as an **Alert**.\n2.  Configure it to trigger when **results count > 5** in a **5-minute window**.\n3.  Set the alert action to **Add to Triggered Alerts**.\n\n### Documentation\nTake screenshots of:\n1.  Hydra command output showing failed attempts.\n2.  The raw Event ID 4625 in Splunk.\n3.  The aggregated search showing the count per IP.\n4.  The Alert configuration page.\n\n### Questions\n- What would be a legitimate reason for multiple 4625 events that is NOT an attack?",
+    "hints": [
+        "Use `bucket _time span=5m` for time windowing.",
+        "Legitimate cause: User forgot password and tried a few variations, or a service account with expired password."
+    ],
+    "expectedOutput": "Screenshots and alert configuration. Answer: User error (typing wrong password) or misconfigured service account.",
+    "solutionCode": "index=windows EventCode=4625 | bucket _time span=5m | stats count by Source_Network_Address, _time | where count > 5"
+}

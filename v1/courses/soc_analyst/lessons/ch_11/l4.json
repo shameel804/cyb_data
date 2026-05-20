@@ -1,0 +1,75 @@
+{
+    "id": "l4",
+    "chapterId": "ch_11",
+    "title": "Operational Intelligence: Mapping TTPs to ATT&CK",
+    "description": "Analyzing adversary campaigns and translating reports into ATT&CK techniques.",
+    "xpReward": 40,
+    "estimatedMinutes": 9,
+    "section": "Operational CTI",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "From Report to Actionable Detection 📝➡️🔍",
+            "content": "# The Art of TTP Extraction\n\n**Scenario:** You receive a 20-page threat report on **'TA444'** (a North Korean threat actor targeting crypto companies).\n\n**How do you turn this PDF into a new SIEM alert?**\n\n1.  **Read the 'Technical Analysis' section.** (Skip the geopolitical fluff).\n2.  **Highlight behavioral keywords:** *\"spawns PowerShell\"*, *\"creates scheduled task named 'GoogleUpdate'\"*, *\"uses WMI for lateral movement\"*.\n3.  **Map to ATT&CK IDs:**\n    - *\"spawns PowerShell\"* -> `T1059.001`\n    - *\"scheduled task named 'GoogleUpdate'\"* -> `T1053.005`\n    - *\"uses WMI for lateral movement\"* -> `T1047`\n4.  **Build Detection Logic:** Focus on the **combination** of these techniques within a short time window."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Case Study: Mapping a Phishing Attack",
+            "content": "Let's map a common phishing chain to ATT&CK.\n\n**Narrative:** User receives email with malicious Word doc. Enables macros. Word spawns PowerShell. PowerShell downloads `payload.exe`. Payload adds a Run key for persistence.\n\n**ATT&CK Mapping:**\n1. Initial Access: `T1566.001` (Spearphishing Attachment)\n2. Execution: `T1204.002` (Malicious File - User Execution)\n3. Execution: `T1059.001` (PowerShell)\n4. Command and Control: `T1105` (Ingress Tool Transfer) -> *downloading payload.exe*\n5. Persistence: `T1547.001` (Registry Run Keys / Startup Folder)\n\n**This is the 'kill chain' for this specific incident.**",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "TTP Mapping 🗺️",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "An attacker uses `net use \\\\server\\share` to copy a file from Workstation A to Server B. Which ATT&CK Tactic and Technique best describe this?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Collection (T1560)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Lateral Movement (T1021.002 - SMB/Windows Admin Shares)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Exfiltration (T1048)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Using `net use` and SMB shares to move files is classic Lateral Movement via Windows Admin Shares.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "The Diamond Model of Intrusion Analysis 💎",
+            "content": "# Another Lens for Operational Intel\n\nThe **Diamond Model** helps analysts understand the relationship between four core features of an attack.\n\n**The Four Points of the Diamond:**\n1.  **Adversary:** Who is the attacker? (APT29, FIN7).\n2.  **Capability:** What tool/malware did they use? (Cobalt Strike, Mimikatz).\n3.  **Infrastructure:** What IP/domain did they use? (185.142.53.21).\n4.  **Victim:** Who was targeted? (Acme Corp, Finance Dept).\n\n**Analysis Pivot:**\n*   If you find a new piece of **Infrastructure** (a new C2 IP), can you pivot to find the associated **Capability** (malware hash) used with it?\n*   This is how CTI analysts create **clusters** of activity to track campaigns."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Operationalizing TTPs: Behavioral Detection",
+            "content": "Instead of alerting on `powershell.exe -enc ...` (which changes daily), alert on the **Behavior**: *Microsoft Office spawning PowerShell with a network connection.*\n\n**SIEM Rule Pseudo-Code:**\n```\nIF (ParentProcess IN ('winword.exe', 'excel.exe', 'outlook.exe'))\nAND (ProcessName = 'powershell.exe')\nAND (NetworkConnection EXISTS to External IP)\nTHEN GENERATE ALERT: 'Suspicious Office Macro Execution'\n```\n\n**This rule catches:**\n- Today's FIN7 macro.\n- Tomorrow's APT29 macro.\n- Next week's unknown custom macro.\n\n**This is the power of behavioral (TTP-based) detection.**",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "Confidence Scoring in CTI 📊",
+            "content": "## Not All Intel is Created Equal\n\nCTI reports use a confidence scale (e.g., Low/Medium/High).\n*   **High Confidence:** Multiple sources, technical evidence, direct observation.\n*   **Medium Confidence:** Logical inference, single source.\n*   **Low Confidence:** Speculation, rumor.\n\n**Never build a detection rule based on Low Confidence intelligence.** You'll drown in false positives."
+        }
+    ]
+}

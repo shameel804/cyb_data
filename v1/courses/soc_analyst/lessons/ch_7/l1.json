@@ -1,0 +1,68 @@
+{
+    "id": "l1",
+    "chapterId": "ch_7",
+    "title": "Why PCAP Matters to Blue Team",
+    "description": "The packet doesn't lie. Why full packet capture is the ultimate source of truth.",
+    "xpReward": 30,
+    "estimatedMinutes": 6,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Ultimate Source of Truth 📦",
+            "content": "# PCAP: Packet Capture\n\nIn Chapter 6, we analyzed **logs** (firewall, proxy, DNS). Logs are **summaries** of what happened. But logs can be wrong, incomplete, or missing due to misconfiguration.\n\n**PCAP** is the **raw, unaltered network traffic**. It contains every single byte that crossed the wire.\n\n**Analogy:**\n*   **Log:** The security guard's handwritten notes. *\"Suspicious person walked by at 2 AM.\"*\n*   **PCAP:** The **high-definition security camera footage**. You can zoom in, rewind, and see exactly what the person was carrying.\n\n**Why SOC Analysts Need PCAP:**\n*   Confirm if an attack actually succeeded (Did the TCP handshake complete?)\n*   Extract transferred files (Malware samples, stolen data).\n*   See **inside** encrypted tunnels (if you have the private key or session key)."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "PCAP vs. NetFlow vs. Logs 📊",
+            "content": "# The Pyramid of Network Visibility\n\n| Data Source | Content | Storage Cost | Detail Level |\n| :--- | :--- | :--- | :--- |\n| **NetFlow / IPFIX** | Who talked to whom, how long, bytes count | Very Low | Low (Metadata) |\n| **Firewall / Proxy Logs** | Port, URL, Action (Allow/Deny) | Low | Medium |\n| **PCAP** | Every byte of every packet | **VERY HIGH** | **Maximum** |\n\n**The Trade-off:** You cannot store full PCAP for all traffic forever. It's too much data. SOCs typically use **rolling buffers** (e.g., 24-72 hours) or capture only on **trigger** (when an alert fires).\n\n**Analyst Note:** If an alert is 3 days old, the PCAP might be **gone**. Act fast."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Visibility Check 🔍",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "You need to know the exact contents of a file that was downloaded via HTTP. Which data source provides this?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Proxy Logs",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Full Packet Capture (PCAP)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "NetFlow Data",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Only PCAP contains the actual file bytes. Proxy logs might have the URL but not the file itself.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "code",
+            "title": "The Anatomy of a Packet (Simplified)",
+            "content": "A packet is like a Russian nesting doll.",
+            "codeSnippet": "[Ethernet Header] [IP Header] [TCP Header] [HTTP Data / Payload]\n\n- Ethernet: Source/Destination MAC Address.\n- IP: Source/Destination IP Address.\n- TCP: Source/Destination Port, Flags (SYN, ACK), Sequence Numbers.\n- Payload: The actual data (HTML, EXE file, password).",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_5",
+            "type": "tip",
+            "title": "The PCAP Goldmine ⛏️",
+            "content": "## When Logs Fail, PCAP Saves You\n\n**Scenario:** Firewall log says connection was `ALLOWED`. Proxy log shows `200 OK` for a suspicious URL. But did the malware actually **install**?\n\n**Answer:** Open the PCAP. Look at the **TCP Stream**. If you see a `GET /` request followed by a large binary blob coming back, and then **more connections** to other IPs... you have **proof of compromise**.\n\n**This is why Tier 2/Tier 3 analysts live in Wireshark.**"
+        }
+    ]
+}

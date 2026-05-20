@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_6",
+    "title": "DNS Anomaly Detection",
+    "description": "Write SIEM queries to detect DGA malware and DNS tunneling.",
+    "estimatedMinutes": 15,
+    "problemStatement": "### Scenario\nYou are a SOC analyst tasked with writing two **scheduled searches** (SIEM queries) to detect DNS-based threats. The data is indexed as `index=dns` with fields: `src_ip`, `query`, `response_code`, `query_type`.\n\n### Task 1: DGA Malware Detection\nWrite a **pseudo-SPL query** that identifies hosts that are likely infected with DGA malware.\n\n**Requirements:**\n- Look at a 1-hour window.\n- Calculate the percentage of `NXDOMAIN` responses per `src_ip`.\n- Only alert if the host made **at least 50 total queries** AND **over 70% of them failed**.\n\n### Task 2: DNS Tunneling Detection\nWrite a **pseudo-SPL query** that identifies potential DNS tunneling.\n\n**Requirements:**\n- Look at a 1-hour window.\n- Alert if a single `src_ip` makes **more than 20 queries** where the **query string length is greater than 52 characters**.\n- Bonus: Also look for queries containing a **high ratio of digits or equals signs** (potential Base64).\n\nProvide the queries as if you were writing them in a SIEM search bar.",
+    "hints": [
+        "Use `eval` to create calculated fields like query length and NXDOMAIN boolean.",
+        "Use `stats` to aggregate by `src_ip`.",
+        "For Base64 detection, use regex: `match(query, \"[A-Za-z0-9+/=]{20,}\")`"
+    ],
+    "expectedOutput": "Two SPL queries as described.",
+    "solutionCode": "# Task 1: DGA Detection\nindex=dns earliest=-1h\n| eval is_nx = if(response_code==\"NXDOMAIN\", 1, 0)\n| stats count, sum(is_nx) as nx_count by src_ip\n| eval fail_pct = round(nx_count/count*100, 2)\n| where count > 50 AND fail_pct > 70\n| table src_ip, count, nx_count, fail_pct\n\n# Task 2: DNS Tunneling\nindex=dns earliest=-1h\n| eval q_len = len(query)\n| search q_len > 52\n| stats count, values(query) as sample_queries by src_ip\n| where count > 20\n| sort -count"
+}

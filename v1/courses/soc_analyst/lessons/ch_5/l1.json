@@ -1,0 +1,74 @@
+{
+    "id": "l1",
+    "chapterId": "ch_5",
+    "title": "What is a SIEM?",
+    "description": "The central nervous system of the SOC explained.",
+    "xpReward": 30,
+    "estimatedMinutes": 6,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Brain of the SOC 🧠",
+            "content": "# SIEM: Security Information and Event Management\n\nA **SIEM** (pronounced \"sim\" or \"seem\") is the central platform that collects, aggregates, and analyzes log data from across the entire organization.\n\n**Analogy:** Imagine a bank with 10,000 security cameras. Watching all those feeds simultaneously is impossible. A **SIEM** is like an intelligent video management system that:\n1.  **Records everything** from all cameras (Log Aggregation).\n2.  **Alerts** when it detects motion in the vault at 3 AM (Correlation).\n3.  **Lets you rewind** and search for a specific person in a red shirt (Search & Forensics)."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "SIEM vs. Log Management 📊",
+            "content": "# It's More Than Just Storage\n\n| Feature | Basic Log Management | SIEM |\n| :--- | :--- | :--- |\n| **Storage** | Saves logs to disk | Saves logs to disk |\n| **Search** | Simple text search | Advanced query language |\n| **Correlation** | ❌ None | ✅ Links events across sources |\n| **Alerting** | ❌ None | ✅ Real-time notifications |\n| **Dashboards** | ❌ Basic graphs | ✅ Interactive visualizations |\n\n**Key Distinction:** A SIEM doesn't just store logs; it **understands relationships**. It knows that a failed login (Event 4625) followed by a successful login (Event 4624) from the same IP is **bad news**."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "SIEM Check ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the primary advantage of a SIEM over simple log aggregation?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It uses less disk space.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It correlates events from different sources to identify attack patterns.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It can send emails.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Correlation is the 'I' in SIEM—Intelligence. It connects the dots across firewalls, servers, and endpoints.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The SIEM Data Pipeline 🔄",
+            "content": "# From Raw Log to Alert\n\n1.  **Collection:** Agents (Splunk Forwarders, Logstash, Azure Monitor Agent) ship logs from endpoints to the SIEM.\n2.  **Parsing & Normalization:** The SIEM extracts fields from raw text.\n    *   *Raw:* `Mar 10 10:15:32 FW-01 %ASA-6-302013: Built outbound TCP connection...`\n    *   *Parsed:* `timestamp=\"Mar 10 10:15:32\" src_ip=\"192.168.1.100\" dest_ip=\"8.8.8.8\" action=\"allow\"`\n3.  **Indexing:** Logs are stored in a way that makes searching fast.\n4.  **Correlation & Alerting:** Rules run against the stream of data.\n5.  **Retention:** Logs are archived or deleted based on compliance policies (e.g., keep for 90 days)."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Popular SIEM Platforms 🛠️",
+            "content": "You'll likely encounter one of these in your career:",
+            "codeSnippet": "1. Splunk Enterprise / Splunk Cloud\n   Query Language: SPL (Search Processing Language)\n   \n2. Microsoft Sentinel\n   Query Language: KQL (Kusto Query Language)\n   \n3. Elastic Stack (ELK)\n   Query Language: Elasticsearch Query DSL / EQL\n   \n4. IBM QRadar\n   Query Language: AQL (Ariel Query Language)",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "The SOC Analyst's Truth 🔍",
+            "content": "## You Will Live in the SIEM\n\nAs a Tier 1/Tier 2 analyst, 80% of your day is spent inside the SIEM search bar. Your ability to **query fast** and **pivot accurately** is the difference between a 5-minute triage and a 5-hour rabbit hole.\n\n**Master the query language. It is your sword.**"
+        }
+    ]
+}

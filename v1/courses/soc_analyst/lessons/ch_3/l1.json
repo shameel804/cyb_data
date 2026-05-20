@@ -1,0 +1,68 @@
+{
+    "id": "l1",
+    "chapterId": "ch_3",
+    "title": "Why Networking Matters to Blue Team",
+    "description": "The network as the SOC's primary sensor.",
+    "xpReward": 20,
+    "estimatedMinutes": 5,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Castle Moat 🏰",
+            "content": "# The Network is Your Perimeter\n\nIn Chapter 1, we talked about defending the castle. The **network** is the **moat and the drawbridge**. It's the pathway everything travels on.\n\n*   **If an endpoint is compromised**, the malware *must* use the network to:\n    *   Phone home (Command & Control)\n    *   Steal data (Exfiltration)\n    *   Spread laterally to other machines\n\n**Key Insight for Analysts:** You might not have visibility into the memory of a user's laptop (that's EDR's job), but you **almost always** have visibility into the network traffic flowing to and from that laptop.\n\n> **Analogy:** You can't see the burglar inside the house, but you *can* see the moving truck backing up to the driveway at 3 AM."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "The SOC's Network Data Sources 📡",
+            "content": "# Where Do We Get This Info?\n\nAs a Tier 1 analyst, you'll look at alerts generated from these network sensors:\n\n1.  **Firewall Logs:** Records of **allowed** and **blocked** connections.\n    *   *Query:* \"Show me all outbound connections to port 22 (SSH) from the HR subnet.\"\n2.  **Proxy / Web Gateway Logs:** Records of web browsing (URLs visited).\n    *   *Query:* \"Show me users who visited `evil-site.com`.\"\n3.  **NetFlow / IPFIX:** Metadata about traffic flow. *Who talked to whom, for how long, and how much data was sent?*\n    *   *Query:* \"Which internal IP sent 5GB of data to Russia last night?\"\n4.  **IDS/IPS Alerts:** Signatures matching known attacks. *Snort/Suricata alerts.*"
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Sensor Check 📡",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "You need to find out if a user clicked on a malicious link in a phishing email. Which log source is MOST useful?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "NetFlow Data",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Proxy / Web Gateway Logs",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Firewall Traffic Log (port 443 only)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Proxy logs show the exact URL requested, including the full path. Firewall logs only show the destination IP and port (usually 443/HTTPS), not the specific malicious page.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "code",
+            "title": "Sample Firewall Log (Syslog)",
+            "content": "This is what raw data looks like. Don't panic. We'll break this down.",
+            "codeSnippet": "Mar 10 10:15:32 FW-01 : %ASA-6-302013: Built outbound TCP connection 12345 for INTERNAL:192.168.1.100/54322 (192.168.1.100/54322) to OUTSIDE:8.8.8.8/53 (8.8.8.8/53)",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_5",
+            "type": "tip",
+            "title": "East-West vs. North-South 🚀",
+            "content": "## Traffic Directions Matter\n\n*   **North-South:** Traffic leaving or entering the corporate network (to/from the Internet). **The Perimeter.**\n*   **East-West:** Traffic between devices **inside** the network. *(Server A talking to Server B).*\n\n**Why it matters:** Many SOCs are blind to East-West traffic. An attacker who compromises a workstation will move **laterally** (East-West) to find the database server. If you only monitor the firewall (North-South), you will **miss this entirely**."
+        }
+    ]
+}

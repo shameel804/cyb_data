@@ -1,0 +1,75 @@
+{
+    "id": "l3",
+    "chapterId": "ch_9",
+    "title": "Basic Dynamic Analysis: The Sandbox",
+    "description": "Safely execute malware to observe process, file, registry, and network behavior.",
+    "xpReward": 40,
+    "estimatedMinutes": 9,
+    "section": "Dynamic Analysis",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Let It Run (Safely) 🏃",
+            "content": "# Dynamic Analysis Overview\n\n**Dynamic Analysis** executes the malware in a controlled environment and monitors its behavior.\n\n**What We Monitor:**\n1.  **Process Activity:** What new processes are spawned? Does it inject into others?\n2.  **File System Changes:** What files are created, modified, or deleted?\n3.  **Registry Changes:** Does it add persistence keys?\n4.  **Network Traffic:** What IPs/Domains does it contact? (C2, Download).\n\n**Core Toolset:**\n*   **Process Monitor (Procmon):** Captures all process/thread/file/registry activity.\n*   **Process Explorer (Procexp):** Shows process tree and loaded DLLs.\n*   **Wireshark:** Captures network traffic.\n*   **Regshot:** Takes a 'before and after' snapshot of the registry to highlight changes."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "The Dynamic Analysis Workflow ⚙️",
+            "content": "# Step-by-Step Lab Procedure\n\n**Preparation (Snapshot Clean):**\n1.  Start clean VM snapshot.\n2.  Launch monitoring tools (Procmon, Wireshark, Regshot first shot).\n3.  Start **INetSim** to simulate internet services.\n\n**Execution:**\n4.  Copy malware to VM Desktop.\n5.  **Execute the malware.** (Right-click -> Run as Administrator if needed).\n6.  Let it run for **2-5 minutes**.\n\n**Observation:**\n7.  Check **Process Explorer**: Did it spawn a child process? Did the original process disappear (suicide)? Is there a new `svchost.exe` with a weird parent?\n8.  Check **Wireshark**: Look for DNS queries, HTTP requests, TLS handshakes (extract JA3).\n\n**Collection:**\n9.  Stop monitoring. Save Procmon log (Filter to PML). Save PCAP.\n10. Take **Regshot second shot** and compare.\n11. **Revert VM to clean snapshot.**"
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Dynamic Workflow 🛠️",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "You run malware and notice in Process Explorer that `malware.exe` spawns `svchost.exe`, then `malware.exe` terminates. What technique is this?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Process Hollowing / Injection",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Normal software update",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "DLL Side-Loading",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Spawning a legitimate process and terminating is a classic injection technique to hide malicious code inside a trusted process.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "Using Procmon Effectively",
+            "content": "Procmon generates **millions of events**. You MUST filter.\n\n**Essential Procmon Filters:**\n1.  **Process Name** `is` `malware.exe` (and its children).\n2.  **Operation** `is` `Process Create`, `WriteFile`, `RegSetValue`, `TCP Connect`.\n3.  **Exclude** `Operation` `is` `RegQueryValue` (Too noisy).\n\n**What to Look For:**\n*   `WriteFile` to `C:\\Users\\Public\\` or `C:\\Windows\\Temp\\` (Dropped payload).\n*   `RegSetValue` to `HKLM\\...\\Run` or `HKCU\\...\\Run` (Persistence).\n*   `Process Create` showing `cmd.exe /c ...` or `powershell.exe -enc ...`.",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Network Analysis in Dynamic Analysis",
+            "content": "Use Wireshark with INetSim. INetSim responds to all DNS requests with its own IP, so you can see what domains the malware **tries** to resolve.\n\n**Key Wireshark Filters During Analysis:**\n```\ndns.qry.name contains \"evil\"\nhttp.request\nip.dst == 192.168.56.101  # INetSim IP\n```\n\n**Extracting IOCs:**\n*   If you see a DNS query for `banana-command[.]com`, add that to your blocklist.\n*   If you see an HTTP POST to `/gate.php` with encrypted data, note the URI pattern.",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Automated Sandboxes for the Win 🚀",
+            "content": "## Joe Sandbox / Any.Run / Cape Sandbox\n\nAs a Tier 1/2 SOC analyst, you will rarely do manual dynamic analysis. You will **submit** the file to a commercial/cloud sandbox and **read the report**.\n\n**Reading a Sandbox Report:**\n1.  **Verdict:** Malicious score (e.g., 100/100).\n2.  **Signatures:** \"Cobalt Strike Beacon detected\", \"Creates persistence via Registry\".\n3.  **Behavior:** Process tree graph.\n4.  **Network:** PCAP download, extracted C2 IPs.\n\n**Understanding sandbox output is the modern SOC analyst's primary malware analysis skill.**"
+        }
+    ]
+}

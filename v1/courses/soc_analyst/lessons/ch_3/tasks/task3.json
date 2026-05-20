@@ -1,0 +1,14 @@
+{
+    "id": "task3",
+    "chapterId": "ch_3",
+    "title": "DNS Tunneling Hunt",
+    "description": "Write a pseudo-query to detect DNS tunneling in a SIEM.",
+    "estimatedMinutes": 10,
+    "problemStatement": "### Scenario\nYour SIEM collects DNS logs. You want to create a scheduled search (alert) that looks for potential **DNS Tunneling**.\n\n### Task\nWrite a **pseudo-query** (plain English logic or Splunk-like syntax) that would find the following suspicious DNS behavior:\n\n- A single internal IP address (`src_ip`)\n- Making more than **100 DNS queries** within **5 minutes**\n- Where the queried domain length (`query`) is **greater than 40 characters**\n- OR the subdomain contains a high ratio of **numbers and special characters**\n\n### Example Splunk Pseudo-Syntax\n```\nindex=dns src_ip=192.168.* \n| stats count by src_ip, query\n| where count > 100 AND len(query) > 40\n| table src_ip, query, count\n```\n\nWrite your version below. Focus on the **logic**, not perfect syntax.",
+    "hints": [
+        "You might need to calculate the length of the queried domain string.",
+        "You can filter for unusual characters using regex like `[^a-zA-Z.]`."
+    ],
+    "expectedOutput": "A logical query that identifies high-volume, long, or randomized DNS queries from a single source.",
+    "solutionCode": "index=dns sourcetype=dns\n| eval query_len = len(query)\n| search query_len > 50 OR query=\"*[0-9a-f]{16}*\"\n| stats count, dc(query) as unique_queries by src_ip\n| where count > 100 OR unique_queries > 50\n| table src_ip, count, unique_queries"
+}
