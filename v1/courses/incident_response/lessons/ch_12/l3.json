@@ -1,0 +1,96 @@
+{
+    "id": "l3",
+    "chapterId": "ch_12",
+    "title": "Writing the Incident Report 📄",
+    "description": "Executive summaries, technical reports, and lessons learned documentation.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Reporting",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Final Deliverable 📦",
+            "content": "# Turning Chaos into a Coherent Document\n\nThe **Incident Report** is the official record of what happened. It serves three audiences:\n\n1.  **Executive Leadership:** What was the business impact? Is it over? What are we doing to prevent recurrence?\n2.  **Technical Team:** What were the IOCs, timeline, and root cause? (For future reference).\n3.  **Legal / Insurance:** Documentation required for claims and potential litigation.\n\n**Three Report Types in One:**\n- **Executive Summary** (1-2 pages)\n- **Technical Findings** (Detailed Timeline, IOCs, MITRE ATT&CK Mapping)\n- **Lessons Learned & Action Items**"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Executive Summary Structure 📈",
+            "content": "# Speaking to the Board\n\nExecutives have limited time and need to make business decisions.\n\n**Section 1: Incident Overview (1 paragraph)**\n- **What happened?** (One sentence: 'On April 20, 2026, Acme Corp experienced a ransomware incident affecting the Accounting file server.')\n- **How was it detected?** ('The incident was detected by our EDR platform at 08:32 UTC.')\n- **Current Status:** ('Systems are fully restored. Enhanced monitoring remains in place.')\n\n**Section 2: Business Impact**\n- **Downtime:** ('The Accounting file server was unavailable for 6 hours.')\n- **Data Exposure:** ('Forensic analysis indicates no evidence of customer data exfiltration.')\n- **Financial Cost:** ('Estimated remediation costs: $75,000 in external consultant fees and overtime.')\n\n**Section 3: Root Cause (High-Level)**\n- ('The initial access vector was a phishing email that bypassed email filters.')\n\n**Section 4: Remediation & Next Steps**\n- ('Implemented Multi-Factor Authentication on all admin accounts.')\n- ('Enhanced email security filtering rules deployed.')\n- ('Full security awareness training scheduled for Q2.')\n\n**Section 5: Lessons Learned**\n- ('Communication delays occurred due to outdated contact list. Process updated.')\n\n**Length:** **1-2 pages maximum.**"
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Executive Summary Content 📋",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which of the following details is MOST appropriate for the Executive Summary of an incident report?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The exact SHA256 hash of the ransomware executable.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The command line arguments used by the attacker's PowerShell script.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The estimated financial impact of the service outage.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A full packet capture analysis showing the C2 beaconing interval.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Executives care about business metrics (money, time, risk). Technical details belong in the Technical Findings section.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Technical Findings Section 🔬",
+            "content": "# The Forensic Record\n\nThis section is for **internal security teams, future investigators, and potentially expert witnesses**.\n\n**Required Subsections:**\n\n**1. Incident Timeline (UTC)**\n- **Format:** `[YYYY-MM-DD HH:MM:SS UTC] - Event Description - Source of Evidence`\n- **Example:** `[2026-04-20 08:15:22] - Phishing email delivered to jsmith@acme.com - O365 Message Trace`\n- **Importance:** This is the single source of truth for what happened when.\n\n**2. Indicators of Compromise (IOCs)**\n- **Network:** IPs, Domains, URLs, JA3/S SL fingerprints.\n- **Host:** File Hashes (MD5, SHA256), File Paths, Registry Keys, Mutex Names, Scheduled Task Names.\n- **Email:** Sender addresses, Subject lines, Attachment names/hashes.\n\n**3. MITRE ATT&CK Mapping**\n- Map each phase of the attack to a Technique ID.\n- **Example:** Initial Access: T1566.001 (Spearphishing Attachment) -> Execution: T1059.001 (PowerShell) -> Persistence: T1053.005 (Scheduled Task).\n- **Value:** Standardized language for describing adversary behavior.\n\n**4. Forensic Evidence Summary**\n- List of evidence collected: 'Memory dump of FS01 (fs01-20260420.raw)', 'Disk image of FS01 (fs01-C-Drive.E01)', 'Firewall logs (2026-04-20.csv)'.\n- Hashing information to prove integrity.\n\n**5. Detailed Analysis Narrative**\n- A prose description of the attack chain, referencing the timeline and IOCs.\n- This tells the **story** of the incident."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Example: Technical Timeline Format ⏱️",
+            "content": "Precision is non-negotiable. Use a consistent format.\n\n**Bad Timeline:**\n```\nMorning: User clicked bad link.\nAfternoon: We found malware.\n```\n\n**Good Timeline:**\n```text\n[2026-04-20 08:15:22 UTC] Email from invoice@paypa1.com with subject 'Invoice 456' delivered to bob.smith@acme.com. Attachment: Invoice_456.xlsm (SHA256: abc123...). Source: O365 Message Trace.\n[2026-04-20 08:32:10 UTC] User bob.smith opened attachment and enabled macros. Source: Sysmon Event ID 1 on BOB-LAPTOP.\n[2026-04-20 08:32:15 UTC] Process 'EXCEL.EXE' (PID 1234) spawned 'powershell.exe' (PID 5678) with command line '-Enc SQBFAFgA...'. Source: Sysmon Event ID 1.\n[2026-04-20 08:32:45 UTC] Process 'powershell.exe' (PID 5678) initiated outbound connection to 185.142.53.179:443. Source: Sysmon Event ID 3.\n[2026-04-20 08:33:00 UTC] SIEM Alert 'Suspicious PowerShell Network Connection' generated. Source: Splunk.\n```\n\n**Why is this better?** It's precise, includes evidence sources, and can be independently verified."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Lessons Learned & Action Items ✅",
+            "content": "# Turning Pain into Progress\n\nThis section is the bridge from **Post-Incident** back to **Preparation**.\n\n**Structure:**\n| Finding | Root Cause | Action Item | Owner | Due Date | Status |\n| :--- | :--- | :--- | :--- | :--- | :--- |\n| Email filter missed phishing message. | SPF/DKIM checks not enforced strictly. | Configure email gateway to quarantine messages failing DMARC. | Email Admin | 2026-05-15 | In Progress |\n| No alert on PowerShell download cradle. | PowerShell Script Block Logging not enabled on 20% of endpoints. | Deploy GPO to enable Script Block Logging globally. | Security Engineering | 2026-05-01 | Complete |\n| Delayed communication with IT. | On-call contact list outdated. | Implement PagerDuty for automated on-call scheduling. | IT Ops Manager | 2026-06-01 | Not Started |\n\n**Characteristics of Good Action Items:**\n- **Specific:** 'Enable PowerShell logging' not 'Improve logging.'\n- **Owned:** Assigned to a specific person or team.\n- **Time-bound:** Clear due date.\n\n**Follow-Up:** The Incident Commander should review this table **monthly** until all items are closed."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "warning",
+            "title": "The 'Draft' Watermark 🚧",
+            "content": "# Controlling Distribution\n\n**Never distribute the full Technical Report widely without controls.**\n\n**Why?**\n- **Discovery Risk:** The Technical Report contains a roadmap of your security failures. In a lawsuit, it's a goldmine for plaintiffs.\n- **Insider Threat:** An employee with a grudge could leak the report to the press.\n\n**Best Practices:**\n- **Mark all drafts:** 'PRIVILEGED & CONFIDENTIAL - ATTORNEY WORK PRODUCT - DRAFT' (if prepared at the direction of counsel).\n- **Limit Distribution:** Executive Summary to Board. Technical Report to core security team and Legal.\n- **Use Secure Sharing:** Password-protected PDFs, secure SharePoint links with expiration.\n- **Final Version:** Store in a restricted, audited location. Do not email as an attachment."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "quiz",
+            "title": "Report Distribution 📤",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "The full Technical Incident Report should be emailed to all employees so everyone can learn from the incident.",
+                "correctAnswer": false,
+                "explanation": "False. Technical reports contain sensitive security details and potential admissions of liability. Distribution must be strictly limited.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

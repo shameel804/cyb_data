@@ -1,0 +1,90 @@
+{
+    "id": "l2",
+    "chapterId": "ch_4",
+    "title": "Logging: The Raw Material 📋",
+    "description": "What to log, where to store it, and why retention matters.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Data Collection",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Logs Are the Crime Scene Photos 📸",
+            "content": "# The Foundation of Detection\n\nIf you don't log it, **you can't detect it** and **you can't investigate it**.\n\n**The Attacker's First Goal:** Clear the logs. Cover their tracks.\n\n**The Defender's Goal:** Make logs **immutable** and **centralized** so the attacker can't touch them.\n\n**Key Principle:** Logs must be shipped **off the local system** to a central, secure location **immediately**."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "What MUST You Log? (The Critical Events) 📝",
+            "content": "### Windows Security Event Logs\n\nEnable **auditing** for these categories via Group Policy:\n\n1.  **Account Logon (Event ID 4624, 4625)**\n    - **Why:** Who logged in? From where? Failed logins = Brute Force.\n\n2.  **Process Creation (Event ID 4688)**\n    - **Why:** What executable ran? Who ran it? *Requires Command Line Logging!*\n\n3.  **PowerShell Logging (Event ID 4104 - Script Block Logging)**\n    - **Why:** Attackers love PowerShell. This logs the **actual script content**.\n\n4.  **Scheduled Task Creation (Event ID 4698)**\n    - **Why:** Attackers use tasks for persistence.\n\n5.  **Security Group Changes (Event ID 4728, 4732)**\n    - **Why:** Attacker adding themselves to 'Domain Admins'.\n\n6.  **Sysmon (System Monitor) - HIGHLY RECOMMENDED**\n    - **What:** A free Microsoft tool that logs **way more** than standard Windows logs (Network Connections, File Creation, Registry Changes).\n    - **If you can only enable ONE extra log source, make it Sysmon.**"
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Logging Must-Haves ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which Windows Event ID is critical for detecting a Brute Force attack against a user account?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "4688 (Process Creation)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "4625 (Failed Logon)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "4728 (Group Change)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "4104 (PowerShell)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Multiple 4625 events followed by a 4624 (Success) indicates a successful password guess.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Log Retention & Storage 🗄️",
+            "content": "### How Long to Keep Logs?\n\nThis is a battle between **Security** (keep forever) and **Cost** (storage is expensive) and **Privacy** (GDPR says don't keep forever).\n\n**Common Retention Periods:**\n- **Hot Storage (SIEM):** 30-90 days (Fast search for active IR).\n- **Warm Storage (Archived):** 6 months - 1 year (Historical investigations).\n- **Cold Storage (Long-term):** 1-7 years (Legal/Compliance holds).\n\n**Best Practice:**\n- **Centralize to a SIEM** (Splunk, Sentinel, Elastic).\n- **Prevent Deletion:** Use storage accounts with **Object Lock** or **Immutable Blobs**. Attackers try to delete logs before encryption.\n- **Use a Log Forwarder:** Never let endpoints talk directly to the SIEM (security risk). Use a dedicated **Log Aggregator** (e.g., NXLog, Winlogbeat)."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Example: Enabling PowerShell Script Block Logging 🖥️",
+            "content": "This is a **GOLD MINE** for detecting malicious scripts. You can see obfuscated code in plaintext.\n\n**PowerShell Command to Enable (Admin):**\n```powershell\nSet-ItemProperty -Path \"HKLM:\\SOFTWARE\\Wow6432Node\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging\" -Name \"EnableScriptBlockLogging\" -Value 1\n```\n\n**Group Policy Path:**\n`Computer Configuration > Administrative Templates > Windows Components > Windows PowerShell > Turn on PowerShell Script Block Logging`\n\n**What it captures:**\nEven if an attacker runs `powershell -enc [BASE64_STRING]`, the log will show the **decoded command**!"
+        },
+        {
+            "id": "s_l2_6",
+            "type": "warning",
+            "title": "The 'Logging Too Much' Trap 🪤",
+            "content": "## Don't Boil the Ocean\n\n**Mistake:** Enabling **every** audit setting in Windows. This generates so much noise that the SIEM crashes or exceeds licensing limits.\n\n**Strategy:** **Focus on what matters.**\n- **Must Log:** Process Creation, Logon/Logoff, Account Management.\n- **Nice to Have:** File Access Auditing (only on sensitive shares).\n- **Skip:** Detailed tracking of every single registry key read.\n\n**Test your logging volume** in a lab before deploying enterprise-wide. A single busy file server logging all file accesses can generate **gigabytes per hour** of useless data."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "Logging Best Practices 📊",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "Logs should be stored locally on each endpoint so they are easily accessible to the system administrator.",
+                "correctAnswer": false,
+                "explanation": "False. Local logs can be deleted by attackers with admin rights. Logs must be shipped off-system to a secure, centralized location immediately.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

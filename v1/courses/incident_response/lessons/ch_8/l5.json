@@ -1,0 +1,96 @@
+{
+    "id": "l5",
+    "chapterId": "ch_8",
+    "title": "Chain of Custody & Documentation 📋",
+    "description": "The legal backbone that makes evidence admissible in court.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Legal Admissibility",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "What is Chain of Custody? 🔗",
+            "content": "# The Paper Trail That Wins Cases\n\n**Chain of Custody (CoC)** is a **chronological documentation** that records:\n- **Who** handled the evidence.\n- **When** they handled it.\n- **Why** they handled it.\n- **Where** it was stored.\n\n**Purpose:** To prove in court that the evidence presented is the **exact same evidence** collected from the crime scene, and that it has **not been tampered with** or altered.\n\n**If there is a gap in the chain of custody, the evidence is **inadmissible**.**\n\n**Analogy:** It's like the tracking number on a FedEx package. You know exactly where it's been and who signed for it."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Elements of a CoC Form 📄",
+            "content": "### What Must Be Recorded?\n\nA proper Chain of Custody form (physical or digital) includes:\n\n1.  **Case / Incident Number:** e.g., `IR-2026-0042`\n2.  **Item Description:**\n    - Make, Model, Serial Number of device.\n    - Or: Filename and SHA256 hash of digital file.\n3.  **Date/Time of Seizure:** (Always in **UTC**).\n4.  **Seized By:** Name and Signature of person collecting evidence.\n5.  **Location of Seizure:** Server rack B12, Office 305, etc.\n6.  **Transfer Log:**\n    - `[Date/Time] Released by: [Name]. Reason: Transfer to forensic lab.`\n    - `[Date/Time] Received by: [Name]. Condition: Sealed bag intact.`\n7.  **Storage Log:** Evidence locker #, temperature log (if required).\n8.  **Final Disposition:**\n    - `Returned to owner on [Date]`\n    - `Destroyed on [Date] via method [Shredded/Wiped]`\n\n**Every single movement of the evidence must be logged.**"
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "CoC Purpose 📝",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is the primary legal purpose of a Chain of Custody form?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To track the financial value of evidence.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To prove that evidence has not been tampered with and is admissible in court.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To list the contents of a hard drive.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To schedule evidence disposal.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "CoC establishes a verifiable history of evidence handling, ensuring integrity and legal admissibility.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Physical Evidence Handling 📦",
+            "content": "### Seizure, Packaging, and Storage\n\n**Step 1: Photography**\n- Before touching anything, **take photos** of the scene: screen, cables, environment.\n\n**Step 2: Seizure**\n- If the system is **ON**, follow Live Response procedures (capture RAM, network state).\n- Document the state of the system (running processes visible on screen).\n\n**Step 3: Tagging & Bagging**\n- Place the hard drive or laptop in an **anti-static bag**.\n- Place that bag in a **tamper-evident evidence bag**.\n- **Seal the bag** and sign **across the seal** with a unique marker.\n- **Label** the bag with Case Number, Item Number, Date, and Collector Name.\n\n**Step 4: Storage**\n- Store in a **locked, access-controlled evidence locker**.\n- Maintain an **access log** for the locker.\n\n**Critical Rule:** **Never leave evidence unattended in an unsecured area.** If you go to the bathroom, lock it in the trunk of your car or take it with you. A gap in physical custody breaks the chain."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Digital Evidence CoC (Files) 💾",
+            "content": "### Tracking Forensic Images and Logs\n\nFor digital files, the **hash value** is the unique identifier.\n\n**Digital CoC Process:**\n1.  **Acquisition:** Log the filename, path, size, and SHA256 hash.\n2.  **Copy to Analysis Workstation:** Log the date, source, destination, and **verify the hash matches** after copy.\n3.  **Analysis Notes:** Every time an analyst works on the case, they note the date and actions taken.\n4.  **Archiving:** When the case closes, the files are moved to long-term storage. Log the move and verify hash after move.\n\n**Tooling:**\n- **Spreadsheet:** `Evidence_Tracker_IR-2026-042.xlsx` stored in a secure, audited SharePoint folder.\n- **Forensic Case Management Software:** e.g., Magnet ATLAS, OpenText EnCase Forensic.\n\n**Golden Rule:** **If it's not written down, it didn't happen.**"
+        },
+        {
+            "id": "s_l5_6",
+            "type": "warning",
+            "title": "Common CoC Mistakes to Avoid ❌",
+            "content": "## How Cases Are Lost\n\n1.  **Missing Timestamps:** *'I got the drive sometime last week.'* (Inadmissible).\n2.  **Unsecured Storage:** *'I left it on my desk overnight.'* (Defense argues tampering).\n3.  **Hash Mismatch:** *'The image hash doesn't match the original.'* (Evidence is corrupt or altered).\n4.  **Using Personal Devices:** *'I imaged the drive to my personal external HDD that also has my family photos.'* (Cross-contamination).\n5.  **No Write Blocker:** *'I just plugged it into my laptop.'* (Evidence altered).\n\n**The Defense Attorney's Job:** Find **one** mistake in your CoC and use it to get **all** the evidence thrown out.\n\n**Your Job:** Make sure there are **zero** mistakes."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "code",
+            "title": "Example: Simple Digital CoC Log Entry (CSV) 📊",
+            "content": "A simple CSV format for tracking evidence files.\n\n```csv\nCaseNumber,ItemID,Filename,SHA256,DateAcquired,AcquiredBy,CurrentLocation,LastVerified\nIR-2026-042,1,SUSPECT-PC-memdump.raw,5b6e6a96b6e6a96b6e6a96b6e6a96b6,2026-04-20T14:35Z,JaneDoe,\\\\forensics\\cases\\IR-2026-042\\,2026-04-21T09:00Z\nIR-2026-042,2,SUSPECT-PC-C-Drive.E01,a1b2c3d4e5f67890abcdef1234567890abcdef12,2026-04-20T16:10Z,JaneDoe,\\\\forensics\\cases\\IR-2026-042\\,2026-04-21T09:00Z\n```\n\n**Why CSV?** It's simple, auditable, and can be hashed itself. Store this file in a **WORM (Write-Once-Read-Many)** storage location."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "quiz",
+            "title": "CoC Best Practices ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "If you leave a seized hard drive in your locked desk drawer overnight, the chain of custody is maintained as long as you trust your coworkers.",
+                "correctAnswer": false,
+                "explanation": "False. A desk drawer is not a secure evidence locker. Anyone with a key or lock-picking skills could access it. Evidence must be in a controlled-access log environment.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

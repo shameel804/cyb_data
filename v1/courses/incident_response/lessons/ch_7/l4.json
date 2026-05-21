@@ -1,0 +1,96 @@
+{
+    "id": "l4",
+    "chapterId": "ch_7",
+    "title": "Evidence Retention & Legal Hold ⚖️",
+    "description": "How long to keep forensic evidence and when to involve legal counsel.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Compliance",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Evidence Lifecycle 🔄",
+            "content": "# You Collected It. Now What?\n\nDuring the incident, you collected:\n- Memory dumps (16GB each)\n- Disk images (500GB each)\n- Network PCAPs (Terabytes)\n- Log exports\n\n**You cannot keep it forever.** Storage costs money. Privacy laws require deletion.\n\n**The Evidence Lifecycle:**\n1.  **Acquisition** (Forensically sound).\n2.  **Analysis** (Active investigation).\n3.  **Retention** (Secure storage).\n4.  **Disposition** (Secure deletion)."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "How Long to Keep Evidence? 📆",
+            "content": "### Balancing Security, Legal, and Privacy\n\nThere is no single correct answer. It depends on **three factors**:\n\n1.  **Legal Requirements:**\n    - **Ongoing Litigation:** Keep **forever** (until the case is closed).\n    - **Statute of Limitations:** For breach of contract, this can be **3-10 years** depending on jurisdiction.\n\n2.  **Insurance Requirements:**\n    - Cyber insurance policies often require evidence retention for **1-3 years**.\n\n3.  **Business Needs:**\n    - Security Team: Keep IOCs for **6-12 months** for hunting.\n    - Privacy Team: Delete personal data as soon as possible (GDPR 'Storage Limitation').\n\n**Common Retention Periods:**\n- **Standard Incident:** 1 year.\n- **Incident Involving PII:** 3 years (or per state law).\n- **Incident Under Litigation Hold:** **Indefinite** (until released by Legal)."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Evidence Retention ⏳",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "true_false",
+                "question": "Once an incident is closed, all forensic evidence (disk images, memory dumps) should be deleted immediately to save storage space.",
+                "correctAnswer": false,
+                "explanation": "False. Legal and insurance requirements often mandate retention for months or years. Premature deletion can lead to spoliation of evidence claims.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Chain of Custody (CoC) 🔗",
+            "content": "### Proving the Evidence Hasn't Been Tampered With\n\nIf the case goes to court, you must prove that the evidence you collected is the **same** evidence you analyzed.\n\n**Chain of Custody Form Elements:**\n- **Item Description:** *'Seagate 1TB HDD, S/N: ABC123'*\n- **Date/Time Seized:** *'2026-04-20 15:30 UTC'*\n- **Seized By:** *'Jane Doe, Forensic Analyst'*\n- **Location:** *'Server Rack B12'*\n- **Transfers:** *'Transferred to John Smith on 2026-04-21 09:00 UTC for analysis. Returned 2026-04-22 17:00 UTC.'*\n- **Final Disposition:** *'Securely wiped using DoD 5220.22-M standard on 2027-04-20.'*\n\n**Electronic Evidence (Files):** Use **cryptographic hashes** (MD5, SHA256). If the hash matches the original acquisition hash, the evidence is intact.\n\n**Tool:** Use a dedicated Evidence Management System or, at minimum, a **spreadsheet stored in a secure, audited location**."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Litigation Hold (Legal Hold) ⚖️",
+            "content": "### The 'Do Not Delete' Order\n\n**Scenario:** The incident involved a former employee stealing trade secrets. The company is suing them.\n\n**Action:** Legal Counsel issues a **Litigation Hold Notice**.\n\n**What This Means for IR:**\n- **STOP** all data deletion processes.\n- The employee's mailbox, laptop image, and network logs **cannot be deleted**.\n- Even if your standard retention policy says 'Delete after 1 year', the Litigation Hold **overrides** it.\n\n**Consequences of Violating a Hold:** **Spoliation of Evidence.** A judge can instruct the jury to *'assume the deleted evidence was bad for the company'*. This can lose the case instantly.\n\n**The IR Analyst's Responsibility:** When you receive a Litigation Hold Notice, **acknowledge it in writing** and **tag the evidence accordingly**."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "code",
+            "title": "Example: Verifying Evidence Integrity 🛡️",
+            "content": "You have a forensic image file: `BOB-LAPTOP-20260420.E01`. You need to prove it hasn't changed.\n\n**Step 1: Generate hash at acquisition time.**\n```powershell\nGet-FileHash -Path \"D:\\Evidence\\BOB-LAPTOP-20260420.E01\" -Algorithm SHA256\n# Output: 5B6E6A96B6E6A96B6E6A96B6E6A96B6...\n```\n**Step 2: Store this hash in the Chain of Custody log.**\n\n**Step 3: Verify hash before analysis (6 months later).**\n```powershell\nGet-FileHash -Path \"D:\\Evidence\\BOB-LAPTOP-20260420.E01\" -Algorithm SHA256\n# Expected Output: 5B6E6A96B6E6A96B6E6A96B6E6A96B6...\n```\n**If the hashes match, the evidence is intact. If they differ, the evidence has been corrupted or tampered with.**"
+        },
+        {
+            "id": "s_l4_7",
+            "type": "tip",
+            "title": "Pro Tip: Secure Storage Location 🔒",
+            "content": "## Where to Store the Evidence?\n\n**Bad Idea:** On the forensic analyst's desktop PC.\n**Good Idea:** On a dedicated, access-controlled network share with **audit logging** enabled.\n**Best Idea:** **Write-Once-Read-Many (WORM)** storage (e.g., AWS S3 Object Lock).\n\n**WORM storage prevents ANYONE (even admins) from deleting or modifying the file before the retention date expires.** This is the gold standard for legal defensibility.\n\n**Physical Evidence (Hard Drives):** Store in a **locked, fireproof safe** with an access log."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "quiz",
+            "title": "Chain of Custody 📜",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "What is the primary purpose of a Chain of Custody form?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To track the financial cost of the evidence.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To prove that evidence has been handled properly and not tampered with.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To list the software installed on the forensic workstation.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To document the performance of the hard drive.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Chain of Custody ensures the integrity and admissibility of evidence in legal proceedings.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

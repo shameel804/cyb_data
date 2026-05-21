@@ -1,0 +1,234 @@
+{
+    "id": "quiz_ch_10",
+    "chapterId": "ch_10",
+    "title": "Chapter 10: Log Analysis Mastery Quiz",
+    "description": "Test your knowledge of Windows Event Logs, Sysmon, Linux logs, searching techniques, and timeline building.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which Windows Event ID indicates a successful user logon?",
+            "options": [
+                "4625",
+                "4624",
+                "4688",
+                "4720"
+            ],
+            "correctAnswer": 1,
+            "explanation": "4624 = Successful logon. 4625 = Failed logon."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "Sysmon is a built-in Windows component that is enabled by default.",
+            "correctAnswer": false,
+            "explanation": "False. Sysmon is a free Sysinternals tool that must be downloaded and installed separately."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which Sysmon Event ID records network connections and includes the process name that initiated the connection?",
+            "options": [
+                "Event ID 1",
+                "Event ID 3",
+                "Event ID 7",
+                "Event ID 11"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Event ID 3 (Network Connect) links the process (Image) to the network connection."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "PowerShell Script Block Logging is recorded in Windows Event ID ______.",
+            "options": [
+                "4103",
+                "4104",
+                "4688",
+                "1102"
+            ],
+            "correctAnswer": "4104",
+            "explanation": "Event ID 4104 in the PowerShell Operational log contains the full text of executed scripts."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "An attacker added themselves to the local 'Administrators' group. Which Event ID records this?",
+            "options": [
+                "4720",
+                "4728",
+                "4732",
+                "4624"
+            ],
+            "correctAnswer": 2,
+            "explanation": "4732 = Member added to security-enabled LOCAL group. 4728 = Member added to GLOBAL group (like Domain Admins)."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "A 'LogonType' of 10 in Event ID 4624 indicates a Remote Desktop (RDP) connection.",
+            "correctAnswer": true,
+            "explanation": "True. LogonType 10 = RemoteInteractive (RDP)."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "In Linux, which log file typically contains SSH authentication events (successful and failed)?",
+            "options": [
+                "/var/log/syslog",
+                "/var/log/auth.log",
+                "/var/log/apache2/access.log",
+                "/var/log/btmp"
+            ],
+            "correctAnswer": 1,
+            "explanation": "/var/log/auth.log (Debian/Ubuntu) or /var/log/secure (RHEL) tracks authentication."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "An Apache access log shows `GET /index.php?id=1' OR '1'='1`. What type of attack is this?",
+            "options": [
+                "Cross-Site Scripting (XSS)",
+                "SQL Injection",
+                "Path Traversal",
+                "Command Injection"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The `' OR '1'='1` pattern is a classic SQL Injection test."
+        },
+        {
+            "id": "q9",
+            "type": "true_false",
+            "question": "The command `grep -c '404' access.log` counts the number of lines containing '404'.",
+            "correctAnswer": true,
+            "explanation": "True. The `-c` flag returns a count of matching lines."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which PowerShell cmdlet is used to query Windows Event Logs directly?",
+            "options": [
+                "Get-Event",
+                "Get-WinEvent",
+                "Select-String",
+                "Get-Log"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Get-WinEvent is the modern cmdlet for querying event logs."
+        },
+        {
+            "id": "q11",
+            "type": "fill_blank",
+            "question": "The open-source tool used to create 'Super Timelines' from multiple forensic artifacts is called ______.",
+            "options": [
+                "Volatility",
+                "Plaso",
+                "Wireshark",
+                "Autopsy"
+            ],
+            "correctAnswer": "Plaso",
+            "explanation": "Plaso (log2timeline) is the standard tool for super timeline generation."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is the primary advantage of using Sysmon Event ID 1 over standard Windows Event ID 4688?",
+            "options": [
+                "Sysmon logs to a different file.",
+                "Sysmon includes the Parent Process and file hashes.",
+                "Sysmon uses less disk space.",
+                "Sysmon is faster."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Sysmon adds Parent Process (critical for tracking exploit chains) and cryptographic hashes."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "You should always normalize log timestamps to UTC when building a cross-system timeline.",
+            "correctAnswer": true,
+            "explanation": "True. UTC eliminates time zone ambiguity and ensures chronological accuracy."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Which Sysmon Event ID logs DNS queries and the process that made them?",
+            "options": [
+                "Event ID 3",
+                "Event ID 11",
+                "Event ID 22",
+                "Event ID 1"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Event ID 22 (DNSEvent) provides process-to-domain mapping, crucial for detecting C2 and DGA domains."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "In Kusto Query Language (KQL), which operator is used to filter rows based on a condition?",
+            "options": [
+                "| where",
+                "| filter",
+                "| search",
+                "| select"
+            ],
+            "correctAnswer": 0,
+            "explanation": "KQL uses `| where Condition` to filter rows."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "The Linux command `last` reads from the `/var/log/wtmp` binary file to show login history.",
+            "correctAnswer": true,
+            "explanation": "True. `last` parses the binary wtmp file."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "An attacker cleared the Windows Security log. Which Event ID indicates this action (if logged)?",
+            "options": [
+                "1102",
+                "4625",
+                "7045",
+                "104"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Event ID 1102 is generated when the Security audit log is cleared."
+        },
+        {
+            "id": "q18",
+            "type": "fill_blank",
+            "question": "The JSON parsing tool commonly used on Linux command lines is called ______.",
+            "options": [
+                "grep",
+                "awk",
+                "jq",
+                "sed"
+            ],
+            "correctAnswer": "jq",
+            "explanation": "jq is the standard lightweight command-line JSON processor."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is a 'Logon ID' used for in Windows event correlation?",
+            "options": [
+                "To uniquely identify a user's login session across multiple events.",
+                "To identify the computer name.",
+                "To identify the process ID.",
+                "To identify the domain controller."
+            ],
+            "correctAnswer": 0,
+            "explanation": "The Logon ID links all actions (process creation, file access) back to the specific authentication event."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "Centralizing logs to a SIEM is optional; local logs on the endpoint are sufficient for incident response.",
+            "correctAnswer": false,
+            "explanation": "False. Local logs can be deleted by attackers. Centralized, immutable storage is essential."
+        }
+    ]
+}

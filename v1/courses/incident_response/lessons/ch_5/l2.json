@@ -1,0 +1,111 @@
+{
+    "id": "l2",
+    "chapterId": "ch_5",
+    "title": "Short-Term Containment Tactics ⚡",
+    "description": "Immediate actions to stop active bleeding without destroying evidence.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Immediate Response",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The First 15 Minutes ⏱️",
+            "content": "# Immediate Life-Saving Actions\n\nYou have confirmed an active incident. The attacker is currently moving laterally or encrypting files. **What do you do RIGHT NOW?**\n\n**Menu of Short-Term Actions (Least to Most Destructive):**\n1.  **Disable User Account** (Identity Layer)\n2.  **Block IP/Domain at Firewall** (Network Layer)\n3.  **Disable Network Port (Switch)** (Network Layer)\n4.  **Isolate Host via EDR** (Endpoint Layer)\n5.  **Physically Unplug Cable** (Physical Layer)\n\n**Golden Rule:** Apply the **least intrusive** measure that effectively stops the threat."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Identity Containment 👤",
+            "content": "### Disabling Compromised Accounts\n\nIf the attacker is using stolen credentials (phishing), the fastest way to stop them is to **revoke their access**.\n\n**Actions (in order of speed):**\n1.  **Azure AD / Okta:** 'Revoke Sessions' + 'Block Sign-in'.\n    - **Time to execute:** 30 seconds.\n    - **Impact:** User cannot access email, cloud apps. *They can still access their local laptop if cached creds exist.*\n\n2.  **Active Directory (On-Prem):** Disable the user object.\n    - **Time to execute:** 1 minute (replication delay).\n    - **Impact:** User cannot log into new systems. Existing Kerberos tickets remain valid for ~10 hours! (Need to purge tickets).\n\n3.  **Reset Password + Force Logoff:**\n    - **Command:** `Reset-ADAccountPassword -Identity 'User' -NewPassword (ConvertTo-SecureString 'TempP@ssw0rd!' -AsPlainText -Force) -Reset`\n    - **Then:** `Invoke-Command -ComputerName 'PC' { logoff.exe }`\n\n> ⚠️ **Warning:** Disabling the account stops the attacker from logging into NEW things, but does NOT kill their existing active session on a server. For that, you need to terminate sessions via Task Manager or `qwinsta` / `logoff`."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Account Containment 🛑",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "You disable a compromised user's Active Directory account. Why might the attacker still be active on the file server?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Active Directory replication is slow.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The attacker has a valid Kerberos Ticket Granting Ticket (TGT) that hasn't expired.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The attacker is using a local admin account.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Disabling an account doesn't work on servers.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Kerberos tickets are valid for a set lifetime (default 10 hours). Disabling the account prevents new logons but doesn't invalidate existing tickets unless you purge them or reboot the target server.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Network Containment 🌐",
+            "content": "### Cutting the Wire (Remotely)\n\nIf you can't physically touch the machine, you can still isolate it.\n\n**1. Block IP at Perimeter Firewall (Egress Filtering)**\n- **Action:** Create a rule: `Source: 10.0.0.105 (Infected PC) Destination: ANY Action: DENY`\n- **Pros:** Stops data exfiltration immediately.\n- **Cons:** Attacker might notice and trigger a 'destruct' routine. Also, the PC can still talk to other internal PCs (Lateral Movement still possible).\n\n**2. Disable Switch Port (Network Access Control)**\n- **Action:** SSH to switch, `interface Gi0/5`, `shutdown`.\n- **Pros:** Complete network isolation. Attacker can't do anything.\n- **Cons:** You lose remote access to the machine (can't push forensic tools).\n\n**3. EDR 'Network Contain' Feature**\n- **Action:** Click 'Isolate Host' in CrowdStrike / Defender console.\n- **Pros:** **BEST OPTION.** The EDR agent blocks all traffic EXCEPT to the EDR cloud console, allowing you to still run remote commands and collect forensics.\n- **Cons:** Requires EDR agent to be installed and working."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "tip",
+            "title": "Pro Tip: Stealth Blocking 🥷",
+            "content": "## Sinkholing vs. Blocking\n\nIf you are dealing with an **Advanced Persistent Threat (APT)** or a human attacker, blocking their IP sends a clear signal: *'We see you.'*\n\n**Advanced Technique: DNS Sinkhole**\n- Instead of blocking the IP, you change the internal DNS record for `malicious-c2.com` to point to **127.0.0.1** or a **honeypot**.\n- **Result:** The malware thinks it's connecting to the C2, but it's connecting to you. The attacker doesn't get an error message (timeout/refused) that would tip them off. This buys you **hours** of silent monitoring time to finish scoping the incident."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "code",
+            "title": "Example: Disabling a Switch Port Remotely 📡",
+            "content": "You identify the infected computer `HR-WS01` is on switch port `Gi1/0/15`.\n\n**Cisco IOS Command:**\n```ios\nenable\nconfigure terminal\ninterface GigabitEthernet1/0/15\nshutdown\ndescription *** ISOLATED DUE TO MALWARE - INCIDENT IR-2026-001 ***\nend\nwrite memory\n```\n\n**Verification:**\n```ios\nshow interface status | include 1/0/15\n```\n*Output should show 'disabled' or 'down'.*\n\n**Important:** **Document this command in the Incident Log.** You must know exactly which port to re-enable later during Recovery."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "Network Isolation Methods 🛜",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "What is the primary advantage of using EDR 'Network Containment' over disabling the physical switch port?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It's faster to click a button.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It allows the security team to still remote into the machine for investigation.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It stops all traffic, including to the EDR cloud.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It doesn't require an internet connection.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "EDR isolation policies allow 'Management Traffic' back to the vendor cloud, keeping the forensic pipeline open while blocking all other malicious traffic.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

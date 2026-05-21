@@ -1,0 +1,90 @@
+{
+    "id": "l5",
+    "chapterId": "ch_6",
+    "title": "Post-Recovery Monitoring & Handoff 📊",
+    "description": "The critical 30-day watch period and transitioning back to normal ops.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Recovery",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The 30-Day Watch 👀",
+            "content": "# Enhanced Monitoring Period\n\nYou are not 'done' when the server boots up. You enter a state of **Heightened Alert**.\n\n**Duration:** Typically **14 to 30 days** post-recovery.\n\n**What Changes During This Period?**\n- **Logging Level:** **Maximum.** Turn on PowerShell Script Block Logging, Process Creation Auditing (4688), and Command Line Logging for **all** recovered systems.\n- **Alert Thresholds:** **Lowered.** A single failed admin login triggers a high-priority ticket.\n- **Daily Hunts:** Analyst reviews logs for the recovered systems **every morning**.\n\n**Why?** If you missed a single backdoor or if the attacker has a new 0-day, this is when they will use it. You want to catch it **immediately**."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "What to Watch For (The Recurrence Checklist) 📋",
+            "content": "### Specific IOCs to Hunt Post-Recovery\n\n1.  **Connections to Previous C2 Infrastructure**\n    - Even if you blocked the IP, did a DNS query for `badguy.com` happen? (Indicates the backdoor is still there).\n\n2.  **Recreation of User Accounts**\n    - Did the 'HelpAssistant' account reappear?\n\n3.  **Recreation of Scheduled Tasks / Services**\n    - Did the `AdobeFlashUpdate` task come back?\n\n4.  **Unusual Login Times**\n    - Is the CFO's account logging in at 3:00 AM again?\n\n5.  **New Software Installs**\n    - Did `AnyDesk` or `TeamViewer` get installed silently?\n\n**Tool:** Set up a **SIEM Dashboard** specifically for 'Post-Recovery Monitoring' that highlights these exact events."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Monitoring Focus 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Why is the post-recovery monitoring period typically set to 30 days?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Because it takes 30 days for patches to install.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Because attackers often wait days or weeks before using a backdoor to avoid detection.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Because it's a legal requirement.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Because backups expire after 30 days.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Attackers may 'sleep' to evade immediate detection. A 30-day watch window catches delayed reactivation.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "The Handoff: Returning to Normal Ops 🤝",
+            "content": "### Closing the Incident and Transitioning\n\nAfter 30 days with **zero recurrences**, the incident can be formally **Closed**.\n\n**Handoff to IT Operations:**\n- **Security Team:** 'The threat is neutralized. The environment is stable. Here is the list of permanent security controls we added (e.g., new firewall rules, MFA requirements).'\n- **IT Operations:** 'Understood. We will maintain these controls as part of standard operations.'\n\n**Key Deliverables from Recovery Phase:**\n1.  **Final Incident Report** (Executive Summary + Technical Details).\n2.  **Updated Network Diagrams** (New VLANs, new firewall rules).\n3.  **Updated Asset Inventory** (New servers built, old ones decommissioned).\n4.  **Lessons Learned Meeting Scheduled** (Phase 6).\n\n**Important:** Do **NOT** disable the enhanced logging. Keep as much of it on as performance allows. You paid for the lesson in stress; keep the visibility."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "tip",
+            "title": "Pro Tip: The 'Sunset' of IOCs 🌇",
+            "content": "## When to Stop Looking for an IOC\n\nYou blocked IP `5.6.7.8`. How long do you keep that block rule in the firewall?\n\n**Bad Answer:** Forever. (Firewall rule bloat causes performance issues and management headaches).\n\n**Good Answer:** **6-12 months.**\n\n**Process:**\n1.  Add the IP to a **Threat Intelligence Feed** with an expiration date.\n2.  After 6 months of no activity, review the feed.\n3.  If the IP is a known bulletproof hosting provider, maybe keep it permanently. If it's a dynamic home IP, remove it.\n\n**Automate this!** Manually tracking IOC expiration is impossible."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "warning",
+            "title": "The False Sense of Security 🛡️",
+            "content": "## The Danger of 'We Fixed It'\n\nAfter a grueling 2-week incident, the team is exhausted. The natural human reaction is to **want it to be over**.\n\n**This is when attackers strike again.**\n\n**Remain Vigilant:**\n- **Rotate Analyst Shifts:** Don't let a tired analyst do the 30-day monitoring.\n- **External Review:** Consider hiring a 3rd party to do a **Compromise Assessment** to look for things you missed.\n- **Trust the Data, Not Your Gut.** Your gut says 'We got them all.' The logs might say otherwise."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Incident Closure 📁",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "Once the incident is closed, you can remove all the temporary firewall rules and logging configurations added during the incident.",
+                "correctAnswer": false,
+                "explanation": "False. Many temporary controls should become permanent improvements to security posture. Evaluate before removing.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,84 @@
+{
+    "id": "l1",
+    "chapterId": "ch_6",
+    "title": "Eradication Fundamentals 🧹",
+    "description": "Understanding the goal of removal vs. containment and the eradication mindset.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Eradication",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "What is Eradication? 🧼",
+            "content": "# Cleaning Up the Mess\n\n**Definition (NIST):** *Eliminating the components of the incident (e.g., malware, attacker tools, backdoors) from the environment.*\n\n**Containment** stopped the bleeding. **Eradication** removes the tumor.\n\n**Key Distinction:**\n- **Containment:** Attacker is locked out, but their tools still sit on the hard drive.\n- **Eradication:** Those tools are **gone**. The vulnerability they used is **patched**.\n\n**Analogy:** Containment is putting a robber in handcuffs. Eradication is returning the stolen goods, fixing the broken window, and changing the locks."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "The Eradication Mindset 🧠",
+            "content": "### Assume the Attacker Had Admin\n\nIf an attacker gained **Local Administrator** or **Domain Admin** privileges, you cannot trust the operating system to tell you the truth.\n\n**The 'Rootkit' Problem:** Malware can hide files, registry keys, and processes from the OS itself.\n\n**Therefore, Eradication is not just 'Run Antivirus Scan'.**\n\n**Eradication Principles:**\n1.  **Look from the Outside:** Use network traffic analysis and EDR telemetry (which is outside the OS kernel) to verify removal.\n2.  **Rebuild, Don't Repair:** For critical systems, it is often **faster and safer** to wipe the hard drive and reinstall from a trusted **Golden Image** than to try and surgically remove every piece of malware.\n3.  **Fix the Root Cause:** If they got in via an unpatched vulnerability, you **must** patch it before restoring service. Otherwise, you're just cleaning a window that they'll break again."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Eradication vs. Containment 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which action is an example of 'Eradication' rather than 'Containment'?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Disabling a compromised user account.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Blocking a malicious IP address at the firewall.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Deleting a malicious scheduled task from a server.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Isolating a host via EDR.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Deleting the malicious artifact removes the threat permanently. The other options only prevent further access/damage.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Rebuild vs. Clean Debate 🖥️",
+            "content": "### When to Nuke It from Orbit\n\n**Option A: Surgical Cleaning**\n- **Process:** Delete specific files, remove registry keys, stop services.\n- **Pros:** Fast (no reinstall), preserves user data and settings.\n- **Cons:** **Risky.** You might miss a backdoor. Rootkits can hide. It's hard to be 100% sure it's clean.\n\n**Option B: Rebuild / Reimage**\n- **Process:** Wipe hard drive, install fresh OS from a trusted source.\n- **Pros:** **Highest Confidence.** You are 100% sure the OS is clean.\n- **Cons:** Time-consuming. User loses local data and customizations.\n\n**Industry Best Practice:**\n- **Workstations:** **Rebuild.** It's just faster and safer.\n- **Servers:** **Surgical Cleaning** *may* be attempted if the server is complex and downtime is unacceptable, but **Rebuild** is still preferred.\n- **Domain Controllers:** **NEVER surgically clean a Domain Controller.** If a DC is compromised, you must **rebuild it from scratch** and restore from a known-good System State backup."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "warning",
+            "title": "The 'Just Reimage' Trap 🪤",
+            "content": "## Don't Reimage Before You Fix the Hole\n\n**Classic Mistake:**\n1.  PC gets malware.\n2.  IT wipes PC and reinstalls Windows.\n3.  User logs in, opens the same phishing email (still in their inbox), or connects to the same vulnerable network share.\n4.  **PC gets infected again in 5 minutes.**\n\n**Correct Sequence:**\n1.  **Eradicate the Root Cause in the Environment** (Patch server, block malicious domain, purge phishing email).\n2.  **Rebuild the Workstation.**\n3.  **Recover User Data** (from a clean backup).\n\n> **Fix the environment, THEN fix the device.**"
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Rebuild vs Clean 🔄",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "If a Domain Controller is compromised, it is acceptable to run an antivirus scan and manually delete any detected malware to save time.",
+                "correctAnswer": false,
+                "explanation": "False. Domain Controllers hold the keys to the kingdom. A compromised DC must be rebuilt from trusted media. Surgical cleaning is too risky.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

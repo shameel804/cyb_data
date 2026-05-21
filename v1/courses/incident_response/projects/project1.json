@@ -1,0 +1,22 @@
+{
+    "id": "project1",
+    "title": "Crafting an IR Fortress: Plan & Prep",
+    "description": "Design a full Incident Response program for a healthcare startup: policy, CSIRT, playbooks, and executive buy‑in.",
+    "difficulty": "Intermediate",
+    "estimatedHours": "3-5",
+    "problemStatement": "## Scenario\nYou are the first Information Security Officer hired by **MediGuard Health**, a 500‑employee healthcare startup that handles electronic Protected Health Information (ePHI). They recently acquired a rival clinic and merged networks, but they have **no formal incident response capability**. The CEO read about HIPAA fines and wants you to build an IR program from scratch.\n\n## Your Mission\n1. **Draft an Incident Response Policy** that grants the CSIRT authority, defines a security incident, and references HIPAA notification requirements.\n2. **Design a CSIRT Structure** with at least five named roles (internal staff) and a clear 24/7 escalation path.\n3. **Create an Escalation Matrix** for four severity levels (Sev4 to Sev1), showing who is notified and within what timeframe.\n4. **Write a Ransomware Playbook** with step‑by‑step instructions for containment, investigation, and recovery that assumes email/phones may be compromised.\n5. **Prepare an Executive Summary** (1 page) that justifies the cost of the program to the Board, focusing on HIPAA compliance and business risk.",
+    "requirements": [
+        "The IR Policy must include a statement of commitment, scope, definition of incident, authority, and HIPAA breach notification reference.",
+        "The CSIRT roster must include Incident Commander, Lead Investigator, Communications Lead, IT Liaison, and Legal Counsel – with backups for each.",
+        "The Escalation Matrix must define time‑to‑notify (Sev1: 15 min, Sev2: 1h, Sev3: 4h, Sev4: 24h) and specify communication channels (primary and OOB).",
+        "The Ransomware Playbook must include immediate containment (network isolation, OOB comms), evidence preservation (memory dump, logs), recovery from immutable backups, and post‑incident steps.",
+        "The Executive Summary must address HIPAA Safe Harbor, business downtime cost, and the ROI of IR preparedness."
+    ],
+    "hints": [
+        "Refer to NIST SP 800‑61 for policy template and lifecycle phases.",
+        "Use the tabletop exercise format to test your playbook mentally before finalizing.",
+        "Remember that HIPAA requires notification to the Secretary of HHS within 60 days, and to affected individuals without unreasonable delay.",
+        "For ransomware, never communicate via corporate email; use Signal/WhatsApp."
+    ],
+    "expectedOutput": "A comprehensive IR program document containing:\n\n1. **Incident Response Policy** (1‑2 pages)\n   - Statement of Commitment, Scope, Definition, Authority, HIPAA reference.\n\n2. **CSIRT Roster** (1 page)\n   - Primary and backup contacts for IC, Investigator, Comms, IT Liaison, Legal, with mobile numbers and OOB app IDs.\n\n3. **Escalation Matrix**\n   - Sev4 (minor) → Sev1 (critical), notification targets (Helpdesk → CEO) and timelines.\n\n4. **Ransomware Playbook**\n   - Phase 1: Detection (SIEM/EDR alert), Phase 2: Containment (EDR isolation, power off only if necessary), Phase 3: Investigation (memory capture, disk imaging), Phase 4: Recovery (restore from offline backup), Phase 5: Post‑Incident.\n\n5. **Executive Summary**\n   - Highlights HIPAA penalties (up to $50k per violation), average breach cost in healthcare ($10.9M), and how the proposed program reduces risk."
+}

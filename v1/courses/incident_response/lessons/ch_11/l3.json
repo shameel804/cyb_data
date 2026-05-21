@@ -1,0 +1,117 @@
+{
+    "id": "l3",
+    "chapterId": "ch_11",
+    "title": "Dynamic Analysis & Sandboxing 🏖️",
+    "description": "Safely executing malware to observe network, file, and process behavior.",
+    "xpReward": 40,
+    "estimatedMinutes": 12,
+    "section": "Dynamic Analysis",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Letting It Run (Safely) 🏃",
+            "content": "# Dynamic Analysis: Watching the Beast in Action\n\nStatic analysis gave you clues. Dynamic analysis gives you **proof**.\n\n**What We Observe:**\n- **Process Activity:** Does it spawn child processes? Does it inject into others?\n- **File System Activity:** What files are created, modified, or deleted?\n- **Registry Activity:** What keys are added/modified?\n- **Network Activity:** Where does it connect? What data does it send? (HTTP requests, DNS queries).\n\n**The Golden Rule:** **Snapshot BEFORE, Compare AFTER.**\n\n**Lab Setup:**\n- **Virtual Machine:** VMware, VirtualBox, or cloud sandbox (ANY.RUN).\n- **Snapshot:** Clean state (Windows 10 with tools installed).\n- **Tools Running:** Process Monitor (ProcMon), Process Explorer, Wireshark, Regshot."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Essential Dynamic Analysis Tools 🧰",
+            "content": "### The Free and Powerful Toolkit\n\n1.  **Process Monitor (ProcMon) 📊**\n    - **Function:** Real-time file system, registry, and process/thread activity.\n    - **IR Use:** See exactly which file the malware drops, which Run key it modifies.\n    - **Tip:** Use **filters** (`Process Name is evil.exe`) or you'll drown in noise.\n\n2.  **Process Explorer (ProExp) 🔍**\n    - **Function:** Advanced Task Manager. Shows process tree, loaded DLLs, handles.\n    - **IR Use:** See if `evil.exe` injected into `svchost.exe`.\n    - **VirusTotal Integration:** Options > VirusTotal.com > Check Image.\n\n3.  **Wireshark / TCPView 🦈**\n    - **Function:** Capture network packets.\n    - **IR Use:** Extract C2 IP/domain, see HTTP POST requests, identify custom protocols.\n    - **TCPView:** Simpler tool to see real-time TCP/UDP connections mapped to processes.\n\n4.  **Regshot 📸**\n    - **Function:** Takes a snapshot of the registry BEFORE and AFTER execution, compares them.\n    - **IR Use:** Find the exact registry keys added or modified.\n\n5.  **FakeNet-NG 🥸**\n    - **Function:** Simulates network services (DNS, HTTP, HTTPS) to trick malware into revealing its C2 domains without letting it talk to the real internet."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Dynamic Tool Matching 🛠️",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which tool is best suited for comparing the Windows registry before and after running malware to identify persistence mechanisms?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Process Monitor",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Wireshark",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Regshot",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "TCPView",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Regshot specializes in taking and comparing registry snapshots.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "The Analysis Workflow 🔄",
+            "content": "### Step-by-Step Manual Dynamic Analysis\n\n1.  **Take Snapshots:** Regshot (1st shot). Create a folder listing: `dir /s /b C:\\ > files_before.txt`.\n2.  **Start Monitoring Tools:** ProcMon (with filter), Wireshark (start capture), Process Explorer.\n3.  **Execute the Malware:** Run as Administrator (if you suspect it needs admin rights).\n4.  **Observe:** Let it run for 2-5 minutes.\n5.  **Simulate User Interaction:** Some malware only activates after a reboot or user login. Use tools like `AutoIT` to simulate clicks, or simply reboot the VM (with persistence tools set to log on boot).\n6.  **Stop Monitoring:** Save ProcMon log, Wireshark PCAP.\n7.  **Take 2nd Snapshots:** Regshot (2nd shot). `dir /s /b C:\\ > files_after.txt`.\n8.  **Compare:** Use Regshot compare report. Use `fc files_before.txt files_after.txt` (or a diff tool) to see new files.\n9.  **Analyze:** Review ProcMon for registry/file writes, Wireshark for DNS/HTTP."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Sandboxes: Automating Dynamic Analysis 🤖",
+            "content": "### When You Need Answers Fast\n\nManual analysis is slow. **Automated Sandboxes** run the malware and generate a report in minutes.\n\n**Popular Options:**\n- **ANY.RUN:** Interactive online sandbox. You can watch the malware run in real-time via browser. **Highly recommended for IR.**\n- **Joe Sandbox:** Deep analysis, great for complex samples.\n- **Cuckoo Sandbox:** Open-source, self-hosted. Complex to set up, but full control.\n- **VirusTotal Sandbox:** Integrated with file uploads.\n\n**What a Sandbox Report Tells You:**\n- **Verdict:** Malicious / Suspicious / Clean.\n- **Network:** Contacted domains/IPs, HTTP requests, downloaded files.\n- **Processes:** Process tree, injected processes.\n- **Files:** Dropped files, modified files.\n- **Registry:** Keys modified.\n- **Screenshots:** Visual of what happened.\n- **MITRE ATT&CK Mapping:** Techniques observed.\n\n**Sandbox Limitations (Evasion):**\n- **Sleep / Delays:** Malware sleeps for 10 minutes (sandbox timeout is 5).\n- **Environment Checks:** Checks for VM artifacts (VMware tools, MAC addresses).\n- **Human Interaction:** Waits for mouse movement or keystrokes.\n- **Internet Check:** Tries to ping Google; if no response, exits.\n\n> **If the sandbox shows no activity, the malware might be *sandbox-aware*. Manual analysis may be required.**"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "code",
+            "title": "Example: Analyzing Network Traffic (Wireshark) 🦈",
+            "content": "You captured a PCAP during execution. You see a DNS query for `malware-c2.ddns.net`, followed by an HTTPS connection.\n\n**Wireshark Filter to Find DNS Queries:**\n```wireshark\ndns.qry.name contains \"malware\"\n```\n\n**Extracting HTTP Requests:**\n```wireshark\nhttp.request\n```\n\n**Follow TCP Stream:** Right-click packet > Follow > TCP Stream. You might see:\n```http\nPOST /gate.php HTTP/1.1\nHost: malware-c2.ddns.net\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)\nContent-Type: application/x-www-form-urlencoded\n\nid=ABCD1234&data=...\n```\n\n**Analysis:**\n- **C2 Domain:** `malware-c2.ddns.net` (IOC).\n- **URI:** `/gate.php` (Network signature).\n- **User-Agent:** Unique string (potential IOC).\n- **POST Data:** Encoded. Likely exfiltrated system info."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "warning",
+            "title": "The 'Detonate Safely' Checklist 📋",
+            "content": "## Never Skip These Steps\n\nBefore you double-click `evil.exe` in your VM:\n\n- [ ] **Host-Only Network Adapter:** VM cannot reach the corporate network or internet (unless you route through a controlled proxy like FakeNet).\n- [ ] **Shared Folders DISABLED.**\n- [ ] **Drag-and-Drop / Clipboard DISABLED.**\n- [ ] **Snapshot Taken.** (If it destroys the VM, you can revert in seconds).\n- [ ] **Host AV Temporarily Disabled?** (Your host AV might quarantine the file before you can copy it to the VM).\n- [ ] **FakeNet-NG Running?** (To safely emulate internet services).\n\n**If the malware is a known **Wiper** or **Ransomware**, even in a VM, ensure the VM's virtual disk is **non-persistent** or you have a snapshot. Some advanced malware can attempt to **escape the VM** (rare, but possible). For highly sensitive APT samples, use a **physical air-gapped machine**."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "quiz",
+            "title": "Sandbox Evasion 🥷",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "A sandbox report shows 'No Malicious Activity Detected', but the file has a high detection rate on VirusTotal. What is a likely explanation?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The file is clean; VirusTotal is wrong.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The malware detected the sandbox environment and remained dormant.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The sandbox is broken.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The file only works on Linux.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Advanced malware employs sandbox evasion techniques (sleeps, VM checks) to avoid analysis.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

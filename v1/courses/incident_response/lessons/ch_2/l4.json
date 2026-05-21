@@ -1,0 +1,70 @@
+{
+    "id": "l4",
+    "chapterId": "ch_2",
+    "title": "Phase 4: Eradication & Cleanup 🧹",
+    "description": "Kicking the attacker out and fixing vulnerabilities for good.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Lifecycle Phase 4",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Cleaning House 🧼",
+            "content": "# Phase 4: Eradication\n\n**Definition:** *Removing the threat actor's presence and the root cause vulnerability from the environment.*\n\nIf Containment is *stopping the bleeding*, Eradication is **surgery** to remove the tumor.\n\n**Key Activities:**\n- Deleting malicious files and registry keys.\n- Disabling compromised user accounts.\n- **Patching the Vulnerability:** If they got in via an old software bug, you must patch it **before** bringing the system back online. Otherwise, they'll just walk right back in.\n- **Resetting Credentials:** All passwords that could have been stolen must be changed."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "warning",
+            "title": "The Danger of 'Reimaging' 🖥️",
+            "content": "## Do Not Just Reformat the Hard Drive!\n\n**Novice Mistake:** 'Oh, there's malware. Let's just wipe the laptop and reinstall Windows from the company image.'\n\n**Why This Fails:**\n- **You Destroy Evidence:** You lose the forensic timeline needed to prove whether data was stolen.\n- **You Ignore Root Cause:** If the malware spread via a network vulnerability, the *new* laptop will just get infected again 5 minutes after you plug it in.\n\n**Proper Eradication Workflow:**\n1.  **Forensic Imaging:** Take a bit-for-bit copy of the drive **first**.\n2.  **Fix the Environment:** Patch the server vulnerability, block the malicious domain.\n3.  **Wipe/Reimage:** Now you can rebuild the machine confidently."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Eradication Order 🔄",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What is the most important step to take BEFORE wiping and rebuilding an infected computer?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Notify the user they can pick up their new laptop.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Create a forensic disk image of the infected hard drive.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Update the antivirus definitions on the new image.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Block the user's internet access.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Forensic imaging preserves the evidence. This is required for legal action, insurance claims, or understanding the full scope of the breach.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Hunting for Backdoors 🚪",
+            "content": "### Ensuring Complete Removal\n\nAttackers are sneaky. They often leave multiple ways back in.\n\n**Eradication Checklist (The 'Triple-Check'):**\n\n1.  **Scheduled Tasks / Cron Jobs:** Did they set a task to re-download malware every Friday at 3 AM?\n2.  **WMI Event Subscriptions (Windows):** A stealthy persistence mechanism that triggers on system events.\n3.  **Hidden User Accounts:** `net user` might show a user named 'HelpAssistant' that you didn't create.\n4.  **Web Shells:** A small script file (`shell.aspx`) left on the public web server.\n5.  **SSH Authorized Keys:** Did they add their public key to the `.ssh/authorized_keys` file so they can log in without a password?\n\n**Golden Rule of Eradication:** *Assume the attacker had Admin access. If they had Admin, you cannot trust the OS to tell you the truth. You must look from outside the OS (e.g., network traffic analysis).*"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Example: Checking Scheduled Tasks (Windows) 🪟",
+            "content": "A common persistence method is hiding malware in Scheduled Tasks.\n\n**Command to list tasks:**\n```cmd\nschtasks /query /fo LIST /v\n```\n\n**What to look for:**\n- Task names that look random (`YjU4M2E`).\n- Tasks that run from suspicious paths (`C:\\Users\\Public\\Documents\\update.exe`).\n- Tasks with 'Hidden' checked.\n\n**Linux Equivalent:**\n```bash\ncrontab -l\ncat /etc/crontab\n```"
+        }
+    ]
+}

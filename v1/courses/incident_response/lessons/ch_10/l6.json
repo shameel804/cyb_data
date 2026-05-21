@@ -1,0 +1,123 @@
+{
+    "id": "l6",
+    "chapterId": "ch_10",
+    "title": "Building Timelines & Correlation ⏱️",
+    "description": "Stitching logs together to reconstruct the attacker's story.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Advanced Analysis",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "From Isolated Events to a Story 📖",
+            "content": "# The Art of Correlation\n\nA single log entry is a **clue**. Correlated logs form a **timeline**.\n\n**Example of Poor Analysis:**\n- *'I found Event ID 4624 at 2:15 AM.'* (Okay, someone logged in. So what?)\n\n**Example of Good Correlation:**\n1.  **2:14:58** - Firewall Log: Connection from `203.0.113.55` to `192.168.1.100:3389` (RDP).\n2.  **2:15:02** - Security Log (Event 4625): Failed logon for `Administrator` from `203.0.113.55`.\n3.  **2:15:05** - Security Log (Event 4625): Failed logon for `jsmith` from `203.0.113.55`.\n4.  **2:15:07** - Security Log (Event 4624): Successful logon for `jsmith` from `203.0.113.55` (LogonType 10).\n5.  **2:15:30** - Sysmon Event 1: `cmd.exe` launched by `winlogon.exe` with command `whoami`.\n\n**The Story:** *Attacker from IP `203.0.113.55` brute-forced the RDP password for user `jsmith`, succeeded, and immediately ran a discovery command.*\n\n**This is a confirmed breach.**"
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "The 'Super Timeline' Methodology 🧵",
+            "content": "### Using Plaso (log2timeline)\n\n**Plaso** is an open-source Python tool that **automates the creation of super timelines**.\n\n**Workflow:**\n1.  **Collect Logs:** Gather EVTX files, Sysmon logs, Apache logs, Registry hives, Prefetch files, etc.\n2.  **Run log2timeline:**\n    ```bash\n    log2timeline.py --storage-file timeline.plaso /evidence/\n    ```\n3.  **Filter and Export:**\n    ```bash\n    psort.py -o l2tcsv -w timeline.csv timeline.plaso \"date > '2026-04-20 00:00:00'\"\n    ```\n4.  **Analyze in Timeline Explorer:** Load the CSV into Eric Zimmerman's **Timeline Explorer**.\n\n**Result:** You can now **filter** by time, **search** for keywords, and **see the attack unfold** in chronological order across **all** log sources simultaneously.\n\n**This is the gold standard for complex forensic investigations.**"
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Correlation Value 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "What is the primary benefit of creating a 'Super Timeline'?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It reduces log storage costs.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It correlates events from disparate log sources into a single chronological view.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It encrypts log files.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It generates automatic incident reports.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Super Timelines break down silos between log sources, revealing the complete attack narrative.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "Correlation by Process ID (PID) 🔗",
+            "content": "### Following the Execution Chain\n\n**Process IDs (PIDs)** are the **glue** that binds Windows logs together.\n\n**Correlation Path:**\n1.  **Sysmon Event 3 (Network Connection):** `powershell.exe` (PID 4567) connected to `evil.com`.\n2.  **Sysmon Event 1 (Process Creation):** Search for `ProcessId=4567`. Find the **Parent PID (PPID)** = 1234 (`winword.exe`).\n3.  **Sysmon Event 1 (Process Creation):** Search for `ProcessId=1234`. Find the command line that launched Word.\n\n**SIEM Query (Splunk) to Follow a PID:**\n```spl\nindex=sysmon (EventID=1 OR EventID=3) ProcessId=4567 OR ParentProcessId=4567\n| table _time, EventID, Image, CommandLine, DestinationIp\n| sort _time\n```\n\n**Linux Equivalent:** Use `strace` or `auditd` logs which contain PIDs and PPIDs for every system call."
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "Correlation by Session ID / Logon ID 🆔",
+            "content": "### Tracking User Activity Across Logoff/Logon\n\nWindows assigns a unique **Logon ID** to every authenticated session. This ID persists across all actions performed in that session.\n\n**How to Use It:**\n- **Event 4624** logs the **Logon ID** assigned to the user.\n- **Event 4688** (Process Creation) includes the **Logon ID** of the user who launched the process.\n- **Event 5140** (Share Access) includes the **Logon ID**.\n\n**Correlation Path:**\n1.  Find suspicious process `evil.exe` (Event 4688). Note the **Logon ID** (e.g., `0x3E7`).\n2.  Search for Event **4624** with `TargetLogonId=0x3E7`.\n3.  **Result:** You find the exact logon event that spawned the malicious process, including the **Source IP Address** and **LogonType**.\n\n**This tells you exactly how the attacker authenticated to the system.**"
+        },
+        {
+            "id": "s_l6_6",
+            "type": "code",
+            "title": "Example: Manual Timeline Building in PowerShell ⏳",
+            "content": "Quick and dirty timeline for a single system.\n\n```powershell\n$Start = (Get-Date).AddHours(-4)\n$End = Get-Date\n\n# Collect events\n$SecurityEvents = Get-WinEvent -FilterHashtable @{LogName='Security'; StartTime=$Start; EndTime=$End} -ErrorAction SilentlyContinue\n$SysmonEvents = Get-WinEvent -LogName \"Microsoft-Windows-Sysmon/Operational\" -ErrorAction SilentlyContinue | Where-Object TimeCreated -gt $Start\n\n# Create custom objects and merge\n$Timeline = @()\n$Timeline += $SecurityEvents | Select-Object TimeCreated, @{n='Source';e={'Security'}}, Id, Message\n$Timeline += $SysmonEvents | Select-Object TimeCreated, @{n='Source';e={'Sysmon'}}, Id, Message\n\n# Sort and export\n$Timeline | Sort-Object TimeCreated | Export-Csv \"C:\\Reports\\ManualTimeline.csv\" -NoTypeInformation\n```\n\n**This is a lightweight alternative to Plaso for quick triage.**"
+        },
+        {
+            "id": "s_l6_7",
+            "type": "warning",
+            "title": "Pitfalls of Timeline Analysis 🕳️",
+            "content": "## Common Mistakes That Break Timelines\n\n1.  **Time Zone Mismatch:**\n    - `Security.evtx` uses **local time** (by default, can be set to UTC).\n    - `Sysmon` uses **UTC**.\n    - **Always normalize to UTC.** Document the system's time zone.\n\n2.  **Clock Skew:**\n    - A server's clock is 5 minutes slow.\n    - Event A (logged at 2:15:00 on the slow clock) actually happened **after** Event B (logged at 2:12:00 on a correct clock).\n    - **Check NTP configuration during triage.**\n\n3.  **Missing Logs (Log Clearing):**\n    - Attacker ran `wevtutil cl Security`.\n    - You see a gap in the timeline. **That gap is itself evidence.**\n    - Look for **Event ID 1102** (Security log cleared).\n\n4.  **Over-Correlation (Confirmation Bias):**\n    - *'I see two events at 2:15 AM. They MUST be related.'*\n    - **Not necessarily.** Correlate using hard links (PID, Logon ID, Source IP), not just timestamps."
+        },
+        {
+            "id": "s_l6_8",
+            "type": "tip",
+            "title": "Pro Tip: Visualizing Timelines 📊",
+            "content": "## A Picture is Worth a Thousand Logs\n\nTools like **Timeline Explorer** or **Kibana (Elastic)** allow you to **visualize** the timeline.\n\n**Visual Pattern Recognition:**\n- **Spikes in failed logons:** Brute force attack.\n- **Regular intervals (beaconing):** Command & Control traffic.\n- **Clusters of file modifications:** Ransomware encryption.\n\n**Show the graph to management.** It's much more compelling than a 10,000-line CSV."
+        },
+        {
+            "id": "s_l6_9",
+            "type": "quiz",
+            "title": "Timeline Pitfalls ⚠️",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "multiple_choice",
+                "question": "Why is time zone normalization critical when building a timeline from multiple log sources?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Because lawyers only understand local time.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Because different logs may use different time zones, causing events to appear out of order.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Because it saves disk space.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Because Windows requires UTC.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Without normalization, an event logged in UTC may appear to happen 'after' an event logged in local time, destroying the accuracy of the timeline.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,111 @@
+{
+    "id": "l3",
+    "chapterId": "ch_9",
+    "title": "TTPs & MITRE ATT&CK 🎯",
+    "description": "Understanding attacker behaviors, not just fingerprints.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Behavioral Intel",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Beyond IOCs: TTPs 🧠",
+            "content": "# Tactics, Techniques, and Procedures\n\nIOCs are **brittle**. They change constantly. \n**TTPs** are **behaviors**. They are hard for attackers to change.\n\n**Definitions:**\n- **Tactics (The 'Why'):** The adversary's goal during a phase. (e.g., *'Credential Access'*).\n- **Techniques (The 'How'):** The specific method used. (e.g., *'Dumping LSASS memory with Mimikatz'*).\n- **Procedures (The 'Specific Steps'):** The exact implementation. (e.g., *'Uses `procdump.exe` with specific command line flags'*).\n\n**Analogy:**\n- **Tactic:** *'Get into the building.'*\n- **Technique:** *'Pick the lock on the back door.'*\n- **Procedure:** *'Uses a specific brand of lockpick and tension wrench.'*\n\n**Focusing on TTPs allows you to detect **new** malware from the same group because their *behavior* remains consistent even when their tools change.**"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "MITRE ATT&CK Framework 🗺️",
+            "content": "### The Universal Language of Adversary Behavior\n\n**ATT&CK** stands for **A**dversarial **T**actics, **T**echniques, and **C**ommon **K**nowledge.\n\nIt is a **giant, free knowledge base** of adversary behaviors observed in the wild.\n\n**How ATT&CK is Organized:**\n- **Matrices:** One for Enterprise, one for Mobile, one for Cloud.\n- **Columns (Tactics):** The 14 stages of an attack lifecycle (Reconnaissance, Resource Development, Initial Access, Execution, etc.).\n- **Rows (Techniques):** Specific actions under each Tactic. Each has a unique ID (e.g., **T1059.001** for PowerShell).\n\n**IR Value of ATT&CK:**\n1.  **Gap Analysis:** *'We have good detection for Initial Access (Phishing), but poor detection for Lateral Movement (SMB).'*\n2.  **Incident Reporting:** *'The attacker used T1566.001 (Spearphishing Attachment) for Initial Access, then T1059.001 (PowerShell) for Execution.'*\n3.  **Threat Actor Profiling:** *'Group APT29 commonly uses T1003.001 (LSASS Memory). Let's focus our hunting there.'*"
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "ATT&CK Structure 🏛️",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "In the MITRE ATT&CK framework, the columns (e.g., Execution, Persistence, Lateral Movement) represent:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Techniques",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Procedures",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Tactics",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Groups",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Columns are Tactics (the 'why' phase). Rows are Techniques (the 'how' method).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Key ATT&CK Techniques for IR Analysts 🔑",
+            "content": "### The Top 10 Techniques You MUST Know\n\n1.  **T1566.001 - Phishing: Spearphishing Attachment** (Initial Access)\n    - *'The user clicked the malicious Excel doc.'*\n\n2.  **T1059.001 - Command and Scripting Interpreter: PowerShell** (Execution)\n    - *'Powershell.exe downloaded a script from the internet.'*\n\n3.  **T1055 - Process Injection** (Defense Evasion, Privilege Escalation)\n    - *'Malware injected code into `explorer.exe` to hide.'*\n\n4.  **T1003.001 - OS Credential Dumping: LSASS Memory** (Credential Access)\n    - *'Mimikatz was used to steal passwords from memory.'*\n\n5.  **T1078 - Valid Accounts** (Defense Evasion, Persistence, Lateral Movement)\n    - *'Attacker logged in with a stolen Domain Admin password.'*\n\n6.  **T1021.002 - Remote Services: SMB/Windows Admin Shares** (Lateral Movement)\n    - *'Attacker copied files to `\\\\SERVER\\C$`.'*\n\n7.  **T1071.001 - Application Layer Protocol: Web Protocols** (Command & Control)\n    - *'Malware beaconed out over HTTPS to look like normal web traffic.'*\n\n8.  **T1041 - Exfiltration Over C2 Channel** (Exfiltration)\n    - *'Data was stolen using the same connection used for commands.'*\n\n9.  **T1486 - Data Encrypted for Impact** (Impact)\n    - *'Ransomware encrypted all files.'*\n\n10. **T1547.001 - Boot or Logon Autostart Execution: Registry Run Keys** (Persistence)\n    - *'Malware added itself to the Run key to survive reboots.'*"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Using ATT&CK to Map an Incident 🗺️",
+            "content": "### From Logs to Narrative\n\nLet's map a real incident to ATT&CK:\n\n**Observed Behavior:**\n- User received email with `Invoice_123.xlsm`.\n- `Excel.exe` spawned `cmd.exe`.\n- `cmd.exe` ran `powershell -enc ...`.\n- PowerShell connected to `185.142.53.179:443`.\n- Scheduled Task `SysUpdate` created.\n- `vssadmin.exe delete shadows /all` executed.\n\n**ATT&CK Mapping:**\n| Observed Behavior | ATT&CK Technique | Tactic |\n| :--- | :--- | :--- |\n| Email with malicious attachment | **T1566.001** | Initial Access |\n| Excel spawning CMD | **T1204.002** | Execution |\n| PowerShell with encoded command | **T1059.001** | Execution |\n| Connection to remote IP | **T1071.001** | Command & Control |\n| Scheduled Task creation | **T1053.005** | Persistence |\n| Deleting Volume Shadow Copies | **T1490** | Impact |\n\n**Conclusion:** This is a **Ransomware Attack Chain**. The mapping tells us exactly where our detection succeeded and where it failed."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Pro Tip: ATT&CK Navigator 🧭",
+            "content": "## Visualizing Your Defenses\n\n**MITRE ATT&CK Navigator** is a free web tool to visualize coverage.\n\n**How to use it:**\n1.  Go to `mitre-attack.github.io/attack-navigator`.\n2.  Select the Enterprise matrix.\n3.  **Color techniques based on your detection coverage:**\n    - **Green:** We have solid detection/alerting.\n    - **Yellow:** We have some logging but no alert.\n    - **Red:** We have **zero visibility**.\n\n**This creates a **'Heat Map of Blind Spots'**. Show this to management to justify budget for new tools. *'See all this red? That's where the next breach will come from.'*"
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Technique Matching 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "An attacker uses `procdump.exe` to dump the memory of `lsass.exe`. Which ATT&CK Technique does this represent?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "T1059.001 - PowerShell",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "T1003.001 - LSASS Memory",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "T1486 - Data Encrypted",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "T1078 - Valid Accounts",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Dumping LSASS is the classic credential dumping technique (T1003.001).",
+                "xpReward": 10
+            }
+        }
+    ]
+}

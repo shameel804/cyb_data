@@ -1,0 +1,84 @@
+{
+    "id": "l1",
+    "chapterId": "ch_8",
+    "title": "What is Digital Forensics? 🔬",
+    "description": "The science of finding, preserving, and analyzing digital evidence.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Forensics Fundamentals",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Digital Forensics Defined 📚",
+            "content": "# The Science of Digital Crime Scenes\n\n**Digital Forensics** is the application of scientific methods to **identify, preserve, recover, analyze, and present** digital evidence in a manner that is legally admissible.\n\n**It's not just 'looking at files'.** It's a disciplined process that answers:\n- **Who** did it?\n- **What** did they do?\n- **When** did they do it?\n- **How** did they get in?\n- **Where** did the data go?\n\n**Key Distinction:** IR focuses on **stopping the bleeding**. Forensics focuses on **understanding the wound**."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "The Four Pillars of Forensics 🏛️",
+            "content": "### A.C.P.O. Principles (UK) / NIST Guidelines (US)\n\nAll forensic actions must adhere to these core principles to ensure evidence is not challenged in court.\n\n1.  **No Action Should Change Data**\n    - The investigator's actions must not alter the original evidence.\n    - **Tool:** Write Blockers, forensic imaging.\n\n2.  **Competence**\n    - Only trained personnel should handle evidence. If you are not qualified, you must work under someone who is.\n\n3.  **Audit Trail**\n    - All processes must be documented and repeatable. Another expert must be able to follow your steps and reach the same conclusion.\n\n4.  **Person in Charge**\n    - A single individual must have overall responsibility for the evidence (Chain of Custody owner).\n\n**Analogy:** Treat the hard drive like a **crime scene**. You wouldn't walk through a bloody room with muddy boots. Don't write to a suspect's hard drive with your OS."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Forensics Principles 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the most fundamental principle of digital forensics?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Work as fast as possible.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Never alter the original evidence.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Always use open-source tools.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Share findings publicly.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Preserving the integrity of the original evidence is the cornerstone of forensic soundness. Any alteration can render evidence inadmissible.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Forensics vs. Incident Response 🆚",
+            "content": "### Two Sides of the Same Coin\n\n| Aspect | Incident Response | Digital Forensics |\n| :--- | :--- | :--- |\n| **Primary Goal** | Stop the threat, restore business. | Determine root cause, collect evidence for court. |\n| **Speed** | Fast. Minutes matter. | Methodical. Hours/Days are acceptable. |\n| **Interaction** | May alter system state (e.g., kill process). | Avoids any alteration. |\n| **Output** | Containment, Eradication, Recovery. | Timeline, Report, Testimony. |\n\n**In a perfect world:** You do **both** simultaneously. \n- **IR Team:** Contains the network spread.\n- **Forensics Team:** Captures memory and disk images of Patient Zero.\n\n**In the real world:** The same person often does both. **You must be able to switch hats.**"
+        },
+        {
+            "id": "s_l1_5",
+            "type": "warning",
+            "title": "The 'Admissibility' Trap ⚖️",
+            "content": "## You Found It. So What?\n\nYou found a file named `passwords.txt` on the attacker's machine. You open it and it's full of company credentials. **Case closed, right?**\n\n**Wrong.**\n\n**In court, the defense will ask:**\n- *'How do we know YOU didn't put that file there?'*\n- *'When was the computer seized?'*\n- *'Who had access to it in the evidence locker?'*\n- *'Did you use a write blocker?'*\n\n**If you cannot answer these questions with documented proof (Chain of Custody, Hashes, Timestamps), the evidence is **thrown out**.**\n\n**Forensics is 50% technical skill and 50% documentation discipline.**"
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "IR vs Forensics Focus 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "During an active ransomware incident, it is acceptable to prioritize forensic imaging over immediate containment.",
+                "correctAnswer": false,
+                "explanation": "False. During an active incident, containment is the priority. Forensics is critical but usually follows initial containment (e.g., imaging after network isolation).",
+                "xpReward": 10
+            }
+        }
+    ]
+}

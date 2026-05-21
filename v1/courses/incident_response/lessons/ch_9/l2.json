@@ -1,0 +1,117 @@
+{
+    "id": "l2",
+    "chapterId": "ch_9",
+    "title": "Indicators of Compromise (IOCs) 🚩",
+    "description": "IPs, domains, hashes—the breadcrumbs attackers leave behind.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Tactical Intel",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "What is an IOC? 🕵️",
+            "content": "# The Digital Fingerprint of an Attack\n\nAn **Indicator of Compromise (IOC)** is a piece of forensic data that identifies potentially malicious activity on a system or network.\n\n**Think of IOCs as the **physical evidence** at a crime scene:** A specific fingerprint, a unique shoe tread, a strand of hair.\n\n**Common IOC Types:**\n| Type | Example | Lifetime |\n| :--- | :--- | :--- |\n| **File Hash** | `SHA256: 5b6e6a96b6...` | Until attacker recompiles malware |\n| **IP Address** | `185.142.53.179` | Hours to Days (dynamic hosting) |\n| **Domain Name** | `evil-c2[.]xyz` | Days to Weeks |\n| **URL** | `https://evil[.]com/payload.exe` | Days |\n| **Registry Key** | `HKLM\\...\\Run\\Malware` | Weeks (persistence) |\n| **Mutex** | `Global\\EvilMutex123` | Until reboot |"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "File Hashes: The Unique ID 🔢",
+            "content": "### MD5, SHA1, SHA256\n\nA **hash** is a mathematical 'fingerprint' of a file. Change even one byte in the file, and the hash completely changes.\n\n**Common Algorithms:**\n- **MD5:** 128-bit. Fast, but **broken** (collisions possible). Still widely used for IOC sharing.\n- **SHA-1:** 160-bit. Also deprecated.\n- **SHA-256:** **Industry Standard.** 256-bit. Extremely secure.\n\n**How Attackers Evade Hash-Based Detection:**\n- They recompile the malware with a **single extra space** in the code. \n- **Result:** Completely new hash. Your old IOC is **useless**.\n\n**IR Value of Hashes:**\n- **High Confidence:** If you find a known ransomware hash on a system, it's **100% bad**.\n- **Pivot:** Search your EDR/SIEM for that hash to find other infected hosts.\n\n**Tool:** Use `Get-FileHash` (PowerShell) or `sha256sum` (Linux) to generate hashes of suspicious files found during IR."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Hash Evasion 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "An attacker changes a single comment line in the malware source code and recompiles it. What happens to the SHA256 hash?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It stays the same.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It changes completely.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It only changes slightly.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The hash becomes invalid.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Avalanche effect: Any change in input produces a radically different hash. This is why hash-based detection is fragile.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "IP Addresses & Domains 🌐",
+            "content": "### The Attacker's Infrastructure\n\n**IP Addresses:**\n- **Pros:** Easy to block at the firewall.\n- **Cons:** **Extremely ephemeral.** Attackers use bulletproof hosting, VPNs, and TOR. The IP you blocked today will be abandoned tomorrow.\n\n**Domain Names:**\n- **Pros:** More stable than IPs. Attackers register domains for campaigns.\n- **Cons:** Attackers use **Domain Generation Algorithms (DGAs)** to create thousands of random domains daily. Blocking one is useless.\n\n**How to Use Network IOCs Effectively:**\n- **Block the IP *and* the Domain.**\n- **Sinkhole the Domain:** Redirect internal DNS queries for `evil.com` to `127.0.0.1` (a honeypot). This prevents connections **and** alerts you if a host tries to resolve it (meaning it's infected).\n\n**Watch Out:** Blocking an IP that belongs to **Cloudflare** or **AWS** can break legitimate websites! Always check WHOIS before blocking."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Using VirusTotal Responsibly ⚠️",
+            "content": "### The 'Do Not Upload Sensitive Files' Rule\n\n**VirusTotal (VT)** is a free service that scans files/URLs with 70+ antivirus engines.\n\n**The Golden Rule of VT for IR:**\n- ✅ **DO search for existing hashes.** (Paste the hash into the search bar).\n- ✅ **DO check IP/domain reputation.**\n- ❌ **DO NOT upload suspicious files from a *live* incident.**\n\n**Why Not Upload?**\n- **VT is public.** Any file you upload is shared with the security community (and paying customers).\n- **Scenario:** You find a Word doc named `Merger_Details_Q2.docx` that you suspect is a malicious macro.\n- **If you upload it to VT:** The entire world (including the attacker) now knows:\n    1.  That your company is involved in a merger.\n    2.  That you found their malware.\n    3.  The internal naming conventions of your files.\n\n**Safe Alternative:** Use a **Private VT Instance** (paid) or a local sandbox."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "warning",
+            "title": "IOC Fatigue & False Positives 🚫",
+            "content": "## Not Every Alert is a Smoking Gun\n\n**Problem:** A free threat feed says `8.8.8.8` is malicious. (It's Google DNS. It's not).\n\n**Consequence:** You block Google DNS and break the internet for your company.\n\n**IOC Vetting Process:**\n1.  **Source:** Who provided this IOC? (CISA > Random Twitter Account).\n2.  **Age:** Is this IOC from 2015? (Probably dead infrastructure).\n3.  **Context:** Is this IP a shared hosting provider? (Cloudflare IPs host both good and bad sites).\n4.  **Verification:** Check **WHOIS** and **VirusTotal relations**.\n\n**Best Practice:** Use **Confidence Scores**. Automatically block **High Confidence** IOCs. Alert on **Low Confidence** IOCs for manual review."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "code",
+            "title": "Example: Searching for IOCs in Logs 📋",
+            "content": "You have a list of suspect IPs from a threat report. Use PowerShell to search firewall logs.\n\n**Firewall Log Format (CSV):** `Date,Time,Action,Source,Destination`\n\n```powershell\n# List of IOCs\n$BadIPs = @('185.142.53.179', '203.0.113.55', '198.51.100.23')\n\n# Import firewall logs\n$Logs = Import-Csv \"C:\\Logs\\firewall_20260420.csv\"\n\n# Find matches\n$Logs | Where-Object { $BadIPs -contains $_.Destination } | \n    Select-Object Date, Time, Source, Destination | \n    Export-Csv \"C:\\Reports\\IOC_Hits.csv\" -NoTypeInformation\n```\n\n**Output:** A list of internal IPs that talked to the bad IPs. **This is how you scope a breach.**"
+        },
+        {
+            "id": "s_l2_8",
+            "type": "quiz",
+            "title": "IOC Usage Best Practices 📌",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "What is the primary risk of uploading a suspicious internal document to the public VirusTotal?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It might crash the VirusTotal website.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The document's contents become visible to competitors and attackers.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "VirusTotal will block your IP address.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It uses too much bandwidth.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Public uploads share the file with the community, potentially leaking sensitive business information.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,117 @@
+{
+    "id": "l4",
+    "chapterId": "ch_10",
+    "title": "Linux & Web Server Logs 🐧",
+    "description": "Analyzing auth.log, syslog, Apache/Nginx access logs, and auditd.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Linux & Web Logs",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Linux Logging Landscape 🗺️",
+            "content": "# Where Linux Hides Its Secrets\n\nMost Linux distributions use **rsyslog** or **systemd-journald** to manage logs. The primary log directory is `/var/log/`.\n\n**Critical Log Files for IR:**\n| Log File | Purpose | Key Contents |\n| :--- | :--- | :--- |\n| `/var/log/auth.log` (Debian/Ubuntu) | Authentication events | SSH logins, `sudo` usage, user creation. |\n| `/var/log/secure` (RHEL/CentOS) | Authentication events | Same as auth.log. |\n| `/var/log/syslog` | System messages | Service starts/stops, kernel messages. |\n| `/var/log/apache2/access.log` | Web server requests | Every HTTP request (IP, URL, User-Agent). |\n| `/var/log/nginx/access.log` | Web server requests | Same as Apache. |\n| `/var/log/audit/audit.log` | Kernel audit subsystem | Detailed system call auditing (if `auditd` is running). |\n| `/var/log/btmp` | Failed login attempts | **Binary file.** Use `lastb` to read. |\n| `/var/log/wtmp` | Login history | **Binary file.** Use `last` to read. |"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Analyzing auth.log / secure 🔐",
+            "content": "### Tracking User Activity and Attacks\n\n**Example Entry (Failed SSH Password):**\n```log\nApr 20 02:15:33 server sshd[1234]: Failed password for invalid user admin from 203.0.113.55 port 52222 ssh2\n```\n\n**Example Entry (Successful SSH Login):**\n```log\nApr 20 02:16:00 server sshd[1235]: Accepted password for jsmith from 192.168.1.100 port 52313 ssh2\nApr 20 02:16:00 server systemd-logind[890]: New session 45 of user jsmith.\n```\n\n**Example Entry (Sudo Usage):**\n```log\nApr 20 02:17:22 server sudo:   jsmith : TTY=pts/0 ; PWD=/home/jsmith ; USER=root ; COMMAND=/usr/bin/apt update\n```\n\n**What Attackers Do:**\n- **Brute Force SSH:** Hundreds of `Failed password` entries from a single IP.\n- **Clear Logs:** `echo '' > /var/log/auth.log` (But this action itself might be logged if auditd is watching).\n\n**Quick Analysis Commands:**\n```bash\n# Count failed SSH attempts by IP\ngrep \"Failed password\" /var/log/auth.log | awk '{print $(NF-3)}' | sort | uniq -c | sort -nr\n\n# Show all sudo commands used today\ngrep \"sudo:\" /var/log/auth.log | grep \"$(date +%b\\ %d)\"\n```"
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Linux Auth Logs 🐧",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "You see `Failed password for invalid user root from 185.142.53.179` repeated 500 times in `/var/log/auth.log`. What is happening?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The root user forgot their password.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A brute-force SSH attack against the root account.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A legitimate system service is failing.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The system clock is wrong.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Repeated failed password attempts from a single IP targeting the root account is a classic brute-force attack.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Web Server Access Logs (Apache/Nginx) 🌐",
+            "content": "### The Attacker's Fingerprints on Your Website\n\n**Combined Log Format (Apache):**\n```log\n203.0.113.55 - - [20/Apr/2026:02:15:33 +0000] \"GET /wp-admin/admin-ajax.php?action=duplicator_download&file=../../../../etc/passwd HTTP/1.1\" 200 1543 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\"\n```\n\n**Breaking Down the Entry:**\n- **IP:** `203.0.113.55` (Attacker's IP).\n- **Timestamp:** `20/Apr/2026:02:15:33 +0000`.\n- **Request:** `GET /wp-admin/admin-ajax.php?action=duplicator_download&file=../../../../etc/passwd`\n    - **This is a Path Traversal attack!** The attacker is trying to read the `/etc/passwd` file.\n- **Status Code:** `200` (Success!). **This is a confirmed breach.**\n- **User-Agent:** `Mozilla/5.0...` (Can be used to fingerprint attacker tools).\n\n**What to Look For:**\n- **SQL Injection:** `?id=1' OR '1'='1`\n- **Command Injection:** `?cmd=whoami`\n- **Web Shell Access:** `POST /uploads/shell.php` with a `cmd` parameter.\n- **Scanning:** Requests for `/wp-login.php`, `/admin.php`, `/.env`."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Example: Hunting Web Shells in Access Logs 🔍",
+            "content": "Web shells are often accessed via `POST` requests with unusual parameters.\n\n**Find POST requests to suspicious file extensions:**\n```bash\ncat /var/log/apache2/access.log | grep -E \"POST.*\\.(php|aspx|jsp)\" | awk '{print $1, $7}' | sort | uniq -c | sort -nr\n```\n\n**Find requests containing `cmd=` or `exec=`:**\n```bash\ngrep -E \"(cmd=|exec=|command=|shell=)\" /var/log/apache2/access.log\n```\n\n**Example Output:**\n```\n203.0.113.55 - - [20/Apr/2026:02:15:33] \"POST /wp-content/uploads/2026/04/shell.php HTTP/1.1\" 200\n```\n\n**Response Analysis:** Look for **HTTP 200** responses to these requests. If you see a `200`, the shell executed successfully."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "auditd: The Linux 'Sysmon' 🛡️",
+            "content": "### Kernel-Level Auditing\n\n**auditd** is the Linux kernel's audit subsystem. It can log **every** system call, file access, and command execution.\n\n**Key Audit Rules for IR:**\n```bash\n# Log all commands run by users (via execve syscall)\n-a always,exit -F arch=b64 -S execve -k command_execution\n\n# Log changes to critical files\n-w /etc/passwd -p wa -k identity_changes\n-w /etc/shadow -p wa -k identity_changes\n-w /etc/sudoers -p wa -k sudo_changes\n\n# Log access to sensitive directories\n-w /var/www/html -p wa -k web_changes\n```\n\n**Searching Audit Logs:**\n```bash\n# Find all commands run by user 'jsmith'\nausearch -ua jsmith -sc execve --format text\n\n# Find all file writes to /etc/\nausearch -f /etc/ -p w --format text\n```\n\n**Limitation:** Auditd generates **massive** logs. Use it sparingly on critical systems or during active investigations."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "tip",
+            "title": "Pro Tip: Parsing JSON Logs with `jq` 🛠️",
+            "content": "## Modern Logs Are JSON\n\nMany modern apps (Docker, Kubernetes, CloudTrail) log in **JSON** format. `jq` is the Swiss Army knife for slicing JSON.\n\n**Example: CloudTrail Log (AWS)**\n```json\n{\"eventTime\": \"2026-04-20T02:15:33Z\", \"eventName\": \"CreateUser\", \"userIdentity\": {\"arn\": \"arn:aws:iam::123456789012:user/evil\"}, \"sourceIPAddress\": \"203.0.113.55\"}\n```\n\n**Query with jq:**\n```bash\n# Extract specific fields\ncat cloudtrail.json | jq -r '.eventTime + \" \" + .eventName + \" \" + .sourceIPAddress'\n\n# Filter by event name\ncat cloudtrail.json | jq 'select(.eventName == \"CreateUser\")'\n```\n\n**This is essential for cloud IR.**"
+        },
+        {
+            "id": "s_l4_8",
+            "type": "quiz",
+            "title": "Web Log Analysis 🌐",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "In an Apache access log, what does a status code of `200` on a request to a suspicious `/uploads/shell.php` file indicate?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The file was not found (404).",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The request was successfully processed by the server.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The user was redirected (302).",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The server encountered an error (500).",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "HTTP 200 means 'OK'. The web shell executed and returned output to the attacker.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,76 @@
+{
+    "id": "l3",
+    "chapterId": "ch_3",
+    "title": "Playbooks & Runbooks 📖",
+    "description": "Detailed response procedures for common incident types.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Procedure",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "From Policy to Action 🎬",
+            "content": "# What is a Playbook?\n\nA **Playbook** (or **Runbook**) is a documented set of **step-by-step actions** to take when a specific type of incident occurs.\n\n**Analogy:** A recipe in a cookbook.\n\n**Difference between Playbook and Runbook:**\n- **Playbook:** High-level strategy and decision points (e.g., 'Isolate patient zero').\n- **Runbook:** Extremely detailed technical commands (e.g., `Invoke-Command -ComputerName $PC -ScriptBlock { Disable-NetAdapter -Name 'Ethernet' }`).\n\n**We will use 'Playbook' to refer to the actionable document.**"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Anatomy of a Good Playbook 🧬",
+            "content": "### Essential Sections\n\nEvery playbook should follow a consistent template:\n\n1.  **Incident Type & ID:** 'PHISH-01: Credential Phishing'\n2.  **Severity Criteria:** When is this a Sev1 (CEO clicked) vs Sev3 (Helpdesk intern clicked)?\n3.  **Detection Logic:** What triggers this playbook? (SIEM Alert Name: 'Suspicious Inbox Rule Created')\n4.  **Required Roles:** Who needs to be in the war room? (e.g., Email Admin, Helpdesk Manager)\n5.  **Phase 1: Containment**\n    - Step 1.1: Force password reset for affected user.\n    - Step 1.2: Revoke active sessions (Azure AD / Okta).\n6.  **Phase 2: Investigation**\n    - Step 2.1: Check Mailbox Rules for forwarding.\n    - Step 2.2: Search email logs for other recipients of the same phish.\n7.  **Phase 3: Eradication**\n    - Step 3.1: Delete malicious email from all mailboxes.\n8.  **Phase 4: Recovery**\n    - Step 4.1: Restore deleted legitimate emails if any.\n9.  **Phase 5: Closeout**\n    - Step 5.1: Document IOCs in Threat Intel Platform."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Playbook Purpose 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What is the main benefit of having a pre-written playbook for Ransomware?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It guarantees you won't have to pay the ransom.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It reduces decision-making time and prevents mistakes during a crisis.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It stops the ransomware from encrypting files.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It replaces the need for antivirus software.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Playbooks reduce 'analysis paralysis' and ensure consistent, swift action. They are cognitive aids, not technical shields.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "Example: Phishing Playbook Snippet 📧",
+            "content": "Here's what a simple step in a Phishing Playbook might look like for an O365 environment.\n\n**Step: Check for Malicious Inbox Rules**\n\nAttackers often set up rules to hide replies or forward mail to themselves.\n\n```powershell\n# Connect to Exchange Online\nConnect-ExchangeOnline\n\n# Check for forwarding rules to external domains\nGet-InboxRule -Mailbox \"victim@company.com\" | \n    Where-Object { $_.ForwardTo -ne $null -or $_.ForwardAsAttachmentTo -ne $null } |\n    Format-List Name, Description, ForwardTo\n```\n\n**Playbook Instruction:** *If any forwarding rule is found targeting an external domain, capture a screenshot for evidence, then disable the rule immediately.*"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Common Playbooks You Need 📚",
+            "content": "### Minimum Viable Set of Playbooks\n\nYou don't need 100 playbooks on day one. Start with the **Most Likely and Most Damaging** scenarios.\n\n**Tier 1 (Critical):**\n- **Ransomware Outbreak**\n- **Data Breach (Confirmed Data Exfiltration)**\n- **Business Email Compromise (BEC) / CEO Fraud**\n\n**Tier 2 (Frequent):**\n- **Phishing (User Clicked Link)**\n- **Malware Infection (Non-Ransomware)**\n- **Lost or Stolen Device**\n\n**Tier 3 (Specialized):**\n- **Denial of Service (DoS/DDoS)**\n- **Insider Threat Investigation**\n- **Web Application Defacement**"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Pro Tip: Living Documents 🌱",
+            "content": "## Playbooks Are Never 'Done'\n\nA playbook written in 2022 is probably outdated in 2026. **Tools change, threats evolve.**\n\n**Maintenance Cadence:**\n- **Quarterly Review:** Does this playbook still reflect our current infrastructure? (Did we move from on-prem Exchange to O365? Update the commands!)\n- **Post-Incident Update:** Every time you use a playbook, ask *'What was missing?'* Update it immediately after the incident.\n\n**Version Control:** Store playbooks in **Git** or a Wiki that tracks changes. **Never** store the 'Master Playbook' as a Word document on a shared drive that might get encrypted by ransomware!"
+        }
+    ]
+}

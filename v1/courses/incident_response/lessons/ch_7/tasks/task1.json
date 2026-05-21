@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_7",
+    "title": "Draft a Lessons Learned Summary",
+    "description": "Identify root causes and create SMART action items from a scenario.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Read the following scenario from a Lessons Learned meeting:\n\n*'During the ransomware incident, the security team tried to contact the backup administrator to verify tape inventory. The on-call list had an old phone number. It took 3 hours to find the correct person. By the time they verified the backups, the ransomware had already encrypted the online backup repository.'*\n\n**Task:**\n1. Use the 'Five Whys' technique (or root cause analysis) to identify the **root cause**.\n2. Create **two SMART Action Items** to prevent this from happening again.\n\n**Output Format:**\n```\nRoot Cause: [Brief statement]\n\nAction Item 1: [SMART description]\nAction Item 2: [SMART description]\n```",
+    "hints": [
+        "Think about why the phone number was old (process failure).",
+        "Think about why the online backup was accessible to ransomware (technical failure).",
+        "Action items need Owners and Due Dates."
+    ],
+    "expectedOutput": "Root Cause: Lack of automated on-call scheduling and failure to enforce immutable backup storage (3-2-1 rule).\n\nAction Item 1: Implement PagerDuty (or similar) for automated on-call rotations and contact updates. Owner: IT Operations Manager. Due: June 30, 2026.\nAction Item 2: Configure immutable object lock on the cloud backup repository to prevent deletion/encryption by ransomware. Owner: Backup Administrator. Due: May 15, 2026.",
+    "solutionCode": "Root Cause: Inadequate process for maintaining emergency contact information and insufficient backup isolation (lack of air-gap/immutability).\n\nAction Item 1: Implement an automated on-call management platform (e.g., PagerDuty, Opsgenie) integrated with the corporate directory. Owner: IT Service Management Lead. Due: June 30, 2026.\nAction Item 2: Enable S3 Object Lock (or equivalent) with Compliance Mode on all backup repositories to ensure backups cannot be deleted or encrypted by ransomware. Owner: Cloud Infrastructure Team. Due: May 30, 2026."
+}

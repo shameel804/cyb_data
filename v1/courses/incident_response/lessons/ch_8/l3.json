@@ -1,0 +1,90 @@
+{
+    "id": "l3",
+    "chapterId": "ch_8",
+    "title": "Live Response vs. Dead Box 🧟",
+    "description": "When to capture memory and when to pull the plug.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Evidence Collection",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Great Debate ⚔️",
+            "content": "# To Pull the Plug or Not?\n\n**'Live Response' (Live Forensics):** Collecting evidence from a **running** system.\n**'Dead Box Forensics' (Post-Mortem):** Analyzing a powered-off hard drive.\n\n**Live Response Pros:**\n- Captures volatile data (RAM, network).\n- Reveals encryption keys.\n- Shows active attacker presence.\n\n**Live Response Cons:**\n- **You alter the system.** Every command you run changes memory, creates processes, and updates registry keys.\n- Legally more complex to defend ('What did your tools do to the evidence?').\n\n**Dead Box Pros:**\n- **Forensically pure.** The hard drive is static. You can image it without altering a single bit (with a write blocker).\n- Gold standard for court.\n\n**Dead Box Cons:**\n- **You lose all volatile data.**\n- Encrypted drives are locked."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "The Hybrid Approach (Best Practice) 🏆",
+            "content": "### Do Both, in This Order\n\n**Step 1: Capture Volatile Data (Live Response)**\n- Run triage scripts to grab network state, process lists, logged-on users.\n- **Capture Full RAM Dump.** (Takes 10-30 mins depending on RAM size).\n- **Document every command you run.**\n\n**Step 2: Controlled Shutdown**\n- **Do NOT just pull the power cord.** This risks corrupting the file system.\n- **Graceful Shutdown:** If possible, shut down via OS. (But this allows malware to run shutdown scripts to delete evidence).\n- **Hard Shutdown:** Pulling the power cord is **sometimes the only safe way** to preserve the disk state from an actively wiping attacker.\n\n**Step 3: Dead Box Imaging**\n- Remove the hard drive, connect to a forensic workstation via **Write Blocker**.\n- Create a forensic image (E01, DD).\n- Analyze the image.\n\n**The Rule of Thumb:**\n- **Ransomware / Destructive Malware:** Live response FIRST (grab RAM), then **Pull the Plug** if active encryption is ongoing.\n- **Data Theft / Espionage:** Live response FIRST (grab RAM, see active connections), then **Graceful Shutdown** if safe."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Live vs Dead Decision 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "A server is actively encrypting files (ransomware). You have 30 seconds to decide. What is the BEST action?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Run a full memory capture (takes 20 mins).",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Pull the network cable immediately, then consider power off.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Gracefully shut down the OS.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Start a disk image.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Speed is critical to stop encryption. Network isolation breaks the attacker's connection. If encryption continues offline, immediate power off may be required to save remaining data.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Risks of Pulling the Plug 🔌",
+            "content": "### What You Lose with a Hard Shutdown\n\n1.  **RAM:** Gone. (But you might not have time to capture it).\n2.  **File System Integrity:** Open files may be corrupted. NTFS transaction logs may be incomplete.\n3.  **Encrypted Drives:** BitLocker will lock the drive. You will **need the recovery key** to image it later.\n\n**Mitigation for Encrypted Drives:**\n- **Before** pulling the plug, if you have 30 seconds, run `manage-bde -protectors -get C:` to display the BitLocker Recovery Key ID. (Don't write it down on the infected machine; take a photo with your phone).\n\n**When You MUST Pull the Plug:**\n- You see a command like `cipher /w:C:\\` (wiping free space) or `format D:`.\n- You see a countdown timer: 'Files will be deleted in 5 seconds'.\n- **In these cases, pulling the plug saves evidence.**"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "warning",
+            "title": "The 'Locked' Laptop Problem 💻",
+            "content": "## What if the Screen is Locked?\n\n**Scenario:** You find the suspect's laptop, but it's at the Windows login screen.\n\n**Option 1: Force Reboot into Forensic Boot Disk**\n- You lose RAM.\n- You can still image the disk (if not encrypted).\n\n**Option 2: Imaging While Locked**\n- If the drive is unencrypted, you can connect a write blocker and image it **while the system is still technically running**. This captures the 'live' file system state.\n\n**Option 3: DMA Attack / FireWire**\n- Advanced technique to read RAM over a hardware port. Rarely used in standard IR.\n\n**Option 4: Walk Away and Get a Warrant**\n- If it's an employee, HR policy may allow you to image it. If it's a 3rd party, you need **Legal** approval before touching it."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "code",
+            "title": "Example: Capturing RAM with WinPMEM (Windows) 💻",
+            "content": "**Step 1:** Download trusted `winpmem.exe` from Velociraptor releases.\n**Step 2:** Run as Administrator from your trusted USB drive.\n\n```cmd\nE:\\tools\\winpmem_mini_x64.exe -o E:\\evidence\\SUSPECT-LAPTOP-20260420.raw\n```\n\n**What it does:**\n- Loads a kernel driver to access physical memory.\n- Writes the entire contents of RAM to the output file.\n- **Size:** Equal to total RAM (e.g., 16GB file).\n\n**Verification:**\nAfter capture, use `winpmem` to verify the image.\n```cmd\nwinpmem_mini_x64.exe -i E:\\evidence\\SUSPECT-LAPTOP-20260420.raw -v\n```\n\n**Important:** This action is **loud**. The attacker's malware may detect the driver load and self-destruct. This is an accepted risk for IR."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Shutdown Decision 🔌",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "If a system is encrypted with BitLocker and you pull the power cord, you can still image the drive without the recovery key.",
+                "correctAnswer": false,
+                "explanation": "False. The drive will be locked. You need the BitLocker recovery key (stored in AD or printed) to unlock it for imaging.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,234 @@
+{
+    "id": "quiz_ch_9",
+    "chapterId": "ch_9",
+    "title": "Chapter 9: Threat Intelligence for IR Quiz",
+    "description": "Test your knowledge of IOCs, TTPs, MITRE ATT&CK, Pyramid of Pain, and operationalizing intel.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which level of threat intelligence provides high-level trends and industry risks for executives?",
+            "options": [
+                "Tactical Intel",
+                "Operational Intel",
+                "Strategic Intel",
+                "Technical Intel"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Strategic intel is for board-level decision making. Tactical is for SOC analysts."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "A list of malicious IP addresses to block is an example of Operational Intelligence.",
+            "correctAnswer": false,
+            "explanation": "False. IP blocklists are Tactical Intelligence."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "What is the primary risk of uploading a sensitive internal document to the public VirusTotal?",
+            "options": [
+                "VirusTotal might crash.",
+                "The document's contents become visible to the public and attackers.",
+                "It uses too much bandwidth.",
+                "VirusTotal will block your IP."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Public uploads share files with the community, potentially leaking sensitive business information."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "The MITRE ATT&CK framework organizes adversary behaviors into columns called ______ and rows called ______.",
+            "options": [
+                "Techniques, Tactics",
+                "Tactics, Techniques",
+                "Groups, Software",
+                "Phases, Methods"
+            ],
+            "correctAnswer": "Tactics, Techniques",
+            "explanation": "Columns = Tactics (the goal). Rows = Techniques (the method)."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which ATT&CK Technique ID corresponds to 'PowerShell' execution?",
+            "options": [
+                "T1003.001",
+                "T1059.001",
+                "T1566.001",
+                "T1486"
+            ],
+            "correctAnswer": 1,
+            "explanation": "T1059.001 is PowerShell. T1003.001 is LSASS dumping. T1566.001 is phishing attachment. T1486 is ransomware."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "File hashes (MD5/SHA256) are high on the Pyramid of Pain and cause significant pain for attackers when blocked.",
+            "correctAnswer": false,
+            "explanation": "False. Hashes are at the very bottom. Attackers can change them in seconds by recompiling."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "According to the Pyramid of Pain, which of the following is the MOST painful for an attacker to change?",
+            "options": [
+                "IP Address",
+                "Domain Name",
+                "Specific Malware Family (Tool)",
+                "TTPs (Behaviors like Credential Dumping)"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Changing fundamental behaviors (TTPs) requires developing new tradecraft, which takes significant time and resources."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What does the term 'Pivoting' mean in threat intelligence analysis?",
+            "options": [
+                "Blocking an IP address.",
+                "Using one indicator to find related indicators.",
+                "Rebooting a server.",
+                "Changing a password."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Pivoting expands the investigation by correlating data (e.g., IP -> Domain -> Registrant Email -> Other Domains)."
+        },
+        {
+            "id": "q9",
+            "type": "true_false",
+            "question": "The intelligence cycle is a one-time process completed when a threat feed is ingested.",
+            "correctAnswer": false,
+            "explanation": "False. It's a continuous loop of planning, collection, processing, analysis, and dissemination."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which TLP designation indicates that information can be shared within the security community but not publicly?",
+            "options": [
+                "TLP:RED",
+                "TLP:AMBER",
+                "TLP:GREEN",
+                "TLP:CLEAR"
+            ],
+            "correctAnswer": 2,
+            "explanation": "TLP:GREEN is for community-wide sharing. TLP:AMBER is for limited/need-to-know sharing."
+        },
+        {
+            "id": "q11",
+            "type": "fill_blank",
+            "question": "The process of proactively searching for threats that have evaded existing security controls is called ______.",
+            "options": [
+                "Incident Response",
+                "Vulnerability Scanning",
+                "Threat Hunting",
+                "Patch Management"
+            ],
+            "correctAnswer": "Threat Hunting",
+            "explanation": "Hunting is proactive; Incident Response is reactive to an alert."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "An attacker uses a Domain Generation Algorithm (DGA) to create thousands of domains daily. Why is this effective against domain blocking?",
+            "options": [
+                "It makes domains easier to remember.",
+                "It ensures the attacker always has a working domain even if you block some.",
+                "It encrypts the domain name.",
+                "It hides the IP address."
+            ],
+            "correctAnswer": 1,
+            "explanation": "DGA makes domain blocking a game of whack-a-mole. You cannot block domains faster than they are generated."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "You should always automatically block any IP address found in a free threat feed.",
+            "correctAnswer": false,
+            "explanation": "False. Free feeds have false positives. Vetting and confidence scoring are required before blocking."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is the main advantage of TTP-based detection over IOC-based detection?",
+            "options": [
+                "TTPs are easier to implement.",
+                "TTPs detect new variants of malware because the behavior remains consistent.",
+                "TTPs require less maintenance.",
+                "TTPs never generate false positives."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Behavioral detection catches the *how*, which stays the same even when the *what* (hash/IP) changes."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Which open-source tool is used to visualize ATT&CK coverage gaps?",
+            "options": [
+                "Wireshark",
+                "VirusTotal",
+                "ATT&CK Navigator",
+                "MISP"
+            ],
+            "correctAnswer": 2,
+            "explanation": "ATT&CK Navigator provides a heat map view of your defensive coverage against the framework."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "ISACs (Information Sharing and Analysis Centers) are industry-specific groups for sharing threat intelligence.",
+            "correctAnswer": true,
+            "explanation": "True. Examples include FS-ISAC (Finance) and H-ISAC (Healthcare)."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "You find a suspicious PowerShell command that downloads a script from `http://evil.com/payload.ps1`. Using the Pyramid of Pain, what is a HIGH-PAIN detection strategy?",
+            "options": [
+                "Block the IP of evil.com.",
+                "Block the domain evil.com.",
+                "Block the hash of payload.ps1.",
+                "Detect any PowerShell process making an outbound HTTP connection."
+            ],
+            "correctAnswer": 3,
+            "explanation": "Detecting the *behavior* (PowerShell + Web Request) catches future variants regardless of domain or hash."
+        },
+        {
+            "id": "q18",
+            "type": "fill_blank",
+            "question": "The 'Pyramid of Pain' was created by ______.",
+            "options": [
+                "Bruce Schneier",
+                "David Bianco",
+                "Mikko Hypponen",
+                "Katie Moussouris"
+            ],
+            "correctAnswer": "David Bianco",
+            "explanation": "David Bianco introduced the Pyramid of Pain concept."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is a 'Sinkhole' used for in threat intelligence operations?",
+            "options": [
+                "To increase network speed.",
+                "To redirect malicious traffic to a safe, monitored server.",
+                "To permanently delete malware.",
+                "To encrypt data."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Sinkholing redirects traffic to a controlled environment, allowing detection of infected hosts without blocking."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "Internal threat intelligence (IOCs from your own incidents) is often more valuable than generic public feeds.",
+            "correctAnswer": true,
+            "explanation": "True. Intel from your own environment is highly relevant and indicates a direct threat to your organization."
+        }
+    ]
+}

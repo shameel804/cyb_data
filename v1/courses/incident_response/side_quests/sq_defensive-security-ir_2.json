@@ -1,0 +1,70 @@
+{
+    "id": "sq_defensive-security-ir_2",
+    "title": "🔍 Stop the Bleed: Detection & Containment",
+    "triggerChapterIndex": 5,
+    "metadata": {
+        "type": "debug"
+    },
+    "questions": [
+        {
+            "id": "sq_defensive-security-ir_2_q1",
+            "type": "multiple_choice",
+            "question": "Find the line containing a containment mistake that would destroy volatile evidence.",
+            "codeSnippet": "1. # Incident Response Actions\n2. analyst@ir:~$ ssh admin@firewall\n3. admin@firewall> configure terminal\n4. admin@firewall> interface GigabitEthernet0/1\n5. admin@firewall> shutdown\n6. # Wait, we should also grab RAM first!\n7. analyst@ir:~$ poweroff",
+            "bugLineIndex": 6,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Line 7 (`poweroff`) destroys RAM before it is captured. The shutdown should only occur after memory has been dumped. The mistake is executing shutdown before the RAM grab.",
+            "xpReward": 30,
+            "difficulty": 3
+        },
+        {
+            "id": "sq_defensive-security-ir_2_q2",
+            "type": "multiple_choice",
+            "question": "Identify the line where proper containment is delayed by an unnecessary approval step.",
+            "codeSnippet": "1. Alert: Ransomware on PC-01\n2. Analyst: <checks logs> confirmed.\n3. Analyst: I'll isolate the PC via EDR console.\n4. Analyst: Wait, I need manager's approval first.\n5. Manager: (away from desk)\n6. 10 minutes later...\n7. Analyst: Manager approved, isolating now.",
+            "bugLineIndex": 3,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Line 4 introduces an unnecessary delay. According to standard containment procedures, the analyst should have authority to isolate immediately for active ransomware (as per policy/playbook). The mistake is waiting for approval that should have been delegated.",
+            "xpReward": 30,
+            "difficulty": 3
+        },
+        {
+            "id": "sq_defensive-security-ir_2_q3",
+            "type": "multiple_choice",
+            "question": "Spot the error in the SIEM rule that will cause false negatives.",
+            "codeSnippet": "1. # Detection rule for brute force\n2. SELECT source_ip, COUNT(*)\n3. FROM firewall_logs\n4. WHERE destination_port = 3389\n5. AND action = 'ALLOW'\n6. GROUP BY source_ip\n7. HAVING COUNT(*) > 5\n8. AND timestamp > NOW() - INTERVAL '5 MINUTES'",
+            "bugLineIndex": 7,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The `timestamp` condition should be in the WHERE clause (line 5) to limit the window, not in HAVING. As written, it counts all connections ever, then filters after aggregation, causing the time window to be ignored. Correct: move line 8 to line 5 as `AND timestamp > NOW() - INTERVAL '5 MINUTES'`.",
+            "xpReward": 30,
+            "difficulty": 3
+        },
+        {
+            "id": "sq_defensive-security-ir_2_q4",
+            "type": "multiple_choice",
+            "question": "Find the line where the analyst violates the golden rule of containment during a data theft incident.",
+            "codeSnippet": "1. # Data exfiltration detected\n2. Analyst: We see large outbound transfer to 203.0.113.55\n3. Analyst: We need to understand what data is being stolen.\n4. Analyst: Let's block the IP immediately.\n5. Analyst: <blocks IP>\n6. Analyst: Now we can investigate.",
+            "bugLineIndex": 4,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Blocking the IP before monitoring prevents understanding what data was already taken. The correct approach is to monitor briefly to determine the scope, then block. The bug is acting too early without intelligence gathering.",
+            "xpReward": 30,
+            "difficulty": 3
+        },
+        {
+            "id": "sq_defensive-security-ir_2_q5",
+            "type": "multiple_choice",
+            "question": "Identify the mistake in this eradication action.",
+            "codeSnippet": "1. # Malware found on HR-WS01\n2. Analyst: I'll delete the malicious file C:\\Windows\\Temp\\evil.exe\n3. Analyst: Now I'll run Autoruns to check persistence.\n4. Analyst: Found a Run key pointing to the same file.\n5. Analyst: I'll delete the Run key.\n6. Analyst: The machine is clean now.",
+            "bugLineIndex": 5,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Deleting the file before documenting its hash and checking for other IOCs could lose evidence. Additionally, the analyst should have taken a forensic image before deleting anything. The bug is incomplete evidence preservation (no hash documented, no image).",
+            "xpReward": 30,
+            "difficulty": 3
+        }
+    ]
+}

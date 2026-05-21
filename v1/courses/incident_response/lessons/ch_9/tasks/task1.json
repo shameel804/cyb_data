@@ -1,0 +1,18 @@
+{
+    "id": "task1",
+    "chapterId": "ch_9",
+    "title": "Map an Attack to MITRE ATT&CK",
+    "description": "Given a scenario, identify the correct ATT&CK techniques.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Read the following incident summary and map the observed actions to the correct MITRE ATT&CK Technique IDs.\n\n**Incident Summary:**\n1. User received an email with a malicious Word document attachment.\n2. User opened the document and enabled macros.\n3. The macro executed PowerShell with an encoded command.\n4. PowerShell downloaded a file from `http://evil.com/beacon.exe`.\n5. The malware created a scheduled task named `SystemUpdate` to run at logon.\n6. The malware attempted to access `lsass.exe` memory.\n\n**Task:** For each action (1-6), provide the most appropriate ATT&CK Technique ID from the list below.\n\n**Available Technique IDs:**\n- T1566.001 (Spearphishing Attachment)\n- T1059.001 (PowerShell)\n- T1053.005 (Scheduled Task)\n- T1003.001 (LSASS Memory)\n- T1204.002 (Malicious File)\n- T1105 (Ingress Tool Transfer)\n\n**Output Format:**\n```\n1: [Technique ID]\n2: [Technique ID]\n3: [Technique ID]\n4: [Technique ID]\n5: [Technique ID]\n6: [Technique ID]\n```",
+    "hints": [
+        "The email delivery is Initial Access.",
+        "Opening the macro doc is User Execution.",
+        "PowerShell is a Command and Scripting Interpreter.",
+        "Downloading a file is Ingress Tool Transfer.",
+        "Scheduled Task is Persistence.",
+        "Accessing LSASS is Credential Dumping."
+    ],
+    "expectedOutput": "1: T1566.001\n2: T1204.002\n3: T1059.001\n4: T1105\n5: T1053.005\n6: T1003.001",
+    "solutionCode": "1: T1566.001\n2: T1204.002\n3: T1059.001\n4: T1105\n5: T1053.005\n6: T1003.001"
+}

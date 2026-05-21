@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_11",
+    "title": "Static Analysis Triage",
+    "description": "Analyze strings and PE headers to extract IOCs and identify capabilities.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You have run `strings` and `PEStudio` on a suspicious executable. Review the following output and answer the questions.\n\n**Strings Output (snippet):**\n```\nhttp://bad-update.ddns.net/config.php\nSoftware\\Microsoft\\Windows\\CurrentVersion\\Run\nStartupTask\ncmd.exe /c ping 8.8.8.8 -n 5\nMozilla/5.0 (Windows NT 10.0; Win64; x64)\nPOST /gate.php HTTP/1.1\n```\n\n**PEStudio Findings:**\n- **Imports:** `InternetOpenUrlA`, `HttpSendRequestA`, `RegSetValueExA`, `CreateProcessA`.\n- **Sections:** `.text` (Entropy: 6.8 / 8.0 - High), `.data` (Entropy: 7.2 / 8.0 - High).\n- **Timestamp:** 2026-04-15 03:22:10 UTC.\n\n**Task:**\n1. Identify **three (3) IOCs** from the strings output.\n2. Based on the imports, what are **two (2) likely capabilities** of this malware?\n3. What does the high entropy in `.text` and `.data` sections suggest?\n4. What is the likely purpose of the `cmd.exe /c ping 8.8.8.8 -n 5` command?\n\n**Output Format:**\n```\n1. IOCs:\n   - [IOC 1]\n   - [IOC 2]\n   - [IOC 3]\n\n2. Capabilities:\n   - [Capability 1]\n   - [Capability 2]\n\n3. High Entropy Suggests: [Explanation]\n\n4. Ping Command Purpose: [Explanation]\n```",
+    "hints": [
+        "IOCs include domains, registry keys, and URIs.",
+        "Look at the Windows API functions in the imports.",
+        "High entropy often means packed or encrypted code.",
+        "The ping command might be checking something before execution."
+    ],
+    "expectedOutput": "1. IOCs:\n   - http://bad-update.ddns.net/config.php\n   - Software\\Microsoft\\Windows\\CurrentVersion\\Run\n   - /gate.php\n\n2. Capabilities:\n   - Network Communication (HTTP C2) - indicated by InternetOpenUrlA, HttpSendRequestA.\n   - Persistence (Registry Run Key) - indicated by RegSetValueExA.\n\n3. High Entropy Suggests: The file is likely packed or encrypted, obscuring its true code.\n\n4. Ping Command Purpose: It is likely checking for internet connectivity or introducing a delay (sleep) to evade sandbox analysis.",
+    "solutionCode": "1. IOCs:\n   - Domain: bad-update.ddns.net\n   - URL/URI: http://bad-update.ddns.net/config.php, POST /gate.php\n   - Registry Key: Software\\Microsoft\\Windows\\CurrentVersion\\Run\n   - (Also accept: User-Agent string)\n\n2. Capabilities:\n   - Command and Control (HTTP/HTTPS) communication.\n   - Persistence installation via Registry Run key.\n   - Execution of additional processes (CreateProcessA).\n\n3. High Entropy Suggests: The sections are packed or encrypted. The real code is hidden and will only be revealed at runtime. Static analysis will be limited.\n\n4. Ping Command Purpose: It is an anti-sandbox/anti-analysis check. It verifies internet connectivity before proceeding (if offline, it might exit) and the `-n 5` introduces a 5-second delay to evade automated sandboxes with short timeouts."
+}

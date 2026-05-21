@@ -1,0 +1,23 @@
+{
+    "id": "project2",
+    "title": "Operation DarkMatter: Ransomware Response",
+    "description": "Lead a simulated ransomware incident from detection to recovery using provided logs and artifacts. Contain, eradicate, and write the post‑incident report.",
+    "difficulty": "Intermediate",
+    "estimatedHours": "4-6",
+    "problemStatement": "## Scenario\nIt’s 09:00 UTC on April 20, 2026, at **FinCorp**, a financial services firm. You are the Incident Commander on duty when the SIEM fires a critical alert: **'Multiple hosts encrypting files – possible ransomware'**.\n\nYou have the following evidence:\n\n- **EDR Alert:** 15 endpoints show a process `encryptor.exe` (SHA256: `5b6e6a96b6e6a96b6e6a96b6e6a96b6`) creating `.locked` files. Originated from `HR-WS01` at 08:55.\n- **Sysmon (HR-WS01):** At 08:52, `winword.exe` spawned `cmd.exe` which ran `powershell -enc SQBFAFgA...`. At 08:54, `powershell.exe` downloaded `encryptor.exe` from `http://bad-update.ddns.net/payload.exe`. At 08:55, `encryptor.exe` started mass file writes.\n- **Firewall Logs:** `HR-WS01` (10.0.0.105) connected to `185.142.53.179:443` at 08:54.\n- **Active Directory:** User `bob.smith` logged into `HR-WS01` at 08:00, then from IP `203.0.113.55` at 08:30 (impossible travel).\n- **Backup Status:** Online backup server `BK01` is reachable but its file share shows `.locked` files on some directories. Offline tape backup from April 19 is intact.\n\n## Your Mission\n1. **Triage and Scope** the incident. What is the initial infection vector? How many hosts are likely affected?\n2. **Contain Immediately.** List the exact steps you would take (in order) to stop the spread, including specific commands and which systems you touch.\n3. **Eradicate the Threat.** How would you remove the malware and backdoors? What about Bob’s account?\n4. **Recover Operations.** Which backup do you restore? Why? How do you validate the restored data is clean?\n5. **Post‑Incident.** Draft a timeline, three lessons learned, and two SMART action items.",
+    "requirements": [
+        "Identify the root cause (phishing email with malicious macro) and patient zero (Bob).",
+        "Containment must include network isolation of affected VLAN, disabling Bob’s account, blocking C2 IP at firewall, and taking a RAM dump of HR-WS01 before shutdown.",
+        "Eradication must remove the Run key persistence, delete the encryptor, and perform full AV scan on all endpoints.",
+        "Recovery must use the offline April 19 backup after verifying its integrity, NOT the online backup which may be compromised.",
+        "Post‑Incident report must contain UTC timeline, lessons learned, and SMART action items (e.g., enforce macro signing, MFA for all logins)."
+    ],
+    "hints": [
+        "Use the Order of Volatility: capture RAM before powering off HR-WS01.",
+        "The `encryptor.exe` hash can be searched across the EDR to find all infected hosts.",
+        "Check if the attacker deleted Volume Shadow Copies (vssadmin).",
+        "The 3‑2‑1 backup rule means your offline tape is the safe choice.",
+        "Remember to involve Legal and Comms – this is a reportable breach under GDPR if EU data is involved."
+    ],
+    "expectedOutput": "A complete incident response report containing:\n\n1. **Scope & Root Cause:** Macro‑enabled Word document delivered via phishing to Bob. Credentials phished, then used for RDP lateral movement. `encryptor.exe` deployed via PowerShell download cradle.\n\n2. **Containment Actions (in order):**\n   - Activate OOB communication (Signal).\n   - Isolate affected VLAN (switch port shutdown or EDR network containment).\n   - Disable Bob’s AD account and force session logoff on all servers.\n   - Block outbound SMB (445) and IP 185.142.53.179 at perimeter firewall.\n   - Use EDR to quarantine `encryptor.exe` on all endpoints.\n   - Capture RAM of HR-WS01 (`winpmem`) then power off gracefully.\n\n3. **Eradication:** Delete malicious scheduled task “SystemUpdate”, remove Run key, reset Bob’s password, enable MFA, patch the email gateway to block `.docm` files without macros.\n\n4. **Recovery:** Restore file server from April 19 offline tape. Scan restored data with updated AV. Test file access with a pilot group before full production.\n\n5. **Post‑Incident Report:**\n   - Timeline (UTC): 08:00 Bob logs in, 08:30 impossible travel, 08:52 macro execution, 08:55 encryption starts, 09:00 detection.\n   - Lessons Learned: (1) Lack of MFA allowed credential abuse. (2) Online backup not air‑gapped. (3) Macros not disabled for users.\n   - Action Items: (1) Deploy MFA for all remote access by May 15. (2) Implement immutable cloud backup by June 1."
+}

@@ -1,0 +1,96 @@
+{
+    "id": "l1",
+    "chapterId": "ch_11",
+    "title": "What is Malware Analysis? 🔬",
+    "description": "Goals, types, and the spectrum from static to dynamic analysis.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Defining Malware Analysis 🧬",
+            "content": "# The Science of Understanding Evil Code\n\n**Malware Analysis** is the process of dissecting malicious software to understand:\n- **What it does** (Capabilities).\n- **How it works** (Mechanism).\n- **Who wrote it** (Attribution - difficult).\n- **How to detect and remove it** (IOCs & Signatures).\n\n**Why Does This Matter for IR?**\n- You found a suspicious file on a compromised host. Is it the **initial dropper** or just a **password stealer**?\n- You need to know if it stole data, established persistence, or spread to other systems.\n- **Without analysis, you're guessing. With analysis, you're investigating.**"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "The Two Pillars of Malware Analysis 🏛️",
+            "content": "### Static vs. Dynamic Analysis\n\n| Feature | Static Analysis | Dynamic Analysis |\n| :--- | :--- | :--- |\n| **Execution** | **No.** You examine the file on disk. | **Yes.** You run the malware in a controlled environment. |\n| **Risk** | Low. No risk of infection. | High. Requires an isolated lab (sandbox). |\n| **Speed** | Fast. Seconds to minutes. | Slower. Minutes to hours. |\n| **What it Reveals** | File structure, embedded strings, potential imports, packer detection. | **Actual behavior**: Network connections, file modifications, registry changes, process creation. |\n| **Limitations** | Obfuscated/packed malware hides its true code. | Malware may detect the sandbox and lie dormant. |\n\n**The Analyst's Workflow:** **Static First, Dynamic Second.** Use static to get quick clues, then use dynamic to confirm behavior."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Analysis Type Check ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which type of analysis involves running the malware in a controlled environment to observe its behavior?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Static Analysis",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Dynamic Analysis",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Code Review",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Heuristic Scanning",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Dynamic analysis requires execution. Static analysis examines the file without running it.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Goals of Malware Analysis in IR 🎯",
+            "content": "### What Questions Are We Trying to Answer?\n\n1.  **Indicators of Compromise (IOCs):**\n    - File hashes (MD5, SHA256).\n    - C2 IP addresses and domain names.\n    - Mutex names, registry keys, file paths.\n\n2.  **Capabilities:**\n    - Does it steal passwords? (Credential Dumper).\n    - Does it encrypt files? (Ransomware).\n    - Does it provide remote access? (RAT - Remote Access Trojan).\n\n3.  **Persistence Mechanism:**\n    - Does it survive a reboot? (Run key, Scheduled Task, Service).\n    - How do we remove it cleanly?\n\n4.  **Network Signatures:**\n    - What does the C2 traffic look like? (User-Agent, URI pattern).\n    - Can we write a Snort/Suricata rule to detect it on the network?\n\n5.  **Attribution (Advanced):**\n    - Does this code resemble known threat actor tools? (Code similarity)."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "The Malware Analysis Spectrum 🌈",
+            "content": "### From Triage to Deep Reverse Engineering\n\nNot every file needs a 40-hour reverse engineering effort. Match the effort to the incident.\n\n**Level 1: Automated Sandbox (Triage)**\n- **Tool:** ANY.RUN, Joe Sandbox, Cuckoo.\n- **Time:** 5-15 minutes.\n- **Use Case:** 90% of IR cases. Confirm it's malicious and extract basic IOCs.\n\n**Level 2: Manual Static + Dynamic**\n- **Tool:** PEStudio, Process Monitor, Wireshark.\n- **Time:** 1-4 hours.\n- **Use Case:** The sandbox didn't give clear answers, or you need specific network indicators.\n\n**Level 3: Reverse Engineering (Disassembly)**\n- **Tool:** IDA Pro, Ghidra, x64dbg.\n- **Time:** Days to Weeks.\n- **Use Case:** Novel malware, targeted attacks (APT), or you're writing a detailed threat report.\n\n**As an IR analyst, you will spend most of your time at Level 1 and Level 2.**"
+        },
+        {
+            "id": "s_l1_6",
+            "type": "warning",
+            "title": "The 'Packed' Problem 📦",
+            "content": "## Why Static Analysis Often Fails\n\nMany malware samples are **packed** or **obfuscated**.\n\n**What is Packing?**\n- The malware is compressed or encrypted.\n- When executed, a small **stub** unpacks the real malicious code **in memory**.\n- **Static Analysis Result:** You see gibberish. No readable strings. No clear imports.\n\n**How to Spot Packed Malware:**\n- **High Entropy:** The file looks like random data. (Tool: `binwalk -E`).\n- **Few Imports:** Only `VirtualAlloc`, `LoadLibrary`, `GetProcAddress`. (Dynamic API resolution).\n- **Section Names:** `.UPX0`, `.UPX1` (UPX packer), `.petite`, etc.\n\n**Response:** You **must** use Dynamic Analysis or Unpack the sample before static analysis works.\n\n**Common Packers:** UPX, Themida, VMProtect, ASPack."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "tip",
+            "title": "Pro Tip: Safety First! 🦺",
+            "content": "## The Prime Directive of Malware Analysis\n\n**Assume EVERY sample is live and dangerous.**\n\n**Lab Safety Rules:**\n1.  **Never analyze malware on your host OS.** Use a **Virtual Machine (VM)** with **snapshots**.\n2.  **Isolate the VM Network.** Use **Host-Only** or a separate **sandbox VLAN** with no route to production.\n3.  **Disable Shared Folders and Clipboard** between host and guest.\n4.  **Treat ANY URL or IP found as malicious.** Do not browse to it from your corporate network.\n5.  **Know your tools.** Accidentally double-clicking the malware in the VM is one thing; double-clicking it on your host desktop is a **career-limiting move**.\n\n**The golden rule:** If you're not 100% sure your lab is isolated, **don't run it.**"
+        },
+        {
+            "id": "s_l1_8",
+            "type": "quiz",
+            "title": "Safety Check 🛡️",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "It is safe to run malware on your daily work laptop if you use a standard user account.",
+                "correctAnswer": false,
+                "explanation": "False. Malware can escalate privileges and infect the host. Always use an isolated virtual machine or dedicated sandbox appliance.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

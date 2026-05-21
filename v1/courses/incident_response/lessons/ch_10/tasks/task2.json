@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_10",
+    "title": "Parse and Analyze Web Server Logs",
+    "description": "Use command-line tools to find suspicious requests in Apache logs.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You have an Apache `access.log` file. You suspect a web application attack.\n\n**Task:** Write the Linux command(s) to accomplish the following:\n\n1.  Find all requests that contain `UNION SELECT` (case-insensitive).\n2.  Count how many unique IP addresses accessed `/wp-login.php`.\n3.  Extract all unique User-Agent strings from the log.\n4.  Show the top 5 IP addresses by number of requests.\n\n**Assume the log format is:**\n`IP - - [Timestamp] \"Request\" Status Size \"Referer\" \"User-Agent\"`\n\n**Output Format:** Provide the exact command line for each task (1-4).",
+    "hints": [
+        "Use `grep -i` for case-insensitive.",
+        "Use `awk` to extract fields ($1 is IP, $7 is request, $12+ is User-Agent).",
+        "Use `sort | uniq -c | sort -nr | head` for top counts."
+    ],
+    "expectedOutput": "1. grep -i 'UNION SELECT' access.log\n2. grep '/wp-login.php' access.log | awk '{print $1}' | sort -u | wc -l\n3. awk -F'\"' '{print $6}' access.log | sort -u\n4. awk '{print $1}' access.log | sort | uniq -c | sort -nr | head -5",
+    "solutionCode": "1. grep -i 'UNION SELECT' access.log\n2. grep '/wp-login.php' access.log | awk '{print $1}' | sort -u | wc -l\n3. awk -F'\"' '{print $6}' access.log | sort -u\n4. awk '{print $1}' access.log | sort | uniq -c | sort -nr | head -5"
+}

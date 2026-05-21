@@ -1,0 +1,234 @@
+{
+    "id": "quiz_ch_5",
+    "chapterId": "ch_5",
+    "title": "Chapter 5: Containment Strategies Quiz",
+    "description": "Test your knowledge of short-term, long-term, and scenario-specific containment.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary goal of the Containment phase?",
+            "options": [
+                "To identify the root cause of the incident.",
+                "To prevent the incident from spreading and causing further damage.",
+                "To restore systems to normal operation.",
+                "To write the final incident report."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Containment stops the bleeding. Root cause is Analysis. Restoration is Recovery."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "Pulling the power cord is the recommended first step for containing a ransomware infection.",
+            "correctAnswer": false,
+            "explanation": "False. Network isolation preserves memory evidence. Pulling power should be a last resort."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which of the following is an example of a 'Short-Term' containment action?",
+            "options": [
+                "Moving a server to a Quarantine VLAN.",
+                "Blocking a malicious IP address at the firewall.",
+                "Restoring a server from a clean backup.",
+                "Applying a security patch."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Blocking an IP is immediate. VLAN steering and backups are longer-term or recovery actions."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "The 'Golden Rule' of containment states: Isolate the ______, not the power.",
+            "options": [
+                "Network",
+                "User",
+                "Disk",
+                "Memory"
+            ],
+            "correctAnswer": "Network",
+            "explanation": "Network isolation preserves volatile memory (RAM) which is critical forensic evidence."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What is the primary advantage of using EDR 'Network Containment' over unplugging the network cable?",
+            "options": [
+                "It's faster.",
+                "It allows the security team to retain remote access for investigation.",
+                "It doesn't require an EDR agent.",
+                "It stops the attacker from seeing the block."
+            ],
+            "correctAnswer": 1,
+            "explanation": "EDR isolation policies maintain a management tunnel to the vendor cloud for remote forensics and remediation."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "Disabling a compromised Active Directory user account immediately terminates all existing active sessions the attacker has on other servers.",
+            "correctAnswer": false,
+            "explanation": "False. Existing Kerberos tickets remain valid until expiration. You must purge tickets or reboot servers to force termination."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "You discover an attacker is actively exfiltrating sensitive data to an external server. What is the recommended approach?",
+            "options": [
+                "Block the IP immediately to stop the leak.",
+                "Monitor the traffic briefly to identify what data is being stolen, then block.",
+                "Shut down the entire server.",
+                "Call the attacker's ISP."
+            ],
+            "correctAnswer": 1,
+            "explanation": "A short monitoring period helps determine the scope of the breach (legal requirement), after which you must cut the connection."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What is the purpose of a 'Quarantine VLAN'?",
+            "options": [
+                "To provide guests with internet access.",
+                "To isolate compromised machines while allowing investigator access.",
+                "To increase network speed.",
+                "To backup files."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Quarantine VLANs restrict access to production networks and the internet, creating a safe 'clean room' for analysis."
+        },
+        {
+            "id": "q9",
+            "type": "true_false",
+            "question": "In a cloud environment (AWS), modifying an EC2 instance's Security Group to block all outbound traffic is a valid containment strategy.",
+            "correctAnswer": true,
+            "explanation": "True. Security groups act as stateful firewalls and can be updated instantly to isolate a compromised host."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "During an insider threat investigation where an employee is suspected of stealing data, what is the best containment approach?",
+            "options": [
+                "Immediately disable their account and escort them out.",
+                "Quietly enable additional logging and legal holds, coordinating with HR.",
+                "Confront the user directly and ask them to stop.",
+                "Block their IP address."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Insider threat response requires covert evidence gathering and HR coordination. Premature action can destroy a legal case."
+        },
+        {
+            "id": "q11",
+            "type": "fill_blank",
+            "question": "To prevent tipping off an attacker that they've been detected, you might use a ______ instead of blocking their IP.",
+            "options": [
+                "Firewall",
+                "DNS Sinkhole",
+                "Router",
+                "Proxy"
+            ],
+            "correctAnswer": "DNS Sinkhole",
+            "explanation": "Sinkholing redirects traffic silently, making the attacker think they are still connected."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Who has the final authority to approve a containment action that will cause significant business disruption?",
+            "options": [
+                "The Security Analyst",
+                "The Incident Commander",
+                "The Network Administrator",
+                "The Helpdesk"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The Incident Commander balances security risk with business impact."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "It is acceptable to bypass the Incident Commander and isolate a system if you are 100% sure it will prevent a catastrophic loss of data that is happening right now.",
+            "correctAnswer": true,
+            "explanation": "True. This is the 'Break Glass' exception. Act to prevent irreversible damage, then report immediately."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Blocking SMB (Port 445) outbound at the edge firewall is an effective long-term containment measure against which threat?",
+            "options": [
+                "Phishing emails",
+                "Ransomware spreading to remote VPN users",
+                "DDoS attacks",
+                "SQL Injection"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Ransomware often uses SMB to spread. Blocking it outbound prevents infected laptops from encrypting file shares over the VPN."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What is the main risk of blocking an entire /24 IP range during an incident?",
+            "options": [
+                "It takes too long to configure.",
+                "You might accidentally block legitimate services or cloud providers.",
+                "It costs extra money.",
+                "Attackers can easily bypass it."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Over-blocking can cause a self-inflicted Denial of Service. Check WHOIS before blocking large ranges."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "If you find one infected computer, you should immediately isolate the entire network subnet to be safe.",
+            "correctAnswer": false,
+            "explanation": "False. This is over-scoping. Isolate the confirmed host first, then scope the incident to determine if others are affected."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which of the following is a Long-Term Containment strategy?",
+            "options": [
+                "Disabling a switch port.",
+                "Spinning up a clean 'Golden Image' server to replace an infected one.",
+                "Disabling a user account.",
+                "Pulling a network cable."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Replacing the server allows business to resume while the infected image is analyzed offline."
+        },
+        {
+            "id": "q18",
+            "type": "fill_blank",
+            "question": "When communicating a service outage to users during a containment operation, you should avoid speculating on the ______.",
+            "options": [
+                "Timeline",
+                "Workaround",
+                "Cause",
+                "Impact"
+            ],
+            "correctAnswer": "Cause",
+            "explanation": "Do not say 'We were hacked' until you have confirmed facts and legal approval."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "In AWS, which action is the most effective way to stop an EC2 instance from accessing S3 buckets during an incident?",
+            "options": [
+                "Stop the EC2 instance.",
+                "Detach or modify the IAM Role attached to the instance.",
+                "Change the instance type.",
+                "Reboot the instance."
+            ],
+            "correctAnswer": 1,
+            "explanation": "IAM Roles control cloud API permissions. Removing the role revokes access without destroying the instance state."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "Documenting the exact time you executed a containment action is optional if it stopped the attack.",
+            "correctAnswer": false,
+            "explanation": "False. Timestamps are mandatory for forensic timelines and legal defensibility."
+        }
+    ]
+}

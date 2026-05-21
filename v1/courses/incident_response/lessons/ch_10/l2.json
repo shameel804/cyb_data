@@ -1,0 +1,117 @@
+{
+    "id": "l2",
+    "chapterId": "ch_10",
+    "title": "Windows Event Logs Deep Dive 🪟",
+    "description": "Critical Event IDs for security, system, and application logs.",
+    "xpReward": 40,
+    "estimatedMinutes": 12,
+    "section": "Windows Logs",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Windows Event Log Ecosystem 📂",
+            "content": "# Your Primary Source of Truth on Windows\n\nWindows logs events to several **channels** (log files). The most important for IR are:\n\n1.  **Security.evtx:** Auditing events (logons, object access, policy changes).\n2.  **System.evtx:** System component events (service crashes, driver loads, time changes).\n3.  **Application.evtx:** Application-specific events (installer logs, application errors).\n4.  **PowerShell Operational.evtx:** PowerShell execution details (Script Block Logging lives here!).\n5.  **Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx:** RDP connections.\n6.  **Microsoft-Windows-TaskScheduler%4Operational.evtx:** Scheduled task creation/modification.\n\n**Location on Disk:** `C:\\Windows\\System32\\winevt\\Logs\\`\n**File Format:** `.evtx` (Binary XML). You need **Event Viewer** or tools like **EvtxeCmd** (Zimmerman) to parse them effectively."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Anatomy of an Event 📋",
+            "content": "### Decoding the Fields\n\nEvery event has standardized fields. Here's what you need to look at:\n\n- **Event ID:** The specific type of event (e.g., 4624 = Logon). **Memorize these.**\n- **TimeCreated (SystemTime):** When the event was logged (UTC if configured correctly).\n- **Computer:** Which machine generated the event.\n- **User:** The Security Identifier (SID) or username associated with the event.\n- **Keywords:** 'Audit Success' or 'Audit Failure'.\n- **EventData (Details):** The juicy part! Contains the source IP of a logon, the command line of a process, the path of a file.\n\n**Example (Event 4624 - Successful Logon):**\n```xml\n<EventData>\n  <Data Name=\"SubjectUserSid\">S-1-5-18</Data>\n  <Data Name=\"TargetUserName\">jsmith</Data>\n  <Data Name=\"TargetDomainName\">CORP</Data>\n  <Data Name=\"LogonType\">10</Data>  <!-- 10 = RemoteInteractive (RDP) -->\n  <Data Name=\"IpAddress\">203.0.113.55</Data>\n  <Data Name=\"IpPort\">52313</Data>\n</EventData>\n```"
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Event ID Recall 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "A 'LogonType' of 10 in Event ID 4624 indicates what type of authentication?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Interactive (Console login)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Network (SMB share access)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "RemoteInteractive (RDP)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Service",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "LogonType 10 specifically identifies Remote Desktop Protocol (RDP) connections.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Critical Security Event IDs (The Cheat Sheet) 📝",
+            "content": "### Logon Events\n| Event ID | Description | IR Significance |\n| :--- | :--- | :--- |\n| **4624** | Successful Logon | Who logged in? From where? (Check LogonType and Source IP). |\n| **4625** | Failed Logon | Brute force attempts. Look for spikes. |\n| **4648** | Logon with explicit credentials (RunAs) | Attacker using `runas /user:admin cmd`. Lateral movement. |\n| **4672** | Special Privileges Assigned | Admin logon. Someone got the keys to the kingdom. |\n| **4776** | Credential Validation (NTLM) | Domain Controller authenticating a user. Useful for NTLM relay detection. |\n\n### Account Management\n| Event ID | Description | IR Significance |\n| :--- | :--- | :--- |\n| **4720** | User Account Created | Attacker creating backdoor account. |\n| **4722** | User Account Enabled | Attacker re-enabling a disabled guest account. |\n| **4728** | Member Added to Security-Enabled Global Group | Attacker adding themselves to 'Domain Admins'. **HIGH ALERT.** |\n| **4732** | Member Added to Security-Enabled Local Group | Attacker adding themselves to local 'Administrators'. |\n\n### Process / Object Access\n| Event ID | Description | IR Significance |\n| :--- | :--- | :--- |\n| **4688** | Process Creation | What executable ran? **Requires command line logging to be useful.** |\n| **4663** | Object Access (File/Registry) | Who accessed that sensitive file? (Requires SACL auditing enabled). |\n| **5140** | Network Share Accessed | Who touched `\\\\SERVER\\Finance`? |"
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Critical System & Application Event IDs ⚙️",
+            "content": "### System Log (System.evtx)\n| Event ID | Description | IR Significance |\n| :--- | :--- | :--- |\n| **7045** | New Service Installed | Malware installing persistence as a Windows Service. |\n| **7036** | Service Started/Stopped | Did the attacker stop Windows Defender? (`WinDefend`). |\n| **104** | System Time Changed | Attacker modifying timestamps to evade timeline analysis. |\n| **6005/6006** | Event Log Service Started/Stopped | Attacker clearing logs? |\n\n### PowerShell Operational Log\n| Event ID | Description | IR Significance |\n| :--- | :--- | :--- |\n| **4103** | Pipeline Execution Details | Shows cmdlet usage. |\n| **4104** | **Script Block Logging** | **THE HOLY GRAIL.** Shows the *actual text* of the PowerShell script, even if it was Base64 encoded. |\n| **4105/4106** | PowerShell Started/Stopped | Tracks execution of PowerShell sessions. |\n\n### RDP / Terminal Services\n| Event ID | Description | IR Significance |\n| :--- | :--- | :--- |\n| **21** | Remote Desktop Session Logon Succeeded | Source IP of RDP connection. |\n| **24** | Remote Desktop Session Disconnected | Session ended. |\n| **25** | Remote Desktop Session Reconnection | Attacker reconnecting to a hijacked session. |"
+        },
+        {
+            "id": "s_l2_6",
+            "type": "code",
+            "title": "Example: Hunting for Lateral Movement (Event ID 4648) 🕵️",
+            "content": "Event ID 4648 logs when a process uses **explicit credentials** to run a command (e.g., `runas`, `PsExec`). Attackers use this to move laterally.\n\n**PowerShell to Query Remote Logs (if WinRM enabled):**\n```powershell\n$Servers = Get-Content \"C:\\Lists\\servers.txt\"\n$Results = foreach ($Server in $Servers) {\n    Get-WinEvent -ComputerName $Server -FilterHashtable @{LogName='Security'; ID=4648} -MaxEvents 50 -ErrorAction SilentlyContinue |\n        Select-Object TimeCreated, \n                      @{n='TargetServer';e={$_.Properties[5].Value}}, \n                      @{n='AccountUsed';e={$_.Properties[1].Value}}, \n                      @{n='Process';e={$_.Properties[11].Value}}\n}\n$Results | Export-Csv \"C:\\Reports\\LateralMovement.csv\" -NoTypeInformation\n```\n\n**What to look for:**\n- `AccountUsed` is a privileged account (Domain Admin).\n- `TargetServer` is a high-value server (Domain Controller, File Server).\n- `Process` is something like `psexesvc.exe` or `cmd.exe`."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Enabling Critical Logging (Group Policy) 📜",
+            "content": "### The 'Default Logging' is Insufficient\n\nOut of the box, Windows does **NOT** log command lines for process creation (Event 4688). This makes the event almost useless for IR.\n\n**Group Policy Settings to Enable:**\n- **Path:** `Computer Configuration > Policies > Windows Settings > Security Settings > Advanced Audit Policy Configuration > Audit Policies`\n- **Enable:**\n    - **Audit Logon Events** (Success and Failure)\n    - **Audit Account Management** (Success)\n    - **Audit Process Creation** (Success) **-- CRITICAL**\n- **Path for Command Line:** `Computer Configuration > Policies > Administrative Templates > System > Audit Process Creation`\n    - **Enable:** `Include command line in process creation events`\n\n**Enable PowerShell Logging:**\n- **Path:** `Computer Configuration > Policies > Administrative Templates > Windows Components > Windows PowerShell`\n- **Enable:** `Turn on PowerShell Script Block Logging`\n\n**Apply these policies to ALL servers and workstations. This is non-negotiable for a mature security program.**"
+        },
+        {
+            "id": "s_l2_8",
+            "type": "quiz",
+            "title": "Event ID Knowledge Check 📋",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "An attacker added themselves to the 'Domain Admins' group. Which Event ID would record this action?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "4624",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "4728",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "4688",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "7045",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "4728 logs when a member is added to a security-enabled **global** group (like Domain Admins). 4732 is for **local** groups.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,123 @@
+{
+    "id": "l5",
+    "chapterId": "ch_11",
+    "title": "Malware Analysis in Incident Response 🚨",
+    "description": "Extracting IOCs, understanding TTPs, and writing actionable reports.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Applied Analysis",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "From Analysis to Action 🎬",
+            "content": "# Closing the Loop in IR\n\nYou've analyzed the malware. You have notes, strings, and PCAPs. **Now what?**\n\nThe entire point of malware analysis in IR is to **improve detection, containment, and eradication**.\n\n**The Output of Analysis is NOT a report. It's a set of **Action Items**.**\n\n1.  **Update Blocklists:** Add domains/IPs to firewall/proxy blocklists.\n2.  **Deploy Detection Rules:** Create YARA rules, Sigma rules, Snort signatures.\n3.  **Update EDR Watchlists:** Add file hashes, mutex names, registry keys.\n4.  **Scoping the Incident:** Search SIEM/EDR for the newly discovered IOCs to find other infected hosts.\n5.  **Informing Eradication:** Knowing the persistence mechanism (e.g., Scheduled Task) tells the IT team exactly what to delete."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Creating YARA Rules 📏",
+            "content": "### Hunting for Malware with Signatures\n\n**YARA** is a tool used to identify and classify malware based on textual or binary patterns.\n\nA YARA rule is like a 'Wanted' poster that describes the malware.\n\n**Basic YARA Rule Structure:**\n```yara\nrule Ransomware_BlackBasta_Strings {\n    meta:\n        description = \"Detects Black Basta ransomware based on strings\"\n        author = \"IR Team\"\n        date = \"2026-04-20\"\n        hash = \"5b6e6a96b6e6a96b6e6a96b6e6a96b6\"\n\n    strings:\n        $str1 = \"basta\" ascii wide\n        $str2 = \".basta\" ascii wide\n        $str3 = \"ReadMe.txt\" ascii wide\n        $mutex = \"Global\\\\BlackBastaMutex\" ascii wide\n\n    condition:\n        uint16(0) == 0x5A4D and (2 of ($str*)) or $mutex\n}\n```\n\n**Explanation:**\n- `meta`: Documentation.\n- `strings`: Patterns to look for.\n- `condition`: When to trigger. `uint16(0) == 0x5A4D` ensures it's a Windows PE file (`MZ` header). `2 of ($str*)` means at least two of the strings must match.\n\n**IR Workflow:**\n1.  Extract unique strings/mutex from analysis.\n2.  Write a YARA rule.\n3.  Scan your file servers and endpoints with the rule to find other instances.\n\n**Tool:** Use `yara64.exe rule.yar C:\\path\\to\\scan`."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "YARA Purpose 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is the primary purpose of a YARA rule in incident response?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To block network traffic.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To identify and classify files based on patterns.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To analyze memory dumps.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To decompile malware.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "YARA is a pattern-matching engine used to hunt for malware based on textual or binary signatures.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Writing an Actionable Malware Analysis Report 📄",
+            "content": "### The 'So What?' Document\n\nYour report must be useful to different audiences.\n\n**1. Executive Summary (1 Paragraph)**\n- *'Analysis of file `Invoice.exe` confirms it is QakBot malware. It attempts to steal credentials and download additional payloads. It communicated with C2 server `185.142.53.179`. Recommended action: Block the IP and hunt for the mutex `QakBotMutex`.'*\n\n**2. IOCs (The Most Important Section)**\n- **Host-Based:**\n    - File Hashes (MD5, SHA256).\n    - File Paths Created (`C:\\Users\\Public\\svchost.exe`).\n    - Registry Keys Modified (`HKLM\\...\\Run\\UpdateTask`).\n    - Mutex Names (`Global\\QakBotMutex`).\n    - Scheduled Task Names (`SystemUpdateCheck`).\n- **Network-Based:**\n    - Domains / IPs Contacted.\n    - URLs / URIs (`POST /bot/gate.php`).\n    - User-Agent Strings.\n    - SSL Certificate Fingerprints (JA3 hash).\n\n**3. Behavioral Summary (TTPs)**\n- **Persistence:** Created Run key.\n- **Execution:** Injected into `explorer.exe`.\n- **C2:** HTTPS beaconing every 60 seconds.\n\n**4. Detection Guidance**\n- **YARA Rule:** (Include the text).\n- **Sigma Rule:** For SIEM detection (e.g., detect process injection).\n- **Snort/Suricata Rule:** For network detection.\n\n**5. Remediation Steps**\n- Delete scheduled task.\n- Remove Run key.\n- Reboot system."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Extracting Configuration Data (Config Extractors) ⚙️",
+            "content": "### Automating the Boring Stuff\n\nMany malware families store their C2 servers and campaign IDs in an **encrypted configuration block**.\n\nManually reversing this encryption is hard. But the community has already done the work.\n\n**Config Extractors:**\n- **Cape Sandbox:** Automatically extracts configs for many families.\n- **MalwareConfig.com:** Online repository of extracted configs.\n- **Family-Specific Scripts:** Python scripts on GitHub (e.g., `QakBot_decryptor.py`).\n\n**IR Analyst Workflow:**\n1.  Identify the malware family (e.g., via sandbox report or YARA rule).\n2.  Google: `[FamilyName] config extractor github`.\n3.  Run the script against the sample.\n4.  **Result:** You instantly get a list of 50 C2 domains, the campaign ID, and the encryption key.\n\n**This is 100x faster than manual RE.**"
+        },
+        {
+            "id": "s_l5_6",
+            "type": "warning",
+            "title": "Common Pitfalls in Malware IR 🚫",
+            "content": "## Mistakes That Cost Time and Safety\n\n1.  **Analyzing on the Wrong OS:** Malware compiled for 64-bit Windows won't run on 32-bit. Linux malware won't run on Windows. **Check `file` command first.**\n2.  **Forgetting the Command Line Arguments:** Some malware requires `-p password` to unpack. If you just double-click, it does nothing. Check strings for `-h`, `--help`, `-k`.\n3.  **Not Simulating a Reboot:** Many persistence mechanisms only trigger **after a reboot**. Always reboot your sandbox VM once and monitor for another 5 minutes.\n4.  **Trusting the Sandbox Verdict Blindly:** A 'Clean' verdict in ANY.RUN doesn't mean it's not malware. It means it didn't trigger. Cross-reference with VirusTotal community score.\n5.  **Sharing IOCs Without Sanitization:** Don't include internal hostnames or usernames in public IOC shares.\n6.  **Leaving the Sandbox Network Open:** If your VM routes through a corporate proxy by mistake, the malware could attack your internal network. **Double-check network settings.**"
+        },
+        {
+            "id": "s_l5_7",
+            "type": "code",
+            "title": "Example: Creating a Simple IOC List (STIX/CSV) 📋",
+            "content": "Format your IOCs so they can be ingested by security tools.\n\n**CSV Format for Bulk Upload:**\n```csv\nindicator_type,indicator_value,description,severity\ndomain,evil-c2.xyz,QakBot C2 Domain,High\nipv4,185.142.53.179,QakBot C2 IP,High\nsha256,5b6e6a96b6e6a96b6e6a96b6e6a96b6,QakBot Dropper,Critical\nmutex,Global\\QakBotMutex,QakBot Mutex,High\nregistry,HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\Update,QakBot Persistence,High\n```\n\n**Share with the Team:**\n- Upload to MISP.\n- Add to the internal Threat Intel wiki.\n- Send to the SOC to add to SIEM watchlists.\n\n**This is how one analyst's work protects the entire organization.**"
+        },
+        {
+            "id": "s_l5_8",
+            "type": "tip",
+            "title": "Pro Tip: Build a Malware Lab in the Cloud ☁️",
+            "content": "## No More Overheating Laptops\n\nRunning VMs locally is resource-intensive.\n\n**Cloud Sandbox Options:**\n- **AWS EC2 with Windows AMI:** Spin up a VM, take snapshot, detonate, terminate. **Caution:** AWS terms of service restrict malware analysis unless using dedicated security accounts.\n- **Azure / GCP:** Similar restrictions.\n- **Specialized Cloud Sandboxes:** ANY.RUN, Joe Sandbox Cloud, VMRay.\n\n**Local Option:** Use a **dedicated physical machine** (an old desktop) with **Deep Freeze** or **Reboot Restore Rx**. Every reboot restores the machine to a clean state. No VM overhead. No cloud costs."
+        },
+        {
+            "id": "s_l5_9",
+            "type": "quiz",
+            "title": "Malware Analysis Reporting 📝",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "Which section of a malware analysis report is MOST critical for the SOC to immediately block threats?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Executive Summary",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Detailed Code Analysis",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Indicators of Compromise (IOCs)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Screenshots",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "IOCs (IPs, domains, hashes) are immediately actionable for blocking and hunting.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

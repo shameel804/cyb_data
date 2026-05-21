@@ -1,0 +1,90 @@
+{
+    "id": "l2",
+    "chapterId": "ch_8",
+    "title": "Order of Volatility ⏳",
+    "description": "Prioritizing evidence collection from most fragile to most persistent.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Evidence Collection",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "What is Volatility? 🌬️",
+            "content": "# Evidence That Disappears\n\n**Volatility** refers to how long data persists without power or active maintenance.\n\n**High Volatility:** Data disappears in **seconds or minutes** (e.g., RAM, CPU registers).\n**Low Volatility:** Data persists for **years** (e.g., Hard Drive platters, Backup Tapes).\n\n**The Golden Rule:** **Collect the MOST volatile evidence FIRST.**\n\nIf you spend 2 hours imaging the hard drive before capturing RAM, you've lost all the encryption keys and network connections that were only in memory. **You just destroyed the most valuable evidence.**"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "The Volatility Ladder (RFC 3227) 🪜",
+            "content": "### Standard Order of Collection\n\n**1. CPU Registers and Cache**\n- **Lifetime:** Nanoseconds.\n- **Practical IR:** Extremely difficult to capture without specialized hardware debugging. Usually skipped in standard IR.\n\n**2. RAM (Memory)**\n- **Lifetime:** Until power off or reboot.\n- **Contains:** Running processes, network connections, encryption keys, console commands, clipboard data, plaintext passwords.\n- **Collection Tool:** `DumpIt`, `WinPMEM`, `AVML`, `Magnet RAM Capture`.\n- **IR Priority:** **CRITICAL. Collect immediately.**\n\n**3. Network State (ARP Cache, Routing Table, Netstat)**\n- **Lifetime:** Dynamic. Changes with network activity.\n- **Contains:** Active connections to C2 servers, lateral movement targets.\n- **Collection Tool:** `netstat -anob`, `arp -a`.\n\n**4. Running Processes and Services**\n- **Lifetime:** Until process ends or system reboot.\n- **Contains:** Malware process ID, command line arguments, loaded DLLs.\n- **Collection Tool:** `tasklist /v`, `pslist`, `Get-Process`.\n\n**5. File System (Disk)**\n- **Lifetime:** Years (unless overwritten).\n- **Contains:** Malware binaries, logs, user documents.\n- **Collection Tool:** Forensic Imaging (FTK Imager, `dd`).\n\n**6. Backups / Archives**\n- **Lifetime:** Long-term.\n- **Contains:** Historical data, previous versions of files.\n- **IR Priority:** Low for active incident, high for historical investigation."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Volatility Order 📊",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "According to the Order of Volatility, which should be collected FIRST?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Hard drive forensic image",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "RAM (Memory) capture",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Windows Event Logs",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Scheduled Tasks list",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "RAM is highly volatile and contains critical evidence lost upon shutdown. It must be captured before any action that risks altering memory.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Why RAM is the 'Holy Grail' 🏆",
+            "content": "### What Lives Only in Memory?\n\n1.  **Encryption Keys**\n    - Full disk encryption keys (BitLocker, FileVault) are stored in memory while the system is running. Capture RAM = Bypass encryption.\n    - Ransomware encryption keys (sometimes).\n\n2.  **Network Connections**\n    - `netstat` data showing active C2 connections. This is **not** logged to disk.\n\n3.  **Command History**\n    - PowerShell history for that specific session.\n\n4.  **Injected Code**\n    - Malware that runs **only in memory** (fileless malware) leaves **no trace on disk**. If you only image the hard drive, you will **never** find this malware.\n\n5.  **Passwords**\n    - Cleartext credentials for service accounts and recently logged-in users often reside in the LSASS process memory.\n\n**Analogy:** Imaging the hard drive is like taking a photo of the **house**. Capturing RAM is like taking a video of **what everyone was doing inside the house at that exact moment**."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Example: Live Triage Commands (Windows) 🪟",
+            "content": "Before capturing full RAM, run these quick commands to snapshot volatile data.\n\n**Save output to a trusted USB drive (NOT the local disk!):**\n\n```cmd\nREM Date/Time Stamp\necho %DATE% %TIME% > E:\\triage\\systeminfo.txt\n\nREM Network Connections\nnetstat -anob >> E:\\triage\\netstat.txt\n\nREM ARP Cache\narp -a >> E:\\triage\\arp.txt\n\nREM Running Processes with Command Lines\nwmic process get ProcessId,Name,CommandLine /format:list >> E:\\triage\\processes.txt\n\nREM Logged On Users\nquery user >> E:\\triage\\users.txt\n```\n\n**Important:** These commands **alter** the system state slightly (new process created). This is acceptable in IR triage, but must be **documented**."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "tip",
+            "title": "Pro Tip: Trusted Tools Binaries 🧰",
+            "content": "## Don't Run the Attacker's Netstat!\n\n**Problem:** If the system is compromised, the attacker may have replaced `netstat.exe` with a **rootkit** version that hides their connections.\n\n**Solution:** Always run tools from a **trusted, write-protected USB drive**.\n\n**Command:**\n```cmd\nE:\\tools\\netstat.exe -anob\n```\n*(Running the known-good version from your Jump Bag)*\n\n**This is called 'Living Off the Land' defense.**"
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "RAM Evidence Value 💾",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "Fileless malware leaves traces on the hard drive that can be found with a standard forensic image.",
+                "correctAnswer": false,
+                "explanation": "False. Fileless malware resides only in RAM or registry. A disk image alone will miss it. Memory analysis is essential.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

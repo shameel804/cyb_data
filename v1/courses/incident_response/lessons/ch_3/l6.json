@@ -1,0 +1,90 @@
+{
+    "id": "l6",
+    "chapterId": "ch_3",
+    "title": "Training & Tabletop Exercises 🎮",
+    "description": "Testing your plan before the real emergency hits.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Testing",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "Plans Are Useless, Planning Is Essential 📝",
+            "content": "# Why You Must Test\n\nYou have written policies, playbooks, and assembled a jump bag. **So what?**\n\nIf you haven't practiced, **you will fail** when the pressure is on.\n\n**Common 'Day of Incident' Discoveries:**\n- *'I can't log into the firewall because my admin account requires MFA on my phone... which is dead.'*\n- *'The playbook says to call John, but John left the company 6 months ago.'*\n- *'What is the IP address of the SIEM again?'*\n\n**The Solution:** **Exercises.**"
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "Types of Exercises 🏋️",
+            "content": "### 1. Tabletop Exercise (TTX)\n- **What:** A **discussion-based** session. Everyone sits around a table (or Zoom) and talks through a scenario.\n- **Example Scenario:** *'It's 3:00 AM Friday. The EDR alerts that the CFO's laptop is encrypting files. What do you do?'*\n- **Goal:** Validate the **process** and **communication** (Who calls whom?).\n- **Cost:** Low. **Frequency:** Quarterly.\n\n### 2. Walkthrough Drill\n- **What:** A 'dry run' of technical steps without actually breaking anything.\n- **Example:** Analyst logs into the backup console and verifies they **can** see the restore points. (They don't actually restore).\n- **Goal:** Validate **access** and **tooling**.\n- **Cost:** Low. **Frequency:** Monthly.\n\n### 3. Functional / Live-Fire Exercise\n- **What:** Simulating an actual attack on a **test environment**.\n- **Example:** Red Team launches a simulated phishing campaign against a test group.\n- **Goal:** Validate **detection** and **response time**.\n- **Cost:** High (requires dedicated lab). **Frequency:** Annually."
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Exercise Types 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "A Tabletop Exercise (TTX) is primarily designed to test:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The effectiveness of antivirus signatures.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The speed of restoring data from backup tapes.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The decision-making process and communication flow of the CSIRT.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The security of the firewall configuration.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "TTXs are low-cost, high-value discussions about process and coordination. They don't touch production systems.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "Designing a Good Tabletop ✍️",
+            "content": "### The Injects Method\n\nA good TTX facilitator doesn't just read a scenario; they use **Injects** (new pieces of information) to steer the conversation.\n\n**Scenario: Ransomware on File Server.**\n\n- **Inject 1:** *The EDR dashboard shows 50 endpoints with the 'Encryptor' alert.* (Team discusses: Containment strategy).\n- **Inject 2:** *The CEO calls the Incident Commander directly on their cell phone demanding an update.* (Team discusses: How to handle executive pressure).\n- **Inject 3:** *A journalist from 'CyberNews Weekly' tweets asking if you've been breached.* (Team discusses: Comms strategy).\n\n**The Goal of the Facilitator:** **Silence is golden.** Let the team talk it out. Don't give them the answer."
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "Training the Non-Technical Team 🧑‍💼",
+            "content": "### Don't Forget HR, Legal, and Comms!\n\nThese roles are critical during an incident, but they are often excluded from technical training.\n\n**Specific Training for Non-Techies:**\n- **HR:** How to place an employee on **Administrative Leave** without tipping off the employee that we suspect them of data theft. (Legal hold on laptop).\n- **Legal:** Understanding what a **Forensic Image** is and why it's necessary for court.\n- **Comms:** How to write a **Breach Notification Letter** that complies with state law.\n\n**Action Item:** Run at least one **Cross-Functional Tabletop** per year that includes HR, Legal, and Comms."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "tip",
+            "title": "Pro Tip: The After-Action Review (AAR) 🔍",
+            "content": "## Close the Loop on Training\n\nEvery exercise must end with a **'Hot Wash'** or **After-Action Review (AAR)**.\n\n**Three Questions to Ask the Team:**\n1.  What went well? *(Celebrate the win: 'We identified the need for OOB comms quickly!')*\n2.  What was confusing? *(Fix the process: 'We didn't know who had the authority to call the ISP.')*\n3.  What is the **ONE** thing we will change before next month?\n\n**Output:** An **Action Plan** with owners and due dates. **This is how you turn a training exercise into a real improvement.**"
+        },
+        {
+            "id": "s_l6_7",
+            "type": "quiz",
+            "title": "Training Impact 📈",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "true_false",
+                "question": "Once an IR Playbook is written, it does not need to be reviewed or tested until an actual incident occurs.",
+                "correctAnswer": false,
+                "explanation": "False. Playbooks must be tested regularly in exercises to ensure they are still accurate and that the team knows how to execute them.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

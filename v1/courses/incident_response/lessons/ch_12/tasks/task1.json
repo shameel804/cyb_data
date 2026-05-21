@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_12",
+    "title": "Draft an Internal Status Update",
+    "description": "Write a concise executive update based on a scenario.",
+    "estimatedMinutes": 10,
+    "problemStatement": "You are the Incident Commander. It is 14:30 UTC. A ransomware incident is ongoing. The Accounting file server (FS01) is encrypted. 45 users are affected. The containment team has isolated the server VLAN. The recovery team estimates restoration from backup will take 4 hours. You need the CISO to approve an emergency change to block outbound SMB traffic at the firewall as a precaution.\n\n**Task:** Write a **brief internal status update** for the CISO using the template format from the lesson.\n\n**Template:**\n```\nINCIDENT UPDATE - [Incident ID] - [Time UTC]\n\nStatus: [Active / Containing / Recovering / Closed]\nImpact: [Brief description of business impact]\nCurrent Action: [What the team is doing right now]\nNext Update: [Time]\n\nDecision Needed: [Specific approval required]\n```\n\n**Output Format:** Plain text using the template.",
+    "hints": [
+        "Be concise. Use bullet points or short sentences.",
+        "State the exact decision needed.",
+        "Include a next update time."
+    ],
+    "expectedOutput": "INCIDENT UPDATE - IR-2026-042 - 14:30 UTC\n\nStatus: Active Containment\nImpact: Accounting file server (FS01) encrypted. 45 users unable to access financial data.\nCurrent Action: Server VLAN isolated. Recovery team preparing to restore from backup (ETA 4 hours).\nNext Update: 15:00 UTC\n\nDecision Needed: Approve emergency firewall change to block outbound SMB (port 445) traffic to prevent potential lateral spread to VPN users.",
+    "solutionCode": "INCIDENT UPDATE - IR-2026-042 - 14:30 UTC\n\nStatus: Active Containment\nImpact: Accounting file server (FS01) encrypted. 45 users unable to access financial data. No evidence of data exfiltration at this time.\nCurrent Action: Affected VLAN isolated. Recovery team preparing restore from immutable backup dated 2026-04-19. EDR scanning additional hosts in VLAN.\nNext Update: 15:00 UTC\n\nDecision Needed: Approve emergency change to implement outbound SMB (port 445) block at perimeter firewall as precautionary containment measure."
+}

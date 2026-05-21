@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_9",
+    "title": "Apply the Pyramid of Pain",
+    "description": "Rank defense actions by the pain they cause an attacker.",
+    "estimatedMinutes": 10,
+    "problemStatement": "You are designing detection strategies for a new ransomware variant. Rank the following defensive actions from **1 (Least Pain for Attacker / Easiest to Bypass)** to **5 (Most Pain for Attacker / Hardest to Bypass)** based on the Pyramid of Pain.\n\n**Actions:**\nA. Block the SHA256 hash of the ransomware executable.\nB. Block the C2 IP address used by the ransomware.\nC. Detect any process that deletes Volume Shadow Copies (`vssadmin delete shadows`).\nD. Block the domain name `ransom-c2.xyz`.\nE. Detect any process that rapidly modifies hundreds of file extensions.\n\n**Output Format:**\n```\n1 (Least Pain): [Letter]\n2: [Letter]\n3: [Letter]\n4: [Letter]\n5 (Most Pain): [Letter]\n```",
+    "hints": [
+        "Hashes change instantly with recompile.",
+        "IPs and domains are low pain.",
+        "Detecting specific commands is moderate pain.",
+        "Detecting behavioral patterns (rapid file modifications) is high pain."
+    ],
+    "expectedOutput": "1 (Least Pain): A\n2: B\n3: D\n4: C\n5 (Most Pain): E",
+    "solutionCode": "1 (Least Pain): A (Hash - trivial to change)\n2: B (IP - easy to change)\n3: D (Domain - moderate effort)\n4: C (Specific command - attacker can change command string)\n5 (Most Pain): E (Behavioral pattern - hard to change fundamental ransomware behavior)"
+}

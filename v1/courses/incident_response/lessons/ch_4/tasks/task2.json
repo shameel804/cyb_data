@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_4",
+    "title": "Hunt for Beaconing Activity",
+    "description": "Identify C2 traffic patterns from firewall log data.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You are provided with a simplified NetFlow summary for internal host `10.0.0.105` over a 1-hour period.\n\n**Data (Time, Dest IP, Bytes Sent):**\n- 14:00:00, 8.8.8.8, 100\n- 14:05:00, 8.8.8.8, 100\n- 14:10:00, 8.8.8.8, 100\n- 14:15:00, 185.142.53.179, 45\n- 14:20:00, 185.142.53.179, 45\n- 14:25:00, 185.142.53.179, 45\n- 14:30:00, 185.142.53.179, 45\n- 14:35:00, 8.8.8.8, 100\n\n**Task:**\n1. Identify which destination IP is suspicious.\n2. Explain WHY it is suspicious (provide two reasons).\n3. What is the security term for this traffic pattern?\n\n**Output Format:**\n```\n1. Suspicious IP: [IP]\n2. Reason 1: [Reason]\n   Reason 2: [Reason]\n3. Pattern Name: [Name]\n```",
+    "hints": [
+        "8.8.8.8 is Google DNS.",
+        "Look at the timing and size of the connections.",
+        "185.142.53.179 is a random VPS IP."
+    ],
+    "expectedOutput": "1. Suspicious IP: 185.142.53.179\n2. Reason 1: Connections occur at exact 5-minute intervals.\n   Reason 2: Bytes transferred are small and consistent (45 bytes).\n3. Pattern Name: Command & Control (C2) Beaconing",
+    "solutionCode": "1. Suspicious IP: 185.142.53.179\n2. Reason 1: Periodic communication with strict 5-minute intervals.\n   Reason 2: Low, consistent data volume characteristic of heartbeat/check-in traffic.\n3. Pattern Name: Command & Control (C2) Beaconing"
+}

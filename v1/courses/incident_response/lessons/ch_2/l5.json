@@ -1,0 +1,49 @@
+{
+    "id": "l5",
+    "chapterId": "ch_2",
+    "title": "Phase 5: Recovery & Restoration 🏥",
+    "description": "Bringing systems back online safely and monitoring for return.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Lifecycle Phase 5",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Back to Business 📈",
+            "content": "# Phase 5: Recovery\n\n**Definition:** *Restoring affected systems to normal operation and verifying they are no longer compromised.*\n\nThis is the 'Light at the End of the Tunnel' phase. But this is where many teams let their guard down.\n\n**Key Distinction:**\n- **Eradication:** Removing bad stuff.\n- **Recovery:** Putting good stuff back.\n\n**Activities:**\n- Restoring data from **clean** backups.\n- Reconnecting systems to the production network.\n- Monitoring for 'Re-infection'."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "warning",
+            "title": "The Backup Pitfall 💾",
+            "content": "## Don't Restore the Malware!\n\n**Scenario:** You have nightly backups of the file server. Ransomware hit at 10:00 AM. \n\n**Question:** When do you restore from?\n\n- **Bad Answer:** Last night's backup (Midnight).\n- **Why?** The attacker might have had **dwell time** of 3 weeks. The 'Midnight' backup might already contain the backdoor or dormant malware.\n\n**Recovery Strategy:**\n1.  **Restore to a Sandboxed VLAN first.**\n2.  **Scan the restored data with updated antivirus/EDR.**\n3.  **Only after confirming it's clean,** move it to production.\n4.  **Preference:** If possible, restore data from **offline, immutable backups** (e.g., tapes or cloud buckets with 'Object Lock' enabled)."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Backup Strategy 🗄️",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "true_false",
+                "question": "If you have been compromised, you should restore from the most recent backup available to minimize data loss, even if you suspect the attacker had access last week.",
+                "correctAnswer": false,
+                "explanation": "False. Restoring a compromised backup reinfects the environment. You must restore from a backup known to be clean (pre-compromise). This might mean losing a few days of data, but that's better than starting over.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "The Monitoring Period (Post-Recovery) 📊",
+            "content": "### Enhanced Monitoring\n\nOnce systems are back online, you enter **High Alert Mode**.\n\n**For the next 7-14 days, you must:**\n- **Increase Logging Verbosity:** Turn on PowerShell Script Block Logging, Process Creation Auditing.\n- **Watch for Recurrence:** Is that suspicious IP address trying to connect again?\n- **Hunt for Missed Backdoors:** Did you miss that hidden scheduled task?\n\n**Sign of Success:** Business operations resume normally with **no further alerts** related to the initial incident.\n\n**Sign of Failure:** 'Why is the CEO's computer beaconing to Russia again?' (This means you missed something in Eradication. Go back to Phase 2)."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "tip",
+            "title": "Pro Tip: Change Management 🔧",
+            "content": "## Communicate the Reconnection\n\nRecovery often involves **removing containment measures** (e.g., unblocking an IP).\n\n**Document this change meticulously.**\n\n- **Bad:** *Analyst Joe silently removes the firewall rule at 3 AM.*\n- **Good:** *Change Ticket #4567 approved by Incident Commander. Firewall rule XYZ disabled at [Timestamp] to restore full service.*\n\nWhy? If the incident reoccurs 2 days later, you need to know **exactly** when the door was re-opened to correlate events."
+        }
+    ]
+}

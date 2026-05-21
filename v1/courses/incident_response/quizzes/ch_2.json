@@ -1,0 +1,234 @@
+{
+    "id": "quiz_ch_2",
+    "chapterId": "ch_2",
+    "title": "Chapter 2: The IR Lifecycle Quiz",
+    "description": "Test your knowledge of all six phases: Preparation through Post-Incident.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which phase of the IR lifecycle involves establishing policies, playbooks, and out-of-band communication channels?",
+            "options": [
+                "Detection & Analysis",
+                "Containment",
+                "Preparation",
+                "Recovery"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Preparation is everything done *before* an incident to ensure readiness."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "The NIST framework defines 'Containment, Eradication, and Recovery' as three separate distinct phases.",
+            "correctAnswer": true,
+            "explanation": "True. While some models group them, NIST SP 800-61 treats them as distinct phases with specific goals."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "What is the primary purpose of a 'Jump Bag' in Preparation?",
+            "options": [
+                "To quickly evacuate the building during a fire.",
+                "To provide analysts with immediate access to trusted forensic tools offline.",
+                "To store backup tapes.",
+                "To carry the CEO's laptop."
+            ],
+            "correctAnswer": 1,
+            "explanation": "A Jump Bag contains essential tools that can be used even when the network is compromised or systems are offline."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "The 'Golden Rule' of containment states: Disconnect the network cable, but do NOT pull the ______ cord.",
+            "options": [
+                "Power",
+                "Ethernet",
+                "USB",
+                "Monitor"
+            ],
+            "correctAnswer": "Power",
+            "explanation": "Pulling power destroys volatile memory evidence. Isolate network connectivity first."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "In the Cyber Kill Chain, 'beaconing' traffic to a malicious IP address represents which phase?",
+            "options": [
+                "Delivery",
+                "Exploitation",
+                "Command & Control (C2)",
+                "Actions on Objectives"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Regular communication back to the attacker for instructions is the C2 phase."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "If you suspect an Advanced Persistent Threat (APT), you should immediately block their IP address at the firewall to stop the attack.",
+            "correctAnswer": false,
+            "explanation": "False. Blocking an IP may alert the attacker that they've been discovered. Sometimes monitoring (silent containment) is more valuable for intelligence gathering."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Which of the following is an example of a 'Long-Term Containment' strategy?",
+            "options": [
+                "Pulling the network cable from an infected laptop.",
+                "Blocking a malicious IP address at the perimeter firewall.",
+                "Unplugging the server power cord.",
+                "Shouting 'Oh no!'"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Short-term is immediate (pull cable). Long-term is strategic (perimeter block) allowing other systems to operate safely."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "During Eradication, what must be done BEFORE wiping and rebuilding an infected computer?",
+            "options": [
+                "Notify the user they can go home.",
+                "Create a forensic disk image.",
+                "Run Windows Update.",
+                "Change the desktop wallpaper."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Forensic imaging preserves evidence required for legal and investigative purposes."
+        },
+        {
+            "id": "q9",
+            "type": "true_false",
+            "question": "A Web Shell is a tool used for detection, not persistence.",
+            "correctAnswer": false,
+            "explanation": "False. A Web Shell is a malicious script placed on a web server to provide an attacker with persistent backdoor access."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Why is it risky to restore data from the most recent backup immediately after a ransomware attack?",
+            "options": [
+                "Backups are always encrypted too.",
+                "The backup might contain the dormant malware or backdoor from before the encryption triggered.",
+                "Restoring takes too long.",
+                "It violates the insurance policy."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Attackers often have dwell time. The backup from yesterday might already be compromised. You must verify cleanliness first."
+        },
+        {
+            "id": "q11",
+            "type": "fill_blank",
+            "question": "The recovery phase should include a period of '______ Monitoring' to watch for signs of reinfection.",
+            "options": [
+                "Reduced",
+                "Enhanced",
+                "Standard",
+                "Passive"
+            ],
+            "correctAnswer": "Enhanced",
+            "explanation": "After recovery, you increase logging and alerting sensitivity to catch any missed backdoors quickly."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is the primary difference between a 'Policy' and a 'Playbook'?",
+            "options": [
+                "Policy is technical; Playbook is managerial.",
+                "Policy defines *what* you will do (authority); Playbook defines *how* to do it (procedure).",
+                "Policy is for executives only.",
+                "They are the same thing."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Policy grants authority and sets high-level rules. Playbooks are detailed, actionable steps for specific scenarios."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "False Positives are a major challenge in the Detection & Analysis phase.",
+            "correctAnswer": true,
+            "explanation": "True. Alert fatigue from too many false positives can cause real incidents to be missed."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Which of these is a stealthy persistence mechanism an attacker might leave behind on Windows?",
+            "options": [
+                "Desktop Shortcut",
+                "WMI Event Subscription",
+                "A large text file named 'README'",
+                "Screensaver settings"
+            ],
+            "correctAnswer": 1,
+            "explanation": "WMI Event Subscriptions are a common, hard-to-detect way to trigger malware execution silently."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Who is the primary audience for the 'Executive Summary' report in the Post-Incident phase?",
+            "options": [
+                "Forensic Analysts",
+                "System Administrators",
+                "C-Suite / Board of Directors",
+                "The Attacker"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The Executive Summary provides a high-level business impact assessment for senior leadership, avoiding deep technical jargon."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "A Blameless Post-Mortem focuses on fixing broken processes rather than punishing individuals.",
+            "correctAnswer": true,
+            "explanation": "True. This creates a culture of transparency and continuous improvement."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "According to the lesson, which phase of the IR lifecycle is most often skipped by organizations?",
+            "options": [
+                "Preparation",
+                "Containment",
+                "Eradication",
+                "Post-Incident Activity"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Post-Incident Activity (Lessons Learned) is frequently skipped due to time pressure or desire to move on."
+        },
+        {
+            "id": "q18",
+            "type": "fill_blank",
+            "question": "The act of moving an infected machine to a VLAN with limited internet and internal access is a form of Long-Term ______.",
+            "options": [
+                "Eradication",
+                "Containment",
+                "Recovery",
+                "Detection"
+            ],
+            "correctAnswer": "Containment",
+            "explanation": "This is a strategic containment action that allows the business to operate while isolating the threat."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is 'Patient Zero' in the context of incident scoping?",
+            "options": [
+                "The first person to report the incident.",
+                "The first system or user compromised in the attack chain.",
+                "The most important server affected.",
+                "The ransomware note."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Identifying Patient Zero helps understand the attack vector and the timeline of lateral movement."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "If an attacker had local administrator access on a server, you can fully trust the operating system logs to tell you what they did.",
+            "correctAnswer": false,
+            "explanation": "False. An attacker with admin rights can clear logs, disable auditing, or modify timestamps. External analysis (network traffic, disk forensics) is required."
+        }
+    ]
+}

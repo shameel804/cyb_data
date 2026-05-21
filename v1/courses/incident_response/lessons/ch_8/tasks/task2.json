@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_8",
+    "title": "Analyze a Chain of Custody Error",
+    "description": "Identify mistakes in a sample CoC log and explain the consequences.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Review the following Chain of Custody log entries for a seized laptop (Item #001):\n\n- **2026-04-20 09:00 UTC:** Seized by Analyst Jane from Employee Bob's desk. Placed in evidence bag. Signed by Jane.\n- **2026-04-20 12:00 UTC:** Jane left the bag on her desk while she went to lunch for 45 minutes.\n- **2026-04-20 13:00 UTC:** Jane gave the bag to Analyst John for imaging. (No signature from John recorded).\n- **2026-04-21 09:00 UTC:** John returned the bag to the evidence locker. Signed by John.\n\n**Task:**\n1. Identify **TWO specific mistakes** in this Chain of Custody.\n2. For each mistake, explain **why** it is a problem for legal admissibility.\n\n**Output Format:**\n```\nMistake 1: [Description]\nWhy it's a problem: [Explanation]\n\nMistake 2: [Description]\nWhy it's a problem: [Explanation]\n```",
+    "hints": [
+        "Think about unsecured evidence.",
+        "Think about missing signatures/transfers."
+    ],
+    "expectedOutput": "Mistake 1: Evidence left unattended on desk during lunch break.\nWhy it's a problem: Creates a custody gap where tampering could have occurred; breaks the chain and makes evidence inadmissible.\n\nMistake 2: No receiving signature from Analyst John when custody transferred.\nWhy it's a problem: Fails to document who had control of the evidence during the imaging period; breaks the continuous record of custody.",
+    "solutionCode": "Mistake 1: Evidence left unattended on desk during lunch break.\nWhy it's a problem: Creates a custody gap where unauthorized access or tampering could have occurred. Defense can argue evidence integrity is compromised.\n\nMistake 2: No receiving signature from Analyst John when custody transferred from Jane to John.\nWhy it's a problem: The log does not prove John actually received the evidence or when he took possession. This breaks the continuous record of who handled the evidence."
+}

@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_5",
+    "title": "Prioritize Containment Actions",
+    "description": "Rank actions for a ransomware scenario from most to least appropriate.",
+    "estimatedMinutes": 10,
+    "problemStatement": "You are the first responder to a ransomware alert on the `FINANCE-PC`. The EDR console shows 500 files encrypted in the last 30 seconds. The machine is remote (user working from home over VPN).\n\n**Available Actions:**\nA. Disable the user's VPN account.\nB. Use EDR 'Network Contain' feature.\nC. Call the user and tell them to pull the power cord.\nD. Block all outbound SMB traffic at the corporate firewall.\nE. Do nothing and monitor.\n\n**Task:** Rank these actions from **1 (Best First Action)** to **5 (Worst/Last Action)** .\n\n**Output Format:**\n`1: [Action Letter] - [Brief Reason]`\n`2: [Action Letter] - [Brief Reason]`\n...",
+    "hints": [
+        "Think about speed and evidence preservation.",
+        "EDR containment is designed for exactly this scenario.",
+        "Disabling VPN stops access but doesn't stop the encryption process."
+    ],
+    "expectedOutput": "1: B - EDR Network Contain is fastest and preserves remote forensic access.\n2: A - Disable VPN account to prevent lateral movement back to corporate network.\n3: D - Block SMB outbound to protect other remote users.\n4: C - Call user to pull power cord (last resort, destroys evidence).\n5: E - Doing nothing is not an option during active ransomware.",
+    "solutionCode": "1: B - EDR Network Containment stops all network activity except the management channel, preserving evidence.\n2: A - Disabling the VPN account prevents the infected machine from reaching internal corporate resources.\n3: D - Blocking SMB outbound is a global protection measure for the rest of the organization.\n4: C - Pulling the power cord destroys volatile evidence and should be avoided if remote containment works.\n5: E - Monitoring is not appropriate when active encryption is occurring."
+}

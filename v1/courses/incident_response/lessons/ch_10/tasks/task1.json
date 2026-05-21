@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_10",
+    "title": "Identify Malicious Activity from Windows Logs",
+    "description": "Analyze a set of Windows Event Log entries and determine the attack timeline.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You are given the following log entries from a compromised server (times in UTC):\n\n```\n[2026-04-20 02:15:22] Security (Event 4625): Failed logon for user 'admin' from IP 203.0.113.55 (LogonType 10)\n[2026-04-20 02:15:25] Security (Event 4625): Failed logon for user 'admin' from IP 203.0.113.55 (LogonType 10)\n[2026-04-20 02:15:28] Security (Event 4625): Failed logon for user 'admin' from IP 203.0.113.55 (LogonType 10)\n[2026-04-20 02:15:31] Security (Event 4624): Successful logon for user 'jsmith' from IP 203.0.113.55 (LogonType 10, LogonID: 0x3E7)\n[2026-04-20 02:16:10] Sysmon (Event 1): Process 'cmd.exe' created (PID 1234). Parent: 'winlogon.exe'. User: jsmith. CommandLine: 'cmd.exe /c whoami'\n[2026-04-20 02:17:45] Sysmon (Event 1): Process 'powershell.exe' created (PID 5678). Parent: 'cmd.exe' (PID 1234). CommandLine: 'powershell.exe -enc SQBFAFgA...'\n[2026-04-20 02:18:00] Sysmon (Event 3): Process 'powershell.exe' (PID 5678) connected to 185.142.53.179:443\n[2026-04-20 02:20:00] Security (Event 4732): User 'jsmith' added to local group 'Administrators' by user 'jsmith'\n```\n\n**Task:** Answer the following questions:\n1.  What type of attack occurred at 02:15:22 - 02:15:31?\n2.  What evidence suggests the attacker successfully logged in?\n3.  What did the attacker do immediately after logging in?\n4.  What is the likely purpose of the PowerShell connection to 185.142.53.179?\n5.  How did the attacker escalate privileges?\n\n**Output Format:** Plain text answers, numbered 1-5.",
+    "hints": [
+        "Look at the pattern of Event 4625 followed by 4624.",
+        "LogonType 10 is RDP.",
+        "Event 4732 is key for privilege escalation.",
+        "Encoded PowerShell plus external connection is C2."
+    ],
+    "expectedOutput": "1. RDP Brute Force attack targeting 'admin', succeeded with credentials for 'jsmith'.\n2. Event ID 4624 with LogonType 10 from the same attacker IP.\n3. Ran 'whoami' to confirm user context, then launched an encoded PowerShell script.\n4. Command and Control (C2) communication / downloading additional payload.\n5. Added 'jsmith' to the local Administrators group (Event 4732).",
+    "solutionCode": "1. RDP Brute Force / Password Guessing attack.\n2. Event ID 4624 at 02:15:31 shows successful logon for jsmith from the attacker's IP.\n3. The attacker ran 'whoami' (discovery) and then launched an obfuscated PowerShell command.\n4. The PowerShell connection is establishing Command & Control (C2) with a remote server.\n5. The attacker used the compromised 'jsmith' account (which likely had admin rights already, or used a separate technique) to explicitly add themselves to the Administrators group for persistence/backup access. (Note: The event shows jsmith added jsmith, indicating the account already had the necessary rights to modify the Administrators group, confirming privilege escalation was successful.)"
+}

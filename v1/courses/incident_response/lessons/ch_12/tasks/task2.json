@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_12",
+    "title": "Create a Lessons Learned Action Plan",
+    "description": "Given incident findings, formulate SMART action items.",
+    "estimatedMinutes": 15,
+    "problemStatement": "The Lessons Learned meeting identified the following findings from a recent phishing incident:\n\n**Finding 1:** The phishing email bypassed the email filter because the sender domain `paypa1.com` was not on any blocklist and had valid SPF/DKIM.\n**Finding 2:** It took 2 hours to contact the email administrator because the on-call schedule was outdated.\n**Finding 3:** PowerShell Script Block Logging was not enabled on 30% of workstations, so we couldn't see what the attacker's script did on those machines.\n\n**Task:** For **each** finding, write a **SMART Action Item**.\n\n**SMART = Specific, Measurable, Assignable, Realistic, Time-bound.**\n\n**Output Format:**\n```\nFinding 1 Action Item: [Description] - Owner: [Role/Team] - Due: [Date]\nFinding 2 Action Item: [Description] - Owner: [Role/Team] - Due: [Date]\nFinding 3 Action Item: [Description] - Owner: [Role/Team] - Due: [Date]\n```",
+    "hints": [
+        "Finding 1: Focus on detection of lookalike domains.",
+        "Finding 2: Focus on automating contact management.",
+        "Finding 3: Focus on ensuring logging coverage."
+    ],
+    "expectedOutput": "Finding 1 Action Item: Implement a security tool to detect and flag newly registered domains with high visual similarity to company domains (typosquatting). - Owner: Security Engineering - Due: 2026-06-01\nFinding 2 Action Item: Migrate on-call scheduling to an automated platform (e.g., PagerDuty) integrated with the corporate directory. - Owner: IT Operations Manager - Due: 2026-05-15\nFinding 3 Action Item: Deploy Group Policy to enable PowerShell Script Block Logging on 100% of Windows endpoints and validate compliance via SCCM report. - Owner: Endpoint Engineering - Due: 2026-05-01",
+    "solutionCode": "Finding 1 Action Item: Deploy and configure a domain reputation monitoring tool (e.g., DNSTwist) to alert on newly registered lookalike domains and integrate with email gateway for automatic flagging. - Owner: Threat Intelligence Team - Due: 2026-06-15\nFinding 2 Action Item: Implement PagerDuty for automated on-call rotation and escalation. Ensure contact information is synced from Active Directory and tested monthly. - Owner: IT Service Management Lead - Due: 2026-05-30\nFinding 3 Action Item: Create a compliance dashboard in SCCM to monitor PowerShell Script Block Logging enablement across all Windows endpoints. Remediate non-compliant devices within 7 days. - Owner: Endpoint Security Team - Due: 2026-05-15"
+}

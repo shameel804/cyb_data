@@ -1,0 +1,234 @@
+{
+    "id": "quiz_ch_8",
+    "chapterId": "ch_8",
+    "title": "Chapter 8: Digital Forensics Fundamentals Quiz",
+    "description": "Test your knowledge of forensic principles, evidence collection, chain of custody, and artifacts.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the most fundamental principle of digital forensics?",
+            "options": [
+                "Work as fast as possible.",
+                "Never alter the original evidence.",
+                "Use only commercial tools.",
+                "Share findings with all stakeholders immediately."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Preserving the integrity of the original evidence is paramount for legal admissibility."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "According to the Order of Volatility, RAM should be collected after the hard drive image.",
+            "correctAnswer": false,
+            "explanation": "False. RAM is highly volatile and should be collected first, before any action that could alter it."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which of the following is stored in RAM and lost upon power-off?",
+            "options": [
+                "Installed software list",
+                "Active network connections",
+                "Windows Event Logs",
+                "Documents on the Desktop"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Active network connections (netstat data) are volatile and only exist in memory while the system runs."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "A hardware device that prevents a forensic workstation from writing to a suspect hard drive is called a ______.",
+            "options": [
+                "Firewall",
+                "Write Blocker",
+                "Hash Generator",
+                "Encryptor"
+            ],
+            "correctAnswer": "Write Blocker",
+            "explanation": "Write blockers are mandatory for maintaining forensic integrity during acquisition."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which forensic image format includes embedded hash verification and case metadata?",
+            "options": [
+                "Raw / DD",
+                "E01 (Expert Witness Format)",
+                "ISO",
+                "ZIP"
+            ],
+            "correctAnswer": 1,
+            "explanation": "E01 is the standard forensic container that embeds hashes and metadata within the file."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "If a system is actively encrypting files (ransomware), you should always perform a full memory capture before pulling the network cable.",
+            "correctAnswer": false,
+            "explanation": "False. Speed is critical to stop encryption. Network isolation (or power off) takes priority over memory capture in active destructive scenarios."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What is the primary legal purpose of a Chain of Custody form?",
+            "options": [
+                "To track the financial cost of the incident.",
+                "To prove that evidence has not been tampered with.",
+                "To list all files on the hard drive.",
+                "To schedule evidence deletion."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Chain of Custody establishes a verifiable history of evidence handling, ensuring integrity and admissibility."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which Windows Event ID indicates a successful user logon?",
+            "options": [
+                "4625",
+                "4624",
+                "4688",
+                "4720"
+            ],
+            "correctAnswer": 1,
+            "explanation": "4624 is successful logon; 4625 is failed logon; 4688 is process creation; 4720 is account creation."
+        },
+        {
+            "id": "q9",
+            "type": "true_false",
+            "question": "Prefetch files (.pf) contain information about how many times an executable has been run.",
+            "correctAnswer": true,
+            "explanation": "True. Prefetch files store run count and last run time, making them valuable for execution evidence."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is a 'Super Timeline' in digital forensics?",
+            "options": [
+                "A timeline that only includes security events.",
+                "A chronological combination of artifacts from multiple sources (Event Logs, Prefetch, Registry, $MFT).",
+                "A timeline created by a specific vendor tool.",
+                "A timeline that covers more than one year."
+            ],
+            "correctAnswer": 1,
+            "explanation": "A Super Timeline correlates multiple artifact types into a single chronological view to reconstruct events."
+        },
+        {
+            "id": "q11",
+            "type": "fill_blank",
+            "question": "Fileless malware that runs only in memory leaves no trace on the ______.",
+            "options": [
+                "Hard Drive",
+                "Registry",
+                "Network",
+                "BIOS"
+            ],
+            "correctAnswer": "Hard Drive",
+            "explanation": "Fileless malware resides in RAM or registry; a disk image alone will miss it."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which registry key contains evidence of USB devices that have been connected to a Windows system?",
+            "options": [
+                "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+                "HKLM\\SYSTEM\\CurrentControlSet\\Enum\\USBSTOR",
+                "HKCU\\Software\\Microsoft\\Internet Explorer\\TypedURLs",
+                "HKLM\\SYSTEM\\CurrentControlSet\\Services"
+            ],
+            "correctAnswer": 1,
+            "explanation": "USBSTOR stores vendor, product, and serial number of every USB device ever plugged in."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "It is acceptable to use a software write blocker instead of a hardware write blocker in all forensic cases.",
+            "correctAnswer": false,
+            "explanation": "False. Hardware write blockers are more reliable and are the gold standard for court. Software blockers are acceptable in some IR scenarios but carry more risk."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is the main risk of pulling the power cord on a system encrypted with BitLocker?",
+            "options": [
+                "The hard drive will be physically damaged.",
+                "The drive will lock and require a recovery key to access.",
+                "The RAM will be preserved.",
+                "Windows will crash permanently."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Power loss locks BitLocker-encrypted drives. You must have the recovery key to unlock and image them."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Which tool is commonly used to parse Prefetch files and output a CSV report?",
+            "options": [
+                "FTK Imager",
+                "PECmd (Eric Zimmerman's tool)",
+                "Wireshark",
+                "Volatility"
+            ],
+            "correctAnswer": 1,
+            "explanation": "PECmd is the standard tool for parsing Windows Prefetch files."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "Leaving a seized hard drive in an unlocked desk drawer overnight breaks the chain of custody.",
+            "correctAnswer": true,
+            "explanation": "True. Unsecured storage introduces a gap in the chain where tampering could have occurred."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Why is time zone normalization critical when building a forensic timeline?",
+            "options": [
+                "Because lawyers only understand UTC.",
+                "Because different artifacts record time in different formats (UTC vs. Local) and must be aligned.",
+                "Because it saves disk space.",
+                "Because it's required by NIST."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Artifacts like $MFT use UTC; Event Logs may use local time. Failing to normalize leads to an inaccurate timeline."
+        },
+        {
+            "id": "q18",
+            "type": "fill_blank",
+            "question": "The command-line tool commonly used on Linux to create a bit-for-bit forensic image is ______.",
+            "options": [
+                "cp",
+                "dd",
+                "mv",
+                "tar"
+            ],
+            "correctAnswer": "dd",
+            "explanation": "dd is the standard disk duplicator. dcfldd is an enhanced version with hashing."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "Which Windows Event ID is critical for detecting credential dumping tools like Mimikatz accessing LSASS?",
+            "options": [
+                "4624",
+                "4688",
+                "4663 (Object Access)",
+                "4104"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Event ID 4663 with specific access masks can indicate LSASS memory access, though it requires advanced audit policy configuration."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "A forensic image (E01) captures only the visible files on the hard drive, not deleted data.",
+            "correctAnswer": false,
+            "explanation": "False. A forensic image captures every sector, including unallocated space where deleted files reside."
+        }
+    ]
+}

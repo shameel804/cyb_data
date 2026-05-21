@@ -1,0 +1,105 @@
+{
+    "id": "l1",
+    "chapterId": "ch_4",
+    "title": "The Detection Challenge 🔎",
+    "description": "Why finding incidents is hard, and the sources we rely on.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Detection Fundamentals",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Why Detection is Hard 🧐",
+            "content": "# The Needle in the Haystack Problem\n\nYou've prepared your team and tools. Now you wait. But how do you know when the bad thing happens?\n\n**The Reality:**\n- **Dwell Time:** Attackers are inside networks for an average of **weeks or months** before being detected.\n- **Volume:** A medium-sized company can generate **millions** of log events per day.\n- **Noise:** 99.9% of those events are normal user behavior.\n\n**Detection is the art of separating the **signal** (the attack) from the **noise** (normal operations).**"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "The Five Pillars of Detection 🏛️",
+            "content": "### Where Do Alerts Come From?\n\nYou cannot detect what you cannot see. You need visibility across **five domains**:\n\n1.  **Endpoints:** Laptops, Servers, Workstations.\n    - *Source:* EDR, Antivirus Logs, Windows Event Logs.\n    - *Detects:* Malware execution, suspicious scripts, credential dumping.\n\n2.  **Network:** Switches, Routers, Firewalls.\n    - *Source:* NetFlow, Firewall Logs, IDS/IPS Alerts.\n    - *Detects:* Port scanning, data exfiltration, C2 beaconing.\n\n3.  **Identity:** Active Directory, Azure AD, Okta.\n    - *Source:* Login Logs, Audit Logs.\n    - *Detects:* Password spraying, impossible travel, privilege escalation.\n\n4.  **Cloud:** AWS CloudTrail, Azure Activity Logs.\n    - *Source:* API Calls.\n    - *Detects:* Unauthorized resource creation, public bucket exposure.\n\n5.  **Human:** User Reports.\n    - *Source:* Helpdesk Tickets, Phishing Report Button.\n    - *Detects:* Phishing emails, 'My computer is acting funny'."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Detection Sources 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "A user suddenly logs into the corporate VPN from New York, and 15 minutes later the same user logs in from London. This is an 'Impossible Travel' alert. Which pillar of detection does this fall under?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Endpoint",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Network",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Identity",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Cloud",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Impossible travel is detected by analyzing login timestamps and geolocation, which are identity and authentication logs (AD, Okta).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Detection Techniques: Signatures vs. Behavior 🤖",
+            "content": "### Two Ways to Catch a Bad Guy\n\n**1. Signature-Based Detection (IOCs)**\n- **What:** Known-bad indicators. Specific file hash, IP address, domain name.\n- **Analogy:** A 'Wanted' poster with a specific face.\n- **Strength:** Low false positives. Very specific.\n- **Weakness:** **Useless against new attacks.** If the attacker changes one byte of the malware, the hash changes and you miss it.\n\n**2. Behavior-Based Detection (IOAs / TTPs)**\n- **What:** Suspicious patterns of activity.\n- **Analogy:** 'A person wearing a ski mask trying door handles on parked cars.' You don't know *who* they are, but the *behavior* is suspicious.\n- **Strength:** Catches novel attacks and zero-days.\n- **Weakness:** Higher false positives (e.g., IT admin running scripts looks like malware).\n\n**Modern IR relies heavily on Behavior-Based detection.**"
+        },
+        {
+            "id": "s_l1_5",
+            "type": "quiz",
+            "title": "Signature vs Behavior 📌",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "An EDR alert fires because 'PowerShell.exe made an outbound network connection to an IP address with a low reputation score.' This is an example of:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Signature-Based Detection",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Behavior-Based Detection (IOA)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "User Reporting",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Static Analysis",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "It's detecting a suspicious combination of actions (PowerShell + Network + Bad Reputation) rather than a known malicious hash. This is behavioral analysis.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Pro Tip: Detection Stack Maturity 📈",
+            "content": "## The Visibility Maturity Model\n\n**Level 0: Blind.** You have no logs. You rely on users screaming.\n**Level 1: Basic Logging.** You have Windows Event Logs (but not centralized).\n**Level 2: Centralized Logging.** You have a SIEM ingesting firewall and AD logs.\n**Level 3: EDR Deployed.** You see process execution and network connections on endpoints.\n**Level 4: Network Visibility (Zeek/Suricata).** You see full protocol metadata.\n**Level 5: Hunting.** You proactively search for threats that bypassed your alerts.\n\n**Goal:** Reach at least **Level 3** for effective IR."
+        }
+    ]
+}

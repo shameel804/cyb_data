@@ -1,0 +1,111 @@
+{
+    "id": "l7",
+    "chapterId": "ch_4",
+    "title": "The Cyber Kill Chain in Practice ⛓️",
+    "description": "Using the Kill Chain framework to structure your investigation.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Frameworks",
+    "slides": [
+        {
+            "id": "s_l7_1",
+            "type": "text",
+            "title": "A Map for the Investigation 🗺️",
+            "content": "# The Lockheed Martin Cyber Kill Chain®\n\nWe introduced this earlier. Now we apply it to **Analysis**.\n\n**The 7 Phases:**\n1.  Reconnaissance\n2.  Weaponization\n3.  Delivery\n4.  Exploitation\n5.  Installation\n6.  Command & Control (C2)\n7.  Actions on Objectives\n\n**Analyst's Mindset:** *'Where in the Kill Chain did I detect this? And what did I MISS in the earlier phases?'*"
+        },
+        {
+            "id": "s_l7_2",
+            "type": "text",
+            "title": "Mapping Alerts to Kill Chain Phases 🧩",
+            "content": "### Example: Ransomware Attack Timeline\n\n**Phase 1: Reconnaissance**\n- *Detection:* None usually. (Attacker scanning LinkedIn for IT staff names).\n- *Analysis Goal:* Hard to detect.\n\n**Phase 2: Weaponization**\n- *Detection:* None. (Attacker creates malicious Excel doc).\n\n**Phase 3: Delivery**\n- *Detection:* **Phishing Email Alert.** (User reports suspicious email).\n- *Analysis Goal:* **GOLDEN OPPORTUNITY.** If you catch it here, you stop the attack cold.\n\n**Phase 4: Exploitation**\n- *Detection:* EDR Alert: `winword.exe` spawned `powershell.exe`.\n- *Analysis Goal:* Still early! Contain the host now.\n\n**Phase 5: Installation**\n- *Detection:* EDR Alert: Suspicious Scheduled Task created.\n- *Analysis Goal:* Attacker has persistence. They'll be back.\n\n**Phase 6: Command & Control**\n- *Detection:* Firewall Alert: Beaconing to `badguy[.]com`.\n- *Analysis Goal:* Attacker is actively managing the host. **URGENT.**\n\n**Phase 7: Actions on Objectives**\n- *Detection:* EDR Alert: **Ransomware behavior (mass file writes).**\n- *Analysis Goal:* **TOO LATE.** You are in Incident Response mode, not just Detection."
+        },
+        {
+            "id": "s_l7_3",
+            "type": "quiz",
+            "title": "Kill Chain Phase Matching 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l7_1",
+                "type": "multiple_choice",
+                "question": "An EDR alert shows 'PowerShell.exe attempted to modify the registry key HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run'. Which Kill Chain phase does this represent?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Delivery",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Exploitation",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Installation (Persistence)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Command & Control",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Modifying the 'Run' key ensures malware starts on boot. This is the Installation/Persistence phase.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l7_4",
+            "type": "text",
+            "title": "Using the Kill Chain for Analysis Gaps 🕳️",
+            "content": "### The 'Course of Action' Matrix\n\nThe real power of the Kill Chain is identifying **where you are blind**.\n\n**Exercise:** You detected an attack at **Phase 6 (C2)** .\n\n**Question:** Why didn't we detect it at Phase 3 (Delivery)?\n- *Answer:* Our email filter missed the phishing email. (Action: Tune email security rules).\n\n**Question:** Why didn't we detect it at Phase 4 (Exploitation)?\n- *Answer:* We don't have EDR on that specific server. (Action: Deploy EDR agent).\n\n**This process is called 'Defensive Gap Analysis'. It feeds directly back into the Preparation phase.**"
+        },
+        {
+            "id": "s_l7_5",
+            "type": "text",
+            "title": "The Unified Kill Chain (Extension) 🔗",
+            "content": "### Beyond the Original 7 Steps\n\nThe original Kill Chain is good, but attackers often move **laterally** inside the network. The **Unified Kill Chain** model adds **Lateral Movement** and **Privilege Escalation** as explicit steps.\n\n**Updated Sequence:**\n1.  Initial Foothold (Delivery -> Installation)\n2.  **Network Propagation (Lateral Movement)**\n3.  **Privilege Escalation (Get Domain Admin)**\n4.  Actions on Objectives (Ransomware/Exfil)\n\n**Why this matters:** Most IR time is spent detecting **Lateral Movement**. An attacker who just phished one user is a problem. An attacker who used that user to compromise the Domain Controller is a **catastrophe**."
+        },
+        {
+            "id": "s_l7_6",
+            "type": "tip",
+            "title": "Pro Tip: The 80/20 Rule of IR 📊",
+            "content": "## Focus on Lateral Movement\n\n**Statistic:** 80% of the damage in a breach happens **after** the initial compromise, during Lateral Movement and Privilege Escalation.\n\n**Detection Focus:**\n- **Logon Events (Event ID 4624) from unusual sources.**\n- **SMB/RDP connections to high-value targets (Servers).**\n- **Service Creation / Scheduled Tasks on remote computers.**\n\nIf you can detect lateral movement **quickly**, you can contain the incident before it becomes a front-page news story."
+        },
+        {
+            "id": "s_l7_7",
+            "type": "quiz",
+            "title": "Defensive Gap Analysis 🕵️",
+            "content": "",
+            "quizData": {
+                "id": "q_l7_2",
+                "type": "multiple_choice",
+                "question": "You discover an attacker exfiltrated data last night. Using the Kill Chain framework, you determine you had no logs of the initial 'Delivery' method. What should you do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Ignore it since the data is already gone.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Improve logging and detection for 'Delivery' phase (e.g., email gateway, browser logs).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Blame the user.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Format the hard drive.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Gap analysis is about improving defenses to prevent the *next* attack. You fix the blind spot in Delivery detection.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

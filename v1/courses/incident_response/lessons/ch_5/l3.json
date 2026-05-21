@@ -1,0 +1,96 @@
+{
+    "id": "l3",
+    "chapterId": "ch_5",
+    "title": "Long-Term Containment Strategies 🛡️",
+    "description": "Strategic isolation, VLAN steering, and keeping the business running.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Strategic Isolation",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "From Tourniquet to Treatment 🏥",
+            "content": "# Moving to a Sustainable State\n\nYou've stopped the active bleeding with Short-Term actions. Now what?\n\nYou can't leave the CEO's laptop unplugged forever. You need a **Long-Term Containment** strategy that allows the business to function while the investigation continues.\n\n**Key Long-Term Concepts:**\n- **Segmentation / VLAN Steering**\n- **Perimeter Blocking (Egress Filtering)**\n- **Just-in-Time (JIT) Access Removal**\n- **System Replacement (Golden Image)**"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "VLAN Steering & Network Segmentation 🔀",
+            "content": "### The 'Remediation' or 'Quarantine' VLAN\n\n**Scenario:** You have 5 infected workstations. You need to analyze them, but you can't let them touch the production network.\n\n**Solution:** Create a dedicated **Quarantine VLAN**.\n\n**Characteristics of Quarantine VLAN:**\n- **No Internet Access:** (Block all outbound 0.0.0.0/0).\n- **Limited Internal Access:** Only allow access to:\n    - The Forensic Analyst's Jump Box.\n    - The SIEM / Log Collector.\n    - **Nothing else.**\n- **DHCP Isolation:** Provide IP addresses but with a different DNS server that sinkholes known bad domains.\n\n**How to Move a Host to Quarantine VLAN:**\n- **Manual:** Change the switch port VLAN ID.\n- **Dynamic (802.1x):** Use RADIUS to assign the 'Quarantine' VLAN based on the machine's AD group membership.\n\n**Benefit:** Analysts can safely RDP/SSH into the infected machines, run memory dumps, and collect logs without the attacker being able to call home or spread ransomware."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "VLAN Purpose 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What is the main purpose of moving an infected machine to a 'Quarantine VLAN'?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To make the internet faster for the user.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To isolate the threat while allowing investigators safe access to collect evidence.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To permanently disconnect the machine.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To update Windows patches.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Quarantine VLANs balance security (no internet, no lateral movement) with the need for continued investigation and forensics.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Perimeter & Egress Filtering 🔥",
+            "content": "### Blocking the Attacker's Infrastructure Globally\n\nWhile Short-Term containment might block an IP on one firewall, Long-Term containment applies the block **everywhere**.\n\n**Actions:**\n1.  **Update Threat Feeds:** Push the attacker's IPs/domains to **all** firewalls, web proxies, and DNS servers.\n2.  **Block Outbound Protocols:**\n    - **Block SMB (445) outbound:** Prevents ransomware from spreading to file shares over the internet (VPN users).\n    - **Block RDP (3389) outbound:** Prevents attackers from using your network as a pivot to attack others.\n    - **Block TOR Exit Nodes:** Many organizations block all known TOR IPs to prevent malware from using TOR for C2.\n\n**Caution: 'Egress Filtering' can break legitimate software.** Test before implementing globally. Start with **Alert Mode** then switch to **Block Mode**."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "System & Service Replacement 🔄",
+            "content": "### Keeping the Business Running\n\nSometimes you can't wait 3 days for forensics to finish on a critical server.\n\n**Strategy: Build a 'Clean Room' Server**\n\n1.  **Take the infected server offline** (preserve for evidence).\n2.  **Spin up a new server** from a trusted **Golden Image** or Infrastructure-as-Code (Terraform).\n3.  **Restore ONLY the application data** from a **verified clean backup** (pre-compromise).\n4.  **Point the Load Balancer** to the new server.\n\n**Result:** Business is back online in **hours**, while the forensic team has **days** to analyze the infected image offline without pressure.\n\n**Cloud Advantage:** This is extremely fast in AWS/Azure. You can snapshot the infected disk for forensics, then launch a replacement instance from the last known good AMI instantly."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "warning",
+            "title": "The Danger of 'Block Now, Think Later' 🚫",
+            "content": "## Avoid the Self-Inflicted DoS\n\nA common junior analyst mistake is to panic and block an entire subnet or country.\n\n**Bad Example:** *'The attack came from 185.142.53.0/24, let's block the whole /24 range!'*\n- **Consequence:** You accidentally block a legitimate Content Delivery Network (CDN) or a vendor's API, taking down your own website or payment processing.\n\n**Best Practice:**\n- **Block Specific IPs or Domain Names.**\n- If you must block a range, check **WHOIS** and **BGP** info first. Is it a cloud provider (AWS/Azure/Digital Ocean)? If so, blocking the range is risky. Many businesses use those cloud providers legitimately."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "code",
+            "title": "Example: Blocking IP in AWS Security Group ☁️",
+            "content": "You need to block the attacker's IP `203.0.113.55` from accessing **any** of your EC2 instances.\n\n**AWS CLI Command:**\n```bash\naws ec2 authorize-security-group-ingress \\\n    --group-id sg-903004f8 \\\n    --ip-permissions '[{\"IpProtocol\": \"-1\", \"FromPort\": -1, \"ToPort\": -1, \"IpRanges\": [{\"CidrIp\": \"203.0.113.55/32\", \"Description\": \"BLOCKED: Attacker IP - IR-2026-001\"}]}]'\n```\n*Wait, that's allowing.* To block, you need to add a **DENY** rule in the **Network ACL** (NACL) because Security Groups are **allow-only**.\n\n**Better Approach (NACL):**\n```bash\naws ec2 create-network-acl-entry \\\n    --network-acl-id acl-5fb85d36 \\\n    --rule-number 1 \\\n    --protocol -1 \\\n    --rule-action deny \\\n    --egress \\\n    --cidr-block 203.0.113.55/32\n```\n*This shows the complexity of cloud networking. Know your tools before the crisis!*"
+        },
+        {
+            "id": "s_l3_8",
+            "type": "quiz",
+            "title": "Long-Term Containment 📋",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "Replacing an infected server with a clean 'Golden Image' is a valid Long-Term Containment strategy.",
+                "correctAnswer": true,
+                "explanation": "True. This allows business operations to resume quickly while the infected image is preserved for offline forensic analysis.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

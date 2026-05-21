@@ -1,0 +1,84 @@
+{
+    "id": "l1",
+    "chapterId": "ch_5",
+    "title": "The Art of Containment 🎯",
+    "description": "Goals, principles, and the golden rules of stopping an incident.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Containment Fundamentals",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "What is Containment? ⛔",
+            "content": "# Stopping the Bleeding\n\nContainment is the **bridge between Detection and Recovery**. You've found the fire. Now you must stop it from spreading while you figure out how it started.\n\n**NIST Definition:** *Prevent the incident from causing further damage to the organization.*\n\n**Primary Goals of Containment:**\n1.  **Stop Lateral Movement:** Prevent the attacker from hopping to other systems.\n2.  **Stop Data Exfiltration:** Cut off the attacker's ability to steal more data.\n3.  **Stop Command & Control:** Block the attacker's ability to send new commands.\n4.  **Preserve Evidence:** Do not destroy the crime scene while securing it.\n\n**Containment is a trade-off between **Security** (shut it all down) and **Business Continuity** (keep the lights on).**"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "The Two-Stage Approach 🪜",
+            "content": "### Short-Term vs. Long-Term Containment\n\nYou cannot design the perfect long-term fix in the first 5 minutes of a crisis.\n\n**Stage 1: Short-Term Containment (The Tourniquet)**\n- **Goal:** Stop the immediate, active threat.\n- **Timeframe:** Minutes to Hours.\n- **Examples:**\n    - Disconnect network cable.\n    - Disable compromised user account.\n    - Block a malicious IP at the firewall.\n- **Risk:** May disrupt business operations.\n\n**Stage 2: Long-Term Containment (The Splint)**\n- **Goal:** Keep the threat contained while allowing *partial* business operations to resume safely.\n- **Timeframe:** Hours to Days.\n- **Examples:**\n    - Move infected systems to a 'Remediation VLAN'.\n    - Spin up a clean 'Golden Image' server to replace the infected one.\n    - Implement strict egress firewall rules.\n- **Benefit:** Minimizes business downtime."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Containment Goals 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which of the following is a primary goal of the Containment phase?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Identifying the root cause vulnerability.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Preventing the incident from spreading to other systems.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Restoring data from backups.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Writing the Lessons Learned report.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Containment is about stopping the spread and limiting damage. Root cause is Analysis/Eradication. Restoring data is Recovery.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Golden Rules of Containment 📜",
+            "content": "### Rules to Live (and Not Get Sued) By\n\n1.  **Do NOT Power Off (Yet)**\n    - **Why?** RAM contains encryption keys, running processes, and network connections. Power off = Evidence lost forever.\n    - **Correct Action:** Disconnect **Network Cable** first. Keep the machine **On**.\n\n2.  **Document the Exact Time and Action**\n    - **Why?** Legal defensibility. A forensic timeline must account for every change you make.\n    - **Example:** `[14:35:22 UTC] Disabled switch port Gi0/5. Reason: Confirmed ransomware encryption on host HR-WS01.`\n\n3.  **Assume the Attacker is Watching**\n    - **Why?** If you send an email saying 'BLOCK IP 5.6.7.8', the attacker reads that email and switches to IP 5.6.7.9.\n    - **Correct Action:** Use **Out-of-Band Comms** (Signal/WhatsApp) for containment coordination.\n\n4.  **Coordinate with Business Owners**\n    - **Why?** Disconnecting the e-commerce server costs $10,000 per minute. The Incident Commander must approve this, not just the analyst."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "warning",
+            "title": "The 'Pull the Plug' Debate 🔌",
+            "content": "## When IS it okay to pull the power?\n\n**Scenario Exception: Destructive Wiper Malware**\n\nIf you are dealing with **Wiper Malware** (malware that intentionally corrupts or deletes files without encryption), **speed is everything**. \n\n**Indicators of Wiper vs Ransomware:**\n- **Ransomware:** Renames files to `.encrypted`. Leaves a ransom note.\n- **Wiper:** Files just disappear or become corrupted (raw zeros). No note.\n\n**Action:** If you confirm it's a wiper actively destroying the file system, **immediate power off** might save whatever data hasn't been touched yet. **This is a command-level decision.**\n\n> **Rule of Thumb:** If you aren't sure, **Isolate Network > Power Off**."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Containment Rules Check ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "Pulling the network cable is always the best first step because it preserves memory evidence.",
+                "correctAnswer": true,
+                "explanation": "True. Network isolation stops C2 and lateral movement while preserving volatile memory. Power off destroys memory.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

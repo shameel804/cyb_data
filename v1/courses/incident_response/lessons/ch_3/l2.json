@@ -1,0 +1,90 @@
+{
+    "id": "l2",
+    "chapterId": "ch_3",
+    "title": "IR Policies & Governance 📜",
+    "description": "Creating the legal and procedural foundation for response.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Policy",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Why Policies Matter ⚖️",
+            "content": "# The Constitution of Incident Response\n\nA **Policy** is a high-level statement of management's intent and direction. It is **mandatory**.\n\n**Without a Policy:**\n- You have no official authority to monitor user activity.\n- You have no right to disconnect a server.\n- You could be sued for 'hacking' your own network.\n\n**With a Policy:**\n- Your actions are **authorized**.\n- It provides **legal protection** for the company and the individual analyst."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Key Elements of an IR Policy 📄",
+            "content": "### What Must Be Included?\n\n1.  **Statement of Commitment**\n    - *Example:* 'Acme Corp is committed to protecting the confidentiality, integrity, and availability of its information assets...'\n\n2.  **Scope**\n    - Does this apply to **Bring Your Own Device (BYOD)**? Contractors? Cloud environments? *Define it.*\n\n3.  **Definition of 'Incident'**\n    - What triggers the formal response process? (e.g., 'Confirmed malware execution' vs 'Failed login')\n\n4.  **Roles and Responsibilities**\n    - Reference the CSIRT Charter.\n\n5.  **Authority and Reporting**\n    - Explicitly state that the CSIRT has the authority to **monitor network traffic**, **intercept suspicious communications**, and **isolate assets**.\n\n6.  **Compliance References**\n    - Mention relevant laws: GDPR, HIPAA, PCI-DSS, local breach notification laws."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Policy Purpose 📌",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What is the primary purpose of a written Incident Response Policy?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To teach analysts how to use forensic tools.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To provide formal authorization and legal protection for response activities.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To list all firewall rules.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To track the number of incidents per month.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Policies grant authority. Procedures (playbooks) teach how. Metrics track numbers.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Acceptable Use & Monitoring 🕵️",
+            "content": "### The Legal Foundation for Watching Users\n\nTo detect insider threats or compromised accounts, you must **monitor user activity**. But in many jurisdictions, monitoring employee activity without **prior notice** is illegal.\n\n**Therefore, you need an Acceptable Use Policy (AUP) or Employee Handbook Acknowledgement.**\n\n**Must-Have Clauses:**\n- *'The company reserves the right to monitor all network traffic, email communications, and stored files on company-owned devices.'*\n- *'Users have no reasonable expectation of privacy when using company systems.'*\n\n**Critical Step:** Ensure **HR** distributes this policy and collects **signed acknowledgements** from **every employee**.\n\n> ⚠️ **Without a signed AUP, investigating a user's mailbox could expose the company to a lawsuit for invasion of privacy.**"
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Data Retention Policy 🗄️",
+            "content": "### How Long Do We Keep the Evidence?\n\n**Scenario:** You collect a forensic image of a server today. How long must you keep it?\n\n**The Answer Depends on the Data Retention Policy.**\n\n**Conflicting Requirements:**\n- **Security Team:** *'Keep it forever for research!'*\n- **Legal Team:** *'Delete it after 90 days to reduce discovery burden in a lawsuit.'*\n- **Privacy Law (GDPR):** *'Delete personal data when no longer needed for the purpose it was collected.'*\n\n**Best Practice:** Define a **Standard Retention Period** (e.g., **1 year** or **Until Litigation Ends**). Document the date of destruction."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "tip",
+            "title": "Pro Tip: Policy vs. Procedure 🔧",
+            "content": "## The Difference Matters\n\nDon't put step-by-step technical commands in a **Policy**.\n\n- **Policy:** *'All critical vulnerabilities must be patched within 30 days.'* (The Rule)\n- **Procedure (Playbook):** *'Run Windows Update, test on dev server, then deploy to prod via SCCM.'* (The Method)\n\n**Why separate them?**\n- Policies change slowly (requires board approval).\n- Procedures change often (new tools, new threats).\n- You don't want to re-approve the entire Policy just because you switched from Symantec to CrowdStrike."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "AUP Awareness 📚",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "If an employee uses a personal Gmail account on a company laptop, the company can legally read those emails as part of an investigation if the AUP states there is no expectation of privacy.",
+                "correctAnswer": true,
+                "explanation": "True (generally). If the employee is using company hardware/network, and the policy explicitly states monitoring occurs, the company has broad latitude. However, always consult Legal Counsel before accessing personal accounts.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

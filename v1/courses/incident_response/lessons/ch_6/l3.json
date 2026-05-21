@@ -1,0 +1,90 @@
+{
+    "id": "l3",
+    "chapterId": "ch_6",
+    "title": "Patching & Vulnerability Remediation 🔧",
+    "description": "Fixing the root cause so the attacker can't just walk back in.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Eradication",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Fixing the Root Cause 🎯",
+            "content": "# You Deleted the Malware. Now What?\n\nIf you don't fix **how** they got in, you'll be back here next week.\n\n**Common Root Causes and Fixes:**\n\n| Root Cause | Eradication Fix |\n| :--- | :--- |\n| **Phishing Email Bypassed Filter** | Block sender domain; Tune email security rules; Run user awareness training. |\n| **Unpatched Software (Log4j, Exchange)** | **Apply security patch immediately.** |\n| **Weak / Default Password** | Enforce **Multi-Factor Authentication (MFA)** ; Reset all passwords. |\n| **Exposed RDP (Port 3389)** | Place RDP behind **VPN** or **Azure App Proxy**. |\n| **Misconfigured Cloud Bucket (S3)** | Set bucket to **Private**. Enable **Block Public Access**. |\n\n**The goal is to **Close the Attack Vector**.**"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Patch Management in a Crisis 🚑",
+            "content": "### Emergency Patching vs. Normal Change Control\n\n**Normal IT:** 'We test patches for 2 weeks in dev before prod.'\n**Incident Response:** 'The attacker is actively exploiting this vulnerability **right now**. We patch in **hours**.'\n\n**Emergency Patch Process:**\n1.  **Identify the CVE** (Common Vulnerabilities and Exposures) from threat intel.\n2.  **Check Vendor Advisory** for patch availability.\n3.  **Deploy to a Pilot Group** (1-2 non-critical servers) to ensure the patch doesn't break the application.\n4.  **Emergency Change Request:** Approved by CISO or Incident Commander.\n5.  **Mass Deploy** to all affected systems.\n6.  **Verification Scan:** Run a vulnerability scanner (e.g., Nessus, Qualys) to confirm the patch applied.\n\n> ⚠️ **Risk:** Emergency patches can break production. But the **known risk** of the attacker is usually greater than the **unknown risk** of the patch."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Root Cause Remediation 🩹",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "An attacker brute-forced the password 'Summer2024!' on an RDP server exposed to the internet. What is the BEST long-term eradication step?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Change the password to 'Winter2025!'.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Enable Multi-Factor Authentication (MFA) and place RDP behind a VPN.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Block the attacker's IP address.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Run Windows Update.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The root cause is exposed weak authentication. MFA and network segmentation fix the root cause. Blocking one IP is a temporary containment measure.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Credential Reset (The Nuclear Option) 🔑",
+            "content": "### When to Reset All Passwords\n\nIf an attacker compromised **Domain Admin** credentials or accessed the **Active Directory database** (NTDS.dit), you must assume **every password in the environment is compromised**.\n\n**The 'Double Reset' Principle:**\n1.  **Reset the KRBTGT Account Password TWICE.**\n    - **Why?** The KRBTGT account encrypts all Kerberos tickets. Changing it twice invalidates **all existing tickets** in the domain. This kicks out any attacker using stolen tickets (Golden Ticket attack).\n    - **Wait time:** 24 hours between resets (to allow replication).\n\n2.  **Reset ALL Privileged Accounts** (Domain Admins, Enterprise Admins, Service Accounts).\n\n3.  **Force Password Reset for ALL Users** (at next logon).\n\n**Impact:** This is massively disruptive. Users will be locked out. Helpdesk will be swamped. **This is a command-level decision.**\n\n**Script Example (PowerShell for KRBTGT Reset):**\n```powershell\n# Reset KRBTGT password\nReset-ComputerMachinePassword -Server (Get-ADDomainController).HostName -Credential (Get-Credential)\n# Wait 24 hours, then run it AGAIN.\n```"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "warning",
+            "title": "The Backdoor You Can't Patch: Trust 👥",
+            "content": "## What If the Attacker is an Insider?\n\nEradication for a **Malicious Insider** is not a technical patch. It's an **HR and Legal process**.\n\n**Technical Actions (Supporting HR):**\n- **Disable Account** (only after HR gives the order).\n- **Place Legal Hold** on Mailbox.\n- **Preserve Laptop Forensically.**\n\n**The 'Fix':** The root cause is a trust relationship. The eradication is **termination of employment** and potential **legal action**. The security team's job is to provide the evidence."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Pro Tip: Verify the Patch 📋",
+            "content": "## Don't Trust the 'Patch Installed' Message\n\nAttackers can tamper with Windows Update to report 'Success' when it actually failed.\n\n**Verification Steps:**\n1.  **Check File Version:** Manually check the version of the vulnerable DLL (e.g., `log4j-core.jar`).\n2.  **Run a Vulnerability Scanner:** Perform an **authenticated scan** against the patched server.\n3.  **Attempt Exploit (Safely):** Use a **proof-of-concept (PoC)** script in a controlled test environment to confirm the exploit no longer works.\n\n**Document the verification:** `[Date] Verified patch KB5021234 applied successfully. File version `C:\\Windows\\System32\\drivers\\xyz.sys` is now 10.0.20348.1.`"
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Credential Reset Strategy 🔐",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "Resetting the KRBTGT account password once is sufficient to invalidate all existing Kerberos tickets in a domain.",
+                "correctAnswer": false,
+                "explanation": "False. It must be reset **twice** (with replication wait time) to fully invalidate Golden Tickets and existing TGTs.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

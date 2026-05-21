@@ -1,0 +1,111 @@
+{
+    "id": "l4",
+    "chapterId": "ch_5",
+    "title": "Scenario-Based Containment 🎭",
+    "description": "Applying containment to ransomware, data theft, insiders, and cloud.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Applied Tactics",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "One Size Does NOT Fit All 👔",
+            "content": "# Tailoring Containment to the Threat\n\nThe way you contain **Ransomware** is **not** the way you contain **Data Theft**.\n\n**Scenario A: Ransomware**\n- **Goal:** Stop encryption spread. Priority is **Availability**.\n- **Action:** Aggressive network isolation (pull the plug / EDR Isolate).\n\n**Scenario B: Data Exfiltration (Theft)**\n- **Goal:** Stop data leak. Priority is **Confidentiality**.\n- **Action:** **Monitor first**, then block. You need to know WHAT was stolen before you cut the connection. If you block immediately, you lose the ability to see what files are being uploaded.\n\n**Scenario C: Insider Threat**\n- **Goal:** Gather evidence without alerting the suspect. Priority is **Legal Admissibility**.\n- **Action:** **Covert monitoring.** Do NOT block the account. Let them continue while HR and Legal build the case."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Ransomware Playbook (Aggressive) 💣",
+            "content": "### Stopping the Encryptor\n\n**Symptom:** EDR alerts 'Mass File Modifications' on `FILE-SERVER-01`.\n\n**Short-Term Actions (Within 60 seconds):**\n1.  **EDR 'Network Contain'** on `FILE-SERVER-01` (if agent works).\n2.  **If EDR fails/unavailable:** **Physically unplug the network cable** from the server.\n    - *Note: This is a rare case where power-off vs network isolation is debated. For a file server, network isolation prevents further remote encryption. Pulling power corrupts the file system and causes data loss.*\n3.  **Disable the compromised user account** that is performing the encryption.\n4.  **Block SMB (Port 445) Outbound** at the edge firewall to prevent the ransomware from spreading to remote VPN users.\n\n**Long-Term Actions:**\n- Move all servers in the same VLAN to a 'High Alert' monitoring state.\n- Implement a **'Break Glass'** Domain Admin account password change (in case attacker stole DA hash)."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Ransomware Response 🦠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What is the most critical immediate containment action for a server actively being encrypted by ransomware?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Run an antivirus scan.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Isolate it from the network (EDR or unplug cable).",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Restore the latest backup.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Call the FBI.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Stopping the encryption spread is paramount. Network isolation is the fastest way to break the attacker's connection to the encryptor process.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Data Theft Playbook (Surgical) 🔪",
+            "content": "### The Dilemma of Exfiltration\n\n**Symptom:** SIEM alert 'Large Outbound Data Transfer from `HR-DB` to `185.142.53.179`'.\n\n**The Critical Question:** *Do we block the IP now, or do we watch?*\n\n**Option 1: Block Now**\n- **Pros:** Stops the immediate bleeding.\n- **Cons:** You don't know **what** data was already stolen. You have no 'smoking gun' for the board or law enforcement.\n\n**Option 2: Monitor (Silent Containment)**\n- **Action:** Set up a **Span Port** or **Full Packet Capture** on the traffic. Record everything for 15-30 minutes to identify the exact files/database tables being targeted.\n- **Then:** Block the IP.\n- **Pros:** You know exactly what was breached (crucial for legal notification).\n- **Cons:** The attacker steals more data during those 30 minutes.\n\n**Decision:** This is an **Incident Commander** decision, usually made with **Legal Counsel**."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Insider Threat Playbook (Covert) 🕵️",
+            "content": "### Handling a Suspicious Employee\n\n**Symptom:** HR reports Bob gave notice, and he's been accessing the 'Customer Database' folder at 2:00 AM.\n\n**Golden Rule of Insider Threat:** **Do NOT confront the user.** **Do NOT disable the account.** (Unless there is an immediate, severe risk of sabotage).\n\n**Covert Containment Steps:**\n1.  **Enable Stealth Audit Logging:** Turn on **Verbose** logging for Bob's account specifically. Log every file he touches.\n2.  **Quietly Block USB Storage:** Use Group Policy to disable USB mass storage for Bob's machine **only**. This prevents him from walking out with a thumb drive, but he might not notice immediately.\n3.  **Legal Hold:** Place a **Litigation Hold** on his mailbox so he cannot delete emails even if he tries.\n4.  **Wait for HR/Legal:** The actual 'Containment' (escorting Bob out of the building) is an **HR function**. Security's job is to preserve evidence until that moment.\n\n**When to Break the Rule:** If Bob is actively running a wipe script (`cipher /w`), **immediate isolation is required**."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Cloud Incident Containment ☁️",
+            "content": "### IaaS (AWS/Azure/GCP) Specifics\n\nContainment in the cloud is faster but different.\n\n**Scenario:** An EC2 instance is compromised and mining crypto or scanning other cloud accounts.\n\n**Unique Cloud Containment Options:**\n1.  **Modify Security Group:** Change the instance's Security Group to one that allows **NO outbound traffic** (0.0.0.0/0 deny). *Takes effect in seconds.*\n2.  **Revoke IAM Role:** If the instance is using an IAM Role to access S3/DynamoDB, you can **detach the role** or apply a **'Deny All'** IAM Policy. This stops cloud lateral movement instantly.\n3.  **Snapshot and Terminate:** Take a forensic snapshot of the EBS volume. **Terminate the instance.** Spin up a clean instance from the same snapshot (mounted as read-only for forensics).\n\n**Caution:** Do **NOT** just 'Stop' the instance if it's part of an Auto-Scaling Group. The ASG will just terminate it and launch a new (still vulnerable) one. You must suspend the ASG processes first."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "Scenario Matching 🎭",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "In which scenario is 'Silent Monitoring' (delaying active blocking) the MOST appropriate containment strategy?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Active ransomware encrypting a file server.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Suspected data exfiltration to an unknown external IP.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A DDoS attack flooding the website.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "An employee watching YouTube at work.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "For data theft, understanding what was taken is often more valuable legally than stopping the last 1% of the transfer. A brief monitoring period helps establish the scope of the breach.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

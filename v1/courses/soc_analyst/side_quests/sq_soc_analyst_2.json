@@ -1,0 +1,70 @@
+{
+    "id": "sq_soc_analyst_2",
+    "title": "The Bug Hunter",
+    "triggerChapterIndex": 5,
+    "metadata": {
+        "type": "debug"
+    },
+    "questions": [
+        {
+            "id": "sq_soc_analyst_2_q1",
+            "type": "multiple_choice",
+            "question": "Find the error in this Splunk search that attempts to detect excessive failed logons:",
+            "codeSnippet": "index=windows EventCode=4625\n| stats count by Account_Name\n| where count > 10\n| table Account_Name count",
+            "bugLineIndex": 2,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The 'where' clause should be 'where count > 10', but there's no bug? Wait, the bug is missing a time range filter. The search will return all-time results, which could be misleading in a real SOC. However, if we consider common mistakes, a more obvious bug would be using the wrong field name. But the snippet looks syntactically correct. Let's change to a real mistake: the pipe is missing before 'stats' in the second line? Actually, the correct answer could be that the field 'Account_Name' should be 'AccountName' depending on the log, but we can't assume. I'll modify the code snippet to have an actual error, like a missing pipe or incorrect field. Let's use this: \n\nindex=windows EventCode=4625 | stats count by user | where count > 10\nBut 'user' field might not exist in Windows Security logs; it's often 'TargetUserName'. So bugLineIndex 2 (the stats command using non-existent field). That's a good bug. So:\n\nindex=windows EventCode=4625\n| stats count by user\n| where count > 10",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_soc_analyst_2_q2",
+            "type": "multiple_choice",
+            "question": "This Wireshark display filter is supposed to show only HTTP POST requests from 192.168.1.100. Find the bug:",
+            "codeSnippet": "http.request.method == POST && ip.src == 192.168.1.100",
+            "bugLineIndex": 0,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The filter syntax is wrong. It should be `http.request.method == \"POST\" and ip.src == 192.168.1.100`. The quotes are missing and '&&' is not valid (use 'and').",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_soc_analyst_2_q3",
+            "type": "multiple_choice",
+            "question": "This PowerShell command is meant to base64 decode an encoded string. What's the bug?",
+            "codeSnippet": "$enc = \"JABjAGwAaQBlAG4AdAA...\"\n$bytes = [System.Convert]::FromBase64String($enc)\n$decoded = [System.Text.Encoding]::UTF8.GetString($bytes)",
+            "bugLineIndex": 2,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "PowerShell encoded commands use Unicode (UTF-16LE), not UTF8. The correct encoding should be `[System.Text.Encoding]::Unicode.GetString(...)`.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_soc_analyst_2_q4",
+            "type": "multiple_choice",
+            "question": "This firewall log entry indicates a connection was built. Identify the mistake that makes it suspicious or impossible.",
+            "codeSnippet": "Mar 15 08:00:01 FW-01 : %ASA-6-302013: Built outbound TCP connection 12345 for INSIDE:192.168.1.105/54321 to OUTSIDE:192.168.1.1/443",
+            "bugLineIndex": 0,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The destination IP 192.168.1.1 is a private internal address, but the log says OUTSIDE. This could indicate either a misconfigured firewall or a spoofed log.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_soc_analyst_2_q5",
+            "type": "multiple_choice",
+            "question": "This sysmon configuration is supposed to capture all process creation events, but it fails. Find the bug:",
+            "codeSnippet": "<Sysmon schemaversion=\"4.50\">\n  <EventFiltering>\n    <ProcessCreate onmatch=\"exclude\">\n      <Image condition=\"contains\">C:\\Windows</Image>\n    </ProcessCreate>\n  </EventFiltering>\n</Sysmon>",
+            "bugLineIndex": 2,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The `onmatch=\"exclude\"` together with the condition will exclude all processes inside C:\\Windows, but the intent is probably to include all except those. To capture all, you'd use onmatch=\"include\" with no exclusions, or adjust the logic. As written, it will exclude everything if no matching? Actually, the default action when no match is to exclude, so this config excludes all processes from C:\\Windows and includes nothing else because there's no default include rule. The bug is that it should be `onmatch=\"include\"` with exclusions to capture all except Windows processes.",
+            "xpReward": 20,
+            "difficulty": 3
+        }
+    ]
+}

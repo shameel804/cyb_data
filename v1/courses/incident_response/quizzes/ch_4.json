@@ -1,0 +1,234 @@
+{
+    "id": "quiz_ch_4",
+    "chapterId": "ch_4",
+    "title": "Chapter 4: Detection & Analysis Quiz",
+    "description": "Test your knowledge of logs, SIEM, EDR, network monitoring, and scoping.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which of the following is an example of a 'Behavior-Based' detection?",
+            "options": [
+                "Alerting on a known malware hash.",
+                "Alerting when PowerShell makes an outbound network connection.",
+                "Alerting when a user visits a known phishing domain.",
+                "Alerting when a file matches a YARA rule for 'Emotet'."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Behavior-based detection looks at actions (PowerShell + Network), not specific known signatures."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "Windows Event ID 4624 indicates a failed login attempt.",
+            "correctAnswer": false,
+            "explanation": "False. 4624 is a successful logon. 4625 is a failed logon."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "What is the primary advantage of using Sysmon over standard Windows Event Logging?",
+            "options": [
+                "Sysmon is installed by default.",
+                "Sysmon provides detailed process creation, network connection, and file creation events.",
+                "Sysmon is a cloud-based SIEM.",
+                "Sysmon replaces the need for antivirus."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Sysmon (System Monitor) adds critical visibility that standard Windows logs lack, such as network connections tied to process GUIDs."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "In a SIEM, the process of refining rules to reduce noise is called ______.",
+            "options": [
+                "Tuning",
+                "Ignoring",
+                "Deleting",
+                "Bypassing"
+            ],
+            "correctAnswer": "Tuning",
+            "explanation": "Tuning involves adding exceptions or refining logic to improve the signal-to-noise ratio."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "An EDR alert shows the process tree: `winword.exe` -> `cmd.exe` -> `powershell.exe`. What is the most likely scenario?",
+            "options": [
+                "User is updating Microsoft Office.",
+                "Malicious macro or exploit executed code within Word.",
+                "Windows Update is running.",
+                "This is normal behavior for Word's grammar checker."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Office applications spawning shells is a classic indicator of compromise (IOC) for macro malware."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "Zeek (Bro) is primarily a Signature-Based Intrusion Detection System (IDS).",
+            "correctAnswer": false,
+            "explanation": "False. Zeek is a network security monitor that logs protocol metadata. It describes traffic rather than just looking for signatures (though it can run signature scripts)."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Which network traffic pattern is most indicative of Command & Control (C2) beaconing?",
+            "options": [
+                "A large, one-time upload of 5GB of data.",
+                "Regular, small outbound connections every 60 seconds to the same IP.",
+                "A single failed RDP connection.",
+                "A user streaming a video from YouTube."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Beaconing is characterized by periodic check-ins at predictable intervals with low data volume."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "You need to determine if a specific malicious file hash exists on any other computer in the network. Which tool is best suited for this rapid search?",
+            "options": [
+                "Ping",
+                "SIEM (Searching Sysmon/EDR logs)",
+                "Notepad",
+                "Active Directory Users and Computers"
+            ],
+            "correctAnswer": 1,
+            "explanation": "EDR or SIEM with endpoint telemetry can instantly query all endpoints for a file hash."
+        },
+        {
+            "id": "q9",
+            "type": "true_false",
+            "question": "Logs should be kept locally on each workstation so that analysts can retrieve them even if the network is down.",
+            "correctAnswer": false,
+            "explanation": "False. Local logs are vulnerable to deletion by attackers or ransomware. Centralized, immutable storage is required."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "In the Cyber Kill Chain, 'Installation' of a backdoor or scheduled task occurs during which phase?",
+            "options": [
+                "Delivery",
+                "Exploitation",
+                "Installation",
+                "Command & Control"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Installation is the phase where the attacker establishes persistence on the victim host."
+        },
+        {
+            "id": "q11",
+            "type": "fill_blank",
+            "question": "The process of determining how many systems are affected by an incident is called ______.",
+            "options": [
+                "Eradication",
+                "Scoping",
+                "Containment",
+                "Tuning"
+            ],
+            "correctAnswer": "Scoping",
+            "explanation": "Scoping defines the 'blast radius' of an incident."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is a major blind spot for Endpoint Detection & Response (EDR) agents?",
+            "options": [
+                "Detecting PowerShell execution.",
+                "Seeing the contents of encrypted HTTPS traffic.",
+                "Blocking malicious processes.",
+                "Isolating a host from the network."
+            ],
+            "correctAnswer": 1,
+            "explanation": "EDR sees the connection metadata but cannot decrypt the contents of TLS/HTTPS traffic without a man-in-the-middle proxy."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "A DNS query for a domain name that is 150 characters long is normal and can be ignored.",
+            "correctAnswer": false,
+            "explanation": "False. Long, random-looking DNS queries are a strong indicator of DNS Tunneling (data exfiltration or C2)."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Which phase of the incident response lifecycle does 'Triage' belong to?",
+            "options": [
+                "Preparation",
+                "Detection & Analysis",
+                "Containment",
+                "Recovery"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Triage is the initial analysis performed on an alert to determine its validity and severity."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "You suspect an attacker used Mimikatz to dump credentials from memory. Which process is the target of this attack on Windows?",
+            "options": [
+                "explorer.exe",
+                "lsass.exe",
+                "winlogon.exe",
+                "svchost.exe"
+            ],
+            "correctAnswer": 1,
+            "explanation": "LSASS (Local Security Authority Subsystem Service) stores cached credentials in memory. Accessing it from a non-system process is a high-fidelity alert."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "Full Packet Capture (PCAP) is the most storage-efficient method of network monitoring.",
+            "correctAnswer": false,
+            "explanation": "False. PCAP is extremely storage intensive. Flow data (NetFlow) or metadata (Zeek) is much more efficient."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What is the primary purpose of 'Risk-Based Alerting' (RBA) in a SIEM?",
+            "options": [
+                "To eliminate all false positives completely.",
+                "To correlate multiple low-severity events into a high-fidelity alert.",
+                "To replace the need for an analyst.",
+                "To slow down the SIEM performance."
+            ],
+            "correctAnswer": 1,
+            "explanation": "RBA scores events over time and only alerts when a threshold is reached, reducing alert fatigue."
+        },
+        {
+            "id": "q18",
+            "type": "fill_blank",
+            "question": "The 'Golden Opportunity' to stop an attack in the Cyber Kill Chain is during the ______ phase.",
+            "options": [
+                "Delivery",
+                "Actions on Objectives",
+                "Command & Control",
+                "Installation"
+            ],
+            "correctAnswer": "Delivery",
+            "explanation": "If you block the phishing email (Delivery), the exploit never occurs."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "Which of the following is an example of 'Lateral Movement'?",
+            "options": [
+                "A user logging into their own workstation.",
+                "An attacker using `psexec` from Workstation A to run a command on Server B.",
+                "A user downloading a file from the internet.",
+                "A firewall blocking a connection."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Lateral movement is moving from one compromised host to another within the network."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "Once a SIEM rule is created, it should never be changed or disabled.",
+            "correctAnswer": false,
+            "explanation": "False. Rules must be constantly tuned and updated based on new threats and changes in the environment."
+        }
+    ]
+}

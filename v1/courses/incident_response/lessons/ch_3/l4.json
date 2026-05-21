@@ -1,0 +1,90 @@
+{
+    "id": "l4",
+    "chapterId": "ch_3",
+    "title": "Essential IR Tools 🧰",
+    "description": "The software and hardware you need in your jump bag.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Tools",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Responder's Toolbox 🧰",
+            "content": "# Building the Digital Jump Bag\n\nIn Chapter 1, we mentioned the Jump Bag. Now we unpack exactly what goes inside.\n\n**Two Categories of Tools:**\n1.  **Preventive/Continuous Tools:** Running 24/7 in the environment (EDR, SIEM).\n2.  **Reactive/Forensic Tools:** Deployed *during* an incident from the Jump Bag.\n\n**Golden Rule of Tools:** **Trust but Verify.** Know how to use the tool **before** the incident. A complex tool in the hands of a novice is dangerous."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Preventive Arsenal (Always On) 🛡️",
+            "content": "### 1. Endpoint Detection & Response (EDR)\n- **Examples:** CrowdStrike Falcon, Microsoft Defender for Endpoint, SentinelOne.\n- **Function:** Advanced antivirus. Records everything processes do. Allows you to **isolate** a host from the network remotely.\n- **IR Value:** **Visibility.** It tells you what process ran, when, and from where.\n\n### 2. Security Information & Event Management (SIEM)\n- **Examples:** Splunk, Microsoft Sentinel, Elastic Security.\n- **Function:** Central log aggregator. Ingests logs from Firewalls, Servers, Cloud.\n- **IR Value:** **Correlation.** Finding the needle in the haystack by linking 'Failed Login' (Windows Log) with 'Blocked Connection' (Firewall Log).\n\n### 3. Network Detection & Response (NDR)\n- **Examples:** Corelight, Darktrace, Zeek (Open Source).\n- **Function:** Analyzes network traffic metadata.\n- **IR Value:** **Catching what EDR misses.** If a device doesn't have an agent (IoT, Printer, Legacy Server), NDR sees its traffic."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Tool Matching 🛠️",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which tool is primarily responsible for aggregating logs from hundreds of different sources into one searchable platform?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "EDR (Endpoint Detection & Response)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "SIEM (Security Information & Event Management)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Firewall",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Vulnerability Scanner",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "SIEM is the central nervous system for logs. EDR focuses on endpoint activity specifically.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "The Physical Jump Bag Contents 🎒",
+            "content": "### Reactive Tools (Offline/Manual)\n\n**Hardware:**\n- **Write Blocker:** **Mandatory** for forensics. Prevents your laptop from writing to the suspect drive.\n- **USB 3.0 Drives (64GB+):** Multiple, formatted as exFAT.\n- **External SSD (1TB+):** For storing memory dumps and disk images.\n- **Cables:** SATA to USB adapter, Ethernet cables (Cat6), Console Cable (Serial to USB).\n- **Rugged Laptop:** Dedicated for investigations. **Never browse the web with it.**\n\n**Software (Pre-loaded on the USB drives):**\n- **Memory Capture:** `DumpIt`, `WinPMEM`, `AVML` (Linux).\n- **Triage Scripts:** `KAPE` (Kroll Artifact Parser and Extractor) - *The gold standard for rapid triage.*\n- **Live Response Tools:** Sysinternals Suite (`Autoruns`, `Process Explorer`, `TCPView`).\n- **Hex Editor:** `HxD`.\n- **Encrypted Password Manager:** Keep the local admin passwords offline."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Example: Capturing Memory with DumpIt 🧠",
+            "content": "One of the first things you do when you physically touch a 'live' compromised machine.\n\n**Command Line (Run as Admin):**\n```cmd\nDumpIt.exe\n```\n\n**What happens:**\n- It asks: 'Are you sure?' (Type `y`).\n- It creates a file like `HOSTNAME-20260420-143022.raw`.\n- **Size:** Equal to the amount of RAM (e.g., 16GB file).\n\n**Why this is critical:**\n- Contains **encryption keys** for ransomware.\n- Contains **network connections** that disappear after reboot.\n- Contains **plaintext passwords** in memory."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "warning",
+            "title": "Tool Sprawl Alert 🚨",
+            "content": "## Don't Overcomplicate the Bag\n\n**Mistake:** Filling the jump bag with 50 different niche tools that no one knows how to use.\n\n**Best Practice:**\n- **Standardize on 5-10 core tools.**\n- **Train the team** on exactly those tools.\n- **Update the tools quarterly.** (Old versions of `Autoruns` might miss new persistence tricks).\n\n**Simplicity = Speed. Speed = Containment.**"
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "Jump Bag Essentials 💼",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "You should use your daily work laptop to perform forensic analysis on a suspect hard drive to save time.",
+                "correctAnswer": false,
+                "explanation": "False. Your daily laptop may be compromised or have antivirus that alters evidence. Use a dedicated, clean forensic workstation or bootable USB environment.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

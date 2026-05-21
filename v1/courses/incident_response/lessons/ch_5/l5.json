@@ -1,0 +1,90 @@
+{
+    "id": "l5",
+    "chapterId": "ch_5",
+    "title": "Decision Making & Communication 📢",
+    "description": "Balancing business impact against security risk during a crisis.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Leadership",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Weight of the Button 🔴",
+            "content": "# Making the Containment Call\n\nContainment decisions are often **irreversible** and **expensive**.\n\n**Example:** Shutting down the e-commerce site costs **$500,000 per hour** in lost sales. \n\n**The Analyst's Job:** Present the **Technical Facts**.\n**The Incident Commander's Job:** Make the **Business Decision**.\n\n**Analyst:** *'We have confirmed ransomware on 5 workstations. We recommend isolating the entire sales VLAN to prevent spread to the credit card processing server.'*\n**Commander:** *'Approved. Execute Plan Bravo.'*\n\n**Never just 'do it'. Always get the authorization log.**"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Risk-Based Decision Matrix 📊",
+            "content": "### How to Recommend a Course of Action\n\nUse a simple **Risk Matrix** to frame your recommendation.\n\n| Action | Security Benefit | Business Impact | **Recommendation** |\n| :--- | :--- | :--- | :--- |\n| **Do Nothing (Monitor)** | Low | None | **Reject** (Risk of spread too high) |\n| **Block Specific IP** | Medium | Low (might block vendor) | **Do It** (Quick win) |\n| **Isolate Single PC** | High | Low (1 user down) | **Do It Immediately** |\n| **Isolate Entire VLAN** | Very High | High (50 users down) | **Escalate to Commander** |\n| **Shut Down Firewall** | Very High | Extreme (Internet down) | **Last Resort / Commander Only** |\n\n**Golden Phrase:** *'The risk of inaction is that the ransomware will spread to the backup server. The impact of action is that 50 users will lose access to email for 2 hours.'*"
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Decision Authority 👑",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Who has the final authority to shut down a critical revenue-generating server to contain an incident?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The Security Analyst who found the malware.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The Incident Commander.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The IT Helpdesk Manager.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Any member of the CSIRT.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The Incident Commander is accountable for balancing security and business operations. They make the call for high-impact actions.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Communicating Containment Internally 💬",
+            "content": "### What to Tell the Users (and What NOT to Tell)\n\n**Scenario:** You just isolated the Accounting VLAN. Users are calling the helpdesk: *'My internet is broken! I have a deadline!'*\n\n**Bad Communication:** *'We cut you off because we think you have a virus from that phishing email Bob clicked.'*\n- **Result:** Panic. Blame. Leaks to the press.\n\n**Good Communication (Pre-Approved by Comms Lead):**\n- *'We are currently investigating a technical issue affecting the Accounting network segment. We are working to restore service as quickly as possible. Please use the guest Wi-Fi or a mobile hotspot for urgent internet access in the meantime. We will update you in 30 minutes.'*\n\n**Key Elements of the Message:**\n- **Acknowledge the impact.**\n- **Provide a workaround** (if possible).\n- **Give a timeline for the next update** (reduces anxiety).\n- **No speculation on cause.**"
+        },
+        {
+            "id": "s_l5_5",
+            "type": "warning",
+            "title": "The 'Just One More Thing' Trap 🪤",
+            "content": "## Scope Creep During Containment\n\n**Scenario:** While isolating the infected PC, you notice the firewall logs show traffic to the same bad IP from **another** computer.\n\n**Temptation:** *'I'll just quickly isolate that one too!'*\n\n**Danger:** You are now acting without authorization. You might be isolating a **test server** that the development team is using to *investigate* the same threat. Or you might be over-scoping and causing a larger outage.\n\n**Correct Action:**\n1.  **Complete the authorized action** (Isolate PC1).\n2.  **Report the new finding** to the Incident Commander.\n3.  **Get authorization** for PC2.\n\n**Discipline prevents chaos.**"
+        },
+        {
+            "id": "s_l5_6",
+            "type": "tip",
+            "title": "Pro Tip: The 'Break Glass' Procedure 🚨",
+            "content": "## When Speed Trumps Authorization\n\nThere is **one exception** to the 'always get approval' rule.\n\n**The 'Break Glass' Scenario:**\n- There is an **immediate, credible threat to human life or safety**.\n- There is a **catastrophic, irreversible financial loss** occurring *right now* that you can stop.\n\n**Example:** You see a command executing that will **wipe the entire production database** in 10 seconds. \n\n**In this case:** **ACT NOW, APOLOGIZE LATER.**\n\n**But you MUST document it:**\n`[14:32:00 UTC] BREAK GLASS: Observed destructive wiper command executing. Unplugged power from DB-SERVER-01 without prior authorization to prevent data loss. Informed IC immediately after.`"
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Communication Check 📞",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "When users ask why the network is down during a containment operation, you should give them all the technical details about the malware to be transparent.",
+                "correctAnswer": false,
+                "explanation": "False. Use pre-approved, non-technical language to avoid causing panic or leaking sensitive information to potential insiders or the press.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

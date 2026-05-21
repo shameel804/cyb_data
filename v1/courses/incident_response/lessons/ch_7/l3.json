@@ -1,0 +1,117 @@
+{
+    "id": "l3",
+    "chapterId": "ch_7",
+    "title": "Incident Reporting & Documentation 📄",
+    "description": "Crafting executive summaries, technical reports, and legal documentation.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Reporting",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Final Deliverables 📦",
+            "content": "# Three Audiences, Three Reports\n\nOne size does **not** fit all when it comes to incident reporting.\n\n**Report 1: Executive Summary**\n- **Audience:** C-Suite, Board of Directors, Insurance Provider.\n- **Focus:** Business Impact, Financial Risk, Reputation.\n- **Length:** 1-2 pages.\n\n**Report 2: Technical Incident Report**\n- **Audience:** Internal Security Team, Future Investigators.\n- **Focus:** IOCs, Timeline, Forensic Findings, MITRE ATT&CK Mapping.\n- **Length:** As long as needed (10-50 pages).\n\n**Report 3: Legal / Compliance Notification**\n- **Audience:** Regulators, Law Enforcement, Affected Customers.\n- **Focus:** Compliance with breach notification laws (GDPR, CCPA, HIPAA).\n- **Length:** Specific format required by law."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Writing the Executive Summary 📈",
+            "content": "### Speak the Language of the Boardroom\n\n**Executives care about three things:**\n1.  **Money:** How much did this cost / will it cost?\n2.  **Risk:** Are we going to get sued? Will customers leave?\n3.  **Resolution:** Is it over? What are we doing to prevent it from happening again?\n\n**Executive Summary Structure:**\n- **What Happened?** (One sentence: *'On April 20, we experienced a ransomware incident affecting the Accounting file server.'*)\n- **Impact to Business:** (*'Operations were disrupted for 4 hours. No evidence of customer data theft was found. Estimated remediation cost: $50,000.'*)\n- **Current Status:** (*'Systems are fully restored. Enhanced monitoring is in place.'*)\n- **Next Steps:** (*'We are implementing MFA on all admin accounts by May 30.'*)\n\n**Avoid Technical Jargon:**\n- ❌ *'The threat actor utilized Cobalt Strike C2 beaconing over HTTPS with a custom malleable profile.'*\n- ✅ *'The attacker used advanced tools to control the infected computer remotely.'*"
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Executive Summary Content 📝",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which of the following details is MOST appropriate for an Executive Summary?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The exact Base64-encoded PowerShell command used by the attacker.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The IP address of the Command & Control server.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The estimated financial impact of the service outage.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A full list of all 50 compromised file hashes.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Executives need business context (money, risk, reputation). Technical details belong in the Technical Report.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Writing the Technical Report 🔬",
+            "content": "### The 'Forensic Bible' of the Incident\n\nThis document is the **single source of truth** for what happened technically. If the case goes to court in 3 years, this report is what the analyst will read to refresh their memory.\n\n**Required Sections:**\n\n1.  **Executive Summary (Technical Version)**\n2.  **Timeline of Events** (UTC Timezone mandatory)\n    - `[2026-04-20 08:15:22 UTC] Phishing email delivered to user inbox.`\n    - `[2026-04-20 08:32:10 UTC] User clicked link, EDR alert triggered.`\n3.  **Indicators of Compromise (IOCs)**\n    - File Hashes (MD5, SHA256)\n    - IP Addresses / Domains\n    - Registry Keys\n4.  **MITRE ATT&CK Mapping**\n    - T1566.001 (Phishing: Spearphishing Attachment)\n    - T1059.001 (PowerShell)\n    - T1486 (Data Encrypted for Impact)\n5.  **Forensic Artifact Summary**\n    - Evidence collected (Memory dumps, disk images, log files).\n6.  **Remediation Steps Taken**\n7.  **Appendix:** Raw Log Snippets (Redacted as needed)."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Example: Timeline Entry Format 📅",
+            "content": "Precision is non-negotiable. Use a consistent format.\n\n**Bad Timeline Entry:**\n```\nMorning: Bob got an email and clicked it.\n```\n\n**Good Timeline Entry:**\n```text\n[2026-04-20 08:15:22 UTC] Email from 'spoofed@paypa1.com' delivered to bob.smith@company.com (Message-ID: <ABC123@mail.paypa1.com>).\n[2026-04-20 08:32:10 UTC] User bob.smith accessed URL 'hxxps://malicious-login[.]ru/verify' from browser 'Chrome.exe' (PID 4567).\n[2026-04-20 08:32:45 UTC] EDR Alert 'Suspicious Download' triggered on host 'BOB-LAPTOP' (Process: powershell.exe, Parent: chrome.exe).\n```\n\n**Why is this better?** It includes exact timestamps, usernames, hostnames, and process IDs. This allows anyone to independently verify the findings."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Legal & Compliance Reporting ⚖️",
+            "content": "### Breach Notification Laws\n\nDepending on your jurisdiction and the type of data involved, you may have a **legal obligation** to report the incident.\n\n**Key Regulations:**\n- **GDPR (EU):** Report to supervisory authority **within 72 hours** of becoming aware of a personal data breach.\n- **HIPAA (US Healthcare):** Report breaches affecting 500+ individuals to HHS and media within 60 days.\n- **PCI-DSS (Payment Cards):** Report to acquiring bank and card brands within 24 hours.\n- **SEC Cyber Rules (US Public Companies):** Disclose material cybersecurity incidents via Form 8-K within **4 business days**.\n\n**Critical Step:** **Involve Legal Counsel EARLY.** Do **not** start drafting a regulatory notification without Legal. What you say in that document can be used against the company in class-action lawsuits."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "warning",
+            "title": "The Danger of Over-Documentation 📑",
+            "content": "## Discovery Risk in Lawsuits\n\n**Scenario:** You write a brutally honest internal memo: *'Our security is terrible. We knew this vulnerability existed for 6 months and did nothing. We are lucky no one noticed.'*\n\n**Reality:** If the company is sued, the plaintiff's lawyers will demand **all documents related to the incident**. That memo **will** be discovered and shown to a jury.\n\n**Best Practice:**\n- **Stick to the facts.** Avoid opinions, speculation, and self-incriminating language.\n- **Use Attorney-Client Privilege.** If legal action is anticipated, have Legal Counsel commission the investigation. The resulting report may be protected by **Work Product Doctrine**.\n- **Label documents carefully:** *'Privileged & Confidential - Attorney Work Product'* (Consult Legal on proper labeling)."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "quiz",
+            "title": "Legal Reporting Deadlines ⏱️",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "Under GDPR, within how many hours must a data protection authority be notified of a personal data breach?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "24 Hours",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "72 Hours",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "7 Days",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "30 Days",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "GDPR Article 33 requires notification to the supervisory authority within 72 hours of becoming aware of the breach.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

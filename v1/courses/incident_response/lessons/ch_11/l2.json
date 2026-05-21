@@ -1,0 +1,117 @@
+{
+    "id": "l2",
+    "chapterId": "ch_11",
+    "title": "Static Analysis Fundamentals 📄",
+    "description": "Examining malware without execution: hashes, strings, PE headers, and imports.",
+    "xpReward": 40,
+    "estimatedMinutes": 12,
+    "section": "Static Analysis",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Step 1: File Identification 🏷️",
+            "content": "# What Am I Looking At?\n\nBefore any analysis, determine the **file type**.\n\n**Don't trust the extension!** `Invoice.pdf.exe` might be an executable, but `evil.dll` could be a text file.\n\n**Tools for Identification:**\n- **Linux `file` command:**\n  ```bash\n  file suspicious.exe\n  # Output: PE32 executable (GUI) Intel 80386, for MS Windows\n  ```\n- **Detect-It-Easy (DIE):** GUI tool that identifies packers, compilers, and linkers.\n- **TrID:** Identifies file types based on binary signatures.\n\n**Why This Matters:**\n- Identifies the target OS (Windows PE, Linux ELF, MacOS Mach-O).\n- Reveals if it's a **.NET** executable (easier to decompile) or **native** code.\n- Flags known **packers**."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Step 2: Cryptographic Hashes #️⃣",
+            "content": "### The Unique Fingerprint\n\nGenerate **MD5**, **SHA1**, and **SHA256** hashes of the file.\n\n**Why?**\n- **IOC Creation:** Share the hash with the community.\n- **Duplicate Detection:** Has this sample been seen before? (Check VirusTotal).\n- **Integrity:** Verify the file hasn't changed during transfer.\n\n**Command (Linux):**\n```bash\nmd5sum evil.exe\nsha256sum evil.exe\n```\n\n**Command (PowerShell):**\n```powershell\nGet-FileHash -Path evil.exe -Algorithm SHA256\n```\n\n**Remember:** Do **NOT** upload sensitive files to public VirusTotal! Search for the hash instead."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "File Identification 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which Linux command is most appropriate for determining the true type of a file regardless of its extension?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "ls -la",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "cat",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "file",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "cp",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The `file` command examines magic bytes and structure to determine file type.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Step 3: Strings Analysis 🔤",
+            "content": "### Reading the Malware's Diary\n\n**Strings** are sequences of printable characters embedded in the binary.\n\n**Why Strings are Gold:**\n- **C2 Domains/IPs:** `evil-c2.xyz`, `http://185.142.53.179/payload`\n- **File Paths:** `C:\\Windows\\Temp\\svchost.exe`\n- **Registry Keys:** `Software\\Microsoft\\Windows\\CurrentVersion\\Run`\n- **Mutex Names:** `Global\\EvilBotMutex123`\n- **Function Names / Error Messages:** `InternetConnectA`, `RegSetValueEx`, `Connection Failed!`\n\n**Tools:**\n- **Linux:** `strings evil.exe`\n- **Windows:** Sysinternals `strings.exe` or `Strings` from the Sysinternals suite.\n- **FLOSS (FireEye Labs Obfuscated String Solver):** **Essential!** Automatically extracts **obfuscated** strings (stack strings, XOR-encoded strings) that normal `strings` misses.\n\n**Command:**\n```bash\nstrings -n 6 evil.exe | sort -u > strings.txt\n```\n*(Extract strings of length 6 or more, sort unique)*"
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Example: Finding IOCs in Strings 📋",
+            "content": "You run `strings` on a suspicious file.\n\n**Snippet of output:**\n```text\nhttp://update-server.ddns.net/config.dat\nSoftware\\Microsoft\\Windows\\CurrentVersion\\Run\nBackdoorMutex\ncmd.exe /c ping 8.8.8.8\n```\n\n**Analysis:**\n- `http://update-server.ddns.net/config.dat`: **C2 Domain.** Add to blocklist.\n- `Software\\Microsoft\\Windows\\CurrentVersion\\Run`: **Persistence mechanism.**\n- `BackdoorMutex`: **Unique identifier.** Search EDR for this mutex name.\n- `cmd.exe /c ping 8.8.8.8`: **Sandbox evasion?** Check if internet is available before running.\n\n**Action:** You now have **three IOCs** (domain, registry key, mutex) from a 30-second static analysis."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Step 4: PE File Analysis (Windows Executables) 🪟",
+            "content": "### Dissecting the Portable Executable Format\n\nWindows `.exe` and `.dll` files follow the **PE (Portable Executable)** format.\n\n**Key Components to Analyze:**\n1.  **Timestamp:** When was the file compiled? (Can be faked, but useful).\n2.  **Sections:** `.text` (code), `.data` (data), `.rsrc` (resources), `.reloc`.\n    - **High Entropy sections** indicate packing/encryption.\n    - **Section names** like `.UPX0` indicate a specific packer.\n3.  **Imports:** What Windows API functions does the malware call?\n    - `CreateFile`, `WriteFile` -> File activity.\n    - `RegSetValueEx` -> Registry modification.\n    - `InternetOpenUrl`, `HttpSendRequest` -> Network communication.\n    - `CreateProcess` -> Spawning new processes.\n    - `VirtualAlloc`, `WriteProcessMemory` -> **Process Injection**.\n4.  **Exports:** What functions does the malware expose to other programs? (Usually relevant for DLLs).\n5.  **Resources:** Embedded data inside the executable (e.g., another executable, a malicious script, a configuration file).\n\n**Essential Tool: PEStudio**\n- Free tool that color-codes suspicious indicators (red = bad, yellow = suspicious).\n- Shows VirusTotal score (if enabled).\n- Displays imports, sections, resources, and strings in a clean GUI."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Analyzing Imports (The API Clues) 📚",
+            "content": "### What Functions Tell You About Behavior\n\n| Imported DLL | Suspicious Functions | Implied Capability |\n| :--- | :--- | :--- |\n| **KERNEL32.dll** | `CreateProcess`, `VirtualAlloc`, `WriteProcessMemory`, `CreateRemoteThread` | Process Injection / Execution |\n| **ADVAPI32.dll** | `RegCreateKeyEx`, `RegSetValueEx`, `CreateService` | Persistence (Registry, Service) |\n| **WININET.dll** / **WINHTTP.dll** | `InternetOpenUrl`, `HttpSendRequest`, `InternetConnect` | Command & Control (HTTP/HTTPS) |\n| **WS2_32.dll** | `socket`, `connect`, `send`, `recv` | Raw Socket C2 |\n| **CRYPT32.dll** | `CryptEncrypt`, `CryptDecrypt` | Encryption (Ransomware / Data Theft) |\n\n**Example:** You see `VirtualAllocEx`, `WriteProcessMemory`, `CreateRemoteThread`. **This is 100% process injection.** The malware will inject code into another process.\n\n**Note:** Malware can **dynamically resolve** functions (calling `GetProcAddress`), so the Import Table may be sparse. This is a red flag itself."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "quiz",
+            "title": "PE Analysis Knowledge 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "You see the functions `RegCreateKeyEx` and `RegSetValueEx` in the import table of a suspicious executable. What is the likely capability?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Network Communication",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Persistence via Registry",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "File Encryption",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Screen Capture",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "These API calls are used to create and modify Windows Registry keys, a common persistence mechanism.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

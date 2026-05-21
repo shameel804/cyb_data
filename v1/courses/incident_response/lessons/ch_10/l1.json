@@ -1,0 +1,90 @@
+{
+    "id": "l1",
+    "chapterId": "ch_10",
+    "title": "Why Logs Are Your Best Friend 📋",
+    "description": "The foundational role of logs in detection, investigation, and legal defense.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Logging Fundamentals",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Logs: The Truth Serum 💉",
+            "content": "# Why Do We Obsess Over Logs?\n\nIn digital forensics and incident response, **logs are the objective record of what happened.**\n\nEnd users lie (unintentionally). *'I didn't click anything!'*\nAttackers lie (intentionally). *'I am a legitimate admin.'*\nMemory can be wiped. Hard drives can be encrypted.\n\n**Logs, if properly configured and protected, cannot lie.**\n\n**Three Critical Functions of Logs in IR:**\n1.  **Detection:** Finding the needle in the haystack (SIEM alerts).\n2.  **Investigation:** Answering *Who, What, When, Where, and How?*\n3.  **Legal Evidence:** Proving in court that the attacker did what you claim they did.\n\n**The Attacker's First Goal After Gaining Admin:** **Clear the logs.** Your goal is to **ship logs off-system before they can.**"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "Types of Logs in an Enterprise 🌐",
+            "content": "### The Full Spectrum of Visibility\n\nTo see the whole picture, you need logs from multiple layers:\n\n| Layer | Log Source | Key Data |\n| :--- | :--- | :--- |\n| **Endpoint** | Windows Event Logs, Sysmon, EDR | Process creation, logins, file access, registry changes |\n| **Network** | Firewall, NetFlow, Proxy, DNS | Connections, bandwidth, URLs visited, domains resolved |\n| **Identity** | Active Directory, Azure AD, Okta | User logins, group changes, privilege escalation |\n| **Application** | Web Server (Apache/Nginx), Database | HTTP requests, SQL queries, application errors |\n| **Cloud** | AWS CloudTrail, Azure Activity Logs | API calls, resource creation/deletion, IAM changes |\n\n**The Goal of Log Analysis:** **Correlate** events across these layers. A single failed login is noise. A failed login (Windows) followed by a successful login (AD) from a suspicious IP (Firewall) followed by a process creation (Sysmon) is an **incident**."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Log Sources 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which log source would tell you that a user successfully changed their password?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Firewall Logs",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Windows Security Event Log",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Web Server Access Log",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "NetFlow Data",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Windows Security logs (Event ID 4723/4724) track password changes and account management.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Logging Paradox ⚖️",
+            "content": "### Log Everything vs. Log Nothing\n\n**Log Too Little:** *'We don't have logs for that server.'*\n- **Consequence:** You cannot prove what happened. The incident is a mystery.\n\n**Log Too Much:** *'We have 50 TB of logs per day!'*\n- **Consequence:** Licensing costs explode. SIEM performance dies. Analysts drown in noise.\n\n**The 'Sweet Spot' Strategy:**\n1.  **Must-Have (Always On):**\n    - Authentication (Success/Failure)\n    - Process Creation (with command line)\n    - Network Connections (Firewall allow/deny)\n    - Account Management\n    - PowerShell Script Block Logging\n\n2.  **Nice-to-Have (Targeted):**\n    - File Access Auditing (only on sensitive shares)\n    - Full Packet Capture (only during active incidents or on critical egress points)\n\n**Rule of Thumb:** **Log the 'Who, What, When, Where' for every significant action.**"
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Log Centralization & Protection 🛡️",
+            "content": "### Don't Leave Logs on the Endpoint\n\n**The 'Local Log' Trap:**\n- Windows Event Logs are stored in `C:\\Windows\\System32\\winevt\\Logs\\`.\n- If an attacker gets **Local Admin**, they can run `wevtutil cl Security` to **clear the Security log**. Poof. Evidence gone.\n\n**The Solution: Centralized Logging**\n1.  **Install an Agent:** Winlogbeat, NXLog, or Splunk Universal Forwarder.\n2.  **Ship Immediately:** Send logs in **real-time** to a central log aggregator (SIEM).\n3.  **Secure the Aggregator:** Restrict access to the SIEM. Enable **immutable storage** (WORM) so even SIEM admins cannot delete logs.\n\n**Linux Equivalent:** Use `rsyslog` or `syslog-ng` to forward `/var/log/auth.log` and `/var/log/syslog` to a central server.\n\n> ⚠️ **A log that only exists on the compromised machine is a log that doesn't exist.**"
+        },
+        {
+            "id": "s_l1_6",
+            "type": "warning",
+            "title": "Time Synchronization is NON-NEGOTIABLE ⏰",
+            "content": "## The 'Timeline Drift' Nightmare\n\n**Scenario:** Server A thinks it's 14:05:00. Workstation B thinks it's 14:12:30. The firewall thinks it's 14:03:15.\n\nYou are trying to correlate an attack that lasted 30 seconds.\n**Result:** You can't. The timeline is gibberish.\n\n**The Fix: NTP (Network Time Protocol)**\n- **All systems MUST sync to the same time source.**\n- **Use UTC for all logs.** (This eliminates time zone confusion when you have offices in NY, London, and Tokyo).\n- **Check Time Skew during IR:** Is the clock on the compromised server 5 minutes fast? That changes the entire timeline of the attack.\n\n**Command to Check NTP Status (Windows):**\n```cmd\nw32tm /query /status\n```\n\n**Command to Check Time Zone (Windows):**\n```cmd\ntzutil /g\n```"
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "Logging Best Practices 📌",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "Storing Windows Event Logs locally on the endpoint is sufficient for incident response.",
+                "correctAnswer": false,
+                "explanation": "False. Local logs can be deleted by attackers. Centralized, immutable storage is required for reliable IR.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

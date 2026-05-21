@@ -1,0 +1,90 @@
+{
+    "id": "l6",
+    "chapterId": "ch_4",
+    "title": "Triage & Scoping 🧩",
+    "description": "Determining the blast radius: who, what, when, and how many.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Analysis",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "From Alert to Incident 🔬",
+            "content": "# Triage: The First 10 Minutes\n\nYou get an alert. Before you declare an 'Incident' and wake up the Commander, you must **Triage**.\n\n**The 5 Key Questions of Triage:**\n1.  **Is this a False Positive?** (Check the raw log: Is it a known scanner IP?)\n2.  **Is this Malicious?** (Check VirusTotal for hash/domain reputation.)\n3.  **Is this Targeted?** (Did the user just visit a bad ad, or is this a human attacker on the keyboard?)\n4.  **What is the Scope?** (How many systems?)\n5.  **What is the Impact?** (Was it just a 'beacon' or did they run Mimikatz and steal passwords?)\n\n**Triage is a balancing act:** **Fast enough** to contain damage, **thorough enough** not to miss the scope."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "The 'Known Bad' Triage 🔍",
+            "content": "### Step 1: Check Reputation\n\nUse **Threat Intelligence** platforms to quickly check indicators.\n\n- **VirusTotal:** Check IP, Domain, File Hash. *Caution: Do NOT upload sensitive documents to public VT!*\n- **AbuseIPDB:** Check if an IP is a known scanner/attacker.\n- **Internal Threat Intel:** Has your team seen this indicator before?\n\n**Result A: Known Bad.**\n- **Action:** High Confidence. Escalate to Containment Phase immediately.\n\n**Result B: Unknown / Clean.**\n- **Action:** **This is where the real work begins.** The attacker might be using brand new infrastructure. You must rely on **behavioral analysis**."
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Triage Step 1 📋",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "You receive an alert for a suspicious outbound connection to `185.142.53.179`. What is the quickest way to check if this IP is a 'known bad' Command & Control server?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Ping the IP address.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Run a port scan against the IP.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Check the IP reputation on VirusTotal or AbuseIPDB.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Block the IP immediately without checking.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Reputation services provide rapid context. Scanning the attacker's IP (port scan) is a bad idea (active engagement/legal risk).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "Scoping: Finding Patient Zero 🦠",
+            "content": "### How Far Did It Spread?\n\nYou have one confirmed infected host. **How many others are there?**\n\n**Technique 1: Search for IOCs (Indicators of Compromise)**\n- **File Hash:** Search EDR for `SHA256: 123abc...` across ALL endpoints.\n- **Registry Key:** Search for the persistence key.\n- **IP Address:** Search firewall logs for ANY internal IP talking to `185.142.53.179`.\n\n**Technique 2: Search for TTPs (Tactics, Techniques, Procedures)**\n- If the attacker used `rundll32.exe` to run a DLL, search for **any** instance of `rundll32.exe` making an external network connection **from any host**.\n\n**Technique 3: Lateral Movement Trails**\n- Check Windows Event ID 4624 (Logon) on **Servers** from the source host `WORKSTATION-01`.\n- Check for SMB connections (port 445) from the infected host to other hosts."
+        },
+        {
+            "id": "s_l6_5",
+            "type": "warning",
+            "title": "The Slippery Slope of Scoping 🧗",
+            "content": "## Don't Over-Scope (or Under-Scope)\n\n**Under-Scoping:** *'I found malware on Bob's PC. I'll clean Bob's PC. Done.'*\n- **Risk:** The attacker has backdoors on 10 other servers. You missed them. They come back next week.\n\n**Over-Scoping:** *'Bob's PC has malware! Burn the entire subnet! Rebuild 500 servers!'\n- **Risk:** Massive business disruption for what might be commodity malware that was contained to one endpoint.\n\n**Best Practice:** **Confidence Levels.**\n- **Definitely Compromised:** Hosts with confirmed IOCs.\n- **Potentially Exposed:** Hosts that communicated with the compromised host via vulnerable protocols (SMB, RDP).\n- **Clean:** No indicators of contact.\n\nFocus eradication on **Definitely Compromised** first. Monitor **Potentially Exposed** aggressively."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "code",
+            "title": "Example: IOC Hunt with PowerShell 💻",
+            "content": "You find a malicious file hash: `5B6E6A96B6E6A96B6E6A96B6E6A96B6`.\n\n**Task:** Find any other computer with this file.\n\n**EDR Query (Pseudo):**\n```sql\nSELECT ComputerName, FilePath, CreationTime \nFROM FileInventory \nWHERE SHA256 = '5B6E6A96B6E6A96B6E6A96B6E6A96B6'\n```\n\n**If you don't have EDR, use native Windows tools (slower):**\n```powershell\nInvoke-Command -ComputerName (Get-Content computers.txt) -ScriptBlock {\n    Get-ChildItem -Path C:\\ -Recurse -ErrorAction SilentlyContinue | \n    Where-Object { (Get-FileHash $_.FullName -Algorithm SHA256).Hash -eq '5B6E...' }\n}\n```\n*Note: This is noisy and slow. EDR is much better for this.*"
+        },
+        {
+            "id": "s_l6_7",
+            "type": "quiz",
+            "title": "Scoping Accuracy 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "true_false",
+                "question": "If you find malware on one computer, you should immediately assume the entire network is compromised and rebuild everything.",
+                "correctAnswer": false,
+                "explanation": "False. This is over-scoping. Use evidence (IOCs, lateral movement logs) to define the actual scope of compromise.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

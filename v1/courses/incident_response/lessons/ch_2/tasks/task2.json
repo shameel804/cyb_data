@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_2",
+    "title": "Phase Identification Challenge",
+    "description": "Classify actions according to the correct NIST phase.",
+    "estimatedMinutes": 10,
+    "problemStatement": "Match the following actions (A, B, C, D) to the correct NIST Incident Response Phase (Preparation, Detection, Containment, Eradication, Recovery, Post-Incident).\n\n**Action A:** Running a vulnerability scan to confirm the patch was applied successfully.\n**Action B:** Updating the firewall playbook to include a step for notifying the CISO.\n**Action C:** Observing multiple failed login attempts in the SIEM dashboard.\n**Action D:** Removing a malicious registry key from a workstation.\n\n**Output Format:**\n`Action A: [Phase]`\n`Action B: [Phase]`\n`Action C: [Phase]`\n`Action D: [Phase]`",
+    "hints": [
+        "Action A happens *after* you think you fixed the vulnerability.",
+        "Action B involves updating documentation *before* or *after* an incident, but which phase specifically deals with updating plans?",
+        "Action D is about removing the attacker's presence, not stopping the spread."
+    ],
+    "expectedOutput": "Action A: Recovery (Validation of fix)\nAction B: Preparation (Updating plans/procedures)\nAction C: Detection (Identifying potential incident)\nAction D: Eradication (Removing artifacts)",
+    "solutionCode": "Action A: Recovery\nAction B: Preparation\nAction C: Detection\nAction D: Eradication"
+}

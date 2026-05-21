@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_2",
+    "title": "Design a Basic IR Playbook",
+    "description": "Create a simple step-by-step playbook for a phishing incident.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You are a security analyst at a company that has just completed **Preparation**. You need to write a basic **Playbook** for 'User Reports Suspicious Email'.\n\n**Scenario:** A user reports an email they *think* is phishing, but they **did not** click any links or open attachments. They just saw it.\n\n**Task:** Write a 5-step playbook (numbered steps) detailing what the analyst should do.\n\n**Requirements:**\n- Step 1: How to confirm it's truly malicious.\n- Step 2: Actions to protect *other* users.\n- Step 3: Actions regarding the reported user's account.\n- Step 4: Cleanup of the email.\n- Step 5: Documentation.\n\n**Output Format:** Plain text numbered list.",
+    "hints": [
+        "Think about checking email headers (SPF/DKIM) or looking at the URL reputation.",
+        "If it's a malicious link, other users might have received it too. How do you stop them from clicking?",
+        "Even if the user didn't click, is there a risk to their account?"
+    ],
+    "expectedOutput": "1. Analyze email headers and URLs in a sandbox to confirm malicious nature.\n2. Search mail logs and purge the email from all other user inboxes.\n3. Verify user did not enter credentials; if unsure, reset password and review recent logins.\n4. Block sender domain and any malicious URLs at the email gateway.\n5. Log the incident ticket with IOCs and resolution details.",
+    "solutionCode": "1. Analyze email headers and URL reputation using a tool like VirusTotal or a secure sandbox environment.\n2. Use the email security gateway to search for and purge the email from all recipient inboxes across the organization.\n3. Verify with the user that they did not interact with the email. If there is any doubt, immediately reset the user's password and revoke active sessions.\n4. Add the sender's domain and any malicious URLs to the block list in the email security gateway and web proxy.\n5. Close the ticket with a detailed summary including the sender address, malicious URL, and timestamps of actions taken."
+}

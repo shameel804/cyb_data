@@ -1,0 +1,90 @@
+{
+    "id": "l3",
+    "chapterId": "ch_4",
+    "title": "SIEM & Alerting Fundamentals 🚨",
+    "description": "Turning logs into actionable alerts and managing false positives.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Alerting",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "What is a SIEM? 🧠",
+            "content": "# Security Information and Event Management\n\nA **SIEM** is the **brain** of your detection operation.\n\n**It does three things:**\n1.  **Aggregation:** Collects logs from **everywhere** (Windows, Linux, Firewalls, Cloud).\n2.  **Correlation:** Links events together. (e.g., 'User X failed 5 logins AND THEN User X logged in successfully AND THEN User X created a new admin account').\n3.  **Alerting:** Notifies the analyst when a correlation rule matches.\n\n**Common SIEM Platforms:**\n- **Commercial:** Splunk Enterprise Security, Microsoft Sentinel, IBM QRadar.\n- **Open Source:** Elastic Security (ELK Stack), Wazuh."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Anatomy of a Good Alert 🚨",
+            "content": "### What Makes an Alert 'Actionable'?\n\nA bad alert is: *'Suspicious Activity Detected'*.\n\nA good alert contains **Context** so the analyst doesn't have to spend 30 minutes hunting for it.\n\n**Required Fields in a SIEM Alert:**\n- **Title:** Clear, descriptive (e.g., 'PowerShell Download Cradle from External IP').\n- **Timestamp:** When did it happen?\n- **Affected Host:** Computer Name / IP.\n- **Affected User:** Username.\n- **Description:** What happened, in plain English.\n- **Severity:** Critical / High / Medium / Low.\n- **Raw Log Evidence:** The exact log line that triggered the alert.\n- **MITRE ATT&CK Technique:** e.g., 'T1059.001 - PowerShell'.\n- **Response Steps:** Link to the relevant Playbook.\n\n> **Analogy:** A fire alarm that says *'BEEP BEEP BEEP'* is annoying. A fire alarm that says *'SMOKE DETECTED IN SERVER ROOM B2'* is helpful."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "SIEM Alert Components 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which of the following is the MOST important piece of context to include in a SIEM alert?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The color of the alert icon.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The raw log entry that triggered the alert.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The name of the SIEM vendor.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The CPU usage of the SIEM server.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The raw log is the source of truth. It allows the analyst to verify the alert and pivot to other related events.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Correlation Rules: The Magic ✨",
+            "content": "### Writing Detection Logic\n\nA single failed login is **noise**. A single failed login followed by a success and then a process run is **signal**.\n\n**Example Rule Logic (Pseudo-code):**\n```text\nIF \n  (Event ID 4625 Count > 5 for User X within 5 minutes)\nAND THEN\n  (Event ID 4624 for User X from IP Address Y)\nAND THEN\n  (Event ID 4688 with Command Line containing 'net user')\nTHEN\n  Trigger Alert 'Potential Password Spray and Lateral Movement'\n```\n\n**Key Concept: Time Windowing.** The SIEM looks at events over a specific period (e.g., 'within 10 minutes')."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "The False Positive Battle ⚔️",
+            "content": "### Tuning the SIEM\n\n**Reality:** When you first set up a SIEM, it will generate **thousands of false positives**.\n\n**Common False Positive Causes:**\n- **IT Admin Activity:** Admin uses `psexec` to deploy software. The SIEM thinks it's malware lateral movement.\n- **Vulnerability Scanners:** Scanner probes 1000 ports. The SIEM thinks it's a port scan attack.\n\n**The Tuning Process (Lifecycle of an Alert):**\n1.  **Create Rule:** Broad detection.\n2.  **Analyze Alerts:** Identify patterns of false positives.\n3.  **Add Exceptions:** *'Suppress this alert if the source IP is the Vulnerability Scanner IP (10.0.0.5)'*.\n4.  **Repeat.**\n\n**Goal:** A **Signal-to-Noise Ratio** where >80% of alerts are actual suspicious activity. This is hard work."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Pro Tip: Risk-Based Alerting (RBA) 📈",
+            "content": "## Don't Alert on Everything. Score It.\n\nAdvanced SIEMs use **Risk-Based Alerting (RBA)** .\n\nInstead of: *'Alert: Failed Login.'*\nDo this: *'Add +10 Risk Score to User Bob.'*\n\nThen alert only when *'User Bob's Risk Score exceeds 80 within 24 hours'*.\n\n**Why is this better?**\nIt reduces alert fatigue by correlating multiple low-level suspicious events into a single, high-fidelity **'Risky User'** alert.\n\n**Analogy:** You don't arrest someone for walking on the sidewalk. You arrest them if they walk on the sidewalk, look in a car window, try a door handle, and then run away."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "False Positive Management 🧹",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "If a SIEM generates too many false positives, the correct response is to disable the rule entirely.",
+                "correctAnswer": false,
+                "explanation": "False. Disabling the rule creates a detection gap. The correct response is to **tune** the rule by adding exceptions or refining the logic.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,84 @@
+{
+    "id": "l3",
+    "chapterId": "ch_2",
+    "title": "Phase 3: Containment Strategies ⛔",
+    "description": "Short-term vs. long-term isolation. Stopping the bleeding.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Lifecycle Phase 3",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Stop the Bleeding 🩸",
+            "content": "# Phase 3: Containment\n\n**Definition:** *Prevent the incident from causing further damage to the organization.*\n\nThis is often the most **stressful** phase because it involves making decisions that impact business operations.\n\n**The Two-Stage Approach:**\n1.  **Short-Term Containment:** Immediate action to stop the active threat (e.g., pull network cable).\n2.  **Long-Term Containment:** Strategic fix to allow business to continue safely (e.g., move affected systems to a 'Quarantine VLAN')."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "warning",
+            "title": "Critical Decision: Power Off vs. Isolate 🔌",
+            "content": "## The Golden Rule of Containment\n\n**Do NOT power off the machine immediately.**\n\n**Why?**\n- **Memory (RAM) is Volatile:** It contains running processes, encryption keys, and network connections. This is **lost forever** on shutdown.\n- **Encryption Malware:** If the ransomware is mid-encryption, pulling the power corrupts the drive and makes recovery harder.\n\n**Correct Short-Term Action:**\n1.  **Disconnect Network Cable** (or disable Wi-Fi/NIC in OS).\n2.  **Keep the system powered on.**\n3.  **Capture Memory Dump** using tools like `DumpIt` or `WinPMEM`.\n\n> **Exception:** If it's a destructive *wiper* malware actively deleting files faster than you can capture memory, **immediate power off** might be the only way to save partial data. This is a command-level decision."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Containment Best Practice 🎓",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "true_false",
+                "question": "Pulling the network cable is generally a safer initial containment action than pulling the power cord.",
+                "correctAnswer": true,
+                "explanation": "True. Network isolation stops lateral movement and C2 traffic while preserving volatile memory evidence for analysis.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Long-Term Containment Examples 🛡️",
+            "content": "### Moving to a Stable State\n\nOnce the immediate threat is stopped, you need to keep the business running.\n\n**Scenario: Ransomware on Accounting PC.**\n- **Short-Term:** Disable switch port for that PC.\n- **Long-Term:** Block the attacker's C2 IP address at the **Perimeter Firewall** (protecting everyone else). Create a rule blocking outbound SMB traffic (port 445) to prevent spread.\n\n**Scenario: Compromised Web Server.**\n- **Short-Term:** Take server out of Load Balancer pool.\n- **Long-Term:** Spin up a new, clean web server from a **Golden Image** and redirect traffic there. Keep the infected one offline for forensics.\n\n**Key Tool:**\n- **VLAN Steering:** Create a 'Remediation VLAN' that has **no internet access** and **limited access** to internal tools. Move infected machines there so IT can work on them without risking the rest of the network."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "tip",
+            "title": "Pro Tip: Avoid Attacker Noticing 🥷",
+            "content": "## Stealth Containment\n\nIf you suspect an **Advanced Persistent Threat (APT)** or a human operator (not just automated malware), **silent containment** is preferred.\n\n- **Don't:** Block the IP address at the firewall (The attacker will know they are caught).\n- **Do:** Use a sinkhole or redirect traffic to a honeypot. Or, monitor their activity quietly to gather intelligence on **which other accounts they have stolen** before you cut them off.\n\n*This is an advanced technique, but knowing it exists separates the novice from the expert.*"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Containment Scenario 📋",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "You discover a server is sending out spam emails. You need to stop the spam flow but preserve evidence. What is the best initial action?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Unplug the server's power cable.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Delete the email queue files.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Block outbound SMTP (port 25) traffic at the network firewall for that specific server IP.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Run an antivirus scan immediately.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Blocking the traffic at the perimeter stops the external harm (spam) while allowing you to investigate the server internally without altering its state.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

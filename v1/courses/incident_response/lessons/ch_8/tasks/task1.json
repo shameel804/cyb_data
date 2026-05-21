@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_8",
+    "title": "Prioritize Evidence Collection",
+    "description": "Rank evidence types by volatility for a live system scenario.",
+    "estimatedMinutes": 10,
+    "problemStatement": "You arrive at a user's workstation that is suspected of being compromised. The system is **ON** and logged into Windows. You have a USB drive with trusted tools.\n\n**Available Evidence Sources:**\nA. Hard Drive (C:)\nB. RAM (Memory)\nC. Network Connections (netstat output)\nD. Windows Event Logs (Security.evtx)\nE. Running Processes List\n\n**Task:** Rank these evidence sources from **1 (Collect First)** to **5 (Collect Last)** based on the Order of Volatility.\n\n**Output Format:**\n```\n1: [Letter] - [Source Name]\n2: [Letter] - [Source Name]\n...\n5: [Letter] - [Source Name]\n```",
+    "hints": [
+        "RAM disappears when power is lost.",
+        "Network connections change rapidly.",
+        "Hard drive data persists for years."
+    ],
+    "expectedOutput": "1: B - RAM (Memory)\n2: C - Network Connections\n3: E - Running Processes List\n4: D - Windows Event Logs\n5: A - Hard Drive (C:)",
+    "solutionCode": "1: B - RAM (Memory)\n2: C - Network Connections (netstat)\n3: E - Running Processes List\n4: D - Windows Event Logs\n5: A - Hard Drive (C:)"
+}

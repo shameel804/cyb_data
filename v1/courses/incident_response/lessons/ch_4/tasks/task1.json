@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_4",
+    "title": "Analyze a Phishing Alert",
+    "description": "Triage a SIEM alert and determine scope based on logs.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You receive the following SIEM alert:\n\n**Title:** Potential Credential Phishing - Suspicious Inbox Rule Created\n**User:** alice.johnson@company.com\n**Timestamp:** 2026-04-20 09:15:22 UTC\n**Description:** User Alice created an inbox rule forwarding all email with subject 'Invoice' to external address `hacker@maildrop.cc`.\n\n**Log Evidence:**\n- Event 1 (Azure AD Sign-in): Alice logged in from IP `45.155.205.233` (Bulgaria) at 09:10 UTC.\n- Event 2 (O365 Audit): Inbox rule 'Cleanup' created at 09:15 UTC.\n\n**Task:** Answer the following questions:\n1. Is this a True Positive or False Positive? Why?\n2. What is the likely Kill Chain Phase?\n3. What is the first containment action you should take?\n4. How would you scope this incident? (What logs would you check?)\n\n**Output Format:**\n```\n1. [True/False] - [Reason]\n2. [Kill Chain Phase]\n3. [Containment Action]\n4. [Scoping Steps]\n```",
+    "hints": [
+        "Alice normally logs in from Chicago. Bulgaria is unusual.",
+        "Forwarding rules to external domains are rarely legitimate.",
+        "Think about resetting credentials and checking for other rules."
+    ],
+    "expectedOutput": "1. True Positive - Unusual geolocation login combined with external forwarding rule creation is a classic BEC/Phishing scenario.\n2. Actions on Objectives / Persistence (Post-Exploitation).\n3. Immediately reset Alice's password and revoke active sessions.\n4. Search Azure AD logs for any other logins from IP 45.155.205.233. Search O365 audit logs for other users creating forwarding rules.",
+    "solutionCode": "1. True Positive - The combination of Impossible Travel login and external mail forwarding is a definitive indicator of account compromise.\n2. Actions on Objectives (Collection/Exfiltration Setup).\n3. Reset Alice's password, revoke all active sessions, and disable the inbox rule.\n4. Query Azure AD Sign-in Logs for any successful authentications from source IP 45.155.205.233 across all users. Query O365 Unified Audit Log for 'New-InboxRule' operations targeting external addresses."
+}

@@ -1,0 +1,96 @@
+{
+    "id": "l4",
+    "chapterId": "ch_9",
+    "title": "The Pyramid of Pain 🔺",
+    "description": "Why blocking IPs is easy for attackers, but changing tools is hard.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Strategy",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Hierarchy of Adversary Pain 📐",
+            "content": "# How Much Does Your Defense Hurt the Attacker?\n\n**The Pyramid of Pain** (by David Bianco) is a model that categorizes IOCs and TTPs by **how difficult they are for an attacker to change**.\n\n**Bottom of Pyramid (Easy for Attacker):**\n- Hash Values\n- IP Addresses\n- Domain Names\n\n**Middle of Pyramid (Annoying for Attacker):**\n- Network/Host Artifacts (URI patterns, Registry keys)\n- Tools (Specific malware families)\n\n**Top of Pyramid (Painful for Attacker):**\n- **TTPs (Behaviors)**\n\n**The Higher You Go, the More Pain You Inflict.**"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Level 1-2: Trivial Changes 🤷",
+            "content": "### Why Blocking Hashes and IPs Barely Hurts\n\n**Hash Values (Bottom):**\n- **Defender Action:** Block `malware.exe` hash.\n- **Attacker Response:** Recompile with a different compiler flag. **Cost: 30 seconds.**\n- **Pain Level:** 😊 (Attacker is happy).\n\n**IP Addresses:**\n- **Defender Action:** Block IP `5.6.7.8`.\n- **Attacker Response:** Spin up a new VPS for $5. **Cost: 5 minutes.**\n- **Pain Level:** 😊\n\n**Domain Names:**\n- **Defender Action:** Block `evil.com`.\n- **Attacker Response:** Register `evil2.com` or use a Domain Generation Algorithm (DGA). **Cost: $10 and 10 minutes.**\n- **Pain Level:** 😐\n\n**Lesson:** **You cannot 'block your way to security' using only IOCs.** You are playing an infinite game of Whack-a-Mole that you will **lose**."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Pyramid Pain Level 📊",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "According to the Pyramid of Pain, which type of indicator is EASIEST for an attacker to change?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "TTPs (Behaviors)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Tools",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "File Hashes",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Domain Names",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "File hashes change with a single recompile. They are at the bottom of the pyramid.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Level 3-4: Causing Friction 🛠️",
+            "content": "### Network Artifacts and Tools\n\n**Network/Host Artifacts:**\n- **Examples:** Unique User-Agent strings used by malware (`Mozilla/5.0 (Windows NT 10.0; Win64; x64) EvilBot/1.0`). Specific URI patterns (`/wp-content/uploads/shell.php?cmd=`).\n- **Attacker Response:** Change the string in the code. **Cost: Recompile and redeploy (1 hour).**\n- **Pain Level:** 😐😐 (Annoying).\n\n**Tools (Specific Malware Families):**\n- **Examples:** Blocking **Cobalt Strike** Beacon configurations or detecting **Mimikatz** execution.\n- **Attacker Response:** Switch to a different tool (e.g., Brute Ratel C4 instead of Cobalt Strike). **Cost: Learning a new tool, buying a new license, rewriting playbooks (Days to Weeks).**\n- **Pain Level:** 😬😬😬 (Significant pain).\n\n**This is where detection starts to actually slow down the adversary.**"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "The Apex: TTPs (Maximum Pain) 😱",
+            "content": "### Detecting Behaviors, Not Tools\n\n**Examples of TTP-Based Detection:**\n- **Detecting any process accessing `lsass.exe` memory** (instead of just detecting `mimikatz.exe`).\n- **Detecting any Office application spawning a command shell** (instead of just detecting a specific macro hash).\n- **Detecting any outbound connection over port 443 that is beaconing at regular intervals** (instead of just blocking a known C2 IP).\n\n**Why This Hurts Attackers So Much:**\n- **They must change their fundamental methodology.**\n- If you detect *all* credential dumping, they can't just switch tools. They must find a **new way** to steal credentials (which is hard research).\n- **Cost:** Developing new TTPs takes **Months to Years** and significant expertise.\n- **Pain Level:** 🤬 (Attacker is furious and might give up on your network).\n\n**The Goal of Mature IR:** **Push your detection up the Pyramid of Pain.**"
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Applying the Pyramid in IR 🎯",
+            "content": "### From Reactive to Proactive\n\n**Immature IR Program (Reactive):**\n1.  Find malware hash `123abc`.\n2.  Block hash `123abc` in EDR.\n3.  Attacker recompiles.\n4.  Repeat next week.\n\n**Mature IR Program (Proactive):**\n1.  Find malware hash `123abc`.\n2.  **Analyze the malware's behavior** in a sandbox.\n3.  Discover it creates a Scheduled Task named `AdobeFlashUpdate` and beacons to `*.ddns.net` domains.\n4.  **Create detection rules for:**\n    - Any Scheduled Task containing obfuscated PowerShell.\n    - Any outbound DNS query to a Dynamic DNS provider.\n5.  **Result:** You detect the **next version** of the malware (with new hash) immediately, because the **behavior** hasn't changed.\n\n**This is the difference between chasing tails and building walls.**"
+        },
+        {
+            "id": "s_l4_7",
+            "type": "tip",
+            "title": "Pro Tip: Use IOCs to Find TTPs 🔍",
+            "content": "## The Stepping Stone Strategy\n\nDon't throw away IOCs! They are the **starting point** for climbing the pyramid.\n\n**Workflow:**\n1.  **Start with an IOC** (e.g., a suspicious IP from a SIEM alert).\n2.  **Pivot to Artifacts:** What User-Agent did the traffic use? What URI path? (Check proxy logs).\n3.  **Pivot to Tools:** What process made the connection? (Check EDR). Was it PowerShell? Cobalt Strike?\n4.  **Define the TTP:** *'PowerShell script downloading from external IP and executing in memory.'*\n5.  **Write a Behavioral Detection Rule** based on that TTP.\n\n**The IOC gets you in the door. The TTP keeps the door shut.**"
+        },
+        {
+            "id": "s_l4_8",
+            "type": "quiz",
+            "title": "Pyramid Strategy ♟️",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "Blocking a specific Cobalt Strike C2 domain is a high-pain action for an attacker according to the Pyramid of Pain.",
+                "correctAnswer": false,
+                "explanation": "False. Domains are low on the pyramid. Detecting the *behavior* of Cobalt Strike beaconing is high pain.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

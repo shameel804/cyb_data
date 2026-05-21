@@ -1,0 +1,90 @@
+{
+    "id": "l1",
+    "chapterId": "ch_9",
+    "title": "What is Threat Intelligence? 🧠",
+    "description": "Turning raw data into actionable insights for faster, smarter response.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Data vs. Information vs. Intelligence 📊",
+            "content": "# From Noise to Knowledge\n\n**Data:** Raw, unprocessed facts.\n- *Example:* `192.168.1.100 connected to 185.142.53.179`\n\n**Information:** Data with context.\n- *Example:* `Workstation HR-PC connected to IP 185.142.53.179 on port 443 at 03:00 UTC.`\n\n**Intelligence:** Information that has been **analyzed** and is **actionable**.\n- *Example:* `IP 185.142.53.179 is a known Cobalt Strike C2 server associated with the 'FIN7' threat group. They target HR departments to steal payroll data. Recommended action: Isolate host and hunt for additional IOCs.`\n\n**Threat Intelligence is the *why* behind the alert. It answers: 'Who is attacking us, and what do they want?'**"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "The Three Levels of Threat Intel 🏔️",
+            "content": "### Strategic, Operational, and Tactical\n\n1.  **Strategic Intel (The 'Boardroom' Level)**\n    - **Audience:** CISO, Board of Directors.\n    - **Content:** High-level trends, industry risks, geopolitical threats.\n    - **Format:** Reports, briefings.\n    - **Example:** *'Ransomware attacks against healthcare organizations increased 40% last quarter.'*\n\n2.  **Operational Intel (The 'War Room' Level)**\n    - **Audience:** Incident Commander, Threat Hunters.\n    - **Content:** Campaign tracking, threat actor TTPs, motivation.\n    - **Format:** Threat Actor Profiles.\n    - **Example:** *'TA577 uses thread hijacking phishing emails to deliver QakBot, leading to Black Basta ransomware.'*\n\n3.  **Tactical Intel (The 'Trench' Level)**\n    - **Audience:** SOC Analysts, IR Responders.\n    - **Content:** **IOCs** (IPs, Hashes, Domains), specific detection rules.\n    - **Format:** Threat Feeds (STIX/TAXII), YARA rules, Sigma rules.\n    - **Example:** *'Block SHA256: 5b6e6a... ; Alert on domain: badupdater[.]xyz'*"
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Intel Level Check ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "A list of malicious IP addresses to block at the firewall is an example of which level of threat intelligence?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Strategic Intel",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Operational Intel",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Tactical Intel",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Executive Intel",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Tactical intel provides the immediate, machine-readable indicators used for blocking and alerting.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Intelligence Cycle 🔄",
+            "content": "### From Raw Data to Action\n\nThreat Intelligence is a **continuous process**, not a one-time download.\n\n**The 5-Step Cycle:**\n1.  **Planning & Direction:** *'What do we need to know?'* (e.g., 'Which threat actors target our industry?')\n2.  **Collection:** Gathering data from internal logs, open-source feeds, commercial vendors, dark web monitoring.\n3.  **Processing:** Normalizing data (removing duplicates, formatting).\n4.  **Analysis:** **The human element.** Connecting dots, assessing credibility, adding context.\n5.  **Dissemination:** Getting the right intel to the right people at the right time.\n\n**The Cycle is Broken If:** You collect feeds but never analyze them. That's just 'data hoarding'.\n\n**Analogy:** Subscribing to 100 newspapers but never reading them. You have potential intelligence, but no actual intelligence."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Why IR *Needs* Threat Intel 🚑",
+            "content": "### Speed and Context Save the Day\n\n**Without Intel:**\n- *'We see an outbound connection to 185.142.53.179. Is it bad? Let me Google it... Maybe? I'm not sure.'*\n- **Result:** **Analysis Paralysis.** Time wasted. Attacker advances.\n\n**With Intel:**\n- *'SIEM Alert: Connection to IP flagged as 'FIN7 C2' in our threat feed. Confidence: High. Recommended Playbook: RANSOMWARE-PREP.'*\n- **Result:** **Immediate Action.** You skip the 'Is this bad?' phase and jump straight to containment.\n\n**The Primary IR Benefit:** **Reduces Mean Time to Detect (MTTD) and Mean Time to Respond (MTTR).**"
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Pro Tip: Free Intel Sources for Beginners 🆓",
+            "content": "## Where to Start?\n\nYou don't need a $100k subscription to start.\n\n**Reliable Open-Source Feeds:**\n- **AlienVault OTX:** Community-powered threat feed. Easy to integrate with SIEMs.\n- **Abuse.ch Feeds:**\n    - **URLhaus:** Malware URLs.\n    - **ThreatFox:** IOCs shared by the community.\n    - **SSL Blacklist:** Malicious SSL certificates.\n- **CISA Known Exploited Vulnerabilities (KEV):** Critical patches you **must** apply.\n\n**But remember:** **Free feeds have higher false positive rates.** Always verify before blocking."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "Intel Cycle Purpose 🔄",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "Once you subscribe to a threat feed, the intelligence cycle is complete.",
+                "correctAnswer": false,
+                "explanation": "False. The cycle requires ongoing analysis, validation, and dissemination. Subscribing to a feed is just the 'Collection' phase.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

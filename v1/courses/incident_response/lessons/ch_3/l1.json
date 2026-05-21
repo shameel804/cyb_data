@@ -1,0 +1,84 @@
+{
+    "id": "l1",
+    "chapterId": "ch_3",
+    "title": "Building Your CSIRT 🏛️",
+    "description": "Structuring the team, defining roles, and establishing authority.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Team & Structure",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "What is a CSIRT? 🦸",
+            "content": "# Computer Security Incident Response Team\n\n**Also known as:** CERT (Computer Emergency Response Team), SIRT, or IR Team.\n\nA CSIRT is a dedicated group responsible for **preparing for, detecting, responding to, and recovering from** security incidents.\n\n**Why formalize a team?**\n- **Clarity:** Everyone knows their job.\n- **Authority:** Clear chain of command.\n- **Accountability:** Ownership of actions.\n\n**Two Common Models:**\n- **Centralized CSIRT:** One team for the whole organization.\n- **Distributed CSIRT:** Team members spread across different business units/regions."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "Core CSIRT Roles 👥",
+            "content": "### The Five Essential Hats\n\n1.  **Incident Commander (IC)** 🎖️\n    - **Responsibility:** Overall strategy, major decisions, resource allocation.\n    - **Skills:** Leadership, calm under pressure, business acumen.\n    - **Key Question:** *Do we pull the plug on the e-commerce site?*\n\n2.  **Lead Investigator (Forensic Lead)** 🔍\n    - **Responsibility:** Technical deep dive, evidence collection, root cause analysis.\n    - **Skills:** Digital forensics, log analysis, reverse engineering basics.\n    - **Key Question:** *How did they get in, and what did they take?*\n\n3.  **Communications Lead** 📣\n    - **Responsibility:** Internal and external messaging, media handling, legal liaison.\n    - **Skills:** Writing, public relations, legal awareness.\n    - **Key Question:** *What do we tell the customers?*\n\n4.  **IT Liaison / System Owner** 💻\n    - **Responsibility:** Subject matter expertise on affected systems, executing recovery steps.\n    - **Skills:** Deep knowledge of specific infrastructure (AD, Cloud, Network).\n    - **Key Question:** *What's the safest way to restore this database?*\n\n5.  **Legal Counsel / HR** ⚖️\n    - **Responsibility:** Advise on regulatory obligations (GDPR, HIPAA), employee actions, and law enforcement engagement.\n    - **Skills:** Privacy law, employment law."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Role Identification 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Who has the final authority to decide whether to notify law enforcement (FBI/Police) about a breach?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Lead Investigator",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Incident Commander",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Legal Counsel (in consultation with IC)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "IT Liaison",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "While the Incident Commander manages the response, the decision to involve law enforcement has legal implications. This decision is typically made by Legal Counsel in coordination with executive leadership and the IC.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Building the Roster 📋",
+            "content": "### Who's On First? (The On-Call Rotation)\n\nIncidents don't wait for 9-to-5. You need **24/7 coverage**.\n\n**Strategies for Small Teams:**\n- **Follow-the-Sun:** Hand off between global offices (London hands off to New York hands off to Sydney).\n- **On-Call Rotation:** Primary/Secondary rotation with an escalation path.\n\n**Critical Information for the Roster:**\n- **Primary Contact:** Mobile phone (SMS/WhatsApp/Signal).\n- **Secondary Contact:** Backup if primary doesn't answer in 15 mins.\n- **Escalation Manager:** Who to wake up if the data center is on fire.\n\n**Pro Tip:** **Test the roster quarterly.** Send a test page at 3:00 AM on a Tuesday. If the phone number is disconnected or the person changed jobs, you'll find out **before** the real incident."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "warning",
+            "title": "The 'Two-Hat' Problem 🎩🎩",
+            "content": "## Avoid Conflicts of Interest\n\nIn small companies, one person might wear multiple hats.\n\n**Bad Example:** The **Network Administrator** is also the **Incident Commander**.\n- **Conflict:** If the incident is caused by a misconfigured firewall (which the Network Admin built), they might downplay the severity to avoid blame.\n\n**Better Model:** Separate the **Operator** (person who runs the system) from the **Investigator** (person who judges the system).\n\n**If you can't separate them due to headcount:**\n- **Bring in a 3rd Party Retainer.** Have a contract with a forensic firm to provide an **independent** investigator for major incidents. This ensures objectivity."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Team Structure Check ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "It's acceptable for the same person to be both the Lead Investigator and the Incident Commander if the team is small.",
+                "correctAnswer": false,
+                "explanation": "False. The IC needs to manage the overall response (people, time, business impact) while the Investigator needs to focus deeply on technical analysis. Combining them leads to poor decisions in both areas.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

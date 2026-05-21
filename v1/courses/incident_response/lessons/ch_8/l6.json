@@ -1,0 +1,123 @@
+{
+    "id": "l6",
+    "chapterId": "ch_8",
+    "title": "Introduction to Forensic Artifacts 🗂️",
+    "description": "Windows event logs, registry, prefetch, and building timelines.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Analysis Basics",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "What Are Forensic Artifacts? 🧩",
+            "content": "# The Digital Footprints Users Leave Behind\n\nEvery action on a computer leaves **traces**. Even when a user deletes a file or clears history, the **artifact** often remains.\n\n**Artifacts are the silent witnesses.**\n\n**Key Windows Artifacts for IR:**\n1.  **Event Logs** (Who logged in? What errors occurred?)\n2.  **Registry Hives** (What software was installed? What USB devices were plugged in?)\n3.  **Prefetch Files** (What executables were run?)\n4.  **Amcache / Shimcache** (Evidence of program execution).\n5.  **Shellbags** (What folders did the user browse?)\n6.  **LNK Files (Shortcuts)** (What files were opened?)\n7.  **$MFT (Master File Table)** (File system timeline: created, modified, accessed).\n8.  **Browser History** (What websites were visited?)\n\n**Analogy:** You deleted the body, but you forgot to clean the fingerprints, the security camera footage, and the witness statements."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "Windows Event Logs 📋",
+            "content": "### The System's Diary\n\nLocated in `C:\\Windows\\System32\\winevt\\Logs\\`.\n\n**Critical Log Files for IR:**\n- **Security.evtx:** Logon events (4624, 4625), Account Management (4720), Privilege Use.\n- **System.evtx:** Service starts/stops, driver loads, system crashes.\n- **Application.evtx:** Application errors, installer logs.\n- **PowerShell Operational.evtx:** Script block logging (4104). **GOLD MINE.**\n- **Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx:** RDP connections (Event ID 21, 24).\n\n**Key Event IDs to Memorize:**\n| Event ID | Description |\n| :--- | :--- |\n| **4624** | Successful Logon |\n| **4625** | Failed Logon |\n| **4648** | Logon with explicit credentials (RunAs) |\n| **4688** | Process Creation (with command line if enabled) |\n| **4720** | User Account Created |\n| **5140** | Network Share Accessed |\n| **4104** | PowerShell Script Block Logging |"
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Event ID Knowledge 🆔",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "Which Windows Event ID indicates a successful user logon?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "4625",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "4624",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "4688",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "4720",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "4624 is the event for successful authentication. 4625 is failed logon.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "Registry Artifacts 📚",
+            "content": "### The Windows Configuration Database\n\nLocated in `C:\\Windows\\System32\\config\\` (System hives) and `C:\\Users\\<User>\\NTUSER.DAT` (User hives).\n\n**Key Registry Keys for IR:**\n\n1.  **Run / RunOnce Keys (Persistence)**\n    - `HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run`\n    - `HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run`\n\n2.  **USB Device History**\n    - `HKLM\\SYSTEM\\CurrentControlSet\\Enum\\USBSTOR`\n    - Shows Vendor, Product, and Serial Number of every USB drive ever plugged in.\n\n3.  **Recent Docs / MRU (Most Recently Used)**\n    - `HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RecentDocs`\n    - Shows files recently opened by the user.\n\n4.  **Typed URLs (IE/Edge)**\n    - `HKCU\\Software\\Microsoft\\Internet Explorer\\TypedURLs`\n\n5.  **Services**\n    - `HKLM\\SYSTEM\\CurrentControlSet\\Services`\n    - Malware often installs itself as a service here.\n\n**Tool to Parse Registry:** **Registry Explorer** (Eric Zimmerman's tool) or `regedit` (read-only on mounted image)."
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "Prefetch Files 🏃",
+            "content": "### Evidence of Execution\n\n**Location:** `C:\\Windows\\Prefetch\\`\n- **Format:** `.pf` files.\n- **Purpose:** Windows speeds up application loading by caching load information.\n- **Forensic Value:** A `.pf` file is created the **first time** an executable is run, and updated **each time** it runs. It contains:\n    - Executable name.\n    - **Run count** (how many times executed).\n    - **Last run time** (embedded in the file).\n    - List of files/dlls loaded by the executable.\n\n**Example:** You find `CMD.EXE-123ABC.pf` on a server that no one should be using command prompt on. The last run time was 3:00 AM. **This is a huge red flag.**\n\n**Tool to Parse Prefetch:** **PECmd** (Eric Zimmerman's tool)."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "code",
+            "title": "Example: Analyzing Prefetch with PECmd 💻",
+            "content": "Command to parse all Prefetch files in a mounted image.\n\n```cmd\nPECmd.exe -d \"G:\\Windows\\Prefetch\" --csv \"C:\\Cases\\IR-001\\Reports\"\n```\n\n**Output CSV Columns:**\n- `ExecutableName`: `POWERSHELL.EXE`\n- `RunCount`: `14`\n- `LastRun`: `2026-04-20 02:15:33`\n- `PreviousRun0`: `2026-04-19 23:45:12`\n\n**Analysis:**\n- PowerShell ran 14 times in the last 24 hours.\n- Last run was at 2:15 AM (outside business hours).\n- **Hypothesis:** Attacker used PowerShell for post-exploitation activities.\n\n**Correlate** this with Event ID 4104 (PowerShell Script Block) to see **what** they ran."
+        },
+        {
+            "id": "s_l6_7",
+            "type": "text",
+            "title": "Building a Timeline (Super Timeline) ⏱️",
+            "content": "### Connecting the Dots\n\nA single artifact tells a small story. A **Super Timeline** combines **all** artifacts into a single chronological view.\n\n**Tools:**\n- **Plaso (log2timeline):** Open-source Python tool. Ingests dozens of artifact types and outputs a single CSV timeline.\n- **Timeline Explorer:** Free viewer for CSV timelines.\n\n**Super Timeline Workflow:**\n1.  Extract artifacts from image (Event Logs, Registry, Prefetch, $MFT, LNK files, Browser History).\n2.  Run `log2timeline.py` to parse everything into a Plaso storage file.\n3.  Run `psort.py` to output a CSV timeline sorted by time.\n4.  Load CSV into Timeline Explorer.\n5.  **Filter** by time range of interest.\n\n**Result:** You can see that at `02:15:33` the attacker logged in via RDP (Event ID 4624). At `02:15:45` they ran `powershell.exe` (Prefetch). At `02:16:00` they created a scheduled task (Event ID 4698). **The story emerges.**"
+        },
+        {
+            "id": "s_l6_8",
+            "type": "tip",
+            "title": "Pro Tip: Time Zone Normalization 🌍",
+            "content": "## The Devil is in the Time Zone\n\n**Problem:** The $MFT uses UTC. Event Logs use local system time (or UTC depending on config). Browser history uses local time.\n\n**If you don't normalize everything to UTC, your timeline will be off by hours.**\n\n**Best Practice:**\n- Always **record the system's time zone** during acquisition (check `tzutil /g` or registry key `HKLM\\SYSTEM\\CurrentControlSet\\Control\\TimeZoneInformation`).\n- Use forensic tools that **automatically normalize to UTC** (Plaso does this well).\n- **Document** the conversion method in your report.\n\n**Incorrect Timeline = Incorrect Conclusions = Lost Case.**"
+        },
+        {
+            "id": "s_l6_9",
+            "type": "quiz",
+            "title": "Artifact Correlation 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "multiple_choice",
+                "question": "Which forensic artifact provides evidence of program execution, including run count and last run time?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Windows Event Log (Security)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Prefetch Files (.pf)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Browser History",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "USB Device History",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Prefetch files are specifically designed to track application execution and are a reliable source for execution evidence.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

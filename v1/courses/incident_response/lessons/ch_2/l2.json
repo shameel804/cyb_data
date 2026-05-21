@@ -1,0 +1,111 @@
+{
+    "id": "l2",
+    "chapterId": "ch_2",
+    "title": "Phase 2: Detection & Analysis 🔎",
+    "description": "Turning raw data into actionable alerts and determining scope.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Lifecycle Phase 2",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Needle in the Haystack 🌾",
+            "content": "# Phase 2: Detection & Analysis\n\n**Definition (NIST):** *Determine whether an incident has occurred, its type, and its scope.*\n\nThis is the **most time-consuming phase**. You will spend 80% of your time here.\n\n**Sources of Detection:**\n- **SIEM Alerts:** '5 failed logins followed by 1 success from foreign IP'.\n- **EDR Alerts:** 'PowerShell downloading a script from pastebin.com'.\n- **User Reports:** 'My computer is acting funny...'\n- **External Notification:** Law Enforcement or a 3rd party says *'We see your data on the dark web'*.\n\n**Challenge:** **False Positives.** "
+        },
+        {
+            "id": "s_l2_2",
+            "type": "warning",
+            "title": "The False Positive Trap 🪤",
+            "content": "## Alert Fatigue is Real\n\nIf your SIEM generates 10,000 alerts a day and 9,999 are 'User changed password', you **will** miss the real one.\n\n**Tuning is Part of Preparation:**\n- Constantly refine rules to remove noise.\n- Use **Risk Scoring** to prioritize.\n\n**Analysis Mindset:**\n- **Is this normal?** (Look at the user's baseline. Does Bob *always* log in from Ohio at 9 AM? Then a 3 AM login from Russia is **abnormal**).\n- **Correlation:** Does the Firewall log match the Endpoint log? (If Endpoint says 'Process X ran' but Firewall says 'No traffic', either the logs are missing or the process was blocked)."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Detection Check 🕵️",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which of the following is generally considered the MOST reliable source of incident detection?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A user calling the helpdesk saying 'My computer is slow'.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "An EDR alert indicating a known malicious process hash executing.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A single failed login attempt on the VPN.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "An email from 'IT Security' asking you to click a link to validate your account.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "EDR alerts with known malicious indicators (IOCs) are high-fidelity detections. User reports are important but often vague. Single failed logins are noise.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Scoping: How Bad is It? 🔬",
+            "content": "### Determining the Scope of Impact\n\nOnce you confirm an incident (e.g., 'Yes, this is ransomware'), you must answer **'How many systems are affected?'**\n\n**Questions to ask:**\n1.  **Patient Zero:** Which was the **first** computer compromised?\n2.  **Lateral Movement:** Did the attacker move from that computer to the Server?\n3.  **Data Access:** Did they access the Payroll database or just the Marketing shared drive?\n\n**Techniques for Scoping:**\n- **Search for IOCs:** Search all endpoints for the specific file hash or registry key.\n- **Network Flow Analysis:** Look at firewall logs to see which internal IPs that Patient Zero talked to on unusual ports."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "The Cyber Kill Chain (Intro) ⛓️",
+            "content": "### A Framework for Analysis: Lockheed Martin Cyber Kill Chain®\n\nThis model helps analysts understand **where** they are in an attack.\n\n1.  **Reconnaissance:** Attacker researches target (LinkedIn, Shodan).\n2.  **Weaponization:** Attacker creates malware payload.\n3.  **Delivery:** Attacker sends phishing email.\n4.  **Exploitation:** User clicks link, code executes.\n5.  **Installation:** Malware installs backdoor.\n6.  **Command & Control (C2):** Malware calls home for instructions.\n7.  **Actions on Objectives:** Data Theft / Encryption.\n\n**IR Application:** If you detect the attack at **Stage 3 (Delivery)**, you are in great shape. If you detect it at **Stage 7 (Actions on Objectives)**, it's a disaster. Our goal is to **Move Detection Left** (Detect earlier)."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Kill Chain Matching 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "An analyst observes outbound network traffic from a workstation to IP address 185.142.53.179 on port 443 every 60 seconds. Which Kill Chain phase does this represent?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Delivery",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Exploitation",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Command & Control (C2)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Reconnaissance",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Regular 'beaconing' traffic back to an attacker's server is the definition of Command & Control (Phase 6).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "code",
+            "title": "Practical: Log Analysis Snippet 📋",
+            "content": "You are given a snippet from `security.log`. What do you see?\n\n```log\nApr 20 02:15:33 server sshd[1234]: Failed password for invalid user admin from 203.0.113.5 port 52222 ssh2\nApr 20 02:15:34 server sshd[1234]: Failed password for invalid user admin from 203.0.113.5 port 52222 ssh2\nApr 20 02:15:36 server sshd[1234]: Failed password for invalid user admin from 203.0.113.5 port 52222 ssh2\nApr 20 02:15:37 server sshd[1234]: Failed password for invalid user root from 203.0.113.5 port 52222 ssh2\n```\n\n**Analysis:** This is a **Brute Force Attack**. The attacker is trying common usernames (`admin`, `root`) rapidly. Detection Phase triggers an alert for 'Multiple Failed Logins from Single Source'."
+        }
+    ]
+}

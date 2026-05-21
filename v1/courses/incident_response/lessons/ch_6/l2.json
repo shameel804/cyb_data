@@ -1,0 +1,117 @@
+{
+    "id": "l2",
+    "chapterId": "ch_6",
+    "title": "Removing Malware & Persistence 🗑️",
+    "description": "Techniques to delete files, registry keys, scheduled tasks, and backdoors.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Eradication",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Attacker's Hideouts 🕳️",
+            "content": "# Finding and Destroying Persistence\n\nAttackers don't just drop a file; they make sure their malware **survives a reboot**.\n\n**Common Persistence Mechanisms on Windows:**\n1.  **Run Keys (Registry)**\n    - `HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run`\n    - `HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run`\n\n2.  **Scheduled Tasks**\n    - Trigger malware to run every day at 3 AM.\n\n3.  **Services**\n    - Malware installs itself as a Windows Service.\n\n4.  **Startup Folder**\n    - `C:\\Users\\[User]\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup`\n\n5.  **WMI Event Subscriptions**\n    - **Stealthy.** Triggers malware when a specific event occurs (e.g., 'When Word.exe launches').\n\n6.  **Browser Extensions / Hijacks**\n    - Malicious Chrome/Edge extensions that steal passwords."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Linux / Unix Persistence 🐧",
+            "content": "### Cron Jobs and Systemd Timers\n\n**Linux Persistence Locations:**\n- **Cron:** `crontab -l` (User jobs) and `/etc/crontab`, `/etc/cron.d/` (System jobs).\n- **Systemd Timers:** `.timer` and `.service` files in `/etc/systemd/system/`.\n- **.bashrc / .profile:** Scripts that run when a user logs in.\n- **SSH Authorized Keys:** Attacker adds their public key to `~/.ssh/authorized_keys` for passwordless access.\n\n**Eradication Steps for Linux:**\n1.  Remove malicious cron entry.\n2.  Delete attacker's SSH key.\n3.  Kill the malicious process.\n4.  Delete the binary from `/tmp` or `/var/tmp` (common hiding spots)."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Persistence Mechanisms 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which Windows persistence mechanism is known for being stealthy because it triggers based on system events rather than a fixed schedule?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Run Key (Registry)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Scheduled Task",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "WMI Event Subscription",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Startup Folder",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "WMI Event Subscriptions are powerful and hard to detect because they execute code when specific events happen (e.g., process creation).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Using Autoruns for Windows Triage 🛠️",
+            "content": "### The Swiss Army Knife of Persistence Detection\n\n**Autoruns** (Sysinternals) is a free Microsoft tool that shows **almost every** place where code can be configured to run automatically on Windows.\n\n**How to Use It:**\n1.  Download Autoruns from Microsoft Sysinternals.\n2.  Run `Autoruns.exe` as Administrator.\n3.  **Options > Scan Options > Verify Code Signatures** and **Check VirusTotal**.\n\n**What to Look For:**\n- Entries highlighted in **Red** (Unsigned / Unknown).\n- Entries with **low VirusTotal scores**.\n- Entries pointing to **odd file paths** (e.g., `C:\\Users\\Public\\Documents\\svchost.exe`).\n\n**Eradication Action:** Right-click the entry and select **Delete**. **Be careful!** Deleting legitimate entries can break software."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Example: Removing a Malicious Scheduled Task 📅",
+            "content": "You found a scheduled task named `AdobeFlashUpdate` that runs `C:\\Windows\\Temp\\update.exe` daily.\n\n**Command to Remove (PowerShell):**\n```powershell\n# Check if task exists\nGet-ScheduledTask -TaskName \"AdobeFlashUpdate\"\n\n# Disable first (safer than immediate delete)\nDisable-ScheduledTask -TaskName \"AdobeFlashUpdate\"\n\n# Delete permanently\nUnregister-ScheduledTask -TaskName \"AdobeFlashUpdate\" -Confirm:$false\n```\n\n**Command Line (schtasks):**\n```cmd\nschtasks /Delete /TN \"AdobeFlashUpdate\" /F\n```\n\n**Important:** Before deleting, **document the task details** for your incident report:\n```powershell\nGet-ScheduledTask -TaskName \"AdobeFlashUpdate\" | Export-Clixml -Path \"C:\\Evidence\\malicious_task.xml\"\n```"
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Handling Web Shells 🌐",
+            "content": "### The Silent Backdoor on Web Servers\n\nA **Web Shell** is a small script file (`.asp`, `.aspx`, `.php`, `.jsp`) uploaded to a public web server. The attacker visits `https://yoursite.com/uploads/shell.php?cmd=whoami` to run commands.\n\n**How to Find Web Shells:**\n- **Search for recently modified files** in web directories.\n- **Search for suspicious file names:** `cmd.aspx`, `shell.php`, `adminer.php`, `uploader.php`.\n- **Search for suspicious strings** in files: `eval(base64_decode`, `system($_GET`, `Runtime.getRuntime().exec`.\n\n**Eradication:**\n1.  **Delete the file.**\n2.  **Check file creation timestamps.** If the shell was uploaded via a vulnerability (e.g., file upload bypass), **patch the vulnerability** immediately.\n3.  **Review web server logs** to see if anyone accessed the shell before you found it (Data Breach?)."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "tip",
+            "title": "Pro Tip: The 'Hidden' User Account 👤",
+            "content": "## Check for Rogue Admin Accounts\n\nAttackers often create local or domain accounts with names like `HelpAssistant`, `Support_388945a0`, or `DefaultAccount`.\n\n**Check for Local Users:**\n```cmd\nnet user\n```\n\n**Check Domain Admins Group:**\n```powershell\nGet-ADGroupMember -Identity \"Domain Admins\"\n```\n\n**If you find an unknown account:**\n- **Do NOT just delete it.**\n- **Disable it first.** (This buys you time to investigate if the attacker is actively using it).\n- **Check the account creation time** (Event ID 4720). This helps scope the breach timeline.\n- **After investigation, delete the account.**"
+        },
+        {
+            "id": "s_l2_8",
+            "type": "quiz",
+            "title": "Web Shell Detection 🕸️",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "You find a file named `config_inc.php` in the `/uploads/images/` directory containing `eval($_POST['cmd'])`. What is this?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A legitimate configuration file.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A web shell backdoor.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "An image file.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A database backup.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The `eval()` function combined with user input (`$_POST`) is a classic web shell pattern. It allows arbitrary code execution.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

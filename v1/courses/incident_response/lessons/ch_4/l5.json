@@ -1,0 +1,117 @@
+{
+    "id": "l5",
+    "chapterId": "ch_4",
+    "title": "Network Detection & Analysis 🌐",
+    "description": "Analyzing traffic patterns, flows, and packet captures.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Network Analysis",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Why Monitor the Network? 🌊",
+            "content": "# The Truth is on the Wire\n\nEndpoints can lie (rootkits hide processes). **Network traffic cannot lie.** If data leaves the building, it crossed the wire.\n\n**Network Visibility Sources:**\n1.  **Firewall Logs:** Allowed/Blocked connections (IP:Port).\n2.  **NetFlow / IPFIX:** Metadata summary (Who talked to whom? How much data?). *Does NOT show content.*\n3.  **IDS/IPS (Suricata/Snort):** Signature-based detection of exploits and malware patterns in packets.\n4.  **Full Packet Capture (FPC):** The **Holy Grail**. Saves the entire packet payload. *Extremely storage intensive.*\n5.  **Zeek (formerly Bro):** **The Gold Standard** for IR. Extracts protocol metadata (HTTP URIs, DNS queries, SSL Certificates, File Hashes from traffic)."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Zeek: The Analyst's Best Friend 🤝",
+            "content": "### Turning Packets into Logs\n\nZeek is an **open-source network security monitor**. It doesn't just look for 'bad signatures'; it **describes** what it sees.\n\n**What Zeek Logs Tell You:**\n- **conn.log:** Every TCP/UDP connection (Source IP, Dest IP, Duration, Bytes Transferred).\n- **dns.log:** Every DNS query (Who looked up `evil.com`?)\n- **http.log:** Every HTTP Request (What URL was visited? What User-Agent?)\n- **files.log:** Hashes of files transferred over the network (Did someone download `malware.exe`?)\n- **ssl.log:** SSL/TLS Certificate details (Is this a self-signed cert?)\n\n**IR Use Case:**\nUser reports phishing. You search Zeek `http.log` for the malicious URL. You find the source IP of the user. Then you pivot to `conn.log` to see **every other connection** that user made in the next 5 minutes (finding the C2 traffic)."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Network Log Sources 📡",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Which network monitoring tool is best for extracting file hashes of executables downloaded over HTTP?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "NetFlow",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Zeek (Bro)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Ping",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Nslookup",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Zeek's `files.log` extracts and hashes files transferred over protocols like HTTP, FTP, and SMB.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Detecting Command & Control (C2) 🕒",
+            "content": "### The Heartbeat of Malware\n\nMalware needs to phone home for instructions. This traffic pattern is called **Beaconing**.\n\n**Characteristics of Beaconing:**\n- **Regular Intervals:** Connection every exactly 60 seconds or 5 minutes.\n- **Low Data Volume:** Just a few bytes (a 'check-in').\n- **Unusual Destinations:** IP address in a country you don't do business with, or a weird port (e.g., port 8080 for HTTPS).\n\n**Detection Query (Pseudocode):**\n```sql\nSELECT Source_IP, Dest_IP, COUNT(*) \nFROM Firewall_Logs \nWHERE Time_Bucket = '5 minutes' \nGROUP BY Source_IP, Dest_IP \nHAVING COUNT(*) > 10 AND Bytes_Sent < 1000\n```\n*This finds IPs making many small, regular connections. A classic sign of C2.*"
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Detecting Data Exfiltration 📤",
+            "content": "### The Great Escape\n\n**Signs of Data Theft:**\n1.  **Volume Anomaly:** Workstation usually sends 50MB/day. Today it sent 5GB to an external IP.\n2.  **Protocol Anomaly:** Sending large data over **DNS** (port 53) is a classic exfiltration tunnel (DNS Tunneling).\n3.  **File Sharing Services:** Connections to `api.dropbox.com` or `transfer.sh` from a server that shouldn't be doing that.\n\n**Analysis with NetFlow:**\n- **Top Talkers Report:** Which internal IPs sent the most data externally in the last 24 hours? Sort descending. Investigate the top 10.\n\n**Warning:** Modern attackers use HTTPS. You won't see the *contents* of the stolen data, only the **volume** and **destination**."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "code",
+            "title": "Example: Detecting DNS Tunneling with Zeek 🕳️",
+            "content": "DNS Tunneling hides data in DNS queries (e.g., `A1B2C3D4.evil.com`).\n\n**Zeek Query to Find Long DNS Queries:**\n```bash\ncat dns.log | zeek-cut query | awk '{print length, $0}' | sort -nr | head -20\n```\n\n**Output:**\n```\n182 JVBERi0xLjQKJeLjz9MKNyAwIG9iago8PC9UeXBlL1hPYmplY3Q...sub.evil.com\n65 www.google.com\n20 mail.company.com\n```\n\n**Analysis:** A DNS query length of **182 characters** is **not normal**. This is likely Base64-encoded data being smuggled out via DNS. This is a **Critical** finding."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "tip",
+            "title": "Pro Tip: PCAPs Are Heavy 💾",
+            "content": "## Full Packet Capture Strategy\n\nYou cannot capture every packet 24/7. It's too expensive.\n\n**Strategy: Rolling Buffer.**\n- Keep a **2-7 day** rolling buffer of PCAPs.\n- When an alert fires, **immediately grab the relevant PCAP snippet** from the buffer before it rolls off.\n- **Use filters:** Only capture traffic to/from high-risk networks (DMZ, External).\n\n**Tool:** `tcpdump`, `netsniff-ng`, or commercial Network Forensics tools (e.g., Corelight)."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "quiz",
+            "title": "C2 Beaconing Detection 📶",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "A workstation is observed making an HTTPS connection to IP 5.6.7.8 exactly every 120 seconds, transferring about 200 bytes each time. This is most likely:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Windows Update checking for patches.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A user refreshing a news website.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Malware Command & Control (C2) beaconing.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A misconfigured NTP time sync.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Regular, low-volume connections to a rare external IP are classic beaconing. NTP uses UDP 123, not HTTPS.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

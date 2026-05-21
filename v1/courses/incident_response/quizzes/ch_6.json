@@ -1,0 +1,234 @@
+{
+    "id": "quiz_ch_6",
+    "chapterId": "ch_6",
+    "title": "Chapter 6: Eradication & Recovery Quiz",
+    "description": "Test your knowledge of removing threats, patching, restoring systems, and post-recovery monitoring.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary goal of the Eradication phase?",
+            "options": [
+                "To stop the incident from spreading.",
+                "To remove the threat actor's presence and the root cause vulnerability.",
+                "To restore data from backups.",
+                "To notify law enforcement."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Eradication removes the attacker's tools and fixes the hole they used to get in."
+        },
+        {
+            "id": "q2",
+            "type": "true_false",
+            "question": "It is safe to surgically clean (delete files/registry keys) a compromised Domain Controller instead of rebuilding it.",
+            "correctAnswer": false,
+            "explanation": "False. Domain Controllers must be rebuilt from trusted media. Surgical cleaning is too risky for the keys to the kingdom."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which tool is recommended for identifying persistence mechanisms on Windows (e.g., Run keys, Scheduled Tasks)?",
+            "options": [
+                "Task Manager",
+                "Autoruns",
+                "Notepad",
+                "Windows Defender Firewall"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Autoruns (Sysinternals) provides a comprehensive view of auto-starting code locations."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "To fully invalidate Golden Ticket attacks, the KRBTGT account password must be reset ______ times.",
+            "options": [
+                "Once",
+                "Twice",
+                "Three",
+                "Zero"
+            ],
+            "correctAnswer": "Twice",
+            "explanation": "Resetting twice with a replication wait invalidates all existing Kerberos tickets."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "An attacker gained access via an unpatched vulnerability in Apache (CVE-2021-44228 - Log4j). What is the MOST critical eradication step?",
+            "options": [
+                "Delete the attacker's web shell.",
+                "Apply the security patch for Log4j.",
+                "Block the attacker's IP address.",
+                "Restart the Apache service."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Patching fixes the root cause. Without it, the attacker can just re-exploit after you delete the shell."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "A web shell is a legitimate tool used by developers to debug web applications.",
+            "correctAnswer": false,
+            "explanation": "False. A web shell is a malicious backdoor script used by attackers to execute commands on a web server."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "During Recovery, why is it recommended to restore systems in 'waves' or phases?",
+            "options": [
+                "Because it takes time to install software.",
+                "To limit the damage if a backdoor was missed and the attacker returns.",
+                "Because users need training.",
+                "To save on electricity costs."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Phased restoration contains the blast radius. If a threat reactivates, it affects a small test group instead of all production."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "You discovered the attacker had access from April 1st to April 15th. It is now April 20th. Which backup is safest to restore?",
+            "options": [
+                "April 19th (Yesterday)",
+                "April 14th (During compromise)",
+                "March 31st (Before compromise)",
+                "April 16th (Day after compromise ended)"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Restore from a pre-compromise date to ensure the backup doesn't contain the attacker's backdoor."
+        },
+        {
+            "id": "q9",
+            "type": "true_false",
+            "question": "Emergency patching during an incident should follow the normal 2-week testing cycle to avoid breaking production.",
+            "correctAnswer": false,
+            "explanation": "False. Emergency patching accelerates the change control process because the risk of the attacker is greater than the risk of the patch."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is the purpose of the 'Enhanced Monitoring' period (typically 30 days) post-recovery?",
+            "options": [
+                "To train new analysts.",
+                "To detect delayed attacker activity or missed backdoors.",
+                "To test backup restoration speeds.",
+                "To calculate the cost of the incident."
+            ],
+            "correctAnswer": 1,
+            "explanation": "The watch period catches any recurrence of the threat that may have been dormant."
+        },
+        {
+            "id": "q11",
+            "type": "fill_blank",
+            "question": "The '3-2-1 Rule' of backups states you should have 3 copies, on 2 different media, with 1 copy being ______.",
+            "options": [
+                "Onsite",
+                "Offsite",
+                "In the cloud",
+                "Encrypted"
+            ],
+            "correctAnswer": "Offsite",
+            "explanation": "One copy must be offsite (and ideally immutable) to survive physical disasters or ransomware."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which of the following is a common Linux persistence mechanism?",
+            "options": [
+                "Run Key (Registry)",
+                "Scheduled Task",
+                "Cron Job",
+                "WMI Event Subscription"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Cron is the standard scheduler for recurring tasks on Linux/Unix."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "Once a server is rebuilt and scanned clean, you can disable the enhanced logging and monitoring for that server.",
+            "correctAnswer": false,
+            "explanation": "False. Keep enhanced logging for the full 30-day watch period. Consider making some of the logging permanent."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is the best way to verify that a security patch successfully remediated a vulnerability?",
+            "options": [
+                "Check the 'Installed Updates' list in Control Panel.",
+                "Run an authenticated vulnerability scan against the server.",
+                "Ask the system administrator if they installed it.",
+                "Assume it worked because the vendor said so."
+            ],
+            "correctAnswer": 1,
+            "explanation": "A vulnerability scanner (e.g., Nessus) provides independent verification that the vulnerability is no longer exploitable."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "During eradication, you find a malicious file at `C:\\Windows\\Temp\\svchost.exe`. What is the BEST course of action?",
+            "options": [
+                "Delete the file immediately.",
+                "Quarantine the file (move to a secure location), document its hash, then delete it.",
+                "Rename the file to `svchost.exe.old`.",
+                "Ignore it if antivirus didn't flag it."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Quarantine first to preserve evidence, document the IOC, then remove. This supports forensic reporting and future hunting."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "Multi-Factor Authentication (MFA) is an effective eradication control against password brute-force attacks.",
+            "correctAnswer": true,
+            "explanation": "True. MFA mitigates the root cause of weak/stolen passwords. It's a critical post-incident improvement."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What is the primary risk of 'surgically cleaning' a compromised workstation instead of rebuilding it?",
+            "options": [
+                "It takes too long.",
+                "You might miss a hidden backdoor or rootkit, leaving the system compromised.",
+                "It requires expensive software.",
+                "It violates software licensing agreements."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Rootkits and advanced malware can hide from standard cleaning tools. Rebuilding provides a known-clean state."
+        },
+        {
+            "id": "q18",
+            "type": "fill_blank",
+            "question": "Attackers often add their public key to the ______ file for passwordless SSH access on Linux.",
+            "options": [
+                "/etc/passwd",
+                "~/.ssh/authorized_keys",
+                "/etc/shadow",
+                "~/.bash_history"
+            ],
+            "correctAnswer": "~/.ssh/authorized_keys",
+            "explanation": "The authorized_keys file allows key-based authentication. Attackers add their keys for persistent backdoor access."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "Which of the following is a sign that recovery was successful and the incident can be closed?",
+            "options": [
+                "The CEO says it's fixed.",
+                "30 days of enhanced monitoring with zero recurrence of IOCs or suspicious behavior.",
+                "The helpdesk stops receiving calls.",
+                "The firewall logs show no blocked connections."
+            ],
+            "correctAnswer": 1,
+            "explanation": "A clean 30-day watch period with no recurrence is the standard metric for closure."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "It is acceptable to restore a backup taken during the compromise window if it's the most recent one and the business needs the data.",
+            "correctAnswer": false,
+            "explanation": "False. Restoring an infected backup reintroduces the threat. You must restore from a known-clean backup, even if it means losing some recent data."
+        }
+    ]
+}

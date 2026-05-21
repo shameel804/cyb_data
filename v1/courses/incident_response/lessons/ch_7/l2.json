@@ -1,0 +1,111 @@
+{
+    "id": "l2",
+    "chapterId": "ch_7",
+    "title": "The Lessons Learned Meeting 🤝",
+    "description": "Running a blameless post-mortem that drives real change.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Process",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Who Should Be in the Room? 🪑",
+            "content": "# The Lessons Learned Attendees\n\nThis is **not** a meeting for the entire company. Keep it focused.\n\n**Mandatory Attendees:**\n- **Incident Commander** (Facilitator)\n- **Lead Investigator** (Technical timeline owner)\n- **IT/Sysadmin Liaison** (System owner perspective)\n- **CSIRT Core Members** (Analysts who worked the incident)\n\n**Optional / As Needed:**\n- **Legal Counsel** (If litigation is expected, they may want the discussion under **Attorney-Client Privilege**).\n- **HR Representative** (If insider threat was involved).\n- **Management** (CISO or Director - they should listen, not dominate).\n\n**Who NOT to Invite:**\n- **The CEO.** (Their presence changes the dynamic; they get the Executive Summary later).\n- **Vendors / 3rd Parties.** (Unless they were part of the response team)."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "The Meeting Agenda 📋",
+            "content": "### A Structured Framework\n\nDon't wing it. Follow a strict agenda to stay on track.\n\n**Agenda (90 minutes max):**\n\n1.  **Set the Stage (5 min):** *'This is a blameless discussion. We are here to improve, not punish.'*\n\n2.  **Timeline Walkthrough (30 min):**\n    - Lead Investigator presents the **detailed chronological timeline** of the incident.\n    - Focus: What did we **know** and **when** did we know it?\n\n3.  **What Worked Well? (15 min)**\n    - **Crucial Step!** Celebrate wins. *'The out-of-band Signal chat worked flawlessly.'* *'The EDR isolation feature saved us hours.'*\n\n4.  **What Could Be Improved? (30 min)**\n    - Identify **process gaps** and **technical blind spots**.\n    - Phrase as *'We observed a delay in...'* not *'Bob was slow...'*\n\n5.  **Action Items (10 min)**\n    - Assign specific, measurable tasks to specific people with **due dates**.\n\n6.  **Close & Next Steps (5 min)**"
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Meeting Facilitation 🎤",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Who is typically the best person to facilitate (lead) the Lessons Learned meeting?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The CEO",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The Lead Investigator",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The Incident Commander",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The Helpdesk Manager",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The Incident Commander has the full context of the response and is trained in crisis leadership. The Investigator presents the facts; the IC facilitates discussion.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Asking the Right Questions 🤔",
+            "content": "### Digging into the 'Why?'\n\nUse the **'Five Whys'** technique to get to the root cause.\n\n**Example:**\n- *Problem:* It took 4 hours to isolate the infected server.\n- **Why?** Because the on-call network engineer didn't answer the phone.\n- **Why?** Because the on-call schedule was outdated and listed his old cell number.\n- **Why?** Because the process for updating the on-call schedule is manual and done once a year.\n- **Why?** Because we don't have an automated on-call management system (e.g., PagerDuty).\n- **Why?** Because it wasn't budgeted.\n\n**Root Cause:** Lack of budget for automated on-call tooling.\n**Action Item:** CISO to include PagerDuty in next quarter's budget request.\n\n**This is far more effective than:** *'Engineer John is lazy.'*"
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Common Lessons Learned Themes 📊",
+            "content": "### Patterns Seen in Almost Every Incident\n\n1.  **Communication Breakdown:** *'We didn't have an updated contact list for the Cloud Team.'*\n    - **Fix:** Centralized, automated contact management.\n\n2.  **Alert Fatigue:** *'The SIEM had 5,000 alerts; we missed the real one.'*\n    - **Fix:** SIEM tuning project.\n\n3.  **Lack of Visibility:** *'We had no logs from the compromised IoT device.'*\n    - **Fix:** Network segmentation and enhanced monitoring.\n\n4.  **Slow Containment:** *'We spent 2 hours getting approval to unplug the server.'*\n    - **Fix:** Update the **Policy** to delegate authority to the IC for specific actions.\n\n5.  **Backup Issues:** *'The backup was also encrypted.'* or *'Restore took 12 hours.'*\n    - **Fix:** Immutable backups / Faster recovery drills."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "tip",
+            "title": "Pro Tip: The 'Parking Lot' 🅿️",
+            "content": "## Managing Off-Topic Discussions\n\nDuring the 'What Could Be Improved' section, someone will inevitably say: *'You know, we should really replace the entire CRM system. It's ancient.'*\n\n**This is a $5 million project. It is NOT a Lessons Learned Action Item.**\n\n**Facilitator's Response:** *'That's a great strategic observation. I'm going to put that in the **Parking Lot** for a separate architectural discussion. For today, let's focus on the immediate process fixes we can make in the next 30 days.'*\n\n**The Parking Lot** keeps the meeting focused and prevents scope creep."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "Root Cause Analysis 🔍",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "The 'Five Whys' technique is used in Lessons Learned to:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Assign blame to five different people.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Identify the underlying root cause of a problem, not just the symptom.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Calculate the financial cost of the incident.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Determine the exact time of the breach.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Five Whys drills down past surface-level symptoms to reveal the systemic process or technical gap that allowed the incident to occur.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,96 @@
+{
+    "id": "l1",
+    "chapterId": "ch_2",
+    "title": "Phase 1: Preparation Deep Dive 🛠️",
+    "description": "Policies, playbooks, tools, and training. Building the foundation.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Lifecycle Phase 1",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Preparation is 90% of the Battle 🏋️",
+            "content": "# Why Preparation Wins Wars\n\nIn Incident Response, **Preparation** is the only phase you have **complete control over**. Once the incident starts, you are reacting.\n\n**NIST Definition:** *Establishing an incident response capability so that the organization is ready to respond to incidents.*\n\n**Consequences of Poor Preparation:**\n- Scrambling for contact info at 3:00 AM.\n- No legal clearance to disconnect a server.\n- Logs that don't exist because you didn't turn on auditing.\n\n**Goal of this Lesson:** Build your **IR Jump Bag**."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "The Policy Foundation 📜",
+            "content": "### 1. IR Policy (The Constitution)\n\nBefore you touch a single computer, you need **written authority**.\n\n**Key Policy Elements:**\n- **Statement of Management Commitment:** 'The CISO is authorized to take necessary actions.'\n- **Scope:** Does this apply to the Cloud? The remote employee in Bali?\n- **Definitions:** What counts as an 'Incident' vs 'Event'?\n- **Roles & Responsibilities:** Who calls the FBI? Who talks to the press?\n\n> ⚠️ **Without policy, your actions are just 'some IT guy breaking things'. With policy, you are 'Executing the Incident Response Plan'.**"
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Policy Check ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "true_false",
+                "question": "A security analyst should always have the authority to disconnect the CEO's laptop from the network if they see malware, even without a written policy.",
+                "correctAnswer": false,
+                "explanation": "False. Authority must be delegated via policy. Disconnecting the CEO without documented approval could result in disciplinary action, even if technically correct.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Playbook / Runbook 📖",
+            "content": "### 2. Playbooks: The Recipe for Response\n\nA **Policy** says *'We will respond'*.\nA **Playbook** says *'How to respond to Ransomware vs Phishing'*.\n\n**What goes in a Playbook?**\n- **Severity Levels:** Sev1 (Critical) vs Sev4 (Minor annoyance).\n- **Step-by-Step Actions:**\n  1. Isolate Network Segment.\n  2. Capture Volatile Data.\n  3. Engage Forensics Vendor.\n- **Communication Templates:** Pre-written emails for 'We are aware of an issue'.\n- **Escalation Paths:** Who needs to know when the clock hits 4 hours of downtime?\n\n**Analogy:** You don't read the instruction manual on how to use a fire extinguisher *while the kitchen is on fire*. You read it beforehand. The Playbook is that manual."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Example: Playbook Decision Tree 🌲",
+            "content": "Many playbooks are simple flowcharts.\n\n```text\n[Alert: Malicious Email Reported]\n         |\n         v\n[Check: Did user click link or open attachment?]\n         |\n    /----+----\\\n  Yes        No\n   |          |\n   v          v\n[Initiate     [Close ticket\n Credential    as Low Risk]\n Reset &       \n Endpoint Scan]\n```\n\n**Why this works:** It prevents the analyst from getting 'analysis paralysis'."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "The Toolbox & The Jump Bag 🎒",
+            "content": "### 3. Technical Preparation: The Jump Bag\n\nImagine your main file server is locked by ransomware. You can't access your tools stored **on** the file server. \n\n**You need a physical or isolated digital 'Jump Bag'.**\n\n**Essential Contents:**\n- **Bootable USB Drives:** With trusted forensic tools (e.g., Kali Linux, SIFT Workstation).\n- **Standalone Binaries:** `netstat.exe`, `procdump.exe`, `autorunsc.exe` (for Windows).\n- **Cables & Dongles:** Never underestimate a dead network port.\n- **Write Blockers:** Hardware devices to read hard drives without altering data.\n- **Encrypted Credentials:** Local admin passwords for critical systems (stored in a secure offline password manager).\n\n**Cloud Equivalent:**\n- A 'Break Glass' account in AWS/Azure that bypasses SSO (Single Sign-On) if SSO is compromised."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "tip",
+            "title": "Pro Tip: Out-of-Band Communication 📞",
+            "content": "## Assume Email is Compromised\n\nIf an attacker has access to a user's mailbox, they can read your response plans and see you coming.\n\n**Preparation Mandate:** Establish a **Secondary Communication Channel** that is **NOT** linked to your corporate identity.\n- **Examples:** Signal group chat, WhatsApp group, a separate Slack workspace on a different domain.\n- **Test it quarterly.** If you only test it during an incident, half the team will have lost the password."
+        },
+        {
+            "id": "s_l1_8",
+            "type": "quiz",
+            "title": "Jump Bag Essentials 🎒",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "What is the primary purpose of a hardware 'Write Blocker'?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To prevent the hard drive from being formatted.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To ensure evidence on the hard drive is not accidentally altered during analysis.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To block the hard drive from connecting to the internet.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To encrypt the contents of the drive.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Write blockers are critical for maintaining forensic integrity. They allow read-only access, ensuring timestamps and file contents aren't modified by the investigator's operating system.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

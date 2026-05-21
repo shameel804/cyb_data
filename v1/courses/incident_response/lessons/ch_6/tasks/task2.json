@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_6",
+    "title": "Create a Phased Recovery Plan",
+    "description": "Outline the order of restoring systems after a major incident.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Your organization suffered a ransomware attack. The following systems were affected and have been rebuilt/reimaged:\n\n- **DC01** (Primary Domain Controller)\n- **FS01** (File Server - Critical Accounting Data)\n- **WEB01** (Public Website)\n- **WORKSTATION-PC01** (Marketing Intern)\n- **WORKSTATION-PC02** (CFO's Laptop)\n- **SQL01** (Database Server - Backend for Website)\n\n**Task:** Create a **Phased Recovery Plan** by assigning each system to one of three waves (Wave 1, Wave 2, Wave 3). Explain your reasoning for the order.\n\n**Guidelines:**\n- Wave 1: Low-risk, non-critical systems to test the environment.\n- Wave 2: Business-critical but isolated systems.\n- Wave 3: Core infrastructure and high-value targets.\n\n**Output Format:**\n```\nWave 1: [List of Systems]\nReason: [Reasoning]\n\nWave 2: [List of Systems]\nReason: [Reasoning]\n\nWave 3: [List of Systems]\nReason: [Reasoning]\n```",
+    "hints": [
+        "Don't put the Domain Controller in Wave 1.",
+        "If the attacker comes back, you want them to hit a test PC first.",
+        "Databases often depend on other services."
+    ],
+    "expectedOutput": "Wave 1: WORKSTATION-PC01\nReason: Low-risk intern PC. If infected, minimal business impact.\n\nWave 2: WEB01, SQL01, FS01\nReason: Business critical, but should be restored after initial environment validation. Restore SQL before WEB if WEB depends on it.\n\nWave 3: DC01, WORKSTATION-PC02\nReason: Domain Controller holds keys to kingdom; restore last after confidence is high. CFO laptop is high-value target; delay reconnection.",
+    "solutionCode": "Wave 1: WORKSTATION-PC01\nReason: Test system with minimal impact. Use to validate the environment is clean before restoring critical assets.\n\nWave 2: FS01, SQL01, WEB01\nReason: File server and database are critical for business operations but can be restored after initial validation. Restore SQL01 before WEB01 if the website relies on the database.\n\nWave 3: DC01, WORKSTATION-PC02\nReason: Domain Controller should be restored last to ensure the environment is fully trusted. CFO laptop is a high-value target and should remain isolated longer for monitoring."
+}

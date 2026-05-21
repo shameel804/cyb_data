@@ -1,0 +1,96 @@
+{
+    "id": "l5",
+    "chapterId": "ch_7",
+    "title": "Closing the Loop: From Report to Action 🔄",
+    "description": "Turning lessons learned into updated playbooks, policies, and controls.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Improvement",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Feedback Loop 🔁",
+            "content": "# From Phase 6 Back to Phase 1\n\nRemember the lifecycle diagram? The arrow goes from **Post-Incident** right back to **Preparation**.\n\n**If you don't update Preparation, the lifecycle is broken.**\n\n**Concrete Actions from Lessons Learned:**\n\n| Lesson Learned | Update to Preparation (Phase 1) |\n| :--- | :--- |\n| 'SIEM missed the alert due to log volume' | Increase SIEM licensing / storage capacity. |\n| 'We couldn't contact the DBA at 3am' | Update On-Call Roster and test it monthly. |\n| 'Ransomware spread via RDP' | Enforce MFA on all RDP access. Update Playbook. |\n| 'Backup restore took 12 hours' | Purchase faster backup hardware / Change recovery procedure. |"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Action Item Tracking ✅",
+            "content": "### The 'Get Stuff Done' List\n\nA Lesson Learned without an **Action Item** is just a complaint.\n\n**SMART Action Items:**\n- **S**pecific\n- **M**easurable\n- **A**ssignable\n- **R**ealistic\n- **T**ime-bound\n\n**Bad Action Item:** *'Improve logging.'*\n**Good Action Item:** *'Enable PowerShell Script Block Logging on all Windows Servers. Owner: Jane Doe (Security Engineering). Due Date: May 15, 2026.'*\n\n**Tracking Methods:**\n- **Jira / ServiceNow Tickets:** Preferred. Assign to the responsible team's backlog.\n- **Excel Spreadsheet:** Okay for small teams, but easy to ignore.\n- **Post-It Note on Monitor:** Terrible. Do not do this.\n\n**Follow-Up:** The Incident Commander (or delegate) should review open Action Items **monthly** until they are closed."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Action Item Quality 📋",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Which of the following is an example of a SMART Action Item?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Fix the firewall.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Enforce MFA for all VPN users by June 1, 2026. Owner: Network Security Team.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Train users better.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "We should probably update the playbook sometime.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "SMART items are specific, measurable, assignable, realistic, and time-bound. Option 2 meets these criteria.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Updating Playbooks & Runbooks 📖",
+            "content": "### Living Documents, Not Shelfware\n\n**During the incident, you probably found errors in your Playbook:**\n- *'The command in the Runbook was for Exchange 2013; we use O365 now.'*\n- *'The escalation contact was wrong.'*\n\n**Post-Incident is the time to fix them.**\n\n**Playbook Update Process:**\n1.  **Annotate:** During the incident, the Lead Investigator marks up a printed copy with red pen.\n2.  **Revise:** Post-incident, update the official digital version (Wiki, Git, Word doc).\n3.  **Review:** Have a peer review the changes for accuracy.\n4.  **Publish:** Announce the updated version to the CSIRT.\n5.  **Train:** At the next Tabletop Exercise, use the **new** playbook.\n\n**Version Control is Critical:** Use a naming convention like `Phishing-Playbook-v2.3-2026-05-01.docx`."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Metrics & Reporting 📊",
+            "content": "### Measuring Improvement Over Time\n\nHow do you prove to the Board that the Lessons Learned process is actually working?\n\n**Track These Metrics Quarter-over-Quarter:**\n\n1.  **Mean Time to Detect (MTTD):** Average time from infection to detection.\n    - *Goal:* Decrease.\n\n2.  **Mean Time to Respond (MTTR):** Average time from detection to containment.\n    - *Goal:* Decrease.\n\n3.  **Recurring Incident Rate:** Percentage of incidents with the same root cause.\n    - *Goal:* **Zero.**\n\n4.  **Action Item Closure Rate:** Percentage of Lessons Learned Action Items completed on time.\n    - *Goal:* >90%.\n\n**Present this data at quarterly security reviews.** It transforms IR from a 'cost center' to a 'continuous improvement program'."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "warning",
+            "title": "The 'We're Too Busy' Trap 🕳️",
+            "content": "## The #1 Reason Action Items Fail\n\n**Three Months Later:**\n- *Manager:* 'Did we ever enable that PowerShell logging?'\n- *Analyst:* 'No, we had that other incident with the cloud bucket, and then the audit...'\n\n**Solution: The 'Fix It Friday' or '20% Time'**\n- Dedicate **one day a month** (or 4 hours a week) specifically to **closing out security improvement tasks**.\n- Block it on the team calendar. Protect it from operational interruptions.\n\n**If you don't schedule it, it won't happen.**"
+        },
+        {
+            "id": "s_l5_7",
+            "type": "tip",
+            "title": "Pro Tip: Celebrate the Wins 🎉",
+            "content": "## Morale Matters\n\nIncident Response is high-stress. The team just went through a war.\n\n**The final step of Post-Incident is to **Celebrate Success**.**\n\n- **Team Lunch:** Manager buys lunch for the team.\n- **Public Recognition:** Send an email to the team copying the CISO: *'Great work containing that ransomware. The swift action saved the company significant downtime.'*\n- **Spot Bonus:** If budget allows.\n\n**Why?** It reinforces positive behavior. It makes people feel valued. **And it makes them more likely to answer the phone at 3:00 AM next time.**"
+        },
+        {
+            "id": "s_l5_8",
+            "type": "quiz",
+            "title": "Continuous Improvement 🔄",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "Once the Lessons Learned meeting is over, the Post-Incident phase is officially closed.",
+                "correctAnswer": false,
+                "explanation": "False. The phase is not closed until Action Items are completed, reports are filed, and the loop feeds back into Preparation.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

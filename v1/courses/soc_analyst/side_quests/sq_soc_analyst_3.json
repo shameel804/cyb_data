@@ -1,0 +1,70 @@
+{
+    "id": "sq_soc_analyst_3",
+    "title": "Packet Oracle",
+    "triggerChapterIndex": 8,
+    "metadata": {
+        "type": "prediction"
+    },
+    "questions": [
+        {
+            "id": "sq_soc_analyst_3_q1",
+            "type": "code_output",
+            "question": "You run the Splunk search `index=windows EventCode=4625 | stats count by Account_Name | sort -count | head 1`. The top account has count 42. What is the output of the `head 1` command?",
+            "codeSnippet": "index=windows EventCode=4625 | stats count by Account_Name | sort -count | head 1",
+            "correctOutput": "Account_Name=Administrator count=42",
+            "correctAnswer": "Account_Name=Administrator count=42",
+            "options": [],
+            "explanation": "The search returns the account with the highest failed logon count.",
+            "xpReward": 25,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_soc_analyst_3_q2",
+            "type": "code_output",
+            "question": "Given this Wireshark filter: `tcp.flags.syn == 1 && tcp.flags.ack == 0` applied to a PCAP. What type of packets will be displayed?",
+            "codeSnippet": "tcp.flags.syn == 1 && tcp.flags.ack == 0",
+            "correctOutput": "SYN packets only (no ACK)",
+            "correctAnswer": "SYN packets only (no ACK)",
+            "options": [],
+            "explanation": "The filter shows pure SYN packets, typical of a SYN scan.",
+            "xpReward": 25,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_soc_analyst_3_q3",
+            "type": "code_output",
+            "question": "In a phishing email header, you see `Authentication-Results: spf=softfail smtp.mailfrom=evil.com; dkim=none`. What is the SPF and DKIM status indicating?",
+            "codeSnippet": "Authentication-Results: spf=softfail smtp.mailfrom=evil.com; dkim=none",
+            "correctOutput": "SPF softfail: sending IP not explicitly authorized; DKIM none: no signature present. The email is likely spoofed.",
+            "correctAnswer": "SPF softfail, DKIM none - likely spoofed email",
+            "options": [],
+            "explanation": "Combined, these indicate a high probability of spoofing.",
+            "xpReward": 25,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_soc_analyst_3_q4",
+            "type": "code_output",
+            "question": "You run the strings command on a suspicious binary and find: `http://update.badguy.xyz/payload.exe`. What does this likely indicate?",
+            "codeSnippet": "strings malware.exe | grep http",
+            "correctOutput": "It indicates malware likely downloads a payload from that URL.",
+            "correctAnswer": "It indicates malware likely downloads a payload from that URL.",
+            "options": [],
+            "explanation": "Embedded URLs are strong indicators of C2 or second-stage downloaders.",
+            "xpReward": 25,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_soc_analyst_3_q5",
+            "type": "code_output",
+            "question": "In a sandbox report, you see that a malicious macro creates a scheduled task named 'GoogleUpdate' that runs `powershell.exe -WindowStyle Hidden -Enc <base64>`. Predict the MITRE ATT&CK technique ID for this persistence mechanism.",
+            "codeSnippet": "Scheduled Task: schtasks /create /tn \"GoogleUpdate\" /tr \"powershell.exe ...\"",
+            "correctOutput": "T1053.005 (Scheduled Task/Job: Scheduled Task)",
+            "correctAnswer": "T1053.005",
+            "options": [],
+            "explanation": "Scheduled Task is a common persistence technique.",
+            "xpReward": 25,
+            "difficulty": 2
+        }
+    ]
+}

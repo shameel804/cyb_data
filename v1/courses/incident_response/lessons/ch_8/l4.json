@@ -1,0 +1,117 @@
+{
+    "id": "l4",
+    "chapterId": "ch_8",
+    "title": "Forensic Imaging & Hashing 🖴",
+    "description": "Creating bit-for-bit copies and proving evidence integrity.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Evidence Acquisition",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "What is a Forensic Image? 📸",
+            "content": "# More Than Just a Copy\n\nA standard file copy (`Ctrl+C`, `Ctrl+V`) copies **only the visible files**. It misses:\n- **Deleted Files** (still on disk until overwritten).\n- **Slack Space** (data in the unused portion of a cluster).\n- **Unallocated Space** (space not currently assigned to any file).\n\nA **Forensic Image** is a **bit-for-bit copy** of **every sector** on the hard drive, from sector 0 to the last sector.\n\n**Formats:**\n- **Raw / DD:** Simple raw copy. No metadata.\n- **E01 (Expert Witness Format):** **Industry Standard.** Includes embedded hash verification and case metadata. Can be compressed.\n- **AFF4:** Modern, open format for cloud forensics."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "The Write Blocker: Non-Negotiable 🚫",
+            "content": "### Protecting the Original Evidence\n\nWhen you connect a suspect hard drive to your forensic workstation via USB, **Windows will automatically write to the drive** (creating `System Volume Information` folder, updating last access times).\n\n**This DESTROYS the forensic integrity of the evidence.**\n\n**Solution: Hardware Write Blocker**\n- A physical device that sits between the suspect drive and your computer.\n- It **blocks** any write commands from reaching the drive.\n- It allows read commands only.\n\n**Software Write Blocker:**\n- Tools like FTK Imager can mount drives as read-only.\n- **Less reliable** than hardware blockers but acceptable in many IR scenarios.\n\n**Linux Equivalent:** Mount the drive with `mount -o ro,noexec,noload /dev/sdb1 /mnt/evidence` (but hardware blocker is still safer)."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Write Blocker Purpose 🛡️",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What is the primary purpose of a hardware write blocker?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To make the hard drive faster.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To prevent the investigator's computer from altering the suspect's hard drive.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To encrypt the hard drive.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To recover deleted files.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Write blockers ensure the original evidence remains unchanged during acquisition and analysis.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Cryptographic Hashing 🔐",
+            "content": "### The 'Digital Fingerprint' of Evidence\n\nA **hash** is a mathematical function that produces a unique fixed-size string from any input. Even a **single bit** change in the input produces a **completely different** hash.\n\n**Common Algorithms:**\n- **MD5:** 128-bit. Fast, but **cryptographically broken** (collisions possible). Still used for integrity checks, not security.\n- **SHA-1:** 160-bit. Also deprecated.\n- **SHA-256:** **Industry Standard for Forensics.** 256-bit. Extremely secure.\n\n**The Forensic Workflow:**\n1.  **Before Acquisition:** Hash the **source drive** (if possible, this is rare and risky).\n2.  **After Imaging:** Hash the **forensic image file**.\n3.  **Before Analysis:** Hash the image file **again** to ensure it hasn't changed since acquisition.\n4.  **If hashes match:** The evidence is intact. **If hashes differ:** Evidence integrity is compromised."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Example: Creating an Image with FTK Imager (GUI) 🖥️",
+            "content": "FTK Imager is a free, industry-standard tool for Windows.\n\n**Steps:**\n1.  Connect suspect drive via write blocker.\n2.  Open FTK Imager.\n3.  **File > Create Disk Image > Physical Drive**\n4.  Select the suspect drive.\n5.  **Add > Image Type > E01**\n6.  Fill in Case Information (Case Number, Examiner, Notes).\n7.  Choose destination (External evidence drive).\n8.  **Check 'Verify images after they are created'**\n9.  Click Start.\n\n**What it creates:**\n- `SUSPECT-DRIVE.E01` (The image data).\n- `SUSPECT-DRIVE.E01.txt` (Log file with hash values).\n\n**Example Log Entry:**\n```text\nImage verification results:\n  MD5 checksum:   5b6e6a96b6e6a96b6e6a96b6e6a96b6\n  SHA1 checksum:  a1b2c3d4e5f67890abcdef1234567890abcdef12\n  Verification completed. No errors found.\n```"
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Linux Imaging with `dd` + `dcfldd` 🐧",
+            "content": "### The Command Line Approach\n\n`dd` is the universal disk duplicator.\n\n**Basic Command (DANGEROUS if you mix up `if` and `of`):**\n```bash\nsudo dcfldd if=/dev/sdb of=/mnt/evidence/suspect-drive.dd bs=4M status=progress hash=sha256 hashlog=/mnt/evidence/suspect-drive.sha256\n```\n- **`if`**: Input File (Suspect Drive). **Double-check this.**\n- **`of`**: Output File (Image file).\n- **`bs=4M`**: Block size for speed.\n- **`status=progress`**: Show progress.\n- **`hash=sha256`**: Calculate SHA256 hash during copy.\n\n**The 'of' (Output) file MUST be on a drive larger than the source.**\n\n**Warning:** If you accidentally swap `if` and `of`, you will **overwrite your suspect drive with zeros**, destroying all evidence. **Measure twice, cut once.**"
+        },
+        {
+            "id": "s_l4_7",
+            "type": "tip",
+            "title": "Pro Tip: Sparse Images & Encryption 📦",
+            "content": "## Dealing with Terabytes\n\nImaging a 4TB drive takes **hours** and requires 4TB of free space.\n\n**Alternatives:**\n- **Targeted Collection:** Use **KAPE** to grab only the specific forensic artifacts you need (Registry, Event Logs, $MFT) instead of the whole drive. This is often sufficient for IR.\n- **Logical Image:** Image only the allocated files (not free space). *Loses deleted data but saves time.*\n- **Encrypted Drives:** You must **decrypt** the drive before imaging (or image the decrypted logical volume). This requires the BitLocker key or user password."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "quiz",
+            "title": "Forensic Image Types 💾",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "Which forensic image format includes embedded hash verification and case metadata?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Raw / DD",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "E01 (Expert Witness Format)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "ISO",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "ZIP",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "E01 is the standard forensic container that stores hashes and metadata within the file itself.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,117 @@
+{
+    "id": "l5",
+    "chapterId": "ch_9",
+    "title": "Applying Intel in Your IR Workflow ⚡",
+    "description": "Pivoting, enrichment, hunting, and sharing intelligence.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Operationalization",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Intel-Driven IR Workflow 🔄",
+            "content": "# From Alert to Enriched Investigation\n\nThreat Intel isn't a separate team; it's **embedded** in every step of IR.\n\n**Phase 2: Detection & Analysis**\n- **Enrich the Alert:** Check IP/Domain/Hash reputation **immediately**.\n- **Contextualize:** Is this IOC associated with a known threat actor? (e.g., 'This IP is linked to LockBit ransomware').\n\n**Phase 3: Containment & Scoping**\n- **Pivot on IOCs:** Search logs for *other* instances of the IOC to find the scope.\n- **Block with Confidence:** *'This domain is high-confidence malware C2. Block at firewall now.'*\n\n**Phase 4: Eradication & Recovery**\n- **Hunt for Residual TTPs:** Use ATT&CK to search for other techniques the same actor group is known for.\n\n**Phase 6: Post-Incident**\n- **Share IOCs/TTPs** internally and externally (ISACs) to protect others.\n- **Update Defensive Playbooks** based on the new TTPs observed."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Pivoting: The Analyst's Superpower 🦸",
+            "content": "### Using One Piece of Data to Find Everything Else\n\n**Pivoting** is the process of taking one indicator and using it to find related indicators.\n\n**Example Pivot Chain:**\n1.  **Start:** Suspicious IP `185.142.53.179`.\n2.  **Pivot 1 (Passive DNS):** What **domains** resolve to this IP? (Answer: `evil-c2.com`, `update-win.net`).\n3.  **Pivot 2 (WHOIS):** Who registered `evil-c2.com`? (Email: `hacker@mail.ru`).\n4.  **Pivot 3 (Reverse WHOIS):** What **other domains** did `hacker@mail.ru` register? (Answer: `paypal-secure-login.com`).\n5.  **Result:** You started with one IP and now have a list of **5 domains** to block and hunt for.\n\n**Essential Pivoting Tools:**\n- **VirusTotal Relations Tab:** Shows domains resolving to an IP, files downloaded from a domain.\n- **PassiveTotal / RiskIQ:** Enterprise passive DNS.\n- **Shodan / Censys:** What else is running on that IP? (Open ports, SSL certificates)."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Pivoting Concept 🔄",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "You have a suspicious domain `evil.com`. Which technique helps you find other domains registered by the same attacker?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Ping the domain.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Reverse WHOIS lookup on the registrant email.",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Check the domain's SSL certificate expiry.",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Run a port scan on the domain.",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Reverse WHOIS finds other domains registered with the same contact details.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Threat Hunting with Intel 🦅",
+            "content": "### Proactively Searching for Evil\n\n**Threat Hunting** is the proactive search for threats that have evaded existing security controls.\n\n**Intel-Driven Hunting Hypothesis:**\n- *'I read a report that APT29 is using a specific WMI Event Subscription for persistence. I will search my entire environment for that specific WMI filter.'*\n\n**Hunting Workflow:**\n1.  **Consume Intel:** Read a threat report or vendor blog.\n2.  **Extract TTP/IOC:** Identify the specific technique (e.g., T1546.003 - Windows Management Instrumentation Event Subscription).\n3.  **Translate to Query:**\n    - *'Show me all workstations with Event ID 5861 (WMI Filter Activity) in the last 30 days.'*\n4.  **Analyze Results:** Are any results suspicious?\n5.  **Escalate to Incident** if findings are confirmed malicious.\n\n**Hunting is how you find the attackers who are 'living off the land' and never triggered a signature alert.**"
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Intelligence Sharing & ISACs 🤝",
+            "content": "### We're All on the Same Side\n\n**Why Share Intel?**\n- Attackers reuse infrastructure across multiple victims.\n- If you share the IP that hit you, you protect your peers. If they share, they protect you.\n\n**How to Share Safely:**\n1.  **Anonymize Internal Data:** Never share internal hostnames, usernames, or file paths.\n2.  **Use Traffic Light Protocol (TLP):**\n    - **TLP:RED:** For your eyes only.\n    - **TLP:AMBER:** Share within your organization/trusted partners.\n    - **TLP:GREEN:** Share within the security community.\n    - **TLP:CLEAR:** Public.\n\n**Where to Share:**\n- **ISACs (Information Sharing and Analysis Centers):** Industry-specific groups (e.g., FS-ISAC for banking, H-ISAC for healthcare). **Highly recommended.**\n- **MISP (Malware Information Sharing Platform):** Open-source threat sharing platform.\n\n**Legal Note:** Involve **Legal Counsel** before joining an ISAC or sharing intel externally."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "code",
+            "title": "Example: Enriching an Alert with a SIEM Playbook 📋",
+            "content": "Many SIEMs allow automated enrichment using Threat Intel feeds.\n\n**Pseudo-Code for Alert Enrichment Playbook:**\n```python\n# When alert fires with external IP 'src_ip'\nsrc_ip = alert.get_field('source_ip')\n\n# Query Threat Intel Platform\nreputation = threat_intel_api.lookup_ip(src_ip)\n\nif reputation.score > 80:\n    alert.add_comment(f\"IP {src_ip} is known malicious (Confidence: High). Associated with {reputation.threat_actor}.\")\n    alert.set_severity(\"Critical\")\n    alert.add_tag(\"threat_intel_match\")\nelse:\n    alert.add_comment(f\"IP {src_ip} has no known reputation.\")\n```\n\n**Result:** The analyst sees a **pre-enriched** alert, saving them 10 minutes of manual research."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "tip",
+            "title": "Pro Tip: Build an Internal Threat Library 📚",
+            "content": "## Learn from Your Own Incidents\n\nEvery incident you respond to generates **unique, high-value intelligence** about the threats targeting *your* organization.\n\n**Action:**\n1.  After an incident, document all IOCs and TTPs observed.\n2.  Store them in an **Internal Threat Library** (a wiki, MISP, or spreadsheet).\n3.  **Automatically prioritize these internal IOCs** over public feeds.\n\n**Why?** If you saw it once in your environment, you are **highly likely** to see it again. This is the most relevant intel you will ever have."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "quiz",
+            "title": "Intel Sharing Protocol 📤",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "You want to share IOCs with a trusted industry peer group but not the general public. Which TLP designation should you use?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "TLP:RED",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "TLP:AMBER",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "TLP:GREEN",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "TLP:CLEAR",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "TLP:AMBER restricts sharing to the recipient's organization and its clients/partners on a need-to-know basis.",
+                "xpReward": 10
+            }
+        }
+    ]
+}
