@@ -1,0 +1,108 @@
+{
+    "id": "l1",
+    "chapterId": "ch_1",
+    "title": "What is Cryptography? 🤔",
+    "description": "The art and science of keeping secrets through mathematical scrambling.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Introduction",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "What hides in the word? 🧐",
+            "content": "# Cryptography = \"Secret Writing\"\n\nThe word comes from Greek:\n- **kryptós** = hidden\n- **gráphein** = to write\n\nIt’s the science of **transforming a readable message (plaintext)** into an **unreadable form (ciphertext)** so only the intended recipient can turn it back.\n\n> Think of a diary with a lock – only you have the key."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "The Basic Flow 🔄",
+            "content": "Every cryptographic system follows this flow:\n\n1. **Alice** writes a message (plaintext).\n2. She **encrypts** it using a secret key → ciphertext.\n3. The ciphertext travels over an insecure channel (the internet, a letter).\n4. **Bob** receives the ciphertext and **decrypts** it with the same (or a related) key → back to plaintext.\n\nAn **eavesdropper (Eve)** sees only the ciphertext and cannot understand it."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the unreadable, scrambled message called?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Plaintext",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Keytext",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Ciphertext",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Hash",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Ciphertext is the encrypted, unreadable form of the message. Plaintext is the original readable message.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "code",
+            "title": "See it in Action",
+            "content": "A tiny example using a Caesar cipher (shift letters by 3):",
+            "codeSnippet": "plaintext = 'HELLO'\nshift = 3\nciphertext = ''\nfor char in plaintext:\n    ciphertext += chr((ord(char) - 65 + shift) % 26 + 65)\nprint(ciphertext)  # KHOOR",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_5",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Cryptography ≠ Stenography\n\n**Cryptography** hides the *meaning* of the message.\n**Steganography** hides the *existence* of the message (e.g., a message hidden in an image’s pixels).\n\nThey’re often used together for extra security!"
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Think About It 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "Which of these is NOT a goal of cryptography?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Confidentiality (keeping secrets)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Integrity (detecting tampering)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Hiding the fact that communication happened",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Authentication (verifying identity)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Hiding the existence of communication is steganography, not cryptography’s primary goal. Cryptography aims for confidentiality, integrity, authentication, and non‑repudiation.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

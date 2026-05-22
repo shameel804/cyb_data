@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_1",
+    "title": "Caesar Encryptor",
+    "description": "Implement the classic shift cipher to encrypt uppercase letters.",
+    "estimatedMinutes": 10,
+    "problemStatement": "You are a Roman centurion needing to send a secret message. The Caesar cipher replaces each letter in the plaintext with a letter shifted `n` places down the alphabet.\n\n**Requirements:**\n- Write a function `caesar_encrypt(plaintext: str, shift: int) -> str`.\n- The input `plaintext` consists only of uppercase English letters (A-Z).\n- Shift must wrap around (after Z comes A).\n- Return the ciphertext as an uppercase string.\n\n**Example:**\n```\ncaesar_encrypt('HELLO', 3) → 'KHOOR'\ncaesar_encrypt('XYZ', 5)   → 'CDE'\n```\n\nYou must handle any shift value, even larger than 26 (use modulo).",
+    "hints": [
+        "Use `ord(char)` to get the ASCII code of a letter. 'A' is 65.",
+        "Subtract 65 to get a 0‑based index, add the shift, apply modulo 26, then add 65 back.",
+        "Don't forget to wrap around – `% 26` is your friend."
+    ],
+    "expectedOutput": "Paste your function definition in the editor; tests will call `caesar_encrypt('HELLO', 3)` and expect 'KHOOR'.",
+    "solutionCode": "def caesar_encrypt(plaintext, shift):\n    ciphertext = ''\n    for char in plaintext:\n        if 'A' <= char <= 'Z':\n            shifted = (ord(char) - 65 + shift) % 26 + 65\n            ciphertext += chr(shifted)\n        else:\n            ciphertext += char  # keep non‑letters unchanged\n    return ciphertext\n"
+}

@@ -1,0 +1,104 @@
+{
+    "id": "l3",
+    "chapterId": "ch_1",
+    "title": "The Cast of Characters: Plaintext, Ciphertext, Keys 🎭",
+    "description": "Get comfortable with the three stars of every cryptographic show.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Core Concepts",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Plaintext 📄",
+            "content": "**Plaintext** is the original, readable message or data. It can be:\n- Text like `\"Meet at dawn\"`\n- A binary file (image, PDF)\n- A database record\n\nPlaintext is the input to the **encryption** process. It's the secret you want to protect."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Ciphertext 🔐",
+            "content": "**Ciphertext** is the scrambled, unreadable output after encryption. To an outsider, it looks like random garbage.\n\nExample:\n- Plaintext: `HELLO`\n- Ciphertext (with shift 3): `KHOOR`\n\nA good cipher produces ciphertext that reveals **nothing** about the plaintext, even if you have many examples."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Identify It 🔍",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "If you encrypt the plaintext \"SUN\" and get \"VXQ\", what is \"VXQ\"?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Key",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Plaintext",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Ciphertext",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Hash",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "\"VXQ\" is the encrypted, unreadable form – that’s the ciphertext.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "The Key 🗝️",
+            "content": "The **key** is a secret piece of information that controls the encryption and decryption.\n\n- In a Caesar cipher, the key is the number of shifts (e.g., 3).\n- In modern ciphers like AES, the key is a long random string of bits (128, 192, or 256 bits).\n\n**Kerckhoffs’ Principle:** A cryptosystem should remain secure even if everything about the system (except the key) is public knowledge. Security must rely only on the key’s secrecy."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Key in Action",
+            "content": "Encrypting with different keys produces completely different ciphertexts from the same plaintext.",
+            "codeSnippet": "def encrypt(plain, key):\n    cipher = ''\n    for c in plain:\n        cipher += chr((ord(c) - 65 + key) % 26 + 65)\n    return cipher\n\nprint(encrypt('HELLO', 3))   # KHOOR\nprint(encrypt('HELLO', 10))  # ROVVY",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Key Size Matters 🔑",
+            "content": "## Strength in Length\n\nIn modern cryptography, the security is directly tied to the key size. A 128‑bit key has 2^128 possible combinations – that’s a number with 39 digits! Brute‑forcing it would take billions of years."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "True or False? 🎲",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "According to Kerckhoffs' Principle, the security of an encryption algorithm must depend on keeping the algorithm secret.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False! Kerckhoffs’ Principle states the algorithm can be public; security must rely on the key’s secrecy alone.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

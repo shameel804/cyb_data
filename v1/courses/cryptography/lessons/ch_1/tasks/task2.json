@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_1",
+    "title": "Caesar Decryptor",
+    "description": "Reverse the shift to recover the original message.",
+    "estimatedMinutes": 10,
+    "problemStatement": "Now that you’ve encrypted a message, the recipient needs to decrypt it. The decryption is just shifting in the opposite direction.\n\n**Requirements:**\n- Write a function `caesar_decrypt(ciphertext: str, shift: int) -> str`.\n- It must undo the encryption performed by your `caesar_encrypt` function.\n- For example, if encryption used shift 3, decryption should shift by -3 (i.e., 23 mod 26).\n- The input is uppercase letters only.\n\n**Example:**\n```\ncaesar_decrypt('KHOOR', 3) → 'HELLO'\ncaesar_decrypt('CDE', 5)   → 'XYZ'\n```\n\n**Hint:** You can reuse your encryption logic by calling it with `-shift` or `26 - (shift % 26)`.",
+    "hints": [
+        "Decryption is just encryption with the negative shift.",
+        "You can call `caesar_encrypt(ciphertext, -shift)` or adjust the shift modulo 26.",
+        "Ensure that negative shifts still wrap correctly: `(x - shift) % 26` works in Python."
+    ],
+    "expectedOutput": "Paste your function definition; tests will call `caesar_decrypt('KHOOR', 3)` and expect 'HELLO'.",
+    "solutionCode": "def caesar_decrypt(ciphertext, shift):\n    plaintext = ''\n    for char in ciphertext:\n        if 'A' <= char <= 'Z':\n            original = (ord(char) - 65 - shift) % 26 + 65\n            plaintext += chr(original)\n        else:\n            plaintext += char\n    return plaintext\n"
+}

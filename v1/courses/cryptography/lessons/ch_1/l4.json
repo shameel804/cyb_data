@@ -1,0 +1,111 @@
+{
+    "id": "l4",
+    "chapterId": "ch_1",
+    "title": "The Two Families: Symmetric & Asymmetric 👪",
+    "description": "One key or two? Discover the fundamental split in cryptographic methods.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Core Concepts",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Symmetric Encryption 🔐",
+            "content": "**Symmetric cryptography** uses the **same key** for both encryption and decryption.\n\n- Think of a treasure chest with one lock: Alice locks it with a key, sends the chest to Bob, who uses an identical copy of the key to open it.\n- Fast and efficient – great for encrypting large amounts of data.\n- The big challenge: **How to share the key securely?** If Eve intercepts the key, all is lost."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Symmetric Example",
+            "content": "Common symmetric algorithms:\n- **AES** (Advanced Encryption Standard) – used in Wi‑Fi, disk encryption, HTTPS.\n- **ChaCha20** – popular in mobile devices and TLS.\n- Legacy: DES, 3DES (now considered weak).\n\nSymmetric ciphers come in two flavours:\n- **Stream ciphers** – encrypt one bit/byte at a time.\n- **Block ciphers** – encrypt fixed‑size blocks (e.g., 128 bits)."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Symmetric Check 📦",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What is the main drawback of symmetric encryption?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It is too slow",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The ciphertext is larger than plaintext",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Secure key distribution is difficult",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It cannot be used for emails",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Both parties must have the same secret key before communicating, and sharing that key securely without a prior secure channel is a chicken‑and‑egg problem.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Asymmetric Encryption 🔑🔑",
+            "content": "**Asymmetric cryptography** uses a **pair of mathematically related keys**: a **public key** and a **private key**.\n\n- The public key can be shared with the world – used for encryption.\n- The private key is kept secret – used for decryption.\n- Analogy: A public mailbox (public key) where anyone can drop a letter, but only the owner with the private key can open it.\n- Solves the key distribution problem! No need to share a secret beforehand."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Asymmetric in Practice",
+            "content": "Common asymmetric algorithms:\n- **RSA** – based on factoring large numbers.\n- **ECC (Elliptic Curve Cryptography)** – smaller keys, same security.\n- **Diffie‑Hellman** – key exchange protocol (not encryption per se).\n\nAsymmetric is **slower** than symmetric, so it’s often used just to exchange a symmetric session key, which then encrypts the bulk data. This is called a **hybrid cryptosystem**."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "Memory Helper 🧠",
+            "content": "## Symmetric = Shared Secret\n## Asymmetric = Public‑Private Pair\n\nWhen you connect to a website via HTTPS, your browser uses asymmetric crypto (RSA/ECDH) to agree on a symmetric AES key for the rest of the session. Best of both worlds!"
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "Which Family? 🏠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "RSA is an example of which type of cryptography?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Symmetric",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Asymmetric",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Hash function",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Encoding",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "RSA uses a public/private key pair, making it asymmetric.",
+                "xpReward": 10
+            }
+        }
+    ]
+}
