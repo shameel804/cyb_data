@@ -1,0 +1,164 @@
+{
+    "id": "l4",
+    "chapterId": "ch_11",
+    "title": "Web Scraping with BeautifulSoup 🕸️",
+    "description": "Parse HTML, traverse the DOM, extract links, tables, and hidden form fields with BeautifulSoup.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Scraping",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "When There's No API",
+            "content": "# Scraping HTML Pages\n\nMany websites don't offer an API. You must fetch the raw HTML and extract the data yourself. `BeautifulSoup` (from `bs4`) makes this painless.\n\n```python\nfrom bs4 import BeautifulSoup\nimport requests\n\nhtml = requests.get('https://example.com').text\nsoup = BeautifulSoup(html, 'html.parser')\n```"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Navigating the Soup",
+            "content": "Access tags like attributes:",
+            "codeSnippet": "from bs4 import BeautifulSoup\nhtml = '<html><body><h1>Title</h1><p>Content</p></body></html>'\nsoup = BeautifulSoup(html, 'html.parser')\nprint(soup.h1.text)  # Title\nprint(soup.p.text)   # Content",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "BeautifulSoup Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What does `soup.title` return?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The text inside the <title> tag",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The <title> tag element",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A list of all titles",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "It returns the Tag object; use `.string` or `.text` to get its content.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "find() and find_all()",
+            "content": "# The Core Search Methods\n\n* `find(name, attrs)` – returns the first matching element.\n* `find_all(name, attrs)` – returns a list of all matches.\n\n```python\nlinks = soup.find_all('a')\nfor link in links:\n    print(link.get('href'))\n```\nYou can filter by attributes: `soup.find_all('div', class_='content')` (use `class_` because `class` is a Python keyword)."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Extract All Links",
+            "content": "Get absolute URLs with `urljoin`:",
+            "codeSnippet": "from bs4 import BeautifulSoup\nfrom urllib.parse import urljoin\nhtml = '<a href=\"/page1\">Link</a><a href=\"https://other.com\">Other</a>'\nsoup = BeautifulSoup(html, 'html.parser')\nbase = 'https://example.com'\nfor a in soup.find_all('a'):\n    full = urljoin(base, a.get('href'))\n    print(full)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "find_all() 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "How do you find all elements with class 'vulnerable' using BeautifulSoup?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "soup.find_all('div', class_='vulnerable')",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "soup.find_all('.vulnerable')",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "soup.select('.vulnerable')",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`class_` is the parameter name; `select` is also valid but uses CSS selectors. Both are correct; the answer given is A.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Extracting Tables and Lists",
+            "content": "# Many vulnerabilities are in tables\n\n```python\ntable = soup.find('table', id='results')\nrows = table.find_all('tr')\nfor row in rows:\n    cols = row.find_all('td')\n    if cols:\n        print(cols[0].text.strip())\n```\nAdjust selectors for the specific site."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "code",
+            "title": "CSS Selectors with `select()`",
+            "content": "Use familiar CSS selectors:",
+            "codeSnippet": "soup.select('div.content > p')   # direct children\nsoup.select('#main')               # ID\nsoup.select('.vuln-class')         # class\n```\n`select()` always returns a list.",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_9",
+            "type": "quiz",
+            "title": "CSS Selectors 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "multiple_choice",
+                "question": "What does `soup.select('a[href]')` return?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "All <a> tags that have an href attribute",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The href attribute of the first <a>",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The text of all links",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`[attr]` selector matches elements with that attribute.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_10",
+            "type": "text",
+            "title": "Scraping Login Forms",
+            "content": "# Find Hidden CSRF Tokens\n\nMany login forms include a hidden `<input>` with a unique token. You must extract it to submit the form successfully.\n\n```python\nform = soup.find('form', id='login')\ncsrf = form.find('input', {'name': 'csrf_token'})\nif csrf:\n    token = csrf['value']\n```\nWe'll use this in the next lesson."
+        },
+        {
+            "id": "s_l4_11",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use `lxml` parser for speed (pip install lxml)\n\n`soup = BeautifulSoup(html, 'lxml')` is faster and more lenient. Fall back to `html.parser` if lxml not installed."
+        },
+        {
+            "id": "s_l4_12",
+            "type": "text",
+            "title": "Next: Stateful Web Automation",
+            "content": "# Now we'll handle cookies, sessions, and real form submissions."
+        }
+    ]
+}

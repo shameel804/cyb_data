@@ -1,0 +1,131 @@
+{
+    "id": "l1",
+    "chapterId": "ch_11",
+    "title": "Understanding HTTP & Requests 🌐",
+    "description": "Learn the basics of HTTP – requests, responses, status codes, and how the web actually works.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Web Fundamentals",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Language of the Web",
+            "content": "# HTTP (HyperText Transfer Protocol)\n\nEvery time you visit a website, your browser sends an **HTTP request** to a server, and the server replies with an **HTTP response**. This is a client‑server protocol – exactly what we'll automate with Python.\n\n* Request: method (GET, POST, etc.), URL, headers, optional body.\n* Response: status code (200 OK, 404 Not Found…), headers, body (HTML, JSON, etc.)."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "Common HTTP Methods",
+            "content": "# Verbs of the Web\n\n* **GET** – retrieve a resource (page, image, API data).\n* **POST** – send data to the server (login form, new comment).\n* **PUT** / **PATCH** – update a resource.\n* **DELETE** – remove a resource.\n* **HEAD** – like GET but only headers, no body.\n\nIn hacking, we often send GET to fetch pages, POST to brute‑force logins, and HEAD to probe servers."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "HTTP Methods 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which HTTP method is typically used to submit a login form?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "GET",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "POST",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "HEAD",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "POST sends data in the request body, which is standard for form submissions.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Status Codes – The Server's Answer",
+            "content": "# Three‑Digit Codes\n\n* **2xx** Success: 200 OK, 201 Created.\n* **3xx** Redirection: 301 Moved Permanently, 302 Found.\n* **4xx** Client Error: 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found.\n* **5xx** Server Error: 500 Internal Server Error.\n\nWhen you scan a web server, the status code tells you if a resource exists or if you're blocked."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "quiz",
+            "title": "Status Codes 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "What does a 404 status code mean?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Success",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Server error",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Not Found",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "404 means the requested URL does not exist on the server.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "Headers – Metadata of the Web",
+            "content": "# Request and Response Headers\n\n* **User‑Agent** – identifies the client (browser, bot). You can spoof this.\n* **Content‑Type** – e.g., `application/json`, `application/x-www-form-urlencoded`.\n* **Cookie** – sends stored cookies back to the server.\n* **Set‑Cookie** (response) – tells the client to store a cookie.\n* **Authorization** – for sending API keys or tokens.\n\nAs a hacker, you'll manipulate headers to impersonate browsers, bypass restrictions, or inject payloads."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "code",
+            "title": "A Raw HTTP Request (text)",
+            "content": "What your Python script will send under the hood:",
+            "codeSnippet": "GET / HTTP/1.1\nHost: example.com\nUser-Agent: Mozilla/5.0 (CyberBot)\nAccept: text/html",
+            "codeLanguage": "http",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_8",
+            "type": "quiz",
+            "title": "Headers 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_3",
+                "type": "true_false",
+                "question": "The `User-Agent` header can be set to any string to disguise your script as a different browser.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "Yes, you can change the User-Agent to mimic different devices or browsers.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_9",
+            "type": "text",
+            "title": "URL Structure",
+            "content": "# scheme://host:port/path?query#fragment\n\nExample: `https://example.com:443/search?q=python#results`\n\nWhen crafting requests, you'll build URLs dynamically with query parameters."
+        },
+        {
+            "id": "s_l1_10",
+            "type": "text",
+            "title": "Next: Using `requests`",
+            "content": "# Now let's move from theory to practice with the `requests` library."
+        }
+    ]
+}

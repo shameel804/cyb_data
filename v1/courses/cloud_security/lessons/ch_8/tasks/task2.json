@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_8",
+    "title": "Implement API Rate Limiting and Authentication",
+    "description": "Describe how to secure an API endpoint using API Gateway, JWT, and a usage plan.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario\nYou have a REST API `/api/orders` deployed on AWS Lambda behind API Gateway. It currently allows anyone to call it without authentication. You must secure it.\n\n### Your Task\nDescribe the steps to:\n1. Add authentication using a Cognito User Pool and a JWT authorizer (or Lambda authorizer).\n2. Enforce rate limiting to 100 requests per second per API key for premium users and 10 requests per second for free tier users.\n3. Ensure only authenticated users with a valid token can access the endpoint, and the token's claims are passed to the Lambda function.\n\nExplain the components and configuration, not the exact code. For example, mention API Gateway usage plans, API keys, and Cognito Authorizer. Explain the flow from client to backend.",
+    "hints": [
+        "Cognito User Pool issues JWT tokens after login. API Gateway's JWT authorizer validates them.",
+        "Usage plans define throttling and quota limits, associated with API keys.",
+        "Free and premium tiers can be different usage plans."
+    ],
+    "expectedOutput": "A clear description of the architecture: Cognito -> API Gateway JWT authorizer -> usage plan + API key -> Lambda. How tokens are validated and limits enforced.",
+    "solutionCode": "1. **Authentication**:\n   - Create an Amazon Cognito User Pool. Clients authenticate and receive an ID/access JWT.\n   - In API Gateway, configure a JWT authorizer (or a Cognito User Pools authorizer) on the `/api/orders` resource. API Gateway validates the token signature, issuer, and expiry automatically.\n   - Any request without a valid JWT receives a 401 Unauthorized.\n\n2. **Rate Limiting**:\n   - Create two Usage Plans in API Gateway: 'Premium' (100 req/s, 10,000 req/day) and 'Free' (10 req/s, 1,000 req/day).\n   - Generate API Keys and associate each key with the appropriate usage plan.\n   - Require API key on the endpoint (`x-api-key` header). The client includes both the JWT and the API key.\n   - API Gateway throttles requests exceeding the plan's limits, returning 429 Too Many Requests.\n\n3. **Token claims to Lambda**:\n   - Enable 'Use Lambda Proxy Integration' and 'Pass through' for the request body. JWT claims (user ID, email) are automatically passed in the `event.requestContext.authorizer.claims` object.\n   - The Lambda function reads the user ID from claims to enforce object‑level authorization (e.g., only return orders belonging to that user).\n\n**Flow**: Client -> POST /login (Cognito) -> receives JWT. Then client sends GET /api/orders with headers: `Authorization: Bearer <JWT>` and `x-api-key: <key>`. API Gateway validates JWT, checks API key against usage plan, and if both pass, forwards the request to Lambda with claims."
+}

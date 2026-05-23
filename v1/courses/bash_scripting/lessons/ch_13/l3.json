@@ -1,0 +1,117 @@
+{
+    "id": "l3",
+    "chapterId": "ch_13",
+    "title": "Trapping Signals with `trap` 🪤",
+    "description": "Intercept interrupts, schedule cleanup tasks, and gracefully handle the unexpected.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Signal Handling",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "What is a Signal? 📡",
+            "content": "## The OS's Way to Communicate\n\nSignals are notifications sent to a process:\n- `SIGINT` (Ctrl+C) – interrupt.\n- `SIGTERM` – terminate (polite).\n- `SIGKILL` – kill (cannot be trapped).\n- `EXIT` – pseudo‑signal, triggered when the script ends normally.\n\nThe `trap` command lets you specify actions to run when a signal is received."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Simple trap Example",
+            "content": "Ignore Ctrl+C:",
+            "codeSnippet": "trap 'echo \"Ignoring Ctrl+C\"' INT\nwhile true; do sleep 1; done",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which signal is sent when the user presses Ctrl+C?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "SIGTERM",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "SIGINT",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "SIGKILL",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "EXIT",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "SIGINT (interrupt) is triggered by Ctrl+C.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Cleanup with `trap` on EXIT 🧹",
+            "content": "## Always Run Code Before Leaving\n\nTemporary files, locks, or open connections should be cleaned up. Using `trap` on `EXIT` guarantees a function runs even if the script exits unexpectedly (unless killed with SIGKILL).\n\n```bash\ncleanup() {\n  rm -f \"$tmpfile\"\n}\ntrap cleanup EXIT\n```"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Temp File Cleanup",
+            "content": "Create a temp file and ensure it's removed:",
+            "codeSnippet": "tmpfile=$(mktemp)\ntrap 'rm -f \"$tmpfile\"' EXIT\necho \"Working...\"\n# script work\nexit 0",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "`trap ... EXIT` runs only if the script exits with code 0.",
+                "correctAnswer": false,
+                "explanation": "`EXIT` trap executes whenever the script terminates, regardless of the exit code (unless killed by SIGKILL).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Error Handler with Line Number 🎯",
+            "content": "## Show Where It Failed\n\nYou can trap the `ERR` pseudo‑signal (Bash only) to run a function when any command fails (if `set -e` is not active or to augment it).\n\n```bash\nerr_handler() {\n  echo \"Error on line $1\"\n}\ntrap 'err_handler $LINENO' ERR\n```\nThis is extremely valuable for debugging."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "code",
+            "title": "ERR Trap Demo",
+            "content": "Run a failing command and catch the line:",
+            "codeSnippet": "trap 'echo \"Failed at line $LINENO\"' ERR\nfalse  # triggers trap\necho \"This still runs if set -e not enabled\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_9",
+            "type": "text",
+            "title": "Stacking traps & Removing Them 📚",
+            "content": "## Multiple Traps\n\nYou can set multiple traps for different signals. To remove a trap, use `trap - SIGNAL`.\n\n```bash\ntrap 'echo Interrupted' INT\ntrap 'echo Terminated' TERM\ntrap - INT   # now Ctrl+C kills as usual\n```"
+        },
+        {
+            "id": "s_l3_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "In a cleanup trap, use `rm -f` and `kill 0` carefully. Ensure the trap code itself doesn't cause errors that could mask the original exit status."
+        }
+    ]
+}

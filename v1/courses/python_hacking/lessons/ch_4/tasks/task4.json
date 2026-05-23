@@ -1,0 +1,15 @@
+{
+    "id": "task4",
+    "chapterId": "ch_4",
+    "title": "Ternary Logger",
+    "description": "Log scan results concisely using ternary expressions and f‑strings.",
+    "estimatedMinutes": 10,
+    "problemStatement": "You're building a scan report system. Write a script `ternary_logger.py` that defines variables: `host`, `port`, `is_open` (boolean). Using an f‑string, print a message like:\n\n\"Host 192.168.1.1:22 is open\" if `is_open` is True, else \"Host 192.168.1.1:22 is closed\"\n\nDo this with a ternary expression inside the f‑string. Next, add a `service` variable (e.g., \"SSH\") and if the service is known (non‑empty string), append \" - service: SSH\". Use another ternary to conditionally include the service part only if `service` is truthy.\n\nExample: if host=\"10.0.0.1\", port=80, is_open=True, service=\"\" → \"Host 10.0.0.1:80 is open\". If service=\"HTTP\" → \"Host 10.0.0.1:80 is open - service: HTTP\".\n\nUse one print statement with a complex f‑string.",
+    "hints": [
+        "Inside f‑string: `f\"Host {host}:{port} is {'open' if is_open else 'closed'}{\" - service: \" + service if service else ''}\"`.",
+        "Alternatively, precompute the status and suffix and embed them.",
+        "Be careful with quotes inside the ternary."
+    ],
+    "expectedOutput": "Host 10.0.0.1:80 is open - service: HTTP",
+    "solutionCode": "host = \"10.0.0.1\"\nport = 80\nis_open = True\nservice = \"HTTP\"\n\nstatus = \"open\" if is_open else \"closed\"\nsuffix = f\" - service: {service}\" if service else \"\"\nprint(f\"Host {host}:{port} is {status}{suffix}\")"
+}

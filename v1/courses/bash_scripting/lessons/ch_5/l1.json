@@ -1,0 +1,112 @@
+{
+    "id": "l1",
+    "chapterId": "ch_5",
+    "title": "The `for` Loop: Counted Iteration 🔢",
+    "description": "Master the classic for loop: iterate over lists, words, numbers, and use C‑style syntax.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "For Loops",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Why Loops? 🔁",
+            "content": "## Don't Repeat Yourself!\n\nImagine you need to print numbers 1 to 5. Without a loop, you'd write five `echo` lines. With a loop, you write the command once and let the loop do the repetition.\n\nLoops are the heartbeat of automation. Bash offers three main loops:\n- `for` – iterate over a list.\n- `while` – repeat while a condition is true.\n- `until` – repeat until a condition becomes true."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "code",
+            "title": "Basic `for` Syntax",
+            "content": "The simplest loop:\n```bash\nfor variable in list; do\n   commands\ndone\n```\n`list` can be words, numbers, or file patterns.",
+            "codeSnippet": "for colour in red green blue; do\n  echo \"$colour\"\ndone",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What keyword ends a `for` loop block?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "fi",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "done",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "esac",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "end",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`done` closes a `for`, `while`, or `until` loop.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Iterating Over Numbers 🔢",
+            "content": "## Brace Expansion Magic\n\nTo loop over a range, use **brace expansion**: `{start..end}`.\n\n```bash\nfor i in {1..5}; do\n   echo \"Number $i\"\ndone\n```\nYou can even add an optional step: `{1..10..2}` (1,3,5,7,9)."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Number Range Loop",
+            "content": "Print even numbers 2 to 10:",
+            "codeSnippet": "for n in {2..10..2}; do\n  echo \"$n\"\ndone",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "fill_blank",
+                "question": "What brace expansion creates the list 5,10,15,20?",
+                "options": [],
+                "correctAnswer": "{5..20..5}",
+                "explanation": "`{start..end..step}` – here start=5, end=20, step=5.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "C‑Style `for` Loop 🧾",
+            "content": "## Like in C or Java\n\nBash supports a C‑like syntax:\n```bash\nfor (( initialise; condition; increment )); do\n   commands\ndone\n```\nExample:\n```bash\nfor (( i=1; i<=5; i++ )); do\n   echo \"i = $i\"\ndone\n```"
+        },
+        {
+            "id": "s_l1_8",
+            "type": "code",
+            "title": "C‑Style Example",
+            "content": "Count down from 5:",
+            "codeSnippet": "for (( i=5; i>=1; i-- )); do\n  echo \"$i\"\ndone\necho \"Blast off!\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Which One to Use?\n- For fixed lists and files, use `for var in ...`.\n- For arithmetic stepping with conditions, use C‑style `for (( ))`."
+        }
+    ]
+}

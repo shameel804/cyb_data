@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_7",
+    "title": "Design a Least‑Privilege Lambda Role",
+    "description": "Create an IAM policy for a Lambda that only writes to a specific CloudWatch log group and reads from a specific DynamoDB table.",
+    "estimatedMinutes": 10,
+    "problemStatement": "## Scenario\nA Lambda function `OrderProcessor` needs to:\n- Write logs to CloudWatch Logs (the log group name is `/aws/lambda/OrderProcessor`).\n- Read items from a DynamoDB table named `Orders`.\n\nIt must not have any other permissions.\n\n### Your Task\nWrite an IAM policy (JSON) that can be attached to the Lambda execution role that grants exactly the above permissions. Include the necessary log stream creation permissions and limit resources appropriately. Assume the DynamoDB table ARN is `arn:aws:dynamodb:us-east-1:123456789012:table/Orders`.",
+    "hints": [
+        "For CloudWatch Logs, allow `logs:CreateLogStream`, `logs:PutLogEvents` on the specific log group ARN.",
+        "For DynamoDB, allow `dynamodb:GetItem` and `dynamodb:Query` maybe? The prompt says \"read items\". Typically `GetItem` and `Query` are needed, but the prompt just says read. I'll include `GetItem` and `Query` with scan maybe, but least privilege: only what's needed. Since they only said read, I'll allow `dynamodb:GetItem` and `dynamodb:Query` as they are read actions. I'll also add `dynamodb:BatchGetItem` if needed? Best to stick with `dynamodb:GetItem` and `dynamodb:Query`.",
+        "Separate statements."
+    ],
+    "expectedOutput": "A JSON IAM policy with two statements scoped to the specific resources.",
+    "solutionCode": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"logs:CreateLogStream\",\n        \"logs:PutLogEvents\"\n      ],\n      \"Resource\": \"arn:aws:logs:us-east-1:123456789012:log-group:/aws/lambda/OrderProcessor:*\"\n    },\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"dynamodb:GetItem\",\n        \"dynamodb:Query\"\n      ],\n      \"Resource\": \"arn:aws:dynamodb:us-east-1:123456789012:table/Orders\"\n    }\n  ]\n}"
+}

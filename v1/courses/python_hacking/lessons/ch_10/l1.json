@@ -1,0 +1,146 @@
+{
+    "id": "l1",
+    "chapterId": "ch_10",
+    "title": "Networking 101: IPs, Ports & Protocols 🌍",
+    "description": "Understand the core networking concepts you'll need: IP addresses, ports, TCP vs UDP, and the client‑server model.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Networking",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Internet's Address Book",
+            "content": "# IP Addresses: Where to Find a Machine\n\nEvery device on a network has an **IP address** (Internet Protocol). It's like a postal address. There are two versions:\n- **IPv4**: `192.168.1.10` (four numbers 0‑255)\n- **IPv6**: `fe80::1` (longer, hex)\n\nWhen you scan a network, you're sending packets to IP addresses."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "code",
+            "title": "Loopback Address",
+            "content": "`127.0.0.1` or `localhost` always refers to your own machine. Perfect for testing.",
+            "codeSnippet": "ping 127.0.0.1",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "IP Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What does the IP address 127.0.0.1 represent?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The default gateway",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The local machine (localhost)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A public DNS server",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "127.0.0.1 is the loopback address, pointing to the current device.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Ports: The Apartment Number 🚪",
+            "content": "# IP Gets You to the Building; Port Tells Which Apartment\n\nAn IP address alone isn't enough. A single server runs many services (web, email, SSH). A **port** (0–65535) identifies a specific service.\n- Well‑known ports: 80 (HTTP), 443 (HTTPS), 22 (SSH), 21 (FTP)\n- Registered ports: 1024–49151\n- Dynamic/private: 49152–65535\n\nA connection is defined by (source IP, source port, destination IP, destination port)."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "quiz",
+            "title": "Ports 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "Which port is typically used for HTTP?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "21",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "22",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "80",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Port 80 is the default for unencrypted HTTP.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "TCP vs UDP: Two Ways to Send Data",
+            "content": "# Connection‑Oriented vs Connectionless\n\n- **TCP (Transmission Control Protocol)**: Reliable, ordered, error‑checked. Like a phone call – you establish a connection, talk, then hang up. Used for HTTP, SSH, FTP.\n- **UDP (User Datagram Protocol)**: Unreliable, no connection. Like sending a postcard – you send and hope it arrives. Faster, used for DNS, streaming, gaming.\n\nFor most hacking tasks (port scanning, banner grabbing) we'll start with TCP. UDP scanning is trickier."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "TCP vs UDP 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_3",
+                "type": "multiple_choice",
+                "question": "Which protocol guarantees delivery and order?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "UDP",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "TCP",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Both",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "TCP provides reliability through acknowledgements and retransmissions.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_8",
+            "type": "text",
+            "title": "The Client‑Server Model",
+            "content": "# A Conversation Between Two Roles\n\n- **Server**: listens on a port, waits for incoming connections.\n- **Client**: initiates connection to a server.\n\nPython's `socket` module lets you play either role. We'll build both."
+        },
+        {
+            "id": "s_l1_9",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use `netstat -an` (or `ss -tuln`) to see what's listening\n\nOn your machine, run `netstat -an` to see active connections and listening ports. This helps you understand what's happening."
+        },
+        {
+            "id": "s_l1_10",
+            "type": "text",
+            "title": "Ready for Sockets",
+            "content": "# Next: The `socket` module – where the real action begins."
+        }
+    ]
+}

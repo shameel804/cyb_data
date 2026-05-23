@@ -1,0 +1,117 @@
+{
+    "id": "l3",
+    "chapterId": "ch_4",
+    "title": "The `test` Command & `[[ ]]` 🧪",
+    "description": "Master the hidden `test` command, the classic `[ ]`, and the modern `[[ ]]`.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Test Constructs",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Meet `test` 🕵️",
+            "content": "## The Invisible Command\n\n`[ ]` is actually an alias for the `test` command. You can write:\n\n```bash\ntest 5 -gt 2 && echo \"yes\"\n```\nIt's the same as `[ 5 -gt 2 ]`. Both return an exit status (0 = true, 1 = false).\n\nBecause `[` is a command, it needs its last argument to be `]`."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "test vs [ ]",
+            "content": "Equivalent:",
+            "codeSnippet": "test -f /etc/hosts && echo \"File exists\"\n[ -f /etc/hosts ] && echo \"File exists\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "true_false",
+                "question": "`[ ]` is a shell built‑in command, not part of the syntax.",
+                "correctAnswer": true,
+                "explanation": "Yes, `[` is a command (often a shell built‑in or a symlink to `test`). That's why spaces are crucial.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "The Modern `[[ ]]` 🆕",
+            "content": "## Enhanced Testing\n\nBash provides an improved version: `[[ ]]`. It's more powerful and safer:\n\n- No word splitting or pathname expansion inside.\n- Supports `&&` and `||` for logical operators.\n- Allows `=~` for regex matching.\n- No need to quote variables on the left of `==`.\n\n**Recommendation**: Use `[[ ]]` for Bash scripts; `[ ]` for POSIX compatibility."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "[[ ]] in Action",
+            "content": "Compare strings safely:",
+            "codeSnippet": "string=\"\"\nif [[ $string = \"\" ]]; then\n  echo \"String is empty\"\nfi",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "Which feature does `[[ ]]` support that `[ ]` does NOT?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "File testing",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Regex matching with =~",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Numeric comparisons",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "String equality tests",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`[[ ]]` can match regular expressions with `=~`, a feature absent from `[ ]`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Logical Operators 🧩",
+            "content": "## Combining Conditions\n\n- With `[ ]`: use `-a` (AND) and `-o` (OR).\n- With `[[ ]]` or inside `(( ))`: use `&&` and `||`.\n\nExamples:\n```bash\n[ 5 -gt 2 -a 10 -gt 5 ]   # old style\n[[ 5 -gt 2 && 10 -gt 5 ]]  # modern\n```"
+        },
+        {
+            "id": "s_l3_8",
+            "type": "code",
+            "title": "Check a Range",
+            "content": "Is the number between 10 and 20?",
+            "codeSnippet": "read -p \"Number: \" num\nif [[ $num -gt 10 && $num -lt 20 ]]; then\n  echo \"In range\"\nfi",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_9",
+            "type": "warning",
+            "title": "⚠️ Portability Note",
+            "content": "`[[ ]]` is not POSIX (plain sh). If you ever write a script that must run with `/bin/sh`, stick to `[ ]`."
+        },
+        {
+            "id": "s_l3_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "You can test a variable's existence and non‑emptiness with `[[ -v var ]]` (Bash 4.2+) or `[ -n \"$var\" ]`."
+        }
+    ]
+}

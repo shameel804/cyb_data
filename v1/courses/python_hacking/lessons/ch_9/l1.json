@@ -1,0 +1,170 @@
+{
+    "id": "l1",
+    "chapterId": "ch_9",
+    "title": "Understanding Modules: Code Organization 📚",
+    "description": "Learn what modules are, how to import them, and how to structure your own scripts as modules.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Modules",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Why Modules? Splitting Big Scripts ✂️",
+            "content": "# A Single Python File is a Module\n\nAny `.py` file is a **module**. When your hacking tool grows to hundreds of lines, you split it into multiple files – one for scanning, one for reporting, one for exploits.\n\nModules let you:\n* Reuse code across projects (import once, use everywhere)\n* Keep things organized and testable\n* Tap into Python's massive standard library and third‑party packages"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "code",
+            "title": "Your First import",
+            "content": "Import the built‑in `math` module:",
+            "codeSnippet": "import math\nprint(math.sqrt(25))  # 5.0",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Module Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What does `import math` allow you to do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Create a new math module",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Access functions and constants defined in the math module",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Install the math library",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`import module` loads the module and makes its contents accessible via module.name.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Different Ways to Import",
+            "content": "# `import` vs `from ... import`\n\n* **`import module`** – brings the whole module; access with `module.function()`.\n* **`from module import something`** – imports specific names directly.\n* **`from module import *`** – imports everything (avoid, can cause name clashes).\n* **`import module as alias`** – give it a short nickname.\n\n```python\nfrom math import sqrt, pi\nprint(sqrt(9))   # 3.0\nprint(pi)        # 3.14159...\n```"
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Alias Example",
+            "content": "Use `import ... as` to shorten long names:",
+            "codeSnippet": "import numpy as np\ndata = np.array([1,2,3])\nprint(data)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Import Styles 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "What does `from random import randint` allow you to do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Call randint() directly without the module prefix",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Import only the random module",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Create a random number module",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "This imports the `randint` function into the current namespace so you can call it directly.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "Where Python Looks for Modules",
+            "content": "# The Module Search Path (sys.path)\n\nPython searches for modules in:\n1. The current directory\n2. Directories listed in the `PYTHONPATH` environment variable\n3. Standard library directories\n4. Site‑packages (where pip installs stuff)\n\nYou can see the search path with:\n```python\nimport sys\nprint(sys.path)\n```"
+        },
+        {
+            "id": "s_l1_8",
+            "type": "text",
+            "title": "The Special `__name__` Variable",
+            "content": "# Is This File Being Run or Imported?\n\nEvery module has a built‑in variable `__name__`. When you run a file directly, `__name__` is set to `\"__main__\"`. When imported, it's set to the module's name.\n\n```python\n# mytool.py\ndef main():\n    print(\"Running tool\")\n\nif __name__ == \"__main__\":\n    main()\n```\nThis pattern allows a file to be both a reusable module and a standalone script."
+        },
+        {
+            "id": "s_l1_9",
+            "type": "code",
+            "title": "if __name__ == \"__main__\" Demo",
+            "content": "Create a script with that guard:",
+            "codeSnippet": "def scan():\n    print(\"Scanning...\")\n\nif __name__ == \"__main__\":\n    scan()",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_10",
+            "type": "quiz",
+            "title": "__name__ 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_3",
+                "type": "multiple_choice",
+                "question": "What is the value of `__name__` when a Python file is run directly?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The filename",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "\"__main__\"",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "None",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "When executed as the main program, Python sets __name__ to '__main__'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_11",
+            "type": "text",
+            "title": "Organizing Your Own Modules",
+            "content": "# Turn Your Hacking Tool into a Module\n\nCreate a file `scanner.py` with functions like `tcp_scan(host, port)`. Then in another file, just `import scanner`. The `if __name__ == \"__main__\"` guard lets you test the module by running it directly.\n\nThis is the foundation of building reusable hacking libraries."
+        },
+        {
+            "id": "s_l1_12",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Keep imports at the top\n\nBy convention, all import statements go at the top of the file, after any module docstring, but before other code. This makes dependencies clear."
+        },
+        {
+            "id": "s_l1_13",
+            "type": "text",
+            "title": "Next: Built‑in Powerhouses",
+            "content": "# Now let's explore two of the most important built‑in modules for hackers: `os` and `sys`."
+        }
+    ]
+}

@@ -1,0 +1,111 @@
+{
+    "id": "l4",
+    "chapterId": "ch_9",
+    "title": "SIEM & Threat Detection 🛡️",
+    "description": "How Security Information and Event Management tools connect the dots and detect attacks.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Why You Need a SIEM 🕵️",
+            "content": "# Connecting the Dots\n\nA single failed SSH login is noise. A thousand failed logins followed by a successful login and an S3 bucket policy change is an attack. A **SIEM** (Security Information and Event Management) aggregates logs from multiple sources and correlates them to find patterns.\n\n- **Without SIEM**: You have separate logs for CloudTrail, VPC Flow, and application errors. You’d need a human to cross‑reference them.\n- **With SIEM**: It automatically alerts: “Potential credential stuffing followed by data exfiltration.”\n\n*SIEM is the detective that pieces together clues from different crime scenes.*"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "SIEM Purpose 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What is the primary value of a SIEM?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It encrypts all logs",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It collects and correlates events from multiple sources to detect threats",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It replaces firewalls",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It automatically patches vulnerabilities",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "SIEM centralizes logs and applies correlation rules to identify anomalies and attacks.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Cloud‑Native Threat Detection 🔍",
+            "content": "## Purpose‑Built for the Cloud\n\nMajor cloud providers offer their own intelligent threat detection services, which are essentially managed SIEM/UEBA:\n\n- **AWS GuardDuty**: Analyzes CloudTrail, VPC Flow Logs, DNS logs, S3 data events, and Kubernetes audit logs. Uses machine learning and threat intel to identify anomalies (e.g., instance communicating with a known crypto‑mining domain).\n- **Azure Sentinel**: A full cloud‑native SIEM with SOAR (automated response playbooks).\n- **Google Cloud Security Command Center (SCC)**: Provides threat detection for containers, VMs, and IAM misconfigurations.\n\n*GuardDuty is the easiest security win on AWS – enable it with one click, no agents required.*"
+        },
+        {
+            "id": "s_l4_4",
+            "type": "quiz",
+            "title": "GuardDuty Match 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "Which AWS service automatically detects that an EC2 instance is mining Bitcoin without you writing any rules?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "AWS Config",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Amazon Inspector",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "GuardDuty",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "CloudTrail",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "GuardDuty detects suspicious activities like cryptomining using machine learning on network and DNS logs.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Open‑Source and Third‑Party SIEMs 🛠️",
+            "content": "If you need a custom or multi‑cloud solution:\n- **Splunk**, **Sumo Logic**, **Datadog Security** – commercial, feature‑rich.\n- **Elastic Security (ELK stack)** – open source, powerful search and dashboarding.\n- **Wazuh** – open‑source SIEM with XDR capabilities.\n\n*Choose based on your scale, budget, and in‑house expertise. The best SIEM is the one you actually tune and respond to.*"
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Correlation Rules & Threat Intel 🧠",
+            "content": "A SIEM’s power comes from **rules**:\n- **Brute force detection**: >5 failed login attempts from the same IP in 1 minute.\n- **Impossible travel**: Successful login from New York, then 5 minutes later from Sydney (physically impossible).\n- **Data exfiltration**: >1GB of outbound traffic from a database server at 2 AM.\n\nMany SIEMs include threat intelligence feeds (known malicious IPs, domains) to automatically block or flag connections.\n\n*Continuously tune your rules. Too many false positives lead to alert fatigue; too few may miss an attack.*"
+        },
+        {
+            "id": "s_l4_7",
+            "type": "tip",
+            "title": "Start With GuardDuty + Security Hub 🚀",
+            "content": "Enable GuardDuty in every region, then enable AWS Security Hub. Security Hub aggregates findings from GuardDuty, Inspector, Macie, and IAM Access Analyzer into a unified dashboard with compliance checks."
+        }
+    ]
+}

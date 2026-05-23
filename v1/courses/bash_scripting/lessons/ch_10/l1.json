@@ -1,0 +1,117 @@
+{
+    "id": "l1",
+    "chapterId": "ch_10",
+    "title": "Pipes: The Power of Connection 🔗",
+    "description": "Understand pipes from the inside – how they connect processes, their exit statuses, and subshell behaviour.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Pipeline Fundamentals",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Magic of `|` ✨",
+            "content": "## Stdout ➡️ Stdin\n\nA **pipe** (`|`) connects the standard output of one command to the standard input of the next. It's the backbone of Unix philosophy: small, composable tools.\n\n```bash\ncommand1 | command2 | command3\n```\nData flows from left to right, processed in stages."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "code",
+            "title": "Simple Pipe",
+            "content": "Count how many shell users exist:",
+            "codeSnippet": "grep -c '/bin/bash' /etc/passwd",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What does `ls -l | wc -l` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Counts the number of files and directories",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Lists long format and then word count",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Shows only directories",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It's an error",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`ls -l` output is piped to `wc -l`, which counts lines.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Pipes Create Subshells 👯",
+            "content": "## Each command in a pipeline runs in a subshell.\n\nThis means variables changed inside the pipeline are lost afterward.\n\n```bash\na=5\necho \"hi\" | { a=10; echo \"$a\"; }  # prints 10 inside\necho \"$a\"  # still 5\n```\nTo capture modifications, use process substitution or redirect the final output."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Variable Scope in Pipelines",
+            "content": "Try to modify a variable in a pipeline:",
+            "codeSnippet": "total=0\nfind . -type f | while read f; do\n  ((total++))\ndone\necho \"Total files: $total\"  # 0!",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "A variable changed inside a `while` loop that is part of a pipeline will be visible after the pipeline.",
+                "correctAnswer": false,
+                "explanation": "Because the loop runs in a subshell, its variable changes are lost when the pipeline ends.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "Exit Status of Pipelines 🚦",
+            "content": "## Which Command's Exit Code Wins?\n\nBy default, the exit status of a pipeline is the exit status of the **last** command.\n\n```bash\nfalse | true\necho $?  # 0\n```\nTo get the status of any command, use the `PIPESTATUS` array (Bash‑only). It holds the exit codes of all parts in the last pipeline."
+        },
+        {
+            "id": "s_l1_8",
+            "type": "code",
+            "title": "PIPESTATUS Example",
+            "content": "Catch the failure of the first command:",
+            "codeSnippet": "ls /nonexistent | wc -l\necho \"PIPESTATUS: ${PIPESTATUS[0]} ${PIPESTATUS[1]}\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_9",
+            "type": "text",
+            "title": "Fail Fast with `set -o pipefail` 🛑",
+            "content": "## Stop on Any Failure\n\nIf you want the pipeline to fail if **any** command fails, enable pipefail:\n\n```bash\nset -o pipefail\nfalse | true\necho $?  # 1\n```\nThis is essential for robust scripts."
+        },
+        {
+            "id": "s_l1_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `trap` to handle errors and `set -e` together with `pipefail` for strict error checking in production scripts."
+        }
+    ]
+}

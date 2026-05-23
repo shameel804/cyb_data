@@ -1,0 +1,104 @@
+{
+    "id": "l2",
+    "chapterId": "ch_9",
+    "title": "CloudTrail & Cloud Audit Logs 📜",
+    "description": "Deep dive into API audit trails, log integrity, and how to track every action in your cloud.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The API Diary: What Is CloudTrail? 📓",
+            "content": "# Recording Every API Call\n\n**AWS CloudTrail** (and analogous services like **Azure Activity Log**, **Google Cloud Audit Logs**) automatically records every API call made in your account. Think of it as a surveillance camera that captures *who* did *what*, *when*, and *from where*.\n\n- **Management Events**: Control plane operations – creating an EC2 instance, modifying a security group, logging in.\n- **Data Events**: Data plane operations – S3 object reads, DynamoDB table writes (often additional cost).\n- **Insights Events**: Unusual activity detected by CloudTrail’s machine learning.\n\n*By default, management events are logged for 90 days in the Event History. For longer retention and deeper analysis, create a **Trail**.*"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "CloudTrail Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which type of CloudTrail event would capture an S3 bucket being made public?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Data event",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Insight event",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Management event",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Network event",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Changing a bucket policy is a management (control plane) action, captured as a management event.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Trails: Preserving Evidence Forever 🗄️",
+            "content": "## Creating a Trail\n\nA **trail** delivers CloudTrail log files to an S3 bucket (and optionally CloudWatch Logs). Key settings:\n- **Apply to all regions** – ensures global coverage.\n- **Enable log file validation** – CloudTrail adds a digest file with hashes to prove logs haven’t been tampered with.\n- **Encrypt log files** with SSE‑KMS.\n- **Organization trail** – a single trail that logs all accounts in your AWS Organization.\n\n*Log integrity is critical for forensics and compliance. Never skip validation.*"
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Creating a Trail with AWS CLI",
+            "content": "Enable a multi‑region trail with validation:",
+            "codeSnippet": "aws cloudtrail create-trail \\\n  --name my-security-trail \\\n  --s3-bucket-name my-cloudtrail-logs \\\n  --is-multi-region-trail \\\n  --enable-log-file-validation \\\n  --kms-key-id alias/cloudtrail-key",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Cross‑Cloud Audit Logs 🌐",
+            "content": "| Cloud | Audit Service | Key Feature |\n|-------|---------------|-------------|\n| AWS | CloudTrail | Organization trail, integrity validation |\n| Azure | Activity Log + Diagnostic Settings | Integration with Azure Monitor, retention up to 90 days free |\n| GCP | Cloud Audit Logs (Admin, Data, System) | Always on, can't be disabled; streams to Cloud Logging |\n\n*All three provide a detailed record of control and data plane actions. Always centralize logs to a security‑hardened account.*"
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Log Integrity 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "Enabling log file validation on CloudTrail means each log file is encrypted and cannot be deleted.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Validation provides a cryptographic hash to detect tampering; it does not prevent deletion. Use S3 MFA Delete or bucket policies for deletion protection.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "tip",
+            "title": "Send Logs to a Dedicated Security Account 🔐",
+            "content": "Create a separate AWS account just for logs. Use S3 bucket policies and cross‑account access so that even if your production account is compromised, attackers cannot delete the evidence."
+        }
+    ]
+}

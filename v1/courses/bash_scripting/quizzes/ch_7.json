@@ -1,0 +1,265 @@
+{
+    "id": "quiz_ch_7",
+    "chapterId": "ch_7",
+    "title": "Chapter 7 Quiz",
+    "description": "Test your knowledge of file reading, redirections, cut/sort/uniq, tr/sed, and grep!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which command shows the first 15 lines of a file?",
+            "options": [
+                "head -15 file",
+                "cat -15 file",
+                "less -15 file",
+                "tail -15 file"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`head -n 15` or `head -15` displays the first 15 lines."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What does `cat file1 file2 > combined` do?",
+            "options": [
+                "Appends file2 to file1",
+                "Creates 'combined' containing the contents of file1 then file2",
+                "Compares file1 and file2",
+                "Merges file1 and file2 into file1"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`cat` concatenates, and `>` redirects output to a new file."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "How do you follow a growing log file in real time?",
+            "options": [
+                "tail -n 20 file",
+                "tail -f file",
+                "less -f file",
+                "head -f file"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`tail -f` follows the file, displaying new lines as they are written."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which `wc` option counts lines only?",
+            "options": [
+                "-c",
+                "-w",
+                "-l",
+                "-m"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`-l` counts lines."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What is the difference between `>` and `>>`?",
+            "options": [
+                "`>` overwrites; `>>` appends",
+                "`>>` overwrites; `>` appends",
+                "Both do the same thing",
+                "`>` is for stdout, `>>` for stderr"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`>` truncates the file before writing; `>>` adds to the end."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "How can you redirect both stdout and stderr to `out.log` in one go?",
+            "options": [
+                "command > out.log 2>&1",
+                "command &> out.log",
+                "command 2> out.log 1>&2",
+                "Both A and B"
+            ],
+            "correctAnswer": 3,
+            "explanation": "`> out.log 2>&1` and `&> out.log` are both valid Bash syntaxes."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What does `tee -a file` do?",
+            "options": [
+                "Reads from file and prints to stdout",
+                "Appends stdin to file and also prints to stdout",
+                "Truncates file and writes stdin",
+                "Tests if file exists"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-a` makes tee append to the file instead of overwriting."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which `cut` delimiter sets a comma as the field separator?",
+            "options": [
+                "-f,",
+                "-d,",
+                "-s,",
+                "-t,"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-d,` specifies the delimiter (comma)."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What does `cut -c1-5 file` do?",
+            "options": [
+                "Deletes characters 1-5",
+                "Extracts characters 1 through 5 of each line",
+                "Counts characters 1-5",
+                "Shows lines 1-5"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-c` operates on character positions."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which `sort` flag sorts numbers correctly (2 before 10)?",
+            "options": [
+                "-n",
+                "-h",
+                "-r",
+                "-g"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`-n` enables numeric sort."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Why is `sort file | uniq` used together?",
+            "options": [
+                "`uniq` only removes duplicate lines that are next to each other",
+                "`uniq` cannot read from a file",
+                "`sort` always removes duplicates",
+                "`uniq` requires sorted input to work at all"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`uniq` only detects adjacent duplicates, so sort first to group them."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What does `tr 'a-z' 'A-Z' < input.txt` do?",
+            "options": [
+                "Converts all uppercase to lowercase",
+                "Converts all lowercase to uppercase",
+                "Counts the letters",
+                "Nothing – tr doesn't accept <"
+            ],
+            "correctAnswer": 1,
+            "explanation": "It translates lowercase to uppercase."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which `sed` command replaces the first 'cat' with 'dog' on each line?",
+            "options": [
+                "sed 's/cat/dog/' file",
+                "sed '/cat/dog/g' file",
+                "sed 's|cat|dog|' file",
+                "Both A and C"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Both `s/cat/dog/` and `s|cat|dog|` work; the delimiter can be changed."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What does the `g` flag in `sed 's/foo/bar/g'` do?",
+            "options": [
+                "Replaces only the last occurrence",
+                "Replaces all occurrences on a line",
+                "Globally ignores case",
+                "Creates a backup"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The `g` flag stands for global, substituting every match on the line."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "How can you delete the 5th line of a file with sed without modifying the original file?",
+            "options": [
+                "sed -i '5d' file",
+                "sed '5d' file",
+                "sed -d 5 file",
+                "sed '5p' file"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`sed '5d'` prints all lines except line 5; without `-i`, the original file stays untouched."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What does `grep -v 'error' log` output?",
+            "options": [
+                "Only lines containing 'error'",
+                "All lines except those containing 'error'",
+                "The number of lines with 'error'",
+                "A verbose listing of 'error' lines"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-v` inverts the match, so it shows lines NOT matching the pattern."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which grep option searches recursively through directories?",
+            "options": [
+                "-r",
+                "-l",
+                "-i",
+                "-d"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`-r` (or `-R`) recursively reads all files under each directory."
+        },
+        {
+            "id": "q18",
+            "type": "fill_blank",
+            "question": "To match whole words only with grep, use the ___ flag.",
+            "options": [],
+            "correctAnswer": "-w",
+            "explanation": "`-w` ensures the pattern is surrounded by non‑word characters."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What does the regular expression `^$` match?",
+            "options": [
+                "Lines starting with $",
+                "Empty lines",
+                "The literal characters ^ and $",
+                "Any line"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`^` is start of line, `$` is end of line; together they match a line with nothing between."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "How can you use grep in an if statement without printing anything?",
+            "options": [
+                "grep -v",
+                "grep -c",
+                "grep -q",
+                "grep -l"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`-q` (quiet) suppresses output and returns an exit code, perfect for conditionals."
+        }
+    ]
+}

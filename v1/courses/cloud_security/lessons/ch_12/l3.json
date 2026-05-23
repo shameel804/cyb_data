@@ -1,0 +1,120 @@
+{
+    "id": "l3",
+    "chapterId": "ch_12",
+    "title": "Implementing Zero Trust in AWS, Azure & GCP 🛠️",
+    "description": "Practical cloud‑native controls: IAM, Conditional Access, BeyondCorp, and service perimeters.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Cloud-Native Zero Trust: It’s Possible Today ☁️",
+            "content": "# You Don’t Need a Special Vendor\n\nAll three major clouds offer powerful Zero Trust building blocks. The key is combining them correctly.\n\n- **AWS**: IAM roles, SCPs, VPC Endpoints, PrivateLink, Session Manager, Cognito.\n- **Azure**: Azure AD Conditional Access, Privileged Identity Management (PIM), Application Gateway + WAF, Azure Firewall.\n- **GCP**: BeyondCorp Enterprise, Identity‑Aware Proxy (IAP), VPC Service Controls, Access Context Manager.\n\n*You can achieve a strong Zero Trust posture with native services – no extra licenses required.*"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Native ZTA 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which AWS service provides temporary, auditable access to EC2 instances without open SSH ports?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "AWS WAF",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "AWS Direct Connect",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "AWS Systems Manager Session Manager",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Amazon GuardDuty",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Session Manager uses IAM, removes the need for SSH keys, and logs sessions – a Zero Trust win.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "AWS Zero Trust in Practice 🔧",
+            "content": "## Combine These Patterns\n\n1. **Identity**: Federate with your corporate IdP (Azure AD, Okta) using IAM Identity Center. Enforce MFA and use permission sets with least privilege.\n2. **Network**: Use VPC Endpoints to keep traffic private. Apply Security Groups that reference other SGs (chaining) instead of CIDR blocks.\n3. **Access**: Use Session Manager for SSH/RDP – no open ports. Use EC2 Instance Connect with temporary keys.\n4. **Data**: Enforce SSE‑KMS with customer keys. Use S3 bucket policies that explicitly deny unless `aws:SecureTransport` is true and MFA is present for deletes.\n5. **Workloads**: Use IAM roles for tasks, ECS tasks, Lambda. Never static keys.\n\n*Together, these ensure that even if network access is granted, identity and context are continuously verified.*"
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "AWS: S3 Policy for Zero Trust (TLS + MFA)",
+            "content": "A bucket policy that requires HTTPS and MFA for delete:",
+            "codeSnippet": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Deny\",\n      \"Principal\": \"*\",\n      \"Action\": \"s3:*\",\n      \"Resource\": \"arn:aws:s3:::my-bucket/*\",\n      \"Condition\": { \"Bool\": { \"aws:SecureTransport\": \"false\" } }\n    },\n    {\n      \"Effect\": \"Deny\",\n      \"Principal\": \"*\",\n      \"Action\": \"s3:DeleteObject\",\n      \"Resource\": \"arn:aws:s3:::my-bucket/*\",\n      \"Condition\": { \"BoolIfExists\": { \"aws:MultiFactorAuthPresent\": \"false\" } }\n    }\n  ]\n}",
+            "codeLanguage": "json",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Azure: Conditional Access & PIM 🔵",
+            "content": "## The Heart of Azure Zero Trust\n\n- **Azure AD Conditional Access**: Evaluate every sign‑in attempt against policies like ‘Require MFA for admins’, ‘Block legacy authentication’, ‘Require compliant device’. Integrates with sign‑in risk.\n- **Privileged Identity Management (PIM)**: Just‑in‑time access. Users activate roles for a limited time (e.g., 1 hour) with justification and approval.\n- **Microsoft Defender for Cloud**: Continuous posture assessment, adaptive network hardening, and JIT VM access.\n- **Azure Application Gateway + WAF**: Protect web apps with centralized inspection.\n\n*Combined, these create a dynamic, risk‑based access control system.*"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Azure PIM 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "Privileged Identity Management (PIM) in Azure enables:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Permanent admin access for all users",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Just‑in‑time privileged role activation with approval",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Automatic patching of VMs",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Network micro‑segmentation",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "PIM reduces standing privileges by providing time‑limited, approved elevation.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "GCP: BeyondCorp & Service Perimeters 🌐",
+            "content": "## Google’s Internal Security, Productized\n\n- **Identity‑Aware Proxy (IAP)**: Access web applications without a VPN. Authenticate with identity and context (device state, IP). IAP grants access to the app, not the network.\n- **Access Context Manager**: Define policies based on device attributes, IP ranges, geolocation.\n- **VPC Service Controls**: Create a security perimeter around managed services (BigQuery, GCS). Data cannot be copied outside the perimeter, even by an authorized user with credentials!\n- **Workload Identity Federation**: Allow workloads outside GCP to impersonate service accounts without downloading keys.\n\n*GCP’s Zero Trust is arguably the most mature native implementation, thanks to BeyondCorp.*"
+        },
+        {
+            "id": "s_l3_8",
+            "type": "tip",
+            "title": "A Quick Zero Trust Win 💡",
+            "content": "In any cloud, start by eliminating standing access keys. Replace them with roles, managed identities, or workload federation. You’ll instantly close one of the biggest attack vectors."
+        }
+    ]
+}

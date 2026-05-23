@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_5",
+    "title": "Batch File Renamer",
+    "description": "Write a script that renames all .jpg files to .jpeg using a for loop.",
+    "estimatedMinutes": 12,
+    "problemStatement": "Your photo collection has dozens of files ending in `.jpg` but your new app expects `.jpeg`. Write a script called `rename_jpg.sh` that:\n\n1. Loops through all `.jpg` files in the current directory.\n2. For each file, renames it by replacing the `.jpg` extension with `.jpeg`.\n3. Prints a message for each rename: \"Renamed old_name to new_name\".\n4. Uses `shopt -s nullglob` to prevent errors if no `.jpg` files exist.\n5. After the loop, prints \"Done.\"\n\nMake it executable and test by first creating a few dummy `.jpg` files with `touch`.",
+    "hints": [
+        "Use parameter expansion: `${var%.jpg}.jpeg` to strip `.jpg` and append `.jpeg`.",
+        "`mv \"$file\" \"$new_name\"` renames the file.",
+        "Remember to `shopt -s nullglob` at the start.",
+        "Check each file exists with `[ -f \"$file\" ]` (optional safety)."
+    ],
+    "expectedOutput": "Renamed photo1.jpg to photo1.jpeg\nRenamed vacation.jpg to vacation.jpeg\nDone.",
+    "solutionCode": "#!/bin/bash\n# Batch rename .jpg to .jpeg\nshopt -s nullglob\n\nfor file in *.jpg; do\n  new_name=\"${file%.jpg}.jpeg\"\n  mv \"$file\" \"$new_name\"\n  echo \"Renamed $file to $new_name\"\ndone\necho \"Done.\""
+}

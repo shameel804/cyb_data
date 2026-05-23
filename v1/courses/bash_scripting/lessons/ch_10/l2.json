@@ -1,0 +1,97 @@
+{
+    "id": "l2",
+    "chapterId": "ch_10",
+    "title": "Advanced Redirections: fds & exec 📂",
+    "description": "Take full control of file descriptors. Redirect entire scripts, clone streams, and close descriptors safely.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Descriptor Mastery",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "File Descriptors Refresher 🧾",
+            "content": "## The Numbers Behind Streams\n\n- `0` – stdin\n- `1` – stdout\n- `2` – stderr\n- `3‑9` – available for custom use\n\nYou've used `>` (default stdout) and `2>` for stderr. Now we'll go deeper."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Redirecting Input with <",
+            "content": "Instead of `cat file`, use `< file` to feed a file's content to a command's stdin:",
+            "codeSnippet": "wc -l < /etc/passwd",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "fill_blank",
+                "question": "Which file descriptor number represents stderr?",
+                "options": [],
+                "correctAnswer": "2",
+                "explanation": "0 is stdin, 1 is stdout, 2 is stderr.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Duplicating Descriptors 🪞",
+            "content": "## `m>&n` and `m<&n`\n\nYou can make one descriptor point to another:\n- `2>&1` – redirect stderr to wherever stdout currently goes.\n- `1>&2` – redirect stdout to stderr.\n- `&>file` – shortcut to send both stdout and stderr to `file`.\n\nOrder matters: `>file 2>&1` writes stdout to file, then merges stderr into that."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Complex Redirects",
+            "content": "Write both stdout and stderr to separate files:",
+            "codeSnippet": "command >out.txt 2>err.txt",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "`command 2>&1 >file` redirects stderr to the same file as stdout.",
+                "correctAnswer": false,
+                "explanation": "It redirects stderr to the original stdout (terminal), then stdout to file. The order is wrong; use `>file 2>&1`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "The `exec` Command for Permanent Redirects 🔒",
+            "content": "## Redirect the Script Itself\n\n`exec` without a command can alter the file descriptors of the current shell.\n- `exec >logfile` – redirects stdout of the entire script from that point on.\n- `exec 2>errfile` – stderr to a file.\n- `exec 0<file` – read stdin from a file.\n- `exec 3>file` – open a custom descriptor for writing.\n\nTo restore, save the original descriptor first: `exec 3>&1` (backup stdout), then later `exec 1>&3 3>&-` (restore and close)."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "exec in Action",
+            "content": "Save all output to a log:",
+            "codeSnippet": "exec >script.log 2>&1\necho \"This goes to the log\"\ndate",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_9",
+            "type": "text",
+            "title": "Closing Descriptors and /dev/fd 🗑️",
+            "content": "## `m>&-` or `m<&-`\n\nClose a file descriptor:\n- `exec 3>&-` closes writing descriptor 3.\n\nSpecial path `/dev/fd/N` represents the file descriptor N as a file. Example: `diff <(cmd1) <(cmd2)` uses `/dev/fd/` under the hood."
+        },
+        {
+            "id": "s_l2_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `exec` to set up logging at the start of a script. It ensures every `echo` is captured without sprinkling `>>` everywhere."
+        }
+    ]
+}

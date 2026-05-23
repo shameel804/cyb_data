@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_7",
+    "title": "Parse a Log Line with String Methods",
+    "description": "Extract specific fields from a simulated authentication log using split, strip, and partition.",
+    "estimatedMinutes": 10,
+    "problemStatement": "You have a log string:\n```\n[2024-05-12 14:23:55] Failed password for root from 192.168.1.100 port 22 ssh2\n```\nWrite a script `log_parser.py` that extracts:\n- Timestamp (inside the brackets, without the brackets)\n- Username (after \"for\", before \"from\")\n- IP address (after \"from\", before \"port\")\n\nUse string methods like `partition()`, `split()`, `strip()`, etc. No regex allowed for this task.\n\nPrint each extracted piece on its own line: \"Timestamp: ...\", \"User: ...\", \"IP: ...\".",
+    "hints": [
+        "First, split off the timestamp: `line.partition(']')` to get the part before the closing bracket.",
+        "Then remove the leading '[' from timestamp.",
+        "For user, after 'for ', use `split()` to break into words and find index of 'from', then slice.",
+        "Alternatively, partition on ' for ' and ' from ' to isolate the fields."
+    ],
+    "expectedOutput": "Timestamp: 2024-05-12 14:23:55\nUser: root\nIP: 192.168.1.100",
+    "solutionCode": "line = \"[2024-05-12 14:23:55] Failed password for root from 192.168.1.100 port 22 ssh2\"\n\n# Timestamp\n_, _, rest = line.partition('[')\ntimestamp, _, _ = rest.partition(']')\nprint(f\"Timestamp: {timestamp}\")\n\n# Username\n_, _, after_for = rest.partition(' for ')\nuser, _, _ = after_for.partition(' from ')\nprint(f\"User: {user}\")\n\n# IP\n_, _, after_from = after_for.partition(' from ')\nip, _, _ = after_from.partition(' port ')\nprint(f\"IP: {ip}\")"
+}

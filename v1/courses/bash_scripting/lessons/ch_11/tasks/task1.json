@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_11",
+    "title": "Log Pattern Extractor",
+    "description": "Write a script that uses grep and regex to extract specific error patterns from a log file.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You have a server log file `server.log` containing lines like:\n```\n2026-05-22 10:15:01 INFO User login\n2026-05-22 10:15:05 ERROR Database connection failed\n2026-05-22 10:15:10 WARN Disk usage 85%\n2026-05-22 10:15:12 ERROR Timeout for request\n```\nWrite a script `extract_errors.sh` that:\n\n1. Accepts the log file as a command-line argument (validate existence).\n2. Extracts only lines that contain 'ERROR' or 'WARN' (case‑insensitive).\n3. From those lines, extract just the error/warning level and the message that follows it (skip timestamp and INFO).\n4. Output each line as: \"LEVEL: message\" (e.g., \"ERROR: Database connection failed\").\n5. Count and print the total number of such lines at the end.\n\nUse `grep -E` and `-o`, possibly combined with `sed` or `awk` for reformatting. Hint: you can pipe multiple greps or use one extended regex with `-o` to capture the level and message.\n\nTest with a sample log file.",
+    "hints": [
+        "First filter with `grep -iE 'error|warn'`.",
+        "Then extract desired parts: `grep -ioE '(ERROR|WARN):? .+'` might not directly work because the log has a different format. Instead, use `awk` to print the level and rest, or use `sed` to remove the timestamp.",
+        "Simpler: `grep -iE 'error|warn' log | awk '{print toupper($3)\": \"$4,$5,...}'` but message may have spaces. Better: use `grep -iE 'error|warn' log | sed -E 's/^[^ ]+ [^ ]+ ([^ ]+) (.*)/\\1: \\2/i'`.",
+        "Capture count using `wc -l`."
+    ],
+    "expectedOutput": "ERROR: Database connection failed\nWARN: Disk usage 85%\nERROR: Timeout for request\nTotal: 3",
+    "solutionCode": "#!/bin/bash\n# extract_errors.sh\nlogfile=\"$1\"\nif [ ! -f \"$logfile\" ]; then\n  echo \"Error: log file not found\" >&2\n  exit 1\nfi\n\ngrep -iE 'error|warn' \"$logfile\" | sed -E 's/^[^ ]+ [^ ]+ ([^ ]+) (.*)/\\1: \\2/i' > temp.out\ncat temp.out\ncount=$(wc -l < temp.out)\necho \"Total: $count\"\nrm temp.out"
+}

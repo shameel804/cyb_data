@@ -1,0 +1,109 @@
+{
+    "id": "l6",
+    "chapterId": "ch_10",
+    "title": "UDP, Raw Sockets & Next Steps 🛸",
+    "description": "Go beyond TCP: work with UDP, understand when to use it, and glimpse the world of raw sockets and packet crafting.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Advanced",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "UDP – Fire and Forget",
+            "content": "# `SOCK_DGRAM` instead of `SOCK_STREAM`\n\nUDP sockets don't connect; they just send data to a destination.\n\n```python\nimport socket\ns = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)\ns.sendto(b'Hello', ('127.0.0.1', 12345))\ndata, addr = s.recvfrom(1024)\n```\n- No connection establishment, faster.\n- Unreliable: packets can be lost, duplicated, or out of order.\n- Used for DNS, DHCP, streaming."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "code",
+            "title": "UDP Echo Client/Server Concept",
+            "content": "Server:\n```python\ns = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)\ns.bind(('', 9999))\nwhile True:\n    data, addr = s.recvfrom(1024)\n    s.sendto(data, addr)\n```\nClient:\n```python\ns = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)\ns.sendto(b'ping', ('127.0.0.1', 9999))\nprint(s.recvfrom(1024))\n```",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "UDP vs TCP 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "Which method sends data on a UDP socket?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "send()",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "sendto()",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "connect() and send()",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "UDP uses sendto() because there is no connection; the destination is specified each time.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "UDP Port Scanning – Tricky",
+            "content": "# UDP Scan Challenges\n\n- If a UDP port is closed, the target may send an ICMP \"port unreachable\" message – but firewalls often block those.\n- Open ports may remain silent, making them indistinguishable from filtered.\n- Python can catch ICMP errors as socket errors (connection refused) on some OS.\n\nFor reliable UDP scanning, tools like Nmap use advanced techniques. In Python, you can try sending a packet and see if you get an ICMP error, but it requires raw sockets or the `scapy` library."
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "Raw Sockets: Packet Crafting",
+            "content": "# The Deep End\n\nRaw sockets allow you to construct your own IP headers and TCP/UDP headers – the domain of `scapy`.\n\nExample with scapy (install with `pip install scapy`):\n```python\nfrom scapy.all import IP, TCP, sr1\npacket = IP(dst=\"scanme.nmap.org\")/TCP(dport=80, flags=\"S\")\nresponse = sr1(packet, timeout=2)\nif response:\n    if response.haslayer(TCP):\n        if response.getlayer(TCP).flags == 0x12: # SYN-ACK\n            print(\"Port 80 open\")\n```\nThis does a SYN scan (half‑open), which is stealthier than a full connect scan."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "quiz",
+            "title": "Raw Sockets 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "true_false",
+                "question": "Python's standard `socket` module alone is enough for crafting custom IP headers.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "You need raw sockets (socket.SOCK_RAW) with root privileges, or a library like scapy that handles low‑level details.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_7",
+            "type": "text",
+            "title": "When to Use scapy vs socket",
+            "content": "# `socket` for normal tasks, `scapy` for advanced\n\n- Use `socket` for simple TCP/UDP communication and connect scans.\n- Use `scapy` for SYN scans, packet sniffing, ARP spoofing, and other advanced attacks.\n\nWe'll introduce scapy in more depth in a future course, but now you know it exists."
+        },
+        {
+            "id": "s_l6_8",
+            "type": "code",
+            "title": "Simple ARP Request with Scapy (Preview)",
+            "content": "This discovers MAC addresses on a local network:",
+            "codeSnippet": "from scapy.all import ARP, Ether, srp\npacket = Ether(dst=\"ff:ff:ff:ff:ff:ff\")/ARP(pdst=\"192.168.1.0/24\")\nresult = srp(packet, timeout=3, verbose=0)[0]\nfor sent, received in result:\n    print(received.psrc, received.hwsrc)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_9",
+            "type": "warning",
+            "title": "Root/Admin Required",
+            "content": "## Raw sockets and scapy often need elevated privileges\n\nRun your scripts as root (Linux) or Administrator (Windows) when using packet crafting."
+        },
+        {
+            "id": "s_l6_10",
+            "type": "text",
+            "title": "Chapter 10 Mastered! 🏆",
+            "content": "# You're Now a Network Hacker\n\nYou can create sockets, build client‑server apps, scan ports, grab banners, and understand UDP and raw sockets. Take the Quiz and tackle the tasks. Then onward to Chapter 11: Web Interactions & APIs!"
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_4",
+    "title": "Port Status Checker",
+    "description": "Use if‑else to determine if a given port is a common service.",
+    "estimatedMinutes": 10,
+    "problemStatement": "Write a script `port_checker.py` that defines a variable `port` (e.g., `port = 22`). Use an `if` statement to print \"SSH\" if port is 22, \"HTTP\" if port is 80, \"HTTPS\" if port is 443, and \"Unknown service\" otherwise. Implement this first with separate `if` statements (check each independently). Then refactor using `if‑elif‑else` for correct exclusive behavior. Finally, add a check to see if the port is even in the valid range (1‑65535). If not, print \"Invalid port number\". Ensure the range check is done before service classification.\n\nExpected output for port=22: \"SSH\" on one line. For port=99999: \"Invalid port number\".",
+    "hints": [
+        "Separate `if` statements would all be evaluated; `elif` stops after first match.",
+        "Use `if 1 <= port <= 65535:` for the range guard.",
+        "For the exclusive service, the structure: if port==22: ..., elif port==80: ... etc."
+    ],
+    "expectedOutput": "SSH (for port 22)\nInvalid port number (for port 99999)",
+    "solutionCode": "port = 22\n\nif port < 1 or port > 65535:\n    print(\"Invalid port number\")\nelse:\n    if port == 22:\n        print(\"SSH\")\n    elif port == 80:\n        print(\"HTTP\")\n    elif port == 443:\n        print(\"HTTPS\")\n    else:\n        print(\"Unknown service\")"
+}

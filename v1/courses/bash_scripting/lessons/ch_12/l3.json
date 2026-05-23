@@ -1,0 +1,118 @@
+{
+    "id": "l3",
+    "chapterId": "ch_12",
+    "title": "awk: Pattern–Action Model 🧩",
+    "description": "Learn the structure of awk programs, fields, records, and built‑in variables.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "awk Basics",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "awk – Aho, Weinberger, Kernighan 🧑‍🔬",
+            "content": "## The Programmable Filter\n\n`awk` processes text line by line, splitting each line into fields. It's a full scripting language with variables, conditionals, and arithmetic – perfect for column‑based data.\n\nBasic syntax:\n```awk\npattern { action }\n```\nBoth pattern and action are optional; missing pattern means every line, missing action defaults to `{ print }`."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Print Specific Columns",
+            "content": "Display username and UID from /etc/passwd:",
+            "codeSnippet": "awk -F: '{ print $1, $3 }' /etc/passwd",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What does `awk '{ print $0 }'` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Prints the first field",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Prints the entire line",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Prints nothing",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Prints line number",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`$0` is the whole input record (line by default).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Field Separators & Built‑in Variables 📊",
+            "content": "## FS, OFS, RS, ORS\n\n- `-F:` or `FS=\":\"` – input field separator.\n- `OFS` – output field separator (default space).\n- `RS` – record separator (default newline).\n- `ORS` – output record separator.\n- `NR` – current record number (total lines across files).\n- `FNR` – record number in current file.\n- `NF` – number of fields in current record.\n- `$NF` – the last field."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Using NR and NF",
+            "content": "Print line number and field count:",
+            "codeSnippet": "awk '{ print NR, NF }' file.txt",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "fill_blank",
+                "question": "The awk variable that holds the number of fields in the current line is ___.",
+                "options": [],
+                "correctAnswer": "NF",
+                "explanation": "`NF` is set automatically to the number of fields.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "BEGIN and END Blocks 🏁",
+            "content": "## Code that runs before/after processing\n\n- `BEGIN { ... }` – executes once before any input is read. Perfect for headers and initialising variables.\n- `END { ... }` – executes once after all input is processed. Perfect for summaries.\n\nExample:\n```awk\nBEGIN { print \"User Report\"; }\n{ print $1; }\nEND { print \"--- End ---\"; }\n```"
+        },
+        {
+            "id": "s_l3_8",
+            "type": "code",
+            "title": "Sum a Column with END",
+            "content": "Calculate total disk usage (1st column) from `du` output:",
+            "codeSnippet": "du | awk '{ sum += $1 } END { print sum \" total\" }'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_9",
+            "type": "text",
+            "title": "Pattern Matching in awk 🔍",
+            "content": "## Filters Just Like Grep\n\nYou can use regex patterns before the action:\n```awk\n/error/ { print NR\": \" $0 }\n```\nCombined with `!` for negation: `!/comment/ { print }`\n\nNumeric comparisons: `$3 > 1000 { print $1 }`"
+        },
+        {
+            "id": "s_l3_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `awk -v var=value` to pass shell variables into awk: `awk -v threshold=100 '$3 > threshold' file`."
+        }
+    ]
+}

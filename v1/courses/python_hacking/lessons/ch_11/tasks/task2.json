@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_11",
+    "title": "GitHub API User Info Fetcher",
+    "description": "Fetch and display a GitHub user's public information using the GitHub API and `requests`.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Write a script `github_user.py` that takes a GitHub username (hardcode 'octocat' for testing) and retrieves their public profile info from `https://api.github.com/users/<username>`. Display: login name, name, public repos count, followers count, and their bio. If the user is not found (404), print 'User not found'. Handle network errors gracefully. Use `requests.get()` and parse JSON.",
+    "hints": [
+        "URL: f'https://api.github.com/users/{username}'",
+        "Check `resp.status_code == 200` before parsing json.",
+        "If 404, print 'User not found'.",
+        "Access fields: data['login'], data.get('name'), data['public_repos'], etc."
+    ],
+    "expectedOutput": "User: octocat\nName: The Octocat\nRepos: 8\nFollowers: 1234\nBio: ...",
+    "solutionCode": "import requests\n\nusername = 'octocat'\nurl = f'https://api.github.com/users/{username}'\n\ntry:\n    resp = requests.get(url, timeout=5)\n    if resp.status_code == 200:\n        data = resp.json()\n        print(f\"Login: {data['login']}\")\n        print(f\"Name: {data.get('name', 'N/A')}\")\n        print(f\"Public Repos: {data['public_repos']}\")\n        print(f\"Followers: {data['followers']}\")\n        print(f\"Bio: {data.get('bio', '')}\")\n    elif resp.status_code == 404:\n        print(\"User not found\")\n    else:\n        print(f\"Unexpected status: {resp.status_code}\")\nexcept requests.exceptions.RequestException as e:\n    print(f\"Request failed: {e}\")\n"
+}

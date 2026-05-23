@@ -1,0 +1,149 @@
+{
+    "id": "l4",
+    "chapterId": "ch_8",
+    "title": "Raising Exceptions & Custom Errors 🚨",
+    "description": "Signal problems in your own code with raise, and create domain‑specific exception classes.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Error Handling",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Sometimes You Need to Yell",
+            "content": "# The `raise` Statement\n\nYou can generate an exception intentionally to indicate an error condition:\n\n```python\nif port < 1 or port > 65535:\n    raise ValueError(\"Invalid port number\")\n```\nThis stops execution and can be caught by a calling function's try/except."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Basic raise",
+            "content": "Validate a target IP:",
+            "codeSnippet": "def scan(target_ip):\n    if not isinstance(target_ip, str):\n        raise TypeError(\"Target IP must be a string\")\n    # proceed...\n\ntry:\n    scan(123)\nexcept TypeError as e:\n    print(f\"Error: {e}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "raise Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What does `raise ValueError(\"message\")` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Logs a warning",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Creates and throws a ValueError exception",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Returns the ValueError to caller",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "raise throws the exception, which can be caught by an except block up the call stack.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Re‑raising Exceptions",
+            "content": "# Catch, Log, Then Re‑throw\n\nSometimes you want to note the error but let someone else handle it:\n```python\ntry:\n    connect()\nexcept ConnectionError:\n    print(\"Connection failed, retrying...\")\n    raise   # re‑raises the same exception\n```\nUsing bare `raise` inside an except block re‑throws the caught exception."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Re‑raise Example",
+            "content": "Add context to an error:",
+            "codeSnippet": "def read_wordlist(path):\n    try:\n        with open(path) as f:\n            return f.readlines()\n    except FileNotFoundError:\n        print(f\"Wordlist {path} missing\")\n        raise  # still propagate so caller knows\n\ntry:\n    read_wordlist(\"missing.txt\")\nexcept FileNotFoundError:\n    print(\"Falling back to default wordlist\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Re‑raise 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "A bare `raise` outside an `except` block is valid Python.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "It raises a RuntimeError: 'No active exception to reraise'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Custom Exception Classes",
+            "content": "# Create Your Own Error Types\n\nInherit from `Exception` (or a built‑in subclass). This lets you write `except MyError:` and gives meaning to errors.\n\n```python\nclass TargetUnreachable(Exception):\n    \"\"\"Raised when a host doesn't respond.\"\"\"\n    pass\n\nclass AuthenticationFailed(Exception):\n    \"\"\"Raised when credentials are wrong.\"\"\"\n    pass\n```\nNow you can `raise TargetUnreachable(\"Host 10.0.0.5 down\")`."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "code",
+            "title": "Using Custom Exceptions",
+            "content": "Hacking simulation:",
+            "codeSnippet": "class WeakPasswordError(Exception):\n    pass\n\ndef set_password(pwd):\n    if len(pwd) < 8:\n        raise WeakPasswordError(\"Password too short!\")\n\nfor attempt in [\"admin\", \"supersecretpassword\"]:\n    try:\n        set_password(attempt)\n    except WeakPasswordError as e:\n        print(f\"Rejected: {e}\")\n    else:\n        print(\"Accepted\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_9",
+            "type": "quiz",
+            "title": "Custom Exceptions 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "multiple_choice",
+                "question": "What is the typical base class for a custom exception?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "BaseException",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Exception",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Error",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Inherit from Exception for most user‑defined exceptions.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_10",
+            "type": "text",
+            "title": "Adding Custom Logic to Exceptions",
+            "content": "# Override __init__ to Store Context\n\n```python\nclass ScanError(Exception):\n    def __init__(self, host, port, message):\n        self.host = host\n        self.port = port\n        super().__init__(message)\n\nraise ScanError(\"10.0.0.1\", 8080, \"Connection refused\")\n```\nThis makes debugging easier – you can access the target that failed."
+        },
+        {
+            "id": "s_l4_11",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Create an Exception Hierarchy\n\n```\nHackingException\n├── NetworkError\n│   ├── TimeoutError\n│   └── ConnectionRefused\n└── AuthenticationError\n```\nYou can catch broad `NetworkError` or specific `TimeoutError`."
+        },
+        {
+            "id": "s_l4_12",
+            "type": "text",
+            "title": "Next: The Art of Debugging",
+            "content": "# You can handle and raise errors. But when they slip through, you need to track them down. Let's learn debugging strategies."
+        }
+    ]
+}

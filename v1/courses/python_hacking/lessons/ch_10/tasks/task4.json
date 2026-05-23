@@ -1,0 +1,16 @@
+{
+    "id": "task4",
+    "chapterId": "ch_10",
+    "title": "Banner Grabber for Common Services",
+    "description": "Connect to a list of ports, send appropriate probes, and grab the initial banner.",
+    "estimatedMinutes": 20,
+    "problemStatement": "Write a script `banner_grabber.py` that defines a function `grab_banner(host, port, probe=None)`. It should:\n- Connect to the host:port.\n- If `probe` is provided (bytes), send it after connecting.\n- Receive up to 4096 bytes, decode with errors='ignore', and return the string.\n- If any error occurs, return None.\n\nThen test it on `'scanme.nmap.org'` for ports: 22 (no probe needed), 80 (send `b'HEAD / HTTP/1.0\\r\\n\\r\\n'`). Print the banner received.\n\nAlso test on a port that is closed (like 23 on that host) and print 'No banner' if None is returned.",
+    "hints": [
+        "Use `s.settimeout(3)`.",
+        "For SSH (22), just recv after connect.",
+        "For HTTP (80), send the probe then recv.",
+        "Catch all exceptions (`except Exception`) to return None."
+    ],
+    "expectedOutput": "Port 22 banner: SSH-2.0-...\nPort 80 banner: HTTP/1.1 200 OK\\r\\n...\nPort 23 banner: No banner",
+    "solutionCode": "import socket\n\ndef grab_banner(host, port, probe=None):\n    s = socket.socket()\n    s.settimeout(3)\n    try:\n        s.connect((host, port))\n        if probe:\n            s.sendall(probe)\n        banner = s.recv(4096).decode(errors='ignore')\n        return banner\n    except:\n        return None\n    finally:\n        s.close()\n\nhost = 'scanme.nmap.org'\n\n# SSH port 22\nbanner = grab_banner(host, 22)\nprint(f\"Port 22 banner: {banner}\" if banner else \"Port 22: No banner\")\n\n# HTTP port 80\nbanner = grab_banner(host, 80, b'HEAD / HTTP/1.0\\r\\n\\r\\n')\nprint(f\"Port 80 banner: {banner[:200]}...\" if banner else \"Port 80: No banner\")\n\n# Closed port 23\nbanner = grab_banner(host, 23)\nprint(f\"Port 23 banner: {banner}\" if banner else \"Port 23: No banner\")\n"
+}

@@ -1,0 +1,107 @@
+{
+    "id": "l4",
+    "chapterId": "ch_4",
+    "title": "Conditional Expressions (Ternary Operator) 🎛️",
+    "description": "Write compact if‑else logic in a single line for cleaner code.",
+    "xpReward": 20,
+    "estimatedMinutes": 6,
+    "section": "Control Flow",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "A Shortcut for Simple if‑else",
+            "content": "# The Ternary Operator\n\nPython's conditional expression syntax:\n```\nvalue_if_true if condition else value_if_false\n```\nExample:\n```python\nstatus = \"Open\" if port == 80 else \"Closed\"\n```\nIt evaluates the condition and returns one of the two values."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Ternary in Action",
+            "content": "Assign a message based on a check:",
+            "codeSnippet": "port = 22\nmsg = \"SSH\" if port == 22 else \"Unknown\"\nprint(f\"Service: {msg}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Ternary Syntax 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What is the output of: `x = \"Yes\" if 10 > 5 else \"No\"`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Yes",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "No",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "True",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "10 > 5 is True, so the value before `if` is chosen.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Where to Use Ternary",
+            "content": "# Best for Simple Assignments or Returns\n\n* Setting a variable based on a condition\n* Building a string for logging\n* Passing a value to a function\n\n```python\nprint(f\"Port {p} is {'open' if p in open_ports else 'closed'}\")\n```\nNot suitable for complex logic with many statements – use full if for that."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Nested Ternary (Careful!)",
+            "content": "You can chain them, but readability suffers:\n```python\nlevel = \"critical\" if score>90 else \"high\" if score>70 else \"low\"\n```\nBetter to use if‑elif‑else for multi‑way."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "warning",
+            "title": "Overuse Alert ⚠️",
+            "content": "## Don't Sacrifice Clarity\n\n```python\n# Hard to read\nx = (a*b if a>b else b*a) if condition else (a+b)\n```\nIf you squint, break it out with normal if/else."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "Ternary Readability 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "The ternary operator can contain multiple statements.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "It evaluates to a single value; you cannot execute statements like `print()` inside it.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_8",
+            "type": "text",
+            "title": "Ternary vs Full if",
+            "content": "# When to Use Which\n\n| Situation | Use |\n|-----------|-----|\n| Choose between two values | Ternary |\n| Execute a block of code | Full if |\n| Need multiple elifs | Full if‑elif |\n| Very short condition inline | Ternary |\n\nBoth have their place. Readability rules."
+        },
+        {
+            "id": "s_l4_9",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use Ternary in f‑strings\n\nEmbed decisions directly in output:\n```python\nprint(f\"Result: {'OK' if code==200 else 'Fail'}\")\n```\nMakes logging concise."
+        },
+        {
+            "id": "s_l4_10",
+            "type": "text",
+            "title": "Next: Boolean Mastery",
+            "content": "# Take Logic to the Next Level\n\nWe've used `and`, `or`, `not`. In the final lesson, we'll dissect truth tables and short‑circuit evaluation to write flawless conditions."
+        }
+    ]
+}

@@ -1,0 +1,111 @@
+{
+    "id": "l5",
+    "chapterId": "ch_6",
+    "title": "Advanced Networking & Hybrid Security 🌐",
+    "description": "VPN, Direct Connect, Transit Gateway, and cloud-native firewalls.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Connecting Your Data Center to the Cloud 🔗",
+            "content": "# Hybrid Network Connectivity\n\nMost enterprises don't live entirely in the cloud – they need secure, high‑speed links between on‑premises and cloud VPCs.\n\n- **VPN (IPsec)**: Encrypted tunnel over the public internet. Fast to set up, but bandwidth and latency depend on internet quality.\n- **AWS Site‑to‑Site VPN**, **Azure VPN Gateway**, **Cloud VPN (GCP)**.\n- **Direct Connect / ExpressRoute / Cloud Interconnect**: Dedicated physical fiber connection from your data center to the cloud provider. Higher cost, but private, consistent performance.\n\n*Always encrypt traffic over VPN. For Direct Connect, the connection is private but not encrypted by default; use an IPsec VPN over it for additional security if needed.*"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "Hybrid Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Which connectivity option provides a dedicated, private physical link to the cloud?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Site‑to‑Site VPN",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Direct Connect",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Internet Gateway",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "NAT Gateway",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Direct Connect is a physical dedicated connection, not over the public internet.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Transit Gateway: The Network Hub 🕸️",
+            "content": "## Simplifying Multi‑VPC Architecture\n\nWhen you have many VPCs and on‑premises sites, peering every pair is a mess. **Transit Gateway** (AWS) / **Azure Virtual WAN** / **Network Connectivity Center (GCP)** act as a central hub.\n\n- Connect multiple VPCs, VPNs, and Direct Connect to a single gateway.\n- Traffic stays on the cloud provider's backbone, not the internet.\n- Centralized control over routing and security.\n\n*Use route tables and network segmentation to isolate environments (dev, prod) even when connected to the same Transit Gateway.*"
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Cloud‑Native Firewalls & WAF 🛡️",
+            "content": "## Beyond SGs and NACLs\n\nFor advanced inspection, cloud providers offer managed firewall services:\n\n- **AWS Network Firewall**: Managed firewall with stateful inspection, intrusion prevention (IPS), and domain filtering. Integrates with VPC.\n- **Azure Firewall**: Managed firewall with high availability, threat intelligence filtering.\n- **Google Cloud Firewall**: Rich rules, including tags, service accounts, and geo‑location.\n- **Web Application Firewall (WAF)**: Protects HTTP/HTTPS applications from common exploits like SQL injection, XSS. **AWS WAF**, **Azure Application Gateway WAF**, **Cloud Armor (GCP)**.\n\n*WAF operates at layer 7 (application), while SGs/NACLs operate at layer 3/4. Use both for comprehensive coverage.*"
+        },
+        {
+            "id": "s_l5_5",
+            "type": "quiz",
+            "title": "Firewall Selection 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "Which service would you use to protect a web application from SQL injection attacks?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Network ACL",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Security Group",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Web Application Firewall (WAF)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "NAT Gateway",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "WAF inspects HTTP traffic at the application layer to block exploits like SQL injection.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "VPC Endpoints & PrivateLink 🔌",
+            "content": "## Keep Traffic Off the Internet\n\nTo access cloud services (e.g., S3, DynamoDB) from private subnets without a NAT Gateway and without traversing the public internet:\n\n- **VPC Endpoints** (AWS) / **Private Link** (Azure) / **Private Google Access**.\n- **Gateway Endpoint**: For S3 and DynamoDB (free).\n- **Interface Endpoint**: For most other services (powered by PrivateLink), creates an ENI in your subnet with a private IP.\n\n*These enhance security by ensuring traffic between your VPC and the service stays within the provider's network, reducing exposure.*"
+        },
+        {
+            "id": "s_l5_7",
+            "type": "tip",
+            "title": "Network Security Best Practices 🏆",
+            "content": "- Implement **least‑privilege routing**: restrict route tables to only necessary paths.\n- Enable **VPC Flow Logs** to capture IP traffic metadata; analyze for anomalies.\n- Use **network segmentation** with separate VPCs or subnets for different environments.\n- Enforce **encryption** for all VPN connections and use HTTPS for web traffic.\n- Regularly audit SGs and NACLs for overly permissive rules (`0.0.0.0/0`)."
+        }
+    ]
+}

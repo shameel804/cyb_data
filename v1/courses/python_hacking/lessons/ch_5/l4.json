@@ -1,0 +1,164 @@
+{
+    "id": "l4",
+    "chapterId": "ch_5",
+    "title": "The `range()` Function: Counting in Loops 🔢",
+    "description": "Generate sequences of numbers effortlessly to scan ports, create payloads, and build timing loops.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Loops",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Why range()?",
+            "content": "# The Go‑To for Numeric Loops\n\nWhen you need to repeat a block exactly N times, or iterate over numbers like port ranges, `range()` creates a sequence of integers.\n\n```python\nfor i in range(5):\n    print(i)\n# Output: 0 1 2 3 4\n```\n* Starts at 0 by default\n* Goes up to, but **does not include**, the stop value\n* Step size is 1 by default"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Basic range()",
+            "content": "Print 0 to 4:",
+            "codeSnippet": "for i in range(5):\n    print(i)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "range() Stop 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What numbers does `range(3)` generate?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "0, 1, 2",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "0, 1, 2, 3",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "1, 2, 3",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "range(n) gives 0 to n-1.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Custom Start & Stop",
+            "content": "# `range(start, stop)`\n\n```python\nfor i in range(10, 15):\n    print(i)   # 10 11 12 13 14\n```\nStarts at 10, stops before 15."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Port Scanning Range",
+            "content": "Scan ports 1 to 1024:",
+            "codeSnippet": "for port in range(1, 1025):\n    print(f\"Scanning port {port}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Start/Stop 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "What is the output of `for i in range(2, 5): print(i)`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "2 3 4 5",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "2 3 4",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "3 4 5",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Starts at 2, stops before 5, so 2,3,4.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Adding a Step",
+            "content": "# `range(start, stop, step)`\n\n```python\nfor i in range(0, 10, 2):\n    print(i)   # 0 2 4 6 8\n```\n* Step can be negative to count backwards:\n```python\nfor i in range(10, 0, -1):\n    print(i)   # 10 9 8 ... 1\n```"
+        },
+        {
+            "id": "s_l4_8",
+            "type": "code",
+            "title": "Negative Step",
+            "content": "Countdown timer:",
+            "codeSnippet": "for sec in range(5, 0, -1):\n    print(f\"{sec}...\")\nprint(\"Boom!\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_9",
+            "type": "quiz",
+            "title": "Step 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "multiple_choice",
+                "question": "What does `list(range(10, 0, -3))` produce?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "[10, 7, 4, 1]",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "[10, 7, 4, 1, -2]",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "[1, 4, 7, 10]",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Starts at 10, subtracts 3 each time, stops before hitting 0 or below (so 10,7,4,1).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_10",
+            "type": "text",
+            "title": "range() is Lazy – Memory Efficient",
+            "content": "# It Doesn't Create a Giant List Immediately\n\nIn Python 3, `range` returns a range object that generates numbers on the fly. You can iterate over a billion numbers without using gigabytes of RAM.\n\n```python\nr = range(1, 1000000000)\nfor i in r:\n    if i == 5:\n        break   # works fine\n```\nThis is excellent for huge port ranges or iterations."
+        },
+        {
+            "id": "s_l4_11",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use `range(len(list))` with Caution\n\nTo loop over indices, Pythonistas prefer:\n```python\nfor i in range(len(items)):\n    item = items[i]\n```\nBut `for item in items:` is better. Only use index if you really need position."
+        },
+        {
+            "id": "s_l4_12",
+            "type": "text",
+            "title": "Now You Can Count Anything",
+            "content": "# Next: Flow Control Inside Loops\n\nWhat if you want to stop early? Or skip an iteration? `break` and `continue` to the rescue."
+        }
+    ]
+}

@@ -1,0 +1,79 @@
+{
+    "id": "l5",
+    "chapterId": "ch_7",
+    "title": "Automating Compute Security 🤖",
+    "description": "Immutable infrastructure, image scanning, and security in CI/CD pipelines.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Infrastructure as Code (IaC) = Security as Code 🏗️",
+            "content": "# Automate Everything, Harden by Default\n\nManual setups are error‑prone. Write your infrastructure declaratively using Terraform, AWS CDK, or CloudFormation.\n\n- **Security scanning for IaC**: Tools like Checkov, tfsec, cfn‑nag scan your code for misconfigurations before deployment.\n- **Enforce policies in the pipeline**: For example, reject any Terraform that opens SSH to `0.0.0.0/0`.\n- **Immutable infrastructure**: Instead of patching running instances, build a new golden image, test it, and roll out fresh instances. Old ones are terminated.\n\n*This eliminates configuration drift and guarantees known‑good state.*"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "IaC Security 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is the main benefit of immutable infrastructure?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It reduces cloud costs",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It ensures every deployment starts from a known, secure state",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It speeds up application performance",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It uses only serverless",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Immutable infrastructure prevents configuration drift by replacing instances rather than modifying them.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "CI/CD Pipeline Security 🚦",
+            "content": "## Shift Left: Catch Bugs Early\n\nEmbed security checks at every stage of your pipeline:\n1. **Code commit**: Lint secrets (git‑secrets, truffleHog) to catch accidental credential commits.\n2. **Build**: Scan dependencies (SAST) and container images.\n3. **Test**: Run security unit tests; fuzz testing.\n4. **Deploy**: Validate infrastructure code; check IAM permissions.\n5. **Production**: Monitor for anomalies, run periodic vulnerability scans.\n\n*The earlier you catch a security issue, the cheaper and safer the fix.*"
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "GitHub Action: Scan Terraform",
+            "content": "Add this to your workflow to run Checkov on IaC:",
+            "codeSnippet": "jobs:\n  security:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - name: Run Checkov\n        uses: bridgecrewio/checkov-action@v12\n        with:\n          directory: terraform/\n          soft_fail: false",
+            "codeLanguage": "yaml",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Patch Management Automation 🔄",
+            "content": "- **AWS Systems Manager Patch Manager**: Automates OS patching across fleets of EC2 instances, with compliance reports.\n- **Azure Update Management**: Centralized patching for VMs.\n- **Containers**: Rebuild images weekly with updated base layers, push to registry, and trigger rolling updates.\n\n*Automated patching removes the human delay – set a maintenance window and let the system do the work.*"
+        },
+        {
+            "id": "s_l5_6",
+            "type": "tip",
+            "title": "Final Compute Security Mantra 🏁",
+            "content": "## If You Can Automate It, Automate It\nManual security tasks are the weakest link. Write it in code, scan it, and deploy it. The goal is to make secure configurations the default, not the exception."
+        }
+    ]
+}

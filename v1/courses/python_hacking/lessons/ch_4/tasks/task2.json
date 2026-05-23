@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_4",
+    "title": "Multi‑Way Protocol Classifier",
+    "description": "Classify network traffic using if‑elif‑else based on protocol number.",
+    "estimatedMinutes": 15,
+    "problemStatement": "In networking, IP protocol numbers indicate the payload type. Common ones: 6=TCP, 17=UDP, 1=ICMP, 2=IGMP. Write a script `protocol_classifier.py` that takes a protocol number (integer) and prints the protocol name. If the number is 6, print \"TCP\". 17 -> \"UDP\", 1 -> \"ICMP\", 2 -> \"IGMP\". If it's another number, print \"Unknown protocol\". Additionally, if the number is 0, print \"HOPOPT (IPv6 Hop-by-Hop Option)\" but only if we want to support that – handle it as a known case. Structure the if‑elif chain properly. Also, print \"Reserved\" if protocol number is in the range 143‑252 (inclusive) – use a combined condition.\n\nTest with protocol=6, 17, 0, 150, 255.",
+    "hints": [
+        "Use `elif 143 <= proto <= 252:` for the reserved range.",
+        "Order matters: put specific numbers before range checks.",
+        "Make sure the else clause covers unknown."
+    ],
+    "expectedOutput": "For 6: TCP\nFor 17: UDP\nFor 0: HOPOPT\nFor 150: Reserved\nFor 255: Unknown protocol",
+    "solutionCode": "protocol = 6  # change for testing\n\nif protocol == 6:\n    print(\"TCP\")\nelif protocol == 17:\n    print(\"UDP\")\nelif protocol == 1:\n    print(\"ICMP\")\nelif protocol == 2:\n    print(\"IGMP\")\nelif protocol == 0:\n    print(\"HOPOPT\")\nelif 143 <= protocol <= 252:\n    print(\"Reserved\")\nelse:\n    print(\"Unknown protocol\")"
+}

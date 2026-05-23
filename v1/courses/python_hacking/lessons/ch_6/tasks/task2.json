@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_6",
+    "title": "Brute‑Force Function with Parameters",
+    "description": "Create a reusable brute‑force function that accepts a wordlist and returns the correct password.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Write a script `brute_func.py` containing a function `brute_force(target_password, wordlist)` that iterates through the `wordlist` and returns the password if found, otherwise returns `None`. The function should also print each attempt (optional: add a `verbose` parameter that defaults to `False`; when True, print attempts).\n\nAfter defining, test it with:\n```python\npasswords = [\"123\", \"admin\", \"letmein\"]\ncorrect = \"admin\"\nresult = brute_force(correct, passwords, verbose=True)\nif result:\n    print(f\"Cracked: {result}\")\nelse:\n    print(\"Not found\")\n```\nUse a default argument for `verbose`.",
+    "hints": [
+        "Function signature: `def brute_force(target, wordlist, verbose=False):`",
+        "Loop over wordlist; if word == target: return word. After loop, return None.",
+        "If verbose, print each attempt."
+    ],
+    "expectedOutput": "Trying 123...\nTrying admin...\nCracked: admin",
+    "solutionCode": "def brute_force(target, wordlist, verbose=False):\n    for word in wordlist:\n        if verbose:\n            print(f\"Trying {word}...\")\n        if word == target:\n            return word\n    return None\n\npasswords = [\"123\", \"admin\", \"letmein\"]\ncorrect = \"admin\"\nresult = brute_force(correct, passwords, verbose=True)\nif result:\n    print(f\"Cracked: {result}\")\nelse:\n    print(\"Not found\")"
+}

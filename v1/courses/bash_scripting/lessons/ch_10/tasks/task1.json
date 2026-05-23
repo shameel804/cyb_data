@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_10",
+    "title": "Advanced Pipeline Monitor",
+    "description": "Build a script that analyzes a log file with a pipeline, captures per‑command exit statuses, and handles failures.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You are monitoring an application log (`app.log`). Write a script `pipeline_analyzer.sh` that:\n\n1. Accepts a log file as argument (validate it exists).\n2. Constructs a pipeline that:\n   - Greps lines containing 'ERROR' or 'WARN' (case‑insensitive).\n   - Extracts the second field (e.g., timestamp) and the error level.\n   - Sorts the lines.\n   - Counts the total number of error/warning lines with `wc -l`.\n3. Before the pipeline, enable `pipefail` so the script fails if any part of the pipeline fails.\n4. After the pipeline, check `${PIPESTATUS[@]}` and print each command's exit status.\n5. If the final count is zero, print \"No errors/warnings found.\" and exit 0. Otherwise, print the count and exit 1.\n\nTest with a sample log file containing both normal lines and some ERROR/WARN lines.",
+    "hints": [
+        "Use `grep -iE 'error|warn'` for case‑insensitive match of both words.",
+        "Extract second field: `awk '{print $2, $NF}'` or similar.",
+        "`wc -l` will count lines; store the count in a variable? But pipeline output goes to stdout. Capture with command substitution if you want the number, but then you lose PIPESTATUS. Instead, redirect to a variable via process substitution: `count=$( ... )` doesn't show PIPESTATUS of the whole chain. Better to tee to a file and capture count separately, or just capture PIPESTATUS and output. The task expects to print count; so you could store the count and then check. Use `pipefail` and `PIPESTATUS` for debugging.",
+        "Use `set -o pipefail` at the start."
+    ],
+    "expectedOutput": "Exit statuses: 0 0 0 0\nTotal errors/warnings: 3",
+    "solutionCode": "#!/bin/bash\n# pipeline_analyzer.sh\nset -o pipefail\n\nlog=\"$1\"\nif [ ! -f \"$log\" ]; then\n  echo \"Error: log file not found\" >&2\n  exit 2\nfi\n\ncount=$(grep -iE 'error|warn' \"$log\" | awk '{print $2, $NF}' | sort | tee /dev/stderr | wc -l)\nstatus=(\"${PIPESTATUS[@]}\")\n\necho \"Exit statuses: ${status[@]}\"\nif [ \"$count\" -eq 0 ]; then\n  echo \"No errors/warnings found.\"\n  exit 0\nelse\n  echo \"Total errors/warnings: $count\"\n  exit 1\nfi"
+}

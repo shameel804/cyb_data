@@ -1,0 +1,95 @@
+{
+    "id": "l1",
+    "chapterId": "ch_9",
+    "title": "Why Monitoring & Logging Matter 🔍",
+    "description": "Understand the role of visibility in cloud security and why you can't protect what you can't see.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "You Can’t Defend in the Dark 🌑",
+            "content": "# Visibility Is the Foundation\n\nImagine a bank with no security cameras, no transaction logs, and no alarms. How would they know if a robbery happened? They wouldn’t—until the vault is empty.\n\nIn the cloud, your resources are virtual. Without **monitoring and logging**, you’re blind:\n- You won’t know who accessed your data.\n- You won’t detect a misconfigured S3 bucket until it’s on the news.\n- You won’t see the attacker moving laterally inside your VPC.\n\n**Monitoring** gives you real‑time awareness. **Logging** gives you the evidence trail. Together, they’re your eyes and ears."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "true_false",
+                "question": "Logging alone is sufficient to detect an active intrusion in real time.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Logs provide the record, but monitoring (alarms, dashboards) is needed to alert you in real time.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "The Three Pillars of Cloud Visibility 🏛️",
+            "content": "1. **Logging** – Recording API calls (CloudTrail), application logs, and OS logs. Answers \"What happened?\"\n2. **Monitoring** – Real‑time metrics and dashboards (CloudWatch). Answers \"What’s happening now?\"\n3. **Alerting** – Automated notifications when something suspicious occurs. Answers \"What should I act on immediately?\"\n\n*Without all three, you’re either flying blind or drowning in noise.*"
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "Pillar Match 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "Which pillar corresponds to receiving a text message when someone deletes a production database?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Logging",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Monitoring",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Alerting",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Backups",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Alerting pushes notifications to humans or systems when a predefined condition is met.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Shared Responsibility for Logging 🤝",
+            "content": "## Who Logs What?\n- **Cloud provider** logs the infrastructure layer (physical access, hypervisor events) and provides services like CloudTrail.\n- **You** must enable and configure those services. By default, many logs are not collected!\n- **You** are responsible for logging your application, operating system, and custom metrics.\n\n*If you haven’t explicitly turned on logging, assume it’s off.*"
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Start With One Critical Trail 🚀",
+            "content": "Enable AWS CloudTrail across all regions in your account today. It costs pennies and provides a complete history of API calls. The first step to security visibility is a single click."
+        }
+    ]
+}

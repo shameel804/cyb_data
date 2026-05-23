@@ -1,0 +1,131 @@
+{
+    "id": "l6",
+    "chapterId": "ch_5",
+    "title": "Nested Loops & Loop‑Else 🧠",
+    "description": "Combine loops for multi‑dimensional tasks and use the `else` clause to detect when a loop completes normally.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Loops",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "Loop Within a Loop",
+            "content": "# For Multi‑Host, Multi‑Port Scanning\n\nWhen you need to scan every port on every host, you nest a `for` loop inside another:\n```python\nhosts = [\"10.0.0.1\", \"10.0.0.2\"]\nports = [22, 80]\nfor host in hosts:\n    for port in ports:\n        print(f\"Scanning {host}:{port}\")\n```\nOutput:\n```\nScanning 10.0.0.1:22\nScanning 10.0.0.1:80\nScanning 10.0.0.2:22\nScanning 10.0.0.2:80\n```"
+        },
+        {
+            "id": "s_l6_2",
+            "type": "code",
+            "title": "Nested Loop Example",
+            "content": "Run it:",
+            "codeSnippet": "hosts = [\"192.168.1.1\", \"192.168.1.2\"]\nports = [443, 8080]\nfor host in hosts:\n    for port in ports:\n        print(f\"Probing {host}:{port}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Nested Loops 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "If `hosts` has 3 items and `ports` has 4 items, how many total iterations will a nested loop execute?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "7",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "12",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "4",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "3 * 4 = 12 total inner loop runs.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "Mixing while and for Nesting",
+            "content": "# Any Loop Can Contain Any Other\n\n```python\nwhile not queue.empty():\n    item = queue.get()\n    for listener in listeners:\n        listener.send(item)\n```\nPerfect for real‑time packet processing."
+        },
+        {
+            "id": "s_l6_5",
+            "type": "warning",
+            "title": "Deep Nesting Alert ⚠️",
+            "content": "## 3+ Levels Hurts Readability\n\nIf you're nesting three deep, consider breaking inner loops into functions. Your brain will thank you later."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "text",
+            "title": "The `else` Clause on Loops 🤯",
+            "content": "# Python's Hidden Gem\n\nAn `else` block after a `for` or `while` loop executes **only if the loop terminated normally** (i.e., not by a `break`).\n\n```python\nfor n in range(2, 10):\n    for x in range(2, n):\n        if n % x == 0:\n            print(f\"{n} is not prime\")\n            break\n    else:\n        # This else belongs to the inner for, runs if break was NOT hit\n        print(f\"{n} is prime\")\n```\nThis is incredibly useful for search loops: \"if item found, break; else, item not found\"."
+        },
+        {
+            "id": "s_l6_7",
+            "type": "code",
+            "title": "Loop‑else in Action",
+            "content": "Check if a password exists in a list:",
+            "codeSnippet": "passwords = [\"abc\", \"def\", \"ghi\"]\nneedle = \"xyz\"\nfor pwd in passwords:\n    if pwd == needle:\n        print(\"Found!\")\n        break\nelse:\n    print(\"Not found\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l6_8",
+            "type": "quiz",
+            "title": "Loop‑else 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "multiple_choice",
+                "question": "When does the `else` block of a `for` loop execute?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Always after the loop",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Only if the loop was not exited by a `break`",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Only if the loop body never executed",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The else clause runs on normal completion (no break).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_9",
+            "type": "text",
+            "title": "Loop‑else with while",
+            "content": "# Works the Same\n\n```python\nattempts = 3\nwhile attempts > 0:\n    if try_login():\n        print(\"Logged in\")\n        break\n    attempts -= 1\nelse:\n    print(\"Account locked\")\n```\nIf login succeeds, break skips the else. If all attempts fail, else runs."
+        },
+        {
+            "id": "s_l6_10",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## The name `else` is confusing\n\nSome think it should have been called `nobreak`. Just remember: `else` means \"no break\"."
+        },
+        {
+            "id": "s_l6_11",
+            "type": "text",
+            "title": "Chapter 5 Mastered! 🎉",
+            "content": "# You Are Now a Looping Legend\n\nYou can automate repetitive tasks with `while` and `for`, control flow with `break`/`continue`, build nested scans, and use the elegant loop‑else. These are the core of every brute‑forcer, scanner, and enumeration tool.\n\nTake the Chapter Quiz and complete the tasks to solidify. Then prepare for Chapter 6: Functions – where you package your logic into reusable blocks."
+        }
+    ]
+}

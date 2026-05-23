@@ -1,0 +1,149 @@
+{
+    "id": "l4",
+    "chapterId": "ch_9",
+    "title": "Installing & Using Third‑Party Libraries 📦",
+    "description": "Install external packages with pip and use requests and BeautifulSoup for web hacking.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "External Libraries",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Beyond the Standard Library",
+            "content": "# pip install Opens the Universe\n\nPython's standard library is huge, but the real magic for hacking is in third‑party packages:\n* **`requests`** – HTTP for humans (GET, POST, sessions, cookies)\n* **`beautifulsoup4`** – HTML parsing\n* **`scapy`** – packet manipulation\n* **`paramiko`** – SSH\n* **`cryptography`** – encryption\n\nInstall them with:\n```\npip install requests beautifulsoup4\n```"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Make an HTTP GET Request",
+            "content": "Fetch a webpage with requests:",
+            "codeSnippet": "import requests\nresponse = requests.get('http://httpbin.org/get')\nprint(response.status_code)\nprint(response.json())",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "requests Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What does `response.status_code` contain after a successful GET?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The HTML content",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The HTTP status code (e.g., 200)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The request headers",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "status_code is an integer like 200, 404, etc.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "requests with Parameters & Headers",
+            "content": "# Customize Your Requests\n\n```python\nimport requests\nparams = {'q': 'python hacking'}\nheaders = {'User-Agent': 'CybronScanner/1.0'}\nresp = requests.get('https://api.github.com/search/repositories',\n                     params=params, headers=headers)\nprint(resp.url)   # see full URL with query string\n```\nThis is how you interact with web APIs."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "POST Request Example",
+            "content": "Submit login data:",
+            "codeSnippet": "import requests\nlogin_url = 'http://httpbin.org/post'\ndata = {'username': 'admin', 'password': 'secret'}\nresp = requests.post(login_url, data=data)\nprint(resp.json())",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "HTTP Methods 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "`requests.get` and `requests.post` are the only HTTP methods available in the requests library.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "requests also supports put, patch, delete, head, options.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "BeautifulSoup – Parse HTML 🍲",
+            "content": "# Extract Data from Web Pages\n\n```python\nfrom bs4 import BeautifulSoup\nimport requests\n\nurl = 'http://example.com'\nresp = requests.get(url)\nsoup = BeautifulSoup(resp.text, 'html.parser')\nprint(soup.title.string)  # page title\nlinks = soup.find_all('a')\nfor link in links:\n    print(link.get('href'))\n```\nBeautifulSoup transforms messy HTML into a searchable tree."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "code",
+            "title": "Extract All Links",
+            "content": "Simulate parsing:",
+            "codeSnippet": "from bs4 import BeautifulSoup\nhtml = '<html><body><a href=\"page1.html\">Link1</a><a href=\"page2.html\">Link2</a></body></html>'\nsoup = BeautifulSoup(html, 'html.parser')\nfor a_tag in soup.find_all('a'):\n    print(a_tag['href'])",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_9",
+            "type": "quiz",
+            "title": "BeautifulSoup 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "multiple_choice",
+                "question": "How do you select the first `<h1>` tag in a soup object?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "soup.h1",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "soup.find_all('h1')",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "soup('h1')",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "soup.h1 returns the first h1 tag; find_all returns a list.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_10",
+            "type": "text",
+            "title": "Installing Packages in a Virtual Environment",
+            "content": "# Remember Chapter 2?\n\nAlways create a virtual environment before installing third‑party packages:\n```bash\npython3 -m venv webscan\nsource webscan/bin/activate\npip install requests beautifulsoup4\n```\nThis keeps your global Python clean and your project reproducible."
+        },
+        {
+            "id": "s_l4_11",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Check package documentation\n\nMost packages have great docs online. For requests: docs.python-requests.org. For BeautifulSoup: crummy.com/software/BeautifulSoup/bs4/doc/."
+        },
+        {
+            "id": "s_l4_12",
+            "type": "text",
+            "title": "Next: Managing Dependencies",
+            "content": "# Now that you can use external libs, let's learn how to freeze requirements and build your own modules."
+        }
+    ]
+}

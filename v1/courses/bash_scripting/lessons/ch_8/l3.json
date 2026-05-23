@@ -1,0 +1,118 @@
+{
+    "id": "l3",
+    "chapterId": "ch_8",
+    "title": "Associative Arrays: Key‑Value Stores 🗝️",
+    "description": "Map keys to values with `declare -A`. Perfect for lookups and dictionaries.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Arrays",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Beyond Numbers: Named Keys 🔑",
+            "content": "## Associative Arrays (Bash 4+)\n\nAn **associative array** (like a dictionary or map) uses strings as indices instead of numbers.\n\nYou must explicitly declare it: `declare -A mydict`.\n\nThen assign: `mydict[key]=value`.\n\nAccess: `${mydict[key]}`."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Create and Access",
+            "content": "Map usernames to full names:",
+            "codeSnippet": "declare -A user_name\nuser_name[alice]=\"Alice Smith\"\nuser_name[bob]=\"Bob Jones\"\necho \"${user_name[alice]}\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which command declares an associative array named `capitals`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "declare -a capitals",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "declare -A capitals",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "capitals=()",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "assoc capitals",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`declare -A` creates an associative array; `-a` is for indexed.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Getting Keys and Values 🗂️",
+            "content": "## Useful Expansions\n\n- All values: `\"${array[@]}\"`\n- All keys: `\"${!array[@]}\"`\n- Number of elements: `${#array[@]}`\n\nThese work just like indexed arrays. Use `\"${!array[@]}\"` to iterate over keys."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Iterate Over an Associative Array",
+            "content": "Loop through keys and values:",
+            "codeSnippet": "declare -A capitals=([France]=Paris [Japan]=Tokyo)\nfor country in \"${!capitals[@]}\"; do\n  echo \"$country -> ${capitals[$country]}\"\ndone",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "fill_blank",
+                "question": "To get all keys of an associative array, use `\"${___array[@]}\"`",
+                "options": [],
+                "correctAnswer": "!",
+                "explanation": "Prefixing the array name with `!` expands to the list of keys.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Initialising with Compound Assignment 🧪",
+            "content": "## All in One Line\n\nYou can assign many key‑value pairs at once:\n```bash\ndeclare -A countries=(\n  [USA]=\"Washington\"\n  [UK]=\"London\"\n)\n```\nOr on a single line: `declare -A arr=([key1]=val1 [key2]=val2)`."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "code",
+            "title": "One‑Liner Initialisation",
+            "content": "Map file extensions to descriptions:",
+            "codeSnippet": "declare -A desc=([txt]=\"Text\" [jpg]=\"Image\" [sh]=\"Script\")\necho \"${desc[sh]}\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_9",
+            "type": "warning",
+            "title": "⚠️ Bash Version",
+            "content": "Associative arrays require Bash 4.0+. If you target macOS, note the default Bash is 3.2; install a newer version or use zsh."
+        },
+        {
+            "id": "s_l3_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use associative arrays for configuration management: load key=value pairs from a file into an array for quick lookups."
+        }
+    ]
+}

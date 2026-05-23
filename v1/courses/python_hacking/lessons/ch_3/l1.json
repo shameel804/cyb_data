@@ -1,0 +1,146 @@
+{
+    "id": "l1",
+    "chapterId": "ch_3",
+    "title": "Variables: Storing Intel Like a Pro 💾",
+    "description": "Learn to assign names to data – your scripts need to remember IPs, ports, and targets.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Data Types",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "What If Your Script Could Remember?",
+            "content": "# Variables are Your Digital Sticky Notes 📝\n\nWhen scanning a network, you need to store the target IP, the port, the timeout value, etc. **Variables** let you give a name to a piece of data and reuse it.\n\n```python\ntarget_ip = \"192.168.1.1\"\nport = 80\n```\nNow `target_ip` holds the string, `port` holds the number. You can change them later or use them in calculations."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "code",
+            "title": "Assignment in Action",
+            "content": "Run this in your script:",
+            "codeSnippet": "target_ip = \"10.0.0.5\"\nport = 22\nprint(target_ip)\nprint(port)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Variable Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What does `target = \"scanme.nmap.org\"` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Scans the target immediately",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Assigns the string to a variable named target",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Checks if the target is reachable",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Assignment stores a value in a variable for later use.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Variable Naming Rules 📛",
+            "content": "# You Can't Just Name It Anything\n\n* Must start with a letter or underscore `_`\n* Can contain letters, digits, underscores\n* Case‑sensitive: `port`, `Port`, `PORT` are three different variables\n* Cannot use Python keywords (like `if`, `for`, `import`)\n\n**Good:** `target_ip`, `_port`, `maxRetries`  \n**Bad:** `2nd_attempt`, `target-ip`, `class`"
+        },
+        {
+            "id": "s_l1_5",
+            "type": "quiz",
+            "title": "Naming Rules 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "Which of the following is a valid Python variable name?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "2nd_attempt",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "my-var",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "scan_result",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Variable names cannot start with a digit or contain hyphens.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "Convention: snake_case 🐍",
+            "content": "# Pythonic Style\n\nMost Python hackers use `snake_case` for variables: lowercase words separated by underscores.\n\n* `target_ip`\n* `num_ports_open`\n* `brute_force_timeout`\n\nThis keeps code readable and consistent. You'll thank yourself later."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use Descriptive Names\n\n`t` is a terrible variable. `target_ip` tells you exactly what it holds. In six months, you'll still understand your own code."
+        },
+        {
+            "id": "s_l1_8",
+            "type": "text",
+            "title": "Reassigning Variables",
+            "content": "# Variables Can Change Their Mind\n\n```python\nport = 80\nprint(port)   # 80\nport = 443\nprint(port)   # 443\n```\nPython just points the name to a new value. Old value? Gone if no one else points to it."
+        },
+        {
+            "id": "s_l1_9",
+            "type": "code",
+            "title": "Multi‑Assignment Trick",
+            "content": "You can assign several variables at once:",
+            "codeSnippet": "ip, port, protocol = \"192.168.1.1\", 80, \"TCP\"\nprint(ip, port, protocol)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_10",
+            "type": "quiz",
+            "title": "Reassignment 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_3",
+                "type": "true_false",
+                "question": "After `x = 10` and then `x = 20`, the value 10 still exists and can be accessed through x.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "x now points to 20; the 10 is unreachable (unless another variable references it).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_11",
+            "type": "text",
+            "title": "What Type Is It?",
+            "content": "# Python Figures It Out\n\nYou don't declare types! Python infers it:\n```python\nport = 80          # int\nversion = 3.11     # float\ntarget = \"server\"  # str\nis_alive = True    # bool\n```\nWe'll explore each type in the next lessons."
+        },
+        {
+            "id": "s_l1_12",
+            "type": "text",
+            "title": "Ready for Numbers?",
+            "content": "# Next: Doing Math with Targets\n\nNow that you can store data, it's time to calculate. Next lesson, we'll crunch numbers for port scanning, timing, and payload sizes."
+        }
+    ]
+}

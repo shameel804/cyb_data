@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_11",
+    "title": "Assess a Workload Against the AWS Security Pillar",
+    "description": "Using the AWS Well‑Architected Tool questions, identify gaps in a given scenario.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario\nA team has deployed a public‑facing web application on EC2. They:\n- Use a single AWS account for everything.\n- Hardcode AWS access keys in the application config file.\n- Store database backups in an S3 bucket without encryption.\n- Have no monitoring or alerting configured.\n- Allow SSH from 0.0.0.0/0 on the web server security group.\n\n### Your Task\nRefer to the AWS Well‑Architected Security Pillar (you can use memory from this chapter). For each of the five focus areas (IAM, Detection, Infrastructure Protection, Data Protection, Incident Response), identify at least one gap and recommend a fix aligned with the framework.\n\nWrite a concise assessment.",
+    "hints": [
+        "IAM: hardcoded credentials violate the ‘strong identity foundation’ principle. Use instance roles.\n",
+        "Data Protection: no encryption at rest; missing encryption in transit? Enable SSE‑S3 and HTTPS.\n",
+        "Infrastructure Protection: open SSH is a bad practice. Use Session Manager or restrict IP."
+    ],
+    "expectedOutput": "A table or bullet list with five areas, gaps, and recommendations.",
+    "solutionCode": "| Focus Area | Gap | Recommendation (Aligned with WA) |\n|------------|-----|----------------------------------|\n| **IAM** | Hardcoded access keys in code. | Replace with EC2 instance role; follow ‘Implement a strong identity foundation’. |\n| **Detection** | No monitoring or alerting. | Enable CloudTrail, GuardDuty, and create CloudWatch alarms for key events; align with ‘Enable traceability’. |\n| **Infrastructure Protection** | SSH open to world. | Restrict SSH to a specific admin IP, or use Session Manager (no open SSH); ‘Apply security at all layers’. |\n| **Data Protection** | Unencrypted S3 bucket. | Enable SSE‑S3 or SSE‑KMS; enforce encryption with bucket policy; ‘Protect data at rest’. |\n| **Incident Response** | No IR playbook or preparation. | Create a runbook for compromised instance; conduct game days; ‘Prepare for security events’. |"
+}

@@ -1,0 +1,116 @@
+{
+    "id": "l1",
+    "chapterId": "ch_4",
+    "title": "The `if` Statement: Making Decisions 🤔",
+    "description": "Teach your script to react differently based on conditions – the first step to intelligent hacking tools.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Control Flow",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Your Script Needs a Brain 🧠",
+            "content": "# From Linear to Smart\n\nSo far, your scripts run top to bottom. But hacking tools must decide: if a port is open, print \"found\"; if a login fails, try another password.\n\nThe `if` statement makes this possible. It runs a block of code only when a condition is `True`."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "code",
+            "title": "Basic if Syntax",
+            "content": "The structure: keyword `if`, a condition, a colon `:`, then an indented block.",
+            "codeSnippet": "port = 80\nif port == 80:\n    print(\"HTTP port is open!\")\nprint(\"Scan continues...\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "if Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What happens if the condition in an `if` statement is `False`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The program crashes",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The indented block is skipped",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The indented block runs twice",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "When the condition is false, Python jumps past the indented block.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Condition: Any Boolean Expression",
+            "content": "# The Heart of the if\n\nThe condition can be:\n* Comparison: `port == 80`, `score > 100`\n* Boolean variable: `is_vulnerable`\n* Truthy/falsy values: `if username:` (runs if username is not empty)\n* Logical combinations: `if port == 80 or port == 443`\n\nRemember, it must evaluate to `True` or `False`."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Truthy Condition Example",
+            "content": "Check if a string is non‑empty before printing:",
+            "codeSnippet": "banner = get_banner()  # may be empty\nif banner:\n    print(f\"Banner: {banner}\")\nelse:\n    print(\"No banner received\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Truthiness Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "`if 0:` will execute the block beneath it.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "0 is falsy, so the block is skipped.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "Indentation Matters (Again)",
+            "content": "# All Lines in the Block Must Be Aligned\n\n```python\nif score > 90:\n    print(\"Excellent!\")\n    print(\"You rock!\")\nprint(\"Done\")  # outside if\n```\nInconsistent indentation causes `IndentationError`. Stick to 4 spaces."
+        },
+        {
+            "id": "s_l1_8",
+            "type": "warning",
+            "title": "Common Mistake ⚠️",
+            "content": "## Forgetting the Colon\n\n```python\nif port == 80   # SyntaxError: invalid syntax\n    print(\"Open\")\n```\nAlways end the `if` line with a colon `:`."
+        },
+        {
+            "id": "s_l1_9",
+            "type": "text",
+            "title": "One‑Liner if (Not Recommended)",
+            "content": "# You Can Squeeze It, but Don't\n\n```python\nif port == 80: print(\"Open\")  # works, but ugly\n```\nFor readability, always put the block on a new indented line. Readability = hackability."
+        },
+        {
+            "id": "s_l1_10",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use `if` to Guard Against Errors\n\nBefore using a dangerous function, check input:\n```python\nif user_input.isdigit():\n    port = int(user_input)\nelse:\n    print(\"Invalid port\")\n```\nThis prevents `ValueError` crashes."
+        },
+        {
+            "id": "s_l1_11",
+            "type": "text",
+            "title": "Ready for else?",
+            "content": "# Next Lesson: Adding More Paths\n\nNow that you can execute code conditionally, you need to handle the \"otherwise\" case. Meet `else` and `elif`."
+        }
+    ]
+}

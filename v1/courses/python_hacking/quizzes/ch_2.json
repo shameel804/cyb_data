@@ -1,0 +1,266 @@
+{
+    "id": "quiz_ch_2",
+    "chapterId": "ch_2",
+    "title": "Chapter 2 Quiz",
+    "description": "Test your knowledge of virtual environments, pip, workspace organization, and hacking libraries.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary purpose of a Python virtual environment?",
+            "options": [
+                "To make Python code run faster",
+                "To isolate project dependencies from the system Python",
+                "To enable cloud computing",
+                "To convert Python to other languages"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Virtual environments create isolated spaces so packages don't conflict across projects."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which command creates a virtual environment named 'myenv'?",
+            "options": [
+                "python -m venv myenv",
+                "pip install myenv",
+                "python create venv myenv",
+                "virtualenv myenv"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`python -m venv myenv` is the standard command (Python 3.3+)."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "After creating a virtual environment, it is automatically activated.",
+            "correctAnswer": false,
+            "explanation": "You must run the activation script (e.g., `source myenv/bin/activate` on Unix) to use it."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "On Linux/macOS, how do you activate a venv called 'hacklab'?",
+            "options": [
+                "hacklab\\Scripts\\activate",
+                "source hacklab/bin/activate",
+                "activate hacklab",
+                "python activate hacklab"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The activation script is located in `bin/` and must be sourced."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What does the command `deactivate` do?",
+            "options": [
+                "Deletes the virtual environment",
+                "Exits the virtual environment and returns to the global Python",
+                "Uninstalls all packages in the venv",
+                "Stops the Python interpreter"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`deactivate` leaves the venv, restoring the original shell environment."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which pip command shows all installed packages in the current environment?",
+            "options": [
+                "pip show all",
+                "pip list",
+                "pip freeze",
+                "pip display"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`pip list` outputs a list of installed packages with versions."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What is the purpose of `pip freeze > requirements.txt`?",
+            "options": [
+                "To delete all packages",
+                "To upgrade all packages",
+                "To save the exact package versions for replication",
+                "To freeze (pause) package installations"
+            ],
+            "correctAnswer": 2,
+            "explanation": "It records the current environment’s packages and their versions into a file."
+        },
+        {
+            "id": "q8",
+            "type": "true_false",
+            "question": "Running `pip install` without an active virtual environment always installs the package globally.",
+            "correctAnswer": true,
+            "explanation": "Without a venv activated, pip targets the system‑wide Python installation."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "How do you install a specific version of a package, e.g., requests 2.25.0?",
+            "options": [
+                "pip install requests version 2.25.0",
+                "pip install requests==2.25.0",
+                "pip install requests@2.25.0",
+                "pip install -v 2.25.0 requests"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Use `==` to pin a version."
+        },
+        {
+            "id": "q10",
+            "type": "fill_blank",
+            "question": "To recreate an environment from a requirements.txt file, use the command `pip install -r ________`.",
+            "options": [
+                "requirements.txt",
+                "packages.txt",
+                "dependencies.txt",
+                "install.txt"
+            ],
+            "correctAnswer": "requirements.txt",
+            "explanation": "The `-r` flag reads the file and installs all listed packages."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which of the following is a recommended project structure for a hacking tool?",
+            "options": [
+                "All files in one folder, no subfolders",
+                "Scripts in `src/`, data in `data/`, output in `output/`, plus requirements.txt and README",
+                "Only a single Python file",
+                "A Jupyter notebook per script"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A clear separation keeps the project maintainable and portable."
+        },
+        {
+            "id": "q12",
+            "type": "true_false",
+            "question": "It is a good practice to include a README.md file in your project even if you don't plan to share it.",
+            "correctAnswer": true,
+            "explanation": "README helps you remember the project's purpose and usage when you return to it later."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which library is built into Python and used for low‑level TCP/UDP connections?",
+            "options": [
+                "requests",
+                "socket",
+                "scapy",
+                "paramiko"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The `socket` module is part of the standard library."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is `requests` primarily used for?",
+            "options": [
+                "Sending raw network packets",
+                "Making HTTP requests to web servers",
+                "Parsing HTML",
+                "Encrypting data"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`requests` simplifies HTTP operations like GET and POST."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Which library would you combine with `requests` to parse HTML and extract data?",
+            "options": [
+                "scapy",
+                "paramiko",
+                "beautifulsoup4",
+                "hashlib"
+            ],
+            "correctAnswer": 2,
+            "explanation": "BeautifulSoup4 is designed for pulling data out of HTML and XML files."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "Scapy can be used for ARP spoofing and packet sniffing.",
+            "correctAnswer": true,
+            "explanation": "Scapy allows crafting and manipulating packets at various layers."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which library would you use to automate SSH connections and execute commands on a remote server?",
+            "options": [
+                "socket",
+                "requests",
+                "paramiko",
+                "hashlib"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Paramiko is a Python implementation of SSHv2."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "What does `hashlib` allow you to do?",
+            "options": [
+                "Create graphical user interfaces",
+                "Generate cryptographic hashes (MD5, SHA256, etc.)",
+                "Send email",
+                "Connect to databases"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`hashlib` provides secure hash and message digest algorithms."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "Which built‑in module can you use to run system commands from Python?",
+            "options": [
+                "requests",
+                "subprocess",
+                "beautifulsoup4",
+                "scapy"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The `subprocess` module spawns new processes, connects to their input/output/error pipes."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "Once a virtual environment is deleted, all packages installed inside it are also removed.",
+            "correctAnswer": true,
+            "explanation": "The venv is a self‑contained folder; deleting it removes everything inside."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "Which command can fix a broken pip installation?",
+            "options": [
+                "pip repair",
+                "python -m ensurepip --upgrade",
+                "pip fix",
+                "pip reinstall pip"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`ensurepip` reinstalls or upgrades pip."
+        },
+        {
+            "id": "q22",
+            "type": "fill_blank",
+            "question": "The file that lists a project's dependencies and is created by `pip freeze` is typically named ________.",
+            "options": [
+                "requirements.txt",
+                "packages.txt",
+                "dependencies.txt",
+                "pipfile.txt"
+            ],
+            "correctAnswer": "requirements.txt",
+            "explanation": "requirements.txt is the conventional name."
+        }
+    ]
+}

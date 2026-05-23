@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_6",
+    "title": "Port Open Checker Function",
+    "description": "Write a function that simulates checking a port and returns True/False.",
+    "estimatedMinutes": 10,
+    "problemStatement": "Create a script `port_check.py` that defines a function `is_port_open(port)`. For simulation, consider ports 22, 80, 443 as always open. Any other port is closed. The function should return `True` if the port is in that list, otherwise `False`. Call the function in a loop over a list `test_ports = [22, 80, 23, 443, 8080]` and print for each port: \"Port X: Open\" or \"Port X: Closed\". Use the function's return value to decide.",
+    "hints": [
+        "Define a list `open_ports_list = [22, 80, 443]` inside the function or globally.",
+        "Use `return port in open_ports_list`.",
+        "Loop: for p in test_ports: if is_port_open(p): ..."
+    ],
+    "expectedOutput": "Port 22: Open\nPort 80: Open\nPort 23: Closed\nPort 443: Open\nPort 8080: Closed",
+    "solutionCode": "def is_port_open(port):\n    open_ports_list = [22, 80, 443]\n    return port in open_ports_list\n\ntest_ports = [22, 80, 23, 443, 8080]\nfor p in test_ports:\n    status = \"Open\" if is_port_open(p) else \"Closed\"\n    print(f\"Port {p}: {status}\")"
+}

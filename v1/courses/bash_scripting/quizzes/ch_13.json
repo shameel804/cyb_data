@@ -1,0 +1,259 @@
+{
+    "id": "quiz_ch_13",
+    "chapterId": "ch_13",
+    "title": "Chapter 13 Quiz",
+    "description": "Test your knowledge of error handling, debugging, and defensive scripting!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What does a zero exit code mean?",
+            "options": [
+                "An error occurred",
+                "Success",
+                "The command was not found",
+                "The script should be restarted"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Zero is the universal code for success."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which variable contains the exit status of the last command?",
+            "options": [
+                "$!",
+                "$?",
+                "$$",
+                "$-"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`$?` stores the exit code of the most recently executed foreground pipeline."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "How can you run a command and capture its exit code?",
+            "options": [
+                "command; status=$?",
+                "status=$(command)",
+                "status=command",
+                "command | status=$?"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Run the command, then immediately assign `$?` to a variable."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What does `command1 && command2` do?",
+            "options": [
+                "Runs command2 only if command1 succeeds",
+                "Runs command2 regardless of command1",
+                "Runs command1 and command2 simultaneously",
+                "Pipes command1 into command2"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`&&` is logical AND; the second command only runs if the first returns zero."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which `set` option makes a script exit on an unset variable?",
+            "options": [
+                "set -e",
+                "set -x",
+                "set -u",
+                "set -o pipefail"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`-u` treats unset variables as an error and exits."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the purpose of `set -o pipefail`?",
+            "options": [
+                "Prevents the use of pipes",
+                "Makes a pipeline return the exit status of the last command that failed",
+                "Forces pipes to run in the current shell",
+                "Redirects all pipeline output to stderr"
+            ],
+            "correctAnswer": 1,
+            "explanation": "With pipefail, the pipeline's exit code is the last non‑zero code (or zero if all succeed)."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "How can you safely provide a default value with `set -u` active?",
+            "options": [
+                "$var",
+                "${var-default}",
+                "${var:-default}",
+                "$var?default"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`${var:-default}` expands to 'default' if var is unset or null."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What does `trap 'echo Cleaning up' EXIT` do?",
+            "options": [
+                "Cleans up only if Ctrl+C is pressed",
+                "Echoes 'Cleaning up' when the script exits, regardless of the reason",
+                "Catches all signals except KILL",
+                "It's invalid syntax"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`EXIT` trap fires on normal exit, error exit, or when killed by some signals (not KILL)."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Which signal cannot be trapped?",
+            "options": [
+                "SIGINT",
+                "SIGTERM",
+                "SIGKILL",
+                "EXIT"
+            ],
+            "correctAnswer": 2,
+            "explanation": "SIGKILL (9) immediately terminates the process; the kernel does not allow trapping it."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "How can you trace a script's execution from the command line?",
+            "options": [
+                "bash -v script.sh",
+                "bash -x script.sh",
+                "bash -d script.sh",
+                "bash -t script.sh"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-x` enables xtrace, printing each command after expansion."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What does `set -x` do inside a script?",
+            "options": [
+                "Stops the script on error",
+                "Prints each command before executing it",
+                "Exports all variables",
+                "Removes comments"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-x` turns on xtrace, which shows commands as they are executed."
+        },
+        {
+            "id": "q12",
+            "type": "fill_blank",
+            "question": "To turn off xtrace, use `set ___x`.",
+            "options": [],
+            "correctAnswer": "+",
+            "explanation": "`set +x` disables the tracing option."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What variable customises the xtrace prompt?",
+            "options": [
+                "PS1",
+                "PS2",
+                "PS3",
+                "PS4"
+            ],
+            "correctAnswer": 3,
+            "explanation": "`PS4` is printed before each traced command; default is `+`."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Which pseudo‑signal can be trapped to run code whenever any command fails (Bash‑only)?",
+            "options": [
+                "DEBUG",
+                "RETURN",
+                "ERR",
+                "FAIL"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`trap ... ERR` triggers on a non‑zero exit (when not in an exception‑ignoring context)."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What is a good practice for logging in scripts?",
+            "options": [
+                "Only print errors to stdout",
+                "Include timestamps and severity levels",
+                "Log everything to /dev/null",
+                "Use echo without any formatting"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Structured logs with timestamps and levels help in troubleshooting."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Why should you validate script arguments at the beginning?",
+            "options": [
+                "It makes the script run faster",
+                "To avoid unexpected behaviour later in the script",
+                "It's required by Bash syntax",
+                "To print a nice usage message only"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Early validation catches errors before any irreversible actions are taken."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What does `[[ -f \"$file\" ]]` check?",
+            "options": [
+                "If $file is a directory",
+                "If $file exists and is a regular file",
+                "If $file is writable",
+                "If $file is non‑empty"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-f` tests for a regular file that exists."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "How can you assert that a variable must be non‑empty?",
+            "options": [
+                "[[ -n \"$var\" ]] || exit 1",
+                "[[ -z \"$var\" ]] || exit 1",
+                "assert $var",
+                "test $var || exit"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`-n` returns true if the string length is non‑zero; the `|| exit 1` fires if that fails."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "`set -e` will cause the script to exit if a command inside an `if` condition fails.",
+            "correctAnswer": false,
+            "explanation": "`set -e` ignores failures of commands that are part of a condition test (if, while, &&, ||)."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which external tool can statically analyse a Bash script for common bugs?",
+            "options": [
+                "bashdb",
+                "shellcheck",
+                "grep",
+                "strace"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`shellcheck` is a linter that finds issues in shell scripts."
+        }
+    ]
+}

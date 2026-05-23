@@ -1,0 +1,117 @@
+{
+    "id": "l5",
+    "chapterId": "ch_11",
+    "title": "grep Advanced & Practical Usage 🕵️",
+    "description": "Apply regex with grep flags, extended regex mode, and real-world log parsing.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Application",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Recap: grep Essentials 📜",
+            "content": "## Flags We Love\n\n- `-E` – extended regex (ERE) for richer patterns.\n- `-i` – case‑insensitive.\n- `-v` – invert match.\n- `-r` / `-R` – recursive directory search.\n- `-n` – line numbers.\n- `-c` – count matches.\n- `-l` – list filenames only.\n- `-o` – show only the matched part, not whole line.\n- `-w` – whole word match."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Extract Only Matches with -o",
+            "content": "Pull all email addresses from a file (simplified):",
+            "codeSnippet": "echo \"Contact: alice@mail.com, bob@web.org\" | grep -Eo '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Which grep flag shows only the matching portion?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "-v",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "-o",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "-l",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "-c",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-o` prints only the part of the line that matched the pattern.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Recursive Search & File Context 🗂️",
+            "content": "## Grepping Whole Projects\n\n`grep -r 'TODO' .` searches all files under current directory.\n`grep -r --include='*.sh' 'FIXME'` limits to .sh files.\n`grep -rl 'error' /var/log/` lists file paths containing \"error\" without showing the lines."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Recursive with Include",
+            "content": "Find all Bash scripts containing '#!/bin/bash':",
+            "codeSnippet": "grep -r --include='*.sh' '^#!/bin/bash' .",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "`grep -rl 'error' /var/log/` prints the actual lines containing 'error'.",
+                "correctAnswer": false,
+                "explanation": "`-l` lists only the filenames where matches were found, not the matching lines.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Real‑World Log Parsing 🗄️",
+            "content": "## Combine Everything\n\nScenario: Apache access log. Extract all IPs that accessed 'admin.php' and got a 200 status.\n\nSample log line: `192.168.1.1 - - [22/May/2026:10:00:00] \"GET /admin.php HTTP/1.1\" 200 1234`\n\nRegex:\n```bash\ngrep 'admin.php' access.log | grep '\" 200 ' | awk '{print $1}'\n```\nOr purely with grep: `grep -Eo '^[^ ]+' access.log` for IPs."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "code",
+            "title": "Log IP Extractor",
+            "content": "Extract IPs that requested admin.php and got 200:",
+            "codeSnippet": "grep 'admin.php' access.log | grep '\" 200 ' | grep -Eo '^[^ ]+'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_9",
+            "type": "text",
+            "title": "Regex in Conditionals 🧪",
+            "content": "## Using `=~` in `[[ ]]`\n\nBash's `[[ ]]` supports regex with the `=~` operator:\n```bash\nif [[ \"$email\" =~ ^[a-z]+@[a-z]+\\.[a-z]{2,}$ ]]; then\n   echo \"Valid\"\nfi\n```\nNo need for `grep`; you can validate inside the script."
+        },
+        {
+            "id": "s_l5_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Build and test your regex with `echo 'test string' | grep -E 'PATTERN'` before embedding it in a script. Use `-n` for line numbers when scanning large files."
+        }
+    ]
+}

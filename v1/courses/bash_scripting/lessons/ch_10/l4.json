@@ -1,0 +1,117 @@
+{
+    "id": "l4",
+    "chapterId": "ch_10",
+    "title": "Process Substitution: Commands as Files 🔄",
+    "description": "Treat command output (or input) as a file – diff two streams, compare live data, and more.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "FIFO Magic",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Problem: Pipes Can't Go Everywhere 🚧",
+            "content": "## Some Commands Expect Files\n\n`diff` needs two files. `paste` needs file arguments. With normal pipes, you'd have to use temporary files.\n\n**Process substitution** solves this by creating a temporary named pipe (or file descriptor) that contains the command's output."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Syntax",
+            "content": "Two forms:\n- `<(command)` – provides the output of command as a file path (reading).\n- `>(command)` – provides a file path that pipes to command's stdin (writing).",
+            "codeSnippet": "# Compare two directory listings\ndiff <(ls dir1) <(ls dir2)",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What does `diff <(cmd1) <(cmd2)` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It's a syntax error",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It compares the output of cmd1 and cmd2 as if they were files",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It pipes cmd1 into cmd2",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It runs both commands and discards output",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Process substitution turns command outputs into temporary file paths that `diff` can read.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "More Uses of `<( )`",
+            "content": "## Merge, Sort, Compare\n\n- `paste <(cut -f1 file1) <(cut -f2 file2)` – combine columns from different commands.\n- `comm -12 <(sort list1) <(sort list2)` – find common lines.\n- `cat <(echo top) file <(echo bottom)` – concatenate command output with a real file."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Concatenate File with Command Output",
+            "content": "Add a header and footer to a file:",
+            "codeSnippet": "cat <(echo \"--- START ---\") data.txt <(echo \"--- END ---\")",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "Process substitution `<(cmd)` creates a real, permanent file on disk.",
+                "correctAnswer": false,
+                "explanation": "It typically creates a named pipe (FIFO) or a file descriptor in `/dev/fd/`, not a permanent file.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "The Writing Side: `>( )` ✍️",
+            "content": "## Redirect Output to a Command\n\n`>(command)` gives you a file path that sends data to the command's stdin.\n\n```bash\ntar cf >(ssh remote 'cd /backup && tar xf -') .\n```\nThis archives current directory and sends the stream directly to a remote tar, without an intermediate file."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "code",
+            "title": "Tee to Multiple Commands",
+            "content": "Send output to two different commands:",
+            "codeSnippet": "echo \"hello\" | tee >(wc -c) >(md5sum) >/dev/null",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_9",
+            "type": "warning",
+            "title": "⚠️ Subshells Again",
+            "content": "Commands inside `>( )` run in subshells, so they can't modify the parent's variables. Use it purely for I/O."
+        },
+        {
+            "id": "s_l4_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `>()` to send logs to both a file and a processing script: `exec > >(tee stdout.log) 2> >(tee stderr.log >&2)`."
+        }
+    ]
+}

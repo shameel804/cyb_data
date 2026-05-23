@@ -1,0 +1,107 @@
+{
+    "id": "l4",
+    "chapterId": "ch_10",
+    "title": "Auditing & Continuous Compliance 🔍",
+    "description": "Gather evidence, automate audits, and maintain compliance over time.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Audit Is Coming – Be Ready 📅",
+            "content": "# From Point‑in‑Time to Continuous\n\nTraditional audits happen once a year: you scramble to collect screenshots and logs. Cloud auditing can be **continuous**.\n\n- **Automated evidence collection**: Use services that log everything (CloudTrail, Config) and export reports.\n- **Audit‑ready reports**: Tools like AWS Audit Manager map your technical controls to frameworks and produce evidence packs.\n\n*The goal is to make every day an audit day – so when the real auditor calls, you just share a link.*"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Audit Efficiency 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What is the biggest advantage of continuous compliance over point‑in‑time audits?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It's cheaper",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It provides ongoing assurance and reduces last‑minute fire drills",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It doesn't require any configuration",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It replaces all security controls",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Continuous compliance means you detect and fix issues in real‑time, so audits become routine verification.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Key Evidence Sources 📁",
+            "content": "## What Auditors Look For\n\n- **Access logs**: CloudTrail, Azure Activity Log, GCP Audit Logs – prove who did what.\n- **Configuration snapshots**: AWS Config configuration items, Azure Resource Graph – show state at a point in time.\n- **Vulnerability scans**: Amazon Inspector reports, container scan results.\n- **Encryption status**: Proof that data is encrypted (KMS key policies, bucket encryption settings).\n- **Incident response records**: Tickets, runbooks, and logs showing incidents were handled.\n\n*Store all evidence in a dedicated, immutable bucket with retention policies matching regulatory requirements.*"
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "AWS Audit Manager: Your Evidence Assistant 🤖",
+            "content": "## Pre‑built Frameworks, Automatic Evidence\n\nAWS Audit Manager helps you continuously audit your AWS usage. You select a framework (e.g., GDPR, HIPAA), and it starts collecting evidence from sources like CloudTrail, Config, and Security Hub.\n\n- Generates an **audit‑ready report** with evidence folders organized by control.\n- Allows auditors to view evidence without direct AWS console access.\n- Reduces manual effort by up to 80%.\n\n*This is the closest thing to having a robotic audit assistant.*"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "quiz",
+            "title": "Audit Manager 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "AWS Audit Manager can automatically remediate security findings.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Audit Manager collects evidence; remediation is handled by other services like Config auto‑remediation or manual processes.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Remediation: From Finding to Fix 🔧",
+            "content": "## Close the Loop\n\nA compliance finding is useless unless it leads to action. Options:\n- **Manual**: Generate a ticket for an engineer (Jira, ServiceNow).\n- **Auto‑remediation**: AWS Config auto‑remediation with Systems Manager Automation; use Lambda to fix misconfigurations automatically (e.g., set S3 bucket to private).\n- **Preventive**: Policy as Code denies non‑compliant deployments at the pipeline stage.\n\n*The highest maturity level is to prevent non‑compliance from happening, not just to detect and fix.*"
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Maintaining Compliance Over Time 📈",
+            "content": "## The Drift Problem\n\nEven if you achieve 100% compliance today, tomorrow someone might spin up a new resource without encryption. **Compliance drift** is the gradual decay of your security posture.\n\n- **Continuous monitoring** alerts you to drift instantly.\n- **Infrastructure as Code (IaC)** ensures that if someone manually changes a resource, the next IaC run resets it to the desired state.\n- **Tagging strategy**: Tag all resources with owner, data classification, and environment. This enables automated reporting and access control.\n\n*Compliance is a journey, not a destination. Build it into your daily operations.*"
+        },
+        {
+            "id": "s_l4_8",
+            "type": "tip",
+            "title": "Gamify Compliance 🎮",
+            "content": "Set a team goal to achieve a 90% Security Hub score. Review the score in your weekly standup. Celebrate when you hit 100%. It makes governance part of your culture."
+        }
+    ]
+}

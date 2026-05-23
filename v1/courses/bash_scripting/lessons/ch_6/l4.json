@@ -1,0 +1,102 @@
+{
+    "id": "l4",
+    "chapterId": "ch_6",
+    "title": "Modular Scripting: Sourcing Files 📦",
+    "description": "Organise reusable functions into separate files and include them with `source` or `.`.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Code Reuse",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Don't Repeat Across Scripts 📚",
+            "content": "## Your Own Library\n\nIf you have a killer logging function, you don't want to copy‑paste it into every script. Put it in a separate file and **source** it.\n\nSourcing runs the commands in the current shell, so any functions (or variables) defined there become available in your script."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Create a Library",
+            "content": "File: `logger.sh`\n```bash\nlog_info() {\n  echo \"[INFO] $(date): $1\"\n}\n```\nMain script:\n```bash\nsource logger.sh\nlog_info \"Script started\"\n```",
+            "codeSnippet": "# Create logger.sh first:\n# echo 'log_info() { echo \"[INFO] $(date): $1\"; }' > logger.sh\nsource logger.sh\nlog_info \"Hello from main\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which command(s) can be used to include another Bash file?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "include",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "require",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "source or .",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "import",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`source filename` or `. filename` (dot space filename) includes the file in the current shell.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "The Dot Command ➿",
+            "content": "## `.` is an Alias for `source`\n\nThe `.` (dot) command does exactly the same thing:\n```bash\n. ./lib.sh\n```\nIt's shorter, but `source` is more readable to newcomers. Both are correct."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Organising a Library",
+            "content": "A typical structure:\n```\nproject/\n  main.sh\n  lib/\n    ui.sh\n    backup.sh\n```\n`main.sh`:\n```bash\nsource lib/ui.sh\nsource lib/backup.sh\n```",
+            "codeSnippet": "mkdir -p lib\necho 'print_header() { echo \"==== $1 ====\"; }' > lib/ui.sh\nsource lib/ui.sh\nprint_header \"Welcome\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "Sourcing a file runs it in a new subshell, isolating variables.",
+                "correctAnswer": false,
+                "explanation": "No, sourcing executes the file in the **current** shell, so any changes to variables or functions affect the current script.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Finding the Right Path 📍",
+            "content": "## Relative vs Absolute\n\n- `source ./lib.sh` – relative to current working directory.\n- `source /path/to/lib.sh` – absolute.\n- Use `$(dirname \"$0\")` to source files relative to the script's own location.\n\nExample:\n```bash\nDIR=\"$(cd \"$(dirname \"$0\")\" && pwd)\"\nsource \"$DIR/lib/utils.sh\"\n```"
+        },
+        {
+            "id": "s_l4_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Check if the library file exists before sourcing: `[ -f \"lib.sh\" ] && source lib.sh || { echo \"Missing lib\"; exit 1; }`."
+        }
+    ]
+}

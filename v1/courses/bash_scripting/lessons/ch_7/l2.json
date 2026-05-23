@@ -1,0 +1,121 @@
+{
+    "id": "l2",
+    "chapterId": "ch_7",
+    "title": "Redirects: Writing & Appending 📝",
+    "description": "Create and extend files using > and >>. Use tee to write and display simultaneously.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Output",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Standard Output Streams 🌊",
+            "content": "## stdout and stderr\n\nEvery command has two output streams:\n- `stdout` (file descriptor 1) – normal output.\n- `stderr` (file descriptor 2) – error messages.\n\nRedirects let you send these streams to files instead of the terminal."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Overwrite with >",
+            "content": "`command > file` writes stdout to file, overwriting it.",
+            "codeSnippet": "echo \"Hello\" > greeting.txt\ncat greeting.txt",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What happens to `data.txt` when you run `echo 'new' > data.txt`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It appends 'new' at the end",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It replaces the entire content with 'new'",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It creates a second file called 'new'",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Nothing, it's an error",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A single `>` truncates the file and writes the new content.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Append with >>",
+            "content": "`>>` adds output to the end of the file, preserving existing data.",
+            "codeSnippet": "echo \"Line 1\" > log.txt\necho \"Line 2\" >> log.txt\ncat log.txt",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Redirecting stderr 🚨",
+            "content": "## Error Output to a File\n\n- `command 2> error.log` – writes only stderr.\n- `command > out.log 2>&1` – merges stderr into stdout and writes both.\n- `command &> all.log` – shortcut to redirect both stdout and stderr (Bash)."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "code",
+            "title": "Capture Errors",
+            "content": "Try listing a non‑existing directory:",
+            "codeSnippet": "ls /nope 2> error.txt\ncat error.txt",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "fill_blank",
+                "question": "How do you redirect both stdout and stderr to the same file in modern Bash?",
+                "options": [],
+                "correctAnswer": "&>",
+                "explanation": "`&> filename` (or `>& filename`) sends both streams to the file.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "tee: See and Save 🧪",
+            "content": "`tee` reads from stdin and writes to both stdout and one or more files. Perfect for logging while watching.",
+            "codeSnippet": "echo \"Starting backup\" | tee -a backup.log",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_9",
+            "type": "warning",
+            "title": "⚠️ Clobber Protection",
+            "content": "Set `set -o noclobber` to prevent `>` from overwriting existing files. Use `>|` to force overwrite when noclobber is on."
+        },
+        {
+            "id": "s_l2_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `/dev/null` as a black hole: `command > /dev/null 2>&1` hides all output completely."
+        }
+    ]
+}

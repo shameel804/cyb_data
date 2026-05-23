@@ -1,0 +1,77 @@
+{
+    "id": "l1",
+    "chapterId": "ch_12",
+    "title": "Designing Your Reconnaissance Scanner 🧠",
+    "description": "Plan the architecture of a multi‑functional hacking tool that integrates port scanning, banner grabbing, and web recon.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Building the Tool",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "From Scripts to a Real Tool",
+            "content": "# You've Learned All the Pieces\n\nYou can:\n- Scan ports (Chapter 10)\n- Grab banners (Chapter 10)\n- Make HTTP requests and parse HTML (Chapter 11)\n- Handle files, JSON, CSV (Chapter 7)\n- Use functions, modules, and error handling (Chapters 6 & 8)\n\nNow we'll combine them into a single reconnaissance tool – **CybronRecon** – that automates the initial phase of a penetration test."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "Tool Features",
+            "content": "# What CybronRecon Will Do\n\n1. **Port Scanning** – scan a range of ports on a target host (TCP connect scan).\n2. **Service Detection** – for open ports, attempt to identify the service and grab its banner.\n3. **Web Recon** – if HTTP/HTTPS is open, fetch HTTP headers, page title, and server technologies.\n4. **Report Generation** – output results as a CSV/JSON report.\n5. **Command‑Line Interface** – target, port range, output format, verbosity via `sys.argv`.\n\nWe'll build it step by step over the next lessons."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Design Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Why is it a good idea to combine port scanning and banner grabbing in one tool?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It saves time and correlates open ports with running services in one run",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It's required by law",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Port scanning alone is useless",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Integrating both gives a complete picture without manual data correlation.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Project Structure",
+            "content": "# Organize Your Code as a Module\n\n```\ncybron_recon/\n├── __init__.py\n├── scanner.py       # port scanning & banner grabbing\n├── web.py           # HTTP/HTTPS recon\n├── report.py        # CSV/JSON output\n└── main.py          # CLI entry point\n```\nWe'll write each module and then assemble them. This keeps the code clean and testable."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Development Approach",
+            "content": "# Write, Test, Integrate\n\n1. Start with `scanner.py` – a function `scan_ports(host, ports, timeout)`.\n2. Test it independently.\n3. Build `web.py` with `web_recon(url)`.\n4. Create `report.py` that takes results and writes them.\n5. Finally, `main.py` ties everything together with argument parsing.\n\nBy the end, you'll have a tool you can actually use in your lab."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Keep functions small and focused.\n\nEach module should have one clear responsibility. If a function grows too long, break it into helpers. This makes debugging easier."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "Next: The Scanner Core",
+            "content": "# Let's build the heart of the tool – the TCP port scanner."
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "id": "task3",
+    "chapterId": "ch_11",
+    "title": "Link Extractor from a Webpage",
+    "description": "Scrape all absolute links from a given URL using BeautifulSoup and print them.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Write a script `link_extractor.py` that defines a function `extract_links(url)`. It fetches the page, parses it with BeautifulSoup, and prints all absolute URLs found in `<a href=\"...\">` tags. Use `urllib.parse.urljoin` to resolve relative links. Print each link on a new line. Call it with `'https://example.com'` (a safe target). Handle request errors.",
+    "hints": [
+        "Parse with `BeautifulSoup(resp.text, 'html.parser')`.",
+        "Loop over `soup.find_all('a')`.",
+        "If 'href' in a.attrs, resolve with `urljoin(url, a['href'])`.",
+        "Filter out empty or `#` links if desired."
+    ],
+    "expectedOutput": "A list of absolute URLs like 'https://www.iana.org/domains/example' etc.",
+    "solutionCode": "import requests\nfrom bs4 import BeautifulSoup\nfrom urllib.parse import urljoin\n\ndef extract_links(url):\n    try:\n        resp = requests.get(url, timeout=5)\n        resp.raise_for_status()\n        soup = BeautifulSoup(resp.text, 'html.parser')\n        for a in soup.find_all('a', href=True):\n            href = a['href']\n            full = urljoin(url, href)\n            print(full)\n    except requests.exceptions.RequestException as e:\n        print(f\"Error: {e}\")\n\nextract_links('https://example.com')\n"
+}

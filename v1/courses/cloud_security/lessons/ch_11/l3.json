@@ -1,0 +1,111 @@
+{
+    "id": "l3",
+    "chapterId": "ch_11",
+    "title": "Azure Well‑Architected & Cloud Adoption Framework ☁️",
+    "description": "Microsoft's approach to secure architecture: principles, checklists, and governance.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Microsoft Azure Well‑Architected Framework 🔵",
+            "content": "# Five Pillars of Azure Excellence\n\nAzure’s Well‑Architected Framework has five pillars:\n- **Reliability** – Ensure the app can recover.\n- **Security** – Protect from threats.\n- **Cost Optimization** – Maximize value.\n- **Operational Excellence** – Run and monitor.\n- **Performance Efficiency** – Adapt to load.\n\n*The Security pillar in Azure is deeply integrated with Azure Policy, Microsoft Defender for Cloud, and Azure AD.*"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Azure Pillars 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which Azure service continuously assesses configurations and provides security recommendations?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Azure Monitor",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Microsoft Defender for Cloud",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Azure Sentinel",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Azure Policy",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Defender for Cloud (formerly Azure Security Center) provides CSPM and workload protection.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Security Principles in Azure 🛡️",
+            "content": "## The Azure Security Pillar\n\nAzure defines several key principles:\n- **Assume Zero Trust** – Verify every access request.\n- **Identity as the primary security perimeter** – Use Azure AD, Conditional Access, MFA.\n- **Protect data** – Classification, encryption, DLP.\n- **Secure the network** – NSGs, Azure Firewall, WAF.\n- **Secure the code** – DevSecOps, GitHub Advanced Security.\n- **Monitor and respond** – Microsoft Sentinel, Defender for Cloud.\n\n*Each principle comes with a checklist and actionable guidance in the Azure Architecture Center.*"
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Azure Landing Zones: Ready‑Made Architecture 🚀",
+            "content": "## Enterprise‑Scale Architecture\n\nAzure Landing Zones provide a recommended multi‑subscription setup:\n- **Management Group hierarchy** – Organize subscriptions (root → platform → landing zones).\n- **Connectivity subscription** – Centralized networking (Hub VNet).\n- **Identity subscription** – Centralized Azure AD.\n- **Management subscription** – Logging, monitoring, security.\n- **Application landing zones** – For workloads (dev, prod).\n\n*This bakes in segmentation, centralized logging, and policy enforcement from day one. It’s an implementation of the Well‑Architected Framework at scale.*"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "quiz",
+            "title": "Landing Zone Concept 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "In Azure Landing Zones, what is the purpose of the management subscription?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Host all production applications",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Centralize logging, monitoring, and security governance",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Provide internet connectivity",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Manage user identities",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The management subscription houses centralized tools like Azure Monitor, Sentinel, and Defender for Cloud.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Azure Policy & Blueprints: Governance as Code 📜",
+            "content": "- **Azure Policy**: Enforces rules (e.g., ‘Require HTTPS on all storage accounts’). Can audit or deny non‑compliant resources.\n- **Initiatives**: Group policies together for a compliance standard (e.g., Azure Security Benchmark).\n- **Blueprints**: Package policies, role assignments, and ARM templates into a single deployable artifact for a landing zone.\n\n*Policy as Code ensures architecture principles are enforced automatically.*"
+        },
+        {
+            "id": "s_l3_7",
+            "type": "tip",
+            "title": "Microsoft Cloud Adoption Framework 🚀",
+            "content": "## Beyond Architecture\n\nThe CAF provides guidance for the entire cloud journey: strategy, plan, ready, adopt, govern, manage. The **Security** module within CAF aligns perfectly with the Well‑Architected pillars."
+        }
+    ]
+}

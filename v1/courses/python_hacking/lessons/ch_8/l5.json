@@ -1,0 +1,161 @@
+{
+    "id": "l5",
+    "chapterId": "ch_8",
+    "title": "Debugging Strategies: pdb, print & Assert 🧰",
+    "description": "Master print‑debugging, assertions, and the Python Debugger to squash even the trickiest bugs.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Error Handling",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Bugs Are Inevitable – Find Them Fast",
+            "content": "# Debugging is 90% of Hacking Script Development\n\nWhen your scanner silently fails or returns wrong results, you need a detective's toolkit. We'll cover three tiers:\n1. **print()** – quick and dirty\n2. **assert** – sanity checks\n3. **pdb** – full interactive debugger"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Tier 1: Strategic print() Debugging 🖨️",
+            "content": "# The Simpler, the Faster\n\nInsert print statements to show variable values and flow:\n```python\ndef scan(port):\n    print(f\"DEBUG: scanning {port}\")\n    result = connect(port)\n    print(f\"DEBUG: result = {result}\")\n    return result\n```\n* Use `f\"{var=}\"` (Python 3.8+) to print name and value: `print(f\"{port=}\")`.\n* Remove or comment out when done – or use a logger."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "code",
+            "title": "Print Debug Example",
+            "content": "Debug a loop variable:",
+            "codeSnippet": "ports = [22, 80, 443]\nfor p in ports:\n    print(f\"DEBUG: checking port {p}\")\n    if p == 80:\n        print(\"Found HTTP!\")\n        break",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_4",
+            "type": "quiz",
+            "title": "Print Debugging 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is an advantage of using print() for debugging?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It can step through code line by line",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It's quick and doesn't require special tools",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It automatically fixes bugs",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Print is universal and immediate, though limited for complex state.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Tier 2: Assertions – Your Safety Harness 🪢",
+            "content": "# `assert condition, message`\n\nAssertions check that something you believe to be true actually is true. If the condition is False, Python raises `AssertionError`.\n\n```python\ndef set_target(ip):\n    assert isinstance(ip, str), \"IP must be string\"\n    assert \".\" in ip, \"Invalid IP format\"\n    # proceed...\n```\nUse them for **internal consistency checks** – not for user input validation (they can be disabled with `-O` flag)."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "code",
+            "title": "Assert in Action",
+            "content": "Verify a port list isn't empty:",
+            "codeSnippet": "def scan_ports(port_list):\n    assert len(port_list) > 0, \"No ports to scan\"\n    for port in port_list:\n        print(f\"Scanning {port}\")\n\nscan_ports([])  # Will raise AssertionError",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Assertions 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "Assertions should be used to validate end‑user input in production code.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "Assertions can be disabled globally; they're for developer errors, not runtime validation.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_8",
+            "type": "text",
+            "title": "Tier 3: pdb – The Python Debugger 🕵️",
+            "content": "# Interactive Breakpoints and Step‑by‑Step Execution\n\n`pdb` lets you pause your program, inspect variables, and execute code line by line.\n\n* Insert `import pdb; pdb.set_trace()` where you want to stop.\n* When the program reaches that line, you enter an interactive shell.\n* Commands: `n` (next line), `s` (step into function), `c` (continue), `l` (list code), `p variable` (print), `q` (quit)."
+        },
+        {
+            "id": "s_l5_9",
+            "type": "code",
+            "title": "pdb Example",
+            "content": "Debug a scanning function:",
+            "codeSnippet": "import pdb\n\ndef check_port(host, port):\n    pdb.set_trace()  # Execution pauses here\n    # Imagine connection logic...\n    return True\n\ncheck_port(\"10.0.0.1\", 80)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_10",
+            "type": "text",
+            "title": "Common pdb Commands",
+            "content": "# Cheat Sheet\n\n* `l` – show where you are in the code\n* `n` – execute next line (stay in current function)\n* `s` – step into a function call\n* `c` – continue until next breakpoint\n* `p expr` – print value of expression\n* `pp expr` – pretty‑print\n* `b lineno` – set a breakpoint at line number\n* `q` – quit\n\nTip: You can use `breakpoint()` (Python 3.7+) instead of `pdb.set_trace()`."
+        },
+        {
+            "id": "s_l5_11",
+            "type": "quiz",
+            "title": "pdb Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_3",
+                "type": "multiple_choice",
+                "question": "Which pdb command executes the next line but does not enter functions called on that line?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "s",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "n",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "c",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`n` (next) runs the whole line and stops at the next line in the same function.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_12",
+            "type": "text",
+            "title": "Debugging Mindset",
+            "content": "# Systematic Approach\n\n1. **Reproduce** the bug reliably.\n2. **Isolate** – narrow down to the smallest piece of code that fails.\n3. **Hypothesize** – guess what variable might be wrong.\n4. **Inspect** – use prints, asserts, or pdb to check.\n5. **Fix** and verify.\n\nAlso: **Rubber Duck Debugging** – explain your code line by line to an inanimate object. You'll often spot the bug yourself."
+        },
+        {
+            "id": "s_l5_13",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use logging instead of print for persistent debugging\n\n```python\nimport logging\nlogging.basicConfig(level=logging.DEBUG)\nlogging.debug(f\"Port {port} is open\")\n```\nYou can turn it on/off without changing code."
+        },
+        {
+            "id": "s_l5_14",
+            "type": "text",
+            "title": "Chapter 8 Complete! 🎓",
+            "content": "# Your Scripts Are Now Battle‑Ready\n\nYou understand errors, catch them gracefully, raise meaningful exceptions, and debug like a pro. No crash will stop your scanning tools. Take the Quiz and tasks, then get ready for Chapter 9 – Modules & External Libraries!"
+        }
+    ]
+}

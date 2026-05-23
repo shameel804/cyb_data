@@ -1,0 +1,145 @@
+{
+    "id": "l2",
+    "chapterId": "ch_11",
+    "title": "Making HTTP Requests with `requests` 📡",
+    "description": "Send GET and POST requests, add headers, parameters, and handle responses with Python's requests library.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "HTTP Clients",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Meet `requests` – HTTP for Humans",
+            "content": "# The Most Popular Third‑Party Python Library\n\nInstall: `pip install requests`\n\n```python\nimport requests\nresp = requests.get('https://example.com')\nprint(resp.status_code)\nprint(resp.text[:200])  # first 200 chars\n```\nMuch simpler than raw sockets. It handles redirects, keep‑alive, and SSL automatically."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "First GET Request",
+            "content": "Fetch a webpage:",
+            "codeSnippet": "import requests\nresp = requests.get('https://httpbin.org/get')\nprint(resp.status_code)\nprint(resp.json())  # httpbin returns JSON",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "requests Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What does `resp.text` contain after a successful `requests.get()`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "HTTP status code",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The response body as a string",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Response headers",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": ".text returns the raw content of the response (Unicode decoded).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Query Parameters (GET)",
+            "content": "# Pass a Dictionary to `params`\n\n```python\npayload = {'q': 'python hacking', 'page': 2}\nresp = requests.get('https://example.com/search', params=payload)\nprint(resp.url)  # https://example.com/search?q=python+hacking&page=2\n```\n`requests` builds the query string for you, handling encoding."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Sending POST Data",
+            "content": "Use the `data` parameter for form‑encoded data:",
+            "codeSnippet": "import requests\nresp = requests.post('https://httpbin.org/post', data={'user':'admin', 'pass':'1234'})\nprint(resp.json())",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "POST Data 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "Using `data={'key':'value'}` in a POST request encodes it as JSON.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "It encodes as `application/x-www-form-urlencoded`. For JSON, use `json={'key':'value'}`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Sending JSON",
+            "content": "# The `json` Parameter\n\n```python\nresp = requests.post('https://api.example.com/login', json={'username':'admin', 'password':'secr3t'})\n```\nSets `Content-Type: application/json` automatically."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "text",
+            "title": "Custom Headers",
+            "content": "# Masquerade as a Browser\n\n```python\nheaders = {\n    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',\n    'Referer': 'https://google.com',\n}\nresp = requests.get(url, headers=headers)\n```\nMany web apps block scripts with the default Python User‑Agent. Always set a realistic one."
+        },
+        {
+            "id": "s_l2_9",
+            "type": "code",
+            "title": "Check Response Headers",
+            "content": "Access `resp.headers` (a dict‑like object):",
+            "codeSnippet": "import requests\nresp = requests.get('https://httpbin.org/get')\nprint(resp.headers['Content-Type'])",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_10",
+            "type": "quiz",
+            "title": "Headers 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "fill_blank",
+                "question": "To set custom headers in a requests call, use the `________` argument.",
+                "options": [
+                    "headers",
+                    "params",
+                    "data",
+                    "cookies"
+                ],
+                "correctAnswer": "headers",
+                "explanation": "The `headers` keyword allows you to pass a dict of HTTP headers.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_11",
+            "type": "text",
+            "title": "Error Handling with `requests`",
+            "content": "# Use `raise_for_status()`\n\n```python\ntry:\n    resp = requests.get(url, timeout=5)\n    resp.raise_for_status()  # raises HTTPError for 4xx/5xx\nexcept requests.exceptions.RequestException as e:\n    print(f\"Request failed: {e}\")\n```\nAlways catch network errors to make your tools robust."
+        },
+        {
+            "id": "s_l2_12",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use a Session for Multiple Requests to the Same Host\n\n```python\ns = requests.Session()\ns.headers.update({'User-Agent': 'Cybron'})\n# now use s.get(...), s.post(...) – keeps cookies and connection pool.\n```\nWe'll explore sessions later."
+        },
+        {
+            "id": "s_l2_13",
+            "type": "text",
+            "title": "Next: APIs & JSON",
+            "content": "# Now that you can make requests, let's interact with proper REST APIs."
+        }
+    ]
+}

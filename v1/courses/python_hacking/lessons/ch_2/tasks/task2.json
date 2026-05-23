@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_2",
+    "title": "Organize the Port Scanner Project",
+    "description": "Build the recommended folder structure and create a test script.",
+    "estimatedMinutes": 10,
+    "problemStatement": "Create a new project directory called `port_scanner` anywhere you like. Inside it, create the following structure:\n- `src/` folder containing an empty `__init__.py` and a `scanner.py` file.\n- `data/` folder (empty for now).\n- `output/` folder.\n- `README.md` file with the text \"# Port Scanner\\nA simple TCP port scanner built with Python.\".\n- Copy the `requirements.txt` from your `hacklab` venv (if you already have one) into this folder, or create a new one with `requests` listed.\n\nThen write a simple `scanner.py` that prints \"Port Scanner v1.0 initialized.\" and a placeholder for the target, e.g., `target = \"127.0.0.1\"`. Run the script using the correct path from the `port_scanner` root directory.",
+    "hints": [
+        "Use `mkdir` (or `md` on Windows) to create folders, and `touch` (or `echo.>` on Windows) to create files.",
+        "Don't forget that `scanner.py` is inside `src/`, so you need to run `python src/scanner.py` from the project root.",
+        "The `__init__.py` can be empty; it just marks `src` as a Python package."
+    ],
+    "expectedOutput": "Terminal output showing `Port Scanner v1.0 initialized.` when running the script.",
+    "solutionCode": "# In terminal (from parent directory):\nmkdir port_scanner\ncd port_scanner\nmkdir src data output\necho \"# Port Scanner\" > README.md\necho \"A simple TCP port scanner built with Python.\" >> README.md\n# Create src/__init__.py (empty)\ntype nul > src\\__init__.py  # on Windows\ntouch src/__init__.py       # on Unix\n# Create src/scanner.py with:\n# print(\"Port Scanner v1.0 initialized.\")\n# target = \"127.0.0.1\"\npython src/scanner.py"
+}

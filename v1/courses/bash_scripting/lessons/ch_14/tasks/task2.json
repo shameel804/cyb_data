@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_14",
+    "title": "Secrets‑Safe Config Loader",
+    "description": "Write a script that loads credentials from a permission‑checked file, uses them, and clears them.",
+    "estimatedMinutes": 20,
+    "problemStatement": "Write `secure_connect.sh` that simulates connecting to a service using credentials from a config file. The script must:\n\n1. Accept one argument: the config file path.\n2. Check that the file exists and its permissions are exactly `600` (owner read‑write only). If not, print an error and exit.\n3. Source the file (after verifying permissions) to load variables `DB_USER` and `DB_PASS`.\n4. Ensure that both variables are set; if not, print error and exit.\n5. Simulate a database query by echoing \"Connecting as $DB_USER...\" (do NOT echo the password).\n6. Use the password only internally (e.g., pass it to a fake command that doesn't print it).\n7. After the simulated operation, unset both variables and log that secrets have been cleared.\n8. Add a trap on EXIT to print \"Cleanup completed.\" (the unset will have already happened).\n9. Use strict mode (`set -euo pipefail`).\n\nCreate a test config file with content `DB_USER=admin` and `DB_PASS=s3cr3t` and set permissions to 600.",
+    "hints": [
+        "Check permissions: `perms=$(stat -c %a \"$file\")` and compare with 600.",
+        "Source the file: `. \"$file\"` or `source \"$file\"`.",
+        "Check variables: `[ -z \"${DB_USER:-}\" ]`.",
+        "Use a dummy function `run_query` that takes a password but does not print it."
+    ],
+    "expectedOutput": "Connecting as admin...\nQuery complete.\nSecrets cleared.\nCleanup completed.",
+    "solutionCode": "#!/bin/bash\nset -euo pipefail\n\ntrap 'echo \"Cleanup completed.\"' EXIT\n\nconfig=\"$1\"\nif [ -z \"$config\" ]; then\n  echo \"Usage: $0 <config_file>\" >&2\n  exit 2\nfi\n\nif [ ! -f \"$config\" ]; then\n  echo \"Config file not found\" >&2\n  exit 1\nfi\n\nperms=$(stat -c %a \"$config\" 2>/dev/null || stat -f %p \"$config\" | cut -c 4-)\nif [ \"$perms\" != \"600\" ]; then\n  echo \"Error: $config must have 600 permissions\" >&2\n  exit 1\nfi\n\nsource \"$config\"\n\nif [ -z \"${DB_USER:-}\" ] || [ -z \"${DB_PASS:-}\" ]; then\n  echo \"Error: DB_USER and DB_PASS must be set in config\" >&2\n  exit 1\nfi\n\necho \"Connecting as $DB_USER...\"\n# Simulated query that uses password internally but doesn't print it\nrun_query() {\n  local pass=\"$1\"\n  # Do something with pass\n  true\n}\nrun_query \"$DB_PASS\"\necho \"Query complete.\"\n\nunset DB_USER DB_PASS\necho \"Secrets cleared.\""
+}

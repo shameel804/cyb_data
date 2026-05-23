@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_3",
+    "title": "Variable Intel Report",
+    "description": "Assign target data to variables and print a formatted report.",
+    "estimatedMinutes": 10,
+    "problemStatement": "Create a script `intel_report.py` that stores the following information in variables:\n- target IP (string, e.g., \"192.168.1.105\")\n- port (integer, e.g., 445)\n- service (string, e.g., \"SMB\")\n- is_vulnerable (boolean, e.g., True)\n\nThen, using f‑strings, print a report that looks like this:\n```\n====== Intel Report ======\nTarget: 192.168.1.105\nPort: 445\nService: SMB\nVulnerable: Yes\n===========================\n```\nIf `is_vulnerable` is True, show \"Yes\", else \"No\". Use a conditional expression inside the f‑string (like `{\"Yes\" if is_vulnerable else \"No\"}`). Make the header lines dynamic based on the length of the title.",
+    "hints": [
+        "The header can be made with `\"=\" * (len(\"Intel Report\") + 10)`",
+        "Use `f\"Vulnerable: {'Yes' if is_vulnerable else 'No'}\"`.",
+        "Make sure you use `str()` for concatenation only if not using f‑strings."
+    ],
+    "expectedOutput": "A nicely formatted report with the target details.",
+    "solutionCode": "target_ip = \"192.168.1.105\"\nport = 445\nservice = \"SMB\"\nis_vulnerable = True\n\ntitle = \"Intel Report\"\nline = \"=\" * (len(title) + 10)\n\nprint(line)\nprint(f\"  {title}  \")\nprint(line)\nprint(f\"Target: {target_ip}\")\nprint(f\"Port: {port}\")\nprint(f\"Service: {service}\")\nprint(f\"Vulnerable: {'Yes' if is_vulnerable else 'No'}\")\nprint(line)"
+}

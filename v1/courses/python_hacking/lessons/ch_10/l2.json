@@ -1,0 +1,149 @@
+{
+    "id": "l2",
+    "chapterId": "ch_10",
+    "title": "Introducing the `socket` Module 🧦",
+    "description": "Create, connect, send, and receive data using Python's built‑in socket library – the foundation of all network hacking.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Networking",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Socket: A Door to the Network",
+            "content": "# What is a Socket?\n\nA **socket** is one endpoint of a two‑way communication link between two programs. Python's `socket` module provides access to the operating system's socket interface.\n\nThink of it as a plug you insert into a network outlet."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Creating a Socket",
+            "content": "To make a TCP socket (IPv4):",
+            "codeSnippet": "import socket\ns = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\nprint(\"Socket created\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Socket Creation 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What does `AF_INET` indicate when creating a socket?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Use IPv6",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Use IPv4 addresses",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Use Unix domain sockets",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "AF_INET stands for Address Family Internet (IPv4).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Connecting to a Server",
+            "content": "# `connect((host, port))`\n\n```python\ns.connect((\"example.com\", 80))\n```\n- The argument is a tuple of (host, port).\n- The host can be an IP or a domain name (DNS lookup happens automatically).\n- If the connection succeeds, the socket is now a client connected to that server."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Connect to a Web Server",
+            "content": "Try connecting to example.com:",
+            "codeSnippet": "import socket\ns = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\ntry:\n    s.connect((\"example.com\", 80))\n    print(\"Connected!\")\nfinally:\n    s.close()",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "connect() 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "The `connect()` method can accept a string like \"host:port\".",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "It expects a tuple (host, port).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Sending Data",
+            "content": "# `send(data)`\n\nAfter connecting, you can send bytes. Convert strings to bytes with `.encode()`.\n\n```python\ns.send(b\"GET / HTTP/1.1\\r\\nHost: example.com\\r\\n\\r\\n\")\n```\n- `send()` returns the number of bytes sent.\n- For large data, use `sendall(data)` to ensure everything is sent."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "Receiving Data",
+            "content": "`recv(buffer_size)` reads up to `buffer_size` bytes.",
+            "codeSnippet": "response = s.recv(4096)\nprint(response.decode())",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_9",
+            "type": "quiz",
+            "title": "Send/Recv 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "multiple_choice",
+                "question": "What must you do to a string before sending it through a socket?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Nothing, sockets accept strings",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Convert to bytes using .encode()",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Use .split()",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Sockets work with bytes; strings must be encoded.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_10",
+            "type": "text",
+            "title": "Closing the Socket",
+            "content": "# Always Close!\n\n```python\ns.close()\n```\nFailing to close can leave ports hanging. Better to use a context manager (Python 3.2+):\n```python\nwith socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:\n    s.connect((host, port))\n    # ...\n```\nBut the context manager doesn't automatically close on exceptions? Actually, it does. But we'll often use try/finally."
+        },
+        {
+            "id": "s_l2_11",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Set a Timeout\n\n`s.settimeout(seconds)` makes connect or recv raise `socket.timeout` after that time. Crucial for scanning dead hosts."
+        },
+        {
+            "id": "s_l2_12",
+            "type": "text",
+            "title": "Next: Client & Server",
+            "content": "# Now that you can connect and talk, let's build both sides of the conversation."
+        }
+    ]
+}

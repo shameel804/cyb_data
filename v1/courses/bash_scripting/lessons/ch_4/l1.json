@@ -1,0 +1,111 @@
+{
+    "id": "l1",
+    "chapterId": "ch_4",
+    "title": "Making Decisions with `if` 🤔",
+    "description": "Teach your script to think! Learn the basic `if` statement and how to test conditions.",
+    "xpReward": 20,
+    "estimatedMinutes": 5,
+    "section": "Condition Basics",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Scripts with a Brain 🧠",
+            "content": "## The `if` Statement\n\nSo far, our scripts run top to bottom. What if we want to do something **only if** a condition is true? That's where `if` comes in.\n\nThink of it like a traffic light:\n- 🟢 If the light is green, you go.\n- 🔴 Otherwise, you stop.\n\nThe `if` statement checks a condition and decides whether to execute a block of code."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "code",
+            "title": "Basic Syntax",
+            "content": "Here's the skeleton:\n```bash\nif [ condition ]; then\n    commands\nfi\n```\n`then` starts the code block; `fi` (if backwards) ends it.",
+            "codeSnippet": "if [ 5 -gt 2 ]; then\n  echo \"5 is greater than 2\"\nfi",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What keyword ends an `if` block in Bash?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "end",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "fi",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "done",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "esac",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`fi` is `if` spelled backwards and closes the block.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Test Brackets `[ ]`",
+            "content": "## `[ condition ]` – The Truth Detector\n\n`[ ]` is actually a command (an alias for `test`). It evaluates expressions and returns success (true) or failure (false).\n\n- Spaces are **mandatory** inside: `[ 5 -gt 2 ]` – not `[5 -gt 2]`.\n- `-gt` means \"greater than\".\n- Other numeric tests: `-lt` (less than), `-eq` (equal), `-ne` (not equal), `-ge` (greater or equal), `-le` (less or equal)."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "A Working Example",
+            "content": "Ask for age and check if the user is an adult:",
+            "codeSnippet": "read -p \"Enter your age: \" age\nif [ $age -ge 18 ]; then\n  echo \"You are an adult.\"\nfi",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "Spaces around the brackets `[ ]` are optional in Bash.",
+                "correctAnswer": false,
+                "explanation": "Spaces are mandatory because `[` is a command and requires separation from its arguments.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "Checking Files 📄",
+            "content": "## File Test Operators\n\nBeyond numbers, `[ ]` can check files and directories:\n\n- `-f file` – true if file exists and is a regular file.\n- `-d dir`  – true if directory exists.\n- `-r file` – readable.\n- `-w file` – writable.\n- `-x file` – executable.\n- `-e file` – file exists (any type).\n\nExample: `if [ -f \"$1\" ]; then ... fi`"
+        },
+        {
+            "id": "s_l1_8",
+            "type": "code",
+            "title": "File Check Script",
+            "content": "Does a file exist?",
+            "codeSnippet": "read -p \"Enter filename: \" fname\nif [ -f \"$fname\" ]; then\n  echo \"$fname exists!\"\nfi",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Always quote variables inside `[ ]` to prevent errors if the variable is empty or contains spaces."
+        }
+    ]
+}

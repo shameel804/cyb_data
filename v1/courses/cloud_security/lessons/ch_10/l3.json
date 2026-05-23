@@ -1,0 +1,116 @@
+{
+    "id": "l3",
+    "chapterId": "ch_10",
+    "title": "Cloud Security Posture Management (CSPM) 🛡️",
+    "description": "Learn how tools like AWS Config, Security Hub, and Azure Policy automate governance.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "What Is CSPM? 🤖",
+            "content": "# Continuous Monitoring for Misconfigurations\n\n**Cloud Security Posture Management (CSPM)** tools automatically scan your cloud environment for misconfigurations, policy violations, and compliance gaps. They are the GRC workhorses.\n\n- Instead of manually checking if S3 buckets are public, a CSPM does it 24/7.\n- Instead of reading through thousands of IAM policies, it finds overly permissive ones.\n- Instead of guessing if you're compliant, it maps findings to frameworks.\n\n*CSPM turns governance from a document into an automated, continuous process.*"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "CSPM Role 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What is the primary function of a CSPM tool?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Encrypt data at rest",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Continuously detect misconfigurations and compliance violations",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Manage IAM roles",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Deploy applications",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "CSPM focuses on posture – are things configured securely?",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "AWS Config: The Rule Engine ⚙️",
+            "content": "## Track Resource Configurations Over Time\n\n- AWS Config records configuration changes to every supported resource (EC2, S3, IAM, etc.) and evaluates them against **Config rules**.\n- **Managed rules**: e.g., `s3-bucket-public-read-prohibited`, `iam-user-no-policies-check`.\n- **Custom rules**: Lambda‑based rules for custom compliance checks.\n- Config generates a timeline and a compliance dashboard.\n\n*Think of Config as a historian and rule enforcer combined – it remembers what your infrastructure looked like and alerts you when it drifts.*"
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "AWS Config Rule: S3 Public Read Prohibited",
+            "content": "A managed rule that checks if any S3 bucket allows public read access:",
+            "codeSnippet": "{\n  \"ConfigRuleName\": \"s3-bucket-public-read-prohibited\",\n  \"Source\": {\n    \"Owner\": \"AWS\",\n    \"SourceIdentifier\": \"S3_BUCKET_PUBLIC_READ_PROHIBITED\"\n  },\n  \"Scope\": {\n    \"ComplianceResourceTypes\": [\"AWS::S3::Bucket\"]\n  }\n}",
+            "codeLanguage": "json",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "AWS Security Hub: The Central Console 🕹️",
+            "content": "## Aggregate Findings and Compliance Scores\n\n- Security Hub collects findings from multiple sources: GuardDuty, Inspector, Macie, Config, and third‑party tools.\n- It runs automated checks against **compliance standards**: CIS AWS Foundations Benchmark, PCI DSS, AWS Foundational Security Best Practices.\n- Provides a readiness score and prioritized list of failing controls.\n\n*Security Hub is the single pane of glass for cloud security posture.*"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Security Hub Function 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "Security Hub can automatically remediate a non‑compliant resource by applying a fix.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Security Hub identifies issues; auto‑remediation requires integration with AWS Config auto‑remediation or EventBridge rules triggering Lambda.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Azure Policy & GCP Security Command Center 🌐",
+            "content": "- **Azure Policy**: Assign built‑in policies (e.g., “Audit VMs without disaster recovery”) or custom policies. Evaluate compliance, deny non‑compliant creation. Integrates with Azure Blueprints for complete governed environments.\n- **GCP Security Command Center (SCC)**: Provides asset inventory, vulnerability scanning, and misconfiguration detection. Premium tier includes compliance reports (CIS, PCI, ISO 27001).\n\n*All major clouds have native CSPM capabilities – no excuse to be blind.*"
+        },
+        {
+            "id": "s_l3_8",
+            "type": "text",
+            "title": "Policy as Code: Shift Left for Compliance 📜➡️🛠️",
+            "content": "## Embed Governance in Your Pipeline\n\nTools like **Terraform Sentinel**, **Open Policy Agent (OPA)**, **AWS CloudFormation Guard**, and **Checkov** allow you to write compliance rules as code.\n- Example: “No AWS security group can have 0.0.0.0/0 for SSH”. If a Terraform plan violates this, the pipeline fails.\n- This prevents non‑compliant infrastructure from ever being deployed.\n\n*Policy as Code makes governance invisible to developers but ironclad for auditors.*"
+        },
+        {
+            "id": "s_l3_9",
+            "type": "tip",
+            "title": "Start With CIS Benchmarks 🏆",
+            "content": "Enable Security Hub’s CIS AWS Foundations standard. It gives you a prioritized list of misconfigurations. Aim for 100% score, then move to more advanced policies."
+        }
+    ]
+}

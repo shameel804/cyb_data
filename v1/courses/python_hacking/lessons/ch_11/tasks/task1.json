@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_11",
+    "title": "HTTP Status Checker",
+    "description": "Write a script that takes a URL, sends a GET request, and prints the status code and a human‑readable message.",
+    "estimatedMinutes": 10,
+    "problemStatement": "Create a script `http_check.py` that defines a function `check_url(url)`. It should send a GET request to the URL with a 5‑second timeout. Print the status code and a message: if 200, 'OK'; if 404, 'Not Found'; if 403, 'Forbidden'; else print the raw code. Use `raise_for_status()` only for 4xx/5xx, but catch exceptions and print 'Request failed'. Test with `'https://httpbin.org/status/200'` and `'https://httpbin.org/status/404'`.",
+    "hints": [
+        "Catch `requests.exceptions.RequestException`.",
+        "After `resp = requests.get(url, timeout=5)`, check `resp.status_code`.",
+        "Use a dict to map codes to messages if desired."
+    ],
+    "expectedOutput": "For 200: 'Status: 200 OK'\nFor 404: 'Status: 404 Not Found' (or similar).",
+    "solutionCode": "import requests\n\ndef check_url(url):\n    try:\n        resp = requests.get(url, timeout=5)\n        code = resp.status_code\n        if code == 200:\n            msg = 'OK'\n        elif code == 404:\n            msg = 'Not Found'\n        elif code == 403:\n            msg = 'Forbidden'\n        else:\n            msg = str(code)\n        print(f\"Status: {code} {msg}\")\n    except requests.exceptions.RequestException as e:\n        print(f\"Request failed: {e}\")\n\ncheck_url('https://httpbin.org/status/200')\ncheck_url('https://httpbin.org/status/404')\n"
+}

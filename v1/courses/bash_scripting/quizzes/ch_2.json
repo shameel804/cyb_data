@@ -1,0 +1,253 @@
+{
+    "id": "quiz_ch_2",
+    "chapterId": "ch_2",
+    "title": "Chapter 2 Quiz",
+    "description": "Test your knowledge of filesystem navigation, listing, and path magic!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What does the root directory contain?",
+            "options": [
+                "Only user files",
+                "The entire filesystem hierarchy",
+                "Temporary files",
+                "Hidden files only"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The root (`/`) is the top of the filesystem tree, containing all other directories and files."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which command prints your current working directory?",
+            "options": [
+                "home",
+                "where",
+                "pwd",
+                "dir"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`pwd` (Print Working Directory) shows where you are."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "What does `cd ..` do?",
+            "options": [
+                "Changes to the home directory",
+                "Changes to the previous directory",
+                "Changes to the parent directory",
+                "Stays in the same directory"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`..` always represents the parent directory (one level up)."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "How do you go to your home directory instantly?",
+            "options": [
+                "cd /home",
+                "cd ~",
+                "cd ..",
+                "cd -"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Both `cd` alone and `cd ~` take you home."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which `ls` flag shows hidden files?",
+            "options": [
+                "-l",
+                "-h",
+                "-a",
+                "-R"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`-a` includes all files, even those starting with a dot."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which `ls` flag displays file sizes in a human‑readable format like 1K, 5M?",
+            "options": [
+                "-l",
+                "-h",
+                "-s",
+                "-r"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-h` stands for human‑readable, best used with `-l`."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What does `mkdir -p projects/cybron/app` do?",
+            "options": [
+                "Fails if projects doesn't exist",
+                "Creates all necessary parent directories",
+                "Deletes the entire path",
+                "Only creates the 'app' folder"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-p` creates parent directories as needed, preventing errors."
+        },
+        {
+            "id": "q8",
+            "type": "true_false",
+            "question": "The command `rmdir` can delete a directory that is not empty.",
+            "correctAnswer": false,
+            "explanation": "`rmdir` only removes empty directories. Use `rm -r` for non‑empty ones."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What is the danger of `rm -rf /`?",
+            "options": [
+                "It renames the root directory",
+                "It removes all files in the system if run as root",
+                "It only removes temporary files",
+                "It asks for confirmation"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`rm -rf` deletes everything recursively and forcefully. As root, it can destroy the OS."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What does the glob pattern `*.txt` match?",
+            "options": [
+                "Any directory",
+                "Files with 'txt' anywhere in the name",
+                "All files ending with `.txt`",
+                "The literal file named '*.txt'"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`*` expands to any string, so `*.txt` matches anything that ends with `.txt`."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "How would you list all files that start with 'a' followed by exactly one character?",
+            "options": [
+                "ls a*",
+                "ls a?",
+                "ls a.",
+                "ls a??"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`?` matches exactly one character, so `a?` matches 'a' then one character."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which character class matches any single digit?",
+            "options": [
+                "[digit]",
+                "[0-9]",
+                "[num]",
+                "<digit>"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Brackets with a range `[0-9]` match any digit 0 through 9."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What does `ls -R` do?",
+            "options": [
+                "Lists files in reverse order",
+                "Lists recursively all subdirectories",
+                "Shows only readable files",
+                "Removes empty directories"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-R` (recursive) dives into subdirectories and lists their contents too."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "If you are in `/var/log`, what does `cd /home` do?",
+            "options": [
+                "Fails because it's relative",
+                "Goes to /home using an absolute path",
+                "Goes to /home/log",
+                "Stays in /var/log"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Paths starting with `/` are absolute, so it takes you directly there."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What does `cd -` do?",
+            "options": [
+                "Goes to the root directory",
+                "Toggles to the previous directory",
+                "Goes up one level",
+                "Shows current directory"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`cd -` changes to the last directory you were in."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "How can you safely test which files a glob would match?",
+            "options": [
+                "Use ls with the glob",
+                "Use echo followed by the glob",
+                "Use test -f",
+                "Just run the command"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`echo *.txt` prints the expanded list, showing exactly what files will be used."
+        },
+        {
+            "id": "q17",
+            "type": "fill_blank",
+            "question": "What command would create three directories (docs, src, bin) in one line?",
+            "options": [],
+            "correctAnswer": "mkdir docs src bin",
+            "explanation": "`mkdir` accepts multiple arguments, creating all specified directories."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "A file named `.bashrc` is hidden by default.",
+            "correctAnswer": true,
+            "explanation": "Files and directories starting with a dot are hidden from normal `ls` output."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "Which `ls` option sorts files by modification time, newest first?",
+            "options": [
+                "-s",
+                "-t",
+                "-r",
+                "-n"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-t` sorts by time. Combine with `-r` to reverse (oldest first)."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What does the `.` symbol represent in a path?",
+            "options": [
+                "The home directory",
+                "The root directory",
+                "The current directory",
+                "The parent directory"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`.` is the current working directory."
+        }
+    ]
+}

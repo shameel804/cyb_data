@@ -1,0 +1,185 @@
+{
+    "id": "l4",
+    "chapterId": "ch_3",
+    "title": "Booleans & Comparisons: True or False? ✅❌",
+    "description": "Teach your script to make decisions based on truth values.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Data Types",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Simplest Data Type: bool",
+            "content": "# Two Values: `True` and `False`\n\nIn Python, `True` and `False` (capitalized!) are the only boolean values. They represent truth and falsehood.\n\n```python\nis_open = True\nhas_vulnerability = False\nprint(type(has_vulnerability))  # <class 'bool'>\n```\nHacking scripts constantly ask yes/no questions: \"Is the port open?\", \"Did the login succeed?\"."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Boolean Variables",
+            "content": "Store results of checks:",
+            "codeSnippet": "port_open = True\nif port_open:\n    print(\"Target port is listening!\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "bool Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which of these is a valid Python boolean?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "true",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "\"True\"",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Python's booleans are `True` and `False` with capital first letters.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Comparison Operators 🔍",
+            "content": "# Asking Questions About Data\n\n| Operator | Meaning | Example | Result |\n|----------|---------|---------|--------|\n| `==` | Equal to | `5 == 5` | True |\n| `!=` | Not equal | `5 != 3` | True |\n| `>` | Greater than | `10 > 5` | True |\n| `<` | Less than | `3 < 1` | False |\n| `>=` | Greater or equal | `5 >= 5` | True |\n| `<=` | Less or equal | `2 <= 4` | True |\n\nThese return a boolean!"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Comparisons in Practice",
+            "content": "Check if a port is in the well‑known range:",
+            "codeSnippet": "port = 80\nis_privileged = port < 1024\nprint(is_privileged)  # True",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Comparisons 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "What is the result of `\"open\" == \"Open\"`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Error",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "String comparison is case‑sensitive.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Logical Operators: and, or, not",
+            "content": "# Combine Multiple Conditions\n\n* `and` – both must be True\n* `or` – at least one True\n* `not` – reverses the boolean\n\n```python\nport = 22\nprotocol = \"SSH\"\nis_ssh = (port == 22) and (protocol == \"SSH\")  # True\nis_web = (port == 80) or (port == 443)          # False\nblocked = not is_ssh                            # False\n```"
+        },
+        {
+            "id": "s_l4_8",
+            "type": "code",
+            "title": "Logic in Action",
+            "content": "Check if a host is likely a web server:",
+            "codeSnippet": "port_80_open = True\nport_443_open = False\nis_web_server = port_80_open or port_443_open\nprint(is_web_server)  # True",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_9",
+            "type": "quiz",
+            "title": "Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "multiple_choice",
+                "question": "What is the value of `True and False`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Error",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`and` requires both sides to be True.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_10",
+            "type": "text",
+            "title": "Truthiness: Non‑Boolean Values",
+            "content": "# Every Value Has a Boolean Personality\n\nPython evaluates other types in a boolean context:\n* **Falsy**: `0`, `0.0`, `\"\"` (empty string), `None`, empty collections\n* **Truthy**: everything else\n\n```python\nif \"hack\":        # non‑empty string → True\n    print(\"Go!\")\nif 0:             # 0 → False\n    print(\"No\")\n```\nHandy for checking if a variable is empty."
+        },
+        {
+            "id": "s_l4_11",
+            "type": "quiz",
+            "title": "Truthiness 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_4",
+                "type": "true_false",
+                "question": "An empty string `\"\"` is considered `True` in a boolean context.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "Empty strings are falsy.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_12",
+            "type": "text",
+            "title": "Comparison Chaining",
+            "content": "# Python Loves Math Style\n\nYou can chain comparisons:\n```python\nage = 25\nif 18 <= age < 65:\n    print(\"Working age\")\n```\nEquivalent to `age >= 18 and age < 65`."
+        },
+        {
+            "id": "s_l4_13",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use `is` for None Check\n\n```python\nresult = None\nif result is None:\n    print(\"No result yet\")\n```\n`is` compares identity, not equality."
+        },
+        {
+            "id": "s_l4_14",
+            "type": "text",
+            "title": "Booleans Complete!",
+            "content": "# Decision Making Ready\n\nYou can now store truth values, compare data, and combine logic. Next: turning strings into numbers and vice versa – type conversion."
+        }
+    ]
+}

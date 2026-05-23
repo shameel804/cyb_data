@@ -1,0 +1,118 @@
+{
+    "id": "l2",
+    "chapterId": "ch_14",
+    "title": "File Permissions & Ownership 🔐",
+    "description": "Learn chmod, umask, and how to lock down your scripts and data from unauthorised access.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Filesystem Security",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Permission Triad 👥",
+            "content": "## Three Roles, Three Actions\n\nEvery file has permissions for:\n- **User** (owner)\n- **Group**\n- **Others** (world)\n\nActions: **r**ead, **w**rite, e**x**ecute.\n\nView with `ls -l`: `-rwxr-x--- 1 alice staff 4096 May 22 script.sh`"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Checking Permissions",
+            "content": "Examine a script file:",
+            "codeSnippet": "ls -l /etc/passwd",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What does the permission `-rwxr-x---` mean?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Owner can read/write/execute, group can read/execute, others have no access",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Everyone can read and execute",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Only the owner can read",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The file is a directory",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The string breaks down: owner `rwx`, group `r-x`, others `---`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "chmod: Changing Permissions ⚙️",
+            "content": "## Symbolic & Numeric Modes\n\n- Symbolic: `chmod u+x script.sh` (user adds execute)\n- Numeric (octal): `chmod 755 script.sh` (owner rwx, group r‑x, others r‑x)\n\nCommon values:\n- `600` – owner read/write, no one else (private key)\n- `644` – owner rw, group/others r (public files)\n- `700` – owner rwx, no one else (private script)\n- `750` – owner rwx, group r‑x (shared script)"
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Restrict a Script",
+            "content": "Make it readable and executable only by you:",
+            "codeSnippet": "chmod 700 myscript.sh",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "fill_blank",
+                "question": "The octal permission `600` gives owner ___ and group/others no access.",
+                "options": [],
+                "correctAnswer": "read and write",
+                "explanation": "6 = rw (4+2). No bits for group/others, so they get nothing.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "umask: Default Permissions 🎛️",
+            "content": "## What New Files Get\n\n`umask` subtracts permission bits from the default (usually 666 for files, 777 for dirs).\n\n- `umask 022` – new files become 644, dirs 755.\n- `umask 077` – new files become 600, dirs 700 (maximum privacy).\n\nSet umask in your script if you create sensitive files, or use `chmod` afterwards."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "Create a Private Temp File",
+            "content": "Use strict umask before mktemp:",
+            "codeSnippet": "umask 077\ntmp=$(mktemp)\n# file has 600 permissions",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_9",
+            "type": "text",
+            "title": "Setuid/Setgid Danger ☠️",
+            "content": "## Avoid Unless Absolutely Necessary\n\nThe setuid bit (`chmod u+s`) makes a script run with the owner's privileges. Bash ignores setuid on scripts for security reasons, but compiled programs can use it. Never rely on setuid shell scripts; use `sudo` instead."
+        },
+        {
+            "id": "s_l2_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Periodically audit permissions with `find /path -type f -perm /o+w` to find world‑writable files."
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_5",
+    "title": "Wordlist Brute‑Force with break",
+    "description": "Iterate over a wordlist, try each password, and stop when the correct one is found.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Create `brute_force.py` with a list of possible passwords: `[\"123456\", \"password\", \"admin\", \"letmein\", \"welcome\"]`. The correct password is `\"admin\"`. Loop through the list using a `for` loop. For each password, print \"Trying: [password]\". If it matches the correct password, print \"Access granted!\" and **break** out of the loop. If you finish the loop without finding it (you can use a loop‑else), print \"Password not found in wordlist\". Test by changing the correct password to something not in the list to see the else execute.",
+    "hints": [
+        "Use `for pwd in wordlist:`",
+        "Inside, compare with correct password.",
+        "Add an `else:` after the for loop to handle not found."
+    ],
+    "expectedOutput": "Trying: 123456\nTrying: password\nTrying: admin\nAccess granted!\n(If not found, after list ends: 'Password not found in wordlist')",
+    "solutionCode": "wordlist = [\"123456\", \"password\", \"admin\", \"letmein\", \"welcome\"]\ncorrect = \"admin\"\nfor pwd in wordlist:\n    print(f\"Trying: {pwd}\")\n    if pwd == correct:\n        print(\"Access granted!\")\n        break\nelse:\n    print(\"Password not found in wordlist\")"
+}

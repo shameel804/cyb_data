@@ -1,0 +1,149 @@
+{
+    "id": "l3",
+    "chapterId": "ch_6",
+    "title": "Return Values: Getting Results Back 📤",
+    "description": "Make functions that compute and give back data – the core of reusable hacking logic.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Functions",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Beyond Printing",
+            "content": "# Functions Should Compute, Not Just Display\n\nA port scanner function shouldn't print \"open\" – it should **return** a boolean so you can use it in logic:\n```python\nif scan_port(\"10.0.0.1\", 80):\n    print(\"Web server found!\")\nelse:\n    print(\"Port closed\")\n```\nThe `return` statement sends data back to the caller and exits the function."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Basic return",
+            "content": "A function that checks if a port is common:",
+            "codeSnippet": "def is_common_port(port):\n    common = [21, 22, 23, 25, 53, 80, 110, 143, 443, 993, 995]\n    return port in common\n\nresult = is_common_port(22)\nprint(result)  # True",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "return Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What happens when `return` is executed inside a function?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The function pauses and resumes later",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The function ends and sends a value back to the caller",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It prints the value",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "return terminates the function and passes the value to the calling code.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Functions Can Return Multiple Values",
+            "content": "# Return a Tuple\n\n```python\ndef scan_target(ip):\n    ports_open = [80, 443]\n    hostname = \"webserver\"\n    return hostname, ports_open  # comma makes a tuple\n\nname, ports = scan_target(\"10.0.0.1\")\nprint(f\"{name} has ports: {ports}\")\n```\nUseful for delivering structured results from a scan."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Multiple return Values",
+            "content": "Simulate banner grab that returns version and OS:",
+            "codeSnippet": "def grab_banner(ip):\n    # pretend we connected\n    version = \"2.0\"\n    os = \"Ubuntu\"\n    return version, os\n\nv, o = grab_banner(\"192.168.1.5\")\nprint(f\"SSH {v} on {o}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Multiple Returns 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "What does `def f(): return 1,2` return?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A tuple (1,2)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Two separate values 1 and 2",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A list [1,2]",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Comma‑separated values are packed into a tuple.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Returning None",
+            "content": "# Functions Without return Give None\n\n```python\ndef log(msg):\n    print(f\"[LOG] {msg}\")\n\nresult = log(\"Scan started\")\nprint(result)  # None\n```\nIf you don't write `return`, Python adds `return None` silently. Use this for actions (side effects) rather than calculations."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "code",
+            "title": "Early Return",
+            "content": "Guard conditions to exit early:",
+            "codeSnippet": "def divide(a, b):\n    if b == 0:\n        return None  # can't divide\n    return a / b\n\nprint(divide(10, 2))\nprint(divide(10, 0))",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_9",
+            "type": "quiz",
+            "title": "None & Early Exit 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "true_false",
+                "question": "A function that reaches the end without a `return` statement will return `False`.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "It returns `None` by default.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_10",
+            "type": "text",
+            "title": "Hacking Functions with Return",
+            "content": "# Build Decisions into Your Tools\n\n```python\ndef port_open(host, port):\n    # actual socket connection attempt\n    try:\n        s.connect((host, port))\n        return True\n    except:\n        return False\n\nif port_open(\"scanme.nmap.org\", 80):\n    print(\"Port 80 open\")\n```\nNow you can loop and act on results."
+        },
+        {
+            "id": "s_l3_11",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use `return` to Break Out of Functions\n\nYou can place `return` anywhere to stop execution early – cleaner than complex if‑else nesting."
+        },
+        {
+            "id": "s_l3_12",
+            "type": "text",
+            "title": "Next: Understanding Scope",
+            "content": "# Where Variables Live and Die\n\nWe've used variables inside functions. Let's learn the rules of scope so you don't accidentally overwrite important data."
+        }
+    ]
+}

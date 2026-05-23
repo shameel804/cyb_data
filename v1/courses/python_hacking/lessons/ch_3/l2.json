@@ -1,0 +1,200 @@
+{
+    "id": "l2",
+    "chapterId": "ch_3",
+    "title": "Numbers: Math for Hackers 🔢",
+    "description": "Master integers and floats, and perform calculations for timing, payloads, and port ranges.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Data Types",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Two Kinds of Numbers",
+            "content": "# int and float\n\n* **int** – whole numbers, no decimal. Example: `80`, `443`, `-1`\n* **float** – numbers with a decimal point. Example: `3.14`, `2.5`, `-0.001`\n\nPython handles them almost seamlessly. In hacking, you'll use ints for port numbers, counts, loops; floats for timeouts, version numbers."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Check the Type",
+            "content": "The `type()` function tells you what you're dealing with:",
+            "codeSnippet": "port = 80\nversion = 3.11\nprint(type(port))\nprint(type(version))",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Type Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What is the type of the value `8080`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "str",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "float",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "int",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "8080 has no decimal, so it's an integer.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Arithmetic Operators",
+            "content": "# Your Calculator Toolkit\n\n| Operator | Name | Example | Result |\n|----------|------|---------|--------|\n| `+` | Addition | `2 + 3` | 5 |\n| `-` | Subtraction | `10 - 2` | 8 |\n| `*` | Multiplication | `4 * 5` | 20 |\n| `/` | Division (float) | `7 / 2` | 3.5 |\n| `//` | Floor division | `7 // 2` | 3 |\n| `%` | Modulus | `7 % 2` | 1 |\n| `**` | Power | `2 ** 10` | 1024 |"
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Hacking with Modulus",
+            "content": "Modulus `%` gives the remainder. Useful for checking even/odd or cycling through a range of ports:",
+            "codeSnippet": "port = 8080\nif port % 2 == 0:\n    print(\"Even port number\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Modulus Magic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "What is the result of `15 % 4`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "3.75",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "4",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "3",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "4 goes into 15 three times (12), remainder 3.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Order of Operations 🧮",
+            "content": "# PEMDAS (Please Excuse My Dear Aunt Sally)\n\nPython respects math rules:\n1. Parentheses `()`\n2. Exponents `**`\n3. Multiplication/Division/Floor/Mod (left to right)\n4. Addition/Subtraction (left to right)\n\n```python\nresult = 10 + 2 * 5    # 20, not 60\nresult = (10 + 2) * 5  # 60\n```\nWhen in doubt, use parentheses."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "quiz",
+            "title": "Order of Ops 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "multiple_choice",
+                "question": "What does `2 ** 3 * 2` evaluate to?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "64",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "16",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "12",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Exponent first: 2**3=8, then 8*2=16.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_9",
+            "type": "text",
+            "title": "Floats and Precision",
+            "content": "# Beware of Floating‑Point Weirdness\n\n```python\nprint(0.1 + 0.2)  # 0.30000000000000004\n```\nThis is a computer limitation, not a bug. For hacking, don't rely on exact float equality unless you round."
+        },
+        {
+            "id": "s_l2_10",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use `round()` for Clean Output\n\n`round(0.1 + 0.2, 2)` gives `0.3`. Perfect for displaying timestamps or rates."
+        },
+        {
+            "id": "s_l2_11",
+            "type": "text",
+            "title": "Augmented Assignment",
+            "content": "# Shorthand Math\n\nCombine operation with assignment:\n```python\nport = 80\nport += 1    # port = port + 1 (now 81)\nport *= 2    # port = port * 2 (now 162)\nport %= 10   # port = port % 10 (now 2)\n```\nGreat for counters and accumulators in scans."
+        },
+        {
+            "id": "s_l2_12",
+            "type": "code",
+            "title": "Augmented Assignment in Action",
+            "content": "Build a simple port counter:",
+            "codeSnippet": "ports_scanned = 0\nports_scanned += 1  # found an open port\nprint(f\"Scanned {ports_scanned} ports so far\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_13",
+            "type": "quiz",
+            "title": "Shorthand 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_4",
+                "type": "multiple_choice",
+                "question": "After `x = 10` then `x //= 3`, what is x?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "3.333",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "3",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "1",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Floor division `10 // 3` yields 3.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_14",
+            "type": "text",
+            "title": "Numbers Recap",
+            "content": "# You've Mastered the Math\n\nYou can now handle ports, calculate payload sizes, and manage timeouts. Next: Strings – the text that connects the hacker to the system."
+        }
+    ]
+}

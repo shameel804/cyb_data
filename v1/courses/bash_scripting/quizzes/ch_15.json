@@ -1,0 +1,253 @@
+{
+    "id": "quiz_ch_15",
+    "chapterId": "ch_15",
+    "title": "Chapter 15 Quiz",
+    "description": "Test your knowledge of building a complete Bash automation project!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the first step in building a complex script?",
+            "options": [
+                "Start coding immediately",
+                "Design the architecture and list required functions",
+                "Write the cron entry",
+                "Test with production data"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Planning before coding prevents rework and ensures all requirements are addressed."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "How can you share variables between functions without making them global?",
+            "options": [
+                "Use `return` to pass them",
+                "Use `echo` and command substitution to capture output",
+                "Use `export` inside the function",
+                "You cannot; they must be global"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Functions can output values to stdout and the caller can capture them with `$( )`."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Why is `declare -g` used when reading config inside a function?",
+            "options": [
+                "To make the variable readonly",
+                "To ensure the variable is created in the global scope, not local",
+                "To export the variable automatically",
+                "To prevent word splitting"
+            ],
+            "correctAnswer": 1,
+            "explanation": "By default, `declare` inside a function creates local variables. `-g` overrides this."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What does `df / | awk 'NR==2 {print $5}'` extract?",
+            "options": [
+                "Total disk size",
+                "Available space",
+                "Used percentage",
+                "Mount point"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The second line is the data line; the 5th field is Use%."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which tool is used to parse command‑line options in Bash?",
+            "options": [
+                "getopt",
+                "getopts",
+                "argparse",
+                "Both A and B"
+            ],
+            "correctAnswer": 3,
+            "explanation": "`getopts` is a Bash builtin; `getopt` is an external utility. Both can be used."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "How do you make a script run silently when called from cron but verbose when run manually?",
+            "options": [
+                "Check if stdin is a terminal with `[ -t 0 ]`",
+                "Use a special cron environment variable",
+                "Create two separate scripts",
+                "It's impossible"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`-t 0` returns true if stdin is connected to a terminal, indicating interactive use."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What is the `RETENTION` concept in backup rotation?",
+            "options": [
+                "The number of backup sources",
+                "The maximum number of backup archives to keep",
+                "The compression level",
+                "The email subject line"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Retention policy defines how many old backups to retain before deletion."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which cron entry runs a script every day at 3:00 AM?",
+            "options": [
+                "0 3 * * *",
+                "3 0 * * *",
+                "* 3 * * *",
+                "0 3 * * 0"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Minute 0, hour 3, every day."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What does `tar -czf archive.tar.gz -C /path dir` do?",
+            "options": [
+                "Compresses the whole filesystem",
+                "Creates archive.tar.gz containing the directory 'dir' from /path",
+                "Extracts archive.tar.gz to /path/dir",
+                "Copies archive to /path"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-C` changes to /path before archiving, so the archive contains 'dir' without the full path."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Why use `mktemp` instead of a fixed name for temporary files?",
+            "options": [
+                "It's shorter to type",
+                "It prevents predictable filename attacks and race conditions",
+                "It creates files in the current directory",
+                "It encrypts the file"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Predictable temp files can be symlinked by attackers; `mktemp` generates unique, safe names."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "The `mail` command is a standard part of Bash.",
+            "correctAnswer": false,
+            "explanation": "`mail` is a separate program (mailutils, mailx) and may not be installed by default."
+        },
+        {
+            "id": "q12",
+            "type": "fill_blank",
+            "question": "To skip comments in a config file, we check if the line starts with `___` and continue.",
+            "options": [],
+            "correctAnswer": "#",
+            "explanation": "Lines beginning with `#` are treated as comments."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which statement about `getopts` is true?",
+            "options": [
+                "It processes long options like `--help`",
+                "It is a builtin that processes single‑character options",
+                "It requires external installation",
+                "It automatically sets global variables"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`getopts` is a Bash builtin for parsing short options (e.g., `-c`)."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is the purpose of a dry‑run mode?",
+            "options": [
+                "To run the script in the background",
+                "To simulate actions without making changes",
+                "To speed up execution",
+                "To encrypt output"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A dry‑run shows what would be done, allowing validation before actual execution."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "How can you ensure a temporary file is removed even if the script crashes?",
+            "options": [
+                "Use `trap 'rm -f \"$tmp\"' EXIT`",
+                "Delete it at the beginning of the script",
+                "Set file permissions to 000",
+                "Write it to /dev/null"
+            ],
+            "correctAnswer": 0,
+            "explanation": "The EXIT trap runs on normal and error exits, cleaning up the file."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What does `ls -t backup-*.tar.gz` do?",
+            "options": [
+                "Lists files sorted by size",
+                "Lists backup files sorted by modification time, newest first",
+                "Counts the number of backup files",
+                "Deletes old backups"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-t` sorts by time, so the newest files appear first."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which of the following is a good practice for logging?",
+            "options": [
+                "Use `echo` without timestamps",
+                "Include timestamps, severity, and message; output to a log file and/or syslog",
+                "Log only error messages",
+                "Print passwords for debugging"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Comprehensive logging aids in debugging and monitoring."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "What is the exit code of a script that runs without errors and has no explicit `exit`?",
+            "options": [
+                "0",
+                "1",
+                "The exit code of the last command",
+                "Undefined"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The script's exit status is the exit status of the last command executed."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "Using `set -euo pipefail` is enough to make any script production‑ready.",
+            "correctAnswer": false,
+            "explanation": "Strict mode catches many errors, but thorough testing, input validation, and proper design are also necessary."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is the main benefit of building a project as a set of functions?",
+            "options": [
+                "Functions are required by cron",
+                "It improves readability, testability, and reusability",
+                "It makes the script run faster",
+                "It hides the code from users"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Modular functions allow independent testing, clearer logic, and reuse in other scripts."
+        }
+    ]
+}

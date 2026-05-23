@@ -1,0 +1,106 @@
+{
+    "id": "l5",
+    "chapterId": "ch_5",
+    "title": "Loop Control: break & continue 🎮",
+    "description": "Take full command of loops – skip iterations, bail out early, and tame nested beasts.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Control Flow",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Taking Control 🕹️",
+            "content": "## Beyond the Condition\n\nSometimes you need to:\n- Exit a loop immediately when a certain event occurs.\n- Skip the rest of the current iteration and move to the next.\n\nBash provides:\n- `break` – exit the loop entirely.\n- `continue` – jump to the next iteration."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "break Example",
+            "content": "Search for a number and stop:",
+            "codeSnippet": "for i in {1..10}; do\n  if [ $i -eq 5 ]; then\n    echo \"Found 5, stopping.\"\n    break\n  fi\n  echo \"Checking $i\"\ndone",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What does `break` do inside a loop?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Pauses the loop temporarily",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Skips to the next iteration",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Terminates the loop immediately",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Restarts the loop from the beginning",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`break` exits the loop entirely, no matter the condition.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "continue Example",
+            "content": "Print only odd numbers:",
+            "codeSnippet": "for (( i=1; i<=10; i++ )); do\n  if (( i % 2 == 0 )); then\n    continue\n  fi\n  echo \"$i\"\ndone",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_5",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "fill_blank",
+                "question": "Which keyword skips the rest of the current loop iteration and proceeds with the next?",
+                "options": [],
+                "correctAnswer": "continue",
+                "explanation": "`continue` stops executing the current iteration and moves to the next evaluation of the loop condition.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Nested Loops & `break n` 🪆",
+            "content": "## Break Out of Multiple Levels\n\nWhen loops are nested, `break` by default exits only the innermost loop. Use `break n` to break out of `n` enclosing loops.\n\n```bash\nfor i in {1..3}; do\n   for j in {1..3}; do\n      if [ $j -eq 2 ]; then\n         break 2  # exits both loops\n      fi\n   done\ndone\n```\n`continue n` works similarly for skipping outer iterations."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "code",
+            "title": "break 2 Demo",
+            "content": "Escape double loop early:",
+            "codeSnippet": "for x in A B C; do\n  for y in 1 2 3; do\n    if [ \"$x$y\" = \"B2\" ]; then\n      echo \"Breaking at B2\"\n      break 2\n    fi\n    echo \"$x$y\"\n  done\ndone\necho \"Done\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Break out of a `while` or `until` loop with `break` just as you do with `for`. The same rules apply."
+        }
+    ]
+}

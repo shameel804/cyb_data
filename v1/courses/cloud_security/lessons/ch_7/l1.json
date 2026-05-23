@@ -1,0 +1,64 @@
+{
+    "id": "l1",
+    "chapterId": "ch_7",
+    "title": "Compute Security: The Frontline 🛡️",
+    "description": "Why protecting your compute layer is critical and the shared responsibility model for compute.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Engine of the Cloud ⚙️",
+            "content": "# Compute Security: Your Code's Guardian\n\nEverything you run – web servers, background jobs, AI models – lives on compute resources. If an attacker compromises your compute, they own your application logic, data in memory, and often have a springboard to other resources.\n\n**Compute security** is about protecting the environments where your code executes:\n- **Virtual Machines (IaaS)** – EC2, Azure VMs, Google Compute Engine\n- **Containers (CaaS)** – ECS, EKS, AKS, GKE\n- **Serverless Functions (FaaS)** – Lambda, Azure Functions, Cloud Functions\n\n*No matter the runtime, the principles are the same: least privilege, hardening, and constant monitoring.*"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which compute model provides the most control over the operating system?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Serverless functions",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Containers on a managed service (Fargate)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Virtual Machines (IaaS)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "All give equal control",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "With VMs, you own the OS, giving you full control and full responsibility for hardening.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "The Shared Responsibility for Compute 🤝",
+            "content": "## Who Secures What?\n\n**Provider (always):**\n- Physical host, hypervisor, network infrastructure.\n- For serverless and managed containers (Fargate), they also manage the runtime and scaling.\n\n**You (varies by service):**\n- **VMs**: OS patches, application, network firewall (SGs), access keys, data encryption.\n- **Containers**: Container image, orchestration config (RBAC, network policies), host OS if using self‑managed nodes.\n- **Serverless**: Function code, dependencies, IAM execution role, environment variables.\n\n*Remember: the higher the abstraction, the less you manage, but your code and permissions are still your castle to defend.*"
+        },
+        {
+            "id": "s_l1_4",
+            "type": "tip",
+            "title": "Start With a Golden Image 🏆",
+            "content": "## Build Once, Deploy Securely Everywhere\nA golden image is a pre‑hardened, patched OS image that you use to launch all instances. It ensures consistency and eliminates manual configuration drift. We'll dive into this next."
+        }
+    ]
+}

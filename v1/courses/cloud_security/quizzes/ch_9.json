@@ -1,0 +1,247 @@
+{
+    "id": "quiz_ch_9",
+    "chapterId": "ch_9",
+    "title": "Chapter 9 Quiz: Monitoring, Logging & Incident Response",
+    "description": "Test your knowledge of visibility, logging, SIEM, and incident response in the cloud.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which AWS service records API calls made in your account for auditing?",
+            "options": [
+                "Amazon CloudWatch",
+                "AWS CloudTrail",
+                "AWS Config",
+                "Amazon GuardDuty"
+            ],
+            "correctAnswer": 1,
+            "explanation": "CloudTrail logs every API call, providing an audit trail of who did what."
+        },
+        {
+            "id": "q2",
+            "type": "fill_blank",
+            "question": "To receive a notification when more than 10 failed login attempts occur, you would create a CloudWatch ______.",
+            "options": [
+                "Log group",
+                "Metric filter",
+                "Alarm",
+                "Dashboard"
+            ],
+            "correctAnswer": "Alarm",
+            "explanation": "Alarms watch a metric and trigger an action, such as sending an SNS notification."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "VPC Flow Logs capture the entire payload of network packets for deep inspection.",
+            "correctAnswer": false,
+            "explanation": "Flow logs capture metadata (source/destination IP, ports, protocol), not the actual data payload."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What does GuardDuty use to detect a cryptomining attack on an EC2 instance?",
+            "options": [
+                "Static code analysis",
+                "Machine learning on DNS queries and network traffic",
+                "Manual rule sets",
+                "User reports"
+            ],
+            "correctAnswer": 1,
+            "explanation": "GuardDuty uses machine learning to identify patterns like communication with known mining pools."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which feature of CloudTrail ensures log files have not been tampered with?",
+            "options": [
+                "Encryption at rest",
+                "Multi‑region trail",
+                "Log file validation",
+                "Organization trail"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Log file validation creates digest files with cryptographic hashes to verify integrity."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "Enabling CloudTrail by itself is enough; you don't need to create a trail for long‑term retention.",
+            "correctAnswer": false,
+            "explanation": "Event history only keeps 90 days. Create a trail and send logs to S3 for long‑term retention."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Which Azure service provides a full cloud‑native SIEM with SOAR capabilities?",
+            "options": [
+                "Azure Monitor",
+                "Azure Sentinel",
+                "Azure Defender",
+                "Azure Log Analytics"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Azure Sentinel is Microsoft's SIEM and SOAR solution."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What is the first step in the cloud incident response lifecycle?",
+            "options": [
+                "Eradication",
+                "Containment",
+                "Preparation",
+                "Detection"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Preparation includes creating IR roles, playbooks, and automation before an incident occurs."
+        },
+        {
+            "id": "q9",
+            "type": "fill_blank",
+            "question": "To count occurrences of 'AccessDenied' in CloudTrail logs, you create a CloudWatch ______ filter.",
+            "options": [
+                "metric",
+                "log",
+                "pattern",
+                "event"
+            ],
+            "correctAnswer": "metric",
+            "explanation": "Metric filters extract metrics from log data, which can then be used for alarms."
+        },
+        {
+            "id": "q10",
+            "type": "true_false",
+            "question": "You should delete a compromised EC2 instance immediately to prevent further damage.",
+            "correctAnswer": false,
+            "explanation": "Containment is key – isolate the instance and snapshot the volume to preserve forensic evidence first."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which AWS service aggregates findings from GuardDuty, Inspector, and Macie into a unified dashboard?",
+            "options": [
+                "AWS Config",
+                "AWS Security Hub",
+                "Amazon Detective",
+                "AWS Shield"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Security Hub provides a comprehensive view of security alerts and compliance status."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is a key benefit of using a separate AWS account for security logs?",
+            "options": [
+                "Reduced cost",
+                "Attackers in the production account cannot delete logs",
+                "Faster log generation",
+                "Automatic incident response"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Centralizing logs in a separate, hardened account limits the blast radius and protects evidence."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "SOAR stands for Security Orchestration, Automation and Response.",
+            "correctAnswer": true,
+            "explanation": "SOAR platforms automate and orchestrate incident response tasks."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Which of the following would NOT typically be a log source for a SIEM?",
+            "options": [
+                "CloudTrail logs",
+                "VPC Flow Logs",
+                "Application logs",
+                "CPU temperature"
+            ],
+            "correctAnswer": 3,
+            "explanation": "CPU temperature is a physical hardware metric not usually relevant for security SIEM, though could be for availability monitoring."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "You want to detect when a user logs in from two different countries within 10 minutes. What SIEM correlation rule technique is this?",
+            "options": [
+                "Brute force detection",
+                "Impossible travel",
+                "Data exfiltration",
+                "Policy violation"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Impossible travel detects geographically improbable access patterns."
+        },
+        {
+            "id": "q16",
+            "type": "fill_blank",
+            "question": "The process of automatically isolating a compromised EC2 instance by changing its security group is an example of ______.",
+            "options": [
+                "forensics",
+                "containment",
+                "eradication",
+                "recovery"
+            ],
+            "correctAnswer": "containment",
+            "explanation": "Containment stops the attacker from causing further harm while you investigate."
+        },
+        {
+            "id": "q17",
+            "type": "true_false",
+            "question": "CloudWatch Logs can be used to store logs from on‑premises servers.",
+            "correctAnswer": true,
+            "explanation": "The CloudWatch agent can be installed on any server, including on‑premises, to send logs to CloudWatch."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which Google Cloud service captures data access logs (e.g., who read a BigQuery table)?",
+            "options": [
+                "Cloud Audit Logs",
+                "Cloud Monitoring",
+                "Security Command Center",
+                "VPC Flow Logs"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Cloud Audit Logs provides admin, data access, and system event logs."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "Why is it important to run 'game days' for incident response?",
+            "options": [
+                "To reduce cloud costs",
+                "To test and improve the IR process and team readiness",
+                "To stress‑test application performance",
+                "To train developers on new features"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Game days simulate real incidents to identify gaps in the response plan and train the team."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which S3 feature can prevent even the root user from deleting CloudTrail logs for a retention period?",
+            "options": [
+                "Bucket Versioning",
+                "MFA Delete",
+                "S3 Object Lock in Compliance mode",
+                "Server Access Logging"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Object Lock with Compliance mode makes objects immutable, preventing deletion or modification by any user, including root."
+        },
+        {
+            "id": "q21",
+            "type": "true_false",
+            "question": "GuardDuty requires you to deploy agents on every EC2 instance to monitor them.",
+            "correctAnswer": false,
+            "explanation": "GuardDuty works by analyzing VPC Flow Logs, CloudTrail, and DNS logs – no agents required."
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_9",
+    "title": "Enable and Configure a CloudTrail Trail",
+    "description": "Write the steps (or CLI commands) to create a multi‑region trail with log file validation and encryption.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario\nYou have a new AWS account and need to set up auditing immediately. You must create a CloudTrail trail that logs management events across all regions, stores logs in a secure S3 bucket, and ensures log integrity.\n\n### Your Task\nProvide a series of AWS CLI commands (and brief explanation) to:\n1. Create an S3 bucket with a bucket policy that allows CloudTrail to write logs.\n2. Create a KMS key for encrypting log files.\n3. Create the trail with multi‑region, log file validation, and encryption.\n4. Explain where you would send the logs for real‑time alerting (optional).\n\nAssume the bucket name is `my-company-cloudtrail-logs-123456` and the KMS alias is `alias/cloudtrail-key`.",
+    "hints": [
+        "Use `aws cloudtrail create-trail` with appropriate flags.",
+        "The bucket policy needs to allow the CloudTrail service principal.",
+        "For real‑time alerting, you'd send logs to CloudWatch Logs."
+    ],
+    "expectedOutput": "A sequence of CLI commands and a short explanation. The trail should be created with validation and encryption.",
+    "solutionCode": "1. Create S3 bucket and apply policy:\n```bash\naws s3api create-bucket --bucket my-company-cloudtrail-logs-123456 --region us-east-1\naws s3api put-bucket-policy --bucket my-company-cloudtrail-logs-123456 --policy file://bucket-policy.json\n```\nPolicy file:\n```json\n{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [{\n    \"Effect\": \"Allow\",\n    \"Principal\": {\"Service\": \"cloudtrail.amazonaws.com\"},\n    \"Action\": \"s3:PutObject\",\n    \"Resource\": \"arn:aws:s3:::my-company-cloudtrail-logs-123456/*\",\n    \"Condition\": {\"StringEquals\": {\"s3:x-amz-acl\": \"bucket-owner-full-control\"}}\n  }]\n}\n```\n2. Create KMS key:\n```bash\naws kms create-key --description \"CloudTrail encryption key\"\naws kms create-alias --alias-name alias/cloudtrail-key --target-key-id <key-id>\n```\nAdd a key policy statement allowing CloudTrail to use the key.\n3. Create trail:\n```bash\naws cloudtrail create-trail \\\n  --name my-company-trail \\\n  --s3-bucket-name my-company-cloudtrail-logs-123456 \\\n  --is-multi-region-trail \\\n  --enable-log-file-validation \\\n  --kms-key-id alias/cloudtrail-key\naws cloudtrail start-logging --name my-company-trail\n```\n4. For real‑time alerting, also send logs to CloudWatch Logs by updating the trail:\n```bash\naws cloudtrail update-trail --name my-company-trail --cloud-watch-logs-log-group-arn <arn> --cloud-watch-logs-role-arn <role>\n```"
+}

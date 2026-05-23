@@ -1,0 +1,96 @@
+{
+    "id": "l5",
+    "chapterId": "ch_1",
+    "title": "Making Scripts Executable ⚙️",
+    "description": "Turn your script into an executable program with chmod and run it from anywhere.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Execution",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Permissions Matter 🔐",
+            "content": "## Can't Run? No Execute Permission!\n\nLinux/macOS have permissions: read (r), write (w), execute (x).\nBy default, a new text file is not executable. You need to give it the execute permission.\n\nUse `ls -l` to see permissions.\n\nExample: `-rw-r--r--` → no `x`."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Grant Execute with chmod ✅",
+            "content": "`chmod +x script.sh` adds execute permission for everyone.",
+            "codeSnippet": "chmod +x hello.sh",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What does `chmod +x myscript.sh` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Deletes the script",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Makes the script readable",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Makes the script executable",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Copies the script",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`chmod +x` adds the execute permission, allowing you to run the script directly.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Running the Executable 🚀",
+            "content": "## Direct Execution\nOnce it's executable, run it with:\n```\n./hello.sh\n```\nThe `./` means \"in the current directory\". Without it, the shell looks in system `PATH` folders."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Try It!",
+            "content": "Make it executable and run:",
+            "codeSnippet": "chmod +x hello.sh\n./hello.sh",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "You can run an executable script without `./` if it's in the current directory.",
+                "correctAnswer": false,
+                "explanation": "You need `./` to tell the shell that the script is in the current directory, unless the directory is in the PATH.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Add to PATH\nIf you place your script in a folder that's in your `PATH` (like `/usr/local/bin`), you can run it from anywhere without `./`."
+        }
+    ]
+}

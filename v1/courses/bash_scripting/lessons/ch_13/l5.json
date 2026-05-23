@@ -1,0 +1,118 @@
+{
+    "id": "l5",
+    "chapterId": "ch_13",
+    "title": "Logging, Assertions & Defensive Code 🧱",
+    "description": "Build a bulletproof foundation with logging functions, input validation, and fail‑fast patterns.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Robustness",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Why Log? 📝",
+            "content": "## You Can't Watch Every Run\n\nA script running at 3 AM via cron won't tell you what happened unless you log it. A good logging system:\n- Records time, severity, and message.\n- Writes to a file, syslog, or stderr.\n- Helps diagnose failures long after they occur."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "A Simple Logging Function",
+            "content": "Create a reusable logger:",
+            "codeSnippet": "log() {\n  local level=\"$1\"\n  shift\n  echo \"[$(date +'%Y-%m-%d %H:%M:%S')] [$level] $*\"\n}\nlog INFO \"Starting backup\"\nlog ERROR \"Disk full\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What should a good log message include?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Only the error code",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Timestamp, severity, and descriptive text",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Just the command that failed",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A progress bar",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A clear log includes when, how severe, and what happened.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Input Validation: Trust No One 🧐",
+            "content": "## Check Before You Act\n\nAlways verify that:\n- Required arguments are provided (`$#`).\n- Files exist and are readable/writable (`-f`, `-r`, `-w`).\n- Directories exist (`-d`).\n- User input matches expected patterns (regex).\n\nFail early with a clear error message and a non‑zero exit code."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Validating a Script Argument",
+            "content": "A robust script start:",
+            "codeSnippet": "if [ $# -ne 1 ]; then\n  echo \"Usage: $0 <filename>\" >&2\n  exit 1\nfi\nif [ ! -f \"$1\" ]; then\n  echo \"Error: '$1' not found\" >&2\n  exit 2\nfi",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "fill_blank",
+                "question": "To check if a variable `file` exists and is a regular file, use `[ ___ \"$file\" ]`.",
+                "options": [],
+                "correctAnswer": "-f",
+                "explanation": "`-f` tests for a regular file.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Assertions: The `||` Pattern 🛑",
+            "content": "## Crash on Unexpected State\n\nAn assertion verifies that a condition is true; if not, something is terribly wrong and the script should abort.\n\n```bash\n[[ -n \"$critical_var\" ]] || { echo \"Assertion failed: critical_var empty\" >&2; exit 5; }\n```\nThis is defensive coding: make assumptions explicit."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "code",
+            "title": "Assertion Example",
+            "content": "Ensure root is running the script:",
+            "codeSnippet": "[[ $EUID -eq 0 ]] || { echo \"Must be root\" >&2; exit 1; }",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_9",
+            "type": "text",
+            "title": "Putting It All Together: A Robust Script Template 🧩",
+            "content": "## The Gold Standard\n\n1. `#!/bin/bash`\n2. `set -euo pipefail`\n3. Trap `EXIT` to cleanup, trap `ERR` for error line.\n4. `log()` function for consistent output.\n5. Validate all inputs at the top.\n6. Use `||` to handle failures explicitly.\n7. Exits with meaningful codes.\n\nThis template will save you hours of debugging."
+        },
+        {
+            "id": "s_l5_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `shellcheck your_script.sh` to automatically find common mistakes and security issues – a linter for Bash."
+        }
+    ]
+}

@@ -1,0 +1,163 @@
+{
+    "id": "l5",
+    "chapterId": "ch_7",
+    "title": "Paths & Directories: The os and pathlib Modules 🗂️",
+    "description": "Navigate the file system, list directories, and build cross‑platform paths like a pro.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "File I/O",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Why Not Just Hardcode Paths?",
+            "content": "# Cross‑Platform Compatibility\n\nWindows uses `\\`, Linux/macOS use `/`. Hardcoded paths break. Python gives us `os.path` (older) and the modern `pathlib` (Python 3.4+). We'll focus on `pathlib` – it's cleaner and object‑oriented."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Creating Path Objects",
+            "content": "Import and build paths:",
+            "codeSnippet": "from pathlib import Path\n\nwordlist = Path(\"wordlists\") / \"rockyou.txt\"\nprint(wordlist)          # wordlists/rockyou.txt (on Unix)\nprint(wordlist.exists()) # check if file exists",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Pathlib Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What does `Path('a') / 'b' / 'c'` produce?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "a/b/c (using appropriate separator)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "a\\b\\c (always backslash)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "a.b.c",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The `/` operator joins paths with the OS‑specific separator.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Useful pathlib Methods",
+            "content": "# Essential Path Attributes\n\n* `.exists()` – does it exist?\n* `.is_file()`, `.is_dir()` – type check\n* `.name` – filename with extension\n* `.stem` – filename without extension\n* `.suffix` – extension (e.g., `.txt`)\n* `.parent` – directory containing the file\n* `.mkdir(parents=True, exist_ok=True)` – create directory\n* `.read_text()`, `.write_text()` – shortcut for small files"
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Path Inspection",
+            "content": "Examine a script file:",
+            "codeSnippet": "from pathlib import Path\nscript = Path(\"hack.py\")\nprint(\"Name:\", script.name)\nprint(\"Stem:\", script.stem)\nprint(\"Suffix:\", script.suffix)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Path Parts 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "If `p = Path('/home/user/data.txt')`, what is `p.stem`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "data",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "data.txt",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "txt",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`.stem` gives the filename without the suffix.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Listing Directory Contents",
+            "content": "# `.iterdir()` and `.glob()`\n\n```python\nfolder = Path(\"logs\")\nfor file in folder.iterdir():\n    print(file.name)\n```\n* `iterdir()` yields all entries (files and dirs).\n* `glob('*.log')` returns files matching a pattern (like `*.log` or `**/*.txt` for recursive).\n\n```python\nfor log in folder.glob('*.log'):\n    process(log)\n```"
+        },
+        {
+            "id": "s_l5_8",
+            "type": "code",
+            "title": "Find All .conf Files Recursively",
+            "content": "Using `rglob` (recursive glob):",
+            "codeSnippet": "from pathlib import Path\nconfig_dir = Path(\"/etc\")  # simulate\n# In practice: for conf in Path('.').rglob('*.conf'):\n#    print(conf)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_9",
+            "type": "quiz",
+            "title": "Globbing 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_3",
+                "type": "true_false",
+                "question": "`Path('.').glob('*.py')` returns only Python files directly in the current directory, not subdirectories.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "`glob` is non‑recursive by default; use `rglob` for recursive.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_10",
+            "type": "text",
+            "title": "The `os` Module (Legacy but Still Used)",
+            "content": "# For Quick Operations\n\n* `os.getcwd()` – current working directory\n* `os.chdir(path)` – change directory\n* `os.listdir(path)` – list contents (returns names)\n* `os.path.join()` – join paths (not as clean as `/`)\n* `os.path.exists()`, `os.path.isfile()`\n\nMany existing tools use `os`. Know it, but prefer `pathlib` for new code."
+        },
+        {
+            "id": "s_l5_11",
+            "type": "code",
+            "title": "os vs pathlib",
+            "content": "Compare:\n```python\n# old\nimport os\nfull = os.path.join(\"data\", \"wordlist.txt\")\n# new\nfrom pathlib import Path\nfull = Path(\"data\") / \"wordlist.txt\"\n```",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_12",
+            "type": "text",
+            "title": "Creating Directories Safely",
+            "content": "# Avoid Errors with `exist_ok=True`\n\n```python\noutput_dir = Path(\"results\") / \"scans\"\noutput_dir.mkdir(parents=True, exist_ok=True)\nwith open(output_dir / \"report.txt\", 'w') as f:\n    f.write(\"data\")\n```\nThis creates all intermediate directories if needed, and doesn't complain if they exist."
+        },
+        {
+            "id": "s_l5_13",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use pathlib for All New Projects\n\nIt's more intuitive, reduces bugs, and handles cross‑platform issues automatically. `Path.read_text()` and `Path.write_text()` are extremely convenient for small files."
+        },
+        {
+            "id": "s_l5_14",
+            "type": "text",
+            "title": "Next: Structured Data – CSV & JSON",
+            "content": "# Real hacking involves configs, API responses, and logs in structured formats. Let's parse them."
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_1",
+    "title": "System Info Script",
+    "description": "Write a script that displays hostname, current directory, and lists files.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Your manager wants a quick system snapshot script called `sysinfo.sh`. It should display:\n\n1. The hostname of the machine.\n2. The current working directory.\n3. A list of all files and folders (including hidden ones) in the current directory.\n\nAdd comments explaining each command. Make the script executable and run it.\n\nBonus: Print a separator line (e.g., `----------`) between sections.",
+    "hints": [
+        "Use `hostname` to get the machine name.",
+        "`pwd` shows the present directory.",
+        "`ls -a` lists all files including hidden ones.",
+        "`echo` can print dashes."
+    ],
+    "expectedOutput": "Hostname: cybron-server\nCurrent Directory: /home/user\nFiles:\n.  ..  .hidden  file1.txt  file2.txt",
+    "solutionCode": "#!/bin/bash\n# System information script\n\necho \"Hostname: $(hostname)\"\necho \"----------\"\necho \"Current Directory: $(pwd)\"\necho \"----------\"\necho \"Files:\"\nls -a"
+}

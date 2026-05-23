@@ -1,0 +1,111 @@
+{
+    "id": "l5",
+    "chapterId": "ch_8",
+    "title": "Real‑World Combo: Substitution + Arrays 🔗",
+    "description": "Store command output directly into arrays, build dynamic menus, and process file lists.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Application",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Loading Command Output into an Array 📥",
+            "content": "## The Missing Map\n\nYou can't directly `arr=$(ls)`. Instead, use `mapfile` (or `readarray`) to read lines into an array:\n\n```bash\nmapfile -t lines < <(ls)\n```\n- `-t` strips trailing newlines.\n- `< <(command)` is process substitution that feeds the command's output as a file.\n\nOlder method: `IFS=$'\\n' read -r -a arr < <(command)`, but `mapfile` is cleaner."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Read Files into Array",
+            "content": "Store all .txt filenames safely:",
+            "codeSnippet": "mapfile -t txt_files < <(find . -name \"*.txt\")\nfor f in \"${txt_files[@]}\"; do echo \"$f\"; done",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What does `mapfile -t arr < <(command)` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Runs the command and stores its exit code in arr",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Reads each line of the command output into an array element",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Maps the command's arguments to an array",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It's a syntax error",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`mapfile` (or `readarray`) reads lines from stdin into an indexed array; `-t` removes the newline from each line.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Building a Dynamic Menu with Arrays 🖥️",
+            "content": "## Select from a List\n\nUse an array to hold menu options and a loop to display them. Combine `select` (built‑in) or manual numbering.\n\n```bash\noptions=(\"Show date\" \"List files\" \"Exit\")\nselect opt in \"${options[@]}\"; do\n   case $opt in ...) ... ;; esac\ndone\n```\n`select` automatically numbers the options."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Select Menu",
+            "content": "Create a simple interactive menu using an array:",
+            "codeSnippet": "actions=(\"Show date\" \"Show uptime\" \"Quit\")\nselect choice in \"${actions[@]}\"; do\n  case $choice in\n    \"Show date\") date ;;\n    \"Show uptime\") uptime ;;\n    \"Quit\") break ;;\n    *) echo \"Invalid\" ;;\n  esac\ndone",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "`select var in \"${arr[@]}\"` uses the elements of the array as menu options.",
+                "correctAnswer": true,
+                "explanation": "Yes, `select` iterates over the provided list and presents them as numbered choices.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Reading Configuration into an Associative Array ⚙️",
+            "content": "## Parse key=value Pairs\n\nA common pattern: load a config file into an associative array.\n```bash\ndeclare -A config\nwhile IFS='=' read -r key value; do\n   config[$key]=$value\ndone < config.ini\n```\nSkip comments and blank lines with `grep -v '^#'`."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "code",
+            "title": "Config Loader",
+            "content": "Read key=value from a here‑doc:",
+            "codeSnippet": "declare -A settings\nwhile IFS='=' read -r key value; do\n  settings[$key]=$value\ndone <<< \"user=admin\nport=8080\"\necho \"User: ${settings[user]}, Port: ${settings[port]}\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `printf '%s\\n' \"${arr[@]}\"` to print each array element on its own line – handy for piping to other tools."
+        }
+    ]
+}

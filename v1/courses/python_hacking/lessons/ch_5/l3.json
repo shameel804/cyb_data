@@ -1,0 +1,188 @@
+{
+    "id": "l3",
+    "chapterId": "ch_5",
+    "title": "The `for` Loop: Iterating Over Collections 🗂️",
+    "description": "Loop through lists, strings, files – the workhorse of scanning and enumeration.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Loops",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "For Loop: Python's Favorite Way to Loop",
+            "content": "# `for item in iterable:`\n\nWhen you have a list of targets, a wordlist, or a string, the `for` loop automatically gives you each element one by one.\n\n```python\nips = [\"192.168.1.1\", \"10.0.0.2\", \"172.16.0.5\"]\nfor ip in ips:\n    print(f\"Scanning {ip}\")\n```\nNo manual index, no counter – Python handles it."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "For Loop Demo",
+            "content": "Iterate over a list of ports:",
+            "codeSnippet": "ports = [22, 80, 443, 8080]\nfor p in ports:\n    print(f\"Checking port {p}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "For Loop Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What does `for x in [1,2,3]: print(x)` output?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "1 2 3",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "[1,2,3]",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "x x x",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Each element is printed on its own line.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Iterating Over Strings",
+            "content": "# Strings Are Sequences of Characters\n\n```python\nbanner = \"SSH-2.0\"\nfor char in banner:\n    if char.isdigit():\n        print(f\"Digit found: {char}\")\n```\nYou can loop through each character. Useful for parsing."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "String Loop",
+            "content": "Check each character:",
+            "codeSnippet": "data = \"admin:1234\"\nfor ch in data:\n    if ch == \":\":\n        print(\"Separator found\")\n        break",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "String Iteration 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "`for c in \"abc\":` will iterate three times, with c taking values 'a', 'b', 'c'.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "Each character becomes the loop variable in turn.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Iterating Over Files (Reading Lines)",
+            "content": "# Huge for Log Parsing\n\nYou can loop over a file object to process each line:\n```python\nwith open(\"passwords.txt\") as f:\n    for line in f:\n        attempt = line.strip()\n        print(f\"Trying {attempt}\")\n```\nThe `for` loop reads the file line by line, not loading everything into memory. Perfect for large wordlists."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "code",
+            "title": "Loop Over File (if you have one)",
+            "content": "Create a dummy file or just see the syntax:",
+            "codeSnippet": "# Simulate lines\nlines = [\"root\\n\", \"admin\\n\", \"user\\n\"]\nfor line in lines:\n    user = line.strip()\n    print(f\"Checking user: {user}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_9",
+            "type": "quiz",
+            "title": "File Loop 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "multiple_choice",
+                "question": "What does `.strip()` do in the line `user = line.strip()`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Removes leading/trailing whitespace and newline characters",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Deletes the file",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Splits the line into words",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "strip() cleans the line so we get just the content.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_10",
+            "type": "text",
+            "title": "The Loop Variable Exists After the Loop",
+            "content": "# Interesting Quirk\n\nAfter a for loop finishes, the loop variable still holds the last value:\n```python\nfor port in [80, 443]:\n    pass\nprint(port)  # 443\n```\nBe careful not to rely on this unintentionally."
+        },
+        {
+            "id": "s_l3_11",
+            "type": "text",
+            "title": "Using `enumerate()` for Counters",
+            "content": "# Need the Index Alongside the Item?\n\n`enumerate()` gives you pairs of (index, item):\n```python\ntargets = [\"host1\", \"host2\", \"host3\"]\nfor i, target in enumerate(targets):\n    print(f\"{i}: {target}\")\n```\nNo manual counter variable needed!"
+        },
+        {
+            "id": "s_l3_12",
+            "type": "code",
+            "title": "Enumerate Demo",
+            "content": "Show scan progress:",
+            "codeSnippet": "ports = [22, 80, 443]\nfor idx, port in enumerate(ports):\n    print(f\"{idx+1}/{len(ports)} scanning port {port}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_13",
+            "type": "quiz",
+            "title": "Enumerate 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_4",
+                "type": "multiple_choice",
+                "question": "What does `enumerate(['a','b'])` produce?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Pairs (0,'a') and (1,'b')",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Just the indices 0,1",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A list of tuples with reversed order",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "enumerate yields (index, item) tuples.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_14",
+            "type": "text",
+            "title": "For Loop Mastery",
+            "content": "# You Can Now Traverse Any Collection\n\nNext, we need a way to generate numeric sequences easily – `range()` – which is essential for port scanning and brute‑forcing with numbers."
+        }
+    ]
+}

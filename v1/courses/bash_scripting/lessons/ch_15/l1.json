@@ -1,0 +1,99 @@
+{
+    "id": "l1",
+    "chapterId": "ch_15",
+    "title": "Project Planning & Design 🗺️",
+    "description": "Map out the final capstone project: a backup and monitoring system. Define requirements and script architecture.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Design",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Grand Finale 🏆",
+            "content": "## You've Learned a Lot\n\nFrom basic commands to regex, sed, awk, error handling, and security. Now it's time to combine everything into one real‑world tool.\n\nOur capstone project: **Cybron Guardian** – a backup and alert system that:\n- Archives a set of directories\n- Logs every action\n- Checks disk space\n- Sends email alerts on failure\n- Runs automatically via cron"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "Requirements Breakdown 📋",
+            "content": "## What Should It Do?\n\n1. **Configuration**: accept a config file with directories to back up, destination, and thresholds.\n2. **Backup**: create compressed `.tar.gz` archives with timestamps.\n3. **Rotation**: keep only the last N backups.\n4. **Disk check**: ensure destination has enough free space before backing up.\n5. **Logging**: write timestamped messages to a log file and syslog (optional).\n6. **Alerting**: if any critical step fails, send an email to the admin.\n7. **Cron‑ready**: run silently when scheduled, verbose when invoked manually."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which of the following is a good practice for a script designed to run via cron?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Always ask for interactive input",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Produce output only on error and log everything",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Print progress bars to the terminal",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Use relative paths because cron sets the working directory to home",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Cron jobs should be silent on success, log details, and use absolute paths.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Architecture Overview 🏛️",
+            "content": "## Modular Functions\n\nWe'll structure the script into functions:\n- `load_config` – parse the config file.\n- `log_msg` – centralised logging.\n- `check_disk` – verify free space.\n- `do_backup` – create archive.\n- `rotate_backups` – delete old archives.\n- `send_alert` – email admin on failure.\n- `main` – orchestrate the flow.\n\nThis makes the script readable, testable, and maintainable."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Skeleton Script",
+            "content": "Start with the basic frame:",
+            "codeSnippet": "#!/bin/bash\nset -euo pipefail\n\nCONFIG=\"${1:-./guardian.conf}\"\n\nguardian_main() {\n  load_config\n  check_disk\n  do_backup\n  rotate_backups\n}\n\nguardian_main",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "Putting the main logic in a function called `main` or `run` improves readability and allows sourcing the script without executing it.",
+                "correctAnswer": true,
+                "explanation": "A `main` function lets you execute the script normally or source it for testing individual functions.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "The Configuration File 🔧",
+            "content": "## Simple key=value Format\n\nWe'll use a config file like:\n```\nBACKUP_SRC=\"/home/user/data /etc\"\nBACKUP_DEST=\"/backup\"\nRETENTION=7\nTHRESHOLD_PCT=10\nADMIN_EMAIL=\"admin@example.com\"\n```\nMultiple source directories are separated by spaces and quoted as needed."
+        },
+        {
+            "id": "s_l1_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Treat the config file as your script's 'control panel'. Changing behaviour doesn't require editing code, only the config."
+        }
+    ]
+}

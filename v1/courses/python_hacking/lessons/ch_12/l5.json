@@ -1,0 +1,116 @@
+{
+    "id": "l5",
+    "chapterId": "ch_12",
+    "title": "Assembling the Final Tool: CLI, Logging & Reports 📊",
+    "description": "Combine all modules, add command‑line arguments, logging, and export results as CSV/JSON.",
+    "xpReward": 40,
+    "estimatedMinutes": 12,
+    "section": "Final Integration",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Bringing It All Together",
+            "content": "# The `main.py` Entry Point\n\n```python\n# main.py\nfrom scanner import scan_ports, resolve_host\nfrom web import web_recon\nfrom report import save_csv, save_json\nimport sys\n\ndef main():\n    args = parse_args()\n    results = run_scan(args)\n    save_results(results, args.format)\n```\nWe'll create a clean CLI using `sys.argv` (or `argparse` for simplicity, we'll stick to simple parsing)."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Command‑Line Arguments",
+            "content": "# Basic Usage\n\n```bash\npython main.py scanme.nmap.org -p 1-1000 -f json\n```\nWe'll parse:\n- target (required)\n- `-p` or `--ports` default `1-1000`\n- `-t` timeout default `0.5`\n- `-f` format `csv` or `json`\n- `-o` output filename\n\nWe'll use `sys.argv` and simple if‑checks. For homework, you can upgrade to `argparse`."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "code",
+            "title": "Argument Parser (Simplified)",
+            "content": "Example using sys.argv:",
+            "codeSnippet": "import sys\n\ndef parse_args():\n    target = None\n    ports = (1, 1024)\n    fmt = 'csv'\n    output = 'report'\n    i = 1\n    while i < len(sys.argv):\n        if sys.argv[i] == '-p':\n            start, end = sys.argv[i+1].split('-')\n            ports = (int(start), int(end))\n            i += 2\n        elif sys.argv[i] == '-f':\n            fmt = sys.argv[i+1]\n            i += 2\n        elif sys.argv[i] == '-o':\n            output = sys.argv[i+1]\n            i += 2\n        else:\n            target = sys.argv[i]\n            i += 1\n    if not target:\n        print(\"Usage: main.py <target> [-p start-end] [-f csv|json] [-o filename]\")\n        sys.exit(1)\n    return target, ports, fmt, output",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_4",
+            "type": "quiz",
+            "title": "CLI Parsing 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "true_false",
+                "question": "Using `sys.argv` is the only way to handle command‑line arguments in Python.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "You can also use `argparse`, `click`, or other libraries; `sys.argv` is the simplest.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "The `run_scan` Function",
+            "content": "# Orchestrate Scans\n\n```python\ndef run_scan(target, ports):\n    start, end = ports\n    print(f\"Scanning {target} ports {start}-{end}...\")\n    scan_results = scan_ports(target, start, end)\n    # For web ports, do extra recon\n    for entry in scan_results:\n        if entry['port'] in [80, 443, 8080, 8443]:\n            ssl = entry['port'] in [443, 8443]\n            web_info = web_recon(target, entry['port'], use_ssl=ssl)\n            if 'error' not in web_info:\n                entry['web'] = web_info\n    return scan_results\n```"
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Report Generation (report.py)",
+            "content": "# Save as CSV or JSON\n\n```python\nimport csv, json\n\ndef save_csv(results, filename):\n    with open(filename+'.csv', 'w', newline='') as f:\n        writer = csv.DictWriter(f, fieldnames=['port','service','banner','web'])\n        writer.writeheader()\n        for r in results:\n            r['web'] = json.dumps(r.get('web', ''))\n            writer.writerow(r)\n\ndef save_json(results, filename):\n    with open(filename+'.json', 'w') as f:\n        json.dump(results, f, indent=2)\n```"
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Report Module 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "Why might we convert the 'web' dict to a JSON string when writing CSV?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "CSV can't handle nested data natively",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It's a bug",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To make the file smaller",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "CSV is flat; nested dicts must be serialized to a string to fit in a column.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_8",
+            "type": "text",
+            "title": "Putting It All in `main.py`",
+            "content": "# The Complete Workflow\n\n1. Parse arguments.\n2. Call `run_scan`.\n3. Save results.\n4. Print summary.\n\nExample output:\n```\nPort 22 open (SSH) - Banner: SSH-2.0-OpenSSH_8.9p1\nPort 80 open (HTTP) - Title: Example Domain, Server: Apache\nReport saved to report.csv\n```"
+        },
+        {
+            "id": "s_l5_9",
+            "type": "code",
+            "title": "Final main.py Skeleton",
+            "content": "We'll provide a full version in the tasks. But structure:",
+            "codeSnippet": "import sys\nfrom scanner import scan_ports\nfrom web import web_recon\nfrom report import save_csv, save_json\n\ndef parse_args(): ...\ndef main():\n    target, ports, fmt, output = parse_args()\n    results = scan_ports(target, ports[0], ports[1])\n    for r in results:\n        if r['port'] in [80,443]:\n            r['web'] = web_recon(target, r['port'], use_ssl=(r['port']==443))\n    if fmt == 'csv': save_csv(results, output)\n    else: save_json(results, output)\n    print('Done.')\nif __name__ == '__main__':\n    main()",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_10",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Test on Your Local Machine\n\nRun a web server (`python -m http.server 8000`) and scan `127.0.0.1 -p 8000-8005` to see results. It's a safe way to test."
+        },
+        {
+            "id": "s_l5_11",
+            "type": "text",
+            "title": "Congratulations! 🎉",
+            "content": "# You've Built a Real Hacking Tool!\n\nYou've applied everything from variables to web scraping in a single, working reconnaissance tool. This is just the beginning – you can now extend it with UDP scanning, vulnerability checks, or integration with Nmap.\n\nTake the final Chapter Quiz and complete the capstone tasks. The world of Python hacking is now yours. **Happy ethical hacking!**"
+        }
+    ]
+}

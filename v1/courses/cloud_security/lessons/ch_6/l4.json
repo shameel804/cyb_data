@@ -1,0 +1,90 @@
+{
+    "id": "l4",
+    "chapterId": "ch_6",
+    "title": "Network ACLs: Subnet Defense 🧱",
+    "description": "Stateless filtering and how to layer NACLs with Security Groups.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Network ACL: The Subnet‑Level Firewall 🔲",
+            "content": "# Another Layer of Protection\n\nA **Network Access Control List (NACL)** is an optional firewall that controls traffic in and out of one or more subnets.\n\n- **Stateless**: Inbound and outbound rules are evaluated separately. If you allow an inbound request, you must explicitly allow the corresponding outbound response.\n- **Both allow and deny rules**: You can deny specific IPs or ports explicitly.\n- **Rule evaluation**: Rules are evaluated in order by **rule number** (lowest number first). The first match wins.\n\n*Think of a NACL as a customs checkpoint at the border of a subnet. Every packet must get past it, regardless of the destination instance's Security Group.*"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "NACL vs SG 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which firewall is stateful and only supports allow rules?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Network ACL",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Security Group",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Both",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Neither",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Security Groups are stateful and allow-only; NACLs are stateless and support allow/deny.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "NACL Rules & Evaluation Order 🔢",
+            "content": "## Example Inbound NACL Rules\n\n| Rule # | Type | Protocol | Port Range | Source | Allow/Deny |\n|--------|------|----------|------------|--------|------------|\n| 100 | HTTP | TCP | 80 | 0.0.0.0/0 | ALLOW |\n| 200 | SSH | TCP | 22 | 203.0.113.0/24 | ALLOW |\n| * | All | All | All | 0.0.0.0/0 | DENY |\n\n- Rule 100 is evaluated first. If a packet matches, the action is taken and evaluation stops.\n- The last rule `*` (rule number 9999) is a default deny – it catches everything else.\n- **Ephemeral ports**: For outbound rules, you must open a range of ephemeral ports (1024‑65535) to allow return traffic, because NACLs are stateless.\n\n*This makes NACLs more complex to configure but powerful for explicit blocklists.*"
+        },
+        {
+            "id": "s_l4_4",
+            "type": "quiz",
+            "title": "NACL Order 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "fill_blank",
+                "question": "NACL rules are evaluated in order of the ______ number, and the first match determines the action.",
+                "options": [
+                    "random",
+                    "rule",
+                    "IP",
+                    "port"
+                ],
+                "correctAnswer": "rule",
+                "explanation": "The rule number determines precedence; lower numbers are evaluated first.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Layering SGs and NACLs 🧱+🔥",
+            "content": "## Defense in Depth for Networks\n\n- **NACL** provides subnet‑level security, perfect for blocking known malicious IP ranges or enforcing that only certain ports enter a subnet.\n- **Security Group** provides instance‑level security, fine‑grained per application.\n\n**Example architecture**:\n- Public subnet NACL: Allow 80/443 inbound, ephemeral ports outbound; deny everything else.\n- Web server SG: Allow 80/443 from world, 22 from admin IP.\n- Private subnet NACL: Allow only traffic from public subnet CIDR on database port (3306); deny internet.\n- Database SG: Allow 3306 from web server SG only.\n\n*If a misconfigured SG accidentally opens port 22 to the world, the NACL can still block it at the subnet boundary.*"
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "Don’t Overcomplicate NACLs 🧹",
+            "content": "For simple setups, you can keep the default NACL (which allows all). Use Security Groups as the primary firewall. NACLs shine when you need explicit deny capabilities or broad‑spectrum subnet‑level blocks."
+        }
+    ]
+}

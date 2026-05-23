@@ -1,0 +1,266 @@
+{
+    "id": "quiz_ch_11",
+    "chapterId": "ch_11",
+    "title": "Chapter 11 Quiz: Security Architecture & Well‑Architected Frameworks",
+    "description": "Test your knowledge of cloud architecture principles, frameworks, and design patterns.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which term best describes a structured design that integrates all security controls in an environment?",
+            "options": [
+                "Security policy",
+                "Security architecture",
+                "Incident response plan",
+                "Compliance report"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Security architecture is the overarching blueprint for protection."
+        },
+        {
+            "id": "q2",
+            "type": "fill_blank",
+            "question": "The design principle of separating resources into isolated zones to limit breach impact is called ________.",
+            "options": [
+                "least privilege",
+                "defense in depth",
+                "segmentation",
+                "economy of mechanism"
+            ],
+            "correctAnswer": "segmentation",
+            "explanation": "Segmentation creates boundaries that contain threats."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "The AWS Well‑Architected Framework consists of five pillars.",
+            "correctAnswer": false,
+            "explanation": "AWS Well‑Architected Framework has six pillars, including the newly added Sustainability."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which AWS Well‑Architected pillar addresses incident response and forensics?",
+            "options": [
+                "Operational Excellence",
+                "Security",
+                "Reliability",
+                "Performance Efficiency"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Incident response is a key area of the Security pillar."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which Azure service provides a unified CSPM and workload protection dashboard?",
+            "options": [
+                "Azure Monitor",
+                "Microsoft Defender for Cloud",
+                "Azure Sentinel",
+                "Azure Policy"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Defender for Cloud assesses configurations and offers recommendations."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the primary mechanism to enforce security constraints across all projects in a GCP organization?",
+            "options": [
+                "IAM conditions",
+                "Organization Policy Service",
+                "VPC Service Controls",
+                "Cloud Audit Logs"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Organization policies set guardrails inherited by all child resources."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "Azure Landing Zones recommend a single subscription for all environments to simplify management.",
+            "correctAnswer": false,
+            "explanation": "Landing Zones advocate multiple subscriptions for isolation (management, connectivity, landing zones)."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "The AWS design principle 'Keep people away from data' suggests:",
+            "options": [
+                "No human should ever access cloud resources",
+                "Use IAM roles for machines and eliminate direct human access where possible",
+                "Encrypt all data so it's invisible",
+                "Move data to on‑premises"
+            ],
+            "correctAnswer": 1,
+            "explanation": "It promotes automation and machine‑to‑machine access, reducing human touchpoints."
+        },
+        {
+            "id": "q9",
+            "type": "fill_blank",
+            "question": "A central VPC that routes traffic between spoke VPCs and to the internet is called a ______.",
+            "options": [
+                "hub",
+                "spoke",
+                "peering",
+                "gateway"
+            ],
+            "correctAnswer": "hub",
+            "explanation": "Hub‑spoke architecture centralizes networking and security inspection."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which AWS service helps set up a well‑architected multi‑account environment with guardrails?",
+            "options": [
+                "AWS Organizations",
+                "AWS Control Tower",
+                "AWS Security Hub",
+                "AWS Landing Zone (deprecated)"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Control Tower automates the creation of a landing zone with best‑practice blueprints."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "Google Cloud VPCs are regional, requiring separate VPCs for different regions.",
+            "correctAnswer": false,
+            "explanation": "GCP VPCs are global; subnets are regional. A single VPC can span regions."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which Azure service provides a Web Application Firewall (WAF) that can be integrated with Application Gateway?",
+            "options": [
+                "Azure Firewall",
+                "Azure DDoS Protection",
+                "Azure WAF",
+                "Azure Front Door"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Azure WAF is a built‑in capability of Application Gateway and Front Door."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What is the primary purpose of VPC Service Controls in GCP?",
+            "options": [
+                "Manage IAM permissions",
+                "Create perimeters to prevent data exfiltration from managed services",
+                "Monitor API calls",
+                "Route network traffic"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Service Controls define a security boundary around data stored in services like BigQuery and GCS."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "In a multi‑account AWS strategy, where should you aggregate CloudTrail logs for security analysis?",
+            "options": [
+                "Each individual workload account",
+                "The management account",
+                "A dedicated security/log archive account",
+                "Any account with enough storage"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Centralizing logs in a dedicated security account ensures they survive a compromise of any workload account."
+        },
+        {
+            "id": "q15",
+            "type": "true_false",
+            "question": "Zero Trust architecture assumes the internal network is implicitly trusted.",
+            "correctAnswer": false,
+            "explanation": "Zero Trust assumes breach and verifies every access request, regardless of network location."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which GCP service provides context‑aware access to internal applications without a VPN?",
+            "options": [
+                "Cloud VPN",
+                "Cloud Interconnect",
+                "Identity‑Aware Proxy (IAP)",
+                "Cloud Armor"
+            ],
+            "correctAnswer": 2,
+            "explanation": "IAP verifies user identity and device posture before granting access."
+        },
+        {
+            "id": "q17",
+            "type": "fill_blank",
+            "question": "The AWS Well‑Architected Tool helps you review workloads and generates a ________ with identified risks.",
+            "options": [
+                "compliance report",
+                "architecture diagram",
+                "risk report",
+                "Well‑Architected Review report"
+            ],
+            "correctAnswer": "Well‑Architected Review report",
+            "explanation": "The tool produces a report highlighting high and medium risk items."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which of the following is NOT a design principle of the AWS Well‑Architected Security pillar?",
+            "options": [
+                "Implement a strong identity foundation",
+                "Enable traceability",
+                "Automate security best practices",
+                "Minimize cloud expenses"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Minimizing expenses is a Cost Optimization principle, not Security."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is the advantage of using AWS Control Tower’s guardrails?",
+            "options": [
+                "They automatically patch software",
+                "They enforce policies like SCPs and Config rules across accounts",
+                "They replace IAM",
+                "They encrypt all network traffic"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Guardrails ensure consistent governance across the organization."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "Google Cloud’s security model, BeyondCorp, is based on the premise that network perimeter security is sufficient.",
+            "correctAnswer": false,
+            "explanation": "BeyondCorp is the origin of Zero Trust: it removes reliance on perimeter and verifies every access."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "Which layer of defense does a hub‑spoke network with central inspection provide?",
+            "options": [
+                "Only north‑south traffic",
+                "East‑west traffic between workloads",
+                "Only DDoS protection",
+                "None, it's purely for performance"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A centralized inspection point can monitor traffic flowing between VPCs (east‑west)."
+        },
+        {
+            "id": "q22",
+            "type": "fill_blank",
+            "question": "A set of AWS accounts grouped under an organization for central management is known as an AWS ________.",
+            "options": [
+                "Organization",
+                "collection",
+                "federation",
+                "group"
+            ],
+            "correctAnswer": "Organization",
+            "explanation": "AWS Organizations allows centralized billing and policy management."
+        }
+    ]
+}

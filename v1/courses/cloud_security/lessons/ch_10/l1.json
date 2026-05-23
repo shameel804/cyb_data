@@ -1,0 +1,111 @@
+{
+    "id": "l1",
+    "chapterId": "ch_10",
+    "title": "What is GRC? Governance, Risk, Compliance Explained 🏛️",
+    "description": "Define the pillars of cloud GRC and why they matter for security.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Three Pillars of GRC 🏛️",
+            "content": "# Governance, Risk, and Compliance\n\nThink of your cloud environment as a massive cruise ship 🛳️.\n- **Governance**: The captain’s orders, crew hierarchy, and standard operating procedures. It defines who is responsible for what and how decisions are made.\n- **Risk**: Navigating storms, avoiding icebergs. It’s about identifying threats, assessing their impact, and deciding how to handle them (accept, mitigate, transfer, avoid).\n- **Compliance**: Passing coast guard inspections. Meeting external standards (laws, regulations, contracts) to prove you are seaworthy.\n\n*Without GRC, you might sail fast but you'll eventually hit an iceberg—or fail an audit and be banned from the port.*"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which GRC pillar deals with identifying and mitigating potential threats?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Governance",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Risk",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Compliance",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "All of them equally",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Risk management focuses on threats and vulnerabilities, and deciding how to treat them.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Governance: The Rule Book 📘",
+            "content": "## Policies, Standards, and Procedures\n\n- **Policies**: High‑level statements (e.g., “All data must be encrypted at rest”). They are mandatory.\n- **Standards**: Specific technical rules (e.g., “Use AES‑256 with AWS KMS”).\n- **Procedures**: Step‑by‑step instructions (e.g., “To enable S3 bucket encryption, follow this runbook…”).\n\nIn the cloud, governance extends to **resource tagging**, **IAM permission boundaries**, and **account structure** (AWS Organizations, Azure Management Groups). Good governance ensures consistent security across hundreds of accounts."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Risk Management: The Art of Navigating Danger ⚠️",
+            "content": "## Identify, Assess, Treat\n\n- **Identify**: What can go wrong? (e.g., S3 bucket exposed to the internet)\n- **Assess**: How likely and how bad? (High probability, critical impact)\n- **Treat**: Decide: Accept (low risk), Mitigate (implement controls), Transfer (insurance), Avoid (don’t do it).\n\nCloud risks are dynamic. New services, misconfigurations, and zero‑day vulnerabilities appear constantly. **Continuous risk assessment** is required, not a one‑time checklist."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "quiz",
+            "title": "Risk Decision 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "A company decides to delete a public dataset rather than encrypt it because the risk is too high. This is an example of:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Risk acceptance",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Risk mitigation",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Risk avoidance",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Risk transfer",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Avoiding the activity entirely is risk avoidance.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "Compliance: Prove You’re Secure 📜",
+            "content": "## Meeting External Obligations\n\nCompliance means proving to auditors, regulators, or customers that you follow specific security standards.\n- **Internal compliance**: Your own policies (are we following our own rules?).\n- **External compliance**: PCI DSS, HIPAA, GDPR, SOC 2, ISO 27001.\n\nIn the cloud, you inherit some provider certifications, but you **own the compliance of what you build**. The shared responsibility model means the provider secures the physical data center (they have SOC 2 reports for that), but you must configure your services correctly to meet standards."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Don’t Just ‘Check the Box’\nGRC isn't about paper; it's about aligning security with business goals. Integrate compliance checks into your CI/CD pipeline (shift left compliance) to avoid last‑minute audit panic."
+        }
+    ]
+}

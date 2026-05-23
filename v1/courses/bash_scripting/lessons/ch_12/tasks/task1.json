@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_12",
+    "title": "CSV Cleaner & Summariser",
+    "description": "Use sed to remove invalid lines from a CSV, then awk to compute statistics on a column.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You have a CSV file `data.csv` with a header and some malformed lines (empty lines, comment lines starting with `#`). The columns are: `name,department,salary`. Write a script `process_csv.sh` that:\n\n1. Accepts the CSV filename as an argument.\n2. Uses `sed` to remove lines that are empty or start with `#` (skip the header as well if present, or leave it, but better to remove it for calculation). For simplicity, remove all lines that start with a letter (the header) and keep only numeric data lines? The header can be removed with `sed '1d'` after cleaning comments. So step: sed to delete comments and blanks, then delete line 1 (header), then pipe to awk.\n3. Then uses `awk -F,` to calculate and print:\n   - The average salary (sum/NR).\n   - The highest salary and the corresponding name.\n   - The number of employees.\n\nTest with a sample CSV.\n\nHint: for highest salary, use `max` variable and store name when updating.",
+    "hints": [
+        "sed: `sed '/^#/d;/^$/d' data.csv | sed '1d'`.",
+        "awk: `{ sum+=$3; count++; if ($3>max) { max=$3; name=$1 } } END { printf ... }`.",
+        "Remember to handle division by zero if count is zero."
+    ],
+    "expectedOutput": "Average salary: 55000\nHighest salary: 95000 (Alice)\nEmployees: 5",
+    "solutionCode": "#!/bin/bash\n# process_csv.sh\n\nfile=\"$1\"\nif [ ! -f \"$file\" ]; then\n  echo \"File not found\" >&2\n  exit 1\nfi\n\nsed '/^#/d;/^$/d' \"$file\" | sed '1d' | awk -F, '{\n  sum += $3\n  count++\n  if ($3 > max) { max = $3; name = $1 }\n}\nEND {\n  if (count > 0) {\n    printf \"Average salary: %.0f\\n\", sum/count\n    printf \"Highest salary: %d (%s)\\n\", max, name\n    print \"Employees: \" count\n  }\n}'"
+}

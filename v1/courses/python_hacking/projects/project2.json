@@ -1,0 +1,26 @@
+{
+    "id": "project2",
+    "title": "WebPulse: HTTP Recon & Vulnerability Profiler",
+    "description": "Create a tool that probes web servers, extracts hidden info, fingerprints technologies, and checks for common misconfigurations.",
+    "difficulty": "Intermediate",
+    "estimatedHours": "3-4",
+    "problemStatement": "Build **WebPulse**, an HTTP reconnaissance tool that goes beyond banner grabbing. Given a URL or host, it will:\n\n## Core Features\n1. **HTTP/HTTPS Probing**: Automatically try both HTTP and HTTPS (ports 80 and 443). If one fails, try the other.\n2. **Header Analysis**: Retrieve all response headers and highlight security‑relevant ones:\n   - `Server` (software disclosure)\n   - `X‑Powered‑By` (technology disclosure)\n   - Missing security headers like `Strict‑Transport‑Security`, `Content‑Security‑Policy`, `X‑Content‑Type‑Options`.\n3. **Technology Fingerprinting**: Check for common technologies by analyzing HTML:\n   - WordPress: `wp‑content`\n   - jQuery: presence of `jquery` script\n   - Bootstrap: `bootstrap.css` or `bootstrap.min.css`\n   - Cloudflare: `cf‑ray` header or `cloudflare` in headers\n   - PHP: `X‑Powered‑By: PHP`\n4. **Directory Enumeration (Lightweight)**: Attempt to fetch a list of common paths (`/robots.txt`, `/admin`, `/wp‑admin`, `/.git/HEAD`) and report which return 200 or 403. Do NOT brute‑force extensively; just check a small built‑in list.\n5. **Report**: Save findings as a JSON file with sections: `url`, `status_code`, `headers`, `technologies`, `security_issues`, `discovered_paths`.\n6. **Command‑Line Interface**: Accept target host/IP and optional `‑‑no‑ssl` flag to skip HTTPS. Use `argparse` or simple `sys.argv`.\n\n## Example Usage\n```bash\npython webpulse.py example.com\n```\n\n## Example Output (Console Summary)\n```\n[*] Scanning example.com...\n[+] HTTP (80): 200 OK\n[+] Server: Apache/2.4.41 (Ubuntu)\n[+] Technologies detected: WordPress, jQuery\n[!] Missing security headers: Strict‑Transport‑Security, Content‑Security‑Policy\n[+] Discovered: /robots.txt (200), /admin (403)\n[*] Report saved to example.com_web_report.json\n```\n\n## JSON Report Structure\n```json\n{\n  \"url\": \"http://example.com\",\n  \"status_code\": 200,\n  \"headers\": { ... },\n  \"technologies\": [\"WordPress\", \"jQuery\"],\n  \"security_issues\": [\n    \"Server header exposes Apache/2.4.41\",\n    \"Missing Strict‑Transport‑Security header\",\n    \"Missing Content‑Security‑Policy header\"\n  ],\n  \"discovered_paths\": [\n    {\"path\": \"/robots.txt\", \"status\": 200},\n    {\"path\": \"/admin\", \"status\": 403}\n  ]\n}\n```",
+    "requirements": [
+        "Use `requests` library with proper timeout and redirect handling.",
+        "For SSL, set `verify=False` and suppress warnings only if `‑‑no‑ssl` flag is not present (i.e., default is to verify but you can also accept a flag to ignore SSL errors).",
+        "Parse HTML with `BeautifulSoup` to extract title and detect technologies.",
+        "The directory check must use a small, hardcoded list (max 10 paths) and respect rate limiting by adding 0.5s delay between requests.",
+        "Handle `requests.exceptions.RequestException` to catch network errors and timeouts.",
+        "Output JSON with `json.dump()` and print a clean summary.",
+        "Include a `requirements.txt` listing `requests`, `beautifulsoup4`, and any other dependencies."
+    ],
+    "hints": [
+        "Start by defining a `check_url(url)` function that returns a dict with status code, headers, and body text.",
+        "For technologies, check for substring presence in `resp.text.lower()`.",
+        "Security header check: define a list of recommended headers and see if they exist in `resp.headers`.",
+        "Directory enumeration: iterate over a list like `['/robots.txt', '/admin', '/wp-admin', '/.git/HEAD', '/console', '/backup']`.",
+        "Use `urllib3.disable_warnings()` only when `verify=False`.",
+        "Use `json.dump(results, f, indent=2)` for nice formatting."
+    ],
+    "expectedOutput": "A functional script that produces the correct JSON report and console summary for a target domain."
+}

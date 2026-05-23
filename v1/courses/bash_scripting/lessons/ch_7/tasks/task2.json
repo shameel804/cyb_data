@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_7",
+    "title": "Text Sanitizer Pipeline",
+    "description": "Build a pipeline that cleans a text file: convert to lowercase, remove punctuation, and count word frequency.",
+    "estimatedMinutes": 20,
+    "problemStatement": "Write a script `word_freq.sh` that processes a text file and prints the most common words. It should:\n\n1. Accept the text file as an argument (validate).\n2. Convert all letters to lowercase using `tr`.\n3. Replace all punctuation characters (.,!?;:) with spaces using `tr`.\n4. Squeeze multiple spaces into one using `tr -s`.\n5. Convert spaces to newlines so each word is on its own line (`tr ' ' '\\n'`).\n6. Sort, count with `uniq -c`, sort numerically descending.\n7. Display the top 20 words.\n8. Ignore empty lines.\n\nTest with a sample paragraph.",
+    "hints": [
+        "Chain `tr` commands: `tr 'A-Z' 'a-z' | tr -d '[:punct:]' | tr -s ' ' '\\n'`.",
+        "Use `grep -v '^$'` to remove empty lines before the final sort.",
+        "Ensure you handle contractions/apostrophes appropriately (maybe delete them)."
+    ],
+    "expectedOutput": "     15 the\n     10 and\n      8 bash\n      ...",
+    "solutionCode": "#!/bin/bash\n# word_freq.sh – word frequency counter\n\nfile=\"$1\"\nif [ ! -f \"$file\" ]; then\n  echo \"Error: file not found\" >&2\n  exit 1\nfi\n\ncat \"$file\" | tr 'A-Z' 'a-z' | tr -d '[:punct:]' | tr -s ' ' '\\n' | grep -v '^$' | sort | uniq -c | sort -nr | head -n 20"
+}

@@ -1,0 +1,94 @@
+{
+    "id": "sq_cloud_security_2",
+    "title": "Crypto Challenge",
+    "triggerChapterIndex": 5,
+    "metadata": {
+        "type": "prediction"
+    },
+    "questions": [
+        {
+            "id": "sq_cloud_security_2_q1",
+            "type": "code_output",
+            "question": "What does this AWS CLI command return? (Assume the bucket contains a single object named `file.txt`.)",
+            "codeSnippet": "aws s3 ls s3://my-bucket",
+            "correctOutput": "2024-01-01 12:00:00      1234 file.txt",
+            "correctAnswer": "2024-01-01 12:00:00      1234 file.txt",
+            "options": [],
+            "explanation": "The `aws s3 ls` command lists objects in the bucket, showing last modified time, size, and key.",
+            "xpReward": 25,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_cloud_security_2_q2",
+            "type": "code_output",
+            "question": "After enabling `BlockPublicAccess` on an S3 bucket, what happens when an anonymous user tries to read an object?",
+            "codeSnippet": "curl https://my-bucket.s3.amazonaws.com/data.csv",
+            "correctOutput": "403 Forbidden",
+            "correctAnswer": "403 Forbidden",
+            "options": [],
+            "explanation": "Block Public Access denies any anonymous request; the response is a 403 Forbidden error.",
+            "xpReward": 25,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_cloud_security_2_q3",
+            "type": "code_output",
+            "question": "What is the result of this IAM policy evaluation? The user `alice` has this policy attached. She calls `s3:DeleteObject` on `arn:aws:s3:::my-bucket/secret.txt`.",
+            "codeSnippet": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"s3:GetObject\",\n      \"Resource\": \"arn:aws:s3:::my-bucket/*\"\n    }\n  ]\n}",
+            "correctOutput": "Access Denied (implicit deny)",
+            "correctAnswer": "Access Denied (implicit deny)",
+            "options": [],
+            "explanation": "The policy only allows `GetObject`. `DeleteObject` is not allowed, so the request is implicitly denied.",
+            "xpReward": 25,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_cloud_security_2_q4",
+            "type": "code_output",
+            "question": "A Lambda function's execution role only has `dynamodb:GetItem` on table `Users`. The function tries to run `dynamodb:PutItem`. What error will the function receive?",
+            "codeSnippet": "import boto3\ndynamodb = boto3.client('dynamodb')\ndynamodb.put_item(TableName='Users', Item={'id': {'S': '123'}})",
+            "correctOutput": "AccessDeniedException",
+            "correctAnswer": "AccessDeniedException",
+            "options": [],
+            "explanation": "The IAM role lacks `dynamodb:PutItem` permission, so DynamoDB returns an Access Denied error.",
+            "xpReward": 25,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_cloud_security_2_q5",
+            "type": "code_output",
+            "question": "Given this KMS key policy, can the IAM user `bob` use the key to encrypt data? (The key policy only grants `kms:Decrypt` to bob.)",
+            "codeSnippet": "{\n  \"Version\": \"2012-10-17\",\n  \"Id\": \"key-policy\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Principal\": {\"AWS\": \"arn:aws:iam::123456789012:user/bob\"},\n      \"Action\": \"kms:Decrypt\",\n      \"Resource\": \"*\"\n    }\n  ]\n}",
+            "correctOutput": "No (kms:Encrypt is not granted)",
+            "correctAnswer": "No (kms:Encrypt is not granted)",
+            "options": [],
+            "explanation": "The key policy only allows decryption; bob cannot call `kms:Encrypt`. Separate permissions are needed.",
+            "xpReward": 25,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_cloud_security_2_q6",
+            "type": "code_output",
+            "question": "A VPC Flow Log record shows `REJECT` for outbound traffic from an EC2 instance to an S3 public endpoint. What is the most likely reason?",
+            "codeSnippet": "2 123456789012 eni-0a1b2c3d 10.0.1.5 52.95.128.79 443 49156 6 1 40 1620254841 1620254900 REJECT OK",
+            "correctOutput": "The subnet has no route to the internet (missing NAT Gateway/Internet Gateway) or a VPC Endpoint is required.",
+            "correctAnswer": "The subnet has no route to the internet (missing NAT Gateway/Internet Gateway) or a VPC Endpoint is required.",
+            "options": [],
+            "explanation": "To reach S3 without an Internet Gateway, a VPC Endpoint must be configured. Alternatively, a NAT Gateway is needed if using a public route. The REJECT indicates no route.",
+            "xpReward": 25,
+            "difficulty": 3
+        },
+        {
+            "id": "sq_cloud_security_2_q7",
+            "type": "code_output",
+            "question": "You deploy this Terraform `aws_cloudtrail` resource. What important setting is missing that could allow log tampering?",
+            "codeSnippet": "resource \"aws_cloudtrail\" \"main\" {\n  name           = \"main-trail\"\n  s3_bucket_name = aws_s3_bucket.trail.id\n  is_multi_region_trail = true\n}",
+            "correctOutput": "enable_log_file_validation = true is missing.",
+            "correctAnswer": "enable_log_file_validation = true is missing.",
+            "options": [],
+            "explanation": "Without `enable_log_file_validation`, CloudTrail won't create digest files, making it harder to prove that logs haven't been altered.",
+            "xpReward": 25,
+            "difficulty": 2
+        }
+    ]
+}

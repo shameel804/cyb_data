@@ -1,0 +1,117 @@
+{
+    "id": "l4",
+    "chapterId": "ch_13",
+    "title": "Debugging: Tracing & Verbose Output 🐛",
+    "description": "Shine a light into your script with `set -x`, `-v`, and custom PS4 to track every step.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Debugging",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "When Scripts Go Wrong 🐞",
+            "content": "## Time to Debug\n\nBash provides built‑in tracing tools that print each command before executing it. This is invaluable for understanding complex scripts.\n\n- `set -x` – **xtrace**: print each command after expansion, preceded by `PS4`.\n- `set -v` – **verbose**: print each command as written, before expansion.\n\nThese can be turned on/off for specific sections."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Enable Tracing",
+            "content": "Activate with `set -x` and run a simple loop:",
+            "codeSnippet": "set -x\nfor i in 1 2 3; do\n  echo $i\ndone\nset +x",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What does `set +x` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Enables tracing",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Disables tracing",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Prints current settings",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Exits the script",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Using `+` instead of `-` turns the option off.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Customising the Trace with PS4 🎨",
+            "content": "## Add Line Numbers and Timestamps\n\n`PS4` is the prompt printed before each traced line. Default is `+`. Enhance it:\n\n```bash\nexport PS4='+ $BASH_SOURCE:$LINENO: '\nset -x\n```\nThis shows the file name and line number, making it easy to locate the source of every action."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Enhanced PS4",
+            "content": "Trace with line numbers:",
+            "codeSnippet": "export PS4='+ ${BASH_SOURCE}:${LINENO}: '\nset -x\necho \"Debugging\"\nset +x",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "`set -v` prints commands after variable expansion and substitution.",
+                "correctAnswer": false,
+                "explanation": "`set -v` prints commands verbatim before expansion; `set -x` prints after expansion.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Debugging a Section 🎯",
+            "content": "## Wrap Only the Problematic Code\n\nInstead of tracing the whole script, enable tracing just around the suspicious lines:\n```bash\nset -x\n# code to debug\nset +x\n```\nOr use `bash -x script.sh` to trace from the command line."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "code",
+            "title": "bash -x from the Command Line",
+            "content": "Run any script with tracing:",
+            "codeSnippet": "bash -x myscript.sh",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_9",
+            "type": "text",
+            "title": "Using `trap DEBUG` 🕵️",
+            "content": "## Per‑Command Hooks\n\n`trap 'commands' DEBUG` executes code before every simple command. Advanced users can use it to customise breakpoints, print variable values, or pause.\n\n```bash\ntrap 'echo \"About to run: $BASH_COMMAND\"' DEBUG\n```"
+        },
+        {
+            "id": "s_l4_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Combine `set -x` with redirection: `exec 2>/tmp/debug.log` and then enable xtrace – all trace output goes to the file."
+        }
+    ]
+}

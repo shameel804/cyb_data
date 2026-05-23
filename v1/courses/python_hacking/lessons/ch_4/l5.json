@@ -1,0 +1,197 @@
+{
+    "id": "l5",
+    "chapterId": "ch_4",
+    "title": "Mastering Boolean Logic & Truth Tables 📊",
+    "description": "Deep dive into `and`, `or`, `not`, truthiness, and short‑circuit evaluation for bulletproof conditions.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Control Flow",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Logic is the Glue of Hacking",
+            "content": "# Every Decision Relies on Booleans\n\nTo build reliable tools, you must understand how `and`, `or`, and `not` really work – including truth tables and short‑circuiting. This lesson makes you a logic wizard."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Truth Table for `and`",
+            "content": "# Both Must Be True\n\n| A     | B     | A and B |\n|-------|-------|--------|\n| True  | True  | True   |\n| True  | False | False  |\n| False | True  | False  |\n| False | False | False  |\n\n```python\nif (port == 80) and (protocol == \"HTTP\"):\n    ...\n```"
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Truth Table for `or`",
+            "content": "# At Least One True\n\n| A     | B     | A or B |\n|-------|-------|--------|\n| True  | True  | True   |\n| True  | False | True   |\n| False | True  | True   |\n| False | False | False  |\n\n```python\nif (port == 80) or (port == 443):\n    print(\"Web server\")\n```"
+        },
+        {
+            "id": "s_l5_4",
+            "type": "quiz",
+            "title": "Truth Tables 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is `True or False`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "None",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`or` needs only one True to return True.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "`not` – The Flipper",
+            "content": "# Reverse the Boolean\n\n| A     | not A |\n|-------|-------|\n| True  | False |\n| False | True  |\n\n```python\nis_closed = False\nif not is_closed:\n    print(\"Port is open!\")\n```"
+        },
+        {
+            "id": "s_l5_6",
+            "type": "code",
+            "title": "Complex Condition Example",
+            "content": "Check if a service is web‑related AND running on standard ports:",
+            "codeSnippet": "service = \"Apache\"\nport = 80\nif (service in [\"Apache\", \"nginx\", \"IIS\"]) and (port == 80 or port == 443):\n    print(\"Standard web server\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Combining 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "Evaluate: `(True and False) or (True and True)`",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "False",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Error",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "False or True gives True.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_8",
+            "type": "text",
+            "title": "Short‑Circuit Evaluation ⚡",
+            "content": "# Python Stops As Soon As It Knows\n\n* **`and`**: if the left side is False, the whole expression is False, so it **doesn't evaluate the right side**.\n* **`or`**: if the left side is True, the whole expression is True, so it skips the right side.\n\nThis can improve performance and avoid errors:\n```python\nif (len(targets) > 0) and (targets[0] == \"127.0.0.1\"):\n    ...\n```\nIf `targets` is empty, `targets[0]` would cause IndexError, but short‑circuiting prevents it from being evaluated."
+        },
+        {
+            "id": "s_l5_9",
+            "type": "code",
+            "title": "Short‑Circuit in Practice",
+            "content": "Safely access first element:",
+            "codeSnippet": "targets = []\nif targets and targets[0] == \"127.0.0.1\":\n    print(\"localhost first\")\nelse:\n    print(\"No localhost\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_10",
+            "type": "quiz",
+            "title": "Short‑Circuit 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_3",
+                "type": "true_false",
+                "question": "In `a or b`, if `a` is True, `b` is still evaluated.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "`or` short‑circuits on True, so `b` is skipped.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_11",
+            "type": "text",
+            "title": "Truthiness – Non‑Bools in Conditions",
+            "content": "# Every Object Has a Truth Value\n\nRecall:\n* **Falsy**: `0`, `0.0`, `\"\"`, `[]`, `{}`, `None`, `False`\n* **Truthy**: everything else\n\nYou can leverage this:\n```python\nusername = input(\"User: \")\nif not username:\n    print(\"No username entered\")\n```\nThis is equivalent to `if username == \"\":` but more Pythonic."
+        },
+        {
+            "id": "s_l5_12",
+            "type": "code",
+            "title": "Truthiness in Scanning",
+            "content": "Check if a scan returned any open ports:",
+            "codeSnippet": "open_ports = [80, 443]\nif open_ports:\n    print(f\"Found {len(open_ports)} open ports\")\nelse:\n    print(\"No open ports\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_13",
+            "type": "quiz",
+            "title": "Truthiness 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_4",
+                "type": "multiple_choice",
+                "question": "Which of these evaluates to False in an `if`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "\" \" (space)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "[]",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "\"0\"",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Empty list is falsy; space and non‑empty string are truthy.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_14",
+            "type": "text",
+            "title": "Parentheses for Clarity",
+            "content": "# When in Doubt, Group\n\n```python\nif (port == 80 or port == 443) and (not blocked):\n    ...\n```\nWithout parentheses, `and` has higher precedence than `or`, which could change meaning. Use parentheses to make intent crystal clear."
+        },
+        {
+            "id": "s_l5_15",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use De Morgan's Laws to Simplify\n\n`not (A and B)` is `(not A) or (not B)`  \n`not (A or B)` is `(not A) and (not B)`\n\nThis can make some negative conditions more readable."
+        },
+        {
+            "id": "s_l5_16",
+            "type": "text",
+            "title": "Chapter 4 Complete! 🎓",
+            "content": "# You're the Decision Maker\n\nYou've mastered `if`, `else`, `elif`, nesting, ternary, and Boolean logic. Your scripts can now intelligently react to any situation. Take the Chapter Quiz and tasks to lock it in. Then, get ready for Chapter 5 – Loops: the automation engines!"
+        }
+    ]
+}

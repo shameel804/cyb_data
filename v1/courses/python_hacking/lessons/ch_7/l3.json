@@ -1,0 +1,161 @@
+{
+    "id": "l3",
+    "chapterId": "ch_7",
+    "title": "Reading Files: Feeding Data into Scripts 📖",
+    "description": "Open, read, and safely handle wordlists, configs, and log files with the `with` statement.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "File I/O",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Files: The Gateway to Real Data",
+            "content": "# Hacking Scripts Need External Input\n\n* Brute‑forcing reads a wordlist file.\n* Port scanning imports target lists.\n* Log analysis parses server logs.\n\nPython makes file I/O simple. The core function: `open()`."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "The open() Function",
+            "content": "# `open(filename, mode)`\n\n| Mode | Meaning |\n|------|---------|\n| `'r'` | read (default) – error if file doesn't exist |\n| `'w'` | write – overwrites existing file |\n| `'a'` | append – adds to end |\n| `'x'` | exclusive creation – fails if file exists |\n| `'r+'` | read and write |\n| `'b'` | binary mode (e.g., `'rb'`) |\n\nExample: `f = open('wordlist.txt', 'r')`"
+        },
+        {
+            "id": "s_l3_3",
+            "type": "code",
+            "title": "Basic Reading",
+            "content": "Read the whole file:",
+            "codeSnippet": "f = open('data.txt', 'r')\ncontent = f.read()\nf.close()\nprint(content[:100])",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_4",
+            "type": "quiz",
+            "title": "open() Modes 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which mode raises an error if the file already exists?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "'w'",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "'x'",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "'a'",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "'x' is exclusive creation; it fails if file exists, preventing accidental overwrite.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Always Use `with` – The Context Manager",
+            "content": "# Forget `f.close()` – Use `with`!\n\n```python\nwith open('wordlist.txt', 'r') as f:\n    content = f.read()\n# file automatically closed here\n```\n* Even if an error occurs, the file is closed safely.\n* Works for writing too.\n* More Pythonic and prevents resource leaks."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "code",
+            "title": "Read Line by Line (Memory Efficient)",
+            "content": "For huge files, iterate over the file object:",
+            "codeSnippet": "with open('passwords.txt', 'r') as f:\n    for line in f:\n        password = line.strip()\n        # try each password",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "With Statement 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "Using `with open(...) as f:` guarantees the file is closed even if an exception occurs.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "The context manager ensures proper cleanup.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_8",
+            "type": "text",
+            "title": "readline() & readlines()",
+            "content": "# When You Need Lines as a List\n\n* `f.readline()` reads one line at a time (keeps newline).\n* `f.readlines()` returns a list of all lines (each with newline).\n\n```python\nwith open('targets.txt') as f:\n    first = f.readline()\n    rest = f.readlines()\n```\nBut looping `for line in f` is usually better."
+        },
+        {
+            "id": "s_l3_9",
+            "type": "text",
+            "title": "Stripping Newlines & Whitespace",
+            "content": "# Don't Forget `.strip()`\n\nLines read from a file include the trailing newline `\\n`. Use `line.strip()` to clean it.\n\n```python\nwith open('targets.txt') as f:\n    targets = [line.strip() for line in f if line.strip()]\n```\nThe `if line.strip()` filters out empty lines."
+        },
+        {
+            "id": "s_l3_10",
+            "type": "code",
+            "title": "Reading with List Comprehension",
+            "content": "Get clean, non‑empty IPs:",
+            "codeSnippet": "with open('hosts.txt', 'r') as f:\n    ips = [line.strip() for line in f if line.strip()]\nprint(ips)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_11",
+            "type": "quiz",
+            "title": "Line Cleaning 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "multiple_choice",
+                "question": "Why do we often call `.strip()` on lines from a file?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To convert to uppercase",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To remove the trailing newline and surrounding whitespace",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To split the line into words",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "strip() removes `\\n` and spaces, giving clean data.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_12",
+            "type": "text",
+            "title": "File Not Found? Handle Errors",
+            "content": "# Use try/except\n\n```python\ntry:\n    with open('wordlist.txt') as f:\n        pass\nexcept FileNotFoundError:\n    print(\"Wordlist not found!\")\n```\nWe'll cover exceptions in Chapter 8, but this is basic safety."
+        },
+        {
+            "id": "s_l3_13",
+            "type": "warning",
+            "title": "Encoding Issues",
+            "content": "## Specify Encoding for Non‑ASCII Files\n\n```python\nwith open('data.txt', encoding='utf-8') as f:\n```\nDefault may vary by OS. If you see `UnicodeDecodeError`, add the correct encoding."
+        },
+        {
+            "id": "s_l3_14",
+            "type": "text",
+            "title": "Next: Writing Files",
+            "content": "# You've ingested data. Now let's output results – write to files for reports and logs."
+        }
+    ]
+}

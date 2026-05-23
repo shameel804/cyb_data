@@ -1,0 +1,111 @@
+{
+    "id": "l4",
+    "chapterId": "ch_4",
+    "title": "Comparing Strings & Numbers 🔢",
+    "description": "Use the right operators for strings and numbers – and avoid common pitfalls.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Operators",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "String Operators 🆚",
+            "content": "## Compare Text, Not Digits\n\nInside `[ ]` and `[[ ]]`:\n- `=` or `==` : equal (both work, `=` is POSIX, `==` Bash).\n- `!=` : not equal.\n- `-z string` : true if string is empty.\n- `-n string` : true if string is not empty (but be careful with quotes).\n\nAlways quote the variable in `[ ]`; in `[[ ]]` it's safe unquoted on the left side."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "String Equality",
+            "content": "Check for exact match:",
+            "codeSnippet": "answer=\"yes\"\nif [ \"$answer\" = \"yes\" ]; then\n  echo \"Proceeding...\"\nfi",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which operator tests if a string is empty?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "-e",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "-z",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "-n",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "-s",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-z` returns true if the string length is zero.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Numeric Operators 🔢",
+            "content": "## Use Math‑Specific Flags\n\nFor numbers, use the arithmetic comparison operators:\n- `-eq` (equal)\n- `-ne` (not equal)\n- `-lt` (less than)\n- `-le` (less or equal)\n- `-gt` (greater than)\n- `-ge` (greater or equal)\n\nIf you use `=` or `!=` on numbers, Bash does string comparison, which can give wrong results (e.g., \"2\" > \"10\" alphabetically)."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Compare Ages",
+            "content": "Correct numeric check:",
+            "codeSnippet": "age=25\nif [ $age -ge 18 ]; then\n  echo \"Adult\"\nfi",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "The operator `-gt` works for both string and numeric comparisons.",
+                "correctAnswer": false,
+                "explanation": "`-gt` is strictly for numeric comparisons; strings use `>` or lexicographic operators, which are different.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Arithmetic Condition `(( ))` 🧮",
+            "content": "## A Cleaner Way for Numbers\n\nBash's `(( ))` is specifically for arithmetic evaluation. It can be used as a condition:\n\n```bash\nif (( age > 17 )); then\n   echo \"Adult\"\nfi\n```\nNo `$` needed on variables, and you use familiar math symbols (`>`, `<`, `>=`, `<=`, `==`, `!=`)."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "code",
+            "title": "(( )) Example",
+            "content": "Check if a number is even:",
+            "codeSnippet": "read -p \"Number: \" num\nif (( num % 2 == 0 )); then\n  echo \"Even\"\nelse\n  echo \"Odd\"\nfi",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "For arithmetic conditions, prefer `(( ))` over `[ ]`. It's cleaner and less error‑prone."
+        }
+    ]
+}

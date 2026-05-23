@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_11",
+    "title": "Design a Multi‑Account Security Architecture",
+    "description": "Sketch an AWS multi‑account structure with centralized logging and guardrails.",
+    "estimatedMinutes": 20,
+    "problemStatement": "## Scenario\nYou are the security architect for a growing startup. You need to propose an AWS multi‑account structure that supports three environments: development, staging, and production. You must also centralize security monitoring and ensure no account can disable CloudTrail.\n\n### Your Task\nDescribe your architecture, including:\n- The organizational unit (OU) structure (at least: Security, Workloads).\n- Which accounts you create and their purposes.\n- How you will centralize logs (CloudTrail, GuardDuty) and enforce policies (SCPs).\n- An example SCP that prevents member accounts from disabling CloudTrail.\n\nYou may write in plain text or bullet points. No diagram drawing tool required.",
+    "hints": [
+        "Use a dedicated Security account for logging and monitoring.",
+        "Place dev, staging, prod accounts in a ‘Workloads’ OU and apply SCPs at the OU level.",
+        "The SCP should deny `cloudtrail:StopLogging` and `cloudtrail:DeleteTrail`."
+    ],
+    "expectedOutput": "A clear description of the architecture, OU structure, accounts, centralized logging setup, and an SCP JSON snippet.",
+    "solutionCode": "Architecture:\n- **Root OU** – Contains the Management account (used only for billing and organization administration).\n- **Security OU** – Contains the ‘Log Archive’ account (centralized CloudTrail and S3 immutable bucket) and ‘Security Tooling’ account (GuardDuty, Security Hub).\n- **Workloads OU** – Contains three accounts: Dev, Staging, Prod.\n\n**Centralized Logging**:\n- An organization‑wide CloudTrail is created from the management account, sending logs to a central S3 bucket in the Log Archive account (with MFA Delete and Object Lock).\n- GuardDuty findings are sent to the Security Tooling account via GuardDuty administrator.\n\n**Policy Enforcement (SCP)**:\n- Attach an SCP to the Workloads OU that denies `cloudtrail:StopLogging`, `cloudtrail:DeleteTrail`, `cloudtrail:UpdateTrail` except for a specific role in the Security account.\n\nExample SCP:\n```json\n{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [{\n    \"Effect\": \"Deny\",\n    \"Action\": [\n      \"cloudtrail:StopLogging\",\n      \"cloudtrail:DeleteTrail\",\n      \"cloudtrail:UpdateTrail\"\n    ],\n    \"Resource\": \"*\",\n    \"Condition\": {\n      \"StringNotLike\": {\n        \"aws:PrincipalArn\": \"arn:aws:iam::*:role/SecurityAuditRole\"\n      }\n    }\n  }]\n}\n```"
+}

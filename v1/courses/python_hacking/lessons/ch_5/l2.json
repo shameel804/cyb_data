@@ -1,0 +1,149 @@
+{
+    "id": "l2",
+    "chapterId": "ch_5",
+    "title": "The `while` Loop: Repeat Until Condition Fails ⏳",
+    "description": "Master the while loop for indefinite repetition – perfect for retries and listening for data.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Loops",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "While Loop Syntax",
+            "content": "# `while condition:`\n\n```python\ncounter = 0\nwhile counter < 3:\n    print(f\"Attempt {counter}\")\n    counter += 1\n```\n1. Check condition (`counter < 3`)\n2. If True, execute the block\n3. After block, go back to step 1\n4. When condition becomes False, exit loop\n\nOutput:\n```\nAttempt 0\nAttempt 1\nAttempt 2\n```"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Run It",
+            "content": "Try the example:",
+            "codeSnippet": "counter = 0\nwhile counter < 3:\n    print(f\"Attempt {counter}\")\n    counter += 1\nprint(\"Loop finished\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "While Execution 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What is the output of:\n```python\ni = 1\nwhile i < 4:\n    print(i)\n    i += 1\n```",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "1 2 3 4",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "1 2 3",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "2 3 4",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "When i becomes 4, condition i<4 is False, loop stops; so 1,2,3 are printed.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "The Loop Variable Must Change",
+            "content": "# Avoid Infinite Loops\n\nIf you forget `counter += 1`, the condition never becomes False. That's an infinite loop.\n\n```python\n# BAD\ncounter = 0\nwhile counter < 3:\n    print(\"Stuck!\")\n```\nAlways update the condition variable, or use `break` when appropriate."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Intentional Infinite Loop + Break",
+            "content": "Sometimes you want to loop until a specific event:",
+            "codeSnippet": "while True:\n    response = input(\"Enter 'quit' to exit: \")\n    if response == 'quit':\n        break\n    print(f\"You said: {response}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Break in While 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "A `while True:` loop with no `break` statement will run forever.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "Without a way to exit, the condition is always True, causing an infinite loop.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Hacking with While: Brute‑Force Attempts",
+            "content": "# Simulate Password Guessing\n\nYou have a list of passwords and want to try each until you find the correct one. While loop can do it with an index.\n\n```python\npasswords = [\"123456\", \"password\", \"admin\", \"letmein\"]\ncorrect = \"admin\"\nindex = 0\nfound = False\n\nwhile index < len(passwords) and not found:\n    attempt = passwords[index]\n    print(f\"Trying {attempt}...\")\n    if attempt == correct:\n        print(\"Access granted!\")\n        found = True\n    index += 1\n```\nThis stops as soon as the password is found or list ends."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "Brute‑Force Example",
+            "content": "Run this script (you can modify the correct password):",
+            "codeSnippet": "passwords = [\"123\", \"abc\", \"secret\", \"hack\"]\ncorrect = \"secret\"\ni = 0\nwhile i < len(passwords):\n    guess = passwords[i]\n    print(f\"Guess: {guess}\")\n    if guess == correct:\n        print(\"Cracked!\")\n        break\n    i += 1",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_9",
+            "type": "quiz",
+            "title": "Brute‑Force Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "multiple_choice",
+                "question": "In the brute‑force script, why do we increment `i` only if password is not found?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To avoid an infinite loop",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To keep trying the same password",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "We increment `i` every iteration regardless; the script above increments it after the if-block, so it always runs",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "The `i += 1` is outside the if-check, so it increments regardless. If we placed it inside else, it would only increment when not found, potentially causing infinite loop if correct not at last index.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_10",
+            "type": "text",
+            "title": "While Loop with Sentinel Value",
+            "content": "# Exit When a Special Value Appears\n\nOften in network programming, you loop receiving data until you get an empty byte (connection closed). That's a sentinel-controlled loop.\n\n```python\ndata = receive_data()\nwhile data:\n    process(data)\n    data = receive_data()\n```\n`data` being empty (falsy) stops the loop. Very common!"
+        },
+        {
+            "id": "s_l2_11",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use a Boolean Flag\n\nFor complex exit conditions, set a `running = True` flag, then `while running:`. Inside, set `running = False` to stop. It makes intent clear."
+        },
+        {
+            "id": "s_l2_12",
+            "type": "text",
+            "title": "Next Up: The `for` Loop",
+            "content": "# More Elegant Iteration\n\nWhile loops are powerful, but when you have a collection to walk through, `for` is cleaner. Let's master it."
+        }
+    ]
+}

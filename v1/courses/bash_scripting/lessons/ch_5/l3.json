@@ -1,0 +1,112 @@
+{
+    "id": "l3",
+    "chapterId": "ch_5",
+    "title": "The `while` Loop: Conditional Repetition ⏳",
+    "description": "Repeat code as long as a condition holds true. Read files line‑by‑line like a pro.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "While Loops",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "`while` – Loop While True ✅",
+            "content": "## Keep Going Until Condition Fails\n\nThe `while` loop executes its block as long as the test command returns success (exit code 0).\n\nSyntax:\n```bash\nwhile [ condition ]; do\n   commands\ndone\n```\nEach iteration re‑checks the condition."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Count to 5",
+            "content": "A simple counter:",
+            "codeSnippet": "count=1\nwhile [ $count -le 5 ]; do\n  echo \"Count: $count\"\n  count=$((count + 1))\ndone",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What must you do inside a `while` loop to avoid an infinite loop?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Use a C‑style for",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Change the loop variable or condition so it eventually becomes false",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Add a `done` statement",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Use double brackets",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "If the condition never changes, the loop runs forever. You must update variables involved in the condition.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Reading Files Line‑by‑Line 📖",
+            "content": "## The Classic `while read` Pattern\n\nTo process a file line by line without word splitting issues, use:\n```bash\nwhile IFS= read -r line; do\n   echo \"$line\"\ndone < \"$filename\"\n```\n- `IFS=` – prevents stripping of leading/trailing whitespace.\n- `-r` – prevents backslash interpretation.\n- `< \"$filename\"` redirects the file into the loop."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Read /etc/hosts",
+            "content": "Print lines from a system file:",
+            "codeSnippet": "while IFS= read -r line; do\n  echo \"Line: $line\"\ndone < /etc/hosts",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "fill_blank",
+                "question": "Which option to `read` prevents backslash escapes from being interpreted?",
+                "options": [],
+                "correctAnswer": "-r",
+                "explanation": "`-r` stands for raw input, leaving backslashes alone.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Infinite Loops & User Input 🔄",
+            "content": "## `while true` – The Never‑ending Loop\n\nSometimes you want a loop that runs until the user quits:\n```bash\nwhile true; do\n   read -p \"Enter command (quit to exit): \" cmd\n   if [ \"$cmd\" = \"quit\" ]; then\n      break\n   fi\n   echo \"You typed: $cmd\"\ndone\n```"
+        },
+        {
+            "id": "s_l3_8",
+            "type": "code",
+            "title": "Simple REPL",
+            "content": "A tiny command interpreter:",
+            "codeSnippet": "while true; do\n  read -p \"> \" input\n  case $input in\n    quit) break ;;\n    *) echo \"Echo: $input\" ;;\n  esac\ndone",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "You can read multiple variables from a line: `while read col1 col2 col3; do ... done < data.csv`. The last variable gets the remainder."
+        }
+    ]
+}

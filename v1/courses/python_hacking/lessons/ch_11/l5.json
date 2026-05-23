@@ -1,0 +1,116 @@
+{
+    "id": "l5",
+    "chapterId": "ch_11",
+    "title": "Handling Cookies, Sessions & Forms 🍪",
+    "description": "Maintain login sessions, submit forms, and bypass simple CSRF protections – the key to web automation.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Automation",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Why Sessions?",
+            "content": "# Persistence Across Requests\n\nWebsites use cookies to maintain state (logged‑in user, shopping cart). If you send separate `requests.get()`, each is independent. You need a **Session** to automatically handle cookies.\n\n```python\ns = requests.Session()\ns.get('https://example.com/login')      # gets initial cookie\ns.post('https://example.com/login', data=credentials)  # sends cookie\n```"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Session Example",
+            "content": "Login and then access a protected page:",
+            "codeSnippet": "import requests\ns = requests.Session()\n# Simulated login (use httpbin for testing)\nlogin_resp = s.post('https://httpbin.org/post', data={'user':'admin','pass':'1234'})\n# Now access a page that would be behind auth\nprofile = s.get('https://httpbin.org/get')\nprint(profile.json())",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Sessions 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "true_false",
+                "question": "A `requests.Session` object automatically stores and sends cookies set by the server.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "Sessions persist cookies across requests, just like a browser.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Submitting a Form with CSRF Token",
+            "content": "# Step‑by‑Step Automation\n\n1. GET the login page.\n2. Parse the CSRF token from the form.\n3. POST the login credentials + CSRF token.\n4. Check if login succeeded (redirect, welcome message).\n\n```python\ns = requests.Session()\n# Step 1: get page\nlogin_page = s.get('https://example.com/login')\nsoup = BeautifulSoup(login_page.text, 'html.parser')\n# Step 2: extract token\ntoken_input = soup.find('input', {'name': 'csrf_token'})\ntoken = token_input['value']\n# Step 3: submit\npayload = {'username': 'admin', 'password': 'secret', 'csrf_token': token}\nresp = s.post('https://example.com/login', data=payload)\nif 'Welcome' in resp.text:\n    print('Login successful')\n```"
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Simulated CSRF Bypass (psuedo)",
+            "content": "Since we can't hit a real site, understand the pattern:",
+            "codeSnippet": "# This is the conceptual flow\n# s = requests.Session()\n# get_page = s.get(url_login)\n# soup = BeautifulSoup(get_page.text, 'html.parser')\n# token = soup.find('input', {'name': 'csrf'})['value']\n# login_data = {'user': 'admin', 'pass': 'pass', 'csrf': token}\n# response = s.post(url_login, data=login_data)\n# if 'dashboard' in response.text:\n#     print('Logged in!')",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "CSRF Token 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "Why do you need to extract a CSRF token before submitting a login form?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To increase security of the form",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Because the server will reject the POST without a valid token",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It's optional",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "CSRF tokens are anti‑CSRF measures; the server verifies it's present and correct.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Handling Cookies Manually",
+            "content": "# You Can Also Send Cookies Explicitly\n\n```python\ncookies = {'sessionid': 'abcd1234'}\nresp = requests.get(url, cookies=cookies)\n```\nOr read `Set-Cookie` from responses and pass them along. But Sessions do this automatically."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "text",
+            "title": "Browser DevTools are Your Friend",
+            "content": "# Reverse Engineer the Requests\n\nOpen Chrome DevTools (Network tab), perform the action manually, and look at the exact request: URL, method, headers, form data. Then replicate it in Python.\n\nThis is how you automate anything – from liking a post to scraping protected data."
+        },
+        {
+            "id": "s_l5_9",
+            "type": "warning",
+            "title": "Terms of Service & Ethics",
+            "content": "## Always check robots.txt and ToS before scraping or automating\n\nUnauthorised access or scraping can be illegal. Use only on sites you own or have explicit permission. Bug bounty programs often allow it within scope."
+        },
+        {
+            "id": "s_l5_10",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use `requests.Session` with `mount` for retries\n\n```python\nfrom requests.adapters import HTTPAdapter\ns = requests.Session()\ns.mount('https://', HTTPAdapter(max_retries=3))\n```\nMakes your tool resilient to intermittent failures."
+        },
+        {
+            "id": "s_l5_11",
+            "type": "text",
+            "title": "Chapter 11 Mastered! 🏆",
+            "content": "# You Can Now Automate the Web\n\nFrom basic HTTP to REST APIs and complex form submissions with CSRF tokens – you have the tools to build powerful web hacking scripts. Take the Quiz and tasks. Then gear up for the final Chapter 12 – Building Your First Hacking Tool!"
+        }
+    ]
+}

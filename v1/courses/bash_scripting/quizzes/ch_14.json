@@ -1,0 +1,253 @@
+{
+    "id": "quiz_ch_14",
+    "chapterId": "ch_14",
+    "title": "Chapter 14 Quiz",
+    "description": "Test your knowledge of Bash security and best practices!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Why is it dangerous to leave variable expansions unquoted?",
+            "options": [
+                "It makes the script slower",
+                "It can cause word splitting and glob expansion",
+                "Variables are not expanded without quotes",
+                "Quotes are only for strings"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Unquoted expansions undergo word splitting and filename expansion, leading to unexpected behaviour."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What does `chmod 600 secret.key` do?",
+            "options": [
+                "Makes the file executable for everyone",
+                "Gives the owner read and write, removes all group/other permissions",
+                "Makes the file readable by everyone",
+                "Sets the setuid bit"
+            ],
+            "correctAnswer": 1,
+            "explanation": "600 = owner rw, group ---, others ---."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which umask value ensures new files are created with 600 permissions?",
+            "options": [
+                "022",
+                "077",
+                "066",
+                "000"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`umask 077` subtracts all group/other bits, resulting in 600 for files."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Why should you avoid hardcoding passwords in scripts?",
+            "options": [
+                "Because they make the script run slower",
+                "Because the script may be shared or committed to version control, exposing the secret",
+                "Because Bash doesn't support strings",
+                "Passwords cannot be used in scripts"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Hardcoded secrets can leak through code sharing, backups, or version history."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What is the recommended way to read a password from a user?",
+            "options": [
+                "read password",
+                "read -p password",
+                "read -sp 'Password: ' password",
+                "input password"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`-s` hides typing, `-p` shows a prompt."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "After using a secret variable, what should you do to minimise exposure?",
+            "options": [
+                "echo it to the log",
+                "unset it",
+                "Export it for other processes",
+                "Store it in a global variable"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`unset` removes the variable from the environment, reducing the attack window."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What is the danger of `eval $user_input`?",
+            "options": [
+                "It's slow",
+                "It can execute arbitrary commands if input is malicious",
+                "It only works on strings",
+                "It requires root"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`eval` parses its arguments as shell code, making it extremely dangerous with untrusted input."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which of the following replaces `eval` safely for building command lines?",
+            "options": [
+                "Using double quotes",
+                "Using an array: cmd=(ls -l \"$@\"); \"${cmd[@]}\"",
+                "Using backticks",
+                "It cannot be replaced"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Arrays preserve arguments without rescanning for special characters."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Why is `mktemp` preferred over manually creating `/tmp/myfile.$$`?",
+            "options": [
+                "It creates more readable names",
+                "It avoids race conditions and predictable filenames",
+                "`mktemp` is faster",
+                "Manual names are more secure"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Predictable temp files are vulnerable to symlink attacks; `mktemp` generates a unique, safe name."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What does `trap 'rm -f \"$tmp\"' EXIT` do?",
+            "options": [
+                "Deletes the temp file only if the script succeeds",
+                "Ensures the temp file is removed when the script exits, regardless of reason",
+                "Creates a signal handler for SIGKILL",
+                "Prints a message on exit"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The EXIT trap runs on normal and error exits, cleaning up the temp file."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "Single quotes allow variable expansion.",
+            "correctAnswer": false,
+            "explanation": "Single quotes suppress all expansion; variables appear literally."
+        },
+        {
+            "id": "q12",
+            "type": "fill_blank",
+            "question": "To make a script readable and executable only by the owner, use `chmod ___ script.sh`.",
+            "options": [],
+            "correctAnswer": "700",
+            "explanation": "7 for owner (rwx), 0 for group and others (no permissions)."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which naming convention is recommended for Bash variables?",
+            "options": [
+                "camelCase",
+                "lower_case_with_underscores",
+                "UPPERCASE for everything",
+                "No conventions"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Lowercase with underscores is standard for non‑environment variables."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What should a script header comment contain?",
+            "options": [
+                "Only the script name",
+                "A brief description, usage, and author",
+                "The entire script code",
+                "The current date only"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A good header explains purpose, usage, and authorship."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What is the purpose of `shellcheck`?",
+            "options": [
+                "To compile Bash scripts",
+                "To statically analyse scripts for common mistakes and style issues",
+                "To run scripts in debug mode",
+                "To encrypt scripts"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`shellcheck` is a linter that finds bugs, warnings, and style problems."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "When should you use `local` for variables?",
+            "options": [
+                "Only in main script body",
+                "Inside functions to limit their scope",
+                "Never; Bash doesn't support it",
+                "For environment variables"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`local` restricts a variable to the function, preventing accidental global changes."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "How can you check if a config file has secure permissions (600) before sourcing?",
+            "options": [
+                "Use `ls -l` and visually inspect",
+                "Use `stat -c %a` and compare with '600'",
+                "Assume it's secure",
+                "Use `chmod 600` every time"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`stat -c %a` (or `-f` on macOS) retrieves the octal permission mode."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "It is acceptable to use `eval` if you trust the source of the input.",
+            "correctAnswer": false,
+            "explanation": "Even trusted input can contain unexpected characters; eval is risky. Better patterns exist."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "Why are command‑line arguments visible in `ps` output?",
+            "options": [
+                "Because they are stored in the environment",
+                "Because `ps` reads from a special file",
+                "Because the kernel records them in the process list",
+                "They are not visible"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Arguments are part of the process's command line, which `ps` and `/proc` expose."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which of the following is a good practice for writing maintainable scripts?",
+            "options": [
+                "Use short, cryptic variable names",
+                "Write all code in one big function",
+                "Modularise with functions, add comments, and lint regularly",
+                "Avoid comments because they slow execution"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Modular code with clear comments and linting improves readability and reduces bugs."
+        }
+    ]
+}

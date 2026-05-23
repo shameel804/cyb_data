@@ -1,0 +1,252 @@
+{
+    "id": "quiz_ch_12",
+    "chapterId": "ch_12",
+    "title": "Chapter 12 Quiz",
+    "description": "Test your knowledge of building an integrated reconnaissance tool, threading, web scraping, and report generation.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary advantage of using threading in a port scanner?",
+            "options": [
+                "It reduces CPU usage",
+                "It allows scanning multiple ports simultaneously, greatly reducing total scan time",
+                "It makes the code simpler",
+                "It is required by law"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Threading enables concurrent socket connections, speeding up the scan."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which module provides a high‑level thread pool interface?",
+            "options": [
+                "threading",
+                "concurrent.futures",
+                "multiprocessing",
+                "asyncio"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`concurrent.futures` provides `ThreadPoolExecutor` and `ProcessPoolExecutor`."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "You must explicitly call `socket.close()` when using `socket.connect_ex()` to avoid resource leaks.",
+            "correctAnswer": true,
+            "explanation": "Yes, sockets are not automatically closed; failing to close can exhaust file descriptors."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "In banner grabbing, why might we send a probe (like an HTTP HEAD request)?",
+            "options": [
+                "To crash the service",
+                "Because some services only respond after receiving a protocol‑specific request",
+                "To bypass firewalls",
+                "To speed up the connection"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Services like HTTP wait for a client request before sending data."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "How can you retrieve the service name for a standard port number?",
+            "options": [
+                "socket.getservbyport(port)",
+                "socket.getservbyport(port, 'tcp')",
+                "Both A and B (providing protocol is recommended)",
+                "You must hardcode it"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`getservbyport` returns the service name; specifying protocol helps when multiple protocols map to the same port."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What does `resp.raise_for_status()` do in the `requests` library?",
+            "options": [
+                "Prints the status code",
+                "Raises an exception if the HTTP status code indicates a client or server error",
+                "Retries the request",
+                "Redirects the request"
+            ],
+            "correctAnswer": 1,
+            "explanation": "It raises `HTTPError` for 4xx and 5xx responses."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Why might you set `verify=False` when making an HTTPS request to an internal server?",
+            "options": [
+                "To enable encryption",
+                "To accept self‑signed certificates without failing",
+                "To make the request faster",
+                "To bypass authentication"
+            ],
+            "correctAnswer": 1,
+            "explanation": "It disables SSL certificate validation, useful for internal testing with self‑signed certs."
+        },
+        {
+            "id": "q8",
+            "type": "fill_blank",
+            "question": "The module used to write CSV files in Python is ________.",
+            "options": [
+                "csv",
+                "json",
+                "pandas",
+                "excel"
+            ],
+            "correctAnswer": "csv",
+            "explanation": "The built‑in `csv` module handles reading and writing CSV."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "When writing nested data (like a dict) to a CSV column, what is a common approach?",
+            "options": [
+                "Write it as a separate file",
+                "Convert it to a JSON string and store in a column",
+                "Ignore it",
+                "Use the `split` method"
+            ],
+            "correctAnswer": 1,
+            "explanation": "CSV columns are flat; JSON serialization preserves the structure."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is the purpose of the `if __name__ == '__main__':` guard in `main.py`?",
+            "options": [
+                "To define the main function",
+                "To allow the script to be both imported as a module and run as a standalone program",
+                "To check the operating system",
+                "To print the script's name"
+            ],
+            "correctAnswer": 1,
+            "explanation": "It separates the executable script entry point from its reusable module code."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "Using `ThreadPoolExecutor` guarantees that the port scan results will be in sorted order.",
+            "correctAnswer": false,
+            "explanation": "Threads complete in unpredictable order; you must sort the results after collection."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What does `sys.argv` contain?",
+            "options": [
+                "The Python version",
+                "A list of command‑line arguments, where index 0 is the script name",
+                "Environment variables",
+                "The current working directory"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`sys.argv` is a list of command line arguments."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which HTTP header often reveals the web server software?",
+            "options": [
+                "User-Agent",
+                "Server",
+                "Content-Length",
+                "Accept"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The `Server` response header typically includes server software and version."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What library is used to parse HTML and extract the page title?",
+            "options": [
+                "requests",
+                "BeautifulSoup",
+                "socket",
+                "json"
+            ],
+            "correctAnswer": 1,
+            "explanation": "BeautifulSoup parses HTML/XML."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "In the tool architecture, why is it beneficial to keep scanner, web, and report as separate modules?",
+            "options": [
+                "It increases code size",
+                "It promotes modularity, reusability, and easier testing",
+                "It's mandatory in Python",
+                "It hides the code from the user"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Separation of concerns makes the codebase manageable."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "You should always include `verify=False` in your web recon module, even for production tools.",
+            "correctAnswer": false,
+            "explanation": "Only use it in controlled environments; it disables security checks."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What does `as_completed()` from `concurrent.futures` do?",
+            "options": [
+                "Waits for all futures to complete",
+                "Yields futures as they complete (in order of completion)",
+                "Cancels pending futures",
+                "Returns the result of the first future"
+            ],
+            "correctAnswer": 1,
+            "explanation": "It returns an iterator that yields futures as they finish."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "To sort a list of dicts by the 'port' key, which code is correct?",
+            "options": [
+                "sorted(results, key=lambda x: x.port)",
+                "sorted(results, key=lambda x: x['port'])",
+                "results.sort(port=True)",
+                "sorted(results, port)"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Use a lambda that accesses dict key."
+        },
+        {
+            "id": "q19",
+            "type": "fill_blank",
+            "question": "The function used to resolve a hostname to an IP address is `socket.________`.",
+            "options": [
+                "gethostbyname",
+                "gethostbyaddr",
+                "getaddrinfo",
+                "resolve"
+            ],
+            "correctAnswer": "gethostbyname",
+            "explanation": "`socket.gethostbyname()` returns the IPv4 address of a host."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is the recommended way to test your hacking tool during development?",
+            "options": [
+                "Scan random internet hosts",
+                "Use localhost and deliberately opened services (like a Python HTTP server)",
+                "Scan government websites",
+                "Never test it"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Always test in a safe, authorized environment – your own machine is best."
+        }
+    ]
+}

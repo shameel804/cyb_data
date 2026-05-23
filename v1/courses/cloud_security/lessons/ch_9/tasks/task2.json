@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_9",
+    "title": "Set Up a CloudWatch Alarm for Unauthorized API Calls",
+    "description": "Create a metric filter and alarm that notifies you when AccessDenied errors exceed a threshold.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario\nYou have CloudTrail logs streaming to a CloudWatch Logs log group named `CloudTrail/DefaultLogGroup`. You need to be notified when there are more than 5 'AccessDenied' API calls in a 5‑minute period.\n\n### Your Task\nProvide the AWS CLI commands (or describe the console steps) to:\n1. Create a metric filter that extracts a count of AccessDenied events.\n2. Create a CloudWatch Alarm that triggers when the metric exceeds 5 in 5 minutes.\n3. Configure the alarm to publish a message to an SNS topic `arn:aws:sns:us-east-1:123456789012:security-alerts`.\n\nExplain why monitoring AccessDenied calls is important (hint: early warning of misconfigured permissions or an attacker probing).",
+    "hints": [
+        "Use the filter pattern `{ ($.errorCode = \"AccessDenied\") }`.",
+        "For the alarm, set the threshold to >5, period 300 seconds."
+    ],
+    "expectedOutput": "CLI commands or detailed console steps, plus a short rationale.",
+    "solutionCode": "1. Create metric filter:\n```bash\naws logs put-metric-filter \\\n  --log-group-name \"CloudTrail/DefaultLogGroup\" \\\n  --filter-name \"AccessDeniedFilter\" \\\n  --filter-pattern \"{ ($.errorCode = \\\"AccessDenied\\\") }\" \\\n  --metric-transformations \\\n    metricName=AccessDeniedCount,metricNamespace=CloudTrailMetrics,metricValue=1\n```\n2. Create alarm:\n```bash\naws cloudwatch put-metric-alarm \\\n  --alarm-name \"HighAccessDenied\" \\\n  --metric-name \"AccessDeniedCount\" \\\n  --namespace \"CloudTrailMetrics\" \\\n  --statistic Sum \\\n  --period 300 \\\n  --evaluation-periods 1 \\\n  --threshold 5 \\\n  --comparison-operator GreaterThanThreshold \\\n  --alarm-actions arn:aws:sns:us-east-1:123456789012:security-alerts\n```\n\n**Why it matters**: A sudden spike in AccessDenied could indicate an attacker attempting to probe permissions or a misconfiguration breaking an application. Early detection allows you to investigate before it escalates."
+}

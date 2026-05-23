@@ -1,0 +1,97 @@
+{
+    "id": "l4",
+    "chapterId": "ch_14",
+    "title": "Avoiding Common Pitfalls & Code Smells 🕳️",
+    "description": "Steer clear of eval, bare variables, backticks, and insecure temporary files.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Anti‑Patterns",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The `eval` Monster 👹",
+            "content": "## Avoid Unless Absolutely Necessary\n\n`eval` forces the shell to parse its arguments as a command, which can execute arbitrary code if the input is uncontrolled.\n\n```bash\ncmd=\"rm -rf /\"\neval $cmd   # disaster if $cmd comes from user\n```\nInstead, use arrays or direct command invocations. If you must use eval, sanitise input meticulously."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Safer Alternative: Arrays",
+            "content": "Instead of `eval \"$command $args\"`, use an array:",
+            "codeSnippet": "cmd=(ls -l \"$@\")\n\"${cmd[@]}\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "true_false",
+                "question": "Using `eval` on unsanitised user input is safe because Bash handles quoting automatically.",
+                "correctAnswer": false,
+                "explanation": "`eval` can execute arbitrary code; it's a major security risk if input isn't strictly controlled.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Unquoted Variable Expansion 💣",
+            "content": "## We've Said It Before...\n\n`for file in $files` loops over word‑split items. `[ $var = \"yes\" ]` fails if `$var` is empty. **Always quote**. There is almost never a good reason to leave expansions unquoted."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Unquoted in Test",
+            "content": "Classic mistake:",
+            "codeSnippet": "if [ $name = \"admin\" ]; then   # BAD if $name empty -> [ = admin ] -> syntax error\n# correct:\nif [ \"$name\" = \"admin\" ]; then",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Insecure Temporary Files 📂",
+            "content": "## Use `mktemp`\n\nNever create temp files with a predictable name like `/tmp/myapp.$$`. This is vulnerable to symlink attacks.\n\nAlways use `mktemp`:\n- `mktemp` creates a unique file with 600 permissions.\n- `mktemp -d` creates a temp directory.\n- Trap EXIT to clean up."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "code",
+            "title": "Safe Temp File",
+            "content": "Create and use:",
+            "codeSnippet": "tmpfile=$(mktemp) || exit 1\ntrap 'rm -f \"$tmpfile\"' EXIT\n# work with $tmpfile",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_8",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "fill_blank",
+                "question": "What command creates a unique temporary file safely?",
+                "options": [],
+                "correctAnswer": "mktemp",
+                "explanation": "`mktemp` generates a unique filename and creates the file with secure permissions.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_9",
+            "type": "text",
+            "title": "Backticks vs `$( )` 🧹",
+            "content": "## Modern Syntax Wins\n\nBackticks (`` ` ``) are deprecated. They make nesting awkward and are easily confused with single quotes. Use `$( )` instead.\n\nAlso, avoid `expr` for arithmetic; use `$(( ))`."
+        },
+        {
+            "id": "s_l4_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Run `shellcheck` on your script; it catches most of these pitfalls automatically."
+        }
+    ]
+}

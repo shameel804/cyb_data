@@ -1,0 +1,110 @@
+{
+    "id": "l3",
+    "chapterId": "ch_9",
+    "title": "CloudWatch & Centralized Logging 📊",
+    "description": "Centralize logs, create metrics, set alarms, and build dashboards for real‑time awareness.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "CloudWatch: The Central Nervous System 🧠",
+            "content": "# Metrics, Logs, Alarms, Dashboards\n\nAmazon CloudWatch is the monitoring backbone for AWS. It does four things:\n- **Metrics** – Numerical data points (CPU utilization, request count).\n- **Logs** – Aggregated log streams from applications, Lambda, CloudTrail.\n- **Alarms** – Trigger when a metric crosses a threshold (e.g., >10 failed logins in 5 minutes).\n- **Dashboards** – Single pane of glass to view all your metrics.\n\n*Think of CloudWatch as a hospital monitor: beeping when something is wrong and charting vitals over time.*"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "CloudWatch Components 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which CloudWatch feature would you use to notify an administrator when an EC2 instance’s CPU exceeds 90% for 10 minutes?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Dashboard",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Logs",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Alarm",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Metrics",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Alarms watch a metric and trigger an action, such as sending an SNS notification.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Centralizing Logs from Everywhere 📥",
+            "content": "## One Destination for All Logs\n\nPush logs to CloudWatch Logs from:\n- **EC2** – Install and configure the CloudWatch agent.\n- **Lambda** – Automatically streams logs.\n- **CloudTrail** – Optionally send to CloudWatch Logs.\n- **VPC Flow Logs** – IP traffic metadata.\n- **Route 53** – DNS query logs.\n\nThen, create **Metric Filters** to turn log patterns into metrics. Example: a filter for “AccessDenied” can become a metric of unauthorized access attempts."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "Creating a Metric Filter (CLI)",
+            "content": "Count every 'AccessDenied' in a CloudTrail log group:",
+            "codeSnippet": "aws logs put-metric-filter \\\n  --log-group-name \"CloudTrail/DefaultLogGroup\" \\\n  --filter-name \"AccessDeniedCount\" \\\n  --filter-pattern \"{ ($.errorCode = \"*UnauthorizedOperation\") || ($.errorCode = \"AccessDenied*\") }\" \\\n  --metric-transformations metricName=AccessDenied,metricNamespace=Security,metricValue=1",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Building an Alarm from a Metric 🚨",
+            "content": "Once you have a metric (e.g., AccessDenied > 5 in 5 minutes), create an Alarm that:\n- Sends an SNS notification (email, text, PagerDuty).\n- Triggers an auto‑remediation Lambda (e.g., revoke the IAM role, isolate the instance).\n\n*Alarms close the loop from detection to action. Don't just watch – respond automatically.*"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Metric Filter Logic 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "You can create a CloudWatch Alarm based on a metric derived from a log filter pattern.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Metric filters extract metrics from logs; alarms can then be created on those custom metrics.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "VPC Flow Logs: Network Visibility 🌐",
+            "content": "## Who's Talking to Whom?\n\nVPC Flow Logs capture metadata about IP traffic: source/destination IP, ports, protocol, and accept/reject status.\n- **Use cases**: Detect port scanning, data exfiltration, and unusual connections.\n- **Publish to S3 or CloudWatch Logs**.\n- **Note**: Flow logs do not capture packet payloads (that would be expensive and invasive).\n\n*Enable flow logs on every VPC – they are your network’s CCTV footage.*"
+        },
+        {
+            "id": "s_l3_8",
+            "type": "tip",
+            "title": "Don’t Forget the OS Logs 🖥️",
+            "content": "Security events like failed SSH logins live in `/var/log/auth.log`. Use the CloudWatch agent to forward these to a central log group. Then create alerts for brute‑force attempts."
+        }
+    ]
+}

@@ -1,0 +1,259 @@
+{
+    "id": "quiz_ch_10",
+    "chapterId": "ch_10",
+    "title": "Chapter 10 Quiz",
+    "description": "Test your knowledge of pipelines, advanced redirections, here documents, process substitution, and named pipes!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What does the `|` symbol do in Bash?",
+            "options": [
+                "Redirects stdout to a file",
+                "Pipes the stdout of one command to the stdin of another",
+                "Runs two commands in parallel",
+                "Creates a logical OR"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The pipe connects stdout of the left command to stdin of the right command."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Why does `count=0; echo test | { count=1; } ; echo $count` print 0?",
+            "options": [
+                "Because `count` is read‑only",
+                "The part inside `{}` runs in a subshell due to the pipe",
+                "The assignment `count=1` failed",
+                "`echo $count` runs before the pipe"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Each segment of a pipeline runs in its own subshell, so variable changes are lost."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "What does `PIPESTATUS` contain?",
+            "options": [
+                "The exit status of the entire pipeline",
+                "An array of exit statuses of each command in the last pipeline",
+                "The PID of the pipeline",
+                "The number of commands in the pipeline"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`PIPESTATUS` is an array; `${PIPESTATUS[0]}` is the exit code of the first command, etc."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "How can you make a pipeline's exit status reflect any failure, not just the last command?",
+            "options": [
+                "set -o errexit",
+                "set -o pipefail",
+                "PIPESTATUS=all",
+                "You can't"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`set -o pipefail` causes the pipeline to return the last non‑zero exit status (or zero if all succeed)."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What does `exec >logfile` do?",
+            "options": [
+                "Runs a new shell and redirects its output",
+                "Redirects the current shell's stdout to logfile permanently",
+                "Executes the `logfile` script",
+                "Closes stdout"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`exec` without a command changes the current shell's file descriptors."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which redirection merges stderr into the same place as stdout?",
+            "options": [
+                "2>&1",
+                "1>&2",
+                "&2>1",
+                "2>1"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`2>&1` duplicates file descriptor 1 (stdout) to file descriptor 2 (stderr), merging them."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What is the purpose of a here document (`<<EOF`)?",
+            "options": [
+                "To create a temporary file",
+                "To pass a multi‑line block of text directly to a command's stdin",
+                "To define a function",
+                "To comment out multiple lines"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A here document sends the lines between the delimiters as input to the command."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "How can you prevent variable expansion inside a here document?",
+            "options": [
+                "Use `<<'EOF'`",
+                "Use `<<-EOF`",
+                "Set `shopt -s noexpand`",
+                "It's not possible"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Quoting the delimiter disables expansion."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What does `<<< \"$var\"` do?",
+            "options": [
+                "Passes the string as a file argument",
+                "Redirects the contents of `$var` to the command's stdin",
+                "It's a syntax error",
+                "Creates a temporary file with `$var`"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A here string sends a single string as stdin."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which of the following is a process substitution that provides command output as a file?",
+            "options": [
+                "$(command)",
+                ">(command)",
+                "<(command)",
+                "| command"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`<(command)` creates a file descriptor (or named pipe) that contains the command's output."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "How can you compare the outputs of two commands without temporary files?",
+            "options": [
+                "diff $(cmd1) $(cmd2)",
+                "diff <(cmd1) <(cmd2)",
+                "cmd1 > tmp; cmd2 > tmp2; diff tmp tmp2",
+                "Both B and C"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Process substitution `<()` turns each command's output into a file path for `diff`."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What does `tee >(wc -c) >(md5sum)` do?",
+            "options": [
+                "It writes output to a file and counts characters",
+                "It splits the piped data to `wc -c` and `md5sum` simultaneously",
+                "It's invalid syntax",
+                "It creates two files"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`>(cmd)` lets tee write to multiple commands at once."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which command creates a named pipe?",
+            "options": [
+                "mkfifo",
+                "mkpipe",
+                "touch -p",
+                "mknod -p"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`mkfifo` creates a FIFO special file."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What happens if you try to read from a named pipe before any process opens it for writing?",
+            "options": [
+                "The read returns immediately with EOF",
+                "The read blocks until a writer opens it",
+                "An error occurs",
+                "It reads empty data"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Opening a FIFO for reading blocks until another process opens it for writing (and vice versa)."
+        },
+        {
+            "id": "q15",
+            "type": "fill_blank",
+            "question": "To make the `while` loop in a pipeline run in the current shell (avoid subshell), you can use ___ substitution.",
+            "options": [],
+            "correctAnswer": "process",
+            "explanation": "Using `while ... done < <(command)` with process substitution avoids the pipe subshell issue."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which of the following correctly redirects both stdout and stderr to `out.log`?",
+            "options": [
+                "command > out.log 2>&1",
+                "command &> out.log",
+                "Both A and B",
+                "command > out.log 2> out.log"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Both `> out.log 2>&1` and `&> out.log` achieve the same result in Bash."
+        },
+        {
+            "id": "q17",
+            "type": "true_false",
+            "question": "Named pipes can be used to communicate between unrelated processes.",
+            "correctAnswer": true,
+            "explanation": "A FIFO exists in the filesystem, so any process with appropriate permissions can read/write to it."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "What does `exec 3<> /tmp/fifo` do?",
+            "options": [
+                "Opens a FIFO as file descriptor 3 for both reading and writing",
+                "Closes file descriptor 3",
+                "Redirects stderr to the FIFO",
+                "It's invalid"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`exec 3<> file` opens a file (or FIFO) for reading and writing on descriptor 3."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "How can you restore stdout after `exec >logfile`?",
+            "options": [
+                "exec 1>&2",
+                "exec 1>/dev/tty",
+                "Save original descriptor first: `exec 3>&1`, then later `exec 1>&3 3>&-`",
+                "You can't"
+            ],
+            "correctAnswer": 2,
+            "explanation": "To restore, save the original stdout with `exec 3>&1` and restore with `exec 1>&3`."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which construct is best for feeding a variable's content to a command without a pipe?",
+            "options": [
+                "echo \"$var\" | cmd",
+                "cmd <<< \"$var\"",
+                "cmd < \"$var\"",
+                "cmd $var"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Here string `<<<` sends the string directly to stdin, avoiding a subshell."
+        }
+    ]
+}

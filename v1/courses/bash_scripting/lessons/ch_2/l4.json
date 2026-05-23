@@ -1,0 +1,102 @@
+{
+    "id": "l4",
+    "chapterId": "ch_2",
+    "title": "Creating & Removing Directories 📁",
+    "description": "Build and tidy up your filesystem with `mkdir`, `rmdir`, and safe cleanup.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Directory Management",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Making Directories with mkdir 🏗️",
+            "content": "## `mkdir` – Make Directory\n\nSyntax: `mkdir [options] directory_name`\n\n- `mkdir projects` creates a single folder.\n- `mkdir -p a/b/c` creates nested directories even if parents don't exist (creates the whole path).\n- `mkdir -m 755 dir` sets permissions at creation time.\n\nYou can create multiple directories at once: `mkdir docs music pics`."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Create a Single Folder",
+            "content": "Make a folder called `cybron`:",
+            "codeSnippet": "mkdir cybron",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "How do you create a directory named `backup` and a subdirectory `logs` inside it with one command?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "mkdir backup/logs",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "mkdir -p backup/logs",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "mkdir backup; mkdir backup/logs",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "mkdir backup+logs",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-p` creates parent directories as needed. Without it, `mkdir backup/logs` would fail if `backup` doesn't exist.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Removing Directories 🗑️",
+            "content": "## `rmdir` and `rm -r`\n\n- `rmdir` removes an **empty** directory. Safe but limited.\n- `rm -r` removes a directory and everything inside it. **Use with extreme caution!**\n- `rm -rf` forces removal without confirmation. `-f` is dangerous; double‑check before using.\n\nAlways `ls` the directory first to confirm its contents."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Remove an Empty Directory",
+            "content": "Remove `cybron` if it's empty:",
+            "codeSnippet": "rmdir cybron",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "`rmdir` can delete a directory that still contains files.",
+                "correctAnswer": false,
+                "explanation": "`rmdir` only works on empty directories. For non‑empty ones, use `rm -r`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "warning",
+            "title": "⚠️ Danger Zone: rm -rf",
+            "content": "## The Nuclear Option\n\n`rm -rf somefolder` irreversibly deletes the folder and all its contents without asking. There is **no trash can**. If you accidentally run `rm -rf /` (as root), you can destroy the whole system.\n\n**Best practice**: Avoid `-f`. Use `rm -ri` to ask for confirmation on each file."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Safer Removal\nUse `trash-cli` or `gio trash` to send files to the system trash instead of permanent deletion."
+        }
+    ]
+}

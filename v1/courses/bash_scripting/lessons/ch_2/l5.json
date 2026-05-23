@@ -1,0 +1,112 @@
+{
+    "id": "l5",
+    "chapterId": "ch_2",
+    "title": "File Paths & Globbing 🗂️",
+    "description": "Work with absolute and relative paths, and use wildcards to match files like magic.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Path Fu",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Paths Revisited 🛤️",
+            "content": "## Absolute vs Relative in Practice\n\n- Absolute path: `/home/alice/Documents/report.txt` – works no matter where you are.\n- Relative path: `Documents/report.txt` – only works if you are in `/home/alice`.\n\nUse `..` to go up: `../../etc` from `/home/alice` goes to `/etc`.\n\n**Tab completion** saves typing: press `Tab` to auto‑complete paths."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Practice Paths",
+            "content": "Navigate to the system config directory from home using a relative path:",
+            "codeSnippet": "cd ../../etc",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "If you are in `/home/alice/Music`, which relative path reaches `/home/alice/Pictures`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Pictures",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "../Pictures",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "../../Pictures",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "./Pictures",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`..` goes up to `/home/alice`, then `Pictures` is a direct child.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Globbing: Pattern Power 💥",
+            "content": "## Wildcards for File Matching\n\nBash can expand special characters (**globs**) to match multiple filenames:\n\n- `*` – any sequence of characters (including none)\n- `?` – exactly one character\n- `[abc]` – any one character inside the brackets\n- `[a-z]` – any character in the range\n\nExample: `ls *.txt` shows all files ending with `.txt`."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Glob in Action",
+            "content": "List all .png files:",
+            "codeSnippet": "ls *.png",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "fill_blank",
+                "question": "What glob pattern matches all files that start with 'a' and have exactly two characters? (e.g., ab, ac, a1)",
+                "options": [],
+                "correctAnswer": "a?",
+                "explanation": "`?` matches exactly one character. So `a?` matches 'a' followed by any single character.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "code",
+            "title": "Character Classes",
+            "content": "List files starting with a lowercase vowel:",
+            "codeSnippet": "ls [aeiou]*",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_8",
+            "type": "text",
+            "title": "Globbing Tips 🧠",
+            "content": "## Advanced Patterns\n\n- `*.[ch]` matches files ending with `.c` or `.h`\n- `[!a]` means NOT 'a' – any single character except 'a'.\n- Globs are expanded **before** the command runs. So `ls *.jpg` becomes `ls photo1.jpg photo2.jpg`.\n\nBe careful: if a pattern matches nothing, it might be passed literally (unless you set `nullglob`)."
+        },
+        {
+            "id": "s_l5_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Test Globs with echo\nBefore using a risky command like `rm`, test your glob: `echo *.tmp`. It shows exactly what files would be matched."
+        }
+    ]
+}

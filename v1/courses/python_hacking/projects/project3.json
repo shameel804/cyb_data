@@ -1,0 +1,29 @@
+{
+    "id": "project3",
+    "title": "CybronRecon: The Ultimate Reconnaissance Toolkit",
+    "description": "Integrate port scanning, service detection, web recon, and reporting into a professional CLI tool with threading, error handling, and multiple output formats.",
+    "difficulty": "Advanced",
+    "estimatedHours": "5-8",
+    "problemStatement": "Combine everything you've learned into **CybronRecon**, a modular reconnaissance framework that can be used in real penetration tests.\n\n## High‑Level Architecture\nThe project will be structured as a Python package:\n```\ncybron_recon/\n├── __init__.py\n├── core/\n│   ├── __init__.py\n│   ├── scanner.py      # port scanning & banner grabbing\n│   ├── web.py          # HTTP/HTTPS recon and directory brute\n│   └── utils.py        # DNS resolution, output helpers\n├── reporters/\n│   ├── __init__.py\n│   ├── csv_report.py\n│   └── json_report.py\n├── main.py             # CLI entry point\n└── requirements.txt\n```\n\n## Features\n1. **Port Scanner** (`scanner.py`):\n   - Threaded TCP connect scan using `ThreadPoolExecutor`.\n   - Service name lookup via `socket.getservbyport()` and custom mappings.\n   - Banner grabbing for open ports (HTTP probes, generic recv).\n   - Returns list of dicts with `port`, `service`, `banner`, `status`.\n\n2. **Web Recon** (`web.py`):\n   - Automatic HTTP/HTTPS detection (try both, prefer HTTPS if both respond).\n   - Header analysis, technology fingerprinting (WordPress, Drupal, etc.), missing security headers.\n   - Lightweight directory brute (configurable list).\n   - SSL error handling (ignore self‑signed certs with a flag).\n\n3. **Reporting** (`reporters/`):\n   - CSV reporter: flat columns; banner/web data serialized as JSON strings.\n   - JSON reporter: full nested structure with metadata (scan time, target, version).\n\n4. **CLI** (`main.py`):\n   - Use `argparse` for rich command‑line parsing.\n   - Subcommands: `scan` (port scan only), `web` (web recon only), `full` (both).\n   - Options: target, ports range, threads, timeout, output format, output file, no‑ssl, wordlist for directories.\n   - Verbose mode (`-v`) to show real‑time progress.\n\n## Example Usage\n```bash\n# Full recon on a target\npython main.py full scanme.nmap.org -p 1-1000 -t 0.5 --threads 150 -f json -o report\n\n# Web recon only\npython main.py web example.com --dir-wordlist common.txt -o web_report\n```\n\n## Expected Output\nConsole output shows live progress (in verbose mode) and final summary. For full scan, report includes nested structure:\n```json\n{\n  \"scan_info\": {\n    \"target\": \"scanme.nmap.org\",\n    \"resolved_ip\": \"45.33.32.156\",\n    \"ports_scanned\": \"1-1000\",\n    \"timestamp\": \"2024-12-01T12:00:00\"\n  },\n  \"open_ports\": [\n    {\n      \"port\": 22,\n      \"service\": \"ssh\",\n      \"banner\": \"SSH-2.0-OpenSSH_6.6.1p1...\",\n      \"web\": null\n    },\n    {\n      \"port\": 80,\n      \"service\": \"http\",\n      \"banner\": \"HTTP/1.1 200 OK...\",\n      \"web\": {\n        \"status_code\": 200,\n        \"title\": \"Example Domain\",\n        \"technologies\": [],\n        \"security_issues\": [\"Missing HSTS header\"],\n        \"discovered_paths\": []\n      }\n    }\n  ]\n}\n```",
+    "requirements": [
+        "Must be a proper Python package that can be imported and run as a script.",
+        "Use `concurrent.futures` for threading with configurable thread count.",
+        "HTTP requests must use `requests.Session()` for connection pooling.",
+        "Banner grabbing must differentiate between services that speak first (SSH, FTP) and those that require a request (HTTP).",
+        "Error handling: scan should continue if one port fails; web recon should handle timeouts and SSL errors gracefully.",
+        "Reports must include metadata (timestamp, target, resolved IP).",
+        "Code must follow PEP 8 style guidelines and include docstrings for all public functions.",
+        "Requirements.txt must list all third‑party dependencies.",
+        "Provide a `README.md` with installation instructions, usage examples, and ethical disclaimer."
+    ],
+    "hints": [
+        "Use `argparse` subparsers to implement `scan`, `web`, and `full` commands.",
+        "For HTTP vs HTTPS detection, first try HTTPS; if SSL error and `--ignore-ssl` is set, retry with verify=False. Else fallback to HTTP.",
+        "Web recon should accept an optional wordlist file for directory brute; if none provided, use a built‑in default list of 15 common paths.",
+        "In `csv_report.py`, flatten nested web data using `json.dumps()`.",
+        "Use `logging` module for verbose output instead of `print` – it can be easily toggled.",
+        "Create a `Config` class or dict to pass settings (threads, timeout, no_ssl, etc.) to modules.",
+        "Test each module independently before integration."
+    ],
+    "expectedOutput": "A fully functional toolkit that can be installed via `pip install -r requirements.txt` and executed to perform comprehensive recon on a lab target, producing accurate JSON/CSV reports."
+}

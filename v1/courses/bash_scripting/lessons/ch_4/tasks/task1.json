@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_4",
+    "title": "Password Strength Checker",
+    "description": "Write a script that evaluates a password's strength using conditional statements.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You're writing a security script. Create `password_check.sh` that reads a password silently and gives feedback:\n\n1. If the password is less than 8 characters, print 'Weak: too short'.\n2. If it is 8 characters or longer, but only contains letters (you can check with a simple glob match in `[[ ]]` using `=~ ^[a-zA-Z]+$`), print 'Moderate: add numbers or symbols'.\n3. If it matches a pattern that includes both letters and numbers (use `=~` with a pattern like `[a-zA-Z]+[0-9]+`), print 'Strong'.\n4. Otherwise, print 'Moderate'.\n\nUse `read -sp` to hide input. Remember to quote variables. Bonus: use `elif` to structure the checks.",
+    "hints": [
+        "Get length: `${#var}` inside `[ ]` or `[[ ]]`.",
+        "Check for letters only: `[[ $pass =~ ^[a-zA-Z]+$ ]]`.",
+        "Check for letters AND digits: `[[ $pass =~ [a-zA-Z]+ && $pass =~ [0-9]+ ]]`.",
+        "The `=~` operator in `[[ ]]` does regex matching."
+    ],
+    "expectedOutput": "Enter password: \nStrong (or Moderate / Weak depending on input)",
+    "solutionCode": "#!/bin/bash\n# Password strength checker\n\nread -sp \"Enter password: \" pass\necho\n\nlen=${#pass}\nif [ $len -lt 8 ]; then\n  echo \"Weak: too short\"\nelif [[ $pass =~ ^[a-zA-Z]+$ ]]; then\n  echo \"Moderate: add numbers or symbols\"\nelif [[ $pass =~ [a-zA-Z]+ && $pass =~ [0-9]+ ]]; then\n  echo \"Strong\"\nelse\n  echo \"Moderate\"\nfi"
+}

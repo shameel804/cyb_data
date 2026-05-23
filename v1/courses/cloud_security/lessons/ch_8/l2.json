@@ -1,0 +1,110 @@
+{
+    "id": "l2",
+    "chapterId": "ch_8",
+    "title": "Securing the CI/CD Pipeline 🚦",
+    "description": "Pipeline integrity, code scanning, dependency checks, and secret management.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Pipeline Is the New Perimeter 🏰",
+            "content": "# Why CI/CD Security Matters\n\nIf an attacker compromises your pipeline, they can inject malicious code into every release. They don't need to hack production; they just need to compromise a build server or a source code repository.\n\n- **Pipeline as a trusted system** – It has access to source code, secrets, and deployment permissions.\n- **Integrity checks** – Ensure artifacts aren't tampered with between build and deploy.\n- **Least privilege** – Build agents should have minimal IAM permissions, not admin.\n\n*Treat your pipeline like a production system: harden it, monitor it, patch it.*"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Pipeline Risk 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "true_false",
+                "question": "The CI/CD pipeline only needs basic security because it runs internally.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "The pipeline is a high‑value target; it holds secrets and deployment access. It must be secured as rigorously as production.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Code Scanning: Static Application Security Testing (SAST) 🔍",
+            "content": "## Find Bugs Without Running Code\n\nSAST tools analyze source code, bytecode, or binaries for patterns that indicate security vulnerabilities.\n\n- **Examples**: SonarQube, Checkmarx, Fortify, GitHub CodeQL.\n- **Detects**: SQL injection, cross‑site scripting (XSS), hard‑coded secrets, insecure configurations.\n- **Integrates early**: Run SAST on every commit or pull request. Fail the build on high‑severity issues.\n\n*SAST is like a spell‑checker that also catches dangerous words. It's fast, but can produce false positives.*"
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "GitHub Action: CodeQL Analysis",
+            "content": "Enabling CodeQL in a GitHub Actions workflow:",
+            "codeSnippet": "name: \"CodeQL\"\n\non:\n  push:\n    branches: [ main ]\n  pull_request:\n    branches: [ main ]\n\njobs:\n  analyze:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: github/codeql-action/init@v3\n        with:\n          languages: javascript\n      - uses: github/codeql-action/analyze@v3",
+            "codeLanguage": "yaml",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Dependency Scanning: Know Your Supply Chain 📦",
+            "content": "## Your Code's Dependencies Can Betray You\n\nModern applications use hundreds of open‑source libraries. A single vulnerable library (like Log4Shell) can compromise everything.\n\n- **Software Composition Analysis (SCA)** tools scan your project's dependencies for known vulnerabilities (CVEs).\n- **Examples**: Dependabot, Snyk, OWASP Dependency‑Check, WhiteSource.\n- **Fix**: Automatically open pull requests to update vulnerable versions.\n\n*Always pin dependency versions. A `package.json` with `\"express\": \"*\"` is a ticking time bomb.*"
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Supply Chain 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "What type of tool scans your project's open‑source libraries for known vulnerabilities?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "SAST",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "DAST",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "SCA (Software Composition Analysis)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "WAF",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "SCA tools check third‑party libraries against vulnerability databases.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Secrets Management in CI/CD 🔐",
+            "content": "## Never Put Credentials in Code\n\n- **Secret scanning**: Tools like git‑secrets, truffleHog, and GitHub secret scanning prevent accidental commits of API keys, passwords, or tokens.\n- **Centralised secrets storage**: Use AWS Secrets Manager, Azure Key Vault, HashiCorp Vault. The pipeline retrieves secrets at runtime, never stores them in the repository.\n- **Short‑lived credentials**: Use OIDC to obtain temporary cloud credentials, avoiding static access keys.\n\n*If a secret is committed to Git, consider it compromised immediately. Rotate it, and add a pre‑commit hook to block future leaks.*"
+        },
+        {
+            "id": "s_l2_8",
+            "type": "tip",
+            "title": "Lock Down Your Pipeline Triggers 🚨",
+            "content": "Require code reviews and branch protection rules. Prevent direct pushes to main. Use signed commits. This stops malicious code from entering the pipeline unnoticed."
+        }
+    ]
+}

@@ -1,0 +1,120 @@
+{
+    "id": "l4",
+    "chapterId": "ch_8",
+    "title": "Web Application Firewall (WAF) Basics 🧱",
+    "description": "How a WAF defends against the OWASP Top 10 and common web exploits.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "What Is a WAF? 🛡️",
+            "content": "# Your Application's Gatekeeper\n\nA **Web Application Firewall (WAF)** sits in front of your web application and inspects HTTP/HTTPS traffic. It can block malicious requests before they reach your server.\n\n- **Layer 7 protection**: Unlike network firewalls (layer 3/4), WAF understands HTTP – URLs, headers, cookies, and form data.\n- **Protects against**: SQL injection, cross‑site scripting (XSS), cross‑site request forgery (CSRF), and other OWASP Top 10 threats.\n- **Cloud‑native WAFs**: AWS WAF, Azure Application Gateway WAF, Google Cloud Armor.\n\n*Think of WAF as a security guard at your building's reception who checks every package before allowing it in.*"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "WAF Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "At which OSI layer does a WAF primarily operate?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Layer 3 (Network)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Layer 4 (Transport)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Layer 7 (Application)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Layer 2 (Data Link)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "WAFs inspect HTTP traffic at the application layer.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "How WAF Rules Work 📏",
+            "content": "## Pattern Matching & Conditions\n\nA WAF rule defines:\n- **Condition**: What to inspect (e.g., URI path, query string, body, IP address, header).\n- **Action**: Allow, Block, Count (monitor), or CAPTCHA.\n- **Rule groups**: Pre‑built rule sets like AWS Managed Rules (core rule set based on ModSecurity/OWASP).\n\n**Example rule**: If the query string contains `SELECT * FROM` (SQL injection pattern), block the request.\n\n*Managed rule sets cover common threats, but custom rules handle business‑specific logic (e.g., blocking requests from a specific country).*"
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "AWS WAF Custom Rule (JSON)",
+            "content": "A rule that blocks requests with a query string that contains 'DROP TABLE':",
+            "codeSnippet": "{\n  \"Name\": \"BlockSQLInjection\",\n  \"Priority\": 1,\n  \"Action\": { \"Block\": {} },\n  \"Statement\": {\n    \"OrStatement\": {\n      \"Statements\": [\n        {\n          \"SqliMatchStatement\": {\n            \"FieldToMatch\": { \"QueryString\": {} },\n            \"TextTransformations\": [ { \"Type\": \"URL_DECODE\", \"Priority\": 0 } ]\n          }\n        }\n      ]\n    }\n  }\n}",
+            "codeLanguage": "json",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "WAF Deployment Models ☁️",
+            "content": "- **AWS WAF**: Attached to CloudFront (global), Application Load Balancer (regional), API Gateway, or AppSync.\n- **Azure WAF**: Integrated with Application Gateway, Front Door, or CDN.\n- **Cloud Armor**: Works with HTTP(S) Load Balancing, with rich language for custom rules.\n\n*Always enable logging (AWS WAF logs to S3, CloudWatch; Azure logs to Log Analytics). Logs are essential for tuning rules and investigating attacks.*"
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "WAF Rule Action 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "You want to test a new WAF rule without blocking real users. Which action should you use?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Block",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Allow",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Count",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "CAPTCHA",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Count mode logs requests that would be blocked, allowing you to tune the rule without impacting users.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "WAF + Bot Control & DDoS Protection 🤖",
+            "content": "Advanced WAF features:\n- **Bot Control**: Identify and block scrapers, scalpers, and credential stuffers using machine learning.\n- **Rate‑based rules**: Block IPs that exceed a request threshold in 5 minutes – prevent brute force.\n- **Integration with DDoS protection**: AWS WAF works with Shield; Cloud Armor integrates with Cloud CDN for volumetric defense.\n\n*A WAF is not a silver bullet, but it's a critical layer in your defense‑in‑depth strategy.*"
+        },
+        {
+            "id": "s_l4_8",
+            "type": "tip",
+            "title": "Start With Managed Rules 🚀",
+            "content": "Enable the AWS/Azure managed rule set for OWASP Top 10. Run in Count mode for a week, analyze logs, then switch to Block. Add custom rules for your specific application logic."
+        }
+    ]
+}

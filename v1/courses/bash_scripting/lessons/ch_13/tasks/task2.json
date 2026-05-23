@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_13",
+    "title": "Debug a Failing Script",
+    "description": "Given a buggy script, enable tracing and identify the errors, then fix them.",
+    "estimatedMinutes": 20,
+    "problemStatement": "You are given a script `mystery.sh` that is supposed to loop through a list of files and print their line counts, but it always outputs 0 lines. The script:\n\n```bash\n#!/bin/bash\nfiles=\"file1.txt file2.txt\"\nfor f in $files; do\n  lines=$(wc -l $f | awk '{print $1}')\n  total=0\n  total=$((total + lines))\ndone\necho \"Total lines: $total\"\n```\n\n1. Run the script with tracing (`bash -x mystery.sh`) and observe the output. Identify the bugs (hint: variable reset inside loop, missing file existence check).\n2. Fix the script:\n   - Add `set -u` at the top.\n   - Ensure `total` is initialised once before the loop.\n   - Validate that each file exists before using `wc`.\n   - Quote `$f` properly.\n3. Re‑run with tracing to confirm it works now.\n4. Add a `trap` on `ERR` that prints the line number where an error occurs.\n\nProvide the corrected script as the solution.",
+    "hints": [
+        "The line `total=0` inside the loop resets `total` every iteration.",
+        "`wc -l $f` might fail if file doesn't exist; add `[ -f \"$f\" ] || continue`.",
+        "Use `shellcheck` if available to catch quoting issues."
+    ],
+    "expectedOutput": "After fix, prints correct total line counts of existing files.",
+    "solutionCode": "#!/bin/bash\nset -euo pipefail\n\ntrap 'echo \"Error at line $LINENO\"' ERR\n\nfiles=\"file1.txt file2.txt\"\ntotal=0\nfor f in $files; do\n  if [ -f \"$f\" ]; then\n    lines=$(wc -l < \"$f\")\n    total=$((total + lines))\n  else\n    echo \"Warning: $f not found\" >&2\n  fi\ndone\necho \"Total lines: $total\""
+}

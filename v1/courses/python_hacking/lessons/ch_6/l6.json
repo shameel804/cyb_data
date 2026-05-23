@@ -1,0 +1,155 @@
+{
+    "id": "l6",
+    "chapterId": "ch_6",
+    "title": "Recursion & Documentation 🌀📝",
+    "description": "Make functions call themselves for elegant solutions, and document your code like a pro.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Functions",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "A Function Calling Itself",
+            "content": "# Recursion – The Inception of Functions\n\nA recursive function is one that calls itself to solve a smaller instance of the same problem. It needs:\n* **Base case**: condition to stop the recursion\n* **Recursive case**: call itself with modified arguments\n\nClassic example: factorial\n```python\ndef factorial(n):\n    if n == 1:\n        return 1\n    else:\n        return n * factorial(n - 1)\n```"
+        },
+        {
+            "id": "s_l6_2",
+            "type": "code",
+            "title": "Factorial Demo",
+            "content": "Run it:",
+            "codeSnippet": "def fact(n):\n    if n == 0: return 1\n    return n * fact(n-1)\n\nprint(fact(5))  # 120",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Recursion Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "What is the base case in `factorial(n)`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "n == 0 (or 1)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "n * factorial(n-1)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "print(n)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The base case stops the recursion; here it's when n reaches 0 or 1.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "Hacking Use: Directory Traversal",
+            "content": "# Recursively List Files\n\n```python\nimport os\ndef list_files(path):\n    for entry in os.listdir(path):\n        full = os.path.join(path, entry)\n        if os.path.isdir(full):\n            list_files(full)   # recurse into subdirectory\n        else:\n            print(full)\n```\nThis is how search tools and malware scanners traverse file systems."
+        },
+        {
+            "id": "s_l6_5",
+            "type": "code",
+            "title": "Simulated Recursive Scan",
+            "content": "No OS calls; just print nesting:",
+            "codeSnippet": "def explore(depth, max_depth=3):\n    if depth > max_depth:\n        return\n    print(\"  \"*depth + f\"Scanning level {depth}\")\n    explore(depth+1, max_depth)\n\nexplore(0)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l6_6",
+            "type": "quiz",
+            "title": "Recursion Use 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "true_false",
+                "question": "Recursion is essential for tasks where the problem can be broken into smaller identical subproblems.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "It's a natural fit for tree traversal, divide‑and‑conquer algorithms, etc.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_7",
+            "type": "text",
+            "title": "Recursion Limits & Performance",
+            "content": "# Python Has a Recursion Limit\n\n`sys.getrecursionlimit()` (default 1000). Deep recursion can hit this and raise `RecursionError`. For very deep structures, use loops instead.\n\nRecursion can also be slower and memory‑heavy due to call stack. Use it when it simplifies code, but be aware of limits."
+        },
+        {
+            "id": "s_l6_8",
+            "type": "text",
+            "title": "Docstrings: Documenting Your Functions",
+            "content": "# Help Future You (and Others)\n\nA **docstring** is a triple‑quoted string right after the function header. It describes what the function does.\n\n```python\ndef scan_port(host, port):\n    \"\"\"\n    Attempt a TCP connection to host:port.\n    Returns True if port is open, else False.\n    \"\"\"\n    # code...\n```\nYou can access it with `help(scan_port)` or `scan_port.__doc__`."
+        },
+        {
+            "id": "s_l6_9",
+            "type": "code",
+            "title": "Docstring Example",
+            "content": "Write and view a docstring:",
+            "codeSnippet": "def check_vuln(software, version):\n    \"\"\"Check if a given software version is known vulnerable.\n    \n    Args:\n        software: name of the software\n        version: version string\n    Returns:\n        Boolean indicating vulnerability\n    \"\"\"\n    return True\n\nhelp(check_vuln)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_10",
+            "type": "quiz",
+            "title": "Docstrings 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_3",
+                "type": "multiple_choice",
+                "question": "Where should a docstring be placed in a function?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "At the very end of the function",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Immediately after the function header (before code)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Before the def line",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "It's the first statement inside the function, enclosed in triple quotes.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_11",
+            "type": "text",
+            "title": "Function Annotations (Bonus)",
+            "content": "# You Can Hint at Types\n\n```python\ndef scan(host: str, port: int = 80) -> bool:\n    return True\n```\nThese are optional but improve readability and can be checked by tools like `mypy`. Python ignores them at runtime."
+        },
+        {
+            "id": "s_l6_12",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Write Docstrings for Every Public Function\n\nIt takes seconds but saves hours when you revisit the code or share tools with teammates."
+        },
+        {
+            "id": "s_l6_13",
+            "type": "text",
+            "title": "Chapter 6 Complete! 🏁",
+            "content": "# Functions Are Your Building Blocks\n\nYou can now define reusable logic, pass data in and out, control variable scope, use lambdas for quick ops, and even write recursive code with proper docs.\n\nTake the Chapter Quiz and complete the hands‑on tasks. Then brace for Chapter 7: Strings & File Manipulation – the real data processing power."
+        }
+    ]
+}

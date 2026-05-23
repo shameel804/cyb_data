@@ -1,0 +1,105 @@
+{
+    "id": "l5",
+    "chapterId": "ch_9",
+    "title": "Practical Automation Recipes 🧑‍🍳",
+    "description": "Combine scheduling with Bash scripts: automatic backups, disk alerts, and log rotation.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Real‑World",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "From Theory to Practice 🏗️",
+            "content": "## Let's Build Something\n\nNow that you understand cron and at, it's time to create useful automations. We'll look at three classic recipes:\n1. **Nightly Backup** – compress a directory and store it.\n2. **Disk Space Monitor** – alert when disk usage exceeds a threshold.\n3. **Log Truncation** – keep log files from growing endlessly."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Recipe 1: Backup Script",
+            "content": "Create a script `/home/user/bin/backup.sh`:\n```bash\n#!/bin/bash\nsrc=\"$HOME/Documents\"\ndest=\"$HOME/backups/backup-$(date +%Y%m%d).tar.gz\"\ntar -czf \"$dest\" \"$src\"\n```\nSchedule: `0 2 * * * /home/user/bin/backup.sh`",
+            "codeSnippet": "#!/bin/bash\n# Simple backup\nsrc=\"$HOME/Documents\"\ndest=\"$HOME/backups/backup-$(date +%Y%m%d).tar.gz\"\nmkdir -p \"$HOME/backups\"\ntar -czf \"$dest\" \"$src\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What does `$(date +%Y%m%d)` produce?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The current time",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A date string like 20260522",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "An error",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The year only",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`+%Y%m%d` formats date as YYYYMMDD.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "Recipe 2: Disk Space Alert",
+            "content": "Check if root partition usage exceeds 80%:\n```bash\n#!/bin/bash\nthresh=80\nused=$(df / | awk 'NR==2 {print $5}' | tr -d '%')\nif [ $used -gt $thresh ]; then\n  echo \"Disk alert! $used% used.\" | mail -s \"Disk Warning\" admin\nfi\n```\nSchedule: `*/30 * * * * /home/user/bin/diskcheck.sh`",
+            "codeSnippet": "#!/bin/bash\nthresh=80\nused=$(df / | awk 'NR==2 {print $5}' | tr -d '%')\nif [ $used -gt $thresh ]; then\n  echo \"Disk alert! $used% used.\" | mail -s \"Disk Warning\" admin\nfi",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_5",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "In the disk check script, `df / | awk 'NR==2 {print $5}'` extracts the used percentage.",
+                "correctAnswer": true,
+                "explanation": "`NR==2` picks the second line (the data line) and prints the 5th column (Use%).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_6",
+            "type": "code",
+            "title": "Recipe 3: Log Truncation",
+            "content": "Keep a log file's last 1000 lines:\n```bash\n#!/bin/bash\nlogfile=\"$HOME/mylog.txt\"\nmax_lines=1000\nif [ -f \"$logfile\" ]; then\n  tail -n $max_lines \"$logfile\" > \"$logfile.tmp\" && mv \"$logfile.tmp\" \"$logfile\"\nfi\n```\nSchedule: `0 0 * * * /home/user/bin/trimlog.sh`",
+            "codeSnippet": "#!/bin/bash\nlogfile=\"$HOME/mylog.txt\"\nmax_lines=1000\nif [ -f \"$logfile\" ]; then\n  tail -n $max_lines \"$logfile\" > \"$logfile.tmp\" && mv \"$logfile.tmp\" \"$logfile\"\nfi",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Testing and Logging 🪵",
+            "content": "## Always Check Your Work\n\n- Run the script manually first.\n- Add logging to the script itself: `echo \"$(date): Backup completed\" >> /var/log/mybackup.log`.\n- In the crontab, redirect output to a log: `0 2 * * * /script.sh >> /var/log/cron.log 2>&1`.\n- Use `grep CRON /var/log/syslog` to see cron execution history."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `flock` (file lock) in cron scripts to prevent overlapping runs: `* * * * * flock -n /tmp/mylock /script.sh`."
+        }
+    ]
+}

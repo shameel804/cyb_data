@@ -1,0 +1,97 @@
+{
+    "id": "l4",
+    "chapterId": "ch_8",
+    "title": "Array Operations & Tricks 🎩",
+    "description": "Slice, append, remove, and loop over arrays – master the full toolbox.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Arrays",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Appending Elements ➕",
+            "content": "## Grow Your Array\n\nTo add an element to the end of an indexed array:\n```bash\narr+=(new_item)\n```\nThis works for both indexed and associative (with a key). For an associative array: `arr[newkey]=value`.\n\nYou can also append multiple items at once: `arr+=(a b c)`."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Add to an Array",
+            "content": "Start with two items, then add more:",
+            "codeSnippet": "nums=(1 2)\nnums+=(3 4)\necho \"${nums[@]}\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "true_false",
+                "question": "`arr+=(value)` adds a new element to the beginning of the array.",
+                "correctAnswer": false,
+                "explanation": "It appends to the end (or next available index).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Slicing: Take a Subset 🔪",
+            "content": "## `${array[@]:offset:length}`\n\nYou can extract a slice of an indexed array:\n- `${arr[@]:2}` – all elements starting from index 2.\n- `${arr[@]:1:3}` – three elements starting from index 1.\n\nThis creates a new list; the original array is unchanged."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Slice Demo",
+            "content": "Get days from the third onward:",
+            "codeSnippet": "days=(Mon Tue Wed Thu Fri)\necho \"${days[@]:2}\"      # Wed Thu Fri\necho \"${days[@]:1:2}\"   # Tue Wed",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "fill_blank",
+                "question": "What expression extracts the second and third elements from an array `arr`? (index 1 and 2)",
+                "options": [],
+                "correctAnswer": "${arr[@]:1:2}",
+                "explanation": "Offset 1 skips the first element, length 2 grabs two items.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Removing Elements 🗑️",
+            "content": "## Unset an Index\n\nUse `unset arr[index]` to delete a specific element. The indices after it do **not** shift; a hole remains (sparse array).\n\nTo reset the whole array: `unset arr` or `arr=()`.\n\nBe careful with associative arrays: `unset arr[key]` removes that key."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "code",
+            "title": "Delete an Item",
+            "content": "Remove the second fruit:",
+            "codeSnippet": "fruits=(apple banana cherry)\nunset fruits[1]\necho \"${fruits[@]}\"        # apple cherry\necho \"Indexes: ${!fruits[@]}\"  # 0 2",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_9",
+            "type": "text",
+            "title": "Testing Existence 🧪",
+            "content": "## Check if an Index or Key Exists\n\nFor indexed: `[ -n \"${arr[idx]+exists}\" ]` or `[[ -v arr[idx] ]]` (Bash 4.2+).\nFor associative, `[[ -v assoc[key] ]]` is the cleanest way.\n\nThis is useful to avoid unbound variable errors."
+        },
+        {
+            "id": "s_l4_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Copy an array: `new_arr=( \"${old_arr[@]}\" )`. For associative, iterate and assign key by key."
+        }
+    ]
+}

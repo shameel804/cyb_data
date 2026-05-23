@@ -1,0 +1,110 @@
+{
+    "id": "l5",
+    "chapterId": "ch_8",
+    "title": "DevSecOps Best Practices & Tools 🛠️",
+    "description": "SAST, DAST, IAST, and building a continuous security feedback loop.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Beyond SAST: A Complete Testing Arsenal 🧪",
+            "content": "# Cover Every Angle\n\n| Method | What It Does | When It Runs |\n|--------|--------------|--------------|\n| **SAST** (Static) | Analyzes source code for patterns | Build, IDE |\n| **DAST** (Dynamic) | Scans running application like an attacker | Test, Staging |\n| **IAST** (Interactive) | Agent inside the app monitors real traffic | Test, QA |\n| **RASP** (Runtime) | Protects app in production by detecting attacks | Production |\n| **SCA** (Composition) | Scans open‑source dependencies | Build |\n\n*No single tool catches everything. Combine them for comprehensive coverage.*"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "Tool Matching 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Which testing method scans a running application from the outside, simulating a real attacker?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "SAST",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "DAST",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "SCA",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "IAST",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "DAST (Dynamic Application Security Testing) probes a live application for vulnerabilities.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "DAST in Your Pipeline 🎯",
+            "content": "## Automated Penetration Testing\n\n- Tools: OWASP ZAP (free, open source), Burp Suite Enterprise, WebInspect.\n- Run DAST against a staging environment after deployment.\n- It crawls the app, sends malicious payloads, and reports vulnerabilities like XSS, SQLi.\n- **Critical**: DAST can modify data or trigger side effects. Use a disposable test environment or be careful with destructive scans.\n\n*DAST finds runtime issues that SAST cannot, like authentication bypass or misconfigured headers.*"
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "OWASP ZAP Baseline Scan (Docker)",
+            "content": "Run a quick DAST scan on your staging site:",
+            "codeSnippet": "docker run -t owasp/zap2docker-stable zap-baseline.py \\\n  -t https://staging.example.com \\\n  -g gen.conf \\\n  -r report.html",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "IAST & RASP: The Next Level 🚀",
+            "content": "- **IAST (Interactive)**: An agent inside the application (e.g., Contrast Assess) observes data flow during functional testing. It pinpoints the exact line of vulnerable code with low false positives.\n- **RASP (Runtime Application Self‑Protection)**: An agent that runs in production and blocks attacks in real time (e.g., SQL injection attempts). It's like a WAF inside the app.\n\n*IAST is for testing; RASP is for defense. Both require language‑specific agents.*"
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Building a Feedback Loop 🔄",
+            "content": "## Security Visibility in One Place\n\n- Send all findings (SAST, DAST, dependency scan) to a central dashboard (e.g., DefectDojo, AWS Security Hub, Azure Security Center).\n- **Triage**: Assign severity (Critical, High, Medium, Low). Set SLAs for remediation (e.g., Critical fixed within 24 hours).\n- **Automated tickets**: Integrate with Jira to create issues automatically.\n- **Trend analysis**: Are vulnerabilities decreasing over time? Celebrate the trend.\n\n*If security feels invisible, developers will ignore it. Make it measurable and visible.*"
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "DevSecOps Culture 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "Developers should be responsible for fixing security bugs found by automated scans, not the security team.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "DevSecOps means security is a shared responsibility. Developers own the fix; security team provides guidance and tools.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_8",
+            "type": "tip",
+            "title": "Gamify Security 🎮",
+            "content": "Run 'bug bounty' days internally. Award points for fixing issues. Make security engineering a fun challenge, not a chore."
+        }
+    ]
+}

@@ -1,0 +1,188 @@
+{
+    "id": "l5",
+    "chapterId": "ch_6",
+    "title": "Lambda Functions: Tiny Anonymous Helpers 🐑",
+    "description": "Write compact functions for filtering, mapping, and quick operations on the fly.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Functions",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "What's a Lambda?",
+            "content": "# An Anonymous, One‑Line Function\n\nSyntax: `lambda arguments: expression`\n\nIt can take any number of arguments but only has a single expression (which is returned automatically).\n\n```python\nsquare = lambda x: x**2\nprint(square(5))  # 25\n```\nEquivalent to:\n```python\ndef square(x):\n    return x**2\n```\nBut much shorter."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Lambda in Action",
+            "content": "Sort a list of IPs by the last octet:",
+            "codeSnippet": "ips = [\"192.168.1.10\", \"10.0.0.2\", \"172.16.0.1\"]\nips.sort(key=lambda ip: int(ip.split('.')[-1]))\nprint(ips)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Lambda Syntax 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Which lambda correctly doubles a number?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "lambda x: return x*2",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "lambda x: x*2",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "lambda (x): x*2",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Lambda returns the expression automatically; no `return` keyword allowed.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Common Use: `filter()`",
+            "content": "# Pick Items That Match a Condition\n\n`filter(function, iterable)` returns an iterator of items for which the function returns `True`.\n\n```python\nports = [22, 80, 23, 443, 8080, 21]\nopen_ports = filter(lambda p: p in [22, 80, 443], ports)\nprint(list(open_ports))  # [22, 80, 443]\n```\nThe lambda tests if each port is in the allowed list."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "filter() with Lambda",
+            "content": "Extract high‑number ports:",
+            "codeSnippet": "ports = [22, 1025, 3389, 5000, 8080]\nhigh = filter(lambda p: p > 1024, ports)\nprint(list(high))",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "filter() 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "What does `list(filter(lambda x: x%2==0, [1,2,3,4]))` return?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "[1,3]",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "[2,4]",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "[True, False, True, False]",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "filter keeps elements where the lambda returns True (even numbers).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "`map()` – Transform Every Item",
+            "content": "# Apply a Function to Each Element\n\n```python\nports_str = [\"22\", \"80\", \"443\"]\nports_int = list(map(int, ports_str))   # built-in int as function\nprint(ports_int)  # [22, 80, 443]\n```\nWith lambda:\n```python\nbanners = [\"SSH-2.0\", \"HTTP/1.1\", \"FTP\"]\nsizes = list(map(lambda b: len(b), banners))\nprint(sizes)  # [7, 8, 3]\n```"
+        },
+        {
+            "id": "s_l5_8",
+            "type": "code",
+            "title": "map() with Lambda",
+            "content": "Convert list of targets to URL formats:",
+            "codeSnippet": "hosts = [\"192.168.1.1\", \"10.0.0.2\"]\nurls = list(map(lambda h: f\"http://{h}:8080\", hosts))\nprint(urls)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_9",
+            "type": "quiz",
+            "title": "map() 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_3",
+                "type": "true_false",
+                "question": "`map()` returns a list by default.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "In Python 3, `map()` returns an iterator; convert with `list()` to see the list.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_10",
+            "type": "text",
+            "title": "Lambda in `sorted()` and `max()`",
+            "content": "# Custom Sorting Keys\n\n```python\nvulnerabilities = [\n    {\"name\":\"Heartbleed\", \"cvss\":7.5},\n    {\"name\":\"Shellshock\", \"cvss\":10.0},\n]\nworst = max(vulnerabilities, key=lambda v: v[\"cvss\"])\nprint(worst[\"name\"])  # Shellshock\n```\nLambdas excel when you need a quick key function."
+        },
+        {
+            "id": "s_l5_11",
+            "type": "code",
+            "title": "Sorted with Lambda",
+            "content": "Sort hosts by number of open ports (simulated):",
+            "codeSnippet": "hosts = [(\"host1\", 3), (\"host2\", 1), (\"host3\", 5)]\nhosts.sort(key=lambda x: x[1], reverse=True)\nprint(hosts)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_12",
+            "type": "quiz",
+            "title": "Lambda + Key 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_4",
+                "type": "multiple_choice",
+                "question": "What does `min(['a', 'bb', 'ccc'], key=len)` return?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "'a'",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "'bb'",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "'ccc'",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The key function `len` compares lengths; 'a' has length 1, minimum.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_13",
+            "type": "warning",
+            "title": "Lambda Limitations",
+            "content": "## Keep Them Simple\n\nLambdas are meant for **simple** expressions. If you need multiple statements, loops, or complex logic, use a regular `def` function. Readability trumps brevity."
+        },
+        {
+            "id": "s_l5_14",
+            "type": "text",
+            "title": "Next: Recursion & Self‑Documenting Code",
+            "content": "# The Final Function Frontier\n\nWe'll wrap up functions with recursion – functions that call themselves – and learn how to document our tools with docstrings."
+        }
+    ]
+}

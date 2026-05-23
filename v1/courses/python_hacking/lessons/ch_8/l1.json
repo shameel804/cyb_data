@@ -1,0 +1,197 @@
+{
+    "id": "l1",
+    "chapterId": "ch_8",
+    "title": "Why Errors Happen & Reading Tracebacks 🐞",
+    "description": "Understand the most common Python errors and learn to decipher tracebacks to fix bugs fast.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Error Handling",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Errors Are NOT Failures 💥",
+            "content": "# They're Your Code Trying to Talk\n\nEvery hacker sees red error messages. Don't panic – they contain everything you need to fix the problem.\n\nAn error (or **exception**) is Python's way of saying \"I can't do what you asked\". It's like a GPS recalculating when you take a wrong turn. Your job is to listen and adjust.\n\nIn this lesson, you'll learn the main error types and how to read the traceback."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "SyntaxError – The Grammar Police 👮",
+            "content": "# Python Couldn't Even Read Your Code\n\nA `SyntaxError` happens when Python can't parse your code because of a typo – missing colon, unclosed string, wrong indentation.\n\n```python\nif True\n    print(\"Hello\")  # SyntaxError: missing colon\n```\n*The error is often on the line before the one marked, or even earlier.*\n\n**Fix:** Python points to the exact spot where it got confused. Look for missing `:`, `()`, or quotes."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Syntax Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which of the following causes a SyntaxError?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "print(\"Hello\")",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "print(\"Hello\"  # missing closing parenthesis",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "print(\"Hello\")  # correct",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "An unclosed parenthesis makes the expression incomplete, causing a SyntaxError.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "NameError – 'What is this?' 🤷",
+            "content": "# You Used a Variable That Doesn't Exist\n\n```python\nprint(attack_payload)   # NameError: name 'attack_payload' is not defined\n```\nUsually a typo or variable used before assignment.\n\n**Fix:** Check spelling, ensure the variable was defined before this line."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "NameError Demo",
+            "content": "Try this (will error):",
+            "codeSnippet": "target = \"192.168.1.1\"\nprint(targt)  # typo!",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "NameError 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "A NameError occurs when you try to use a variable that hasn't been assigned a value yet.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "Exactly. Python doesn't recognize the name.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "TypeError – Mixing Oil and Water 🛢️+💧",
+            "content": "# Wrong Type of Operation\n\n```python\n\"Port: \" + 80   # TypeError: can only concatenate str (not \"int\") to str\n```\nYou tried to add a string and an integer. Python won't guess.\n\n**Fix:** Convert with `str()`, `int()`, etc., or use f‑strings.\n\nOther examples: calling a non‑callable object, passing wrong number of arguments."
+        },
+        {
+            "id": "s_l1_8",
+            "type": "quiz",
+            "title": "TypeError 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_3",
+                "type": "multiple_choice",
+                "question": "What will `len(42)` raise?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "SyntaxError",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "TypeError",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "ValueError",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "len() expects a sequence; an integer is not iterable, causing TypeError.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_9",
+            "type": "text",
+            "title": "ValueError – Right Type, Wrong Value 📉",
+            "content": "# The Data Makes No Sense\n\n```python\nint(\"abc\")   # ValueError: invalid literal for int() with base 10: 'abc'\n```\nThe string is the correct type (str) but its content can't be converted.\n\nAnother case: `math.sqrt(-1)` raises ValueError (domain error).\n\n**Fix:** Validate data before conversion."
+        },
+        {
+            "id": "s_l1_10",
+            "type": "code",
+            "title": "Safe Conversion Pattern",
+            "content": "Check before converting:",
+            "codeSnippet": "port_str = \"8080\"\nif port_str.isdigit():\n    port = int(port_str)\nelse:\n    print(\"Invalid port\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_11",
+            "type": "quiz",
+            "title": "ValueError 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_4",
+                "type": "true_false",
+                "question": "`float(\"3.14.15\")` will raise a ValueError because the string has two dots.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "Yes, that's not a valid float literal.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_12",
+            "type": "text",
+            "title": "Other Common Exceptions",
+            "content": "# Quick Reference\n\n* **ZeroDivisionError** – dividing by 0.\n* **FileNotFoundError** – opening a non‑existent file.\n* **IndexError** – list index out of range.\n* **KeyError** – dictionary key not found.\n* **AttributeError** – accessing a non‑existent attribute.\n* **ImportError** – module not found.\n\nEach tells you exactly what went wrong."
+        },
+        {
+            "id": "s_l1_13",
+            "type": "text",
+            "title": "The Anatomy of a Traceback 🔍",
+            "content": "# Read from Bottom to Top\n\n```\nTraceback (most recent call last):\n  File \"scan.py\", line 5, in <module>\n    result = 100 / port_count\nZeroDivisionError: division by zero\n```\n\n1. **Last line** tells the error type and message.\n2. Above that, the exact line of code that failed, and its location.\n3. The traceback stack shows the path of execution (most recent last).\n\nFocus on the last file/line listed – that's your bug."
+        },
+        {
+            "id": "s_l1_14",
+            "type": "quiz",
+            "title": "Traceback Reading 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_5",
+                "type": "multiple_choice",
+                "question": "In the traceback above, what is the error type?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "NameError",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "ZeroDivisionError",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "FileNotFoundError",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The last line says ZeroDivisionError.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_15",
+            "type": "text",
+            "title": "You're Now Fluent in Error‑ese",
+            "content": "# Next: Catching Them Before They Crash\n\nNow that you can identify errors, let's stop them from killing your script with `try` and `except`."
+        }
+    ]
+}

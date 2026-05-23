@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_10",
+    "title": "Create an AWS Config Rule with Auto‑Remediation",
+    "description": "Design a Config rule that detects public S3 buckets and automatically makes them private.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario\nYour organization mandates that no S3 bucket can have public read access. You need to automatically detect and fix this.\n\n### Your Task\nDesign a solution using AWS Config and AWS Systems Manager Automation that:\n1. Uses a managed Config rule to detect buckets that allow public read.\n2. When the rule becomes NON_COMPLIANT, triggers an auto‑remediation action that sets the bucket’s Block Public Access to block all public access (or applies a private bucket policy).\n\nDescribe the components and flow. You may write a high‑level architecture (no code needed), but you must specify:\n- Which managed Config rule to use.\n- The remediation action (e.g., SSM Automation document `AWS-DisableS3BucketPublicReadWrite`).\n- The event bridge rule or Config auto‑remediation configuration.\n\nExplain the security benefit of automating this instead of manual review.",
+    "hints": [
+        "Use the `s3-bucket-public-read-prohibited` managed rule.",
+        "In Config, you can set up auto‑remediation with Systems Manager Automation `AWS-DisableS3BucketPublicReadWrite`.",
+        "This can be configured directly in the AWS Config console under the rule's remediation action."
+    ],
+    "expectedOutput": "A clear description of the rule, remediation, and configuration. Mention the SSM document. Explain that automation ensures immediate response, reducing the window of exposure.",
+    "solutionCode": "1. **Managed Config Rule**: `s3-bucket-public-read-prohibited`. This rule evaluates all S3 buckets and marks them NON_COMPLIANT if they allow public read access.\n2. **Auto‑Remediation**: In the Config rule settings, configure auto‑remediation. Select the Systems Manager Automation document `AWS-DisableS3BucketPublicReadWrite`. This document automatically applies `BlockPublicAcls: true` and `BlockPublicPolicy: true` to the non‑compliant bucket, effectively removing public access.\n3. **Trigger**: When Config evaluates and detects NON_COMPLIANT, it automatically executes the SSM document (using a service‑linked role). No custom EventBridge rule is required if using Config's native remediation feature; but you can also use an EventBridge rule for custom actions.\n\n**Security benefit**: Manual review can delay fixing public buckets for hours or days, during which data can be exfiltrated. Automation reduces the risk window to minutes and ensures consistent enforcement."
+}

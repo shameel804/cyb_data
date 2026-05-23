@@ -1,0 +1,118 @@
+{
+    "id": "l2",
+    "chapterId": "ch_12",
+    "title": "sed Editing Commands & The Hold Space 🧠",
+    "description": "Use d, a, i, c, and the powerful hold space to perform multi‑line transformations.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "sed Advanced",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Basic Line Operations 🛠️",
+            "content": "## Delete, Append, Insert, Change\n\n- `d` – delete pattern space; start next cycle.\n- `a\\` – append text after the line.\n- `i\\` – insert text before the line.\n- `c\\` – replace the line(s) with text.\n\nThese are the classic `sed` editing commands used with addresses."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Append and Insert",
+            "content": "Add a header before line 1 and footer after last line:",
+            "codeSnippet": "sed '1i\\START' file.txt | sed '$a\\END'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "fill_blank",
+                "question": "Which sed command replaces an entire addressed line?",
+                "options": [],
+                "correctAnswer": "c",
+                "explanation": "`c\\text` changes (replaces) the matched line(s) with the given text.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "The Pattern Space vs. The Hold Space 🧠",
+            "content": "## Dual Buffers\n\n`sed` has two internal buffers:\n- **Pattern space** – holds the current line (or lines) being processed.\n- **Hold space** – temporary storage that persists across lines.\n\nCommands:\n- `h` – copy pattern space to hold space.\n- `H` – append pattern space to hold space (with newline).\n- `g` – copy hold space to pattern space.\n- `G` – append hold space to pattern space (with newline).\n- `x` – exchange pattern and hold spaces."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Reverse Lines Using Hold Space",
+            "content": "Classic recipe:",
+            "codeSnippet": "sed -n '1!G;h;$p' file",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "What does `G` do in sed?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Copy hold space to pattern space",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Append hold space to pattern space",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Move pattern space to hold space",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Delete hold space",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`G` appends the hold space (with a newline) to the pattern space.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Multi‑line Joining with `N` 🔗",
+            "content": "## Bring Next Line into Pattern Space\n\n`N` reads the next line and appends it to the pattern space (separated by a newline). This lets you process pairs of lines together.\n\nExample: join lines ending with backslash.\n```bash\nsed ':a;/\\\\$/N;s/\\\\\\n//;ta'\n```"
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "Join Backslash‑Continuation",
+            "content": "Merge lines that end with `\\`:",
+            "codeSnippet": "echo -e \"line1\\\\\\nline2\" | sed ':a;/\\\\$/N;s/\\\\\\n//;ta'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_9",
+            "type": "text",
+            "title": "Branching with `:` and `t` 🏷️",
+            "content": "## Labels and Conditional Jumps\n\n- `:label` – define a label.\n- `b label` – unconditional jump.\n- `t label` – jump if a substitution was made since last input line or `t`.\n\nThis enables loops inside sed, like the backslash‑joining example."
+        },
+        {
+            "id": "s_l2_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `sed -n '1h;1!H;${g;s/\\n/ /g;p}'` to join all lines into one. Hold space accumulates lines, then on last line swap and remove newlines."
+        }
+    ]
+}

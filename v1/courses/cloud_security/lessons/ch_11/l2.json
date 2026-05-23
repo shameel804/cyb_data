@@ -1,0 +1,111 @@
+{
+    "id": "l2",
+    "chapterId": "ch_11",
+    "title": "The AWS Well‑Architected Framework 🔍",
+    "description": "Deep dive into the Security Pillar and how it guides secure design on AWS.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "AWS Well‑Architected: Six Pillars 🏛️",
+            "content": "# A Holistic Approach to the Cloud\n\nThe AWS Well‑Architected Framework helps you build secure, high‑performing, resilient, and efficient infrastructure. It consists of six pillars:\n\n- **Operational Excellence** – Run and monitor systems.\n- **Security** – Protect data, systems, and assets.\n- **Reliability** – Recover from failures.\n- **Performance Efficiency** – Use resources effectively.\n- **Cost Optimization** – Avoid unnecessary spend.\n- **Sustainability** – Minimize environmental impact.\n\n*Today, we’ll zoom in on the Security Pillar, but remember: they’re interconnected. A security control can impact performance, and a cost decision can affect security.*"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Framework Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which pillar of the AWS Well‑Architected Framework is directly concerned with IAM policies and encryption?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Reliability",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Security",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Cost Optimization",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Operational Excellence",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The Security pillar covers identity, data protection, infrastructure protection, detection, and incident response.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Security Pillar: Five Focus Areas 🔐",
+            "content": "## A Deep Dive\n\n1. **Identity & Access Management**\n   - Use IAM roles, not long‑term credentials.\n   - Centralize identity with AWS IAM Identity Center (SSO) or federation.\n   - Enforce MFA and strong password policies.\n\n2. **Detection**\n   - Enable CloudTrail across all accounts.\n   - Use GuardDuty and Security Hub.\n   - Set up alerts for unusual activity.\n\n3. **Infrastructure Protection**\n   - Design VPCs with private subnets, security groups, and NACLs.\n   - Use AWS WAF and Shield for application and DDoS protection.\n   - Harden OS with golden images.\n\n4. **Data Protection**\n   - Encrypt data at rest (KMS) and in transit (TLS).\n   - Classify data and use DLP (Macie).\n   - Implement backup and restore.\n\n5. **Incident Response**\n   - Pre‑define roles and playbooks.\n   - Isolate instances with automated scripts.\n   - Conduct forensics with snapshots.\n\n*Each area maps to topics we’ve already covered – the framework ties them together.*"
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Design Principles in the Security Pillar 🧱",
+            "content": "AWS defines seven design principles for security:\n\n1. **Implement a strong identity foundation**: Least privilege, central identity.\n2. **Enable traceability**: Log everything, monitor, alert.\n3. **Apply security at all layers**: Network, compute, application, data.\n4. **Automate security best practices**: IaC, auto‑remediation.\n5. **Protect data in transit and at rest**: Encryption, TLS, tokenization.\n6. **Keep people away from data**: Use roles for machines; eliminate direct access.\n7. **Prepare for security events**: Incident response, game days.\n\n*These aren’t just suggestions; they’re the distilled wisdom of thousands of AWS security reviews.*"
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "Design Principle 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "Which design principle recommends using IAM roles for EC2 instances instead of embedding access keys?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Enable traceability",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Implement a strong identity foundation",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Keep people away from data",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Automate security best practices",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A strong identity foundation means using temporary credentials and centralized identity management.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "How to Use the Framework in Practice 📝",
+            "content": "## The Well‑Architected Review\n\n1. **Define the workload** – Identify what you’re reviewing (an application, a data lake).\n2. **Answer the questions** – The Framework provides questions for each pillar (e.g., ‘How do you manage credentials?’).\n3. **Identify risks** – High‑risk items (HRIs) and medium‑risk items (MRIs) are flagged.\n4. **Remediate** – Fix the findings, ideally via automation.\n\n*AWS provides the **Well‑Architected Tool** in the console to guide you through this process and generate reports.*"
+        },
+        {
+            "id": "s_l2_7",
+            "type": "tip",
+            "title": "Use the Lens Extensions 🚀",
+            "content": "The framework has specialized ‘Lenses’ like the **Serverless Lens**, **SaaS Lens**, and **Financial Services Lens** that add extra questions. For security, the **Security Lens** is being developed as a standalone deep dive."
+        }
+    ]
+}

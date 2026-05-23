@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_2",
+    "title": "Library Explorer Script",
+    "description": "Write a script that demonstrates two hacking libraries and save requirements.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Inside a project folder (e.g., `library_demo`), activate a virtual environment and install `requests` and `beautifulsoup4`. Then write a script `demo.py` that:\n- Imports both libraries.\n- Uses `requests` to fetch the content of `http://example.com`.\n- Prints the HTTP status code.\n- Parses the page title (the text inside `<title>`) using BeautifulSoup.\n- Prints the title.\n\nFinally, generate a `requirements.txt` for this project. Run the script to confirm it works.",
+    "hints": [
+        "`response = requests.get('http://example.com')` then `response.status_code`.",
+        "Soup object: `soup = BeautifulSoup(response.text, 'html.parser')`, title: `soup.title.string`.",
+        "If you get a 'module not found' error, ensure the venv is activated and packages installed."
+    ],
+    "expectedOutput": "Status code: 200\nTitle: Example Domain",
+    "solutionCode": "import requests\nfrom bs4 import BeautifulSoup\n\nresponse = requests.get('http://example.com')\nprint(f\"Status code: {response.status_code}\")\n\nsoup = BeautifulSoup(response.text, 'html.parser')\nprint(f\"Title: {soup.title.string}\")"
+}

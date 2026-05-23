@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_10",
+    "title": "Simple TCP Port Checker",
+    "description": "Write a script that checks if a specific port on a given host is open using a socket.",
+    "estimatedMinutes": 10,
+    "problemStatement": "Create a script `check_port.py` that takes a host and port (hardcoded for now, e.g., `'scanme.nmap.org'` and `80`). Use the `socket` module to attempt a TCP connection. Set a timeout of 3 seconds. Print \"Port X is OPEN\" if the connection succeeds, otherwise print \"Port X is CLOSED or FILTERED\". Use `connect_ex()` to avoid exceptions. Close the socket properly.",
+    "hints": [
+        "Create socket with `socket.socket(socket.AF_INET, socket.SOCK_STREAM)`.",
+        "Set timeout with `s.settimeout(3)`.",
+        "Use `s.connect_ex((host, port))`; check if return value == 0.",
+        "Wrap in try/finally to ensure close."
+    ],
+    "expectedOutput": "Port 80 is OPEN (or CLOSED/FILTERED if unreachable).",
+    "solutionCode": "import socket\n\nhost = 'scanme.nmap.org'\nport = 80\n\ns = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\ns.settimeout(3)\ntry:\n    result = s.connect_ex((host, port))\n    if result == 0:\n        print(f\"Port {port} is OPEN\")\n    else:\n        print(f\"Port {port} is CLOSED or FILTERED\")\nfinally:\n    s.close()\n"
+}

@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_8",
+    "title": "Custom Authentication Exception",
+    "description": "Create a custom exception and a login function that raises it on wrong credentials, then catch it.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Define a custom exception `InvalidCredentialsError` that inherits from `Exception`. Create a function `login(username, password)` that checks against a hardcoded dictionary `{'admin': 'secr3t', 'user': 'pass'}`. If the username doesn't exist, raise `InvalidCredentialsError` with message \"Unknown user\". If password is wrong, raise with message \"Wrong password\". On success, return True.\n\nIn the main block, test the function with a list of attempts (e.g., `[('admin','secr3t'), ('root','toor'), ('admin','wrong')]`). For each attempt, call `login` inside a try/except and print the result: either \"Login successful\" or \"Login failed: <error message>\".",
+    "hints": [
+        "Class definition: `class InvalidCredentialsError(Exception): pass`",
+        "Use `raise InvalidCredentialsError('Unknown user')`.",
+        "In loop, catch `InvalidCredentialsError as e` and print `e`.",
+        "No need to break; just process each attempt."
+    ],
+    "expectedOutput": "Attempt ('admin', 'secr3t'): Login successful\nAttempt ('root', 'toor'): Login failed: Unknown user\nAttempt ('admin', 'wrong'): Login failed: Wrong password",
+    "solutionCode": "class InvalidCredentialsError(Exception):\n    pass\n\ndef login(username, password):\n    users = {'admin': 'secr3t', 'user': 'pass'}\n    if username not in users:\n        raise InvalidCredentialsError('Unknown user')\n    if users[username] != password:\n        raise InvalidCredentialsError('Wrong password')\n    return True\n\nattempts = [('admin','secr3t'), ('root','toor'), ('admin','wrong')]\nfor u, p in attempts:\n    try:\n        login(u, p)\n        print(f\"Attempt {u}: Login successful\")\n    except InvalidCredentialsError as e:\n        print(f\"Attempt {u}: Login failed: {e}\")\n"
+}

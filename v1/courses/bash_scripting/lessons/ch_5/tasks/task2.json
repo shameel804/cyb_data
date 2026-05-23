@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_5",
+    "title": "Log Watcher",
+    "description": "Create a script that tails a log file and uses a while loop to search for a keyword, then exits.",
+    "estimatedMinutes": 15,
+    "problemStatement": "As a sysadmin, you need to monitor a log file in real time and trigger an action when a specific word appears. Write `watchlog.sh` that:\n\n1. Takes a log file path as the first argument.\n2. Checks if the file exists and is readable; if not, print an error and exit.\n3. Prompts the user for a keyword to watch for.\n4. Runs `tail -f` on the log file (use a named pipe or background process) or, more simply, use `while read` loop but simulate watching by reading from a growing file? Actually `tail -F` can be piped into a while loop: `tail -F \"$1\" | while IFS= read -r line; do ... done`.\n5. In the loop, check if each line contains the keyword using `[[ $line == *$keyword* ]]`.\n6. When the keyword is found, print \"ALERT: Found '$keyword' in line: $line\" and exit the loop.\n7. After the loop, print \"Watch ended.\"\n\nMake sure the script can be stopped with Ctrl+C and handles pipe interruption gracefully.",
+    "hints": [
+        "Use `if [ ! -f \"$1\" ]; then ...` to validate file.",
+        "Use `tail -F \"$1\" | while IFS= read -r line; do ... done`.",
+        "Inside the loop, `if [[ $line == *$keyword* ]]; then ...; fi`.",
+        "When breaking out of a piped `while`, the main script might not exit. Use `break` and maybe `pkill -P $$ tail` to clean up. For simplicity, just `exit 0` after alert."
+    ],
+    "expectedOutput": "Enter keyword to watch: ERROR\nALERT: Found 'ERROR' in line: 2026-05-22 10:15:01 ERROR Disk full\nWatch ended.",
+    "solutionCode": "#!/bin/bash\n# Log watcher – requires a log file argument\n\nlogfile=\"$1\"\nif [ ! -f \"$logfile\" ]; then\n  echo \"Error: file '$logfile' not found.\"\n  exit 1\nfi\n\nread -p \"Enter keyword to watch: \" keyword\n\ntail -F \"$logfile\" | while IFS= read -r line; do\n  if [[ $line == *$keyword* ]]; then\n    echo \"ALERT: Found '$keyword' in line: $line\"\n    kill $PPID 2>/dev/null  # kill the tail process; this kills the script’s parent?\n    exit 0\n  fi\ndone\n\necho \"Watch ended.\""
+}

@@ -1,0 +1,118 @@
+{
+    "id": "l4",
+    "chapterId": "ch_7",
+    "title": "Transforming Text with tr & sed 🌀",
+    "description": "Translate characters with tr and perform powerful search‑replace operations with sed.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Stream Editing",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "`tr` – Translate Characters 🔄",
+            "content": "## A Simple Character Swapper\n\n`tr` reads from stdin and replaces or deletes characters. It works on single characters, not strings.\n\n- `tr 'a-z' 'A-Z'` – convert lower to uppercase.\n- `tr -d ' '` – delete all spaces.\n- `tr -s ' '` – squeeze repeated spaces into one.\n\nExample: `echo \"Hello World\" | tr '[:lower:]' '[:upper:]'`"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Uppercase Everything",
+            "content": "Convert text file content to uppercase:",
+            "codeSnippet": "echo \"bash is fun\" | tr 'a-z' 'A-Z'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which `tr` flag removes characters?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "-d",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "-s",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "-r",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "-c",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-d` stands for delete. `-s` squeezes repeats.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "`sed` – Stream Editor ✨",
+            "content": "## Much More Powerful\n\n`sed` can search and replace strings, delete lines, insert text, and more. The most common use is substitution:\n\n```bash\nsed 's/old/new/' file       # replace first occurrence on each line\nsed 's/old/new/g' file      # replace all occurrences (global)\n```\nIt can work on files or from a pipe."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Basic sed Substitution",
+            "content": "Replace 'hello' with 'hi' in a string:",
+            "codeSnippet": "echo \"hello world hello\" | sed 's/hello/hi/'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "fill_blank",
+                "question": "What suffix makes sed substitution replace *every* match on a line?",
+                "options": [],
+                "correctAnswer": "g",
+                "explanation": "The `g` flag (global) replaces all occurrences, not just the first.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "More sed Tricks 🎩",
+            "content": "## Beyond Substitute\n\n- Delete lines: `sed '3d' file` (delete line 3).\n- Print only specific lines: `sed -n '5,10p' file`.\n- In‑place editing: `sed -i 's/old/new/g' file` (careful!).\n- Use a different delimiter if your string contains slashes: `sed 's|path/to|new/path|'`."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "code",
+            "title": "Delete Lines with sed",
+            "content": "Remove line 2 from output:",
+            "codeSnippet": "seq 1 5 | sed '2d'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_9",
+            "type": "warning",
+            "title": "⚠️ sed -i Danger",
+            "content": "`-i` modifies the file in place. Always test without `-i` first, or use `-i.bak` to create a backup."
+        },
+        {
+            "id": "s_l4_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "You can chain multiple sed commands with `-e` or by separating with `;`: `sed -e 's/a/A/' -e 's/b/B/'`"
+        }
+    ]
+}

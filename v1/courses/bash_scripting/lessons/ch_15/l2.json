@@ -1,0 +1,117 @@
+{
+    "id": "l2",
+    "chapterId": "ch_15",
+    "title": "Core Functions & Error Handling 🏗️",
+    "description": "Implement backup, logging, disk checking, and robust error recovery – the backbone of the tool.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Implementation",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Loading Configuration 🧾",
+            "content": "## Reading key=value Safely\n\nWe'll use a `while read` loop with `IFS='='` to parse the config file, ignoring empty lines and comments.\n\n```bash\nwhile IFS='=' read -r key value; do\n  [[ -z \"$key\" || \"$key\" =~ ^[[:space:]]*# ]] && continue\n  key=$(echo \"$key\" | xargs)\n  value=$(echo \"$value\" | xargs)\n  declare -g \"$key=$value\"\ndone < \"$CONFIG\"\n```\n`declare -g` sets the variable globally (needed if inside function)."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Config Loader Function",
+            "content": "Implement `load_config`:",
+            "codeSnippet": "load_config() {\n  while IFS='=' read -r key value; do\n    [[ -z \"$key\" || \"$key\" =~ ^[[:space:]]*# ]] && continue\n    key=$(echo \"$key\" | xargs)\n    value=$(echo \"$value\" | xargs)\n    declare -g \"$key=$value\"\n  done < \"$CONFIG\"\n}",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Why use `declare -g` inside the config loading function?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To make variables local to the function",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To ensure variables are available globally after the function ends",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It's required for all variable assignments",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To prevent word splitting",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Without `-g`, the `declare` would create a local variable (inside function). `-g` forces it into the global scope.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Logging with Severity Levels 📝",
+            "content": "## A Reusable `log` Function\n\nWe'll define `log INFO \"message\"`, `log ERROR \"message\"`. The function will:\n- Prepend timestamp and level.\n- Write to stdout (which can be redirected by cron to a file).\n- Also append to a dedicated log file if `LOGFILE` is set.\n\n```bash\nlog() {\n  local level=\"$1\"; shift\n  local msg=\"[$(date +'%Y-%m-%d %T')] [$level] $*\"\n  echo \"$msg\"\n  [ -n \"${LOGFILE:-}\" ] && echo \"$msg\" >> \"$LOGFILE\"\n}\n```"
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Disk Space Check",
+            "content": "Prevent backup if disk is too full:\n```bash\ncheck_disk() {\n  local pct_used=$(df \"$BACKUP_DEST\" | awk 'NR==2 {print $5}' | tr -d '%')\n  local free=$((100 - pct_used))\n  if [ \"$free\" -lt \"$THRESHOLD_PCT\" ]; then\n    log ERROR \"Low disk space: ${free}% free, threshold ${THRESHOLD_PCT}%\"\n    send_alert \"Backup aborted – low disk\"\n    exit 1\n  fi\n  log INFO \"Disk space OK (${free}% free)\"\n}\n```",
+            "codeSnippet": "check_disk() {\n  local pct_used=$(df \"$1\" | awk 'NR==2 {print $5}' | tr -d '%')\n  local free=$((100 - pct_used))\n  if [ \"$free\" -lt \"${2:-10}\" ]; then\n    log ERROR \"Low disk space: ${free}% free\"\n    return 1\n  fi\n  log INFO \"Disk space OK: ${free}% free\"\n  return 0\n}",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "The `df` command's `--output` option is the most portable way to get used percentage.",
+                "correctAnswer": false,
+                "explanation": "`--output` is a GNU extension; the `awk` method works on both GNU and BSD (macOS) `df`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "The Backup Function 🗜️",
+            "content": "## Create Compressed Archive\n\nFor each directory in `$BACKUP_SRC`:\n- Use `tar -czf \"$BACKUP_DEST/backup-$(hostname)-$(date +%Y%m%d-%H%M%S).tar.gz\" -C \"$(dirname \"$dir\")\" \"$(basename \"$dir\")\"`\n- Handle errors: if tar fails, log and send alert.\n- Use `||` to trigger failure action.\n\nThis preserves directory structure and compresses on the fly."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "do_backup Implementation",
+            "content": "Example:",
+            "codeSnippet": "do_backup() {\n  for dir in $BACKUP_SRC; do\n    local name=\"backup-$(hostname)-$(date +%Y%m%d-%H%M%S).tar.gz\"\n    if tar -czf \"$BACKUP_DEST/$name\" -C \"$(dirname \"$dir\")\" \"$(basename \"$dir\")\"; then\n      log INFO \"Backed up $dir to $name\"\n    else\n      log ERROR \"Failed to backup $dir\"\n      send_alert \"Backup failed for $dir\"\n      return 1\n    fi\n  done\n}",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_9",
+            "type": "text",
+            "title": "Rotating Old Backups 🧹",
+            "content": "## Keep Only the Newest N\n\n- List backup files by modification time (`ls -t`).\n- Skip the first `$RETENTION` files (the newest).\n- Delete the rest.\n\n```bash\nrotate_backups() {\n  local files=($(ls -t \"$BACKUP_DEST\"/backup-*.tar.gz 2>/dev/null))\n  for ((i=$RETENTION; i<${#files[@]}; i++)); do\n    rm -f \"${files[i]}\" && log INFO \"Rotated: removed ${files[i]}\"\n  done\n}\n```"
+        },
+        {
+            "id": "s_l2_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Test your rotation logic with a small retention number and dummy files before trusting it with real data."
+        }
+    ]
+}

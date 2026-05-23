@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_2",
+    "title": "Create and Activate Your Hacking Lab",
+    "description": "Set up a virtual environment named 'hacklab' and install the requests library.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Perform the following steps in your terminal (Command Prompt, PowerShell, or macOS/Linux terminal):\n\n1. Navigate to a folder where you want to store your hacking projects (e.g., `Documents/hacking_projects`).\n2. Create a virtual environment called `hacklab` using Python's `venv` module.\n3. Activate the environment (remember the command differs by OS).\n4. Verify activation by checking the prompt and running `pip list` – it should show a minimal set of packages.\n5. Install the `requests` library using `pip`.\n6. Run `pip list` again and confirm `requests` appears.\n7. Create a `requirements.txt` file for this environment with `pip freeze > requirements.txt`.\n8. Deactivate the environment.\n\nProvide the exact commands you used and the output of the final `pip list`.",
+    "hints": [
+        "On Windows, the activation script is inside `hacklab\\Scripts\\activate`. On macOS/Linux, `source hacklab/bin/activate`.",
+        "If `pip` is not recognized, try `python -m pip install requests`.",
+        "After deactivation, `pip list` will show the global packages, not the venv ones."
+    ],
+    "expectedOutput": "A terminal session showing the creation, activation, installation, and deactivation steps, with `pip list` displaying `requests` while activated.",
+    "solutionCode": "# Example on macOS/Linux:\nmkdir hacking_projects\ncd hacking_projects\npython3 -m venv hacklab\nsource hacklab/bin/activate\npip list\npip install requests\npip list\npip freeze > requirements.txt\ndeactivate"
+}

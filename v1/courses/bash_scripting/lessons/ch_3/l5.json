@@ -1,0 +1,118 @@
+{
+    "id": "l5",
+    "chapterId": "ch_3",
+    "title": "Command Substitution & Arithmetic 🧮",
+    "description": "Store command output in variables and perform basic maths – the first step to dynamic scripts.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Dynamic Data",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Command Substitution 🏭",
+            "content": "## Capture Output into Variables\n\nCommand substitution lets you run a command and use its output as a string.\n\nTwo syntaxes:\n- `$(command)` – modern, preferred.\n- `` `command` `` – older, backtick style (harder to nest).\n\nExample:\n```bash\nnow=$(date)\necho \"The time is $now\"\n```"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Store Date",
+            "content": "Capture the current date:",
+            "codeSnippet": "today=$(date +%Y-%m-%d)\necho \"Today is $today\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Which syntax is the modern way to perform command substitution?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "`command`",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "$(command)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "${command}",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "<(command)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`$(...)` is the recommended modern syntax; backticks are older and can't easily be nested.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Arithmetic Expansion 🔢",
+            "content": "## Bash Can Do Maths!\n\nBash isn't a calculator, but you can do integer arithmetic with `$(( expression ))`.\n\nOperators: `+`, `-`, `*`, `/`, `%` (modulo)\n\n```bash\nresult=$(( 5 + 3 ))\necho $result   # 8\n```\n\nNo spaces needed inside `(( ))`, but they're fine. Variables don't need `$` inside `(( ))`."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Simple Maths",
+            "content": "Add two numbers:",
+            "codeSnippet": "a=10\nb=7\nsum=$((a + b))\necho \"Sum: $sum\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "fill_blank",
+                "question": "What is the value of `$(( 10 / 3 ))` in Bash?",
+                "options": [],
+                "correctAnswer": "3",
+                "explanation": "Bash does integer division. 10 / 3 = 3 (remainder discarded).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Combining Substitution and Arithmetic 🧬",
+            "content": "## Dynamic Calculations\n\nYou can mix command substitution and arithmetic:\n\n```bash\ncount=$(ls | wc -l)\necho \"You have $count files.\"\ndouble=$((count * 2))\necho \"Double that is $double.\"\n```\nThis makes scripts smart!"
+        },
+        {
+            "id": "s_l5_8",
+            "type": "code",
+            "title": "File Counter",
+            "content": "Count files in current directory and double it:",
+            "codeSnippet": "files=$(ls | wc -l)\necho \"Files: $files\"\necho \"Doubled: $((files * 2))\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_9",
+            "type": "warning",
+            "title": "⚠️ Floating Point",
+            "content": "Bash arithmetic is integer‑only. For decimals, use `bc` or `awk`. Example: `echo \"scale=2; 5/3\" | bc`."
+        },
+        {
+            "id": "s_l5_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Increment/Decrement\nYou can use `((var++))` or `((var--))` to increase/decrease a variable by 1, no `$` needed."
+        }
+    ]
+}

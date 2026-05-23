@@ -1,0 +1,259 @@
+{
+    "id": "quiz_ch_11",
+    "chapterId": "ch_11",
+    "title": "Chapter 11 Quiz",
+    "description": "Test your knowledge of regular expressions and grep mastery!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the default regex mode for `grep`?",
+            "options": [
+                "Extended Regular Expressions (ERE)",
+                "Basic Regular Expressions (BRE)",
+                "Perl Compatible Regular Expressions (PCRE)",
+                "No regex, only literal matching"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Without `-E`, `grep` uses BRE. Use `-E` for extended features."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What does the regex `^Error` match?",
+            "options": [
+                "Lines ending with 'Error'",
+                "Lines that contain the word 'Error' anywhere",
+                "Lines that start with 'Error'",
+                "Lines without 'Error'"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`^` anchors the pattern to the beginning of a line."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which character matches any single character (except newline) in regex?",
+            "options": [
+                "*",
+                "?",
+                ".",
+                "+"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The dot `.` is a wildcard for one character."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "How do you match a literal dot (period) in regex?",
+            "options": [
+                "\\.",
+                ".",
+                "dot",
+                "[.]"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Escaping with backslash `\\.` matches a real dot."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What does `[^a-z]` match?",
+            "options": [
+                "Any lowercase letter",
+                "Any character that is NOT a lowercase letter",
+                "A literal caret followed by a-z",
+                "An uppercase letter"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`^` inside brackets negates the class."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which regex matches either 'cat' or 'dog'?",
+            "options": [
+                "cat|dog",
+                "(cat|dog)",
+                "Both A and B",
+                "cat&dog"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The pipe `|` is alternation; parentheses are optional but clarify scope."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What does `a+` match?",
+            "options": [
+                "Zero or more 'a' characters",
+                "One or more 'a' characters",
+                "Exactly one 'a'",
+                "An optional 'a'"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`+` quantifier means 'one or more'."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which regex matches exactly five digits?",
+            "options": [
+                "[0-9]{5}",
+                "[0-9]{4,5}",
+                "[0-9]+",
+                "[0-9]*"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`{5}` means exactly five repetitions of the preceding character class."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What does `(ab){2,}` match?",
+            "options": [
+                "abab",
+                "ab twice, then any character",
+                "Two or more consecutive 'ab' pairs",
+                "ab followed by 2"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The group `(ab)` repeated at least twice, so 'abab', 'ababab', etc."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which backreference matches the first captured group?",
+            "options": [
+                "\\0",
+                "\\1",
+                "\\g1",
+                "$1"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`\\1` refers to the first parenthesized group."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What does `grep -i 'error' log` do?",
+            "options": [
+                "Inverts the match, showing non‑error lines",
+                "Searches case‑insensitively",
+                "Counts matching lines",
+                "Shows only filenames with matches"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-i` makes the search ignore case."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which grep flag outputs only the matching part of the line?",
+            "options": [
+                "-v",
+                "-o",
+                "-l",
+                "-c"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-o` stands for 'only matching'."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "How do you search recursively for 'TODO' in all files under current directory?",
+            "options": [
+                "grep -l TODO .",
+                "grep -r TODO .",
+                "grep -o TODO .",
+                "grep -R TODO"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-r` or `-R` enables recursive directory search."
+        },
+        {
+            "id": "q14",
+            "type": "true_false",
+            "question": "The regex `^$` matches any empty line.",
+            "correctAnswer": true,
+            "explanation": "Yes, start immediately followed by end means a line with nothing in between."
+        },
+        {
+            "id": "q15",
+            "type": "fill_blank",
+            "question": "The regex that matches lines beginning with a digit: `^___`",
+            "options": [],
+            "correctAnswer": "[0-9]",
+            "explanation": "`^` anchors to start, `[0-9]` matches a digit."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which pattern matches words that start with 's' and end with 'ing'?",
+            "options": [
+                "s.*ing",
+                "s.ing",
+                "s.+ing",
+                "Both A and C"
+            ],
+            "correctAnswer": 3,
+            "explanation": "`s.*ing` allows zero or more characters; `s.+ing` requires at least one. Both match the description."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What is the effect of `grep -c`?",
+            "options": [
+                "Shows context lines",
+                "Counts the number of matching lines",
+                "Checks syntax only",
+                "Compresses the output"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-c` prints the count of matching lines."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "How can you match a literal asterisk in a `grep -E` pattern?",
+            "options": [
+                "\\*",
+                "*",
+                "[*]",
+                "Both A and C"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Escaping with backslash or putting it in a character class both work."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What does `grep -v '^#' config` do?",
+            "options": [
+                "Shows lines that start with #",
+                "Shows lines that do NOT start with #",
+                "Inverts the file",
+                "Removes comments"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-v` inverts the match, so lines not beginning with `#` are printed."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which Bash construct allows regex matching in an `if` condition?",
+            "options": [
+                "`if [ $str =~ regex ]`",
+                "`if [[ $str =~ regex ]]`",
+                "`if ( $str =~ regex )`",
+                "`if [[ $str = regex ]]`"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The `=~` operator inside `[[ ]]` performs regular expression matching."
+        }
+    ]
+}

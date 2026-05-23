@@ -1,0 +1,129 @@
+{
+    "id": "l2",
+    "chapterId": "ch_3",
+    "title": "Working with Values & Quotes 🧾",
+    "description": "Assign values, reference variables correctly, and understand quoting rules that keep your data safe.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Syntax",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Variable Naming Rules 📛",
+            "content": "## Valid Names\n\n- Names can contain letters, numbers, and underscores.\n- They **must not** start with a number.\n- No spaces.\n- Case‑sensitive: `Name` and `name` are different.\n\nGood: `user`, `file_count`, `backupDir`\nBad: `2things`, `user name`, `my-var`"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which is a valid variable name?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "3colors",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "first-name",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "file_count",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "user name",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`file_count` uses underscore, starts with a letter. The others contain invalid characters or start with a digit.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Quoting: Single vs Double 🛡️",
+            "content": "## Protecting Your Values\n\nQuotes control how Bash interprets spaces and special characters.\n\n- **Double quotes** `\" \"` – allow variable expansion (`$var`) and command substitution.\n- **Single quotes** `' '` – everything inside is literal, no expansion.\n\nExample:\n```bash\nmsg=\"hello\"\necho \"$msg world\"   # hello world\necho '$msg world'   # $msg world\n```"
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Double vs Single",
+            "content": "See the difference:",
+            "codeSnippet": "drink=\"coffee\"\necho \"I love $drink\"\necho 'I love $drink'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "What will `echo 'The price is $5'` output?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The price is $5",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The price is 5",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Error",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The price is",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Single quotes prevent expansion, so `$5` is printed literally.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Why Double Quotes Matter 💡",
+            "content": "## Avoid Word Splitting\n\nIf a variable contains spaces and you use it without quotes, Bash may split it into multiple words.\n\n```bash\nfile=\"my document.txt\"\nls $file    # looks for 'my' and 'document.txt'\nls \"$file\"  # looks for 'my document.txt'\n```\n\n**Rule of thumb**: always double‑quote your variables, e.g., `\"$var\"`."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "code",
+            "title": "Quoting in Action",
+            "content": "Avoid accidents with spaces:",
+            "codeSnippet": "path=\"Program Files\"\n# Wrong:\n# ls $path\n# Correct:\nls \"$path\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_8",
+            "type": "warning",
+            "title": "⚠️ Unquoted Variables",
+            "content": "Unquoted variables can also cause globbing and unexpected behaviour. When in doubt, quote it out!"
+        },
+        {
+            "id": "s_l2_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Curly Braces for Clarity\nUse `${var}` to separate the variable name from surrounding text.\n```bash\necho \"${name}dy\"   # outputs 'Alicey'\n```"
+        }
+    ]
+}

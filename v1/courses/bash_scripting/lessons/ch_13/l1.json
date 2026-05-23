@@ -1,0 +1,118 @@
+{
+    "id": "l1",
+    "chapterId": "ch_13",
+    "title": "Exit Codes & The `$?` Mystery 🔢",
+    "description": "Understand how commands signal success or failure, and how your script should respond.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Status Handling",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Every Command Returns a Number 🔢",
+            "content": "## The Invisible Report Card\n\nIn Bash, every command, script, and function finishes by returning an **exit code** (also called exit status or return code).\n\n- `0` means **success**.\n- Non‑zero (1‑255) means **failure**.\n\nThe shell stores the exit code of the last command in the special variable `$?`."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "code",
+            "title": "See Exit Codes",
+            "content": "Run a successful command, then check `$?`:",
+            "codeSnippet": "echo \"hello\"\necho \"Exit code: $?\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What exit code does a command return on success?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "1",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "0",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "255",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Null",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Zero is the universal success code in Unix.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Common Exit Codes 📊",
+            "content": "## Meaningful Failure\n\n- `1` – general error.\n- `2` – misuse of shell builtins.\n- `126` – command found but not executable.\n- `127` – command not found.\n- `128+N` – command terminated by signal N (e.g., 130 = Ctrl+C).\n\nYou should use `exit N` in your scripts to signal different error types."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Exiting a Script with a Code",
+            "content": "Use `exit` to stop the script and set `$?`:",
+            "codeSnippet": "#!/bin/bash\nif [ ! -f /etc/config ]; then\n  echo \"Missing config\" >&2\n  exit 1\nfi\n# proceed...",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "fill_blank",
+                "question": "A script runs `exit 5`. What will `$?` be after the script finishes?",
+                "options": [],
+                "correctAnswer": "5",
+                "explanation": "The argument to `exit` becomes the exit status of the script.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "Checking Success with `if` and `&&` 🔗",
+            "content": "## Don't Ignore Failures\n\n- `if command; then ... fi` – tests exit code directly.\n- `command && success_action` – only runs if command succeeded.\n- `command || fail_action` – runs if command failed.\n\nExample:\n```bash\ngrep -q 'error' log && echo \"Found\" || echo \"Not found\"\n```"
+        },
+        {
+            "id": "s_l1_8",
+            "type": "code",
+            "title": "Chain with && and ||",
+            "content": "Create directory and change into it only if creation succeeded:",
+            "codeSnippet": "mkdir -p /tmp/work && cd /tmp/work || { echo \"Failed\"; exit 1; }",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_9",
+            "type": "warning",
+            "title": "⚠️ `$?` is Fragile",
+            "content": "`$?` changes after every command. Capture it immediately if you need it later:\n```bash\ngrep pattern file\ngrep_ret=$?\necho \"grep returned $grep_ret\"\n```"
+        },
+        {
+            "id": "s_l1_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `set -e` to make the script exit on any error (except in some contexts). We'll cover that next."
+        }
+    ]
+}

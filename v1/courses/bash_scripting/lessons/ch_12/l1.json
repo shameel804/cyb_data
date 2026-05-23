@@ -1,0 +1,117 @@
+{
+    "id": "l1",
+    "chapterId": "ch_12",
+    "title": "sed Deep Dive: Addresses & Line Ranges 📖",
+    "description": "Master sed's pattern addressing, line‑number ranges, and the command‑execution cycle.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "sed Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "sed – The Stream Editor 🏭",
+            "content": "## More Than s/old/new\n\n`sed` reads input line by line, applies commands, and writes the result to stdout. It never changes the original file unless `-i` is used.\n\nCommands can be **addressed** to specific lines or patterns, making it a programmable filter. In this lesson, we go beyond basic substitution."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "Addressing Lines 🎯",
+            "content": "## By Number or Pattern\n\n- `3d` – delete line 3.\n- `$d` – delete last line.\n- `1,5d` – delete lines 1 through 5.\n- `/pattern/d` – delete lines matching `pattern`.\n- `/start/,/stop/d` – delete from first line matching `start` to first line matching `stop`.\n\nAddresses can be combined: `3,/pattern/d` starts at line 3 until pattern."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "code",
+            "title": "Address Examples",
+            "content": "Print lines 5 to 10:",
+            "codeSnippet": "sed -n '5,10p' file.txt",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What does `sed '3d'` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Deletes all lines containing '3'",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Deletes the third line",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Duplicates the third line",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Prints only the third line",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`3d` addresses line number 3 and applies the delete command.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "The `-n` Quiet Mode 🤫",
+            "content": "## Suppress Automatic Printing\n\nBy default, sed prints every line after processing. With `-n`, it prints only when explicitly told with `p`. This is essential when you want to extract specific lines.\n\n`sed -n '10,20p' file` acts like a `head`/`tail` combo."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "code",
+            "title": "Extract Address Ranges",
+            "content": "Print lines from the first match of 'START' to the first 'END':",
+            "codeSnippet": "sed -n '/START/,/END/p' log.txt",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "`sed '/start/,/stop/d'` deletes all lines between the patterns inclusive.",
+                "correctAnswer": true,
+                "explanation": "The range includes the lines that match the start and stop patterns.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_8",
+            "type": "text",
+            "title": "Address Modifiers: `!` Negation 🚫",
+            "content": "## Do Everything EXCEPT...\n\nAppend `!` to an address to apply the command to lines that do **not** match.\n\n- `sed '/^$/!s/^/  /'` – add two spaces to non‑empty lines.\n- `sed '1,5!d'` – keep lines 1‑5, delete the rest (opposite of `1,5d`)."
+        },
+        {
+            "id": "s_l1_9",
+            "type": "code",
+            "title": "Negation in Action",
+            "content": "Delete all lines except those containing 'keep':",
+            "codeSnippet": "sed '/keep/!d' file.txt",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `sed -n '1!G;h;$p'` to reverse the order of lines (a classic one‑liner)."
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "id": "task4",
+    "chapterId": "ch_3",
+    "title": "Login Result Formatter",
+    "description": "Convert boolean login result into a friendly message with f‑strings.",
+    "estimatedMinutes": 10,
+    "problemStatement": "Write a script `login_check.py` that simulates a login attempt. Define:\n- `username` (string) = \"admin\"\n- `password` (string) = \"secret123\"\n- `attempt_user` (string) = \"admin\"\n- `attempt_pass` (string) = \"wrongpass\"\n- `login_success = (attempt_user == username) and (attempt_pass == password)`\n\nThen print a message using f‑strings:\n\"Login for admin: Successful\" if login_success is True, else \"Login for admin: Failed\".\n\nAlso print the length of the password and the user input in uppercase (just for logging).",
+    "hints": [
+        "Use a conditional expression in f‑string: `{\"Successful\" if login_success else \"Failed\"}`.",
+        "String methods `upper()` and `len()` can be called inside the f‑string."
+    ],
+    "expectedOutput": "Login for admin: Failed\nPassword length: 8\nInput (upper): WRONGPASS",
+    "solutionCode": "username = \"admin\"\npassword = \"secret123\"\nattempt_user = \"admin\"\nattempt_pass = \"wrongpass\"\n\nlogin_success = (attempt_user == username) and (attempt_pass == password)\n\nprint(f\"Login for {attempt_user}: {'Successful' if login_success else 'Failed'}\")\nprint(f\"Password length: {len(password)}\")\nprint(f\"Input (upper): {attempt_pass.upper()}\")"
+}

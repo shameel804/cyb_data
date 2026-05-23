@@ -1,0 +1,90 @@
+{
+    "id": "l2",
+    "chapterId": "ch_6",
+    "title": "Subnets, Route Tables & Gateways 🚦",
+    "description": "Design public/private subnets and control traffic flow.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Subnets: Carving Up Your Network 🧩",
+            "content": "# Public vs Private Subnets\n\nA **subnet** is a segment of your VPC's IP address range where you place resources.\n\n- **Public subnet**: Has a route to the Internet via an **Internet Gateway (IGW)**. Used for web servers, load balancers facing the internet.\n- **Private subnet**: No direct route to the internet. Used for databases, application servers that shouldn't be directly exposed.\n\n*Each subnet resides in a single Availability Zone.*\n\n**Why segment?** If an attacker compromises a web server in the public subnet, they still can't directly reach the database in the private subnet without breaking through additional controls."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Subnet Smarts 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which type of subnet would you use for a database that should never be directly reachable from the internet?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Public subnet",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Private subnet",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "DMZ subnet",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Gateway subnet",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Private subnets have no direct internet access, ideal for backend services.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Route Tables: The Traffic Director 🧭",
+            "content": "## How Packets Find Their Way\n\nA **route table** contains rules (routes) that determine where network traffic is directed.\n\n- Every subnet must be associated with exactly one route table.\n- A route has a **destination** (CIDR) and a **target** (e.g., `igw‑xxxx` for internet, `nat‑xxxx` for NAT, `local` for within VPC).\n- The `local` route is always present and enables communication within the VPC.\n\n**Public subnet route table**:\n- `10.0.0.0/16 -> local`\n- `0.0.0.0/0 -> igw‑12345` (all internet‑bound traffic goes to IGW)\n\n**Private subnet route table**:\n- `10.0.0.0/16 -> local`\n- `0.0.0.0/0 -> nat‑12345` (internet traffic goes through a NAT Gateway)"
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "Route Table Check 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "fill_blank",
+                "question": "To make a subnet 'public', its route table must have a route to an Internet _______.",
+                "options": [
+                    "Gateway",
+                    "Router",
+                    "Switch",
+                    "Firewall"
+                ],
+                "correctAnswer": "Gateway",
+                "explanation": "An Internet Gateway (IGW) enables communication between the VPC and the internet.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "NAT Gateway: Internet Access for Private Instances 🌉",
+            "content": "## One‑Way Outbound Bridge\n\nInstances in private subnets sometimes need internet access (e.g., to download patches). A **NAT Gateway** (or NAT instance) allows outbound connections while preventing unsolicited inbound traffic.\n\n- **NAT Gateway** is a managed service that translates private IPs to a public IP for outbound requests.\n- Placed in a **public subnet**.\n- Private subnet's route table points `0.0.0.0/0` to the NAT Gateway.\n\n*The NAT Gateway receives the response and forwards it back to the private instance. Inbound connections initiated from the internet are blocked.*"
+        },
+        {
+            "id": "s_l2_6",
+            "type": "tip",
+            "title": "Cost & Availability 🚨",
+            "content": "## NAT Gateway Best Practices\n- Deploy one NAT Gateway per Availability Zone for resilience (it is zonal).\n- It charges per hour and per GB processed. Use a NAT instance for cheap test environments.\n- Remember: NAT Gateway can't be used for IPv6 (use egress‑only internet gateway)."
+        }
+    ]
+}

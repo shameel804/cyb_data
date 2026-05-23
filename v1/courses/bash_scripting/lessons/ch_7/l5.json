@@ -1,0 +1,118 @@
+{
+    "id": "l5",
+    "chapterId": "ch_7",
+    "title": "Searching with grep 🔍",
+    "description": "Find patterns like a detective. Use grep, regex, and its most useful flags.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Pattern Search",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "grep: Global Regular Expression Print 🌐",
+            "content": "## The Search Engine of the Terminal\n\n`grep` searches through text for lines matching a pattern (regex).\n\nBasic syntax: `grep pattern file`\n\nIf you don't specify a file, grep reads from stdin – perfect for pipes.\n\nCommon patterns: plain text, or regular expressions for flexible matching."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Simple grep",
+            "content": "Find lines containing 'root' in /etc/passwd:",
+            "codeSnippet": "grep root /etc/passwd",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What does `grep hello file.txt` output?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "All lines that contain the word 'hello'",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The number of 'hello' occurrences",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The filename if 'hello' is found",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Nothing",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "By default, grep prints every line matching the pattern.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Essential grep Flags 🏷️",
+            "content": "## Supercharge Your Search\n\n- `-i` : case‑insensitive.\n- `-v` : invert – show lines NOT matching.\n- `-r` / `-R` : recursive directory search.\n- `-n` : show line numbers.\n- `-c` : count matches instead of printing.\n- `-l` : list filenames with matches (not content).\n- `-w` : whole word match."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Case‑Insensitive & Recursive",
+            "content": "Search for 'error' in all .log files in /var/log:",
+            "codeSnippet": "grep -ri error /var/log/*.log",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "fill_blank",
+                "question": "Which grep flag shows only the count of matching lines?",
+                "options": [],
+                "correctAnswer": "-c",
+                "explanation": "`-c` prints the number of lines that match the pattern.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Regex with grep 💡",
+            "content": "## Unlock Pattern Power\n\n`grep` supports basic regex by default (`BRE`). With `-E` you get extended regex (ERE).\n\n- `.` – any single character.\n- `*` – zero or more of the preceding.\n- `^` – start of line.\n- `$` – end of line.\n- `[abc]` – character class.\n- `\\|` – alternation (or).\n\nExample: `grep -E '^(error|warning)' log.txt`"
+        },
+        {
+            "id": "s_l5_8",
+            "type": "code",
+            "title": "Regex Example",
+            "content": "Find lines starting with a digit:",
+            "codeSnippet": "echo -e \"1 apple\\nbanana\\n2 cherry\" | grep -E '^[0-9]'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_9",
+            "type": "text",
+            "title": "grep in Pipelines 🖇️",
+            "content": "## Filter Command Output\n\n`ps aux | grep ssh` finds SSH processes.\n`dmesg | grep -i usb` looks for USB device messages.\n`history | grep git` searches your command history.\n\nAlways use `grep` as a filtering stage in your pipe."
+        },
+        {
+            "id": "s_l5_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `grep -q` for quiet mode – it returns just an exit code without printing. Perfect for conditionals: `if grep -q pattern file; then ...`"
+        }
+    ]
+}

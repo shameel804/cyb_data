@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_7",
+    "title": "Log Analyzer Script",
+    "description": "Parse a server log file with cut, sort, uniq to extract and rank IP addresses.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You have a web server access log `access.log` in the common format (space‑delimited, first field is IP). Create a script `analyze_log.sh` that:\n\n1. Takes the log file path as the first argument. If missing or file doesn't exist, print an error and exit.\n2. Extracts the IP addresses (first column) using `cut`.\n3. Sorts the IPs.\n4. Counts occurrences of each IP using `uniq -c`.\n5. Sorts the counts numerically in descending order (most frequent first).\n6. Shows only the top 10 IPs using `head`.\n7. Outputs the result in a clean format.\n\nTest with a dummy log file (create a few lines with `echo`).",
+    "hints": [
+        "`cut -d' ' -f1` extracts the first field.",
+        "`sort | uniq -c | sort -nr` sorts by frequency descending.",
+        "Top 10: `head -n 10`.",
+        "Remember to validate the input file."
+    ],
+    "expectedOutput": "     45 192.168.1.1\n     30 10.0.0.5\n      ... (top 10 rows)",
+    "solutionCode": "#!/bin/bash\n# analyze_log.sh – extract top 10 IPs from access log\n\nlogfile=\"$1\"\nif [ -z \"$logfile\" ] || [ ! -f \"$logfile\" ]; then\n  echo \"Usage: $0 <logfile>\" >&2\n  exit 1\nfi\n\necho \"Top 10 IPs by request count:\"\ncut -d' ' -f1 \"$logfile\" | sort | uniq -c | sort -nr | head -n 10"
+}

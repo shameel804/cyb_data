@@ -1,0 +1,111 @@
+{
+    "id": "l2",
+    "chapterId": "ch_6",
+    "title": "Arguments & Return Values 📥",
+    "description": "Pass data into functions via positional parameters and get results with return codes or output.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Data Flow",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Positional Parameters Inside Functions 🎯",
+            "content": "## The Same as Script Arguments\n\nInside a function, `$1`, `$2`, ... `$9`, `${10}` etc. refer to the **function's** arguments, not the script's.\n\n- `$@` : all arguments as separate words (use with `\"$@\"`).\n- `$*` : all arguments as a single string.\n- `$#` : number of arguments.\n\nThis lets you write flexible, reusable code."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Inspect Arguments",
+            "content": "Display argument count and values:",
+            "codeSnippet": "info() {\n  echo \"You passed $# arguments\"\n  echo \"List: $@\"\n}\ninfo apple banana cherry",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What does `$#` give inside a function?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The PID of the function",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The number of arguments passed to the function",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The number of lines in the function",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The return code",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`$#` expands to the count of positional parameters.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Return Values: Exit Codes 🚦",
+            "content": "## `return` for Success/Failure\n\nA function can return a status code using `return` (0–255). By convention, 0 means success, non‑zero means error.\n\n```bash\nis_even() {\n  return $(( $1 % 2 ))\n}\nis_even 4\nif [ $? -eq 0 ]; then echo \"Even\"; fi\n```\n**Limitation**: `return` only takes integers, not strings or large numbers."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Check File Exists",
+            "content": "Use `return` to signal success/failure:",
+            "codeSnippet": "file_exists() {\n  [ -f \"$1\" ] && return 0 || return 1\n}\nfile_exists /etc/hosts && echo \"Yep\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "You can `return` a string like \"Alice\" from a Bash function.",
+                "correctAnswer": false,
+                "explanation": "`return` only accepts integer exit codes (0‑255). To send back a string, `echo` it and capture with `$()`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Getting Data Back: Command Substitution 📤",
+            "content": "## `echo` to Return Values\n\nFor returning strings or numbers, `echo` (or `printf`) the value and capture it:\n\n```bash\nget_date() {\n  date +%Y-%m-%d\n}\ntoday=$(get_date)\necho \"Today is $today\"\n```\nThe function's output becomes the value of the variable."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "Uppercase Transformer",
+            "content": "Function that returns a modified string:",
+            "codeSnippet": "to_upper() {\n  echo \"$1\" | tr 'a-z' 'A-Z'\n}\nresult=$(to_upper \"hello\")\necho \"$result\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Combine both: use `return` for status (error checking) and `echo` for data. This mimics the behaviour of many Unix commands."
+        }
+    ]
+}

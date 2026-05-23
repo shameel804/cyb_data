@@ -1,0 +1,143 @@
+{
+    "id": "l3",
+    "chapterId": "ch_8",
+    "title": "else & finally: Graceful Cleanup 🧹",
+    "description": "Use else for success‑only code and finally for guaranteed resource release (files, sockets).",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Error Handling",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Beyond try/except",
+            "content": "# Two More Blocks: `else` and `finally`\n\n* **`else`** runs only if `try` block completed without exceptions. Use it for code that should execute on success.\n* **`finally`** runs **no matter what** – exception or not. Perfect for cleanup: closing files, network connections."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "else Example",
+            "content": "Only process data if reading succeeded:",
+            "codeSnippet": "try:\n    f = open('targets.txt')\nexcept FileNotFoundError:\n    print(\"No target file\")\nelse:\n    targets = f.readlines()\n    f.close()\n    print(f\"Loaded {len(targets)} targets\")\n",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "else Block 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "When does the `else` block of a try/except execute?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Always",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Only if no exception occurred in the try block",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Only if an exception occurred",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "else runs on the success path, keeping the happy path separate from error handling.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "finally – The Guarantee",
+            "content": "# Cleanup Code That Always Runs\n\n```python\ntry:\n    f = open('data.bin', 'rb')\n    process(f)\nexcept IOError:\n    print(\"IO error\")\nfinally:\n    f.close()   # always closes the file, even if error\n```\nEven if an unhandled exception propagates, `finally` runs first.\n\n**Use case:** closing sockets, removing temp files, releasing locks."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Socket Cleanup with finally",
+            "content": "Simulate network connection (pseudo):",
+            "codeSnippet": "sock = None\ntry:\n    sock = connect_to_target(\"10.0.0.1\", 80)\n    sock.send(data)\nexcept ConnectionError:\n    print(\"Connection failed\")\nfinally:\n    if sock:\n        sock.close()\n        print(\"Socket closed\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "finally Guarantee 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "If you use a `return` statement inside the `try` block, the `finally` block will still execute.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "Yes, `finally` runs before the function actually returns, even if there's a return in try/except.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Combining else and finally",
+            "content": "# The Full try/except/else/finally\n\n```python\ntry:\n    risky_operation()\nexcept SomeError:\n    handle_error()\nelse:\n    on_success()\nfinally:\n    cleanup()\n```\n* Only one of `except` or `else` runs.\n* `finally` always runs.\n\nOrder matters: try → except (if needed) → else (if no except) → finally."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "code",
+            "title": "Complete Example",
+            "content": "Robust file reading:",
+            "codeSnippet": "def load_config(path):\n    f = None\n    try:\n        f = open(path)\n        config = f.read()\n    except FileNotFoundError:\n        print(\"Config not found, using defaults\")\n        config = \"default\"\n    else:\n        print(\"Config loaded\")\n    finally:\n        if f:\n            f.close()\n    return config",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_9",
+            "type": "quiz",
+            "title": "Execution Flow 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "multiple_choice",
+                "question": "In `try: ... except: ... else: ... finally: ...`, which blocks run if an exception is caught?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "except and finally",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "else and finally",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "try and else",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "If an exception is caught, the matching except runs, then finally. else is skipped.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_10",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use `with` Instead of try/finally for Files\n\n```python\nwith open('file.txt') as f:\n    data = f.read()\n# auto-close, even on exception\n```\n`with` is equivalent to try/finally for resource management – cleaner and safer."
+        },
+        {
+            "id": "s_l3_11",
+            "type": "text",
+            "title": "Next: Raising Your Own Exceptions",
+            "content": "# Now You Catch Errors; Next You'll Throw Them\n\nCustom exceptions let you signal problems specific to hacking logic, like 'TargetUnreachable' or 'WeakPassword'. Let's raise our voice."
+        }
+    ]
+}

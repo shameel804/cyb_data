@@ -1,0 +1,125 @@
+{
+    "id": "l4",
+    "chapterId": "ch_7",
+    "title": "Writing & Appending: Saving Results 💾",
+    "description": "Write scan reports, export cracked passwords, and append to log files correctly.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "File I/O",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Creating and Overwriting Files",
+            "content": "# Mode `'w'` – Write (truncates existing)\n\n```python\nwith open('report.txt', 'w') as f:\n    f.write(\"Scan Report\\n\")\n    f.write(\"===========\\n\")\n```\n* If file doesn't exist, it's created.\n* If it exists, its content is wiped.\n* Use `'w'` for fresh output, `'a'` to append."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Write a Simple Report",
+            "content": "Save open ports to a file:",
+            "codeSnippet": "open_ports = [22, 80, 443]\nwith open('ports.txt', 'w') as f:\n    for port in open_ports:\n        f.write(f\"Port {port} is open\\n\")\nprint(\"Report saved\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Write Mode 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What happens if you open an existing file with mode 'w'?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It appends data",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It raises an error",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It overwrites the file completely",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "'w' truncates the file before writing.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Appending: Mode `'a'`",
+            "content": "# Add Data Without Erasing\n\n```python\nwith open('log.txt', 'a') as f:\n    f.write(f\"{timestamp}: New scan started\\n\")\n```\n* Pointer starts at end of file.\n* `'a'` creates file if it doesn't exist.\n* Perfect for logging."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Append Log Entries",
+            "content": "Simulate a log:",
+            "codeSnippet": "import datetime\nwith open('activity.log', 'a') as f:\n    time = datetime.datetime.now().isoformat()\n    f.write(f\"[{time}] Brute-force attempt\\n\")\nprint(\"Logged\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Append vs Write 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "Mode 'a' can only be used with existing files.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "Like 'w', it creates a new file if it doesn't exist.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Writing Multiple Lines: `writelines()`",
+            "content": "# Takes an Iterable of Strings\n\n```python\nlines = [\"line1\\n\", \"line2\\n\", \"line3\\n\"]\nwith open('output.txt', 'w') as f:\n    f.writelines(lines)\n```\n* Does NOT add newlines for you – include them.\n* Equivalent to looping and `write()`."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "code",
+            "title": "Export Scan Results",
+            "content": "Write a list of IPs to a file:",
+            "codeSnippet": "ips = [\"192.168.1.1\", \"10.0.0.2\"]\nwith open('discovered_hosts.txt', 'w') as f:\n    f.writelines(ip + '\\n' for ip in ips)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_9",
+            "type": "text",
+            "title": "Binary Mode `'wb'`",
+            "content": "# For Non‑Text Data\n\nWhen you need to write bytes (e.g., downloading payloads, images, encrypted data):\n```python\nwith open('payload.exe', 'wb') as f:\n    f.write(binary_data)\n```\nAlways use binary mode for binary files to avoid encoding corruption."
+        },
+        {
+            "id": "s_l4_10",
+            "type": "warning",
+            "title": "Always Use `with` for Writing",
+            "content": "## Data loss if you forget to close\n\nIf you write without `with` and the program crashes, data may not be flushed to disk. `with` ensures cleanup."
+        },
+        {
+            "id": "s_l4_11",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Print to File\n\nYou can redirect `print` to a file:\n```python\nwith open('out.txt', 'w') as f:\n    print(\"Hello\", file=f)\n```\nGreat for quick scripts."
+        },
+        {
+            "id": "s_l4_12",
+            "type": "text",
+            "title": "Next: Navigating the File System",
+            "content": "# We've read and written files. Now let's explore folders, paths, and file listings – key for scanning tools."
+        }
+    ]
+}

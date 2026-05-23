@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_4",
+    "title": "Nested Access Control",
+    "description": "Simulate a firewall rule: only allow access if IP is trusted AND port is allowed.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Create a script `firewall_sim.py` that determines if a connection should be allowed based on source IP and destination port. Rules:\n- Trusted IPs: \"192.168.1.100\", \"10.0.0.5\", \"172.16.0.1\"\n- Allowed ports: 22, 80, 443\n- If the IP is trusted, then check the port: if port is allowed, print \"Access granted\", else print \"Port blocked\".\n- If the IP is not trusted, print \"IP not trusted\".\n\nImplement with nested if statements: first check IP in trusted list, then inside that check port. Use the `in` operator to check membership in a list.\n\nTest with: (\"192.168.1.100\", 80), (\"10.0.0.5\", 23), (\"8.8.8.8\", 80).",
+    "hints": [
+        "Store trusted_ips = [...] and allowed_ports = [...].",
+        "First condition: `if ip in trusted_ips:`",
+        "Inside, use `if port in allowed_ports:`."
+    ],
+    "expectedOutput": "Access granted\nPort blocked\nIP not trusted",
+    "solutionCode": "trusted_ips = [\"192.168.1.100\", \"10.0.0.5\", \"172.16.0.1\"]\nallowed_ports = [22, 80, 443]\n\nip = \"192.168.1.100\"\nport = 80\n\nif ip in trusted_ips:\n    if port in allowed_ports:\n        print(\"Access granted\")\n    else:\n        print(\"Port blocked\")\nelse:\n    print(\"IP not trusted\")"
+}

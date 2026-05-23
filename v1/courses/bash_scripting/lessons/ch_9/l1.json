@@ -1,0 +1,115 @@
+{
+    "id": "l1",
+    "chapterId": "ch_9",
+    "title": "Scheduling with cron 🕒",
+    "description": "Learn what cron is, how to view and edit your crontab, and the structure of a cron job.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Cron Basics",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Time to Automate ⏰",
+            "content": "## Why Run Scripts Manually?\n\nImagine you need to:\n- Back up files every night at 2 AM.\n- Send a report every Monday morning.\n- Clean temporary files every hour.\n\nDoing this by hand is impossible. That's where **cron** comes in – the time‑based job scheduler in Unix‑like systems."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "What is cron? 🕰️",
+            "content": "## The Silent Worker\n\n**cron** is a daemon (background process) that wakes every minute to check if any jobs are due.\n\n- Each user has their own **crontab** (cron table) – a file listing their scheduled tasks.\n- Jobs run with the user's permissions.\n- Cron is perfect for periodic maintenance, monitoring, and automation."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "code",
+            "title": "View Your Crontab 👀",
+            "content": "Use `crontab -l` to list your current jobs. If you have none, it'll say \"no crontab\".",
+            "codeSnippet": "crontab -l",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What does `crontab -l` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Locks the crontab file",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Lists the current user's cron jobs",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Loads a new crontab from a file",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Deletes all cron jobs",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-l` stands for list, showing the user's scheduled tasks.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Anatomy of a Cron Job 🦴",
+            "content": "## The Format\n\nA crontab line consists of six fields:\n```\n* * * * * command_to_execute\n│ │ │ │ │\n│ │ │ │ └─ Day of week (0‑7) (Sun=0 or 7)\n│ │ │ └─── Month (1‑12)\n│ │ └───── Day of month (1‑31)\n│ └─────── Hour (0‑23)\n└───────── Minute (0‑59)\n```\nA `*` means \"every\". Spaces or tabs separate fields."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "code",
+            "title": "A Simple Cron Job",
+            "content": "Run a script every day at 3:15 AM:\n```\n15 3 * * * /home/alice/backup.sh\n```",
+            "codeSnippet": "# Example crontab entry (do not run this in the app):\n# 15 3 * * * /home/alice/backup.sh",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "fill_blank",
+                "question": "In a cron entry, which field specifies the hour? (1st, 2nd, 3rd, 4th, 5th)",
+                "options": [],
+                "correctAnswer": "2nd",
+                "explanation": "The order is minute, hour, day‑of‑month, month, day‑of‑week. Hour is the second field.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_8",
+            "type": "text",
+            "title": "Editing Your Crontab 📝",
+            "content": "## Use `crontab -e`\n\nThis opens your crontab in the default editor (usually vi or nano). Add your jobs there, one per line.\n\n- Make sure the script is executable and uses absolute paths (or set PATH at the top of the crontab).\n- Cron runs with a minimal environment; always redirect output to a file if you need to debug.\n\nExample of a crontab file:\n```\n# m h  dom mon dow   command\n30 2 * * 1   /usr/local/bin/update.sh\n```"
+        },
+        {
+            "id": "s_l1_9",
+            "type": "warning",
+            "title": "⚠️ Environment Matters",
+            "content": "Cron doesn't source `.bashrc` or `.profile`. If your script depends on PATH or environment variables, define them inside the script or at the top of the crontab: `PATH=/usr/bin:/bin`."
+        },
+        {
+            "id": "s_l1_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Test your cron command by running it manually first. Then schedule it and check `/var/log/syslog` or `journalctl` for errors."
+        }
+    ]
+}

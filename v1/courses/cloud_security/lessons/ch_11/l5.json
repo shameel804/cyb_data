@@ -1,0 +1,126 @@
+{
+    "id": "l5",
+    "chapterId": "ch_11",
+    "title": "Designing Secure Architectures: Patterns & Practices 🧩",
+    "description": "Apply landing zones, multi‑account strategies, and defense in depth to real‑world designs.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Multi‑Account Strategy 🏢",
+            "content": "# Segment by Account, Not Just VPC\n\nUsing a single cloud account for everything is like having one massive room for all your belongings. **Multi‑account** (or multi‑subscription/project) is a fundamental security architecture pattern.\n\n**Benefits:**\n- **Blast radius reduction**: A compromise in dev won’t reach prod.\n- **Cost allocation & billing isolation**.\n- **Separate security boundaries**: Different compliance scopes.\n\n**Typical layout (AWS example):**\n- **Management Account** – Organization, billing only.\n- **Security Account** – Centralized logs (CloudTrail), GuardDuty, Security Hub.\n- **Shared Services Account** – CI/CD, DNS, monitoring.\n- **Workload Accounts** – One per environment per application (e.g., app1‑dev, app1‑prod).\n\n*Use AWS Organizations SCPs, Azure Management Groups, or GCP folders to enforce policies across accounts.*"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "Multi‑Account Benefits 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is the primary security advantage of separating production and development into different cloud accounts?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It reduces monthly cost",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It limits the blast radius if one account is compromised",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It improves application performance",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It automatically encrypts data",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Strong account boundaries prevent lateral movement between environments.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Landing Zones: Ready‑Made Segments 🛬",
+            "content": "All three major clouds provide landing zone accelerators:\n- **AWS Control Tower** – Sets up a well‑architected multi‑account environment with guardrails (SCPs, Config rules).\n- **Azure Landing Zones** – ARM templates or Terraform to create management group hierarchy and policies.\n- **GCP Fabric FAST** – (or open‑source Terraform modules) establishes org structure and constraints.\n\n*Landing zones implement the frameworks automatically. Start with one, customize later.*"
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "AWS SCP: Deny Leaving the Organization",
+            "content": "An SCP that prevents member accounts from leaving the organization, applied to the root:",
+            "codeSnippet": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [{\n    \"Effect\": \"Deny\",\n    \"Action\": [\"organizations:LeaveOrganization\"],\n    \"Resource\": \"*\"\n  }]\n}",
+            "codeLanguage": "json",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Centralized Logging & Security Monitoring 🔍",
+            "content": "## See Everything from One Place\n\n- All accounts send CloudTrail/Audit Logs to a centralized security account.\n- Security Hub, Azure Sentinel, or GCP Security Command Center aggregate findings.\n- Use **immutable storage** for log archives (S3 Object Lock, immutable Blob storage).\n\n*This design ensures that if an attacker compromises a workload account, they cannot delete the logs that would incriminate them.*"
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Network Segmentation & Hub‑Spoke 🕸️",
+            "content": "For networking within an account or across accounts:\n- **Hub‑Spoke model**: A central ‘hub’ VPC hosts shared services (firewall, VPN, inspection) and ‘spoke’ VPCs contain workloads.\n- **Transit Gateway** (AWS) / **Virtual WAN** (Azure) / **Network Connectivity Center** (GCP) route traffic through the hub.\n- Inspect east‑west traffic with a cloud‑native firewall (AWS Network Firewall, Azure Firewall).\n\n*This enables you to inspect traffic between workloads, not just north‑south (internet <-> VPC).*"
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Network Pattern 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "In a hub‑spoke network architecture, where would you typically place a shared firewall appliance?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "In each spoke VPC",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "In the hub VPC",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "In the internet gateway",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "On each EC2 instance",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The hub VPC centralizes shared services, including firewalls, to control traffic between spokes and to the internet.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_8",
+            "type": "text",
+            "title": "Zero Trust Architecture in the Cloud 🔐",
+            "content": "## Never Trust, Always Verify\n\n- **Micro‑segmentation**: Network policies and security groups limit pod‑to‑pod or instance‑to‑instance traffic.\n- **Identity‑aware proxy**: Google IAP, Azure AD Application Proxy – access applications without VPN.\n- **Just‑in‑time access**: No standing privileges; request access for a limited time.\n- **Device posture checks**: Ensure connecting devices are compliant before granting access.\n\n*Zero Trust is an architectural principle, not a product. It’s the culmination of everything we’ve learned: IAM, network, encryption, monitoring.*"
+        },
+        {
+            "id": "s_l5_9",
+            "type": "tip",
+            "title": "Document Your Architecture 📝",
+            "content": "Use architecture diagrams (draw.io, Lucidchart) and maintain a decisions log. Why did you choose a particular pattern? This helps future you and auditors."
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "id": "task4",
+    "chapterId": "ch_11",
+    "title": "Login Form Simulation with CSRF",
+    "description": "Simulate a login process: fetch a page, extract a pretend CSRF token, and submit the form.",
+    "estimatedMinutes": 20,
+    "problemStatement": "We'll simulate a login page using `https://httpbin.org` which doesn't actually have CSRF, but we'll pretend. The task is to write a script `login_sim.py` that does:\n1. Use `requests.Session()`.\n2. GET `https://httpbin.org/get` (pretend it's the login page).\n3. Print the cookies set by the server.\n4. 'Extract' a fake CSRF token from a made‑up string (just assign `token = 'fake_csrf_token'`).\n5. POST to `https://httpbin.org/post` with data `{'username': 'admin', 'password': '1234', 'csrf_token': token}`.\n6. Print the response JSON to verify the data was sent.\n\nThis demonstrates the session cookie persistence and the structure of a CSRF‑protected login. Print `s.cookies.get_dict()` after step 2 to show cookie handling.",
+    "hints": [
+        "`s.get('https://httpbin.org/get')` will return a cookie (maybe).",
+        "`print(s.cookies.get_dict())` shows cookies.",
+        "Then `resp = s.post('https://httpbin.org/post', data=payload)`.",
+        "`print(resp.json()['form'])` to see the posted data."
+    ],
+    "expectedOutput": "Cookies from GET: {...}\nPosted form data: {'username': 'admin', 'password': '1234', 'csrf_token': 'fake_csrf_token'}",
+    "solutionCode": "import requests\n\ns = requests.Session()\n\n# Step 1: visit login page\nresp_get = s.get('https://httpbin.org/get')\nprint(\"Cookies after GET:\", s.cookies.get_dict())\n\n# Step 2: extract fake token\ntoken = 'fake_csrf_token'\n\n# Step 3: submit login\npayload = {\n    'username': 'admin',\n    'password': '1234',\n    'csrf_token': token\n}\nresp_post = s.post('https://httpbin.org/post', data=payload)\nprint(\"\\nPosted form data:\")\nprint(resp_post.json()['form'])\n"
+}

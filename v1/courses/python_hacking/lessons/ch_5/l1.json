@@ -1,0 +1,109 @@
+{
+    "id": "l1",
+    "chapterId": "ch_5",
+    "title": "Why Loops? Automating Repetition 🔁",
+    "description": "Understand how loops save time and why they're essential for brute-force and scanning.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Loops",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Problem with Repetition 🥱",
+            "content": "# Hacking Loves Repetitive Tasks\n\nImagine typing `print(\"Trying password 1\")`, `print(\"Trying password 2\")` … up to 1000. That's insane!\n\n**Loops** let you run a block of code multiple times with minimal instructions. They automate:\n* Password cracking attempts\n* Port scanning across thousands of ports\n* Parsing each line of a log file\n* Sending packets to every IP in a subnet"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "code",
+            "title": "Without Loop vs With Loop",
+            "content": "# Compare the Difference\n**Without loop:**\n```python\nprint(\"Scanning port 1\")\nprint(\"Scanning port 2\")\nprint(\"Scanning port 3\")\n```\n**With loop (concept):**\n```python\nfor port in [1,2,3]:\n    print(f\"Scanning port {port}\")\n```\nThe second one scales to thousands with no extra work.",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Loop Need 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Why are loops essential in hacking scripts?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "They make code look complex",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "They automate repetitive tasks efficiently",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "They replace variables",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Loops are the automation engine, crucial for scanning, brute‑forcing, and data processing.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Two Main Loops in Python",
+            "content": "# `while` and `for`\n\n* **`while`**: Repeats as long as a condition is `True`. Best when you don't know how many iterations you need (e.g., wait until a connection is established).\n* **`for`**: Iterates over items of a sequence (list, string, range, file). Best when you know exactly what to loop over (e.g., a wordlist).\n\nWe'll master both, starting with `while`."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Loop Anatomy: The Basics",
+            "content": "# Every Loop Has:\n\n1. A **loop variable** (optional but common)\n2. A **condition** or **iterable**\n3. An **indented body**\n4. A way to **update** the condition (for while) or **next item** (for for)\n\nWithout an update, a while loop becomes **infinite** – which is sometimes useful (listening servers) but often a bug."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "warning",
+            "title": "Beware the Infinite Loop ☠️",
+            "content": "## A while loop that never stops\n\n```python\nwhile True:\n    print(\"This will print forever!\")\n```\nIf you run this, you'll need Ctrl+C to stop it. Always ensure your loop has an exit strategy (unless you intentionally want an endless daemon)."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "Loop Types 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "Which loop type is best when you don't know in advance how many iterations are needed?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "for loop",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "while loop",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "if-else",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`while` runs until a condition becomes false, perfect for unknown counts.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_8",
+            "type": "text",
+            "title": "Hacking Loop Examples Ahead",
+            "content": "# What We'll Build\n\n* Brute‑force password guesser (while)\n* Port scanner (for + range)\n* Wordlist iterator (for)\n* Multi‑host scanner (nested loops)\n* Graceful exit with `break`\n\nTime to dive in!"
+        }
+    ]
+}

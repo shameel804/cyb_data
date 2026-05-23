@@ -1,0 +1,98 @@
+{
+    "id": "sq_cloud_security_3",
+    "title": "Security Sprint",
+    "triggerChapterIndex": 8,
+    "metadata": {
+        "type": "speed"
+    },
+    "questions": [
+        {
+            "id": "sq_cloud_security_3_q1",
+            "type": "true_false",
+            "question": "AWS IAM roles provide long‑lived access keys that should be rotated regularly.",
+            "isTrue": false,
+            "correctAnswer": "false",
+            "options": [],
+            "explanation": "IAM roles provide temporary credentials, not long‑lived keys. They are automatically rotated.",
+            "xpReward": 15,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_cloud_security_3_q2",
+            "type": "true_false",
+            "question": "An S3 bucket policy can grant access to anonymous users.",
+            "isTrue": true,
+            "correctAnswer": "true",
+            "options": [],
+            "explanation": "Yes, using `\"Principal\": \"*\"` makes the bucket policy world‑readable, which is often dangerous.",
+            "xpReward": 15,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_cloud_security_3_q3",
+            "type": "true_false",
+            "question": "VPC Flow Logs capture the actual payload of network packets.",
+            "isTrue": false,
+            "correctAnswer": "false",
+            "options": [],
+            "explanation": "Flow logs capture metadata (IPs, ports, protocol, accept/reject) only, not payload.",
+            "xpReward": 15,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_cloud_security_3_q4",
+            "type": "true_false",
+            "question": "AWS WAF can block SQL injection attacks at the application layer.",
+            "isTrue": true,
+            "correctAnswer": "true",
+            "options": [],
+            "explanation": "WAF is a Layer 7 firewall that inspects HTTP requests and can block SQLi patterns.",
+            "xpReward": 15,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_cloud_security_3_q5",
+            "type": "true_false",
+            "question": "Envelope encryption uses a master key to encrypt data keys, which then encrypt the actual data.",
+            "isTrue": true,
+            "correctAnswer": "true",
+            "options": [],
+            "explanation": "That is the definition of envelope encryption – a core concept in cloud KMS.",
+            "xpReward": 15,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_cloud_security_3_q6",
+            "type": "true_false",
+            "question": "A Docker container running as root has the same capabilities as the host's root user.",
+            "isTrue": false,
+            "correctAnswer": "false",
+            "options": [],
+            "explanation": "Containers have a limited set of capabilities by default, but running as root is still riskier than running as non‑root.",
+            "xpReward": 15,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_cloud_security_3_q7",
+            "type": "true_false",
+            "question": "CloudTrail automatically logs S3 object‑level read events (GetObject) by default.",
+            "isTrue": false,
+            "correctAnswer": "false",
+            "options": [],
+            "explanation": "Data events like GetObject must be explicitly enabled and may incur additional costs.",
+            "xpReward": 15,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_cloud_security_3_q8",
+            "type": "true_false",
+            "question": "AWS Security Hub can automatically remediate all found misconfigurations without any external automation.",
+            "isTrue": false,
+            "correctAnswer": "false",
+            "options": [],
+            "explanation": "Security Hub identifies issues, but auto‑remediation requires integration with AWS Config auto‑remediation or EventBridge + Lambda.",
+            "xpReward": 15,
+            "difficulty": 2
+        }
+    ]
+}

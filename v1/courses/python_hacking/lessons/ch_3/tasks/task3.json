@@ -1,0 +1,16 @@
+{
+    "id": "task3",
+    "chapterId": "ch_3",
+    "title": "Banner Parser",
+    "description": "Slice and dice a service banner to extract version info.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You receive a server banner:\n`\"220 ProFTPD 1.3.5 Server (Debian)\"`\n\nCreate a script `banner_parser.py` that extracts:\n- The protocol indicator (first 3 characters) → \"220\"\n- The software name (everything after the space following the protocol until the next space) → \"ProFTPD\"\n- The version number (e.g., \"1.3.5\") – use `split()` to break the string into words, and grab the 3rd word (index 2)\n- The OS information inside parentheses – find the indices of '(' and ')' and slice, or use `split('(')`.\n\nPrint each piece on its own line with a label.",
+    "hints": [
+        "`parts = banner.split()` creates a list of words.",
+        "`software = parts[1]` gives the name.",
+        "For the OS, you can do `banner[banner.find('(')+1 : banner.find(')')]`.",
+        "Check the length before slicing to avoid errors."
+    ],
+    "expectedOutput": "Protocol: 220\nSoftware: ProFTPD\nVersion: 1.3.5\nOS: Debian",
+    "solutionCode": "banner = \"220 ProFTPD 1.3.5 Server (Debian)\"\n\n# Protocol\nprotocol = banner[:3]\nprint(f\"Protocol: {protocol}\")\n\n# Software name (first word after protocol)\nparts = banner.split()\nsoftware = parts[1]\nprint(f\"Software: {software}\")\n\n# Version (third word)\nversion = parts[2]\nprint(f\"Version: {version}\")\n\n# OS inside parentheses\nstart = banner.find('(') + 1\nend = banner.find(')')\nos = banner[start:end]\nprint(f\"OS: {os}\")"
+}

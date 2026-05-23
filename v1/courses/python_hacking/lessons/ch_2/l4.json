@@ -1,0 +1,173 @@
+{
+    "id": "l4",
+    "chapterId": "ch_2",
+    "title": "Essential Hacking Libraries Overview 🔎",
+    "description": "Meet the pre‑built modules that turn Python into a cyber weapon.",
+    "xpReward": 30,
+    "estimatedMinutes": 7,
+    "section": "Lab Setup",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Why Reinvent the Wheel?",
+            "content": "# Python's Superpower: A Library for Everything\n\nIn hacking, you don't need to write low‑level network code from scratch. The community has already built battle‑tested libraries. You just import them and focus on the attack logic.\n\nLet's survey the most important ones you'll use throughout this course."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "1. `socket` 🧦",
+            "content": "# Low‑Level Networking\n\nComes built‑in with Python. Use it to create TCP/UDP connections, send raw data, and build port scanners.\n\n```python\nimport socket\ns = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\ns.connect((\"example.com\", 80))\n```\n**When:** You need full control over network packets."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Library Match 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which library would you use to create a basic TCP connection to a server?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "requests",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "socket",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "beautifulsoup4",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The `socket` module provides low‑level networking interfaces.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "2. `requests` 🌐",
+            "content": "# HTTP Made Human\n\nThe most popular third‑party library. It abstracts away the pain of making web requests.\n\n```python\nimport requests\nresp = requests.get(\"https://api.example.com/data\")\nprint(resp.status_code)\nprint(resp.json())\n```\n**When:** Interacting with websites, APIs, login forms, and web scraping."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "3. `beautifulsoup4` 🍜",
+            "content": "# HTML Parsing for Scraping\n\nAfter you download a web page with `requests`, `bs4` helps you extract the data.\n\n```python\nfrom bs4 import BeautifulSoup\nsoup = BeautifulSoup(html_content, 'html.parser')\nlinks = soup.find_all('a')\n```\n**When:** Reconnaissance, scraping emails, finding hidden forms."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Scraping Pair 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "`beautifulsoup4` can download web pages by itself.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "BeautifulSoup only parses HTML. You need `requests` (or another library) to fetch the page first.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "4. `scapy` 🕊️",
+            "content": "# Packet Manipulation Powerhouse\n\nScapy lets you craft, send, receive, and dissect network packets at any layer. Perfect for network scanning, ARP spoofing, and packet sniffing.\n\n```python\nfrom scapy.all import IP, ICMP, sr1\npacket = IP(dst=\"192.168.1.1\")/ICMP()\nresponse = sr1(packet, timeout=2)\n```\n**When:** Advanced network attacks and analysis (install via `pip install scapy`)."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "warning",
+            "title": "Scapy Permissions ⚠️",
+            "content": "## Requires Admin/Root\n\nBecause scapy manipulates raw sockets, you must run your scripts as Administrator (Windows) or with `sudo` (Linux/macOS). Always work inside a safe lab."
+        },
+        {
+            "id": "s_l4_9",
+            "type": "text",
+            "title": "5. `paramiko` 🔑",
+            "content": "# SSH & SFTP in Pure Python\n\nConnect to remote servers securely, execute commands, transfer files – all from Python. Ideal for automating attacks against SSH services.\n\n```python\nimport paramiko\nclient = paramiko.SSHClient()\nclient.connect('host', username='user', password='pass')\nstdin, stdout, stderr = client.exec_command('ls')\n```\n**When:** Brute‑forcing SSH, remote administration."
+        },
+        {
+            "id": "s_l4_10",
+            "type": "text",
+            "title": "6. `hashlib` & `cryptography` 🔐",
+            "content": "# Hashing, Encryption, and Cracking\n\n* `hashlib` (built‑in) – MD5, SHA1, SHA256 hashing. Useful for password cracking.\n* `cryptography` (third‑party) – AES, RSA encryption/decryption.\n\n```python\nimport hashlib\nhash = hashlib.sha256(b\"password\").hexdigest()\n```\n**When:** Password attacks, data integrity checks."
+        },
+        {
+            "id": "s_l4_11",
+            "type": "quiz",
+            "title": "Library Purpose 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "multiple_choice",
+                "question": "Which library would you choose for creating a SHA‑256 hash of a string?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "requests",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "hashlib",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "socket",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`hashlib` provides secure hash and message digest algorithms.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_12",
+            "type": "text",
+            "title": "7. `os` & `subprocess` 💻",
+            "content": "# Interacting with the Operating System\n\nThese built‑in modules let you run system commands, navigate files, and manage processes.\n\n```python\nimport os\nos.system('ls')   # Not recommended for production\n\nimport subprocess\nsubprocess.run(['ls', '-la'], capture_output=True)\n```\n**When:** Automating command‑line tools, privilege escalation scripts."
+        },
+        {
+            "id": "s_l4_13",
+            "type": "text",
+            "title": "Your Hacking Stack 🔧",
+            "content": "# Summarized\n\n| Library      | Use Case              | Install         |\n|--------------|-----------------------|-----------------|\n| `socket`     | TCP/UDP connections   | built‑in        |\n| `requests`   | HTTP requests         | pip             |\n| `beautifulsoup4`| HTML parsing       | pip             |\n| `scapy`      | Packet crafting       | pip             |\n| `paramiko`   | SSH automation        | pip             |\n| `hashlib`    | Hashing               | built‑in        |\n| `os`/`subprocess`| System commands   | built‑in        |\n\nWe'll use all of these in upcoming projects. You're now equipped with a full arsenal."
+        },
+        {
+            "id": "s_l4_14",
+            "type": "quiz",
+            "title": "Arsenal Recap 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_4",
+                "type": "true_false",
+                "question": "`socket` and `hashlib` are third‑party libraries that must be installed with pip.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "Both are part of Python's standard library (built‑in).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_15",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Read the Docs\n\nEvery library has official documentation. When stuck, search \"python <library> docs\". It's the hacker's secret weapon."
+        },
+        {
+            "id": "s_l4_16",
+            "type": "text",
+            "title": "Chapter 2 Complete! 🎓",
+            "content": "# You're a Lab Master\n\nYou can now create isolated environments, manage packages, organize projects, and know which library to use for each task. Next up: Chapter 3 – Python Foundations: Variables & Data Types. Time to start coding for real!"
+        }
+    ]
+}

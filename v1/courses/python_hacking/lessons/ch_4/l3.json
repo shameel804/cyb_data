@@ -1,0 +1,148 @@
+{
+    "id": "l3",
+    "chapterId": "ch_4",
+    "title": "Nested Conditions & Complex Logic 🧩",
+    "description": "Combine conditions inside conditions to handle intricate hacking scenarios.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Control Flow",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Life Is Rarely One‑Layered",
+            "content": "# Decisions Within Decisions\n\nA port scanner: first check if host is reachable, then scan ports; for each open port, identify service. That's nesting – an `if` inside another `if` (or `else`)."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Basic Nested if",
+            "content": "Only probe SSH if the port is open and it's a Unix system:",
+            "codeSnippet": "port = 22\nos = \"Linux\"\nif port == 22:\n    print(\"SSH port detected\")\n    if os == \"Linux\":\n        print(\"Attempting Linux SSH exploit\")\n    else:\n        print(\"Non‑Linux, skipping\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Nesting 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "true_false",
+                "question": "You can place `if` statements inside `else` blocks as well.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "Any block can contain another conditional statement.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Indentation Creates Levels",
+            "content": "# Keep Your Nesting Readable\n\nEach level adds 4 spaces. Too many levels? Consider combining conditions with `and`/`or` or using a function (later).\n\n```python\nif port_open:\n    if service_known:\n        if has_exploit:\n            print(\"Launch attack\")\n```\nThree levels is manageable; more than that, refactor."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Combining with `and` vs Nesting",
+            "content": "This nested if:\n```python\nif port == 80:\n    if protocol == \"HTTP\":\n        print(\"Web server\")\n```\nCan be flattened:\n```python\nif port == 80 and protocol == \"HTTP\":\n    print(\"Web server\")\n```\nBoth do the same, but `and` is cleaner for simple AND logic.",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Flattening 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "Which approach is preferred when checking multiple conditions that all must be true?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Deeply nested ifs",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Using `and` to combine conditions",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A long list of elifs",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`and` reduces nesting and improves readability.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Nested if‑elif‑else Chain",
+            "content": "# You Can Nest Full Ladders\n\n```python\nif host_up:\n    if port == 80:\n        print(\"HTTP open\")\n    elif port == 443:\n        print(\"HTTPS open\")\n    else:\n        print(\"Other port open\")\nelse:\n    print(\"Host down\")\n```\nUseful when the outer condition defines a context."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "code",
+            "title": "Brute‑Force Simulation",
+            "content": "Check if a password is correct only if user exists:",
+            "codeSnippet": "user_db = {\"admin\": \"secr3t\"}\nattempt_user = \"admin\"\nattempt_pass = \"secr3t\"\n\nif attempt_user in user_db:\n    print(\"User found\")\n    if user_db[attempt_user] == attempt_pass:\n        print(\"Login success!\")\n    else:\n        print(\"Wrong password\")\nelse:\n    print(\"User unknown\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_9",
+            "type": "quiz",
+            "title": "Nested Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "multiple_choice",
+                "question": "In the above code, if `attempt_user = \"root\"` (not in dict), what is printed?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Login success!",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Wrong password",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "User unknown",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "The outer if fails, so the `else` of that outer block runs.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_10",
+            "type": "text",
+            "title": "Beware of Deep Nesting 🕳️",
+            "content": "# Too Many Indentations Hurt\n\nIf you find yourself indenting 5 times, pause. Could you restructure with functions? Could you use `and`/`or`? Clean code is easier to debug during a live penetration test."
+        },
+        {
+            "id": "s_l3_11",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use `elif` to Flatten Multi‑way Branching\n\nInstead of nested if‑else for multiple exclusive cases, use a flat if‑elif‑else with combined conditions when possible."
+        },
+        {
+            "id": "s_l3_12",
+            "type": "text",
+            "title": "Next: One‑Liner Magic",
+            "content": "# Conditional Expressions\n\nSometimes you need a quick decision inside a larger expression. The ternary operator is your compact friend."
+        }
+    ]
+}

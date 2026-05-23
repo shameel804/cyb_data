@@ -1,0 +1,105 @@
+{
+    "id": "l1",
+    "chapterId": "ch_6",
+    "title": "Virtual Private Cloud (VPC) Basics 🏗️",
+    "description": "What is a VPC and why network isolation is your first line of defense.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Your Private Island in the Cloud 🏝️",
+            "content": "# VPC: Your Own Network\n\nA **Virtual Private Cloud** is a logically isolated section of the cloud where you can launch resources in a virtual network you define.\n\n- **Complete control**: You choose IP address ranges, create subnets, configure route tables, and firewalls.\n- **Isolation by default**: Resources in one VPC cannot reach resources in another VPC unless you explicitly peer them.\n- **Foundation for security**: Without network segmentation, every server sits in the same flat network – a recipe for disaster.\n\n*Think of a VPC as a private, fenced‑off neighborhood in the cloud. You decide who gets in and how roads connect.*"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the primary purpose of a VPC?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To store encryption keys",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To provide logical network isolation for cloud resources",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To accelerate application performance",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To replace IAM",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A VPC isolates your cloud resources into a private, software‑defined network.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "CIDR: Your Network's Address Space 📊",
+            "content": "## Choosing IP Ranges\n\nWhen creating a VPC, you define a **CIDR block** (e.g., `10.0.0.0/16`).\n\n- **CIDR** (Classless Inter‑Domain Routing) defines a range of IP addresses. `/16` means the first 16 bits are fixed, leaving 16 bits for hosts (65,536 addresses).\n- **Private IP ranges** (RFC 1918):\n  - `10.0.0.0/8` (huge)\n  - `172.16.0.0/12`\n  - `192.168.0.0/16`\n- Cloud VPCs usually use these private ranges; they are not routable on the internet.\n\n*Pick a CIDR large enough to accommodate future subnets and growth.*"
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "CIDR Check ✍️",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "What does the `/16` in `10.0.0.0/16` signify?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Number of available IP addresses",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The number of bits that are fixed for the network prefix",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The subnet mask in decimal",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The block size in bytes",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The /16 indicates the network prefix length – 16 bits fixed.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "VPC and Availability Zones 🗺️",
+            "content": "## High Availability Built In\n\n- A VPC spans **all Availability Zones (AZs)** in a region.\n- You place **subnets** in specific AZs for resilience.\n- Resources in different AZs are physically separated, yet can communicate over the VPC's private network.\n\n*Security tip: Use separate subnets for each layer (web, app, db) and each AZ for defense in depth.*"
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Never Use the Default VPC for Production\nCreate your own VPC with properly planned CIDR, subnets, and security controls. The default VPC often has permissive configurations."
+        }
+    ]
+}

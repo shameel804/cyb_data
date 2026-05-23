@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_10",
+    "title": "Map a Framework to Cloud Controls",
+    "description": "Given HIPAA requirements, list AWS services and configurations to meet them.",
+    "estimatedMinutes": 20,
+    "problemStatement": "## Scenario\nYour company is building a healthcare application that handles Protected Health Information (PHI). You must comply with HIPAA. You are hosting it on AWS and have signed a Business Associate Agreement (BAA) with AWS.\n\n### Your Task\nFor each of the following HIPAA safeguards, suggest at least two specific AWS services or configurations that would help satisfy the requirement:\n1. **Access Control** – ensure only authorized personnel access PHI.\n2. **Audit Controls** – record and examine access to PHI.\n3. **Integrity Controls** – protect PHI from improper alteration or destruction.\n4. **Encryption** – protect PHI at rest and in transit.\n\nWrite your answers in a clear list. Explain why each choice fits.",
+    "hints": [
+        "IAM policies, MFA, Security Groups for access control.",
+        "CloudTrail, CloudWatch Logs for audit.",
+        "S3 Object Lock, backup policies for integrity.",
+        "KMS, TLS/SSL, AWS Certificate Manager for encryption."
+    ],
+    "expectedOutput": "A list mapping each safeguard to at least two AWS services/configurations with short justifications.",
+    "solutionCode": "1. **Access Control**:\n   - IAM policies with least privilege: limit who can access EC2, RDS, S3 containing PHI. Use roles instead of long‑term credentials.\n   - MFA enforcement for all IAM users and root account. Use Security Groups to restrict network access to PHI databases.\n2. **Audit Controls**:\n   - AWS CloudTrail: log all API calls for auditing and retain logs in an immutable S3 bucket.\n   - CloudWatch Logs + Metric Filters: monitor unauthorized access attempts and set alarms.\n3. **Integrity Controls**:\n   - S3 Object Lock in Compliance mode: prevent deletion or modification of PHI backups for a retention period.\n   - AWS Backup with immutable vaults: ensure backups cannot be tampered with.\n4. **Encryption**:\n   - AWS KMS with customer‑managed keys for S3, RDS, EBS encryption at rest. Use SSE‑KMS.\n   - AWS Certificate Manager to provision TLS certificates for load balancers, and enforce HTTPS via CloudFront and ALB. Use TLS 1.2+."
+}

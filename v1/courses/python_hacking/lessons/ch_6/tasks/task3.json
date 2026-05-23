@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_6",
+    "title": "Filter Open Ports with Lambda",
+    "description": "Use lambda and filter() to extract only open ports from a list of scan results.",
+    "estimatedMinutes": 10,
+    "problemStatement": "Assume a list of tuples `scan_results = [(\"192.168.1.1\", 22, True), (\"192.168.1.1\", 23, False), (\"192.168.1.2\", 80, True), (\"192.168.1.2\", 443, False)]` where each tuple is (host, port, is_open). Use `filter()` with a lambda to create a new list containing only the entries where `is_open` is True. Print the filtered list.\n\nThen, using `map()` and a lambda, transform the filtered list into a list of strings formatted like \"host:port (open)\". Print that list.",
+    "hints": [
+        "filter: `lambda entry: entry[2]` (since entry[2] is the boolean).",
+        "map: `lambda entry: f\"{entry[0]}:{entry[1]} (open)\"`.",
+        "Wrap filter/map with list() to see results."
+    ],
+    "expectedOutput": "[('192.168.1.1', 22, True), ('192.168.1.2', 80, True)]\n['192.168.1.1:22 (open)', '192.168.1.2:80 (open)']",
+    "solutionCode": "scan_results = [(\"192.168.1.1\", 22, True), (\"192.168.1.1\", 23, False), (\"192.168.1.2\", 80, True), (\"192.168.1.2\", 443, False)]\n\nopen_entries = list(filter(lambda e: e[2], scan_results))\nprint(open_entries)\n\nformatted = list(map(lambda e: f\"{e[0]}:{e[1]} (open)\", open_entries))\nprint(formatted)"
+}

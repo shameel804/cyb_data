@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_8",
+    "title": "Debug the Broken Scanner",
+    "description": "Use print debugging or pdb to find and fix a buggy port scanning script.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Below is a buggy script `scanner.py`. It's supposed to scan ports 20‑25 and print whether each is 'Open' (even ports) or 'Closed' (odd ports), but it prints all as 'Closed'. There is a logical error. Your task:\n\n1. Copy the buggy code (provided in solution stub).\n2. Use `print` debugging (or `pdb`) to find the bug.\n3. Fix it so that even ports show 'Open'.\n\nThe buggy code:\n```python\nfor port in range(20, 26):\n    if port % 2 = 0:       # <-- can you spot the bug?\n        print(f\"Port {port}: Open\")\n    else:\n        print(f\"Port {port}: Closed\")\n```\nFix it and run, then explain what the bug was.",
+    "hints": [
+        "Look carefully at the if condition.",
+        "The assignment operator `=` vs equality `==`.",
+        "If you run the code as given, it will raise a SyntaxError; but if you miss it, you might have a logical bug that always goes to else."
+    ],
+    "expectedOutput": "Port 20: Open\nPort 21: Closed\nPort 22: Open\nPort 23: Closed\nPort 24: Open\nPort 25: Closed",
+    "solutionCode": "for port in range(20, 26):\n    if port % 2 == 0:   # bug was single = (assignment) instead of == (comparison)\n        print(f\"Port {port}: Open\")\n    else:\n        print(f\"Port {port}: Closed\")\n"
+}

@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_11",
+    "title": "Regex Password Validator",
+    "description": "Build a script that validates password strength using extended regular expressions.",
+    "estimatedMinutes": 20,
+    "problemStatement": "Write a script `pwcheck.sh` that reads a password from the user (silently) and checks the following criteria using regex and conditionals:\n\n1. Must be at least 8 characters long.\n2. Contains at least one uppercase letter.\n3. Contains at least one lowercase letter.\n4. Contains at least one digit.\n5. Contains at least one special character from the set `@#$%^&+=`.\n\nUse `[[ $pass =~ regex ]]` to test each requirement. Print each requirement as 'PASS' or 'FAIL' along with a reason. If all pass, print 'Strong password'. Otherwise, print 'Weak: fix the above'.\n\nEnsure your regexes are correct: `[A-Z]`, `[a-z]`, `[0-9]`, `[@#$%^&+=]`. Use `read -sp` to hide input.\n\nBonus: add a loop that repeats until a strong password is entered.",
+    "hints": [
+        "Length check: `${#pass}`.",
+        "Uppercase regex: `[A-Z]`.",
+        "Special characters: `[@#$%^&+=]`.",
+        "Use a variable `valid=true` and set to false if any check fails, or use individual flags."
+    ],
+    "expectedOutput": "Enter password: \nLength (8+): PASS\nUppercase letter: FAIL (missing)\nLowercase letter: PASS\nDigit: PASS\nSpecial char: FAIL (missing)\nWeak: fix the above",
+    "solutionCode": "#!/bin/bash\n# pwcheck.sh\n\nvalid=true\nread -sp \"Enter password: \" pass\necho\n\n# Length\nif [ ${#pass} -lt 8 ]; then\n  echo \"Length (8+): FAIL (too short)\"\n  valid=false\nelse\n  echo \"Length (8+): PASS\"\nfi\n\n# Uppercase\nif [[ $pass =~ [A-Z] ]]; then\n  echo \"Uppercase letter: PASS\"\nelse\n  echo \"Uppercase letter: FAIL (missing)\"\n  valid=false\nfi\n\n# Lowercase\nif [[ $pass =~ [a-z] ]]; then\n  echo \"Lowercase letter: PASS\"\nelse\n  echo \"Lowercase letter: FAIL (missing)\"\n  valid=false\nfi\n\n# Digit\nif [[ $pass =~ [0-9] ]]; then\n  echo \"Digit: PASS\"\nelse\n  echo \"Digit: FAIL (missing)\"\n  valid=false\nfi\n\n# Special\nif [[ $pass =~ [@#\\$%^&+=] ]]; then\n  echo \"Special char: PASS\"\nelse\n  echo \"Special char: FAIL (missing)\"\n  valid=false\nfi\n\nif $valid; then\n  echo \"Strong password\"\nelse\n  echo \"Weak: fix the above\"\nfi"
+}

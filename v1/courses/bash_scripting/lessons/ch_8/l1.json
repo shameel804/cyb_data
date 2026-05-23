@@ -1,0 +1,117 @@
+{
+    "id": "l1",
+    "chapterId": "ch_8",
+    "title": "Command Substitution Deep Dive 🏊",
+    "description": "Go beyond the basics: capture multi‑line output, handle whitespace, and nest substitutions safely.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Substitution",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Recap: $( ) and `` 👟",
+            "content": "## Two Ways to Capture Output\n\nYou already know command substitution:\n- `$(command)` – modern, nestable.\n- `` `command` `` – older, trickier with nesting.\n\nBoth run the command and replace the expression with its standard output. But there's more to learn about how whitespace and multiple lines are handled."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "code",
+            "title": "Capture a Full Directory Listing",
+            "content": "Store the output of `ls` in a variable:",
+            "codeSnippet": "listing=$(ls -l)\necho \"$listing\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What does `result=$(date)` store?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The string 'date'",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The output of the date command",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Nothing, it's an error",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The exit code of date",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Command substitution replaces the expression with the stdout of the command.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Trailing Newlines Are Stripped ✂️",
+            "content": "## A Subtle Gotcha\n\n`$(command)` strips **all trailing newlines**. If you `echo \"$var\"`, the final newline is gone. This is usually fine, but may matter if you need the exact file content.\n\nWorkaround: Use a parameter expansion trick or `printf '%s' \"$var\"` and add your own newline if needed."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Newline Behaviour",
+            "content": "Count the difference:",
+            "codeSnippet": "text=$(cat file.txt)\necho \"$text\"       # may lose final blank line\nwc -l <<< \"$text\"   # lines counted differ from original file",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "`$(command)` always preserves exactly the output, including trailing newlines.",
+                "correctAnswer": false,
+                "explanation": "All trailing newline characters are removed from the output before assignment.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "Handling Spaces and Word Splitting 💥",
+            "content": "## Double Quote Your Substitutions\n\nIf the command output contains spaces, an unquoted substitution will be split into multiple words.\n\n```bash\nfiles=$(ls)          # single string with newlines\nfor f in $files; do  # BAD: word splitting\necho \"File: $f\"\ndone\n```\nInstead, use `while IFS= read` or an array (next lesson)."
+        },
+        {
+            "id": "s_l1_8",
+            "type": "code",
+            "title": "Safe Iteration Over Files",
+            "content": "Use an array to store filenames safely:",
+            "codeSnippet": "all_files=( *.txt )  # globbing fills array\nfor f in \"${all_files[@]}\"; do\n  echo \"Processing $f\"\ndone",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_9",
+            "type": "text",
+            "title": "Nesting Substitutions 🪆",
+            "content": "## $( ) is Your Friend\n\nBackticks make nesting painful; `$( )` handles it cleanly:\n\n```bash\n# Nested: get the directory of the current script\ndir=$(dirname $(realpath $0))\n```\nYou can even use multiple levels of nesting without escaping."
+        },
+        {
+            "id": "s_l1_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `$()` inside `$(( ))` for dynamic arithmetic: `count=$(( $(wc -l < file) * 2 ))`"
+        }
+    ]
+}

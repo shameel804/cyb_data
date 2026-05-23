@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_8",
+    "title": "Design a Secure CI/CD Pipeline Stage",
+    "description": "List the security checks you would add to a GitHub Actions workflow for a Node.js app.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario\nYou are building a CI/CD pipeline using GitHub Actions for a Node.js web application. The pipeline currently only runs unit tests. You need to enhance it with security checks.\n\n### Your Task\nWrite a sequence of pipeline stages (or describe the jobs) that add the following security gates:\n1. Secret scanning – prevent accidental credential leaks.\n2. SAST – scan JavaScript code for vulnerabilities.\n3. Dependency scanning – check for known vulnerable libraries.\n4. Container image scanning (the app will be deployed as a Docker container) – check the image for CVEs.\n\nFor each, name a specific tool (e.g., truffleHog, CodeQL, npm audit, Trivy) and explain why it's important. Also, state what action should happen if a critical issue is found (fail the build, create a ticket, etc.).",
+    "hints": [
+        "Use GitHub Actions marketplace or CLI tools.",
+        "For secret scanning, use truffleHog action or git‑secrets; for SAST, CodeQL; for dependency, npm audit or Dependabot; for container scanning, Trivy or Docker Scout.",
+        "Decide on failure thresholds: fail on HIGH or CRITICAL severity."
+    ],
+    "expectedOutput": "A description of pipeline stages with tool names, rationale, and failure actions.",
+    "solutionCode": "Here is the enhanced pipeline:\n\n1. **Secret Scanning (truffleHog)**\n   - Tool: truffleHog GitHub Action.\n   - Scans all commits in the pull request for high‑entropy strings and known credential patterns.\n   - Action: If any secret is found, the build fails immediately and an alert is sent to the security team. The secret must be rotated.\n\n2. **SAST (CodeQL)**\n   - Tool: GitHub CodeQL analysis.\n   - Analyzes JavaScript code for vulnerabilities like XSS, SQLi, and code injection.\n   - Action: Fail the build on any result with severity 'Error' or 'Warning'. Show findings in the GitHub Security tab.\n\n3. **Dependency Scanning (Dependabot + npm audit)**\n   - Tool: Dependabot is configured to open PRs for vulnerable dependencies. Additionally, run `npm audit --audit-level=high` in the CI.\n   - Action: If `npm audit` finds high or critical vulnerabilities, fail the build. Dependabot PRs should be reviewed and merged promptly.\n\n4. **Container Image Scanning (Trivy)**\n   - Tool: Aqua Trivy action scans the built Docker image for OS and library CVEs.\n   - Action: Fail the build if any HIGH or CRITICAL CVEs are detected. Do not push the image to the registry.\n\nOverall policy: any critical or high severity finding blocks the deployment to production. Medium severity creates a Jira ticket for review."
+}

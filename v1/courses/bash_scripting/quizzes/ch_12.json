@@ -1,0 +1,259 @@
+{
+    "id": "quiz_ch_12",
+    "chapterId": "ch_12",
+    "title": "Chapter 12 Quiz",
+    "description": "Test your knowledge of sed and awk mastery!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What does `sed '5d' file` do?",
+            "options": [
+                "Deletes the fifth line",
+                "Deletes all lines containing '5'",
+                "Duplicates the fifth line",
+                "Prints only the fifth line"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`5d` addresses line 5 and applies the delete command."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "How do you print lines 10 through 20 with sed without printing other lines?",
+            "options": [
+                "sed '10,20d'",
+                "sed -n '10,20p'",
+                "sed '10,20p'",
+                "sed -v '10,20p'"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-n` suppresses default output; `p` prints the addressed range."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "What does `sed '/start/,/stop/d'` do?",
+            "options": [
+                "Deletes lines before 'start' and after 'stop'",
+                "Deletes only lines containing 'start' and 'stop'",
+                "Deletes all lines from the first 'start' to the first 'stop' inclusive",
+                "Deletes the whole file"
+            ],
+            "correctAnswer": 2,
+            "explanation": "A pattern range deletes all lines from the line matching the start pattern to the line matching the stop pattern."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "In sed, what does the `-i` flag do?",
+            "options": [
+                "Ignores case",
+                "Inserts text",
+                "Edits files in‑place",
+                "Inverts the address"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`-i` overwrites the original file with the output."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which sed command appends text after the current line?",
+            "options": [
+                "i\\",
+                "a\\",
+                "c\\",
+                "d"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`a\\text` appends text after the line; `i\\` inserts before."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What does the sed hold space provide?",
+            "options": [
+                "A backup of the original file",
+                "Temporary storage that persists across lines",
+                "A place to store error messages",
+                "Extra memory for regular expressions"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The hold space is a buffer you can copy/append/exchange with the pattern space for multi‑line operations."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What does `H` do in sed?",
+            "options": [
+                "Copy pattern space to hold space",
+                "Append pattern space to hold space",
+                "Move hold space to pattern space",
+                "Delete hold space"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`H` appends pattern space to hold space with a newline."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "In awk, what does `$0` represent?",
+            "options": [
+                "The first field",
+                "The entire current record (line)",
+                "The number of fields",
+                "The last field"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`$0` is the whole input line."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Which awk variable holds the number of fields in the current record?",
+            "options": [
+                "NR",
+                "NF",
+                "FS",
+                "OFS"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`NF` is automatically set to the number of fields."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is the purpose of `BEGIN` in awk?",
+            "options": [
+                "To start the main loop",
+                "To execute code before any input is read",
+                "To begin a pattern range",
+                "To initialise the field separator"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The `BEGIN` block runs once before any records are processed."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "How do you print the last field of each line with awk?",
+            "options": [
+                "print $NF",
+                "print $last",
+                "print $0[-1]",
+                "print $(NF-1)"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`NF` is the number of fields; `$NF` gives the value of the last field."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which awk command sums all values in the third column and prints the total?",
+            "options": [
+                "{ total += $3 } END { print total }",
+                "sum($3) { print }",
+                "for(i=1;i<=NR;i++) total += $3; print total",
+                "print sum($3)"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`total` accumulates across lines; the `END` block prints the final sum."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "How can you count distinct values in awk?",
+            "options": [
+                "Using an associative array",
+                "Using `uniq` inside awk",
+                "awk cannot count distinct values",
+                "Using a loop with `sort`"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`seen[$1]++` counts occurrences; the number of keys in the array is the distinct count."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What does `awk -v thresh=10 '$3 > thresh' file` do?",
+            "options": [
+                "Prints lines where the third field is greater than the shell variable $thresh",
+                "Prints lines where the third field > 10",
+                "Sets thresh to 10 inside awk",
+                "Both B and C"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-v` passes the value, so `thresh` inside awk becomes 10; lines with $3 > 10 are printed."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Which awk built‑in function splits a string into an array?",
+            "options": [
+                "split()",
+                "substr()",
+                "match()",
+                "gsub()"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`split(string, array, separator)` divides a string into an array of substrings."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What is the effect of `sed 's/^/  /'`?",
+            "options": [
+                "Adds two spaces at the end of each line",
+                "Indents every line with two spaces",
+                "Removes the first two characters",
+                "Deletes lines starting with a space"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`^` matches start; replacing with two spaces prepends them to each line."
+        },
+        {
+            "id": "q17",
+            "type": "fill_blank",
+            "question": "To remove comments (lines starting with #) with sed, use `sed '/^#/___'`.",
+            "options": [],
+            "correctAnswer": "d",
+            "explanation": "The `d` command deletes addressed lines."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "How can you use awk to process a CSV file with a comma separator?",
+            "options": [
+                "awk -F, '{ print $2 }'",
+                "awk -F',' '{ print $2 }'",
+                "Both are correct",
+                "awk cannot handle CSV"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`-F,` and `-F','` both set comma as field separator."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "The sed command `t label` jumps to a label only if a substitution was made.",
+            "correctAnswer": true,
+            "explanation": "`t` tests if any substitution succeeded since the last input line or `t`; if so, it branches."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which of the following is a typical use of combining sed and awk?",
+            "options": [
+                "sed cleans up formatting, awk performs calculations",
+                "sed does arithmetic, awk renames files",
+                "awk edits files in place, sed prints reports",
+                "They cannot be combined"
+            ],
+            "correctAnswer": 0,
+            "explanation": "sed is great for substitution and line operations; awk is powerful for field‑based computations."
+        }
+    ]
+}

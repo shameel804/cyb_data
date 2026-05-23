@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_3",
+    "title": "Port Number Calculator",
+    "description": "Use math operators to calculate next port and check range.",
+    "estimatedMinutes": 10,
+    "problemStatement": "Write a script `port_math.py` that:\n- Defines a base port number `current_port = 8080`.\n- Calculates the next port (current + 1) and the previous port (current - 1).\n- Prints them clearly.\n- Checks if the current port is a well‑known port (less than 1024) and prints a boolean result.\n- Calculates the port range for a scan of 100 ports (current to current+99) and prints the range as \"Start: X, End: Y\".\n\nUse augmented assignment to increment the current_port by 10, then print the new value.",
+    "hints": [
+        "`is_well_known = current_port < 1024` will give a bool.",
+        "For the range, end = current_port + 99.",
+        "After incrementing with `+=`, print again."
+    ],
+    "expectedOutput": "Next: 8081, Prev: 8079, Well-known: False, Scan range Start: 8080, End: 8179, After increment: 8090",
+    "solutionCode": "current_port = 8080\nnext_port = current_port + 1\nprev_port = current_port - 1\nprint(f\"Next: {next_port}, Prev: {prev_port}\")\n\nis_well_known = current_port < 1024\nprint(f\"Well-known: {is_well_known}\")\n\nstart = current_port\nend = current_port + 99\nprint(f\"Scan range Start: {start}, End: {end}\")\n\ncurrent_port += 10\nprint(f\"After increment: {current_port}\")"
+}

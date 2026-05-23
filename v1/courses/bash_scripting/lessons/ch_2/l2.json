@@ -1,0 +1,106 @@
+{
+    "id": "l2",
+    "chapterId": "ch_2",
+    "title": "Navigating with cd 🧭",
+    "description": "Move between directories using absolute and relative paths. Master `.`, `..`, and `~`.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Navigation",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Change Directory Command 📂",
+            "content": "## `cd` – Your Steering Wheel\n\n`cd` (change directory) moves you to a different folder.\n\nSyntax: `cd [directory]`\n\n- If no directory is given, `cd` takes you home.\n- `cd -` takes you to the previous directory you were in."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Jump Home 🏠",
+            "content": "Go back to your home directory:",
+            "codeSnippet": "cd",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What does `cd ~` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Goes to the root directory",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Goes to the previous directory",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Goes to your home directory",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Stays in the same place",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`~` represents home, so `cd ~` (or just `cd`) takes you there.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Absolute vs Relative Paths 🛣️",
+            "content": "## Two Ways to Describe a Location\n\n- **Absolute path**: starts from root (`/`). Example: `/home/alice/Documents`\n- **Relative path**: starts from where you are now. Example: `Documents` (if you're already in `/home/alice`).\n\nRelative paths use special symbols:\n- `.`  – current directory\n- `..` – parent directory (one level up)"
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Climb Up ⬆️",
+            "content": "Move to the parent directory:",
+            "codeSnippet": "cd ..",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "fill_blank",
+                "question": "If you are in /home/alice/Music, what command takes you to /home/alice?",
+                "options": [],
+                "correctAnswer": "cd ..",
+                "explanation": "`..` refers to the parent directory. `cd ..` goes up one level to `/home/alice`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "code",
+            "title": "Stay in the Current Dir 🧭",
+            "content": "`.` is useful for running scripts in your current location (e.g., `./script.sh`). But `cd .` does nothing – you stay put.",
+            "codeSnippet": "cd .",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## The Dash Trick\n`cd -` toggles between the last two directories. It's like a back button in your terminal!"
+        }
+    ]
+}

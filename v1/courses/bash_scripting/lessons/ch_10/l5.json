@@ -1,0 +1,117 @@
+{
+    "id": "l5",
+    "chapterId": "ch_10",
+    "title": "Named Pipes (FIFOs) & Real‑World Pipelines 🏭",
+    "description": "Create persistent inter‑process communication channels with mkfifo, and build robust data‑processing pipelines.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Advanced IPC",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "What is a Named Pipe? 🎺",
+            "content": "## A File That Acts Like a Pipe\n\nA **named pipe** (FIFO) appears as a file in the filesystem, but behaves like a pipe. One process writes to it; another reads from it. Data flows in order, and reading is destructive.\n\nCreate one with: `mkfifo mypipe`.\n\nUseful when two independent processes need to communicate."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Basic FIFO Demo",
+            "content": "Terminal 1:\n```bash\nmkfifo chat\ntail -f chat\n```\nTerminal 2:\n```bash\necho \"Hello\" > chat\n```",
+            "codeSnippet": "mkfifo myfifo\n# Terminal 1: cat < myfifo\n# Terminal 2: echo 'data' > myfifo",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What command creates a named pipe?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "touch pipe",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "mkfifo pipe",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "mkpipe pipe",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "mknod pipe p",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "`mkfifo` is the standard command; `mknod ... p` also works but is older.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Avoiding Deadlocks 🔒",
+            "content": "## A FIFO Blocks Until Both Ends Are Ready\n\nIf you open a FIFO for reading before anything writes to it, the read blocks (until something opens it for writing). Similarly, a write blocks until a reader opens.\n\nUse background processes or separate terminals to avoid hanging. In scripts, you can use `exec` to manage file descriptors without blocking."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Script‑Friendly FIFO",
+            "content": "Background a writer so the reader can start:",
+            "codeSnippet": "mkfifo data_pipe\n(cat /etc/passwd > data_pipe) &\nhead -n 3 < data_pipe\nrm data_pipe",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "A named pipe can be read by multiple processes simultaneously, each getting the same data.",
+                "correctAnswer": false,
+                "explanation": "A FIFO is a stream; once a reader consumes data, that data is gone. Multiple readers will each get partial or interleaved data, not a copy.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Real‑World Pipeline: Log Processor 🏭",
+            "content": "## Putting It All Together\n\nImagine you have an API log stream. You want to:\n1. Filter error lines.\n2. Extract timestamps and error codes.\n3. Count error types.\n\nYou can build a pipeline:\n```bash\ntail -f /var/log/api.log | grep ERROR | awk '{print $3, $NF}' | sort | uniq -c | tee errors.txt\n```"
+        },
+        {
+            "id": "s_l5_8",
+            "type": "code",
+            "title": "Live Pipeline with Process Substitution",
+            "content": "Feed the live count to a dashboard:",
+            "codeSnippet": "mkfifo error_pipe\ntail -f /var/log/api.log | grep ERROR > error_pipe &\nwhile read line; do\n  echo \"$(date): $line\"\ndone < error_pipe",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_9",
+            "type": "text",
+            "title": "Performance Considerations ⚡",
+            "content": "## Pipes Are Efficient but...\n\n- Too many sequential pipes can slow down due to context switching.\n- Use `grep -q` for early exit if you just need existence.\n- Combine filters with `awk` where possible to reduce process spawning.\n- For large data, consider temporary files instead of pipes (disk I/O vs. memory/CPU)."
+        },
+        {
+            "id": "s_l5_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `pv` (pipe viewer) to monitor throughput of a pipeline: `cat largefile | pv | gzip > out.gz`."
+        }
+    ]
+}

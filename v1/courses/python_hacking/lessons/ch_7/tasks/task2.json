@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_7",
+    "title": "Regex IP Extractor from Log File",
+    "description": "Read a file (or simulated text) and extract all IP addresses using regex, then save them to a file.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Create a script `extract_ips.py`. Since we don't have a real file, simulate a log with a multiline string:\n```\nLOG_START\nConnection from 10.0.0.1 accepted\nFailed login from 192.168.1.50\nPort scan detected from 10.0.0.1\nAllowed admin from 172.16.0.5\nLOG_END\n```\nUse `re.findall()` with a regex pattern for IPv4 addresses to extract all IPs. The extracted IPs should be unique (no duplicates). Print the unique IPs sorted. Then write them to a file `unique_ips.txt`, one per line.",
+    "hints": [
+        "Pattern: `r'\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}'`",
+        "Use `set()` to get unique IPs.",
+        "`sorted()` returns a sorted list.",
+        "Write with `'\\n'.join(list)` and `f.write()`."
+    ],
+    "expectedOutput": "['10.0.0.1', '172.16.0.5', '192.168.1.50'] (order may vary)\nFile unique_ips.txt containing these IPs.",
+    "solutionCode": "import re\n\nlog = \"\"\"LOG_START\nConnection from 10.0.0.1 accepted\nFailed login from 192.168.1.50\nPort scan detected from 10.0.0.1\nAllowed admin from 172.16.0.5\nLOG_END\"\"\"\n\npattern = r'\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}'\nips = re.findall(pattern, log)\nunique = sorted(set(ips))\nprint(unique)\n\nwith open('unique_ips.txt', 'w') as f:\n    f.write('\\n'.join(unique))\n"
+}

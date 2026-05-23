@@ -1,0 +1,152 @@
+{
+    "id": "l2",
+    "chapterId": "ch_2",
+    "title": "Package Management with pip 📦",
+    "description": "Install, upgrade, and manage the external libraries that power hacking tools.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Lab Setup",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Your Hacking Arsenal Comes from pip",
+            "content": "# Python's Package Installer\n\n`pip` is the standard tool for installing Python packages from the [Python Package Index (PyPI)](https://pypi.org). Want a library to make HTTP requests? `pip install requests`. Want to parse HTML? `pip install beautifulsoup4`.\n\nEvery hacking tool you'll build depends on `pip`."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Checking pip Installation",
+            "content": "# Is pip Already There?\n\nUsually, pip comes bundled with Python. Verify:\n```\npip --version\n```\nor\n```\npip3 --version\n```\nIf not, you can install it via `python -m ensurepip --upgrade`. But on most systems it's ready."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "true_false",
+                "question": "pip can only install packages that come with Python by default.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "pip downloads and installs third‑party packages from PyPI, extending Python's capabilities.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "The Basics: install, uninstall, list",
+            "content": "# Essential pip Commands\n\n* **Install the latest version:** `pip install package_name`\n* **Install a specific version:** `pip install package_name==1.2.3`\n* **Upgrade a package:** `pip install --upgrade package_name`\n* **Uninstall:** `pip uninstall package_name`\n* **List installed:** `pip list`\n* **Show details:** `pip show package_name`"
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Try It in Your Venv",
+            "content": "Activate your environment, then:",
+            "codeSnippet": "pip install requests\npip list\npip show requests",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Command Quiz 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "Which command removes a package entirely?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "pip delete package_name",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "pip remove package_name",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "pip uninstall package_name",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "`pip uninstall` is the correct sub‑command to remove a package.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Freezing Dependencies ❄️",
+            "content": "# Share Your Exact Environment\n\nWhen you build a hacking tool and want to share it, others need the same libraries. Use:\n```\npip freeze > requirements.txt\n```\nThis creates a `requirements.txt` file listing every package and its version. To recreate the environment, someone (or you) runs:\n```\npip install -r requirements.txt\n```\nThis is standard practice in professional tools."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "Example requirements.txt",
+            "content": "Your file might look like:",
+            "codeSnippet": "requests==2.31.0\nbeautifulsoup4==4.12.3\nscapy==2.5.0",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_9",
+            "type": "quiz",
+            "title": "Freeze Frame 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "multiple_choice",
+                "question": "What is the purpose of `pip freeze > requirements.txt`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To delete all installed packages",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To save the current environment's package list for later replication",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To upgrade all packages at once",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "It records exact versions, making the project reproducible.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_10",
+            "type": "warning",
+            "title": "Watch Out: Global vs Venv pip",
+            "content": "## Always Check Activation\n\nIf you run `pip install` without activating a venv, you'll install to the **global** Python. On some systems that requires admin rights and can cause conflicts. Always ensure `(env_name)` is in your prompt before installing anything."
+        },
+        {
+            "id": "s_l2_11",
+            "type": "text",
+            "title": "Upgrading pip Itself",
+            "content": "# Stay Current\n\nEven pip needs updates. Run:\n```\npip install --upgrade pip\n```\nThis ensures you have the latest features and security fixes."
+        },
+        {
+            "id": "s_l2_12",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Using `python -m pip`\n\nIf `pip` command is not found, you can always use:\n```\npython -m pip install package\n```\nThis invokes pip via the Python interpreter, which is especially reliable."
+        },
+        {
+            "id": "s_l2_13",
+            "type": "text",
+            "title": "What We've Installed So Far",
+            "content": "# Recap\n\nWe have a venv named `hacklab`, and inside it we've installed `requests`. In the next lesson, we'll organize our scripts into folders so we can actually start writing hacking code."
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_9",
+    "title": "My First Cron Job",
+    "description": "Create a script that logs the date and add it to your crontab to run every minute.",
+    "estimatedMinutes": 12,
+    "problemStatement": "You want to verify that cron is working on your system. Write a script `cron_test.sh` that:\n\n1. Is executable and located in your home directory (or a path you choose).\n2. Contains a shebang and appends a timestamped message to a log file `~/cron_test.log` (e.g., \"Cron ran at Thu May 22 10:15:00 UTC 2026\").\n3. Then, add a crontab entry (using `crontab -e`) that runs this script **every minute**.\n4. Wait a couple of minutes, then check the log file to see the entries.\n5. After testing, comment out or remove the cron job to stop filling the log.\n\nDocument the steps in a comments header. Bonus: also log any errors by redirecting stderr.",
+    "hints": [
+        "The script: `echo \"Cron ran at $(date)\" >> ~/cron_test.log`.",
+        "Cron entry: `* * * * * /home/user/cron_test.sh` (use full path).",
+        "To avoid mail: `* * * * * /home/user/cron_test.sh >> /dev/null 2>&1` (but then you lose the log unless script writes to file). So just let script handle its own logging.",
+        "Check with `tail -f ~/cron_test.log`."
+    ],
+    "expectedOutput": "Multiple lines in ~/cron_test.log, each with a timestamp roughly one minute apart.",
+    "solutionCode": "#!/bin/bash\n# cron_test.sh – logs execution time to a file\nLOGFILE=\"$HOME/cron_test.log\"\necho \"Cron ran at $(date)\" >> \"$LOGFILE\""
+}

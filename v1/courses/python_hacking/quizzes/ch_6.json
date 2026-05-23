@@ -1,0 +1,323 @@
+{
+    "id": "quiz_ch_6",
+    "chapterId": "ch_6",
+    "title": "Chapter 6 Quiz",
+    "description": "Test your mastery of functions: definition, parameters, return, scope, lambda, recursion, and docstrings.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What keyword is used to define a function in Python?",
+            "options": [
+                "function",
+                "def",
+                "func",
+                "define"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Python uses `def` to start a function definition."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What will the following code print?\n```python\ndef greet():\n    print(\"Hi\")\ngreet()\ngreet()\n```",
+            "options": [
+                "Hi (once)",
+                "Hi Hi",
+                "HiHi",
+                "Error"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The function is called twice, each printing 'Hi' on a new line."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "Parameters are the values you pass to a function when calling it.",
+            "correctAnswer": false,
+            "explanation": "Parameters are the variables in the function definition; arguments are the values passed."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which of the following is a valid function call with keyword arguments?",
+            "options": [
+                "connect(port=22, \"10.0.0.1\")",
+                "connect(host=\"10.0.0.1\", port=22)",
+                "connect(\"10.0.0.1\", port=22)",
+                "Both B and C"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Positional arguments before keyword arguments is allowed; A is invalid because keyword before positional."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What value does `port` take in this function call?\n```python\ndef scan(host, port=80):\n    pass\nscan(\"server\", 443)\n```",
+            "options": [
+                "80",
+                "443",
+                "None",
+                "server"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The default 80 is overridden by the explicit argument 443."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which statement about `return` is true?",
+            "options": [
+                "It prints the value to the console",
+                "It ends the function and sends a value back to the caller",
+                "It pauses the function",
+                "It must be used in every function"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`return` terminates the function and optionally provides a result."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What does a function return if there is no `return` statement?",
+            "options": [
+                "0",
+                "False",
+                "None",
+                "It raises an error"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Implicitly returns `None`."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "How can a function return multiple values?",
+            "options": [
+                "Use `return value1, value2` (they are packed into a tuple)",
+                "Use multiple `return` statements",
+                "It's not possible",
+                "Use a list"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Comma‑separated values are packed into a tuple."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Given `def f(): return 1, 2`, what is the type of the returned object?",
+            "options": [
+                "int",
+                "list",
+                "tuple",
+                "set"
+            ],
+            "correctAnswer": 2,
+            "explanation": "It returns a tuple (1,2)."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is the output of:\n```python\ndef test(x):\n    x = x + 1\n    return x\na = 5\ntest(a)\nprint(a)\n```",
+            "options": [
+                "5",
+                "6",
+                "None",
+                "Error"
+            ],
+            "correctAnswer": 0,
+            "explanation": "a is unchanged because integers are immutable and the function's x is local."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which keyword allows a function to modify a global variable?",
+            "options": [
+                "global",
+                "nonlocal",
+                "extern",
+                "static"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`global` declares that a name refers to a variable in the global scope."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is the LEGB rule?",
+            "options": [
+                "Python's order for variable name resolution: Local, Enclosing, Global, Built-in",
+                "A coding style guide",
+                "A data structure",
+                "An encryption algorithm"
+            ],
+            "correctAnswer": 0,
+            "explanation": "It's the scope resolution order."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What does `nonlocal` do?",
+            "options": [
+                "Makes a variable global",
+                "Allows modification of a variable in the nearest enclosing (non‑global) scope",
+                "Declares a constant",
+                "None of the above"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`nonlocal` is used in nested functions to refer to variables in outer (but not global) scopes."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is a lambda function?",
+            "options": [
+                "A function defined with the `lambda` keyword, limited to a single expression",
+                "A normal function with a special name",
+                "A function that only works with numbers",
+                "A deprecated feature"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Lambda creates anonymous inline functions."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What does `list(filter(lambda x: x>5, [3,8,1,6]))` return?",
+            "options": [
+                "[3,1]",
+                "[8,6]",
+                "[True, False]",
+                "[8,6,True]"
+            ],
+            "correctAnswer": 1,
+            "explanation": "filter keeps elements >5: 8 and 6."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What is the output of `list(map(lambda x: x*2, [1,2,3]))`?",
+            "options": [
+                "[1,2,3]",
+                "[2,4,6]",
+                "map object",
+                "[1,4,9]"
+            ],
+            "correctAnswer": 1,
+            "explanation": "map applies the lambda, doubling each element."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which key function sorts strings by their length?",
+            "options": [
+                "lambda s: len(s)",
+                "lambda s: s.len()",
+                "len",
+                "Both A and C work"
+            ],
+            "correctAnswer": 3,
+            "explanation": "You can pass `len` directly as the key function, or a lambda returning len(s)."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "What is a base case in recursion?",
+            "options": [
+                "The first call to the function",
+                "A condition that stops the recursion",
+                "The last line of the function",
+                "The input with the largest value"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The base case prevents infinite recursion."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "Python imposes a recursion limit to prevent stack overflow.",
+            "correctAnswer": true,
+            "explanation": "Yes, default is 1000; it can be changed with `sys.setrecursionlimit()`."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Where is a docstring placed?",
+            "options": [
+                "Before the function definition",
+                "Immediately after the function header",
+                "At the end of the function",
+                "Inside a comment block"
+            ],
+            "correctAnswer": 1,
+            "explanation": "It's the first statement in the function body, enclosed in triple quotes."
+        },
+        {
+            "id": "q21",
+            "type": "fill_blank",
+            "question": "The built‑in function used to display documentation of a function is ________.",
+            "options": [
+                "help()",
+                "doc()",
+                "info()",
+                "man()"
+            ],
+            "correctAnswer": "help()",
+            "explanation": "`help(function_name)` shows its docstring and signature."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "What is a key advantage of functions?",
+            "options": [
+                "They make code reuse easier",
+                "They help organize complex programs",
+                "They reduce duplication",
+                "All of the above"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Functions promote all these benefits."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "What does `*args` do in a function definition?",
+            "options": [
+                "Accepts any number of positional arguments as a tuple",
+                "Accepts any number of keyword arguments as a dict",
+                "Indicates required arguments",
+                "Is a syntax error"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`*args` collects extra positional arguments into a tuple."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "Which statement is true about default parameter values?",
+            "options": [
+                "Defaults are evaluated each time the function is called",
+                "Defaults are evaluated once at definition time",
+                "Defaults must be integers",
+                "Defaults cannot be None"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Default values are created once when the function is defined, which can cause issues with mutable objects."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "How would you call a function `attack(ip, port, method='TCP')` using only keyword arguments?",
+            "options": [
+                "attack(ip='10.0.0.1', port=80, method='UDP')",
+                "attack('10.0.0.1', 80, method='UDP')",
+                "attack(port=80, '10.0.0.1')",
+                "attack(method='UDP', ip='10.0.0.1', port=80)"
+            ],
+            "correctAnswer": 3,
+            "explanation": "All arguments by keyword; order can be arbitrary."
+        }
+    ]
+}

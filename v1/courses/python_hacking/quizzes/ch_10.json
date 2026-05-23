@@ -1,0 +1,278 @@
+{
+    "id": "quiz_ch_10",
+    "chapterId": "ch_10",
+    "title": "Chapter 10 Quiz",
+    "description": "Test your knowledge of networking basics, sockets, TCP/UDP, port scanning, and banner grabbing.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What does IP stand for?",
+            "options": [
+                "Internet Protocol",
+                "Internal Process",
+                "Interface Program",
+                "Integrated Packet"
+            ],
+            "correctAnswer": 0,
+            "explanation": "IP is the Internet Protocol."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which port is commonly used for SSH?",
+            "options": [
+                "80",
+                "443",
+                "22",
+                "21"
+            ],
+            "correctAnswer": 2,
+            "explanation": "SSH uses port 22 by default."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "TCP is a connectionless protocol.",
+            "correctAnswer": false,
+            "explanation": "TCP is connection‑oriented; UDP is connectionless."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What does `AF_INET` specify when creating a socket?",
+            "options": [
+                "Use IPv6",
+                "Use IPv4",
+                "Use Bluetooth",
+                "Use Unix domain sockets"
+            ],
+            "correctAnswer": 1,
+            "explanation": "AF_INET is the address family for IPv4."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which method sets a timeout on socket operations?",
+            "options": [
+                "socket.timeout()",
+                "socket.settimeout()",
+                "socket.delay()",
+                "socket.time()"
+            ],
+            "correctAnswer": 1,
+            "explanation": "s.settimeout(seconds) sets a timeout for blocking operations."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What does `connect_ex()` return on success?",
+            "options": [
+                "1",
+                "0",
+                "True",
+                "The socket object"
+            ],
+            "correctAnswer": 1,
+            "explanation": "connect_ex() returns 0 on successful connection, otherwise an error code."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Which method is used to start a server listening for connections?",
+            "options": [
+                "bind()",
+                "listen()",
+                "accept()",
+                "connect()"
+            ],
+            "correctAnswer": 1,
+            "explanation": "listen() tells the socket to listen for incoming connections."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What does `accept()` return?",
+            "options": [
+                "A new socket and the client address",
+                "Only the client address",
+                "A connection object",
+                "None"
+            ],
+            "correctAnswer": 0,
+            "explanation": "accept() blocks and returns (conn, address) where conn is a new socket for the client."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Why is it important to close a socket?",
+            "options": [
+                "To free the port and resources",
+                "To send a final message",
+                "It's not necessary",
+                "To encrypt the data"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Closing releases the file descriptor and allows the port to be reused."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is banner grabbing?",
+            "options": [
+                "Downloading images from a website",
+                "Reading the initial data sent by a service to identify it",
+                "Sending spam emails",
+                "A type of denial‑of‑service attack"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Banner grabbing captures the welcome message or headers that identify a service."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "HTTP servers always send a banner immediately after a TCP connection.",
+            "correctAnswer": false,
+            "explanation": "HTTP servers wait for a client request before sending a response."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which Python function can resolve a hostname to an IP address?",
+            "options": [
+                "socket.connect()",
+                "socket.getaddrinfo()",
+                "socket.bind()",
+                "socket.listen()"
+            ],
+            "correctAnswer": 1,
+            "explanation": "getaddrinfo() resolves hostnames; connect() also resolves but getaddrinfo is explicit."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What type of socket is used for UDP communication?",
+            "options": [
+                "SOCK_STREAM",
+                "SOCK_DGRAM",
+                "SOCK_RAW",
+                "SOCK_RDM"
+            ],
+            "correctAnswer": 1,
+            "explanation": "SOCK_DGRAM indicates UDP (datagram)."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is a SYN scan?",
+            "options": [
+                "A full TCP connect scan",
+                "A scan that sends a SYN, receives SYN‑ACK, then sends RST (half‑open)",
+                "A UDP scan",
+                "A scan that uses ICMP"
+            ],
+            "correctAnswer": 1,
+            "explanation": "SYN scan is stealthier because it never completes the TCP handshake."
+        },
+        {
+            "id": "q15",
+            "type": "fill_blank",
+            "question": "The `________` module provides high‑level packet crafting capabilities in Python.",
+            "options": [
+                "scapy",
+                "requests",
+                "socket",
+                "paramiko"
+            ],
+            "correctAnswer": "scapy",
+            "explanation": "Scapy is the most popular Python library for packet manipulation."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Why might a UDP scan show a port as open when it's actually closed?",
+            "options": [
+                "UDP is reliable",
+                "Closed ports may not send any response, making them look open if no ICMP error is received",
+                "All ports respond to UDP",
+                "It's impossible"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Open UDP ports typically stay silent; closed ports may respond with an ICMP port unreachable, but firewalls can block that."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What does `socket.SO_REUSEADDR` allow?",
+            "options": [
+                "Reusing the same port immediately after the socket is closed",
+                "Using a different address family",
+                "Encrypting the connection",
+                "Connecting to multiple hosts"
+            ],
+            "correctAnswer": 0,
+            "explanation": "SO_REUSEADDR allows a socket to bind to a port that is in TIME_WAIT state."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which method sends all data, ensuring it's completely transmitted?",
+            "options": [
+                "send()",
+                "sendall()",
+                "sendto()",
+                "write()"
+            ],
+            "correctAnswer": 1,
+            "explanation": "sendall() calls send() repeatedly until all data is sent."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "You can use `socket` module to create both TCP and UDP sockets.",
+            "correctAnswer": true,
+            "explanation": "Yes, by specifying SOCK_STREAM for TCP or SOCK_DGRAM for UDP."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is the role of the `backlog` parameter in `listen(backlog)`?",
+            "options": [
+                "Number of bytes to receive",
+                "Maximum number of queued connections",
+                "Timeout value",
+                "Port number"
+            ],
+            "correctAnswer": 1,
+            "explanation": "backlog specifies the maximum number of pending connections the system will queue."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "Which library is commonly used for HTTP requests instead of raw sockets?",
+            "options": [
+                "socket",
+                "requests",
+                "scapy",
+                "paramiko"
+            ],
+            "correctAnswer": 1,
+            "explanation": "requests abstracts HTTP, making it much easier than crafting HTTP over sockets."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "What does the `encode()` method do when sending data?",
+            "options": [
+                "Converts bytes to string",
+                "Converts string to bytes",
+                "Encrypts data",
+                "Compresses data"
+            ],
+            "correctAnswer": 1,
+            "explanation": "encode() converts a Unicode string to a bytes object using a character encoding."
+        }
+    ]
+}

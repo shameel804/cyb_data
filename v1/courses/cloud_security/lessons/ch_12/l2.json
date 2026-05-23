@@ -1,0 +1,142 @@
+{
+    "id": "l2",
+    "chapterId": "ch_12",
+    "title": "Zero Trust Architecture Deep Dive 🔐",
+    "description": "NIST 800‑207, micro‑segmentation, and the principles of never trust, always verify.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Death of the Perimeter 💀",
+            "content": "# Why Zero Trust?\n\nThe traditional model – trusted internal network, untrusted internet – is obsolete. Once an attacker gets past the firewall, they roam freely.\n\n**Zero Trust** flips the script:\n- **Never trust, always verify** – Every access request, regardless of origin, must be authenticated, authorized, and encrypted.\n- **Assume breach** – Design as if the attacker is already inside.\n- **Least privilege** – Grant only the minimum access needed, just‑in‑time.\n\n*Zero Trust is not a product; it's a philosophy supported by a set of technologies.*"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Zero Trust Core 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What is the fundamental principle of Zero Trust?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Trust but verify",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Never trust, always verify",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Trust internal traffic implicitly",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Rely only on perimeter firewall",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Zero Trust mandates continuous verification of every access request.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "NIST SP 800‑207: The Zero Trust Bible 📖",
+            "content": "## The Official Definition\n\nNIST Special Publication 800‑207 defines a Zero Trust Architecture (ZTA). Key tenets:\n\n1. **All data sources and computing services are considered resources.**\n2. **All communication is secured regardless of network location.**\n3. **Access to individual enterprise resources is granted on a per‑session basis.**\n4. **Access is determined by dynamic policy – including the observable state of client identity, application/service, and the requesting asset – and may include other behavioral and environmental attributes.**\n5. **The enterprise monitors and measures the integrity and security posture of all owned and associated assets.**\n6. **All resource authentication and authorization are dynamic and strictly enforced before access is allowed.**\n7. **The enterprise collects as much information as possible about the current state of assets, network infrastructure, and communications and uses it to improve its security posture.**\n\n*This isn't just a checklist; it's a fundamental shift in network design.*"
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "NIST Tenet 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "According to NIST, how should access to an individual resource be granted in ZTA?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Once a device is on the corporate network",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Based on static IP address",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "On a per‑session basis, using dynamic policy",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Through a VPN only",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Access is temporary and evaluated for each session, not persistent.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Pillars of a Zero Trust Architecture 🏛️",
+            "content": "## The Building Blocks\n\n1. **Identity** – Strong authentication (MFA), identity federation, continuous authorization.\n2. **Devices** – Endpoint health checks, device compliance before granting access.\n3. **Network** – Micro‑segmentation, encrypted traffic, software‑defined perimeters.\n4. **Applications & Workloads** – Secure by code, container security, API gateways with authentication.\n5. **Data** – Classification, encryption everywhere, DLP, and access controls based on sensitivity.\n\n*Each pillar must work together. A weak link breaks the chain.*"
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Micro‑Segmentation: The Network Piece 🧩",
+            "content": "## No More Flat Networks\n\nMicro‑segmentation divides your network into tiny, isolated zones, even within the same subnet.\n\n- **Legacy**: All servers in a VLAN can talk to each other.\n- **Zero Trust**: Each application has its own security policy; only explicitly allowed traffic passes.\n- **Implementation**: Kubernetes Network Policies, AWS Security Groups referencing other SGs, Azure NSGs, GCP firewall rules with service accounts.\n\n*If a web server is compromised, micro‑segmentation prevents it from directly reaching the database.*"
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "Micro‑Segmentation 📝",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "true_false",
+                "question": "Micro‑segmentation means splitting a VPC into public and private subnets.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "That's subnetting. Micro‑segmentation creates granular, per‑workload firewalls, often within the same subnet.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_8",
+            "type": "text",
+            "title": "The Policy Engine & Policy Administrator ⚙️",
+            "content": "## The Brain of ZTA\n\nNIST describes a **Policy Engine (PE)** that makes access decisions based on:\n- User identity and role.\n- Device health and patch level.\n- Request context (time of day, geolocation).\n- Data sensitivity.\n- Threat intelligence.\n\nA **Policy Administrator (PA)** enforces the decision (e.g., opens a gateway or issues a token).\n\nIn cloud practice, the PE/PA is often a combination of IAM, identity provider, and API gateway. For example, Azure AD Conditional Access acts as the policy engine."
+        },
+        {
+            "id": "s_l2_9",
+            "type": "tip",
+            "title": "Don’t Boil the Ocean 🚀",
+            "content": "Start your Zero Trust journey with identity: enforce MFA everywhere, move to passwordless. Then tackle device compliance. Then micro‑segment your most critical applications."
+        }
+    ]
+}

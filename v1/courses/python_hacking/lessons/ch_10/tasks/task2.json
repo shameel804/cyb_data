@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_10",
+    "title": "Echo Server and Client",
+    "description": "Build a server that echoes back any message and a client that sends a message and prints the reply.",
+    "estimatedMinutes": 20,
+    "problemStatement": "Write two scripts: `echo_server.py` and `echo_client.py`.\n- `echo_server.py`: Create a TCP server on `127.0.0.1:8888`. Use `SO_REUSEADDR`. After accepting a connection, receive up to 1024 bytes, send them back, and then close the connection. (Only handle one client, then exit).\n- `echo_client.py`: Connect to `127.0.0.1:8888`, send the message `b'Hello, Echo!'`, receive the response, print it (decode to string), and close.\n\nRun the server first, then the client in a separate terminal (or simulate that they are separate). Provide the code for both files.",
+    "hints": [
+        "Server: set `s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)` before bind.",
+        "Listen with `server.listen(1)`, then `conn, addr = server.accept()`.",
+        "Use `conn.recv(1024)` and `conn.sendall(data)`.",
+        "Client: simply connect and send/recv."
+    ],
+    "expectedOutput": "Client prints: b'Hello, Echo!' (or decoded).",
+    "solutionCode": "# echo_server.py\nimport socket\n\nHOST = '127.0.0.1'\nPORT = 8888\n\nwith socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:\n    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)\n    s.bind((HOST, PORT))\n    s.listen(1)\n    print(f\"Echo server listening on {HOST}:{PORT}\")\n    conn, addr = s.accept()\n    with conn:\n        print(f\"Connected by {addr}\")\n        data = conn.recv(1024)\n        if data:\n            conn.sendall(data)\n    print(\"Server done.\")\n\n# echo_client.py\nimport socket\n\nHOST = '127.0.0.1'\nPORT = 8888\n\nwith socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:\n    s.connect((HOST, PORT))\n    s.sendall(b'Hello, Echo!')\n    data = s.recv(1024)\n    print(data.decode())\n"
+}

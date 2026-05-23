@@ -1,0 +1,25 @@
+{
+    "id": "project2",
+    "title": "Centralized Security Monitoring & Compliance Dashboard",
+    "description": "Implement a multi‑account cloud security monitoring solution with CloudTrail, GuardDuty, Security Hub, and custom dashboards that alert on threats and track compliance.",
+    "difficulty": "Intermediate",
+    "estimatedHours": "8-12",
+    "problemStatement": "## Objective\nYour company has three AWS accounts: Development, Staging, and Production. You need to set up centralized security monitoring to detect threats, maintain compliance, and provide a single pane of glass for the security team.\n\n## What You Will Build\n- An AWS Organization with a dedicated **Security account** and three member accounts (if you cannot actually create multiple accounts, simulate using separate IAM roles or describe the architecture).\n- An organization‑wide CloudTrail that sends logs to a central S3 bucket in the Security account, with integrity validation and immutable storage (Object Lock).\n- GuardDuty delegated administrator in the Security account, aggregating findings from all member accounts.\n- AWS Security Hub with the **CIS AWS Foundations Benchmark** standard enabled, aggregating compliance scores and findings from all accounts.\n- A custom CloudWatch dashboard in the Security account showing key metrics: total GuardDuty findings by severity, compliance score trend, number of S3 buckets without encryption (using Config rule data), and unauthorized API calls count.\n- Automated alerting: SNS topic that sends email for any GuardDuty finding of severity HIGH or CRITICAL, and when the CIS compliance score drops below 80%.\n- A weekly automated report (via Lambda) that summarizes the security posture and sends it to the team’s Slack channel (or email as fallback).\n\nThe final deliverable is a **configuration guide** explaining the setup, along with the dashboard design and alerting logic.",
+    "requirements": [
+        "CloudTrail must be an organization trail, logging management and S3 data events (at least for the production account). Logs must be stored with SSE‑KMS and Object Lock in Compliance mode for 365 days.",
+        "GuardDuty must be enabled in all regions and all accounts, with findings centralized in the Security account.",
+        "Security Hub must have the CIS AWS Foundations Benchmark enabled; the security score must be captured and displayed in the dashboard.",
+        "The CloudWatch dashboard must have at least four widgets showing different security metrics.",
+        "The SNS topic must trigger an email notification for HIGH/CRITICAL GuardDuty findings (you can simulate a finding by creating a test instance with a known vulnerability).",
+        "The weekly summary Lambda must query Security Hub and GuardDuty APIs, format a summary, and send it (you can use a scheduled CloudWatch Event rule).",
+        "All configurations must follow least privilege – for example, the Lambda role must only have permissions to read Security Hub, not modify it."
+    ],
+    "hints": [
+        "Use AWS Control Tower (if available) or manually set up AWS Organizations. Enable trusted access for CloudTrail, GuardDuty, and Security Hub.",
+        "For the S3 bucket, apply a bucket policy that allows CloudTrail from all accounts, and enable Object Lock during bucket creation (requires versioning).",
+        "In GuardDuty, add the member accounts under the delegate administrator and accept the invitations.",
+        "To create the dashboard widget for S3 bucket encryption status, you can use a custom CloudWatch metric from a Config rule that evaluates `s3-bucket-server-side-encryption-enabled` and pushes the count of non‑compliant buckets.",
+        "For the weekly report Lambda, use Python with boto3 to call `securityhub.get_findings()` and `guardduty.get_findings()`, aggregate, and send via Slack webhook (or SNS)."
+    ],
+    "expectedOutput": "A fully working centralized monitoring environment that demonstrates:\n- Centralized CloudTrail logs across accounts, with evidence of immutable storage.\n- GuardDuty console showing findings from member accounts.\n- Security Hub dashboard with a CIS compliance score and aggregated findings.\n- Custom CloudWatch dashboard showing security metrics.\n- SNS email alerts triggered by test GuardDuty findings (screenshot of email).\n- A sample weekly report email/message.\n- The walkthrough should include all configuration steps, IAM policies, and the architecture diagram."
+}

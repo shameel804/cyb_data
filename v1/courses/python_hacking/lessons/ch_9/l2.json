@@ -1,0 +1,161 @@
+{
+    "id": "l2",
+    "chapterId": "ch_9",
+    "title": "Built-in Modules: os & sys ⚙️",
+    "description": "Harness the power of the operating system and the Python interpreter with os and sys.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Modules",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Why os and sys?",
+            "content": "# Control the Environment\n\n* **`os`** – interact with the operating system: navigate directories, run commands, read environment variables.\n* **`sys`** – interact with the Python runtime: command‑line arguments, exit the program, path info.\n\nEvery hacking script eventually needs these. Let's dive in."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "os Module Essentials 🗂️",
+            "content": "# Navigating the File System\n\n* `os.getcwd()` – current working directory\n* `os.chdir(path)` – change directory\n* `os.listdir(path)` – list directory contents (returns list of names)\n* `os.mkdir(path)` – create a directory\n* `os.makedirs(path, exist_ok=True)` – create directories recursively\n* `os.path.join()` – join paths safely\n* `os.path.exists(path)`, `os.path.isfile()`, `os.path.isdir()`\n\nExample:\n```python\nimport os\nprint(os.getcwd())\nfiles = os.listdir('.')\nfor f in files:\n    if os.path.isfile(f):\n        print(f)\n```"
+        },
+        {
+            "id": "s_l2_3",
+            "type": "code",
+            "title": "os File Operations",
+            "content": "List only Python files in current dir:",
+            "codeSnippet": "import os\npy_files = [f for f in os.listdir('.') if f.endswith('.py')]\nprint(py_files)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "os Module 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which function returns the current working directory?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "os.cwd()",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "os.getcwd()",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "os.path.cwd()",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "os.getcwd() gets the current working directory.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Running System Commands",
+            "content": "# `os.system()` and `subprocess` (better)\n\n```python\nimport os\nos.system('ping -c 1 8.8.8.8')  # runs command, prints output\n```\nBut `os.system()` is limited. The `subprocess` module is preferred for capturing output, error handling:\n```python\nimport subprocess\nresult = subprocess.run(['ping', '-c', '1', '8.8.8.8'], capture_output=True, text=True)\nprint(result.stdout)\n```\nWe'll use subprocess in later chapters; know that `os` can also run commands."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "sys Module – Command Line Arguments 🖥️",
+            "content": "# `sys.argv` is a List of Arguments\n\nWhen you run a script with arguments, they're captured in `sys.argv`.\n\n```python\nimport sys\nif len(sys.argv) < 2:\n    print(\"Usage: python script.py <target>\")\n    sys.exit(1)\ntarget = sys.argv[1]\nprint(f\"Scanning {target}\")\n```\n`sys.argv[0]` is the script name. Indices 1,2,... are the arguments."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "code",
+            "title": "Command Line Argument Demo",
+            "content": "Simulate argv (since we can't pass args in playground, we'll hardcode for demo):",
+            "codeSnippet": "import sys\n# In real script, sys.argv comes from command line\n# Simulate:\nsys.argv = ['script.py', '192.168.1.1', '80']\nif len(sys.argv) > 1:\n    target = sys.argv[1]\n    port = sys.argv[2] if len(sys.argv) > 2 else '80'\n    print(f\"Target: {target}, Port: {port}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_8",
+            "type": "quiz",
+            "title": "sys.argv 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "If you run `python scan.py 10.0.0.1 8080`, what is `sys.argv[2]`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "scan.py",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "10.0.0.1",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "8080",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Index 0 is the script name; 1 is the first arg, 2 is the second.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_9",
+            "type": "text",
+            "title": "sys.exit() & sys.path",
+            "content": "# Graceful Termination and Module Search\n\n* **`sys.exit([arg])`** – exit the program. Pass an integer to indicate status (0=success, non‑zero=error).\n* **`sys.path`** – list of directories Python searches for modules. You can modify it to add custom module directories.\n\n```python\nimport sys\nsys.path.append('/home/hacker/mymodules')\nimport my_custom_module\n```"
+        },
+        {
+            "id": "s_l2_10",
+            "type": "code",
+            "title": "sys.exit() Example",
+            "content": "Stop if target not specified:",
+            "codeSnippet": "import sys\nif len(sys.argv) < 2:\n    print(\"Error: target required\")\n    sys.exit(1)\n# rest of script...",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_11",
+            "type": "quiz",
+            "title": "sys.exit() 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "true_false",
+                "question": "`sys.exit(0)` indicates successful termination.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "By convention, exit code 0 means success; non‑zero indicates error.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_12",
+            "type": "text",
+            "title": "os.environ – Environment Variables",
+            "content": "# Access System Secrets\n\n```python\nimport os\nhome = os.environ.get('HOME')\nuser = os.environ.get('USER')\nprint(f\"Home: {home}, User: {user}\")\n```\nYou can also set them (within the script's process): `os.environ['MY_VAR'] = 'value'`. Handy for configuration."
+        },
+        {
+            "id": "s_l2_13",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use `os.path.join()` for cross‑platform paths\n\nInstead of `'logs/' + filename`, use `os.path.join('logs', filename)`. It handles Windows vs Unix separators automatically."
+        },
+        {
+            "id": "s_l2_14",
+            "type": "text",
+            "title": "Next: Time & Randomness",
+            "content": "# Now that you can control the OS and interpret command lines, let's add timing and randomness for stealth and testing."
+        }
+    ]
+}

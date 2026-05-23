@@ -1,0 +1,253 @@
+{
+    "id": "quiz_ch_6",
+    "chapterId": "ch_6",
+    "title": "Chapter 6 Quiz",
+    "description": "Test your knowledge of Bash functions: definition, parameters, scope, sourcing, and best practices!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which of the following correctly defines a Bash function named `hello`?",
+            "options": [
+                "function hello { ... }",
+                "hello() { ... }",
+                "def hello { ... }",
+                "Both A and B"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Bash supports both `function name { ... }` and `name() { ... }` syntaxes."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "How do you call a function named `greet` after defining it?",
+            "options": [
+                "call greet",
+                "greet()",
+                "greet",
+                "function greet"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Simply use the function's name as if it were a command."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Inside a function, what does `$@` represent?",
+            "options": [
+                "The script's arguments",
+                "All arguments passed to the function, individually quoted",
+                "The return value of the function",
+                "The PID of the function"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`$@` expands to all positional parameters passed to the function, each as a separate word."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What is the maximum valid return code from a function using `return`?",
+            "options": [
+                "1",
+                "0",
+                "255",
+                "Infinite"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Exit codes are 8-bit unsigned integers, so the range is 0–255."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "How can you capture a string that a function outputs?",
+            "options": [
+                "result=$(myfunc)",
+                "result=myfunc",
+                "result=return myfunc",
+                "result=`myfunc` (only backticks work)"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Both `$(myfunc)` and backticks work, but `$(...)` is modern."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "Variables assigned inside a function without `local` become global.",
+            "correctAnswer": true,
+            "explanation": "Unless declared `local`, any variable assignment inside a function affects the global scope."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What keyword restricts a variable to the function's scope?",
+            "options": [
+                "private",
+                "local",
+                "static",
+                "global"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`local` marks a variable as local to the function and its called children."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What happens if you `echo $temp` after calling a function that used `local temp=5`?",
+            "options": [
+                "Prints 5",
+                "Prints nothing (empty)",
+                "Prints 'temp'",
+                "Error"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`local` variables do not persist after the function exits."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Which command includes another script file in the current shell?",
+            "options": [
+                "execute",
+                "run",
+                "source",
+                "include"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`source filename` or `. filename` executes the file in the current shell context."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What does `. ./lib.sh` do?",
+            "options": [
+                "Runs lib.sh in a new shell",
+                "Sources lib.sh from the current directory",
+                "Lists the contents of lib.sh",
+                "Nothing, it's a syntax error"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The dot command followed by a path sources the file. `./lib.sh` is a relative path."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "How can you safely source a file only if it exists?",
+            "options": [
+                "source ifexists lib.sh",
+                "[ -f lib.sh ] && source lib.sh",
+                "source -f lib.sh",
+                "test -e lib.sh | source"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The condition `[ -f lib.sh ]` checks existence, and `&&` runs `source` only if true."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is a base case in recursion?",
+            "options": [
+                "The first call to the function",
+                "A condition that stops the recursion",
+                "The largest input",
+                "An error handler"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Without a base case, the function would call itself infinitely."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which redirection sends output to standard error?",
+            "options": [
+                ">&1",
+                ">&2",
+                "1>&2",
+                "2>&1"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`>&2` is a shorthand to redirect stdout to stderr. `1>&2` also works but `>&2` is common."
+        },
+        {
+            "id": "q14",
+            "type": "fill_blank",
+            "question": "Inside a function, to get the number of arguments, use `___`.",
+            "options": [],
+            "correctAnswer": "$#",
+            "explanation": "`$#` expands to the count of positional parameters passed to the function."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Why is it recommended to use `local` for loop counters inside functions?",
+            "options": [
+                "To make the loop faster",
+                "To prevent accidental modification of global variables",
+                "To allow the counter to be used outside the function",
+                "Local is mandatory for loops"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Without `local`, a loop counter like `i` becomes global and could interfere with other parts of the script."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What is the purpose of `type -t myfunc`?",
+            "options": [
+                "Prints the definition of myfunc",
+                "Checks if myfunc is defined and returns 'function'",
+                "Removes the function",
+                "Times the function execution"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`type -t` tells what type of thing a name is; if it's a function, it prints 'function'."
+        },
+        {
+            "id": "q17",
+            "type": "true_false",
+            "question": "A function can call another function that is defined later in the script, as long as the call happens after both are defined.",
+            "correctAnswer": true,
+            "explanation": "The function definitions must be read before they are invoked, but a function may call another that appears later as long as the calling code is reached after both definitions."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which exit code conventionally indicates success?",
+            "options": [
+                "1",
+                "0",
+                "-1",
+                "255"
+            ],
+            "correctAnswer": 1,
+            "explanation": "In Unix, exit code 0 means success; non‑zero means error."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "If a function does not explicitly `return`, what will `$?` be after calling it?",
+            "options": [
+                "Always 0",
+                "The exit code of the last command run inside the function",
+                "The function name",
+                "None of the above"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Without `return`, the function's exit status is that of the last command executed inside it."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is a good practice for a function that should not be called directly?",
+            "options": [
+                "Name it starting with an underscore",
+                "Use `private` keyword",
+                "Make it external",
+                "There is no way to indicate privacy"
+            ],
+            "correctAnswer": 0,
+            "explanation": "An underscore prefix (e.g., `_helper()`) is a common convention to signal that the function is internal/private."
+        }
+    ]
+}

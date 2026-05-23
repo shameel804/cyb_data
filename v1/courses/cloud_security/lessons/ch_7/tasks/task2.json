@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_7",
+    "title": "Build a Secure Dockerfile",
+    "description": "Write a multi‑stage Dockerfile that runs as a non‑root user with minimal attack surface.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario\nYou have a Node.js application that is currently built with a single‑stage Dockerfile using `node:latest` and runs as root. You need to rewrite it to be secure.\n\n### Your Task\nWrite a multi‑stage Dockerfile that:\n- Uses a specific Node.js LTS version (e.g., `node:20.11-alpine`) for the build stage.\n- Uses a smaller, distroless‑type runtime image `node:20.11-alpine` (or gcr.io/distroless/nodejs) for production.\n- Creates a non‑root user (`node`) and runs the app as that user.\n- Copies only the necessary files from the build stage.\n- Sets `NODE_ENV=production` to avoid development dependencies.\n- Uses `EXPOSE` for port 3000.\n\nAlso, write a brief explanation of why a multi‑stage build improves security.",
+    "hints": [
+        "Use `FROM node:20.11-alpine AS builder` and `FROM node:20.11-alpine`.",
+        "Create a system group and user if not present: `addgroup -g 1001 -S nodejs && adduser -S nodejs -u 1001` (if needed).",
+        "Remember `USER node`."
+    ],
+    "expectedOutput": "A Dockerfile with two stages, non‑root user, and explanation.",
+    "solutionCode": "# Build stage\nFROM node:20.11-alpine AS builder\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci --only=production\nCOPY . .\n\n# Production stage\nFROM node:20.11-alpine\nRUN addgroup -g 1001 -S nodejs && adduser -S nodejs -u 1001\nUSER nodejs\nWORKDIR /app\nCOPY --chown=nodejs:nodejs --from=builder /app/node_modules ./node_modules\nCOPY --chown=nodejs:nodejs --from=builder /app .\nENV NODE_ENV=production\nEXPOSE 3000\nCMD [\"node\", \"server.js\"]\n\n# Explanation: Multi‑stage builds keep build tools and dev dependencies out of the final image, drastically reducing the attack surface. Running as a non‑root user adds a layer of defense against container breakout."
+}

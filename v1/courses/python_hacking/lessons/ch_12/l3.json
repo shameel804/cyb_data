@@ -1,0 +1,98 @@
+{
+    "id": "l3",
+    "chapterId": "ch_12",
+    "title": "Adding Service Detection & Banner Grabbing 🏷️",
+    "description": "Extend the scanner to identify services and grab banners, logging results to a file.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Building the Tool",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "After Finding Open Ports, Identify Services",
+            "content": "# Combine with Banner Grabbing\n\nOnce we know a port is open, we can attempt to receive a banner or send a simple probe to identify what's running.\n\nWe'll add a function `grab_banner(host, port, timeout=2)` that:\n- Connects to the port\n- Sends a protocol‑specific probe (or just receives)\n- Returns the banner (first 1024 bytes decoded)\n\nWe'll handle common ports like 80 (HTTP), 22 (SSH), 21 (FTP) with appropriate probes."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Banner Grabbing Function",
+            "content": "Implement in `scanner.py`:",
+            "codeSnippet": "def grab_banner(host, port, timeout=2):\n    s = socket.socket()\n    s.settimeout(timeout)\n    try:\n        s.connect((host, port))\n        # Send probe depending on port\n        if port == 80 or port == 8080:\n            s.sendall(b'HEAD / HTTP/1.0\\r\\n\\r\\n')\n        elif port == 21:  # FTP\n            pass  # just recv\n        # else: just recv\n        banner = s.recv(1024).decode(errors='ignore').strip()\n        return banner\n    except:\n        return None\n    finally:\n        s.close()",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Banner Probes 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Why do we send a HEAD request for HTTP services?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Because HTTP servers only respond after receiving a request",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To exploit the server",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It's the only way to get a banner",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "HTTP doesn't send a banner on connect; you must issue a request to get a response.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Enriching the Scan Results",
+            "content": "# Store Port, Service Name, and Banner\n\nWe'll modify the scanner to return a list of dictionaries:\n```python\n{\n    \"port\": 80,\n    \"service\": \"http\",\n    \"banner\": \"HTTP/1.1 200 OK\\r\\nServer: Apache/2.4.41\"\n}\n```\nWe can use `socket.getservbyport(port)` to get the service name if available, and fill in custom names for well‑known ports."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Enriched Scan Function (Snippet)",
+            "content": "New `scan_ports` returns list of dicts:",
+            "codeSnippet": "def scan_ports(target, start, end, timeout=0.5):\n    ip = resolve_host(target)\n    open_ports = []  # list of dicts\n    with ThreadPoolExecutor(max_workers=100) as ex:\n        futures = {ex.submit(check_port, ip, p, timeout): p for p in range(start, end+1)}\n        for future in as_completed(futures):\n            port, is_open = future.result()\n            if is_open:\n                service = socket.getservbyport(port, 'tcp') if port <= 1024 else 'unknown'\n                banner = grab_banner(ip, port, timeout)\n                open_ports.append({'port': port, 'service': service, 'banner': banner})\n    return sorted(open_ports, key=lambda x: x['port'])",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Service Name 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "`socket.getservbyport(22)` will return 'ssh' on most systems.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "It looks up the service name from the system's services database.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Adding Logging",
+            "content": "# Write Results to a File\n\nWhile scanning, we can log to a file with `logging` module. But for now, the function returns data; the reporting module will handle output.\n\nWe'll ensure the `scanner.py` module is self‑contained: just scanning and banner grabbing. No file writing inside it."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "text",
+            "title": "Next: Web Recon Module",
+            "content": "# Now let's write the HTTP/HTTPS probing part."
+        }
+    ]
+}

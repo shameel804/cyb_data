@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_6",
+    "title": "Harden a Web Server Security Group",
+    "description": "Write Security Group rules for a web server that only allows necessary traffic.",
+    "estimatedMinutes": 10,
+    "problemStatement": "## Scenario\nAn EC2 instance `web‑01` needs to serve an internet‑facing web application. It runs a custom HTTP server on port 8080 (not standard 80) and also requires HTTPS on 443. You manage the server via SSH from the corporate VPN, which has a static IP `198.51.100.25`. The instance also needs to fetch an API from an internal service at `internal-api.local` (which resolves to a private IP) on port 9000.\n\n### Your Task\nWrite a set of Security Group rules (in JSON‑like structure or plain text) for `web‑01` that follows least privilege. Specify:\n- Inbound rules (ports, protocols, sources).\n- Outbound rules (if you modify the default).\n\nAssume the internal API instance has a Security Group `sg‑0a1b2c3d`.\n\nAlso, explain why you chose each rule.",
+    "hints": [
+        "Remember: outbound is allowed by default. Do you need to restrict it further? Possibly not, but you could restrict to only known services.",
+        "Use the internal API's SG as the destination in the outbound rule if you want to be explicit."
+    ],
+    "expectedOutput": "Inbound: custom TCP 8080 from 0.0.0.0/0, HTTPS 443 from 0.0.0.0/0, SSH 22 from 198.51.100.25/32. Outbound: retain default all, or optionally restrict to port 9000 to sg‑0a1b2c3d. Explanations.",
+    "solutionCode": "Inbound Rules:\n- Type: Custom TCP, Port: 8080, Source: 0.0.0.0/0  (Allow web traffic on custom port)\n- Type: HTTPS, Port: 443, Source: 0.0.0.0/0  (Allow secure web traffic)\n- Type: SSH, Port: 22, Source: 198.51.100.25/32  (Admin access only from corporate VPN)\n\nOutbound Rules:\n- Keep default allow all (or if you want to restrict):\n  1. Custom TCP, Port: 9000, Destination: sg‑0a1b2c3d (Allow access to internal API)\n  2. HTTPS, Port: 443, Destination: 0.0.0.0/0 (Allow updates, external API calls)\n  3. HTTP, Port: 80, Destination: 0.0.0.0/0 (Allow package downloads, etc.)\n\nExplanation: Least privilege: web ports open to world, SSH restricted. Outbound we can leave open for simplicity, but explicitly limiting to needed services reduces data exfiltration risk. Referencing the API SG instead of IP is dynamic and secure."
+}

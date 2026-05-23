@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_3",
+    "title": "System Snapshot Reporter",
+    "description": "Capture system information using environment variables and command substitution, then display a formatted report.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Write a script `snapshot.sh` that produces a clean system report using environment variables and command substitution. It should display:\n\n1. Your username (from environment variable `USER`).\n2. Your home directory (`HOME`).\n3. The current shell (`SHELL`).\n4. The number of files and directories in your home directory (use `ls | wc -l` with command substitution).\n5. The current date and time in a friendly format.\n6. A disk usage summary of your home directory (command `du -sh ~` – capture its output).\n\nAdd a header line with a title. Use proper quoting and export at least one variable before displaying (to practice export). The script should be executable.",
+    "hints": [
+        "Read environment variables directly: `$USER`, `$HOME`, etc.",
+        "Command substitution: `files=$(ls ~ | wc -l)`.",
+        "For disk usage: `usage=$(du -sh ~ | cut -f1)` (or just use the full line).",
+        "Use `echo` for each line. Consider `-e` if you want newlines, but separate echo lines is fine."
+    ],
+    "expectedOutput": "====== SYSTEM SNAPSHOT ======\nUser: alice\nHome: /home/alice\nShell: /bin/bash\nItems in home: 42\nCurrent Date: Thu May 22 10:00:00 UTC 2026\nHome Disk Usage: 1.2G\t/home/alice",
+    "solutionCode": "#!/bin/bash\n# System snapshot script\n\nexport SNAPSHOT_DATE=$(date)  # example of export\necho \"====== SYSTEM SNAPSHOT ======\"\necho \"User: $USER\"\necho \"Home: $HOME\"\necho \"Shell: $SHELL\"\nitems=$(ls ~ | wc -l)\necho \"Items in home: $items\"\necho \"Current Date: $SNAPSHOT_DATE\"\nusage=$(du -sh ~ 2>/dev/null)\necho \"Home Disk Usage: $usage\""
+}

@@ -1,0 +1,18 @@
+{
+    "id": "task2",
+    "chapterId": "ch_2",
+    "title": "File Pattern Hunt",
+    "description": "Use wildcards to find and list specific file types in a directory you set up.",
+    "estimatedMinutes": 15,
+    "problemStatement": "In your `mission-logs` directory, populate it with dummy files using `touch`. Then use globbing to find specific files. Create a script `hunt.sh` that performs the following:\n\n1. Create these files inside `mission-logs`: `report1.txt`, `report2.txt`, `log.txt`, `data.csv`, `notes.md`, `archive.tar.gz`, `hidden.log` (hint: make it hidden), `image01.png`, `image02.jpg`, `README`.\n2. List only files with the `.txt` extension.\n3. List files that have exactly three characters in their name and end with `.txt` (e.g., `log.txt`). Use `?`.\n4. List all files that start with `image` and end with either `.png` or `.jpg` (character class).\n5. List all hidden files (starting with a dot).\n6. Before any listing, `echo` a description of what you're showing.\n\nRun the script and verify the outputs.",
+    "hints": [
+        "Use `touch` to create multiple files at once: `touch report1.txt report2.txt ...`.",
+        "Hidden file: start name with dot: `.hidden.log`.",
+        "Glob: `ls *.txt` for all .txt files.",
+        "Three-letter .txt: `ls ???.txt`.",
+        "Image pattern: `ls image0[12].{png,jpg}`? Actually `[12]` for one digit; `ls image0[12].*` but need .png or .jpg exactly. Use `ls image0[12].{png,jpg}` (brace expansion) or `ls image0[12].???`; the simplest is `ls image0[12].{png,jpg}`. Not covered yet but okay.",
+        "Hidden: `ls .*` (but beware it matches . and ..). Better to use `ls -d .*` to avoid listing directories. Or just `ls -a` and filter. For simplicity, `ls .*` will work if no directories match. The task expects `ls .*`."
+    ],
+    "expectedOutput": "Listings:\n- All .txt: report1.txt report2.txt log.txt\n- Three-letter .txt: log.txt\n- Image pattern: image01.png image02.jpg\n- Hidden: .hidden.log (and . and .. depending on method).",
+    "solutionCode": "#!/bin/bash\n# File Pattern Hunt\n\ncd ~/mission-logs || { echo \"Directory missing\"; exit 1; }\n# Create files\ntouch report1.txt report2.txt log.txt data.csv notes.md archive.tar.gz .hidden.log image01.png image02.jpg README\n\necho \"=== All .txt files ===\"\nls *.txt\n\necho \"=== Three-letter .txt files ===\"\nls ???.txt\n\necho \"=== Images (png or jpg) ===\"\nls image0[12].{png,jpg}\n\necho \"=== Hidden files ===\"\nls -d .* 2>/dev/null  # suppress error if no hidden files"
+}

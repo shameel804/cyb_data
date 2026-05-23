@@ -1,0 +1,253 @@
+{
+    "id": "quiz_ch_6",
+    "chapterId": "ch_6",
+    "title": "Chapter 6 Quiz: Securing the Cloud Network",
+    "description": "Test your knowledge of VPCs, subnets, security groups, NACLs, and hybrid connectivity.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary function of a Virtual Private Cloud (VPC)?",
+            "options": [
+                "To encrypt data at rest",
+                "To provide logical network isolation",
+                "To manage user identities",
+                "To distribute traffic across instances"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A VPC creates an isolated virtual network for your cloud resources."
+        },
+        {
+            "id": "q2",
+            "type": "fill_blank",
+            "question": "The range of IP addresses assigned to a VPC is defined using a ______ block.",
+            "options": [
+                "CIDR",
+                "DNS",
+                "MAC",
+                "SSL"
+            ],
+            "correctAnswer": "CIDR",
+            "explanation": "CIDR (Classless Inter‑Domain Routing) block defines the VPC's IP address space."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "A public subnet can communicate with the internet only if it has a route to a Virtual Private Gateway.",
+            "correctAnswer": false,
+            "explanation": "A public subnet needs a route to an Internet Gateway (IGW), not a Virtual Private Gateway (which is for VPN)."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which AWS service provides a managed firewall with intrusion prevention and domain filtering?",
+            "options": [
+                "Security Groups",
+                "Network ACLs",
+                "AWS Network Firewall",
+                "AWS WAF"
+            ],
+            "correctAnswer": 2,
+            "explanation": "AWS Network Firewall is a managed service with advanced threat filtering."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Security Groups are stateful. What does this mean?",
+            "options": [
+                "They remember IP addresses forever",
+                "They automatically allow return traffic for an allowed outbound connection",
+                "They block traffic by default and you must explicitly allow both directions",
+                "They always deny traffic"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Stateful means that if you initiate a connection outbound, the response is automatically allowed back in."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "A Network ACL can have both ALLOW and DENY rules.",
+            "correctAnswer": true,
+            "explanation": "NACLs support both allow and deny rules, unlike Security Groups."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "You need to allow an EC2 instance in a private subnet to download updates from the internet. Which component is required?",
+            "options": [
+                "Internet Gateway attached to the private subnet",
+                "NAT Gateway in a public subnet",
+                "Virtual Private Gateway",
+                "VPC Endpoint"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A NAT Gateway provides outbound‑only internet access for private instances."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which firewall operates at the instance level and only allows rules?",
+            "options": [
+                "Network ACL",
+                "Security Group",
+                "AWS WAF",
+                "AWS Shield"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Security Groups are attached to instances and only support allow rules."
+        },
+        {
+            "id": "q9",
+            "type": "fill_blank",
+            "question": "To allow web servers to talk to database servers by referencing their security group, you use the database SG's ______ as the source in the database SG's inbound rule.",
+            "options": [
+                "ID",
+                "IP",
+                "name",
+                "CIDR"
+            ],
+            "correctAnswer": "ID",
+            "explanation": "You can reference another security group's ID to allow traffic from any instance with that SG attached."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which feature would you use to keep traffic between an EC2 instance and S3 entirely on the AWS network?",
+            "options": [
+                "Internet Gateway",
+                "NAT Gateway",
+                "VPC Endpoint",
+                "Direct Connect"
+            ],
+            "correctAnswer": 2,
+            "explanation": "VPC Endpoints route traffic to S3 without going over the internet."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "An IPsec VPN connection to the cloud is inherently more secure than a Direct Connect connection because Direct Connect is not encrypted.",
+            "correctAnswer": true,
+            "explanation": "Direct Connect is a private line but does not natively encrypt traffic. VPN encrypts traffic but traverses the internet. For high security, you can run IPsec VPN over Direct Connect."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is the default rule for both inbound and outbound traffic in a custom Network ACL?",
+            "options": [
+                "Allow all",
+                "Deny all",
+                "Allow only HTTP",
+                "Inherit from VPC"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Custom NACLs start with a default deny all rule; you must add allow rules."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "You want to connect multiple VPCs and an on‑premises network in a hub‑and‑spoke model. Which service should you use?",
+            "options": [
+                "VPC Peering",
+                "Transit Gateway",
+                "Internet Gateway",
+                "Network ACL"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Transit Gateway acts as a central hub to connect multiple networks."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "To protect a web application from cross‑site scripting (XSS), you should deploy:",
+            "options": [
+                "Security Group",
+                "NACL",
+                "WAF",
+                "NAT Gateway"
+            ],
+            "correctAnswer": 2,
+            "explanation": "WAF inspects HTTP requests and can block XSS patterns."
+        },
+        {
+            "id": "q15",
+            "type": "true_false",
+            "question": "If you delete the outbound rule allowing all traffic from a Security Group, the existing inbound SSH connection will immediately drop.",
+            "correctAnswer": false,
+            "explanation": "Security Groups are stateful; established inbound connections are tracked, and return traffic is allowed automatically. Removing the egress rule might affect new outbound connections, but established ones are usually unaffected (though exact behavior can depend on the specific implementation; generally, the tracking table keeps the flow)."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "A company wants to block all incoming traffic from a known malicious IP range for the entire VPC. Which is most efficient?",
+            "options": [
+                "Add a deny rule in every instance's Security Group",
+                "Add a deny rule in the subnet's NACL",
+                "Add an explicit deny in the VPC route table",
+                "Enable AWS Shield Advanced"
+            ],
+            "correctAnswer": 1,
+            "explanation": "NACLs can deny traffic at the subnet level, affecting all instances in that subnet. Doing it per SG would be cumbersome."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What is the correct route table entry for a private subnet to access the internet through a NAT Gateway?",
+            "options": [
+                "0.0.0.0/0 -> Internet Gateway",
+                "0.0.0.0/0 -> NAT Gateway",
+                "10.0.0.0/16 -> NAT Gateway",
+                "0.0.0.0/0 -> Virtual Private Gateway"
+            ],
+            "correctAnswer": 1,
+            "explanation": "All internet‑bound traffic (0.0.0.0/0) should point to the NAT Gateway."
+        },
+        {
+            "id": "q18",
+            "type": "fill_blank",
+            "question": "The process of evaluating NACL rules by lowest rule number first is called ______ evaluation.",
+            "options": [
+                "priority",
+                "ordered",
+                "first‑match",
+                "hierarchical"
+            ],
+            "correctAnswer": "first‑match",
+            "explanation": "NACL rules are processed in order, and the first rule that matches the traffic is applied."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "You can use AWS WAF in front of an Application Load Balancer to filter web requests.",
+            "correctAnswer": true,
+            "explanation": "WAF integrates with ALB, CloudFront, API Gateway, etc., to protect web applications."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which service provides a dedicated physical connection between on‑premises and cloud for consistent network performance?",
+            "options": [
+                "Site‑to‑Site VPN",
+                "Direct Connect",
+                "Transit Gateway",
+                "VPC Peering"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Direct Connect is a dedicated, private connection bypassing the public internet."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "In a stateless firewall like NACL, why must you explicitly open ephemeral ports for return traffic?",
+            "options": [
+                "Because NACL rules only work for TCP",
+                "Because the firewall does not track connection state",
+                "Because ephemeral ports are blocked by default",
+                "To increase security"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Stateless means each packet is evaluated independently; there is no concept of a related response, so you must open the ports the response will use."
+        }
+    ]
+}

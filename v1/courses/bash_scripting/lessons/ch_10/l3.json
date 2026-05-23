@@ -1,0 +1,112 @@
+{
+    "id": "l3",
+    "chapterId": "ch_10",
+    "title": "Here Documents & Here Strings 📝",
+    "description": "Feed multiline text or single strings directly into commands without temporary files.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Inline Input",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "What is a Here Document? 📄",
+            "content": "## `<<` – Inline Multiline Input\n\nA **here document** allows you to pass a block of text directly to a command's stdin.\n\n```bash\ncommand <<DELIMITER\nline 1\nline 2\nDELIMITER\n```\nAll text until the delimiter appears is fed to the command. Common delimiter: `EOF`."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Here Doc Basic",
+            "content": "Use cat to display a block of text:",
+            "codeSnippet": "cat <<EOF\nHello,\nThis is a here document.\nEOF",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What does the delimiter after `<<` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It specifies the output file",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It marks the end of the input block",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It defines a variable name",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It suppresses variable expansion",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The delimiter indicates where the input ends; it must appear on a line by itself.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Quoting Delimiters & Indentation 🧼",
+            "content": "## Control Expansion and Whitespace\n\n- If the delimiter is quoted (e.g., `'EOF'`), variable expansion and command substitution are **disabled** inside the here document.\n- Use `<<-` (with a dash) to strip leading **tab** characters – useful for indentation in scripts. (Spaces are not stripped.)"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Quoted vs Unquoted",
+            "content": "Variable expansion in here docs:",
+            "codeSnippet": "name=\"Cybron\"\ncat <<EOF\nHello $name\nEOF\ncat <<'EOF'\nHello $name\nEOF",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "fill_blank",
+                "question": "To prevent variable expansion in a here document, you must ___ the delimiter.",
+                "options": [],
+                "correctAnswer": "quote",
+                "explanation": "Quoting the delimiter (single or double quotes) disables expansion.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Here Strings: `<<<` 🧵",
+            "content": "## Single Line Inline Input\n\nA **here string** sends a single string (or a variable) as stdin:\n\n```bash\ncommand <<< \"some text\"\ncommand <<< \"$variable\"\n```\nIt's a compact alternative to `echo \"text\" | command` that avoids a subshell."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "code",
+            "title": "Here String Example",
+            "content": "Count characters in a variable:",
+            "codeSnippet": "msg=\"hello world\"\nwc -c <<< \"$msg\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use here docs to generate configuration files or SQL queries inside a script, avoiding temporary files and external `echo` chains."
+        }
+    ]
+}

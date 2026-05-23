@@ -1,0 +1,16 @@
+{
+    "id": "task3",
+    "chapterId": "ch_10",
+    "title": "Basic Port Scanner (1‑1024)",
+    "description": "Implement a sequential port scanner that checks ports 1‑1024 on localhost and lists open ports.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Write a script `port_scanner.py` that scans ports 1 through 1024 on `127.0.0.1`. For each port, try to connect with a timeout of 0.1 seconds. If the connection succeeds, print \"Port X: OPEN\". Keep a list of open ports. After the scan, print the list of open ports. Use `connect_ex()` for speed. Ensure all sockets are closed.\n\nSince scanning localhost may not have many open ports, test it by maybe running a service (like a simple HTTP server on port 8000) – but the script should work as is.",
+    "hints": [
+        "Loop `for port in range(1, 1025)`.",
+        "Create a new socket each iteration.",
+        "Use `s.settimeout(0.1)` for speed.",
+        "If `connect_ex()` == 0, append port to `open_ports` list."
+    ],
+    "expectedOutput": "List of open ports (likely including 80, 443 if web server, or 22 if SSH, etc.) and final summary.",
+    "solutionCode": "import socket\n\ntarget = '127.0.0.1'\nopen_ports = []\n\nfor port in range(1, 1025):\n    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n    s.settimeout(0.1)\n    result = s.connect_ex((target, port))\n    if result == 0:\n        print(f\"Port {port}: OPEN\")\n        open_ports.append(port)\n    s.close()\n\nprint(f\"\\nOpen ports: {open_ports}\")\n"
+}

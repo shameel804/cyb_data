@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_10",
+    "title": "Set Up a Compliance Dashboard Using Security Hub",
+    "description": "Describe how to enable CIS AWS Foundations standard and interpret the compliance score.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario\nAs the cloud security lead, you need to give management visibility into the cloud's compliance with CIS AWS Foundations Benchmark. You decide to use AWS Security Hub.\n\n### Your Task\nWrite a step‑by‑step plan to:\n1. Enable Security Hub for your AWS account (and optionally across an organization).\n2. Enable the CIS AWS Foundations standard.\n3. After the initial scan, describe how you would interpret the security score (e.g., 72%) and what actions you would prioritize.\n4. Propose a regular review cadence (e.g., weekly) and how you'd communicate progress.\n\nNo technical implementation details needed beyond the enabling steps, but be specific about the Security Hub features you use.",
+    "hints": [
+        "Security Hub is enabled via the AWS Console or API. Choose to enable CIS standard during setup or later.",
+        "The security score is the percentage of passed controls out of total controls. Failed or unknown controls lower the score.",
+        "Prioritize failed critical/high severity controls."
+    ],
+    "expectedOutput": "A clear plan with steps, interpretation guidance, and review cadence.",
+    "solutionCode": "1. **Enable Security Hub**: Go to Security Hub console, click 'Go to Security Hub', then 'Enable Security Hub'. Select the CIS AWS Foundations Benchmark standard. If using AWS Organizations, designate a delegated administrator account to manage findings across accounts.\n2. **Enable CIS Standard**: After enabling, navigate to 'Security standards', find 'CIS AWS Foundations Benchmark', and ensure it's enabled. Security Hub will begin scanning; results appear within a few hours.\n3. **Interpret the Score**: The dashboard shows an overall compliance score (e.g., 72%). This means 72% of controls are PASSED. I would filter by 'FAILED' status and sort by severity. For example, 'Ensure IAM password policy prevents password reuse' might be failed – I would prioritize fixing all critical/high severity controls first. Each finding includes a remediation link.\n4. **Regular Review**: Set a weekly meeting to review the score. Track trend over time (Security Hub provides historical data). Goal: increase score to 95%+ within 3 months. Communicate progress to management via a simple dashboard screenshot and action plan."
+}

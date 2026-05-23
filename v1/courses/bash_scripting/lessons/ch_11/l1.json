@@ -1,0 +1,99 @@
+{
+    "id": "l1",
+    "chapterId": "ch_11",
+    "title": "What is Regex? 🔍",
+    "description": "Understand the concept of regular expressions and why they are the ultimate search tool.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Introduction",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Problem with Plain Text Search 🧐",
+            "content": "## Finding Needles in Haystacks\n\nYou already know `grep hello file.txt` finds lines containing \"hello\". But what if you need to find:\n- Lines that start with \"Error\"?\n- Email addresses?\n- A word that may be spelled \"color\" or \"colour\"?\n\nSimple string matching isn't enough. You need a **pattern language** – that's regex."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "Regular Expressions Explained 🧩",
+            "content": "## A Tiny Language for Text\n\nA **regular expression** (regex or regexp) is a sequence of characters that defines a search pattern. It's a standard supported by many tools (grep, sed, awk, Python, JavaScript, etc.).\n\nRegex lets you describe **what** you want to match, not the exact literal string. It's like a supercharged wildcard.\n\nExample: `^[A-Z]` matches any line that begins with an uppercase letter."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "code",
+            "title": "Your First Regex with grep",
+            "content": "Find lines starting with 'root' using `^` (start anchor):",
+            "codeSnippet": "grep '^root' /etc/passwd",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is a regular expression?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A command to rename files",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A pattern‑matching language for text",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A Bash built‑in variable",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A file permission system",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Regex is a mini‑language used to describe text patterns for searching, validation, and transformation.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Where Regex Shines ✨",
+            "content": "## Use Cases\n\n- **Validation**: Is this input a valid email? phone number?\n- **Extraction**: Pull all dates from a document.\n- **Replacement**: Swap first name and last name order.\n- **Log analysis**: Find IP addresses that accessed a specific URL.\n\nIn Bash, `grep`, `sed`, and `awk` use regex extensively. Mastering it supercharges your scripting."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "Regex Flavours: BRE vs ERE 🧪",
+            "content": "## Two Main Dialects in Bash\n\n- **Basic Regular Expressions (BRE)**: default for `grep` and `sed`. Metacharacters like `?`, `+`, `{`, `|`, `(`, `)` need backslash escaping.\n- **Extended Regular Expressions (ERE)**: activated with `grep -E` or `sed -r`/`-E`. Metacharacters are used directly; you escape them to make them literal.\n\nWe'll focus on ERE (`grep -E`) for cleaner patterns."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "`grep` without `-E` uses Extended Regular Expressions.",
+                "correctAnswer": false,
+                "explanation": "Default `grep` uses Basic Regular Expressions (BRE). Use `grep -E` for Extended.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "When in doubt, use `grep -E` for your regex. It's more intuitive and consistent with other modern tools."
+        }
+    ]
+}

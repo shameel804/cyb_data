@@ -1,0 +1,104 @@
+{
+    "id": "l2",
+    "chapterId": "ch_7",
+    "title": "Fortress VMs: Hardening Virtual Machines 🏰",
+    "description": "Golden images, OS hardening, key management, and patching strategies.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Golden Image Strategy 🥇",
+            "content": "# One Image to Rule Them All\n\nA **golden image** is a base virtual machine image that has been:\n- Patched to the latest security updates.\n- Hardened according to a security baseline (CIS benchmarks).\n- Stripped of unnecessary packages and services.\n- Configured with company policies (logging, monitoring agents).\n\nEvery new instance launches from this image. Never configure servers manually after launch – that leads to configuration drift and security gaps.\n\n*Think of a golden image as a perfectly prepared meal kit. You just pop it in the oven (launch the VM).*"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Golden Image 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "true_false",
+                "question": "You should apply security patches manually to each running EC2 instance rather than updating the golden image.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Manual patching leads to inconsistencies. Always update the golden image and redeploy instances.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "OS Hardening Checklist 📋",
+            "content": "## Locking the Doors\n\n- **Disable root login** – Use `sudo` and SSH key‑only authentication.\n- **Remove unnecessary services** – `systemctl disable --now unused-service`.\n- **Enable host‑based firewall** – `ufw` or `firewalld`, allow only needed ports.\n- **Set strong password policies** (if passwords must exist).\n- **Enable automatic security updates** – `unattended-upgrades` on Ubuntu.\n- **Log everything** – Forward logs to a central SIEM (CloudWatch, Splunk).\n- **Use SELinux or AppArmor** for mandatory access control.\n\n*The CIS Benchmark for your OS is the gold standard – automate checks with tools like Amazon Inspector or Lynis.*"
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "User Data Hardening Script",
+            "content": "A script that runs when an EC2 instance first boots, applying initial hardening:",
+            "codeSnippet": "#!/bin/bash\n# Update packages\nsudo apt update -y && sudo apt upgrade -y\n# Enable automatic security updates\nsudo apt install unattended-upgrades -y\nsudo dpkg-reconfigure --priority=low unattended-upgrades\n\n# Disable root SSH\nsudo sed -i 's/^PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config\nsudo systemctl restart sshd\n\n# Enable UFW and allow only necessary ports\nsudo ufw allow 22/tcp\nsudo ufw allow 80/tcp\nsudo ufw allow 443/tcp\nsudo ufw --force enable",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "Hardening Drill 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "Which Linux kernel security module implements mandatory access controls?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "UFW",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "SELinux",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "SSH",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "systemd",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "SELinux and AppArmor enforce mandatory access controls to limit what processes can do.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Key Management & Access 🔑",
+            "content": "## Never Lose the Keys\n\n- **SSH key pairs**: Create a dedicated key pair for each application or administrator. Store private keys in a secrets manager, not on laptops.\n- **EC2 Instance Connect** (AWS) / **OS Login** (GCP): Use temporary, auditable SSH access without managing keys.\n- **Session Manager** (AWS Systems Manager): Access instances via the browser or CLI, no open SSH port needed! This is the modern best practice.\n\n*Eliminating long‑lived SSH keys and open port 22 reduces the attack surface massively.*"
+        },
+        {
+            "id": "s_l2_7",
+            "type": "tip",
+            "title": "Pro Tip: Use Session Manager 🚀",
+            "content": "Configure an IAM role for your EC2 instances that allows `ssmmessages:*` and `ec2messages:*`. Then you can connect without a bastion host, without exposing SSH, and all sessions are logged in CloudTrail."
+        }
+    ]
+}

@@ -1,0 +1,104 @@
+{
+    "id": "l5",
+    "chapterId": "ch_10",
+    "title": "Banner Grabbing: Service Identification 🏷️",
+    "description": "Send and receive data to grab service banners, identifying software versions and potential vulnerabilities.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Scanning",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "What is a Banner?",
+            "content": "# The Welcome Message\n\nMany services, when you connect, send a banner (like SSH sends `SSH-2.0-OpenSSH_8.9p1`). HTTP servers respond with headers. FTP, SMTP, etc., all have banners.\n\nBanner grabbing means connecting to a port and reading whatever the server sends first. This reveals the software and version."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Simple Banner Grab (no data sent)",
+            "content": "Just connect and recv:",
+            "codeSnippet": "import socket\n\ns = socket.socket()\ns.settimeout(2)\ntry:\n    s.connect(('example.com', 80))\n    banner = s.recv(1024).decode(errors='ignore')\n    print(banner)\nexcept:\n    print(\"No banner\")\nfinally:\n    s.close()",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Banner Grab 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Why might a banner not appear after a TCP connection?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The service sends nothing until the client sends a request",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "All services send a banner immediately",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Python can't receive data",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Some protocols (like HTTP) wait for a client request; others (SSH, FTP) send a banner immediately.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Grabbing HTTP Service Banners",
+            "content": "# For HTTP, send a HEAD request\n\n```python\nrequest = b\"HEAD / HTTP/1.1\\r\\nHost: example.com\\r\\n\\r\\n\"\ns.send(request)\nresponse = s.recv(4096)\nprint(response.decode())\n```\nThis reveals server software in the `Server` header."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Identify Web Server Software",
+            "content": "Extract Server header:",
+            "codeSnippet": "import socket\n\ns = socket.socket()\ns.settimeout(2)\ns.connect(('example.com', 80))\ns.send(b'HEAD / HTTP/1.1\\r\\nHost: example.com\\r\\n\\r\\n')\nresp = s.recv(1024).decode()\nfor line in resp.split('\\r\\n'):\n    if line.lower().startswith('server:'):\n        print(line)\n        break\ns.close()",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "HTTP Banner 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "FTP servers typically send a banner immediately upon connection.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "FTP (port 21) usually sends a '220' banner right after connection.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Combining Port Scan + Banner Grab",
+            "content": "# We can now build a reconnaissance tool\n\n1. Scan a range of ports.\n2. For open ports, attempt to grab a banner.\n3. Print results.\n\nThis is the heart of basic reconnaissance. We'll build a full tool in Chapter 12."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "warning",
+            "title": "Legal Warning ⚖️",
+            "content": "## Only scan systems you own or have permission to test.\n\nScanning random hosts is illegal. Use `scanme.nmap.org` (provided by Nmap for testing) or your own lab."
+        },
+        {
+            "id": "s_l5_9",
+            "type": "text",
+            "title": "Next: UDP & Beyond",
+            "content": "# Now let's look at UDP and get a taste of raw sockets."
+        }
+    ]
+}

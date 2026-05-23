@@ -1,0 +1,117 @@
+{
+    "id": "l2",
+    "chapterId": "ch_13",
+    "title": "Safer Scripts with `set` Options 🛡️",
+    "description": "Enable strict mode with -e, -u, and pipefail to catch errors before they become disasters.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Strict Mode",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Why `set` Options? ⚙️",
+            "content": "## Bash's Safety Switches\n\nThe `set` builtin lets you toggle shell behaviour. A few well‑chosen options drastically reduce bugs.\n\n- `set -e` – exit immediately if a command fails.\n- `set -u` – treat unset variables as an error.\n- `set -o pipefail` – a pipeline fails if any part fails.\n\nTogether they are often called **strict mode**."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "The Magic Line",
+            "content": "Start every script with:\n```bash\nset -euo pipefail\n```",
+            "codeSnippet": "#!/bin/bash\nset -euo pipefail\necho \"Safe script running...\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What does `set -e` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Echo commands before execution",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Exit immediately if a command returns non‑zero",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Enable extended globbing",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Export all variables",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-e` (errexit) stops the script at the first failure.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "`set -u`: No More Typos 🔎",
+            "content": "## Catch Uninitialised Variables\n\nWithout `-u`, a typo like `echo $config_file` (instead of `$config_file`) silently produces empty string. With `-u`, it's an error and the script halts.\n\nExample:\n```bash\nset -u\necho $USER_NAME   # error if USER_NAME not set\n```\nUse `${var:-default}` to provide fallbacks safely."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Fallback with -u",
+            "content": "Safe way to provide a default:",
+            "codeSnippet": "set -u\nname=\"${1:-guest}\"\necho \"Hello, $name\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "With `set -u`, `${varname:-default}` still works even if `varname` is not set.",
+                "correctAnswer": true,
+                "explanation": "The `:-` operator provides a default and does not trigger an unset error.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "`pipefail`: No Hiding Errors 🌊",
+            "content": "## Whole Pipeline Integrity\n\nWithout `pipefail`, `false | true` returns 0 (success) because the last command succeeded. With `pipefail`, the pipeline returns 1.\n\n```bash\nset -o pipefail\nfalse | true\necho $?   # 1\n```\nThis prevents silent failures in long pipelines."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "pipefail Example",
+            "content": "Catch a failure in a pipe:",
+            "codeSnippet": "set -o pipefail\ncat nonexistent_file | wc -l\necho \"Exit: $?\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_9",
+            "type": "warning",
+            "title": "⚠️ Caveats of `set -e`",
+            "content": "`set -e` has some surprising exceptions (e.g., commands in `if`, `while`, `&&`, `||`, or pipelines before the last command). Test your script thoroughly. Some developers prefer explicit error checks over `set -e`."
+        },
+        {
+            "id": "s_l2_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `set -e` for new scripts, but if you're debugging an existing one, add it gradually. Combine with `trap` to log errors before exit."
+        }
+    ]
+}

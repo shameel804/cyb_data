@@ -1,0 +1,209 @@
+{
+    "id": "l6",
+    "chapterId": "ch_3",
+    "title": "F-Strings & Formatting: Clean Output 🖨️",
+    "description": "Build readable reports and log messages with Python's modern string formatting.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Data Types",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "Why F-Strings? 🚀",
+            "content": "# The Clearest Way to Build Strings\n\nIntroduced in Python 3.6, **f‑strings** (formatted string literals) let you embed expressions directly inside strings. They're fast, readable, and perfect for logging results.\n\nOld way:\n```python\n\"Port: \" + str(port) + \" is open\"\n```\nF‑string:\n```python\nf\"Port: {port} is open\"\n```"
+        },
+        {
+            "id": "s_l6_2",
+            "type": "code",
+            "title": "Simple F‑String",
+            "content": "Run this:",
+            "codeSnippet": "port = 22\nstatus = \"open\"\nprint(f\"Port {port} is {status}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "F‑String Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "What character must precede the quotes for an f‑string?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "r",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "f",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "b",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The `f` prefix tells Python to evaluate the expressions inside curly braces.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "Embedding Expressions",
+            "content": "# You Can Put Any Valid Expression Inside {}\n\n* Variables: `{name}`\n* Arithmetic: `{port + 1}`\n* Function calls: `{len(target)}`\n* Conditionals (inline): `{\"open\" if port == 80 else \"closed\"}`\n\n```python\ntarget = \"10.0.0.1\"\nprint(f\"Next subnet: {target[:-1] + '2'}\")\n```"
+        },
+        {
+            "id": "s_l6_5",
+            "type": "code",
+            "title": "Expression Power",
+            "content": "Calculate and display:",
+            "codeSnippet": "base_port = 8000\nprint(f\"Scan range: {base_port} - {base_port + 99}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l6_6",
+            "type": "quiz",
+            "title": "Expressions 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "multiple_choice",
+                "question": "What does `f\"2 + 2 = {2+2}\"` output?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "2 + 2 = 4",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "2 + 2 = 2+2",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Error",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The expression inside the braces is evaluated.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_7",
+            "type": "text",
+            "title": "Format Specifiers 🎨",
+            "content": "# Control How Values Are Displayed\n\nAfter the expression, add `:` and a format spec:\n* **Decimals:** `{value:.2f}` – 2 decimal places\n* **Width/alignment:** `{name:10}` – pad to 10 chars, left‑aligned; `{name:>10}` – right‑aligned\n* **Thousands separator:** `{big_number:,}`\n* **Percentage:** `{ratio:.1%}`\n\n```python\nscan_time = 12.34567\nprint(f\"Scan took {scan_time:.2f} seconds\")\n```"
+        },
+        {
+            "id": "s_l6_8",
+            "type": "code",
+            "title": "Formatting Demo",
+            "content": "Create a neat report:",
+            "codeSnippet": "ip = \"192.168.1.1\"\nopen_ports = 3\ntotal = 1000\nprint(f\"Host: {ip:15} | Open: {open_ports:3} / {total:4} ({open_ports/total:.1%})\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l6_9",
+            "type": "quiz",
+            "title": "Format Specs 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_3",
+                "type": "multiple_choice",
+                "question": "What does `f\"{3.14159:.2f}\"` produce?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "\"3.14\"",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "\"3.14159\"",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "3.14 (float)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": ".2f means two decimal places.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_10",
+            "type": "text",
+            "title": "Debugging with f‑strings",
+            "content": "# `=` Sign for Quick Debug\n\nPython 3.8+ lets you print variable name and value:\n```python\nport = 80\nprint(f\"{port=}\")  # port=80\n```\nGreat for logging!"
+        },
+        {
+            "id": "s_l6_11",
+            "type": "code",
+            "title": "Debug Print",
+            "content": "Check status:",
+            "codeSnippet": "target = \"scanme.nmap.org\"\nport = 22\nprint(f\"{target=}, {port=}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l6_12",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Combine with Raw Strings if Needed\n\n`fr\"Path: {path}\"` gives you a raw f‑string – useful for Windows paths or regex."
+        },
+        {
+            "id": "s_l6_13",
+            "type": "text",
+            "title": "Alternative: .format() Method",
+            "content": "# Older but Still Valid\n\n```python\n\"Port: {} is {}\".format(port, status)\n```\nF‑strings are usually preferred for readability, but you'll see `.format()` in older tools. Know both."
+        },
+        {
+            "id": "s_l6_14",
+            "type": "quiz",
+            "title": "Format Methods 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_4",
+                "type": "multiple_choice",
+                "question": "Which of the following is a valid f‑string?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "\"fResult: {2+2}\"",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "f\"Result: {2+2}\"",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "\"Result: {2+2}\".f()",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The `f` must be before the opening quote.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_15",
+            "type": "text",
+            "title": "Chapter 3 Mastered! 🏆",
+            "content": "# You Now Speak Python's Data Language\n\nVariables, numbers, strings, booleans, conversion, and formatting – you've built the foundation for every hacking script. Take the Chapter Quiz and complete the tasks to solidify these skills. Then, Chapter 4 awaits: Control Flow – where your scripts start making decisions automatically."
+        }
+    ]
+}

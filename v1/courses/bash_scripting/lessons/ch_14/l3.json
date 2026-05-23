@@ -1,0 +1,117 @@
+{
+    "id": "l3",
+    "chapterId": "ch_14",
+    "title": "Handling Secrets & Sensitive Data 🤫",
+    "description": "Never hardcode credentials – use environment variables, secure files, and clearing techniques.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Secrets Management",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Hardcoding = Public 🔓",
+            "content": "## Your Script Could End Up on GitHub\n\nNever embed passwords, API keys, or tokens directly in the script. Anyone with read access (or version control history) can see them.\n\nInstead, use:\n- Environment variables\n- Separate config files with restricted permissions\n- Secret managers (vault, pass, 1Password CLI)\n- Read from stdin or `read -s`"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Environment Variable Approach",
+            "content": "Export the secret in your shell, then reference it:",
+            "codeSnippet": "export DB_PASS=\"supersecret\"\n# In script:\necho \"Connecting with $DB_PASS\"  # still prints it, better to not echo!",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Why is it better to pass secrets via environment variable than a command‑line argument?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Environment variables are encrypted",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Command‑line arguments may be visible in `ps` output",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Environment variables are faster",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "There is no difference",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Arguments appear in `ps aux`, potentially exposing secrets to other users. Environment vars are not normally visible to other users (unless `/proc` is exposed).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Reading Secrets Securely 🤐",
+            "content": "## `read -s` and Prompt\n\nFor passwords typed by a user, use `read -sp`. The secret won't echo to the terminal.\n\nNever log or debug‑print the raw password. Clear the variable as soon as possible with `unset` or `passwd=`."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Read Password Safely",
+            "content": "Prompt, then clear:",
+            "codeSnippet": "read -sp \"Database password: \" DB_PASS\necho\n# use DB_PASS\n# ...\nunset DB_PASS",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "You should always `echo $PASSWORD` for debugging to ensure it's set.",
+                "correctAnswer": false,
+                "explanation": "Echoing a secret displays it on screen and possibly in logs, defeating security.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Config Files: Lock Them Down 📁",
+            "content": "## Secure Permissions on Secrets\n\nIf you store credentials in a file:\n- Set file permissions to `600` or `400`.\n- Ensure the directory is not world‑readable.\n- Use `source` to load variables, but ensure the file only contains assignments.\n- Consider encrypting the file with `gpg` or `openssl`."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "code",
+            "title": "Load a Restricted Config",
+            "content": "Check permissions before sourcing:",
+            "codeSnippet": "config=\"$HOME/.myapprc\"\nif [ -f \"$config\" ]; then\n  perms=$(stat -c %a \"$config\")\n  if [ \"$perms\" = \"600\" ]; then\n    source \"$config\"\n  else\n    echo \"Config has insecure permissions!\" >&2\n    exit 1\n  fi\nfi",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_9",
+            "type": "warning",
+            "title": "⚠️ Cleaning Variables",
+            "content": "`unset` only removes the variable from the current shell; it may remain in memory. For highly sensitive data, consider using `shred` on files, but variables in memory are harder to erase completely."
+        },
+        {
+            "id": "s_l3_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `pass` (the standard Unix password manager) or `gpg --decrypt` to fetch secrets on demand rather than storing them in plaintext."
+        }
+    ]
+}

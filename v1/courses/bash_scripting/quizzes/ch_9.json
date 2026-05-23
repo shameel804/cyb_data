@@ -1,0 +1,253 @@
+{
+    "id": "quiz_ch_9",
+    "chapterId": "ch_9",
+    "title": "Chapter 9 Quiz",
+    "description": "Test your knowledge of scheduling tasks with cron and at!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What command lists the current user's cron jobs?",
+            "options": [
+                "crontab -e",
+                "crontab -l",
+                "crontab -r",
+                "crontab -s"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`crontab -l` lists all scheduled tasks."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which field in a cron entry represents the day of week?",
+            "options": [
+                "The first field",
+                "The third field",
+                "The fifth field",
+                "The second field"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The order is minute, hour, day‑of‑month, month, day‑of‑week (5th field)."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "What does `*/10 * * * * /script.sh` do?",
+            "options": [
+                "Runs the script every 10 minutes",
+                "Runs the script at 10 minutes past every hour",
+                "Runs the script 10 times a day",
+                "It's an invalid syntax"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`*/10` in the minute field means every 10 minutes."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What cron shortcut runs a job at system boot?",
+            "options": [
+                "@startup",
+                "@reboot",
+                "@boot",
+                "@onboot"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`@reboot` is the special string for startup tasks."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "How do you edit your crontab?",
+            "options": [
+                "crontab -e",
+                "crontab -l",
+                "edit crontab",
+                "nano /etc/crontab"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`crontab -e` opens the user's crontab in the default editor."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "By default, cron emails the job's output to the user.",
+            "correctAnswer": true,
+            "explanation": "If a job produces output, cron emails it to the owner unless MAILTO is set to empty."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Which variable disables cron email notifications?",
+            "options": [
+                "MAILTO=\"\"",
+                "EMAIL=\"\"",
+                "MAIL=off",
+                "CRON_MAIL=0"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Setting `MAILTO=\"\"` stops cron from sending mail."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What does `0 9 * * 1` mean?",
+            "options": [
+                "At 9 AM every day",
+                "At 9 AM on Mondays",
+                "At 9 minutes past midnight on Mondays",
+                "Every 9 hours on Monday"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Minute=0, hour=9, day‑of‑week=1 (Monday)."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "How can you schedule a job to run every weekday at 8:30 AM?",
+            "options": [
+                "30 8 * * 1-5",
+                "30 8 * * 1,2,3,4,5",
+                "Both A and B",
+                "30 8 * * 1-7"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`1-5` and `1,2,3,4,5` both represent Monday–Friday."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Why is it important to use absolute paths in cron jobs?",
+            "options": [
+                "Relative paths are shorter",
+                "Cron runs with a minimal environment and may not have the correct PATH",
+                "Absolute paths run faster",
+                "Cron only accepts absolute paths"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The cron environment is stripped down; absolute paths avoid 'command not found' errors."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What is the `at` command used for?",
+            "options": [
+                "Scheduling recurring jobs",
+                "Scheduling a one‑time job at a specific time",
+                "Viewing system logs",
+                "Managing user permissions"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`at` runs a command once at a given time, unlike cron which repeats."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which command lists pending `at` jobs?",
+            "options": [
+                "at -l",
+                "atq",
+                "at -c",
+                "Both A and B"
+            ],
+            "correctAnswer": 3,
+            "explanation": "`atq` is the alias for `at -l`; both show the queue."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "How do you delete an `at` job with ID 5?",
+            "options": [
+                "atrm 5",
+                "at -d 5",
+                "at -r 5",
+                "Both A and B"
+            ],
+            "correctAnswer": 3,
+            "explanation": "`atrm 5` or `at -d 5` removes the job."
+        },
+        {
+            "id": "q14",
+            "type": "fill_blank",
+            "question": "Write the cron expression for \"every 5 minutes\". (five characters, space separated)",
+            "options": [],
+            "correctAnswer": "*/5 * * * *",
+            "explanation": "`*/5` in the minute field triggers every 5 minutes."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "If a cron job produces output and you don't redirect it, what happens?",
+            "options": [
+                "The output is lost",
+                "Cron emails it to the owner",
+                "The job fails",
+                "The output is written to /tmp"
+            ],
+            "correctAnswer": 1,
+            "explanation": "By default, cron captures stdout/stderr and sends it via mail."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What does `crontab -r` do?",
+            "options": [
+                "Reloads the crontab",
+                "Removes the user's crontab entirely",
+                "Edits the root crontab",
+                "Restarts the cron daemon"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-r` deletes all cron jobs for the user without confirmation."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which directory contains scripts that run hourly as root?",
+            "options": [
+                "/etc/cron.d",
+                "/etc/cron.hourly",
+                "/var/cron/hourly",
+                "/etc/hourly"
+            ],
+            "correctAnswer": 1,
+            "explanation": "System‑wide hourly scripts are placed in `/etc/cron.hourly/`."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "The `at` command can schedule a job to run multiple times like cron.",
+            "correctAnswer": false,
+            "explanation": "`at` is for one‑time execution only. For repetition, use cron."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "How would you schedule a script to run at 2:30 PM on the first day of every month?",
+            "options": [
+                "30 14 1 * *",
+                "30 14 1 * 1",
+                "30 2 1 * *",
+                "30 14 * 1 *"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Minute=30, hour=14 (2 PM), day‑of‑month=1, month=*, day‑of‑week=*."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which tool can prevent overlapping cron job executions?",
+            "options": [
+                "flock",
+                "timelimit",
+                "batch",
+                "nice"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`flock` manages file locks, ensuring only one instance of the script runs at a time."
+        }
+    ]
+}

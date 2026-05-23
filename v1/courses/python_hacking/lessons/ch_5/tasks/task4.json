@@ -1,0 +1,16 @@
+{
+    "id": "task4",
+    "chapterId": "ch_5",
+    "title": "Multi‑Host Multi‑Port Scanner (Nested Loops)",
+    "description": "Use nested loops to scan several hosts on several ports and report the results.",
+    "estimatedMinutes": 20,
+    "problemStatement": "Write a script `multi_scanner.py` that defines two lists: `hosts = [\"192.168.1.1\", \"10.0.0.2\"]` and `ports = [22, 80, 443]`. Use nested `for` loops to iterate over each host and each port. For each combination, print \"Scanning [host] on port [port]...\". Inside the inner loop, after printing, check if the port is 80 and the host is \"10.0.0.2\" – if so, print \"-> Web server found on unexpected host!\" and use `break` to stop scanning further ports for that host (but continue with next hosts).\n\nNote: `break` inside the inner loop only exits that inner loop; outer loop continues.\n\nExpected output should show all scans for first host, and for second host stop after port 80.",
+    "hints": [
+        "Outer loop: `for host in hosts:`",
+        "Inner loop: `for port in ports:`",
+        "After printing, if condition matches, print special message and break.",
+        "You can use a for‑else to print a summary per host, but not required."
+    ],
+    "expectedOutput": "Scanning 192.168.1.1 on port 22...\nScanning 192.168.1.1 on port 80...\nScanning 192.168.1.1 on port 443...\nScanning 10.0.0.2 on port 22...\nScanning 10.0.0.2 on port 80...\n-> Web server found on unexpected host!\n",
+    "solutionCode": "hosts = [\"192.168.1.1\", \"10.0.0.2\"]\nports = [22, 80, 443]\nfor host in hosts:\n    for port in ports:\n        print(f\"Scanning {host} on port {port}...\")\n        if host == \"10.0.0.2\" and port == 80:\n            print(\"-> Web server found on unexpected host!\")\n            break\n"
+}

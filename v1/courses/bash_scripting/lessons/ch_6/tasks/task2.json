@@ -1,0 +1,17 @@
+{
+    "id": "task2",
+    "chapterId": "ch_6",
+    "title": "Recursive File Lister",
+    "description": "Write a recursive function that lists all files in a directory tree with indentation.",
+    "estimatedMinutes": 20,
+    "problemStatement": "Write a script `treewalk.sh` that implements a recursive function `list_tree` to display a directory's contents in a tree‑like format. The function should:\n\n1. Take two parameters: the directory path and the indentation level (an integer).\n2. For each item in the directory:\n   - Print its name preceded by spaces proportional to the level (e.g., two spaces per level).\n   - If the item is a directory, recursively call `list_tree` on it with `level+1`.\n3. Skip hidden files (those starting with `.`) unless the directory itself is `.git`? Or just skip hidden to keep it simple. The problem statement can allow to list all, but to avoid infinite recursion with `.` and `..`, skip those explicitly.\n4. Use `local` variables for the loop iterator.\n\nAfter defining the function, call it on a directory provided as the first argument (default to current directory if none). The script should check that the directory exists.\n\nTest on a small directory structure to see the tree.",
+    "hints": [
+        "Use `for item in \"$1\"/*; do` to loop over non‑hidden items (skips dot).",
+        "Inside the loop, extract the basename: `name=$(basename \"$item\")`.",
+        "Indentation: `printf '%*s' $(( level * 2 )) ''` before the name.",
+        "Check if it's a directory with `[ -d \"$item\" ]`, and skip `.` and `..`? Actually `for item in \"$1\"/*` won't match `.` or `..`, so no need.",
+        "Recursion: `list_tree \"$item\" $(( level + 1 ))`."
+    ],
+    "expectedOutput": "dir1\n  file1\n  subdir\n    file2\n...",
+    "solutionCode": "#!/bin/bash\n# treewalk.sh – recursive directory listing\n\nlist_tree() {\n  local dir=\"$1\"\n  local level=\"$2\"\n  local prefix=$(printf '%*s' $(( level * 2 )) '')\n\n  for item in \"$dir\"/*; do\n    if [ -e \"$item\" ]; then\n      local name=$(basename \"$item\")\n      echo \"${prefix}${name}\"\n      if [ -d \"$item\" ]; then\n        list_tree \"$item\" $(( level + 1 ))\n      fi\n    fi\n  done\n}\n\ndir=\"${1:-.}\"\nif [ ! -d \"$dir\" ]; then\n  echo \"Error: not a directory\" >&2\n  exit 1\nfi\nlist_tree \"$dir\" 0"
+}

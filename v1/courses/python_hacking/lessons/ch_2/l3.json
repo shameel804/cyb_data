@@ -1,0 +1,137 @@
+{
+    "id": "l3",
+    "chapterId": "ch_2",
+    "title": "Organizing Your Hacking Workspace 🗂️",
+    "description": "Structure your projects like a pro so you never lose a script again.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Lab Setup",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Chaos is the Enemy of Hacking 🧹",
+            "content": "# A Messy Desk = Missed Vulnerabilities\n\nWhen you're deep in a penetration test, you don't want to hunt for the right script. A clear folder structure keeps you fast and professional.\n\nWe'll create a standard project skeleton that you can reuse for every tool you build."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "The Golden Project Structure 🏗️",
+            "content": "# MyProject/\n```\n├── venv/               # Virtual environment (already created)\n├── src/                # Your Python scripts\n│   ├── __init__.py     # (optional, makes it a package)\n│   └── main.py         # Entry point\n├── data/               # Input files (wordlists, targets)\n├── output/             # Scan results, logs\n├── requirements.txt    # Dependencies\n└── README.md           # What this tool does\n```\n\nAdjust names to fit your tool. For a port scanner, you might have `src/scanner.py` and `data/targets.txt`."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Structure Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Why keep `requirements.txt` in the project root?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Python requires it to run",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "So anyone can recreate the environment with `pip install -r requirements.txt`",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It's just for decoration",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "It documents dependencies, making the project portable.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Creating the Folders Manually",
+            "content": "# Hands‑On\n\nOpen your terminal (with venv active if you want, though not necessary). Navigate to where you keep projects and run:\n```\nmkdir port_scanner\ncd port_scanner\nmkdir src data output\n```\nOn Windows you can use File Explorer, but terminal commands are faster and make you look cooler 😎."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Create a README.md",
+            "content": "Every project should have a README. Inside `port_scanner/`, create `README.md` with:",
+            "codeSnippet": "# Port Scanner\nA simple TCP port scanner built with Python.",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "README 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "A README file is only needed if you publish the code online.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "Even for personal projects, a README helps you remember what the code does when you revisit it later.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Naming Conventions 🏷️",
+            "content": "# Be Descriptive\n\n* Use lowercase letters and underscores for filenames: `port_scanner.py`, `brute_force_login.py`\n* Avoid spaces; they cause headaches on the command line.\n* Name the main script `main.py` if you have multiple modules, or a specific name like `scanner.py`.\n* Keep data files in `data/`, results in `output/`."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use Version Control (Git)\n\nEven as a beginner, learn to use Git. It lets you track changes, revert mistakes, and collaborate. Initialize a repo with `git init` inside your project folder. There are great mobile apps for Git too!"
+        },
+        {
+            "id": "s_l3_9",
+            "type": "text",
+            "title": "Your First Script Goes into `src/`",
+            "content": "# Let's Place `main.py`\n\nInside `src/`, create a file `main.py` with just:\n```python\nprint(\"Port Scanner Starting...\")\n```\nThen run it from the project root:\n```\npython src/main.py\n```\nNow you have a working skeleton. Add real logic later."
+        },
+        {
+            "id": "s_l3_10",
+            "type": "quiz",
+            "title": "Path Quiz 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "multiple_choice",
+                "question": "Given the structure above, how would you run `main.py` from the `port_scanner` directory?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "python main.py",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "python src/main.py",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "python src\\main.py (only on Windows)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Because `main.py` is inside the `src` folder, you must include that path.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_11",
+            "type": "text",
+            "title": "Workspace Complete ✅",
+            "content": "# You're Now Organized\n\nEvery hacking project from now on will follow this pattern. Consistency saves brainpower for the actual hacking. Up next: meet the libraries that will turn your skeleton into a beast."
+        }
+    ]
+}

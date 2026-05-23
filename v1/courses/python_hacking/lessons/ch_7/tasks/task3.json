@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_7",
+    "title": "CSV Scan Result Reporter",
+    "description": "Write a script that reads scan results from a list of dicts and exports them to a CSV file with headers.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You have a list of dictionaries representing scan results:\n```python\nresults = [\n    {\"host\": \"192.168.1.1\", \"port\": 22, \"status\": \"open\"},\n    {\"host\": \"192.168.1.1\", \"port\": 80, \"status\": \"closed\"},\n    {\"host\": \"192.168.1.2\", \"port\": 443, \"status\": \"open\"}\n]\n```\nWrite a script `csv_export.py` that writes this data to a file `scan_report.csv` using `csv.DictWriter`. Include the column headers \"host\", \"port\", \"status\". After writing, read the file back using `csv.DictReader` and print each row to verify.",
+    "hints": [
+        "Use `fieldnames=['host','port','status']`.",
+        "Call `writer.writeheader()` before `writer.writerows(results)`.",
+        "To read back, open the file in 'r' mode with newline='' and use DictReader."
+    ],
+    "expectedOutput": "CSV file created. When reading back, prints:\n{'host': '192.168.1.1', 'port': '22', 'status': 'open'}\n{'host': '192.168.1.1', 'port': '80', 'status': 'closed'}\n{'host': '192.168.1.2', 'port': '443', 'status': 'open'}",
+    "solutionCode": "import csv\n\nresults = [\n    {\"host\": \"192.168.1.1\", \"port\": 22, \"status\": \"open\"},\n    {\"host\": \"192.168.1.1\", \"port\": 80, \"status\": \"closed\"},\n    {\"host\": \"192.168.1.2\", \"port\": 443, \"status\": \"open\"}\n]\n\nwith open('scan_report.csv', 'w', newline='') as f:\n    writer = csv.DictWriter(f, fieldnames=['host','port','status'])\n    writer.writeheader()\n    writer.writerows(results)\n\nprint(\"CSV file created\")\n\nwith open('scan_report.csv', 'r', newline='') as f:\n    reader = csv.DictReader(f)\n    for row in reader:\n        print(row)\n"
+}

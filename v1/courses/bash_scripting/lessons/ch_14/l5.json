@@ -1,0 +1,117 @@
+{
+    "id": "l5",
+    "chapterId": "ch_14",
+    "title": "Style, Documentation & Maintainability 📚",
+    "description": "Write readable, self‑documenting code with consistent naming, comments, and ShellCheck linting.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Best Practices",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Why Style Matters 🎨",
+            "content": "## Code Is Read More Than Written\n\nA consistent style helps you and others understand the logic quickly.\n\n- Indentation: 2 or 4 spaces, never tabs.\n- Line length: keep under 80‑100 characters.\n- Use blank lines to separate logical blocks.\n- Place `then` on the same line as `if` or on a new line – pick one and stick to it."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Good Indentation Example",
+            "content": "Clean conditional:",
+            "codeSnippet": "if [ -f \"$file\" ]; then\n  echo \"Processing $file\"\n  cat \"$file\"\nfi",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Which indentation style is recommended?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Use tabs because they compress better",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Use spaces (2 or 4) consistently",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Mix tabs and spaces for flexibility",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Indentation is not important in Bash",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Consistent space indentation ensures the code looks the same everywhere.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Naming Conventions 🏷️",
+            "content": "## Make Names Meaningful\n\n- Variables: `lower_case_with_underscores`.\n- Constants: `UPPER_CASE_WITH_UNDERSCORES`.\n- Functions: `verb_noun()` e.g., `get_user`, `parse_log`.\n- Private functions: `_prefix_with_underscore()`.\n\nAvoid single‑letter names except for loop indices (`i`, `j`). Use `local` for all function‑local variables."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Function with Good Naming",
+            "content": "Example:",
+            "codeSnippet": "get_user_home() {\n  local username=\"$1\"\n  grep \"^$username:\" /etc/passwd | cut -d: -f6\n}",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Comments: The Why, Not the What 💡",
+            "content": "## Document Intent\n\nExplain *why* a piece of code exists, not *what* it does (the what is visible).\n\n- Every script should have a header describing its purpose, author, and usage.\n- Every function should have a short comment above it.\n- Use `#` for single‑line, `: '...'` for multi‑line block comments."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "code",
+            "title": "Script Header Template",
+            "content": "Start each script with:",
+            "codeSnippet": "#!/bin/bash\n#\n# script_name.sh - one‑line description\n# Usage: ./script_name.sh [options] <file>\n# Author: Your Name\n#\nset -euo pipefail",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_8",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "A comment should describe each line of code in detail.",
+                "correctAnswer": false,
+                "explanation": "Comments should explain the purpose and reasoning, not restate the obvious. Too many comments can clutter code.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_9",
+            "type": "text",
+            "title": "Use ShellCheck & Linting 🔍",
+            "content": "## Automate Quality\n\n`shellcheck` is a static analysis tool that catches dozens of common mistakes and style violations.\n\n- Install: `apt install shellcheck` or `brew install shellcheck`.\n- Run: `shellcheck myscript.sh`.\n- Integrate with your editor (VS Code, Vim, etc.).\n\nMake it a habit to lint every script before committing."
+        },
+        {
+            "id": "s_l5_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Version control (Git) is essential. Write a `.gitignore` that excludes temporary files, and commit only your source scripts and test data."
+        }
+    ]
+}

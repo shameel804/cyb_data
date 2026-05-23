@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_9",
+    "title": "Random Password Generator",
+    "description": "Use the random module to generate a secure‑looking password of customizable length.",
+    "estimatedMinutes": 10,
+    "problemStatement": "Write a script `password_gen.py` that defines a function `generate_password(length=16)` which returns a random password containing a mix of uppercase, lowercase, digits, and punctuation. Use `random.choice()` on a string of allowed characters. Print 5 generated passwords of length 20 each to demonstrate. Make sure to import the necessary modules.",
+    "hints": [
+        "Create a character set: `chars = string.ascii_letters + string.digits + string.punctuation`.",
+        "Use a loop or list comprehension: `''.join(random.choice(chars) for _ in range(length))`.",
+        "Import `string` for the character sets.",
+        "Call `generate_password(20)` five times."
+    ],
+    "expectedOutput": "Five random passwords of length 20 printed, each on a new line.",
+    "solutionCode": "import random\nimport string\n\ndef generate_password(length=16):\n    chars = string.ascii_letters + string.digits + string.punctuation\n    return ''.join(random.choice(chars) for _ in range(length))\n\nfor _ in range(5):\n    print(generate_password(20))\n"
+}

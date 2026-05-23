@@ -1,0 +1,98 @@
+{
+    "id": "l2",
+    "chapterId": "ch_12",
+    "title": "Implementing the TCP Port Scanner Module 🔍",
+    "description": "Write the core port scanning engine with threading for speed and robust error handling.",
+    "xpReward": 35,
+    "estimatedMinutes": 10,
+    "section": "Building the Tool",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Recap: The Connect Scan",
+            "content": "# Using `socket` to Test Ports\n\nWe'll use `connect_ex()` with a short timeout. For each port that returns 0, it's open.\n\n```python\nimport socket\ndef is_open(host, port, timeout=0.5):\n    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n    s.settimeout(timeout)\n    result = s.connect_ex((host, port))\n    s.close()\n    return result == 0\n```\nBut scanning one port at a time is slow. We'll use threading."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Why Threading?",
+            "content": "# Scan Many Ports Concurrently\n\nPython's `threading` module lets us run multiple `is_open()` calls in parallel. For 1000 ports, that's 1000 sockets waiting for responses at the same time, dramatically reducing scan time.\n\nWe'll use `ThreadPoolExecutor` from `concurrent.futures` for a clean thread pool."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "code",
+            "title": "Threaded Scanner Function",
+            "content": "A high‑level skeleton:",
+            "codeSnippet": "from concurrent.futures import ThreadPoolExecutor, as_completed\nimport socket\n\ndef scan_port(host, port, timeout=0.5):\n    s = socket.socket()\n    s.settimeout(timeout)\n    code = s.connect_ex((host, port))\n    s.close()\n    if code == 0:\n        return port, 'open'\n    return port, 'closed'\n\ndef scan_ports(host, ports, timeout=0.5, max_threads=100):\n    open_ports = []\n    with ThreadPoolExecutor(max_workers=max_threads) as executor:\n        future_to_port = {executor.submit(scan_port, host, p, timeout): p for p in ports}\n        for future in as_completed(future_to_port):\n            port, status = future.result()\n            if status == 'open':\n                open_ports.append(port)\n    return open_ports",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "Threading 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Why use `ThreadPoolExecutor` over manually spawning threads?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It's the only way to use threads",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It manages a pool of threads, reusing them and limiting maximum concurrency",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It makes the code run on one core",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "It's a higher‑level interface that abstracts thread management and provides a limit on concurrent tasks.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Handling DNS Resolution",
+            "content": "# Resolve Hostname Once\n\nIf the target is a domain name, we should resolve it once to avoid repeated DNS lookups.\n\n```python\nimport socket\ntry:\n    ip = socket.gethostbyname(host)\nexcept socket.gaierror:\n    print(\"Invalid hostname\")\n    return []\n```\nThen use `ip` in all scan calls."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "code",
+            "title": "Complete Port Scanner (scanner.py)",
+            "content": "Full function with DNS resolution and error handling:",
+            "codeSnippet": "import socket\nfrom concurrent.futures import ThreadPoolExecutor, as_completed\n\ndef resolve_host(host):\n    try:\n        return socket.gethostbyname(host)\n    except socket.gaierror:\n        return None\n\ndef check_port(host, port, timeout):\n    s = socket.socket()\n    s.settimeout(timeout)\n    code = s.connect_ex((host, port))\n    s.close()\n    return (port, code == 0)\n\ndef scan_ports(target, start_port, end_port, timeout=0.5, threads=100):\n    ip = resolve_host(target)\n    if not ip:\n        print(f\"Could not resolve {target}\")\n        return []\n    ports = range(start_port, end_port+1)\n    open_ports = []\n    with ThreadPoolExecutor(max_workers=threads) as ex:\n        futures = {ex.submit(check_port, ip, p, timeout): p for p in ports}\n        for future in as_completed(futures):\n            port, is_open = future.result()\n            if is_open:\n                open_ports.append(port)\n    return sorted(open_ports)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "Error Handling 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "If `socket.gethostbyname()` fails, the scanner should still attempt to connect using the original hostname string.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "If DNS resolution fails, the host is unreachable; attempting to connect with the string might cause delays. It's better to stop early.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_8",
+            "type": "text",
+            "title": "Putting It in scanner.py",
+            "content": "# We'll Save the Code for Integration\n\nIn our project folder, `scanner.py` will contain these functions. We'll add banner grabbing later.\n\nNow let's extend it to identify services."
+        }
+    ]
+}

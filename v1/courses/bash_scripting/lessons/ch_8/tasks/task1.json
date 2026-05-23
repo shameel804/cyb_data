@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_8",
+    "title": "Config to Array",
+    "description": "Parse a configuration file into an associative array and use it in a script.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Write a script `load_config.sh` that reads a configuration file `config.ini` (provided as first argument) and loads key=value pairs into an associative array. Then, use it to print a system greeting.\n\nRequirements:\n1. Check that the file exists and is readable.\n2. Declare an associative array `config`.\n3. Use a `while IFS='=' read -r key value` loop to populate it, ignoring empty lines and comments (lines starting with `#`).\n4. Strip any leading/trailing whitespace from keys and values (hint: use `sed` or `${var## }`).\n5. The script should then print a message: \"Welcome, [user]! The application is running on port [port].\" where `user` and `port` are taken from the config.\n6. If `user` or `port` are missing, print a warning and exit.\n\nCreate a sample `config.ini` for testing:\n```\nuser=cybron\n# database settings\nport=8080\n```",
+    "hints": [
+        "Use `grep -v '^#'` to remove comment lines, or check inside the loop with `[[ $key == \\#* ]]` and continue.",
+        "Trim whitespace: `key=$(echo \"$key\" | xargs)`, `value=$(echo \"$value\" | xargs)`.",
+        "Use `[[ -v config[\"$key\"] ]]` or just check `${config[$key]}`.",
+        "After populating, retrieve: `${config[user]}`."
+    ],
+    "expectedOutput": "Welcome, cybron! The application is running on port 8080.",
+    "solutionCode": "#!/bin/bash\n# load_config.sh\n\nconfig_file=\"$1\"\nif [ ! -f \"$config_file\" ]; then\n  echo \"Error: config file not found\" >&2\n  exit 1\nfi\n\ndeclare -A config\nwhile IFS='=' read -r key value; do\n  [[ -z \"$key\" || \"$key\" =~ ^[[:space:]]*# ]] && continue\n  key=$(echo \"$key\" | xargs)   # trim whitespace\n  value=$(echo \"$value\" | xargs)\n  config[$key]=$value\ndone < \"$config_file\"\n\nif [ -z \"${config[user]}\" ] || [ -z \"${config[port]}\" ]; then\n  echo \"Error: 'user' and 'port' must be defined in config\" >&2\n  exit 1\nfi\n\necho \"Welcome, ${config[user]}! The application is running on port ${config[port]}.\""
+}

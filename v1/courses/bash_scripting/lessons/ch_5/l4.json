@@ -1,0 +1,102 @@
+{
+    "id": "l4",
+    "chapterId": "ch_5",
+    "title": "The `until` Loop: Wait for Success 🚦",
+    "description": "Loop until a condition becomes true. Learn when to flip the logic.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Until Loops",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "`until` – The Opposite of `while` 🔄",
+            "content": "## Loop Until True\n\n`while` runs as long as the condition is **true**; `until` runs as long as the condition is **false**.\n\nSyntax:\n```bash\nuntil [ condition ]; do\n   commands\ndone\n```\nThe loop stops when the condition becomes true."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Count Up",
+            "content": "Same counter logic with `until`:",
+            "codeSnippet": "count=1\nuntil [ $count -gt 5 ]; do\n  echo \"Count: $count\"\n  count=$((count + 1))\ndone",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "When does an `until` loop stop?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "When the condition is false",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "When the condition becomes true",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "After a fixed number of iterations",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Never",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`until` runs while the condition is false, so it stops when it finally becomes true.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Practical `until` Examples 🔧",
+            "content": "## Wait for Something\n\n`until` is great for waiting:\n- Wait for a file to appear: `until [ -f /tmp/ready ]; do sleep 1; done`\n- Wait for network to come up: `until ping -c1 google.com; do sleep 5; done`\n\nIt clearly expresses the idea of \"keep trying until successful\"."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Wait for a File",
+            "content": "Pause script until a specific file exists:",
+            "codeSnippet": "echo \"Waiting for /tmp/go.txt...\"\nuntil [ -f /tmp/go.txt ]; do\n  sleep 2\ndone\necho \"File found, continuing.\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "An `until` loop will execute at least once even if the condition is initially true.",
+                "correctAnswer": false,
+                "explanation": "Like `while`, `until` checks the condition before the first iteration. If already true, the body is skipped entirely.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Translating Between `while` and `until` 🔁",
+            "content": "## Negate the Condition\n\n```bash\n# These two are equivalent:\nwhile ! [ condition ]; do ... done\nuntil [ condition ]; do ... done\n```\nChoose the one that reads more naturally for your scenario."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "If you find yourself writing `while ! ...`, consider `until` for readability."
+        }
+    ]
+}

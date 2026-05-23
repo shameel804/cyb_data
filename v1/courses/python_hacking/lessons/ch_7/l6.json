@@ -1,0 +1,170 @@
+{
+    "id": "l6",
+    "chapterId": "ch_7",
+    "title": "Working with CSV, JSON & Logs 📊",
+    "description": "Parse structured data formats – the lifeblood of penetration testing reports and API hacking.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "File I/O",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "Why Structured Data?",
+            "content": "# CSV, JSON, XML – APIs and Reports Speak These\n\n* **CSV** (Comma‑Separated Values): scan results, user lists.\n* **JSON** (JavaScript Object Notation): REST API responses, config files.\n* **Logs**: custom formats, often parsed with regex.\n\nPython has built‑in modules: `csv`, `json`, and we've already seen `re`."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "CSV – The `csv` Module",
+            "content": "# Reading a CSV File\n\n```python\nimport csv\nwith open('scan_results.csv', newline='') as f:\n    reader = csv.reader(f)\n    for row in reader:\n        print(row)  # list of columns\n```\n* `csv.DictReader` reads into dictionaries keyed by header row."
+        },
+        {
+            "id": "s_l6_3",
+            "type": "code",
+            "title": "DictReader Example",
+            "content": "Simulated CSV data:",
+            "codeSnippet": "import csv, io\nfake_csv = \"host,port,status\\n192.168.1.1,22,open\\n10.0.0.2,80,open\"\nreader = csv.DictReader(io.StringIO(fake_csv))\nfor row in reader:\n    print(row['host'], row['port'])",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l6_4",
+            "type": "quiz",
+            "title": "CSV 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "What does `csv.DictReader` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Writes dictionaries to CSV",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Reads each row as a dictionary using the first row as keys",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Reads CSV without headers",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "DictReader maps column headers to values.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "Writing CSV",
+            "content": "# `csv.writer` and `csv.DictWriter`\n\n```python\nwith open('out.csv', 'w', newline='') as f:\n    writer = csv.writer(f)\n    writer.writerow(['host', 'port'])\n    writer.writerow(['10.0.0.1', 22])\n```\nDictWriter writes dictionaries with `writeheader()` and `writerows()`."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "code",
+            "title": "Export Scan Results to CSV",
+            "content": "DictWriter example:",
+            "codeSnippet": "import csv\nresults = [\n    {'ip': '10.0.0.1', 'port': 22, 'open': True},\n    {'ip': '10.0.0.2', 'port': 80, 'open': False}\n]\nwith open('scan.csv', 'w', newline='') as f:\n    writer = csv.DictWriter(f, fieldnames=['ip', 'port', 'open'])\n    writer.writeheader()\n    writer.writerows(results)\nprint('CSV saved')",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l6_7",
+            "type": "text",
+            "title": "JSON – The Universal API Language",
+            "content": "# `json` Module: `load()`, `loads()`, `dump()`, `dumps()`\n\n* `json.loads(string)` – parse JSON string → Python dict/list.\n* `json.dumps(obj, indent=2)` – Python object → JSON string.\n* `json.load(file)` – read JSON from file.\n* `json.dump(obj, file)` – write JSON to file.\n\n```python\nimport json\nresp = '{\"ip\": \"8.8.8.8\", \"country\": \"US\"}'\ndata = json.loads(resp)\nprint(data['ip'])\n```"
+        },
+        {
+            "id": "s_l6_8",
+            "type": "code",
+            "title": "API Response Simulation",
+            "content": "Parse and access:",
+            "codeSnippet": "import json\nresponse = '{\"port\": 22, \"service\": \"ssh\", \"version\": \"OpenSSH_8.9\"}'\ninfo = json.loads(response)\nprint(f\"Service: {info['service']} v{info['version']}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l6_9",
+            "type": "quiz",
+            "title": "JSON Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "multiple_choice",
+                "question": "Which function converts a Python dictionary to a JSON string?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "json.loads()",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "json.dumps()",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "json.write()",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`dumps` means 'dump string'; `loads` means 'load string'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_10",
+            "type": "text",
+            "title": "Reading/Writing JSON Files",
+            "content": "# Persistent Config or Results\n\n```python\n# Save\nconfig = {\"target\": \"192.168.1.0/24\", \"ports\": [22,80,443]}\nwith open('config.json', 'w') as f:\n    json.dump(config, f, indent=2)\n\n# Load\nwith open('config.json') as f:\n    config = json.load(f)\nprint(config['target'])\n```"
+        },
+        {
+            "id": "s_l6_11",
+            "type": "code",
+            "title": "Save and Load Settings",
+            "content": "Write a JSON config file:",
+            "codeSnippet": "import json\nsettings = {\"timeout\": 2.5, \"verbose\": True}\nwith open('settings.json', 'w') as f:\n    json.dump(settings, f)\nprint('Config saved')\n# later\nwith open('settings.json') as f:\n    loaded = json.load(f)\nprint(loaded['timeout'])",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l6_12",
+            "type": "text",
+            "title": "Log Parsing – Putting It All Together",
+            "content": "# Combine File Reading, Regex, and Strings\n\n```python\nimport re\nwith open('/var/log/auth.log') as f:\n    for line in f:\n        if 'Failed password' in line:\n            ip_match = re.search(r'\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}', line)\n            user_match = re.search(r'invalid user (\\S+)', line)\n            if ip_match:\n                ip = ip_match.group()\n                user = user_match.group(1) if user_match else 'unknown'\n                print(f\"Failed login from {ip} for {user}\")\n```\nThis is a real‑world hacking analysis script."
+        },
+        {
+            "id": "s_l6_13",
+            "type": "quiz",
+            "title": "Integration 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_3",
+                "type": "true_false",
+                "question": "Regular expressions can be combined with file reading to extract patterns from logs.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "Absolutely; it's a core technique in intrusion detection and forensic analysis.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_14",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use `pprint` for Complex JSON\n\n`from pprint import pprint; pprint(data)` prints nested JSON in a readable way."
+        },
+        {
+            "id": "s_l6_15",
+            "type": "text",
+            "title": "Chapter 7 Mastered! 🏆",
+            "content": "# You're a String & File Wizard\n\nFrom advanced string methods and regex to file I/O, path management, and structured data parsing – you can now process any data a hacking tool needs. Take the Quiz and tackle the tasks. Then, Chapter 8: Handling Errors Like a Pro – where your scripts become unbreakable."
+        }
+    ]
+}

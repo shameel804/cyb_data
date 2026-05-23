@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_4",
+    "title": "Simple System Menu",
+    "description": "Build an interactive menu using `case` that lets the user run common commands.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Write a script `menu.sh` that displays the following menu repeatedly until the user selects 'Quit':\n\n```\n1) Show current date and time\n2) List files in current directory\n3) Show disk usage\n4) Show your username\n5) Quit\n```\n\nUse `read` to get the user's choice, then a `case` statement to execute the corresponding command. For option 3, use `du -sh .` (current directory).\n\nWrap the menu in an infinite loop (`while true; do ... done`) and break out on option 5. Make sure to give an error message for invalid choices.",
+    "hints": [
+        "Use `while true; do ... done` to loop forever.",
+        "Use `case` to match `1`, `2`, `3`, `4`, `5`, and `*` for default.",
+        "For quit, use `exit` or `break`.",
+        "Put `clear` at the top to refresh the screen (optional)."
+    ],
+    "expectedOutput": "A looping menu that performs actions and only stops when 5 is selected.",
+    "solutionCode": "#!/bin/bash\n# Simple system menu\n\nwhile true; do\n  clear\n  echo \"===== MENU =====\"\n  echo \"1) Show current date and time\"\n  echo \"2) List files in current directory\"\n  echo \"3) Show disk usage\"\n  echo \"4) Show your username\"\n  echo \"5) Quit\"\n  read -p \"Choice: \" choice\n  case $choice in\n    1) date ;;\n    2) ls -la ;;\n    3) du -sh . ;;\n    4) whoami ;;\n    5) echo \"Goodbye!\"; exit ;;\n    *) echo \"Invalid option\"; sleep 1 ;;\n  esac\n  echo \"\"\n  read -p \"Press Enter to continue...\"\ndone"
+}

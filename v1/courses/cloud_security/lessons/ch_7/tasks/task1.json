@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_7",
+    "title": "Craft a Golden AMI User Data Script",
+    "description": "Write a user data script that hardens an EC2 instance on first boot.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario\nYou are building a golden AMI for a web server fleet. The AMI itself will be created from a base Amazon Linux 2023 image, but the final hardening will be applied at launch via a user data script.\n\n### Your Task\nWrite a bash user data script that:\n- Updates all installed packages.\n- Enables automatic security updates (using `dnf-automatic` on Amazon Linux).\n- Disables root SSH login.\n- Enables the host firewall (`firewalld`) and allows only ports 22 (SSH) from a specific IP `203.0.113.10`, plus 80 and 443 from anywhere.\n- Installs and starts the Amazon CloudWatch agent to forward system logs.\n\nExplain in 1‑2 sentences why this script contributes to a secure golden image.",
+    "hints": [
+        "Use `dnf update -y` and `systemctl enable --now dnf-automatic.timer`.",
+        "For SSH, edit `/etc/ssh/sshd_config` and restart sshd.",
+        "For firewalld, add rich rules to restrict SSH source."
+    ],
+    "expectedOutput": "A bash script with the described steps, plus a short rationale.",
+    "solutionCode": "#!/bin/bash\n# Update all packages\ndnf update -y\n\n# Enable automatic security updates\ndnf install dnf-automatic -y\nsystemctl enable --now dnf-automatic.timer\n\n# Disable root SSH login\nsed -i 's/^PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config\nsystemctl restart sshd\n\n# Enable and configure firewalld\nsystemctl enable --now firewalld\nfirewall-cmd --permanent --add-service=ssh\nfirewall-cmd --permanent --add-rich-rule='rule family=\"ipv4\" source address=\"203.0.113.10\" port protocol=\"tcp\" port=\"22\" accept'\nfirewall-cmd --permanent --add-service=http\nfirewall-cmd --permanent --add-service=https\nfirewall-cmd --reload\n\n# Install and start CloudWatch agent (simplified)\ndnf install amazon-cloudwatch-agent -y\n/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c ssm:AmazonCloudWatch-linux -s\n\n# Rationale: This script ensures every instance is patched, protected by a firewall, and logs centrally, maintaining a consistent security baseline regardless of who launches the instance."
+}

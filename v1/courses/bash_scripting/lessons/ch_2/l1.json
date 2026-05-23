@@ -1,0 +1,94 @@
+{
+    "id": "l1",
+    "chapterId": "ch_2",
+    "title": "The Linux Filesystem Tree 🌳",
+    "description": "Understand the hierarchical structure: root, home, and the big picture.",
+    "xpReward": 20,
+    "estimatedMinutes": 5,
+    "section": "Filesystem Basics",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Everything is a File (or Folder) 🗃️",
+            "content": "## The Grand Tree\n\nIn Linux and macOS, the filesystem is organised like an upside‑down tree. The very base is the **root directory**, written as a single slash `/`.\n\n- Everything – your documents, system files, even devices – lives somewhere under `/`.\n- Directories (folders) can contain files or other directories.\n- No drive letters like `C:` – all disks are mounted somewhere under the root.\n\nThink of `/` as the Earth, and every folder is a continent, country, or city."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What symbol represents the root directory in Linux?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "~",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "/",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "C:\\",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": ".",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The root directory is a single forward slash `/`. It's the top of the filesystem tree.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Your Home Sweet Home 🏠",
+            "content": "## Home Directory\n\nEvery user has a personal folder inside `/home/` (Linux) or `/Users/` (macOS). This is your **home directory**, where you store your personal files.\n\n- Symbolised by `~` (tilde).\n- If your username is `alice`, your home is `/home/alice`.\n- When you open a terminal, you normally start in your home directory."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "code",
+            "title": "Where Am I? 📍",
+            "content": "Use `pwd` to see your current directory. Try it now!",
+            "codeSnippet": "pwd",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_5",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "fill_blank",
+                "question": "What shortcut symbol stands for your home directory?",
+                "options": [],
+                "correctAnswer": "~",
+                "explanation": "The tilde `~` is shorthand for the current user's home directory.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "Important Top‑Level Folders 🗺️",
+            "content": "## The Big Picture\n\nSome directories you'll see right under `/`:\n\n- `/bin` – essential command binaries (like `ls`, `cp`).\n- `/etc` – system configuration files.\n- `/home` – users' personal homes.\n- `/tmp` – temporary files (cleared on reboot).\n- `/var` – variable data like logs.\n\nYou don't need to memorise them all now. Just know they're part of the tree."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Visualise the Tree\nRun `tree /` (if installed) to see a beautiful ASCII art of the entire filesystem. Use `tree ~` to start from home."
+        }
+    ]
+}

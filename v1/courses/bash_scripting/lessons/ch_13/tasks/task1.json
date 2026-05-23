@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_13",
+    "title": "Robust File Processor",
+    "description": "Create a script that uses strict mode, logging, and trap to safely process a file.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Write a script `robust_copy.sh` that copies a source file to a destination directory, logging every step and cleaning up temporary files on exit. It must:\n\n1. Accept source file and destination directory as command‑line arguments (check count).\n2. Start with `set -euo pipefail`.\n3. Define a `log` function that outputs timestamped messages with level (INFO, ERROR).\n4. Validate that the source file exists (`-f`) and the destination is a directory (`-d`). Exit with appropriate codes and error messages on failure.\n5. Create a temporary file (`mktemp`) for a checksum and register a trap on EXIT to remove it.\n6. Copy the file using `cp` and if it fails, log an error and exit.\n7. After copy, compute the MD5 of both files (use `md5sum` or `md5`) and log whether they match.\n8. If the checksums differ, log ERROR and exit 1; else log INFO and exit 0.\n\nMake the script executable and test it.",
+    "hints": [
+        "Use `mktemp` to create the temp file: `tmp=$(mktemp)`.",
+        "Trap: `trap 'rm -f \"$tmp\"' EXIT`.",
+        "Use `cp \"$src\" \"$dest_dir/\"` with error check: `if ! cp ...; then ...; fi` or use `||`.",
+        "Compute MD5: `md5sum \"$file\" | cut -d' ' -f1 > $tmp` then compare the two checksums."
+    ],
+    "expectedOutput": "INFO messages about copying and checksum; temporary file cleaned up.",
+    "solutionCode": "#!/bin/bash\nset -euo pipefail\n\nlog() {\n  local level=\"$1\"; shift\n  echo \"[$(date +'%Y-%m-%d %H:%M:%S')] [$level] $*\"\n}\n\nif [ $# -ne 2 ]; then\n  echo \"Usage: $0 <source> <dest_dir>\" >&2\n  exit 1\nfi\n\nsrc=\"$1\"\ndest_dir=\"$2\"\n\nif [ ! -f \"$src\" ]; then\n  log ERROR \"Source file '$src' not found\"\n  exit 2\nfi\nif [ ! -d \"$dest_dir\" ]; then\n  log ERROR \"Destination directory '$dest_dir' not found\"\n  exit 3\nfi\n\ntmp=$(mktemp)\ntrap 'rm -f \"$tmp\"' EXIT\n\nlog INFO \"Copying $src to $dest_dir\"\ncp \"$src\" \"$dest_dir/\" || { log ERROR \"Copy failed\"; exit 4; }\n\ndest_file=\"$dest_dir/$(basename \"$src\")\"\n\nmd5sum \"$src\" | cut -d' ' -f1 > \"$tmp\"\nsrc_md5=$(cat \"$tmp\")\nmd5sum \"$dest_file\" | cut -d' ' -f1 > \"$tmp\"\ndest_md5=$(cat \"$tmp\")\n\nif [ \"$src_md5\" != \"$dest_md5\" ]; then\n  log ERROR \"Checksum mismatch!\"\n  exit 1\nfi\n\nlog INFO \"Copy successful, checksums match.\"\nexit 0"
+}

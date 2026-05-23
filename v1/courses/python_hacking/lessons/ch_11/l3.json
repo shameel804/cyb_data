@@ -1,0 +1,140 @@
+{
+    "id": "l3",
+    "chapterId": "ch_11",
+    "title": "Working with REST APIs 🤖",
+    "description": "Interact with RESTful services – parse JSON, authenticate with tokens/keys, and consume real‑world APIs.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "APIs",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "What is a REST API?",
+            "content": "# Application Programming Interface\n\nA REST API exposes server functionality over HTTP using standard methods (GET, POST, PUT, DELETE). Data is usually returned as **JSON**.\n\nExample: GitHub API `https://api.github.com/users/octocat` returns JSON with user details.\n\nHacking tools often consume APIs for reconnaissance, searching exploits, or automating tasks."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Calling an API",
+            "content": "Fetch public data from a free API:",
+            "codeSnippet": "import requests\nresp = requests.get('https://api.github.com/users/octocat')\nif resp.status_code == 200:\n    data = resp.json()  # parse JSON into dict\n    print(f\"Name: {data['name']}\")\n    print(f\"Public repos: {data['public_repos']}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "JSON Parsing 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What does `resp.json()` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Returns the raw bytes",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Parses the response body as JSON and returns a Python dict/list",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Encodes data to JSON",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "It deserializes JSON into Python objects.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "API Authentication",
+            "content": "# Most APIs Require a Key or Token\n\n* **Query parameter**: `?api_key=YOUR_KEY`\n* **Header**: `Authorization: Bearer YOUR_TOKEN` or `X-API-Key: ...`\n\n```python\nheaders = {'Authorization': 'Bearer ghp_xxxxxxxxx'}\nresp = requests.get('https://api.github.com/user', headers=headers)\n```\nNever hardcode keys! Use environment variables or config files."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Using Environment Variable for API Key",
+            "content": "Safer way:",
+            "codeSnippet": "import os\napi_key = os.environ.get('GITHUB_TOKEN')\nif not api_key:\n    print(\"Set GITHUB_TOKEN environment variable\")\nelse:\n    headers = {'Authorization': f'token {api_key}'}\n    resp = requests.get('https://api.github.com/user', headers=headers)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "API Keys 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "It's safe to commit your API keys to a public GitHub repository if the code is open source.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "Never expose secrets; attackers scan for them. Use environment variables or secret management.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Pagination – Getting All Results",
+            "content": "# APIs Often Return Limited Results Per Page\n\nThey provide a `next` link or a `page` parameter. You must loop until no more data.\n\n```python\nurl = 'https://api.example.com/data?page=1'\nwhile url:\n    resp = requests.get(url, headers=headers)\n    data = resp.json()\n    process(data['results'])\n    url = data.get('next')  # None if last page\n```\nThis is critical for scraping large datasets."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "text",
+            "title": "Sending Data to an API (POST/PUT)",
+            "content": "# Create or Update Resources\n\n```python\nnew_repo = {\"name\": \"my-hacking-tool\", \"private\": False}\nresp = requests.post('https://api.github.com/user/repos', json=new_repo, headers=headers)\nif resp.status_code == 201:\n    print(\"Repository created\")\n```\nAlways check the API documentation for required fields and format."
+        },
+        {
+            "id": "s_l3_9",
+            "type": "quiz",
+            "title": "API Operations 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "multiple_choice",
+                "question": "Which HTTP method would you use to update an existing resource via a REST API?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "GET",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "POST",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "PUT or PATCH",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "PUT replaces the entire resource; PATCH modifies part of it.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_10",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Rate Limiting\n\nMany APIs limit requests per minute. If you exceed, you'll get 429 Too Many Requests. Implement delays and handle retries gracefully."
+        },
+        {
+            "id": "s_l3_11",
+            "type": "text",
+            "title": "Next: Web Scraping",
+            "content": "# APIs are great, but sometimes data is only in HTML. BeautifulSoup to the rescue!"
+        }
+    ]
+}

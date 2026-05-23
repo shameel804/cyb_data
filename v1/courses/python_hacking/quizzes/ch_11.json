@@ -1,0 +1,317 @@
+{
+    "id": "quiz_ch_11",
+    "chapterId": "ch_11",
+    "title": "Chapter 11 Quiz",
+    "description": "Test your mastery of HTTP, requests library, REST APIs, web scraping, and session handling.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What does HTTP stand for?",
+            "options": [
+                "HyperText Transfer Protocol",
+                "High Transfer Text Protocol",
+                "HyperTransfer Text Protocol",
+                "HyperText Transmission Protocol"
+            ],
+            "correctAnswer": 0,
+            "explanation": "HTTP is the foundation of data communication on the web."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which HTTP method is used to submit form data?",
+            "options": [
+                "GET",
+                "POST",
+                "HEAD",
+                "OPTIONS"
+            ],
+            "correctAnswer": 1,
+            "explanation": "POST sends data in the request body, suitable for forms."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "What status code indicates 'Not Found'?",
+            "options": [
+                "200",
+                "301",
+                "404",
+                "500"
+            ],
+            "correctAnswer": 2,
+            "explanation": "404 means the requested resource was not found."
+        },
+        {
+            "id": "q4",
+            "type": "true_false",
+            "question": "A `requests.get()` call will automatically follow redirects by default.",
+            "correctAnswer": true,
+            "explanation": "Yes, requests follows 3xx redirects unless you set `allow_redirects=False`."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "How do you send query parameters using `requests.get()`?",
+            "options": [
+                "Pass a dict to the `params` argument",
+                "Append to the URL manually",
+                "Use the `data` argument",
+                "Use the `json` argument"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`params` automatically builds the query string."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "To send JSON data in a POST request, which argument do you use?",
+            "options": [
+                "data",
+                "params",
+                "json",
+                "files"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`json` serializes the dict to JSON and sets Content-Type header."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What module is used to parse HTML in Python?",
+            "options": [
+                "requests",
+                "BeautifulSoup",
+                "json",
+                "socket"
+            ],
+            "correctAnswer": 1,
+            "explanation": "BeautifulSoup (from bs4) parses HTML/XML."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "How do you get the text content of a `<title>` tag using BeautifulSoup?",
+            "options": [
+                "soup.title.text()",
+                "soup.title.string or .text",
+                "soup.find('title').getText()",
+                "Both B and C"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Both `.string`/`.text` and `.getText()` work."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Which method returns a list of all matching elements?",
+            "options": [
+                "find()",
+                "find_all()",
+                "select_one()",
+                "search()"
+            ],
+            "correctAnswer": 1,
+            "explanation": "find_all() returns a list; find() returns the first match."
+        },
+        {
+            "id": "q10",
+            "type": "fill_blank",
+            "question": "In BeautifulSoup, to select elements by CSS class, you use the `________` attribute with a trailing underscore because `class` is a Python keyword.",
+            "options": [
+                "class_",
+                "class",
+                "css",
+                "selector"
+            ],
+            "correctAnswer": "class_",
+            "explanation": "Use `class_='value'` to avoid conflict with Python's `class` keyword."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What does `resp.raise_for_status()` do?",
+            "options": [
+                "Prints the status code",
+                "Raises an HTTPError if the status code is 4xx or 5xx",
+                "Retries the request",
+                "Redirects to a new URL"
+            ],
+            "correctAnswer": 1,
+            "explanation": "It triggers an exception for client or server errors."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "How do you set a custom User‑Agent header?",
+            "options": [
+                "resp = requests.get(url, useragent='mybot')",
+                "resp = requests.get(url, headers={'User-Agent': 'mybot'})",
+                "resp = requests.get(url, agent='mybot')",
+                "resp = requests.get(url, user_agent='mybot')"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Use the `headers` dict."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Why is a `requests.Session` useful for logging into a website?",
+            "options": [
+                "It encrypts all requests",
+                "It automatically stores and sends cookies between requests",
+                "It makes the requests faster",
+                "It bypasses firewalls"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Sessions maintain cookie state like a browser."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is a CSRF token?",
+            "options": [
+                "A cookie used for authentication",
+                "A unique hidden value that must be submitted with a form to prevent cross‑site request forgery",
+                "A type of malware",
+                "An encryption method"
+            ],
+            "correctAnswer": 1,
+            "explanation": "CSRF tokens are anti‑CSRF measures; they ensure the form submission is legitimate."
+        },
+        {
+            "id": "q15",
+            "type": "true_false",
+            "question": "When scraping a website, you should always respect `robots.txt` and the site's Terms of Service.",
+            "correctAnswer": true,
+            "explanation": "Ethical scraping respects legal boundaries."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which method would you use to send a PUT request to update a resource via REST API?",
+            "options": [
+                "requests.put()",
+                "requests.patch()",
+                "requests.post()",
+                "requests.send('PUT')"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`requests.put()` exists for PUT requests."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "How do you handle pagination in an API?",
+            "options": [
+                "Send the `page` parameter in each request until no more data",
+                "Download all data in one request",
+                "Ignore it, only first page matters",
+                "Use BeautifulSoup"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Loop through pages using the provided parameter or `next` link."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "What does `urllib.parse.urljoin(base, relative)` do?",
+            "options": [
+                "Joins two URL components together, handling relative paths",
+                "Encodes a URL",
+                "Parses a query string",
+                "Sends a request"
+            ],
+            "correctAnswer": 0,
+            "explanation": "It resolves a relative URL against a base URL to produce an absolute URL."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "If an API returns JSON, what is the quickest way to extract a nested value?",
+            "options": [
+                "Use regex",
+                "Parse with `.json()` then use dictionary key access",
+                "Parse with `.text` and split",
+                "Use BeautifulSoup"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`.json()` returns a Python dict, accessible by keys."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "How do you add a delay between requests to avoid rate limiting?",
+            "options": [
+                "Use `time.sleep()` between requests",
+                "Set a header",
+                "Use a Session",
+                "Increase timeout"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Sleep pauses execution to limit request frequency."
+        },
+        {
+            "id": "q21",
+            "type": "true_false",
+            "question": "API keys should be hardcoded in the script for convenience.",
+            "correctAnswer": false,
+            "explanation": "Never hardcode secrets; use environment variables."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "What is the advantage of using `requests.Session` over individual `requests.get()` calls?",
+            "options": [
+                "It's faster due to connection pooling",
+                "It persists cookies across requests",
+                "It can handle authentication automatically",
+                "All of the above"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Sessions reuse TCP connections, store cookies, and can have default headers/auth."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "Which attribute of a BeautifulSoup Tag object returns its text content stripped of tags?",
+            "options": [
+                ".string",
+                ".text",
+                ".get_text()",
+                "All of the above"
+            ],
+            "correctAnswer": 3,
+            "explanation": "All provide the textual content."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "To find all `<input>` elements with name='passwd' in a soup, you would write:",
+            "options": [
+                "soup.find_all('input', {'name': 'passwd'})",
+                "soup.find_all('input', name='passwd')",
+                "soup.select('input[name=\"passwd\"]')",
+                "All of the above"
+            ],
+            "correctAnswer": 3,
+            "explanation": "All three methods work."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "What is the best way to debug the exact HTTP request your Python script sends?",
+            "options": [
+                "Enable logging with `requests` debug",
+                "Use `print(resp.request.headers)` and `resp.request.body`",
+                "Use a tool like Wireshark",
+                "Both A and B"
+            ],
+            "correctAnswer": 3,
+            "explanation": "You can inspect the PreparedRequest object or enable detailed logging."
+        }
+    ]
+}

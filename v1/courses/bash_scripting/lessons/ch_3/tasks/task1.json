@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_3",
+    "title": "Personalised Welcome",
+    "description": "Create an interactive script that asks for user's name and favourite colour, then prints a custom message.",
+    "estimatedMinutes": 10,
+    "problemStatement": "You're building a friendly terminal app. Write a script called `greet_user.sh` that:\n\n1. Asks the user for their first name and stores it in a variable.\n2. Asks for their favourite colour and stores it.\n3. Prints a message like: \"Hello, [name]! Your favourite colour is [colour], that's awesome!\"\n4. Then, using the `date` command and command substitution, prints: \"Today is [current day of week], enjoy your day!\"\n\nMake sure the script has a shebang, comments, and uses double quotes around variables. Run it and test with sample inputs.",
+    "hints": [
+        "Use `read -p` to prompt and read in one line.",
+        "Capture the day of the week with `date +%A`.",
+        "Remember to quote your variables to handle spaces in names/colours."
+    ],
+    "expectedOutput": "Hello, Alice! Your favourite colour is Blue, that's awesome!\nToday is Thursday, enjoy your day!",
+    "solutionCode": "#!/bin/bash\n# Personalised welcome script\n\nread -p \"Enter your first name: \" name\nread -p \"Enter your favourite colour: \" colour\necho \"Hello, $name! Your favourite colour is $colour, that's awesome!\"\nday=$(date +%A)\necho \"Today is $day, enjoy your day!\""
+}

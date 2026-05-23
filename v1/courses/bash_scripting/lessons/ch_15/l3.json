@@ -1,0 +1,117 @@
+{
+    "id": "l3",
+    "chapterId": "ch_15",
+    "title": "Scheduling & Notifications ⏰",
+    "description": "Integrate cron‑ready design, email alerts, and command‑line options to control behaviour.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Automation",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Making It Cron‑Friendly 🕒",
+            "content": "## Run Silently When Scheduled\n\nWe can check if the script is connected to a terminal (`-t 0`). If not, we suppress normal output and only log.\n\n```bash\nif [ -t 0 ]; then\n  LOGFILE=\"\"  # print to terminal\nelse\n  LOGFILE=\"/var/log/cybron_guardian.log\"\nfi\n```\nCron jobs aren't attached to a terminal, so this auto‑detection is useful."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Cron‑Detection Snippet",
+            "content": "Set up logging based on whether the script runs interactively:",
+            "codeSnippet": "if [ -t 0 ]; then\n  echo \"Running in terminal mode\"\nelse\n  LOGFILE=\"/var/log/cybron_guardian.log\"\n  exec > /dev/null 2>&1  # suppress stdout/stderr except log file\nfi",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What does `[ -t 0 ]` check?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "If stdout is a terminal",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "If stdin is a terminal",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "If the script is run with bash",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "If the time is correct",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-t fd` tests if file descriptor fd is opened on a terminal. fd 0 is stdin.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Email Alert Function 📧",
+            "content": "## Using `mail` or `sendmail`\n\nA simple email function that uses the system's `mail` command (if available):\n```bash\nsend_alert() {\n  local subject=\"$1\"\n  local body=\"$2\"\n  echo \"$body\" | mail -s \"$subject\" \"$ADMIN_EMAIL\" 2>/dev/null || log ERROR \"Failed to send email\"\n}\n```\nFor systems without `mail`, you could fallback to writing to a specific alert file."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "send_alert Example",
+            "content": "Trigger an email on critical failure:",
+            "codeSnippet": "send_alert \"Guardian Alert\" \"Backup of /data failed due to insufficient space.\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "The `mail` command is guaranteed to be installed on all Linux distributions.",
+                "correctAnswer": false,
+                "explanation": "It may need to be installed (e.g., `mailutils` or `mailx`). Always check availability or provide fallback.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Adding Command‑Line Options 🎛️",
+            "content": "## Make It Flexible\n\nUse `getopts` to handle flags:\n- `-c config` – specify config file.\n- `-v` – verbose (force terminal mode).\n- `-d` – dry‑run (show what would be done without executing).\n\nThis allows the same script to be used interactively and by cron."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "code",
+            "title": "Option Parsing with getopts",
+            "content": "Simple skeleton:",
+            "codeSnippet": "while getopts \":c:vd\" opt; do\n  case $opt in\n    c) CONFIG=\"$OPTARG\" ;;\n    v) VERBOSE=true ;;\n    d) DRY_RUN=true ;;\n    \\?) echo \"Usage: $0 [-c config] [-v] [-d]\" >&2; exit 1 ;;\n  esac\ndone",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_9",
+            "type": "text",
+            "title": "Putting the Cron Entry Together 📅",
+            "content": "## Example crontab\n\n```\n# Run Cybron Guardian every night at 2:30 AM\n30 2 * * * /usr/local/bin/cybron_guardian.sh -c /etc/cybron.conf\n```\nThe script will be silent, log to file, and send email only if something goes wrong."
+        },
+        {
+            "id": "s_l3_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Always include a `--help` message (or `-h`) that prints usage. It's the first thing a new user will try."
+        }
+    ]
+}

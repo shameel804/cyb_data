@@ -1,0 +1,111 @@
+{
+    "id": "l2",
+    "chapterId": "ch_5",
+    "title": "Looping Over Files & Command Output 📁",
+    "description": "Harness the power of globbing and command substitution to process real data in loops.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Data Loops",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Globbing in a `for` Loop 🌐",
+            "content": "## Wildcard Expansion\n\nYou can use glob patterns directly after `in`:\n```bash\nfor file in *.txt; do\n   echo \"Found: $file\"\ndone\n```\nBash expands `*.txt` into a list of matching filenames **before** the loop runs. If no files match, the pattern is left literal, which can be a problem."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Process All Images",
+            "content": "Simulate a command on each `.png`:",
+            "codeSnippet": "for img in *.png; do\n  echo \"Processing $img...\"\n  # convert $img -resize 50% small_$img  (example)\ndone",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What happens if you write `for f in *.xyz` but no `.xyz` files exist?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The loop doesn't run",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The loop runs once with $f = *.xyz",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Bash throws an error",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It creates a file named *.xyz",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "By default, if no files match, the pattern remains unexpanded, causing a single iteration with the literal pattern.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Safer Globbing with `nullglob` 🛡️",
+            "content": "## Avoid the Literal Pattern Trap\n\nSet `shopt -s nullglob` to make unmatched globs expand to **nothing** (the loop won't run at all).\n\n```bash\nshopt -s nullglob\nfor file in *.xyz; do\n   echo \"$file\"\ndone\n# If no *.xyz files, loop body never executes.\n```\nUse `shopt -u nullglob` to turn it off."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "nullglob Example",
+            "content": "Try with non‑existing pattern:",
+            "codeSnippet": "shopt -s nullglob\nfor f in *.nothing; do\n  echo \"This won't print\"\ndone\necho \"Loop finished\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "`shopt -s nullglob` causes unmatched globs to expand to an empty list.",
+                "correctAnswer": true,
+                "explanation": "Exactly – it prevents the literal string from being used, making the loop safer.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Looping Over Command Output 📄",
+            "content": "## Using `$( )` as the List\n\nYou can feed the output of a command directly into a `for` loop:\n```bash\nfor user in $(cut -d: -f1 /etc/passwd); do\n   echo \"User: $user\"\ndone\n```\n**Caution**: this splits on spaces/tabs/newlines (the IFS). For files, it's better to use `while read` (next lesson)."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "List All Directories",
+            "content": "Print only directories in current folder:",
+            "codeSnippet": "for dir in $(ls -d */ 2>/dev/null); do\n  echo \"Directory: $dir\"\ndone",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_9",
+            "type": "warning",
+            "title": "⚠️ Word Splitting Risk",
+            "content": "If a filename contains spaces, `for f in $(ls)` will split it into multiple words. Prefer globbing (`*.txt`) or `while` loops for robust file handling."
+        }
+    ]
+}

@@ -1,0 +1,253 @@
+{
+    "id": "quiz_ch_4",
+    "chapterId": "ch_4",
+    "title": "Chapter 4 Quiz",
+    "description": "Test your knowledge of conditionals: if, test, case, and logical operators!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the correct syntax for an `if` statement in Bash?",
+            "options": [
+                "if condition { }",
+                "if [ condition ]; then ... fi",
+                "if (condition) { }",
+                "if test condition then ... done"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The Bash `if` uses `if [ condition ]; then ... fi`."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which numeric operator means 'greater than or equal to'?",
+            "options": [
+                "-gt",
+                "-ge",
+                "-le",
+                "-ne"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-ge` is greater or equal. `-gt` is strictly greater."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "What is the purpose of `elif`?",
+            "options": [
+                "To end an if block",
+                "To provide an alternative condition after if",
+                "To execute a default case",
+                "To loop over items"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`elif` adds extra conditional branches, checked if the previous `if` or `elif` was false."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which command is synonymous with `[ ]`?",
+            "options": [
+                "test",
+                "eval",
+                "expr",
+                "true"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`[` is an alias for `test`. Both evaluate expressions."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Why are spaces required inside `[ ]`?",
+            "options": [
+                "For readability only",
+                "Because `[` is a command and needs argument separation",
+                "Because Bash syntax demands it",
+                "Spaces aren't actually required"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`[` is a command, so it needs space between itself and its arguments."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which operator checks if a file exists and is a regular file?",
+            "options": [
+                "-e",
+                "-f",
+                "-d",
+                "-r"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-f` returns true for regular files. `-e` is any file type."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "The `[[ ]]` construct allows regex matching with `=~`.",
+            "correctAnswer": true,
+            "explanation": "Yes, `[[ ]]` supports regex with `=~`, e.g., `[[ $str =~ ^[0-9]+$ ]]`."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What is the output of: `if [ 10=10 ]; then echo equal; fi` (notice the lack of spaces around `=`)?",
+            "options": [
+                "equal",
+                "Nothing",
+                "Syntax error",
+                "10=10"
+            ],
+            "correctAnswer": 0,
+            "explanation": "In Bash, `[` is a command that requires spaces around its operators. Without spaces, `10=10` is parsed as a single argument. Because it is a non-empty string, Bash evaluates it as true, so the script prints 'equal'. (Note: `[ 10=20 ]` would also print 'equal' for the exact same reason)."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "How would you test if the variable `name` is non‑empty?",
+            "options": [
+                "[ -z \"$name\" ]",
+                "[ -n \"$name\" ]",
+                "[ \"$name\" = \"\" ]",
+                "[ -e \"$name\" ]"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-n` returns true if the string has non‑zero length."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which statement about `(( ))` is correct?",
+            "options": [
+                "It can only evaluate string comparisons",
+                "It is used for arithmetic evaluation, allowing C‑style operators",
+                "It is identical to `[ ]`",
+                "It cannot be used in an `if` condition"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`(( ))` is for arithmetic; inside, you can use operators like `>`, `<`, `==` without dollar signs on variables."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What keyword ends a `case` block?",
+            "options": [
+                "done",
+                "fi",
+                "esac",
+                "endcase"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`esac` is `case` reversed."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "In a `case` statement, which pattern acts as the default catch‑all?",
+            "options": [
+                "?)",
+                "*)",
+                "else)",
+                "default)"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The `*` pattern matches everything and is used as the default."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "How can you make `case` match either 'y' or 'Y'?",
+            "options": [
+                "[yY])",
+                "(y|Y))",
+                "y|Y)",
+                "y,Y)"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The pipe `|` between patterns (without parentheses) is the correct syntax: `y|Y)`."
+        },
+        {
+            "id": "q14",
+            "type": "fill_blank",
+            "question": "Type the operator that checks if file is executable: [ ___ script.sh ]",
+            "options": [],
+            "correctAnswer": "-x",
+            "explanation": "`-x` tests for execute permission."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What does `[[ 5 -lt 3 && 4 -gt 1 ]]` evaluate to?",
+            "options": [
+                "True",
+                "False",
+                "Syntax error",
+                "5"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`5 -lt 3` is false, so the AND condition is false."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which of the following is the best practice for variable quoting in `[ ]`?",
+            "options": [
+                "Never quote variables",
+                "Always quote variables",
+                "Quote only numbers",
+                "Quoting is optional in `[ ]`"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Quoting prevents word splitting and errors if the variable is empty."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "How do you combine two conditions with AND inside `[ ]` (POSIX style)?",
+            "options": [
+                "&&",
+                "-a",
+                "and",
+                "-and"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Inside `[ ]`, use `-a` for AND, `-o` for OR. Outside or with `[[ ]]`, use `&&` and `||`."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "In a `case` statement, the `;;` is optional for the last pattern.",
+            "correctAnswer": false,
+            "explanation": "All pattern blocks must end with `;;` (or `;&` / `;;&`). No exception."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What will this script print?\n```bash\nval=15\nif (( val < 10 )); then echo \"low\"; elif (( val < 20 )); then echo \"mid\"; else echo \"high\"; fi\n```",
+            "options": [
+                "low",
+                "mid",
+                "high",
+                "Nothing"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`15` is not less than 10, so falls to `elif`; 15 < 20 is true, prints 'mid'."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which command can directly evaluate arithmetic conditions without using `[ ]`?",
+            "options": [
+                "test",
+                "(( ))",
+                "expr",
+                "[[ ]]"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`(( ))` is designed for arithmetic evaluation and returns a success/failure exit status."
+        }
+    ]
+}

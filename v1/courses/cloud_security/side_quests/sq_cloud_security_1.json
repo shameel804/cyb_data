@@ -1,0 +1,82 @@
+{
+    "id": "sq_cloud_security_1",
+    "title": "The Cloud Moat Mystery",
+    "triggerChapterIndex": 2,
+    "metadata": {
+        "type": "debug"
+    },
+    "questions": [
+        {
+            "id": "sq_cloud_security_1_q1",
+            "type": "multiple_choice",
+            "question": "Find the security vulnerability in this Terraform snippet.",
+            "codeSnippet": "resource \"aws_security_group\" \"web_sg\" {\n  name = \"web_sg\"\n  ingress {\n    from_port   = 22\n    to_port     = 22\n    protocol    = \"tcp\"\n    cidr_blocks = [\"0.0.0.0/0\"]\n  }\n}",
+            "bugLineIndex": 6,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Line 6 (`cidr_blocks = [\"0.0.0.0/0\"]`) opens SSH to the entire internet, inviting brute‑force attacks. Restrict to a specific admin IP range.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_cloud_security_1_q2",
+            "type": "multiple_choice",
+            "question": "Locate the misconfiguration that makes this S3 bucket publicly readable.",
+            "codeSnippet": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Principal\": \"*\",\n      \"Action\": \"s3:GetObject\",\n      \"Resource\": \"arn:aws:s3:::my-bucket/*\"\n    }\n  ]\n}",
+            "bugLineIndex": 5,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Line 5 (`\"Principal\": \"*\"`) allows anyone (anonymous users) to read objects. Remove the wildcard principal or restrict to specific AWS accounts.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_cloud_security_1_q3",
+            "type": "multiple_choice",
+            "question": "Identify the dangerous permission in this IAM policy.",
+            "codeSnippet": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": \"iam:PassRole\",\n      \"Resource\": \"*\"\n    }\n  ]\n}",
+            "bugLineIndex": 6,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Line 6 (`\"Resource\": \"*\"`) allows passing any role to any service – a classic privilege escalation path. Always restrict `iam:PassRole` to specific roles.",
+            "xpReward": 20,
+            "difficulty": 3
+        },
+        {
+            "id": "sq_cloud_security_1_q4",
+            "type": "multiple_choice",
+            "question": "Spot the vulnerability in this Python script that uploads a file to S3.",
+            "codeSnippet": "import boto3\ns3 = boto3.client('s3')\ns3.put_object(Bucket='my-bucket', Key='data.csv', Body=open('data.csv', 'rb'), ACL='public-read')",
+            "bugLineIndex": 2,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Line 2 uses `ACL='public-read'`, making the uploaded file world‑readable. Remove the ACL parameter to use the default (private) or enforce bucket policies.",
+            "xpReward": 20,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_cloud_security_1_q5",
+            "type": "multiple_choice",
+            "question": "Find the flaw in this Network ACL (NACL) rule.",
+            "codeSnippet": "resource \"aws_network_acl\" \"bad_nacl\" {\n  vpc_id = aws_vpc.main.id\n  ingress {\n    protocol   = \"-1\"\n    rule_no    = 100\n    action     = \"allow\"\n    cidr_block = \"0.0.0.0/0\"\n    from_port  = 0\n    to_port    = 0\n  }\n}",
+            "bugLineIndex": 7,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Line 7 (`cidr_block = \"0.0.0.0/0\"`) combined with all ports (`from_port`/`to_port` = 0) allows any inbound traffic from anywhere. Restrict the CIDR and ports.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_cloud_security_1_q6",
+            "type": "multiple_choice",
+            "question": "Which line introduces an infrastructure misconfiguration in this AWS CLI command?",
+            "codeSnippet": "aws ec2 authorize-security-group-ingress \\\n  --group-id sg-12345678 \\\n  --protocol tcp --port 3306 \\\n  --cidr 0.0.0.0/0",
+            "bugLineIndex": 3,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Line 3 (`--cidr 0.0.0.0/0`) opens the MySQL port to the entire internet. Replace with a restricted CIDR, e.g., your VPC or a specific IP.",
+            "xpReward": 20,
+            "difficulty": 1
+        }
+    ]
+}

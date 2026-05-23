@@ -1,0 +1,117 @@
+{
+    "id": "l5",
+    "chapterId": "ch_12",
+    "title": "Real‑World Text Processing Combos 🔗",
+    "description": "Chain sed and awk in pipelines to solve complex log analysis, CSV manipulation, and reporting.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Integration",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Unix Philosophy in Action 🧠",
+            "content": "## Do One Thing Well, Compose\n\n`sed` excels at line‑oriented transformations (substitutions, deleting, inserting). `awk` excels at field‑based calculations and reporting. Together they form an unstoppable duo.\n\nA typical pipeline: `grep` to filter, `sed` to clean, `awk` to compute."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Clean CSV with sed, Summarise with awk",
+            "content": "Remove empty lines and comments, then compute average of column 3:",
+            "codeSnippet": "sed '/^#/d;/^$/d' data.csv | awk -F, '{ sum+=$3; count++ } END { print sum/count }'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Why would you use `sed` before `awk` in a pipeline?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To perform arithmetic",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To clean or pre‑format text before field‑based processing",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "sed is required before awk",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To sort the output",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "sed can strip unwanted lines, replace delimiters, or fix formatting so awk receives clean input.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Apache Log Analysis Example 🌐",
+            "content": "## Extract Top 10 IPs by Requests\n\nGiven an Apache combined log, we can:\n1. `sed` to remove lines that are not access entries (if any).\n2. `awk` to extract the first field (IP).\n3. `sort | uniq -c | sort -nr | head`.\n\nBut we can also use `awk` associative arrays to count and sort itself (though sorting requires `asort` in GNU awk). We'll combine classic tools."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Top IPs Pipeline",
+            "content": "Count IP addresses from an access log:",
+            "codeSnippet": "awk '{ print $1 }' access.log | sort | uniq -c | sort -nr | head -10",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "awk can completely replace the `sort | uniq -c` pattern for counting.",
+                "correctAnswer": true,
+                "explanation": "awk can accumulate counts in an associative array and then output them, eliminating the need for sort/uniq in the pipeline.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Reformatting Reports with awk 📊",
+            "content": "## From Raw Data to Readable Tables\n\nUsing `printf` and `BEGIN`/`END`, awk can produce formatted reports.\n\nExample: display disk usage as a table:\n```bash\ndf -h | awk 'NR>1 { printf \"%-20s %5s\\n\", $1, $5 }'\n```"
+        },
+        {
+            "id": "s_l5_8",
+            "type": "code",
+            "title": "Formatted Disk Usage",
+            "content": "Print filesystem and use% excluding header:",
+            "codeSnippet": "df -h | awk 'NR>1 { printf \"%-25s %s\\n\", $6, $5 }'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_9",
+            "type": "text",
+            "title": "sed + awk: A Complex Example 🧪",
+            "content": "## Transform and Calculate\n\nProblem: Convert a log with timestamps like `[2026-05-22 10:15:01]` into a CSV of date and count of events per day.\n\nPipeline:\n```bash\ngrep 'ERROR' app.log | sed 's/\\[/,/; s/\\]//' | awk -F',' '{ print $2 }' | cut -d' ' -f1 | sort | uniq -c\n```\nBut we can also use awk with match() to extract date and count."
+        },
+        {
+            "id": "s_l5_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "When chaining sed and awk, test each stage separately: `command1 | head`, then add `| command2 | head`, etc. Build incrementally."
+        }
+    ]
+}

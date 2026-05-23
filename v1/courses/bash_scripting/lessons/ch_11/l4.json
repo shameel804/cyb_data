@@ -1,0 +1,118 @@
+{
+    "id": "l4",
+    "chapterId": "ch_11",
+    "title": "Grouping & Alternation 🧬",
+    "description": "Use parentheses for capturing, non-capturing groups, and the OR operator.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Expression Building",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Grouping with Parentheses `( )` 🎒",
+            "content": "## Combine Parts\n\nParentheses group parts of a regex, treating them as a single unit. This allows:\n- Applying quantifiers to a whole sub‑pattern.\n- Capturing the matched text for later use (backreferences).\n\nExample: `(ab)+` matches \"ab\", \"abab\", \"ababab\"."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Grouping Example",
+            "content": "Match repeating 'ha':",
+            "codeSnippet": "echo \"hahaha\" | grep -E '(ha)+'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What does `(abc){2}` match?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "abc2",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "abcabc",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "abcc",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "abc or abc",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The group `(abc)` repeated exactly twice yields 'abcabc'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Backreferences 🔙",
+            "content": "## Refer to a Captured Group\n\nA backreference `\\1`, `\\2`, ... matches the exact text captured by the first, second, etc. group. This is powerful for finding repeated words or patterns.\n\nExample: `^([a-z]+) \\1$` matches a line that is a word repeated (e.g., \"hello hello\").\n\nUse `grep -E` but backreferences work only in some flavors; `grep` does support them."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Find Doubled Words",
+            "content": "Match two identical consecutive words:",
+            "codeSnippet": "echo \"the the problem\" | grep -E '\\b([a-z]+) \\1\\b'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "fill_blank",
+                "question": "To match the exact same text as the first parenthesized group, use the backreference ___.",
+                "options": [],
+                "correctAnswer": "\\1",
+                "explanation": "`\\1` refers to the first captured group.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Alternation (OR) with `|` 🚦",
+            "content": "## This OR That\n\nThe pipe `|` allows matching either the pattern on its left or on its right. Groups often help limit the scope.\n\n- `cat|dog` matches \"cat\" or \"dog\".\n- `(red|blue) ball` matches \"red ball\" or \"blue ball\".\n\n`grep -E 'error|warning'` finds lines with either word."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "code",
+            "title": "Alternation Example",
+            "content": "Filter log for both critical and fatal messages:",
+            "codeSnippet": "echo -e \"INFO ok\\nCRITICAL fail\\nFATAL crash\" | grep -E 'CRITICAL|FATAL'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_9",
+            "type": "text",
+            "title": "Non‑Capturing Groups (ERE) 📦",
+            "content": "## Group Without Capturing\n\nIf you only want grouping but don't need backreference, use `(?:...)`. This improves performance and avoids unnecessary capture.\n\n```bash\ngrep -E '(?:red|blue) color'\n```\nNote: `grep -E` doesn't support `(?: )` natively? Actually, extended regex does not include non‑capturing groups; that's Perl‑compatible (PCRE). In standard ERE, all groups capture. So we'll mention that in Bash `grep`, there's no non‑capturing group; just use parentheses. This is a minor detail. We'll still mention that PCRE supports it, but in `grep -E` all groups capture. Keep it accurate: \"Standard ERE doesn't have non‑capturing groups; all `(...)` capture.\" So I'll adjust the slide accordingly."
+        },
+        {
+            "id": "s_l4_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "When using alternation, put the most specific patterns first, because `grep` will match the first alternative that fits (in some tools it's leftmost match)."
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "id": "task3",
+    "chapterId": "ch_9",
+    "title": "Webpage Title Extractor",
+    "description": "Use requests and BeautifulSoup to fetch a URL and print its title. Handle connection errors gracefully.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Write a script `get_title.py` that defines a function `fetch_title(url)`. It should:\n- Use `requests.get(url, timeout=5)` to fetch the page.\n- If successful, parse with BeautifulSoup and return the page title string (or None if no title).\n- If `requests.exceptions.RequestException` occurs (catch all request errors), print an error message and return None.\n\nTest the function by calling it with `'http://example.com'` (should return 'Example Domain') and also with an invalid URL like `'http://thisdoesnotexist.invalid'` (should print error and return None). Print the title or 'No title found'.",
+    "hints": [
+        "Import `requests` and `from bs4 import BeautifulSoup`.",
+        "Catch `requests.exceptions.RequestException` as e; print(f'Request failed: {e}').",
+        "To get title: `soup.title.string` if `soup.title` else None.",
+        "Use `response.raise_for_status()` to check for HTTP errors."
+    ],
+    "expectedOutput": "Title for http://example.com: Example Domain\nTitle for invalid URL: Request failed: ...\nNo title found",
+    "solutionCode": "import requests\nfrom bs4 import BeautifulSoup\n\ndef fetch_title(url):\n    try:\n        resp = requests.get(url, timeout=5)\n        resp.raise_for_status()\n        soup = BeautifulSoup(resp.text, 'html.parser')\n        return soup.title.string if soup.title else None\n    except requests.exceptions.RequestException as e:\n        print(f\"Request failed: {e}\")\n        return None\n\n# Test with valid URL\ntitle = fetch_title('http://example.com')\nprint(f\"Title: {title if title else 'No title found'}\")\n\n# Test with invalid URL\nprint()\ntitle = fetch_title('http://thisdoesnotexist.invalid')\nprint(f\"Title: {title if title else 'No title found'}\")\n"
+}

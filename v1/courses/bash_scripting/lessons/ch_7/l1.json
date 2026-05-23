@@ -1,0 +1,121 @@
+{
+    "id": "l1",
+    "chapterId": "ch_7",
+    "title": "Reading Files 📖",
+    "description": "Master the essential file viewers: cat, less, head, tail, and wc to inspect any text.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "File Input",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Your Reading Toolkit 🔧",
+            "content": "## Bash is a Text Powerhouse\n\nMost system data is plain text: logs, configs, CSV exports. Before modifying anything, you need to **view** it safely. Bash offers a suite of commands for exactly that.\n\nToday's stars:\n- `cat` – concatenate and print entire files\n- `less` – scroll through large files\n- `head` / `tail` – peek at the beginning or end\n- `wc` – count lines, words, and bytes"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "code",
+            "title": "cat: Dump It All 🐱",
+            "content": "`cat` displays the full content of one or more files. Great for small files, dangerous for huge ones.",
+            "codeSnippet": "cat /etc/hostname",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What does `cat file1 file2` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Prints file1 then file2",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Compares the two files",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Copies file1 into file2",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Only prints the first file",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`cat` concatenates and prints all given files in order.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "code",
+            "title": "less: Scroll with Ease 📜",
+            "content": "`less` opens a file in a pager. Use arrows, PgUp/Down, `/` to search, `q` to quit.",
+            "codeSnippet": "less /var/log/syslog",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_5",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Inside `less`, press `G` to jump to the end, `g` to go to the top, and `-N` flag shows line numbers (`less -N file`)."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "head & tail: First & Last Glimpses 🔭",
+            "content": "## Peek Without Opening Fully\n\n- `head -n 5 file` – first 5 lines (default 10).\n- `tail -n 5 file` – last 5 lines.\n- `tail -f file` – follow; continuously show new lines (great for logs)."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "code",
+            "title": "head & tail Demo",
+            "content": "Show top 3 and bottom 3 lines of /etc/passwd:",
+            "codeSnippet": "head -n 3 /etc/passwd\ntail -n 3 /etc/passwd",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_8",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "fill_blank",
+                "question": "Which `tail` option keeps watching a file for new lines?",
+                "options": [],
+                "correctAnswer": "-f",
+                "explanation": "`tail -f` follows the file, showing appended data in real time.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_9",
+            "type": "code",
+            "title": "wc: Count Everything 🔢",
+            "content": "`wc` prints line, word, and byte counts.\n- `-l` : lines only\n- `-w` : words only\n- `-c` : bytes only",
+            "codeSnippet": "wc /etc/passwd",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `wc -l < file` to avoid printing the filename, or pipe `cat file | wc -l`."
+        }
+    ]
+}

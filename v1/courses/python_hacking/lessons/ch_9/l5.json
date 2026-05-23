@@ -1,0 +1,123 @@
+{
+    "id": "l5",
+    "chapterId": "ch_9",
+    "title": "Managing Dependencies & Creating Your Own Modules 🧩",
+    "description": "Freeze requirements, create reusable modules, and understand Python packages.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "External Libraries",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Reproducible Environments",
+            "content": "# `pip freeze > requirements.txt`\n\nAfter installing packages for your hacking tool, freeze the exact versions:\n```bash\npip freeze > requirements.txt\n```\nThis creates a file like:\n```\nrequests==2.31.0\nbeautifulsoup4==4.12.3\n```\nAnyone (including future you) can recreate the environment:\n```bash\npip install -r requirements.txt\n```"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Example Workflow",
+            "content": "In your project folder:\n```bash\npython -m venv venv\nsource venv/bin/activate\npip install requests\npip freeze > requirements.txt\n```\nNow commit `requirements.txt` to version control.",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "pip freeze 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is the purpose of `pip freeze > requirements.txt`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Installs all required packages",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Creates a file listing all installed packages with versions for reproducibility",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Freezes the current Python version",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "It generates a dependency list that can be used to clone the environment.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Turning Your Scripts into a Module",
+            "content": "# Create a Reusable Library\n\n1. Put your functions in a `.py` file, e.g., `scanner.py`.\n2. In another script, `import scanner`.\n3. Use `if __name__ == '__main__':` to provide a CLI when run directly.\n\nExample:\n```python\n# scanner.py\ndef tcp_connect(host, port):\n    # ...\n    return True\n\nif __name__ == '__main__':\n    import sys\n    tcp_connect(sys.argv[1], int(sys.argv[2]))\n```\nNow you can `python scanner.py 10.0.0.1 80` or `import scanner` in other code."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Creating a Package (Folder of Modules)",
+            "content": "Structure:\n```\nmytool/\n  __init__.py\n  scanner.py\n  reporter.py\n```\nThen `from mytool import scanner`. The `__init__.py` file (can be empty) tells Python this directory is a package.",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Modules & Packages 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "What file makes a directory a Python package?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "main.py",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "__init__.py",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "setup.py",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The presence of __init__.py indicates that the directory is a package (in modern Python it can be omitted, but it's still conventional).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Relative Imports",
+            "content": "# Within a Package, Import Sibling Modules\n\n```python\n# mytool/scanner.py\nfrom . import reporter\n```\nThe dot means \"in the same package\". Use `..` for parent package. This is standard for larger tools."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "text",
+            "title": "Publishing Your Tool on PyPI (Overview)",
+            "content": "# Make It Public (Optional)\n\n1. Create a `setup.py` or `pyproject.toml` file.\n2. Register on pypi.org.\n3. Use `twine` to upload.\n\nNow anyone can `pip install yourtool`. Many hacking tools are distributed this way."
+        },
+        {
+            "id": "s_l5_9",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use `python -m pip` Always\n\nInstead of bare `pip`, use `python -m pip install ...`. This guarantees you're using the pip associated with the current Python interpreter."
+        },
+        {
+            "id": "s_l5_10",
+            "type": "text",
+            "title": "Chapter 9 Complete! 🎉",
+            "content": "# You've Unlocked Python's Vast Ecosystem\n\nYou understand imports, built‑in modules (os, sys, time, datetime, random), third‑party packages (requests, bs4), and how to manage dependencies and build your own modules. Take the Quiz and tasks, then gear up for Chapter 10 – Networking!"
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_11",
+    "title": "Compare Landing Zone Approaches",
+    "description": "Write a short memo comparing AWS Control Tower and Azure Landing Zones for a hybrid organization.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario\nYour CTO is considering a multi‑cloud strategy and asks for a quick comparison between AWS Control Tower and Azure Landing Zones to understand how they each establish a governed environment.\n\n### Your Task\nWrite a one‑page memo (brief paragraphs) covering:\n- The core purpose of each service.\n- How they handle account/subscription isolation and policy enforcement.\n- One key differentiator (e.g., AWS Control Tower’s Account Factory vs. Azure’s built‑in Policy as Code).\n- Which you would recommend for a team already heavily using Microsoft 365 and Azure AD.\n\nKeep it concise but informative.",
+    "hints": [
+        "AWS Control Tower sets up a landing zone with AWS Organizations, SCPs, and Config rules.",
+        "Azure Landing Zones are a set of guidelines and reference implementations using Management Groups, Azure Policy, and Blueprints.",
+        "Consider existing identity investments."
+    ],
+    "expectedOutput": "A short memo with a clear comparison and a justified recommendation.",
+    "solutionCode": "**Memo**\n\n**Subject: Landing Zone Options for Multi‑Cloud Governance**\n\n**AWS Control Tower** automates the setup of a well‑architected multi‑account AWS environment. It creates a landing zone with a management account, a log archive account, and an audit account. It enforces guardrails through Service Control Policies (SCPs) and AWS Config rules. It also provides an Account Factory for provisioning new accounts with standardized baselines.\n\n**Azure Landing Zones** provide a set of reference architectures, best practices, and deployment templates (Bicep/Terraform) to set up an enterprise‑grade Azure environment. They leverage Management Groups to organize subscriptions, Azure Policy and Initiatives to enforce governance, and Blueprints to deploy compliant environments. They deeply integrate with Azure AD.\n\n**Key Differentiator**: AWS Control Tower is a managed service with a console‑driven experience and built‑in guardrails. Azure’s approach is more ‘infrastructure as code’ focused, allowing extensive customization via Azure Policy. However, it might require more upfront design.\n\n**Recommendation**: Since we already use Microsoft 365 and Azure AD, Azure Landing Zones would provide a seamless identity integration and leverage our existing skill set. We can enforce policies using the same Azure AD tenant and gain a unified compliance view. I recommend starting with the Azure implementation, but we can later adopt Control Tower for our AWS environment."
+}

@@ -1,0 +1,200 @@
+{
+    "id": "l1",
+    "chapterId": "ch_7",
+    "title": "String Sorcery: Advanced Methods ✨",
+    "description": "Master join, split, replace, strip, case, and boolean checks – the toolkit for cleaning and analyzing text.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Strings & Files",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Beyond the Basics",
+            "content": "# You've Already Seen split(), strip(), find(), startswith()…\n\nNow we'll go deeper. These methods transform raw output into actionable intel. A messy banner like `\"  220 ProFTPD 1.3.5 (Debian)\\n\"` becomes clean data with a few calls."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "join() – The Opposite of split()",
+            "content": "# Glue Strings Together\n\n`separator.join(iterable)` returns a single string from an iterable of strings.\n\n```python\npath_parts = [\"usr\", \"local\", \"bin\"]\npath = \"/\".join(path_parts)   # \"usr/local/bin\"\n```\n* **Use case:** build URLs, file paths, or reconstruct payloads.\n* Very efficient – faster than `+` in a loop."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "code",
+            "title": "join() in Action",
+            "content": "Build a comma‑separated list of open ports:",
+            "codeSnippet": "open_ports = [22, 80, 443]\nport_str = \",\".join(str(p) for p in open_ports)\nprint(f\"Open ports: {port_str}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "join() 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What does `\"-\".join([\"A\",\"B\",\"C\"])` return?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A-B-C",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "[A-B-C]",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "ABC",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The hyphen is placed between each element.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "split() Refresher & partition()",
+            "content": "# split(sep, maxsplit) is known; partition() is different\n\n* **`split()`** returns a list of pieces.\n* **`partition(sep)`** splits on **first** occurrence and returns a tuple of three: (before, sep, after). Even if sep not found, it returns (whole_string, '', '').\n\n```python\nssh_banner = \"SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.6\"\nprint(ssh_banner.partition(\"-\"))\n# ('SSH', '-', '2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.6')\n```\nUseful for grabbing the first token."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "code",
+            "title": "partition() Demo",
+            "content": "Extract protocol and version from a banner:",
+            "codeSnippet": "banner = \"HTTP/1.1 200 OK\"\nprotocol, _, rest = banner.partition(\"/\")\nprint(protocol)  # HTTP",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "partition() 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "If `s = \"name:password\"`, what does `s.partition(\":\")` return?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "('name', 'password')",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "('name', ':', 'password')",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "['name', 'password']",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "partition returns a 3‑tuple: (head, separator, tail).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_8",
+            "type": "text",
+            "title": "replace() – Swap Substrings",
+            "content": "# `replace(old, new, count)`\n\n```python\npayload = \"<script>alert('XSS')</script>\"\nsafe = payload.replace(\"<\", \"&lt;\").replace(\">\", \"&gt;\")\n```\n* Essential for sanitizing output or crafting payload variants.\n* `count` limits number of replacements."
+        },
+        {
+            "id": "s_l1_9",
+            "type": "code",
+            "title": "replace() in Action",
+            "content": "Obfuscate an IP address:",
+            "codeSnippet": "ip = \"192.168.1.105\"\nobfuscated = ip.replace(\".\", \"[.]\")\nprint(obfuscated)  # 192[.]168[.]1[.]105",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_10",
+            "type": "quiz",
+            "title": "replace() 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_3",
+                "type": "true_false",
+                "question": "`replace()` modifies the original string in place.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "Strings are immutable; `replace()` returns a new string.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_11",
+            "type": "text",
+            "title": "Case Conversion & Checks",
+            "content": "# upper(), lower(), capitalize(), title(), swapcase()\n\n* `upper()`, `lower()` – standardize for comparison.\n* `capitalize()` – first char upper, rest lower.\n* `title()` – title case (capitalize each word).\n* `swapcase()` – flip casing.\n\n```python\ncmd = \"ShUtDoWn\"\nif cmd.lower() == \"shutdown\":\n    print(\"Executing…\")\n```"
+        },
+        {
+            "id": "s_l1_12",
+            "type": "text",
+            "title": "Boolean String Methods",
+            "content": "# isalpha(), isdigit(), isalnum(), isspace(), startswith(), endswith()\n\n* Validate input: `port_str.isdigit()` before int() conversion.\n* Check file extensions: `filename.endswith(\".exe\")`.\n* Detect empty strings: `s.isspace()` returns True if only whitespace.\n\nThese prevent crashes and are crucial for parsing logs."
+        },
+        {
+            "id": "s_l1_13",
+            "type": "code",
+            "title": "Input Validation Example",
+            "content": "Only convert if the string looks like a number:",
+            "codeSnippet": "user_input = \"8080\"\nif user_input.isdigit():\n    port = int(user_input)\n    print(f\"Port: {port}\")\nelse:\n    print(\"Invalid port\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_14",
+            "type": "quiz",
+            "title": "String Checks 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_4",
+                "type": "multiple_choice",
+                "question": "Which method returns True if a string contains only letters?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "isdigit()",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "isalpha()",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "isalnum()",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "isalpha() checks for alphabetic characters only.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_15",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Method Chaining\n\nCombine calls: `banner.strip().lower().replace(\" \", \"_\")` makes a clean variable name from input."
+        },
+        {
+            "id": "s_l1_16",
+            "type": "text",
+            "title": "Next: Regex – Patterns Unleashed",
+            "content": "# Now you're a string ninja. But for complex patterns like IP addresses, we need regular expressions. Let's dive into regex!"
+        }
+    ]
+}

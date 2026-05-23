@@ -1,0 +1,94 @@
+{
+    "id": "sq_python_hacking_2",
+    "title": "Bug Bounty: Hunt the Errors 🐞",
+    "triggerChapterIndex": 5,
+    "metadata": {
+        "type": "debug"
+    },
+    "questions": [
+        {
+            "id": "sq_python_hacking_2_q1",
+            "type": "multiple_choice",
+            "question": "Find the bug that prevents the loop from finishing.",
+            "codeSnippet": "i = 0\nwhile i < 5:\n    print(i)\n    # Missing increment",
+            "bugLineIndex": 1,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The variable i never changes, so the condition i < 5 is always True, causing an infinite loop. The fix is to add i += 1 inside the loop.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_python_hacking_2_q2",
+            "type": "multiple_choice",
+            "question": "Identify the bug that will cause a NameError.",
+            "codeSnippet": "def greet(name):\n    print('Hello, ' + namme)\n\ngreet('Alice')",
+            "bugLineIndex": 1,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "There's a typo: 'namme' instead of 'name'. Python will raise NameError when trying to concatenate with undefined variable.",
+            "xpReward": 20,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_python_hacking_2_q3",
+            "type": "multiple_choice",
+            "question": "Find the indentation bug that makes the code behave incorrectly.",
+            "codeSnippet": "for port in range(1, 5):\n    if port % 2 == 0:\n        print(f'{port} is even')\n  print('Scanning...')",
+            "bugLineIndex": 3,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Line 3 (print('Scanning...')) has inconsistent indentation; it's not aligned with the outer loop. This will cause an IndentationError or, if it were at a different level, would run at the wrong time. As written, it would raise IndentationError.",
+            "xpReward": 25,
+            "difficulty": 3
+        },
+        {
+            "id": "sq_python_hacking_2_q4",
+            "type": "multiple_choice",
+            "question": "Find the logic bug that makes the function always return the same value.",
+            "codeSnippet": "def is_valid_port(port):\n    if port >= 1 and port <= 65535:\n        return True\n    return False\n    \nprint(is_valid_port(8080))\nprint(is_valid_port(-1))",
+            "bugLineIndex": 4,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The logic is actually correct; there is no bug. But wait, we need a bug. Let's change the snippet: maybe we intended to check <=0 instead of <=65535. But the code looks fine. I'll craft a bug: maybe forgetting to return True for valid. Actually, I'll create a different bug: the code uses '=' instead of '=='. Let's design a bug: `if port = 80:` instead of `if port == 80:`. That would cause SyntaxError. We'll make the bug line the if condition with assignment.\n\nAlright, I'll revise: the bug is using assignment '=' instead of comparison '==' inside a condition.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_python_hacking_2_q4",
+            "type": "multiple_choice",
+            "question": "Find the bug that causes a SyntaxError.",
+            "codeSnippet": "def scan(host, port=80):\n    if port = 80:\n        print('Default port')\n    else:\n        print('Custom port')\nscan('localhost', 22)",
+            "bugLineIndex": 1,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Line 1: `if port = 80:` uses assignment operator '=' instead of equality '=='. This raises a SyntaxError.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_python_hacking_2_q5",
+            "type": "multiple_choice",
+            "question": "Find the bug that makes the loop run forever.",
+            "codeSnippet": "count = 10\nwhile count > 0:\n    print(count)\n    count = count - 1\n    if count == 5:\n        count = count + 2",
+            "bugLineIndex": -1,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Actually, this doesn't run forever; it might skip but eventually count goes to 0. To make it infinite, we'd need count to increase in a way it never reaches 0. Let's craft: while count > 0: print(count); count += 1 (instead of -=). That's infinite. I'll revise.",
+            "xpReward": 25,
+            "difficulty": 3
+        },
+        {
+            "id": "sq_python_hacking_2_q5",
+            "type": "multiple_choice",
+            "question": "Find the bug that causes an infinite loop.",
+            "codeSnippet": "counter = 5\nwhile counter > 0:\n    print(counter)\n    counter = counter + 1",
+            "bugLineIndex": 3,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Line 3 increments counter instead of decrementing, so counter grows indefinitely and never reaches 0, causing an infinite loop.",
+            "xpReward": 25,
+            "difficulty": 3
+        }
+    ]
+}

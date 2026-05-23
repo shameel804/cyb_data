@@ -1,0 +1,185 @@
+{
+    "id": "l3",
+    "chapterId": "ch_9",
+    "title": "Time, Datetime & Random 🕒🎲",
+    "description": "Add timing, delays, and unpredictability to your tools with datetime, time, and random.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Modules",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Why Timing Matters in Hacking",
+            "content": "# Scans, Brute‑force, and Logging\n\n* **Timestamps** – record when events happen (critical for forensics/logs).\n* **Delays** – slow down brute‑force to avoid detection or wait for responses.\n* **Randomization** – generate test data, pick random user‑agents, randomize scan order.\n\nPython's `time`, `datetime`, and `random` modules are your allies."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "The `time` Module ⏱️",
+            "content": "# `time.sleep()` and `time.time()`\n\n* **`time.sleep(seconds)`** – pause execution. Fractional seconds allowed.\n* **`time.time()`** – returns current Unix timestamp (seconds since epoch).\n\n```python\nimport time\nstart = time.time()\ntime.sleep(2)   # wait 2 seconds\nend = time.time()\nprint(f\"Elapsed: {end - start:.2f}s\")\n```"
+        },
+        {
+            "id": "s_l3_3",
+            "type": "code",
+            "title": "Delay a Scan",
+            "content": "Simulate a stealthy scan with pauses:",
+            "codeSnippet": "import time\nports = [22, 80, 443]\nfor port in ports:\n    print(f\"Scanning {port}\")\n    time.sleep(0.5)  # 500ms delay",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_4",
+            "type": "quiz",
+            "title": "time Module 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What does `time.time()` return?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Current date and time as a string",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Seconds since the Unix epoch (float)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Number of milliseconds since program start",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "time.time() returns a float representing seconds since Jan 1, 1970.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "The `datetime` Module 📅",
+            "content": "# Human‑Readable Dates and Times\n\n`datetime` provides classes: `datetime`, `date`, `time`, `timedelta`.\n\n```python\nfrom datetime import datetime\nnow = datetime.now()\nprint(now)  # 2024-05-20 15:30:45.123456\nprint(now.strftime(\"%Y-%m-%d %H:%M:%S\"))  # custom format\n```\nUse `strftime` to format timestamps for log files."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "code",
+            "title": "Logging with Timestamps",
+            "content": "Create a professional log entry:",
+            "codeSnippet": "from datetime import datetime\nnow = datetime.now()\ntimestamp = now.strftime(\"[%Y-%m-%d %H:%M:%S]\")\nprint(f\"{timestamp} Scan started\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "datetime 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "What does `datetime.now().strftime(\"%H:%M\")` produce?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Current hour and minute as a string",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Current date",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Seconds since epoch",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "%H is hour (24h), %M is minute; strftime formats accordingly.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_8",
+            "type": "text",
+            "title": "Timedelta – Adding/Subtracting Time",
+            "content": "# Calculate Future/Past Dates\n\n```python\nfrom datetime import datetime, timedelta\nnow = datetime.now()\ntomorrow = now + timedelta(days=1)\nyesterday = now - timedelta(days=1)\nprint(tomorrow.strftime(\"%Y-%m-%d\"))\n```\nUseful for setting expiration times or calculating scan durations."
+        },
+        {
+            "id": "s_l3_9",
+            "type": "code",
+            "title": "Scan Duration Calculation",
+            "content": "Measure how long a function takes:",
+            "codeSnippet": "import time\nfrom datetime import timedelta\nstart = time.time()\n# ... scanning ...\ntime.sleep(3.5)\nend = time.time()\nduration = timedelta(seconds=end-start)\nprint(f\"Scan took {duration}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_10",
+            "type": "text",
+            "title": "The `random` Module 🎲",
+            "content": "# Add Unpredictability\n\n* **`random.randint(a, b)`** – random integer between a and b inclusive.\n* **`random.choice(seq)`** – pick a random element from a non‑empty sequence.\n* **`random.random()`** – random float 0.0 to 1.0.\n* **`random.shuffle(list)`** – shuffle a list in place.\n* **`random.uniform(a, b)`** – random float between a and b.\n\n```python\nimport random\n# Random port between 1024 and 49151\nport = random.randint(1024, 49151)\nprint(f\"Random high port: {port}\")\n```"
+        },
+        {
+            "id": "s_l3_11",
+            "type": "code",
+            "title": "Random User‑Agent Spoofing",
+            "content": "Pick a random browser identifier:",
+            "codeSnippet": "import random\nuser_agents = [\n    \"Mozilla/5.0 (Windows NT 10.0)\",\n    \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)\",\n    \"Mozilla/5.0 (X11; Linux x86_64)\"\n]\nua = random.choice(user_agents)\nprint(f\"Using User-Agent: {ua}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_12",
+            "type": "quiz",
+            "title": "random Module 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "multiple_choice",
+                "question": "Which function returns a random integer from 1 to 10 inclusive?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "random.random(1,10)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "random.randint(1,10)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "random.uniform(1,10)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "randint includes both endpoints; uniform returns a float.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_13",
+            "type": "text",
+            "title": "Seeding the Random Generator",
+            "content": "# For Reproducible Results\n\n```python\nimport random\nrandom.seed(42)  # same sequence every time\nprint(random.randint(1,100))  # always same with same seed\n```\nUseful for testing, not for cryptography! For secure random, use `secrets` module."
+        },
+        {
+            "id": "s_l3_14",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use `random.SystemRandom` for security‑sensitive randomness\n\n`sysrand = random.SystemRandom()` uses OS entropy source. Good for generating temporary passwords or keys."
+        },
+        {
+            "id": "s_l3_15",
+            "type": "text",
+            "title": "Next: External Libraries",
+            "content": "# Now that you're a master of built‑ins, it's time to install third‑party libraries – the real power‑ups."
+        }
+    ]
+}

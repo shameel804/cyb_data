@@ -1,0 +1,104 @@
+{
+    "id": "l3",
+    "chapterId": "ch_6",
+    "title": "Security Groups: The Instance Firewall 🔥",
+    "description": "Stateful rules for EC2, RDS, Lambda – only allow what you need.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "What Are Security Groups? 🔒",
+            "content": "# The Virtual Firewall Around Every Resource\n\nA **Security Group (SG)** acts as a stateful firewall for cloud instances (EC2, RDS, ELB, etc.). It controls inbound and outbound traffic at the instance level.\n\n- **Stateful**: If you allow an inbound request, the response traffic is automatically allowed, regardless of outbound rules.\n- **Allow rules only**: You can only specify *allow* rules. There is no explicit deny.\n- **Default behavior**: By default, all inbound traffic is denied; all outbound traffic is allowed.\n\n*Think of a Security Group as a list of VIP guests. Anyone on the list gets in; everyone else is turned away. If a guest leaves, the bouncer remembers and lets them back in automatically (stateful).*"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "SG Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "true_false",
+                "question": "A Security Group can have both allow and deny rules for inbound traffic.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Security Groups only support allow rules. Explicit denies are done via Network ACLs.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Inbound & Outbound Rules 🔁",
+            "content": "## How to Write SG Rules\n\nA rule specifies:\n- **Type/Protocol**: TCP, UDP, ICMP, or custom.\n- **Port range**: e.g., 80 (HTTP), 443 (HTTPS), 22 (SSH).\n- **Source (inbound)** / **Destination (outbound)**: Can be a CIDR block (`203.0.113.0/24`), another Security Group ID, or a prefix list.\n\n**Example – Web server SG:**\n- Inbound: TCP 80 from `0.0.0.0/0` (world)\n- Inbound: TCP 443 from `0.0.0.0/0`\n- Inbound: TCP 22 from `admin-office-ip/32` (only admin)\n- Outbound: All traffic (default)\n\n*Using another SG ID as source is powerful: you can allow web servers to talk to database servers simply by referencing the database SG.*"
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "Terraform: Web Server SG",
+            "content": "Creating a security group with Terraform:",
+            "codeSnippet": "resource \"aws_security_group\" \"web_sg\" {\n  name        = \"web-sg\"\n  description = \"Allow HTTP/HTTPS and admin SSH\"\n  vpc_id      = aws_vpc.main.id\n\n  ingress {\n    from_port   = 80\n    to_port     = 80\n    protocol    = \"tcp\"\n    cidr_blocks = [\"0.0.0.0/0\"]\n  }\n\n  ingress {\n    from_port   = 443\n    to_port     = 443\n    protocol    = \"tcp\"\n    cidr_blocks = [\"0.0.0.0/0\"]\n  }\n\n  ingress {\n    from_port   = 22\n    to_port     = 22\n    protocol    = \"tcp\"\n    cidr_blocks = [\"203.0.113.5/32\"] # admin IP\n  }\n\n  egress {\n    from_port   = 0\n    to_port     = 0\n    protocol    = \"-1\"\n    cidr_blocks = [\"0.0.0.0/0\"]\n  }\n}",
+            "codeLanguage": "hcl",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "quiz",
+            "title": "Best Practice Check 📝",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "What is the most secure way to allow an application server to communicate with a database server in the same VPC?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Allow all traffic from the entire VPC CIDR",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Reference the database server's private IP in the SG",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Reference the database server's security group ID in the application SG's outbound rule",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Open the database port to 0.0.0.0/0",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Using SG references ensures only resources associated with that specific SG can connect, and it dynamically adapts to IP changes.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Stateful Magic ✨",
+            "content": "## Why It Matters\n\nBecause SGs are stateful, you don't need to explicitly open ephemeral ports for return traffic. When an instance initiates an outbound connection, the SG automatically allows the response back in.\n\n*This dramatically simplifies rules, but also means you must be careful with overly permissive inbound rules – once a connection is established, the state might allow unexpected return paths.*"
+        },
+        {
+            "id": "s_l3_7",
+            "type": "warning",
+            "title": "Common Mistake! 🚨",
+            "content": "## Never Open SSH (22) or RDP (3389) to 0.0.0.0/0\nEven for a few minutes, bots will brute‑force your instance. Always restrict administrative ports to specific IP addresses or use Session Manager (AWS) / Bastion Hosts."
+        }
+    ]
+}

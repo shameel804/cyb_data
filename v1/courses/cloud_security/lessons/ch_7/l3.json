@@ -1,0 +1,104 @@
+{
+    "id": "l3",
+    "chapterId": "ch_7",
+    "title": "Container Security: Locking Down the Box 📦",
+    "description": "Secure images, runtime protection, and Kubernetes security basics.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Docker Security: Start Clean, Stay Clean 🐳",
+            "content": "# The Container Attack Surface\n\nContainers share the host kernel, so a breakout can compromise all containers on that node. Security must start at the image.\n\n- **Use minimal base images**: Alpine, distroless, or scratch. Fewer packages = fewer vulnerabilities.\n- **Scan images for CVEs**: Tools like Trivy, Clair, Docker Scout, or ECR built‑in scanning.\n- **Multi‑stage builds**: Compile in a fat stage, copy only the runtime binary to a slim final image.\n\n*Never use `latest` tag in production – pin to a specific digest for immutability.*"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Container Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What is a primary security advantage of using a distroless base image?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It includes a shell for easier debugging",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It eliminates unnecessary packages and reduces attack surface",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It automatically applies security patches",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It encrypts the container filesystem",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Distroless images contain only the application and its runtime dependencies, not package managers or shells.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "code",
+            "title": "Secure Dockerfile Example",
+            "content": "A multi‑stage build that runs as a non‑root user:",
+            "codeSnippet": "FROM golang:1.21 AS builder\nWORKDIR /app\nCOPY . .\nRUN CGO_ENABLED=0 go build -o myapp\n\nFROM gcr.io/distroless/static-debian12\nCOPY --from=builder /app/myapp /myapp\nUSER nonroot:nonroot\nENTRYPOINT [\"/myapp\"]",
+            "codeLanguage": "docker",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Runtime Security & Least Privilege ⏱️",
+            "content": "- **Run as non‑root**: `USER 1000` in Dockerfile; in Kubernetes, set `securityContext: runAsNonRoot: true`.\n- **Read‑only root filesystem**: `--read-only` flag (Docker) or `readOnlyRootFilesystem: true` (K8s).\n- **Drop Linux capabilities**: `--cap-drop=ALL --cap-add=NET_BIND_SERVICE`.\n- **Limit resources**: Set memory/CPU limits to prevent DoS.\n- **Secrets**: Inject via Kubernetes Secrets, mounted as files, never in environment variables or images.\n\n*Remember: containers are processes. Give them the bare minimum.*"
+        },
+        {
+            "id": "s_l3_5",
+            "type": "quiz",
+            "title": "Runtime Rules 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "A container running as root can potentially escape to the host if a kernel vulnerability exists.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Running as root inside the container increases the risk of container breakout; non‑root adds a vital layer of defense.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Kubernetes Security Essentials ☸️",
+            "content": "## Protect the Orchestrator\n\n- **RBAC**: Define roles and role bindings; avoid using the default service account.\n- **Network Policies**: Restrict pod‑to‑pod communication (like a firewall).\n- **Pod Security Standards**: Enforce `restricted` profile (prevents privilege escalation).\n- **Image pull secrets**: Use private registries with authentication.\n- **Admission Controllers**: Validate configurations before deployment (e.g., OPA Gatekeeper).\n\n*Never expose the Kubernetes dashboard publicly. Use kubectl with IAM authentication.*"
+        },
+        {
+            "id": "s_l3_7",
+            "type": "tip",
+            "title": "Scan Everything in CI/CD 💡",
+            "content": "Integrate container image scanning into your pipeline. Fail the build if critical CVEs are found. Tools: Trivy, Snyk, AWS ECR scan, Azure Defender for Containers."
+        }
+    ]
+}

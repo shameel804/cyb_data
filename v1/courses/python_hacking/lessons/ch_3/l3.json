@@ -1,0 +1,251 @@
+{
+    "id": "l3",
+    "chapterId": "ch_3",
+    "title": "Strings: Manipulating Text 🧵",
+    "description": "Slice, dice, and combine text – essential for crafting exploits and parsing output.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Data Types",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Strings are Everywhere",
+            "content": "# In Hacking, Everything is Text\n\nBanners, HTTP responses, file paths, usernames, passwords – all strings. Python gives you incredible powers to slice, search, and transform text.\n\n```python\nbanner = \"SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.6\"\n```\nWe can extract the version, check for vulnerabilities, and more."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "String Basics",
+            "content": "# Quotes and Multi‑line\n\n* Single or double quotes: `'hello'` `\"hello\"`\n* Triple quotes for multiple lines:\n```python\npayload = \"\"\"GET / HTTP/1.1\nHost: example.com\n\"\"\"\n```\n* Empty string: `\"\"` or `''`"
+        },
+        {
+            "id": "s_l3_3",
+            "type": "code",
+            "title": "Length of a String",
+            "content": "Use `len()` to count characters:",
+            "codeSnippet": "banner = \"SSH-2.0-OpenSSH_8.9\"\nprint(len(banner))  # 19",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_4",
+            "type": "quiz",
+            "title": "Length 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What is `len(\"hack\")`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "4",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "5",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "3",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The string has four characters: h, a, c, k.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Indexing – Zero‑Based Positions 🔢",
+            "content": "# Characters Have Addresses\n\nEach character has an index starting from 0:\n```\nString:  P  y  t  h  o  n\nIndex:   0  1  2  3  4  5\n```\nYou can access with `string[index]`:\n```python\nlang = \"Python\"\nprint(lang[0])  # P\nprint(lang[5])  # n\n```"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "code",
+            "title": "Indexing Demo",
+            "content": "Extract the protocol from a URL:",
+            "codeSnippet": "url = \"https://example.com/login\"\nprotocol = url[0:5]\nprint(protocol)  # https",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Indexing 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "Given `s = \"cybron\"`, what does `s[2]` return?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "c",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "b",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "r",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Index 0=c, 1=y, 2=b.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_8",
+            "type": "text",
+            "title": "Negative Indexing 🔙",
+            "content": "# Count from the End\n\nUse negative numbers to start from the right:\n```python\ns = \"Python\"\ns[-1]  # n\ns[-2]  # o\n```\nGreat for grabbing file extensions: `filename[-3:]` for `.py`"
+        },
+        {
+            "id": "s_l3_9",
+            "type": "text",
+            "title": "Slicing – Getting Substrings ✂️",
+            "content": "# The Power of [start:stop:step]\n\n* `s[start:stop]` – from `start` up to but NOT including `stop`\n* `s[:stop]` – from beginning to stop\n* `s[start:]` – from start to end\n* `s[:]` – whole copy\n* `s[::-1]` – reverse!\n\n```python\nip = \"192.168.1.100\"\nfirst_octet = ip[0:3]   # \"192\"\nlast_part = ip[-3:]     # \"100\"\n```"
+        },
+        {
+            "id": "s_l3_10",
+            "type": "code",
+            "title": "Slicing Practice",
+            "content": "Extract the domain from an email:",
+            "codeSnippet": "email = \"admin@example.com\"\nat_index = email.find('@')\ndomain = email[at_index+1:]\nprint(domain)  # example.com",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_11",
+            "type": "quiz",
+            "title": "Slice Challenge 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "multiple_choice",
+                "question": "What does `\"password\"[1:4]` return?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "pas",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "ass",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "ssw",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Indices 1,2,3 give 'a','s','s'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_12",
+            "type": "text",
+            "title": "String Concatenation & Repetition",
+            "content": "# Combine and Repeat Strings\n\n* Concatenate with `+` : `\"Hello\" + \" \" + \"World\"`\n* Repeat with `*` : `\"-=\" * 20` → `\"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\"`\n\n```python\ntarget = \"192.168.1.\" + \"1\"\nseparator = \"=\" * 40\n```"
+        },
+        {
+            "id": "s_l3_13",
+            "type": "code",
+            "title": "Building a Banner",
+            "content": "Create a scanner banner:",
+            "codeSnippet": "tool = \"CybronScanner\"\nline = \"=\" * len(tool)\nprint(line)\nprint(tool)\nprint(line)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_14",
+            "type": "quiz",
+            "title": "Repetition 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_4",
+                "type": "true_false",
+                "question": "`\"ab\" * 3` produces `\"ababab\"`.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "String multiplication repeats the string.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_15",
+            "type": "text",
+            "title": "String Methods – Built‑in Power",
+            "content": "# Python Strings Come with Tools\n\n* `upper()`, `lower()` – change case\n* `strip()` – remove whitespace\n* `replace(old, new)` – swap text\n* `split(sep)` – divide into list\n* `startswith(prefix)`, `endswith(suffix)`\n* `find(sub)` – locate substring\n\n```python\npayload = \"  admin:admin  \"\nclean = payload.strip()   # \"admin:admin\"\n```"
+        },
+        {
+            "id": "s_l3_16",
+            "type": "code",
+            "title": "Method Mania",
+            "content": "Parse a service banner:",
+            "codeSnippet": "banner = \"SSH-2.0-OpenSSH_8.9p1\"\nif banner.startswith(\"SSH\"):\n    version = banner.split(\"_\")[-1]\n    print(f\"SSH version: {version}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_17",
+            "type": "quiz",
+            "title": "Methods 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_5",
+                "type": "multiple_choice",
+                "question": "What does `\"  data  \".strip()` return?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "\"  data  \"",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "\"data\"",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "\"  data\"",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "strip() removes leading and trailing whitespace.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_18",
+            "type": "text",
+            "title": "Strings are Immutable",
+            "content": "# You Can't Change a String In‑Place\n\n```python\ns = \"hack\"\ns[0] = \"H\"  # TypeError!\n```\nInstead, create a new string:\n```python\ns = \"H\" + s[1:]  # \"Hack\"\n```\nKeep this in mind when modifying payloads."
+        },
+        {
+            "id": "s_l3_19",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use `in` for Substring Checking\n\n```python\nif \"vulnerable\" in banner:\n    print(\"Possible exploit!\")\n```\n`in` returns a boolean – super handy."
+        },
+        {
+            "id": "s_l3_20",
+            "type": "text",
+            "title": "Next: True or False?",
+            "content": "# Time for Booleans\n\nNow that you can manipulate text, you'll need to make decisions. Booleans and comparisons are up next."
+        }
+    ]
+}

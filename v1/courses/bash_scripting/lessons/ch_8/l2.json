@@ -1,0 +1,112 @@
+{
+    "id": "l2",
+    "chapterId": "ch_8",
+    "title": "Indexed Arrays: Ordered Lists 📋",
+    "description": "Create and use numeric‑index arrays to store collections of values.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Arrays",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "What is an Array? 🗄️",
+            "content": "## A List with Numbered Slots\n\nAn **indexed array** is a variable that holds multiple values, each accessible by a numeric index (starting at 0).\n\nThink of it as a row of lockers. Locker 0 holds the first item, locker 1 the second, and so on.\n\nIn Bash, arrays can be created on the fly without declaration, but it's clearer to use `declare -a`."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Declare and Assign",
+            "content": "Create an array of fruits:",
+            "codeSnippet": "fruits=(apple banana cherry)\necho ${fruits[0]}  # apple",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which syntax creates an indexed array called `colors`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "colors = [red, green, blue]",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "colors=(red green blue)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "declare -a colors = (red green blue)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "set colors red green blue",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`array_name=(item1 item2 ...)` is the correct syntax.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Accessing Array Elements 📍",
+            "content": "## By Index\n\n- Single element: `${array[index]}`\n- All elements: `${array[@]}` or `${array[*]}`\n- Number of elements: `${#array[@]}`\n- Length of a specific element: `${#array[index]}`\n\nIndices are zero‑based. You can also assign to a specific index: `array[3]=dog`."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Array Access Examples",
+            "content": "Show all elements and count:",
+            "codeSnippet": "names=(Alice Bob Charlie)\necho \"All: ${names[@]}\"\necho \"Count: ${#names[@]}\"\necho \"Index 1: ${names[1]}\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "fill_blank",
+                "question": "What does `${#arr[@]}` give you?",
+                "options": [],
+                "correctAnswer": "the number of elements in the array",
+                "explanation": "The `#` before the array expansion gives the length when used with `@` or `*`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Looping Over an Array 🔁",
+            "content": "## Using for and Indices\n\nTwo common patterns:\n```bash\nfor item in \"${arr[@]}\"; do ... done\nfor i in \"${!arr[@]}\"; do echo \"$i: ${arr[i]}\"; done\n```\nThe second pattern (`\"${!arr[@]}\"`) gives the list of indices – useful for sparse arrays."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "Loop Over Array",
+            "content": "Print all fruits with index:",
+            "codeSnippet": "fruits=(apple banana cherry)\nfor i in \"${!fruits[@]}\"; do\n  echo \"$i -> ${fruits[i]}\"\ndone",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Always quote `${arr[@]}` to prevent word splitting: `\"${arr[@]}\"` keeps items intact."
+        }
+    ]
+}

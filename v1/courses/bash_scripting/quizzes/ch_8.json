@@ -1,0 +1,253 @@
+{
+    "id": "quiz_ch_8",
+    "chapterId": "ch_8",
+    "title": "Chapter 8 Quiz",
+    "description": "Test your knowledge of command substitution, indexed arrays, associative arrays, and their real‑world uses!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which syntax is the modern, nestable command substitution?",
+            "options": [
+                "`command`",
+                "$(command)",
+                "${command}",
+                "<(command)"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`$(command)` is the preferred, nestable form."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What happens to trailing newlines when you capture with `result=$(command)`?",
+            "options": [
+                "They are preserved exactly",
+                "They are converted to spaces",
+                "They are stripped",
+                "The command fails"
+            ],
+            "correctAnswer": 2,
+            "explanation": "All trailing newline characters are removed from the output."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "How do you declare an indexed array named `files`?",
+            "options": [
+                "declare -A files",
+                "files=[]",
+                "declare -a files",
+                "Both C and simply `files=()`"
+            ],
+            "correctAnswer": 3,
+            "explanation": "`declare -a files` is explicit, but `files=()` also works. Both are correct."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What does `${#arr[@]}` return?",
+            "options": [
+                "The length of the first element",
+                "The number of elements in the array",
+                "All indices",
+                "The string '#arr[@]'"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`#` before the array expansion gives the element count."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which expression lists all indices of an indexed array?",
+            "options": [
+                "${!arr[@]}",
+                "${arr[@]}",
+                "${arr[*]}",
+                "${#arr[@]}"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`!` in front of the array name expands to the list of indices (or keys for associative)."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "How do you append a new item to an indexed array?",
+            "options": [
+                "arr.append(item)",
+                "arr[${#arr[@]}]=item",
+                "arr+=(item)",
+                "Both B and C"
+            ],
+            "correctAnswer": 3,
+            "explanation": "`arr+=(item)` is the simplest way, and manually assigning to the next index also works."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "After `unset arr[2]`, the element at index 2 is deleted and all later indices shift down.",
+            "correctAnswer": false,
+            "explanation": "Unset leaves a gap; indices do not shift. The array becomes sparse."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What does `declare -A capitals` create?",
+            "options": [
+                "An indexed array of capitals",
+                "An associative array (key‑value pairs)",
+                "A read‑only array",
+                "An array that only accepts strings"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`-A` creates an associative array."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "How do you access the value for key 'France' in an associative array `capitals`?",
+            "options": [
+                "${capitals.France}",
+                "${capitals[France]}",
+                "${capitals['France']}",
+                "${capitals[0]}"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`${array[key]}` uses the key string; quotes are optional if no spaces."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which command reads lines from a command output into an array cleanly?",
+            "options": [
+                "readarray -t arr < command",
+                "mapfile -t arr < <(command)",
+                "arr=$(command)",
+                "arr=( $(command) )"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`mapfile` (or `readarray`) with process substitution is the safest way to get each line as an array element."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What does `select var in \"${opts[@]}\"` do?",
+            "options": [
+                "It creates a loop that presents a numbered menu and reads user choice",
+                "It filters array elements matching a pattern",
+                "It sorts the array",
+                "It assigns the first element to var"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`select` is a built‑in that generates a menu from a list and prompts the user to choose."
+        },
+        {
+            "id": "q12",
+            "type": "fill_blank",
+            "question": "To safely iterate over all elements of an array `items`, preserving spaces, use `for i in \"$___\"`",
+            "options": [],
+            "correctAnswer": "{items[@]}",
+            "explanation": "`\"${items[@]}\"` expands each element as a separate quoted word."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which expansion extracts two elements starting from index 3 of an array `data`?",
+            "options": [
+                "${data[3:2]}",
+                "${data[@]:3:2}",
+                "${data:3:2}",
+                "${data[@]:2:3}"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`${array[@]:offset:length}` is the correct slice syntax."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "How can you load key=value pairs from a file into an associative array?",
+            "options": [
+                "Use while read and assign to array",
+                "Use `mapfile -A`",
+                "Array=( $(cat file) )",
+                "Associative arrays cannot be loaded from files"
+            ],
+            "correctAnswer": 0,
+            "explanation": "A `while IFS='=' read -r key value` loop can populate an associative array."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What happens if you use `unset` on an entire array variable?",
+            "options": [
+                "All elements become empty strings",
+                "The array becomes empty",
+                "The variable is removed completely",
+                "It prints all elements"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`unset arr` destroys the variable entirely."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Why is `files=$(ls)` dangerous for iterating over filenames?",
+            "options": [
+                "It doesn't list hidden files",
+                "Word splitting and globbing on the unquoted expansion can break filenames with spaces",
+                "It only returns one filename",
+                "There is no danger"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Unquoted expansion splits on spaces and expands globs, corrupting filenames."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which of the following correctly checks if an indexed array `arr` has an element at index 2?",
+            "options": [
+                "[ -f \"${arr[2]}\" ]",
+                "[[ -v arr[2] ]]",
+                "test \"${arr[2]}\"",
+                "[[ -e arr[2] ]]"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`[[ -v arr[2] ]]` returns true if that variable (array index) has been set."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "What is the output of `echo \"${#arr[0]}\"` when `arr=(hello world)`?",
+            "options": [
+                "5",
+                "2",
+                "hello",
+                "0"
+            ],
+            "correctAnswer": 0,
+            "explanation": "`${#arr[0]}` gives the length of the first element, which is 5."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "Associative arrays are available in Bash 3.2 (macOS default).",
+            "correctAnswer": false,
+            "explanation": "Associative arrays require Bash 4.0+. macOS ships with 3.2, so you need a newer Bash."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "How can you copy an indexed array `src` to `dest`?",
+            "options": [
+                "dest=$src",
+                "dest=(\"${src[@]}\")",
+                "dest=${src[*]}",
+                "cp $src $dest"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`(\"${src[@]}\")` creates a new array with the same elements, properly quoted."
+        }
+    ]
+}

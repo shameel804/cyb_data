@@ -1,0 +1,27 @@
+{
+    "id": "project1",
+    "title": "SecureCloudApp: Deploy a Hardened Web Application on AWS",
+    "description": "Build a three‑tier web application from scratch, applying IAM, VPC, encryption, WAF, and monitoring controls to create a production‑ready secure environment.",
+    "difficulty": "Intermediate",
+    "estimatedHours": "6-10",
+    "problemStatement": "## Objective\nYou are a cloud security engineer tasked with deploying a secure, three‑tier web application on AWS. The application consists of a React frontend, a Node.js API backend, and a PostgreSQL database. You must configure the environment from scratch, applying all the security principles learned in the course.\n\n## What You Will Build\n- A VPC with public, private app, and private database subnets across two Availability Zones.\n- An Application Load Balancer (ALB) with an HTTPS listener, associated with AWS WAF to protect against OWASP Top 10 attacks.\n- EC2 instances (or Auto Scaling group) for the backend, launched from a hardened AMI, with IAM roles and no SSH access (use Session Manager).\n- An RDS PostgreSQL database encrypted with KMS, using IAM database authentication, no static credentials.\n- An S3 bucket for frontend hosting (with CloudFront), configured with Block Public Access, encryption, and an OAI.\n- CloudTrail enabled for API logging, GuardDuty for threat detection, and CloudWatch alarms for unauthorized actions.\n- All secrets stored in AWS Secrets Manager with automatic rotation.\n\nYou may use the AWS Management Console, AWS CLI, or Infrastructure as Code (Terraform / CloudFormation). The final deliverable is a **walkthrough document** that describes the architecture, shows key configurations (screenshots or code snippets), and explains how each component contributes to security.",
+    "requirements": [
+        "The VPC must follow security best practices: distinct security groups for each tier, Network ACLs with restrictive rules (blocking SSH from the internet, allowing only necessary ports).",
+        "The backend EC2 instances must not have public IPs; they should only be reachable via the ALB.",
+        "SSH access must be replaced by AWS Systems Manager Session Manager (no open SSH port).",
+        "The database must use encryption at rest (AWS KMS CMK) and require TLS connections; IAM database authentication must be used for the backend application role.",
+        "AWS WAF must be attached to the ALB with at least one custom rule (e.g., SQL injection match) and rate‑based rule.",
+        "CloudFront must be configured for the frontend, serving content over HTTPS only; the S3 bucket must be private.",
+        "CloudTrail must be enabled with a multi‑region trail and log file validation; GuardDuty must be enabled in the region.",
+        "At least one CloudWatch alarm must be created to detect >5 AccessDenied API calls in 5 minutes and send an email via SNS.",
+        "All IAM policies must follow least privilege (no wildcards on resources unless justified)."
+    ],
+    "hints": [
+        "Start by designing the network on paper: VPC CIDR, subnets, route tables, Internet Gateway, and NAT Gateway.",
+        "Use AWS managed policies as a base but restrict them further: for example, `AmazonSSMManagedInstanceCore` for Session Manager, plus a custom policy for application needs.",
+        "For the database, create an IAM role for the backend with `rds-db:connect` permission and attach it to the EC2 instance profile.",
+        "Enable S3 default encryption and set a bucket policy that enforces `aws:SecureTransport`.",
+        "When configuring WAF, first set the rate‑based rule to Count mode to observe traffic before switching to Block."
+    ],
+    "expectedOutput": "A fully functional, secure web application environment that meets all requirements. The walkthrough document should demonstrate:\n- Architecture diagram (can be a simple drawing).\n- Evidence that HTTPS is enforced end‑to‑end.\n- Screenshots of the AWS WAF rules and test that a simulated SQL injection request is blocked (you can use a simple curl command).\n- CloudTrail logs showing API calls.\n- CloudWatch alarm configuration and a test email notification.\n- No hardcoded credentials anywhere."
+}

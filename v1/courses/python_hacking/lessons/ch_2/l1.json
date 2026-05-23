@@ -1,0 +1,182 @@
+{
+    "id": "l1",
+    "chapterId": "ch_2",
+    "title": "Virtual Environments: Your Safe Sandbox 🏖️",
+    "description": "Create isolated Python worlds so your experiments never break your system.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Lab Setup",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The One Rule of Hacking Labs 🧪",
+            "content": "# Never Mess Up Your Main System\n\nImagine you install a shady library to crack a WiFi password. It breaks your system Python, and now every Python app on your computer crashes. **Nightmare!**\n\nThat's why we use **virtual environments** – clean, separate Python installations that keep your experiments contained.\n\nThink of them as disposable labs: if something explodes, just delete the lab and make a new one."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Why use a virtual environment for hacking projects?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It makes your code run faster",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It isolates dependencies and prevents system‑wide breakage",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It's required by law for ethical hacking",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Virtual environments create a sandbox so libraries you install don't conflict with other projects or your OS.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "What Exactly is a Virtual Environment?",
+            "content": "# A Folder with Its Own Python\n\nA virtual environment (venv) is just a directory that contains:\n* A copy of the Python interpreter\n* Its own `pip` (package installer)\n* Its own `site-packages` folder for libraries\n\nWhen you **activate** it, your terminal points to that copy. Any packages you install go there, not to the global system. **Deactivate** to return to normal."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "code",
+            "title": "Creating Your First Venv",
+            "content": "Navigate to your projects folder and run:",
+            "codeSnippet": "# Windows (Command Prompt or PowerShell)\npython -m venv hacklab\n\n# macOS / Linux\npython3 -m venv hacklab",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Inside the `hacklab` Folder",
+            "content": "# What Was Just Created?\n\nYou'll see a folder called `hacklab` with:\n* `hacklab/bin/` (or `Scripts/` on Windows) – contains the python executable and activation scripts\n* `hacklab/lib/` – where installed packages live\n* `hacklab/pyvenv.cfg` – a config file\n\n**Never edit these files manually.** Just use activation commands."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Venv Structure 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "After creating a virtual environment, you can directly use `python` from it without activation.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "You must run the activation script first. Without it, your terminal still uses the global Python.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "Activation – The Magic Spell ✨",
+            "content": "# Open a Terminal and Run:\n\n**Windows (Command Prompt):**\n```\nhacklab\\Scripts\\activate\n```\n**Windows (PowerShell):**\n```\nhacklab\\Scripts\\Activate.ps1\n```\n**macOS / Linux:**\n```\nsource hacklab/bin/activate\n```\n\nYou'll see `(hacklab)` appear at the prompt. That means it's active! Now any `pip install` command will target this environment."
+        },
+        {
+            "id": "s_l1_8",
+            "type": "code",
+            "title": "Check Which Python You're Using",
+            "content": "After activation, verify you're in the right place:",
+            "codeSnippet": "# Windows\nwhere python\n\n# macOS/Linux\nwhich python",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_9",
+            "type": "warning",
+            "title": "PowerShell Execution Policy 🚫",
+            "content": "## On Windows PowerShell\n\nIf you get an error about scripts being disabled, run:\n```\nSet-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned\n```\nThen retry activation. This allows local scripts to run safely."
+        },
+        {
+            "id": "s_l1_10",
+            "type": "quiz",
+            "title": "Activation Quiz 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_3",
+                "type": "multiple_choice",
+                "question": "How do you know a virtual environment is active?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Python stops working",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The terminal prompt shows the environment name in parentheses",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A pop‑up window appears",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The prompt changes to show `(env_name)` confirming activation.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_11",
+            "type": "text",
+            "title": "Installing Packages Inside the Venv",
+            "content": "# Now Use pip Safely\n\nWith `(hacklab)` active, run:\n```\npip install requests\n```\nThis installs the `requests` library **only** inside `hacklab`. Your system Python remains untouched."
+        },
+        {
+            "id": "s_l1_12",
+            "type": "code",
+            "title": "List Installed Packages",
+            "content": "See exactly what's in your environment:",
+            "codeSnippet": "pip list",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_13",
+            "type": "text",
+            "title": "Deactivating & Cleanup",
+            "content": "# Leave the Sandbox\n\nJust type:\n```\ndeactivate\n```\nThe prompt returns to normal. To completely remove the lab, simply **delete the `hacklab` folder** – that's it! No uninstaller needed.\n\nThis is why venvs are perfect for hacking: try dangerous libraries, break things, wipe it, and start fresh."
+        },
+        {
+            "id": "s_l1_14",
+            "type": "quiz",
+            "title": "Deactivate & Delete 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_4",
+                "type": "true_false",
+                "question": "Deleting the virtual environment folder removes all packages installed inside it.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "Everything is inside that folder. Delete it, and the venv is gone completely.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_15",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use Descriptive Names\n\nName your venvs after the project, e.g., `port_scanner_env` or `web_recon_venv`. This makes it clear which environment belongs to which tool."
+        },
+        {
+            "id": "s_l1_16",
+            "type": "text",
+            "title": "Your First Lab is Ready! 🎉",
+            "content": "# Time to Experiment\n\nYou now have a safe, isolated Python playground. In the next lesson, we'll master `pip` to load it with hacking libraries."
+        }
+    ]
+}

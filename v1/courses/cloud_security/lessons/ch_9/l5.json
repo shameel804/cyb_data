@@ -1,0 +1,110 @@
+{
+    "id": "l5",
+    "chapterId": "ch_9",
+    "title": "Incident Response in the Cloud 🚨",
+    "description": "Build a cloud‑native incident response plan, automate containment, and conduct forensics.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Assume Breach: Be Ready 🧯",
+            "content": "# Incident Response Is Not Optional\n\nEvery organization will face a security incident. The difference between a minor event and a headline‑making breach is **preparation**.\n\nA cloud incident response (IR) plan must be:\n- **Cloud‑specific**: You can’t just unplug a server; you need to isolate resources via APIs.\n- **Automated**: Scripts that quarantine an EC2 instance in seconds.\n- **Rehearsed**: Run game days (simulated attacks) every quarter.\n\n*An IR plan that lives in a drawer is useless. It must be live, tested, and continuously improved.*"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "IR Mindset 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is the first priority when responding to a compromised EC2 instance?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Delete all data",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Immediately terminate the instance",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Isolate the instance (e.g., detach from network) to preserve evidence while stopping lateral movement",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Notify all customers immediately",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Containment is crucial – isolate the instance while preserving forensic evidence for later analysis.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "The Six Phases of Cloud IR 🔄",
+            "content": "1. **Preparation**: Create IR roles, playbooks, automation scripts, and a clean “forensic” VPC.\n2. **Detection**: GuardDuty, CloudWatch alarms, or a third‑party SIEM alerts you.\n3. **Containment**: Isolate the resource (security group change, detach from Auto Scaling, snapshot EBS).\n4. **Eradication**: Remove the attack vector (patch vulnerability, rotate credentials, delete backdoor user).\n5. **Recovery**: Restore from known‑good backup, redeploy from golden image.\n6. **Lessons Learned**: Post‑mortem, update playbooks, improve automation.\n\n*In the cloud, you can snapshot and analyze a compromised instance without powering it down – the perfect forensic copy.*"
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "Automated Containment Script (AWS CLI)",
+            "content": "Isolate an EC2 instance by moving it to an isolated security group:",
+            "codeSnippet": "INSTANCE_ID=\"i-0123456789abcdef0\"\n# Create a forensic snapshot (preserve evidence)\naws ec2 create-snapshot --volume-id $(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].BlockDeviceMappings[0].Ebs.VolumeId' --output text)\n# Change security group to 'quarantine' (no inbound/outbound except forensics)\naws ec2 modify-instance-attribute --instance-id $INSTANCE_ID --groups sg-0a1b2c3d4e5f6\n# Disable termination protection (if needed)\naws ec2 modify-instance-attribute --instance-id $INSTANCE_ID --no-disable-api-termination",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Forensic Readiness 🔬",
+            "content": "## Preserve Evidence the Cloud Way\n\n- **Enable EBS snapshots**: Take a snapshot of the compromised instance’s volumes before shutting it down. This captures memory? No, memory is lost, but disk is preserved. For memory forensics, you need specialized tools.\n- **Preserve logs**: Ensure CloudTrail logs are in an immutable S3 bucket (with Object Lock).\n- **Use a separate forensic AWS account**: Share the snapshot with a dedicated investigation account to prevent the attacker from tampering.\n- **IAM roles for investigators**: Pre‑create read‑only roles for forensics teams.\n\n*Assume the attacker will try to delete logs – use MFA Delete and Glacier Vault Lock to protect them.*"
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Forensic Snapshot 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "Taking an EBS snapshot of a compromised EC2 instance captures the contents of RAM for memory forensics.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "EBS snapshots capture disk volumes only. RAM forensics requires tools like Memoryze or AWS EC2 memory acquisition capabilities (which are limited).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "IR Automation with SOAR 🤖",
+            "content": "## Security Orchestration, Automation and Response\n\nTools like **AWS Step Functions**, **Azure Logic Apps**, or **Google Cloud Workflows** can automate playbooks. Example flow:\n1. GuardDuty triggers a finding.\n2. CloudWatch Event rule invokes a Step Function.\n3. Step Function isolates the instance, snapshots the volume, and sends a Slack message to the security team.\n4. Security team performs investigation; if confirmed, Step Function continues with eradication (revoking keys, deleting IAM user).\n\n*Automate the tedious parts. Let humans make the big decisions.*"
+        },
+        {
+            "id": "s_l5_8",
+            "type": "tip",
+            "title": "Game Day: Test Your IR Plan 🎮",
+            "content": "Every quarter, simulate an incident: \"On Tuesday at 10am, the security team will receive a GuardDuty alert for a compromised instance. Respond.\" Measure time to containment. Update playbooks based on what you learn."
+        }
+    ]
+}

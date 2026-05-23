@@ -1,0 +1,161 @@
+{
+    "id": "l3",
+    "chapterId": "ch_11",
+    "title": "Character Classes & Quantifiers 🧮",
+    "description": "Define sets of characters and control repetitions with *, +, ?, and {n,m}.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Advanced Matching",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Character Classes `[ ]` 🧱",
+            "content": "## Match One of Many\n\nSquare brackets define a **character class** – a set of characters to match a single position.\n\n- `[aeiou]` – any vowel.\n- `[0-9]` – any digit (range).\n- `[a-zA-Z]` – any letter.\n- `[^abc]` – any character **NOT** a, b, or c (negated class).\n\nInside a class, most metacharacters lose their special meaning (except `^`, `-`, `]`)."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Vowel Finder",
+            "content": "List lines that contain at least one vowel:",
+            "codeSnippet": "echo -e \"rhythm\\nhello\\nfly\\nwhy\" | grep -E '[aeiou]'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What does `[^0-9]` match?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Any digit",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Any character that is NOT a digit",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A literal ^ then 0-9",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The characters 0-9 only",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`^` at the start of a character class negates it.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Predefined Character Classes 📋",
+            "content": "## Shorthands\n\nMany regex flavors support shortcuts:\n- `\\d` – digit `[0-9]`\n- `\\D` – non‑digit\n- `\\w` – word character `[a-zA-Z0-9_]`\n- `\\W` – non‑word\n- `\\s` – whitespace (space, tab, newline)\n- `\\S` – non‑whitespace\n\nNote: `grep` doesn't support `\\d` etc. unless you use `grep -P` (Perl‑compatible). Stick to `[0-9]` for portability."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Simulating \\d",
+            "content": "Match lines with digits using character class:",
+            "codeSnippet": "grep -E '[0-9]' /etc/hosts",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "`grep -E '\\d'` correctly matches digits.",
+                "correctAnswer": false,
+                "explanation": "Standard ERE doesn't support `\\d`; you need `grep -P` or `[0-9]`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Quantifiers: *, +, ? 🔁",
+            "content": "## How Many Times?\n\n- `*` – zero or more of the preceding.\n- `+` – one or more.\n- `?` – zero or one (optional).\n\nExamples:\n- `ab*c` matches \"ac\", \"abc\", \"abbc\", etc.\n- `ab+c` matches \"abc\", \"abbc\" but NOT \"ac\".\n- `colou?r` matches both \"color\" and \"colour\"."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "code",
+            "title": "Quantifier Demo",
+            "content": "Find words with double letters:",
+            "codeSnippet": "echo -e \"happy\\nhop\\nmeet\" | grep -E '(.)\\1'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_9",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "multiple_choice",
+                "question": "Which regex matches an optional 's'?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "file*s",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "files?",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "file+s",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "file*s?",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`s?` makes the preceding character 's' optional, matching 'file' and 'files'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_10",
+            "type": "text",
+            "title": "Fixed Repetition with `{n,m}` 🎯",
+            "content": "## Precise Control\n\n- `{n}` – exactly n times.\n- `{n,}` – at least n times.\n- `{n,m}` – between n and m times.\n\nExamples:\n- `[0-9]{3}` matches exactly three digits.\n- `a{2,4}` matches \"aa\", \"aaa\", or \"aaaa\"."
+        },
+        {
+            "id": "s_l3_11",
+            "type": "code",
+            "title": "Find Phone Numbers (simplified)",
+            "content": "Match pattern 3 digits, dash, 4 digits:\n```bash\necho 'Call 555-1234 now' | grep -E '[0-9]{3}-[0-9]{4}'\n```",
+            "codeSnippet": "echo 'Call 555-1234 now' | grep -E '[0-9]{3}-[0-9]{4}'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_12",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Be careful: `.*` is greedy – it matches as much as possible. To match minimally, use `.*?` (not supported in ERE; need Perl regex `-P`)."
+        }
+    ]
+}

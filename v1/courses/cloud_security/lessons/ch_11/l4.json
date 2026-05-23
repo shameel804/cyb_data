@@ -1,0 +1,111 @@
+{
+    "id": "l4",
+    "chapterId": "ch_11",
+    "title": "Google Cloud Architecture Framework 🏛️",
+    "description": "How GCP embeds security into every layer of the architecture with its principles.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Google’s Architecture Framework 🌐",
+            "content": "# Security by Default\n\nGoogle Cloud’s Architecture Framework is organized around **four pillars**:\n- **Operational excellence**\n- **Security, privacy, and compliance**\n- **Reliability**\n- **Performance and cost optimization**\n\nGoogle has a unique philosophy: **beyond‑production** and **security‑by‑default**. Many services automatically encrypt data at rest and in transit without customer action."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "GCP Pillars 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which GCP service provides global external load balancing with built‑in DDoS protection?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Cloud VPN",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Cloud Armor",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "VPC firewall rules",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Cloud CDN",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Cloud Armor provides DDoS protection and WAF capabilities at the edge of Google’s network.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Core Security Principles in GCP 🛡️",
+            "content": "## Google’s Approach\n\n1. **Defense in Depth** – Multiple layers: Google’s global network, encryption everywhere, BeyondCorp (Zero Trust).\n2. **Least Privilege** – Use IAM roles and service accounts; prefer Workload Identity Federation.\n3. **Centralized Identity** – Cloud Identity, workforce identity federation.\n4. **Secure by Design** – Encryption at rest is on by default; Shielded VMs protect against rootkits.\n5. **Automated Governance** – Organization Policy Service to restrict resource configurations.\n\n*Google’s internal security model (BeyondCorp) heavily influences its cloud offerings – users don’t need a VPN; they authenticate to the service.*"
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Resource Hierarchy & Organization Policies 🏢",
+            "content": "GCP organizes resources into a strict hierarchy:\n- **Organization** → **Folders** → **Projects** → **Resources**.\n- **Organization Policies** are inherited downward and can enforce constraints like ‘Disable serial port access to VMs’ or ‘Restrict service account creation’.\n- This is GCP’s version of a landing zone concept – create a folder structure that maps to your business units and apply policies at the folder level.\n\n*Example: A ‘Production’ folder can have a policy that denies creating public Cloud Storage buckets, while a ‘Development’ folder allows it.*"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "quiz",
+            "title": "Resource Hierarchy 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "What is the primary mechanism to enforce security constraints across an entire GCP organization?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "IAM policies",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "VPC firewall rules",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Organization Policy Service",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Cloud Audit Logs",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Org policies allow administrators to set guardrails for all projects under a node.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Secure Networking: Beyond VPC 🔗",
+            "content": "- **VPC is global** – subnets span regions; firewall rules are global.\n- **Cloud Armor** – WAF and DDoS protection at the edge.\n- **VPC Service Controls** – Create security perimeters around data to prevent exfiltration.\n- **Private Google Access** – Access Google services (like BigQuery) without public IPs.\n\n*GCP’s networking model reduces the need for complex peering and routing seen in other clouds.*"
+        },
+        {
+            "id": "s_l4_7",
+            "type": "tip",
+            "title": "Embrace BeyondCorp 🚀",
+            "content": "Google’s BeyondCorp is the origin of Zero Trust. Apply the same principles in your cloud: never trust the network, always verify the device and user. Use Context‑Aware Access in Cloud Identity‑Aware Proxy (IAP)."
+        }
+    ]
+}

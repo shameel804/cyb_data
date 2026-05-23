@@ -1,0 +1,264 @@
+{
+    "id": "quiz_ch_3",
+    "chapterId": "ch_3",
+    "title": "Chapter 3 Quiz",
+    "description": "Test your knowledge of variables, user input, environment, and command substitution!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "How do you assign the value 'hello' to a variable named 'greeting'?",
+            "options": [
+                "greeting = hello",
+                "greeting=hello",
+                "$greeting=hello",
+                "greeting= \"hello\""
+            ],
+            "correctAnswer": 1,
+            "explanation": "No spaces around `=`. `greeting=hello` is the correct assignment."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What does `echo $name` do if the variable `name` contains 'Cybron'?",
+            "options": [
+                "Prints 'name'",
+                "Prints 'Cybron'",
+                "Prints '$name'",
+                "Gives an error"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`$name` expands to the value of the variable."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which of the following is an invalid variable name?",
+            "options": [
+                "myVar",
+                "file_count",
+                "2cool",
+                "_private"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Variable names cannot start with a digit."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What will `echo '$HOME'` output?",
+            "options": [
+                "/home/user",
+                "$HOME",
+                "HOME",
+                "Nothing"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Single quotes prevent expansion, so the literal string `$HOME` is printed."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Why is it recommended to double‑quote variable expansions like `\"$var\"`?",
+            "options": [
+                "To make the script run faster",
+                "To prevent word splitting and globbing",
+                "To convert the variable to uppercase",
+                "Double quotes are not needed"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Double quotes preserve the variable's value as a single word, avoiding unwanted splitting."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which `read` flag hides user input?",
+            "options": [
+                "-p",
+                "-h",
+                "-s",
+                "-q"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`-s` stands for silent, hiding input as it's typed."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "How can you provide a prompt with `read`?",
+            "options": [
+                "read -m \"Prompt\" var",
+                "read -p \"Prompt\" var",
+                "read \"Prompt\" var",
+                "read var -p \"Prompt\""
+            ],
+            "correctAnswer": 1,
+            "explanation": "The `-p` option is followed by the prompt string and the variable name."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What happens if `read first last` gets the input 'John Michael Smith'?",
+            "options": [
+                "`first` gets 'John', `last` gets 'Michael Smith'",
+                "Error – too many words",
+                "`first` gets 'John Michael', `last` gets 'Smith'",
+                "`first` gets 'John', `last` gets 'Michael'"
+            ],
+            "correctAnswer": 0,
+            "explanation": "The last variable gets all remaining words. So `last` becomes 'Michael Smith'."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What command turns a shell variable into an environment variable?",
+            "options": [
+                "set",
+                "env",
+                "export",
+                "global"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`export` promotes a variable so child processes can see it."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which variable typically stores the path to your home directory?",
+            "options": [
+                "PATH",
+                "HOME",
+                "DIR",
+                "ROOT"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`HOME` holds the absolute path to the user's home directory."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "How do you view all environment variables?",
+            "options": [
+                "ls -env",
+                "printenv",
+                "showenv",
+                "echo $ENV"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`printenv` (or `env`) lists all environment variables."
+        },
+        {
+            "id": "q12",
+            "type": "true_false",
+            "question": "Changes to environment variables in a child process affect the parent shell.",
+            "correctAnswer": false,
+            "explanation": "A child can't modify the parent's environment; changes are local to the child."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What is the modern syntax for command substitution?",
+            "options": [
+                "`command`",
+                "$(command)",
+                "${command}",
+                "#(command)"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`$(...)` is the standard, nestable syntax."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What does `files=$(ls | wc -l)` store in `files`?",
+            "options": [
+                "The list of filenames",
+                "The number of files in the current directory",
+                "The total size of files",
+                "The word count of each file"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`wc -l` counts lines, so the number of entries from `ls`."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What will `$(( 10 / 3 ))` evaluate to?",
+            "options": [
+                "3.33",
+                "3",
+                "1",
+                "10/3"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Bash performs integer division, truncating the decimal."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "How can you increment the variable `count` by 1?",
+            "options": [
+                "count = count + 1",
+                "count=$count+1",
+                "((count++))",
+                "count+=1"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`((count++))` is the arithmetic increment. `count+=1` doesn't work directly; `((count+=1))` would, but `((count++))` is standard."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What does `echo \"${name}dy\"` output if `name=Alice`?",
+            "options": [
+                "Alicedy",
+                "Alice",
+                "${name}dy",
+                "Aliced y"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Curly braces separate the variable name, so it becomes `Alice` + `dy`."
+        },
+        {
+            "id": "q18",
+            "type": "fill_blank",
+            "question": "Complete the command to read a password silently: read ___ \"Password: \" pass",
+            "options": [
+                "-s",
+                "-p",
+                "-sp",
+                "-ps"
+            ],
+            "correctAnswer": "-sp",
+            "explanation": "Combining `-s` (silent) and `-p` (prompt) yields `read -sp`."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What will `echo $(whoami)` do?",
+            "options": [
+                "Print the command string 'whoami'",
+                "Print the current username",
+                "Print an error",
+                "Print nothing"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Command substitution runs `whoami` and replaces `$(whoami)` with its output."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which quote type allows variable expansion?",
+            "options": [
+                "Single quotes",
+                "Double quotes",
+                "Backticks",
+                "No quotes"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Double quotes preserve literals but still expand variables and command substitutions."
+        }
+    ]
+}

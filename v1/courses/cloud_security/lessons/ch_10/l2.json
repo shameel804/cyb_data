@@ -1,0 +1,117 @@
+{
+    "id": "l2",
+    "chapterId": "ch_10",
+    "title": "Cloud Compliance Frameworks 📜",
+    "description": "Deep dive into ISO 27001, SOC 2, PCI DSS, HIPAA, GDPR and how they map to the cloud.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Framework Jungle 🌴",
+            "content": "# Why So Many Standards?\n\nDifferent industries and regions have different security expectations. You’ll likely need to comply with multiple frameworks.\n\n- **SOC 2**: Service Organization Control – for technology and cloud companies; trust criteria (Security, Availability, Confidentiality, Processing Integrity, Privacy).\n- **ISO 27001**: International standard for an Information Security Management System (ISMS); 93 controls in Annex A (updated in 2022).\n- **PCI DSS**: Payment Card Industry Data Security Standard – protect cardholder data.\n- **HIPAA**: Health Insurance Portability and Accountability Act – for healthcare data in the US.\n- **GDPR**: General Data Protection Regulation – data privacy in the EU.\n\n*You don’t need to memorize every control; you need to know which apply to you and how to map them to your cloud environment.*"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Framework Match 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "An online store processing credit cards must comply with which primary standard?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "GDPR",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "HIPAA",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "PCI DSS",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "SOC 2",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "PCI DSS specifically governs credit card data handling.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "SOC 2 Deep Dive 🔍",
+            "content": "## Trust Services Criteria\n\nSOC 2 reports are based on five **Trust Services Criteria** (TSC):\n- **Security**: System is protected against unauthorized access (firewalls, IAM, MFA).\n- **Availability**: System is operational and usable (backups, redundancy).\n- **Processing Integrity**: System processing is complete, valid, accurate, timely, and authorized.\n- **Confidentiality**: Information designated as confidential is protected.\n- **Privacy**: Personal information is collected, used, retained, disclosed, and disposed of appropriately.\n\nCloud providers (AWS, Azure, GCP) obtain SOC 2 Type II reports, meaning their controls are tested over a period of time. **You inherit** those for the physical layer, but you must build your own SOC 2 compliant app layer."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "ISO 27001: The International Gold Standard 🥇",
+            "content": "## ISMS and Annex A\n\nISO 27001 requires an **Information Security Management System** – a set of policies, processes, and systems to manage information security risks.\n- It follows the **Plan‑Do‑Check‑Act** cycle.\n- **Annex A** lists 93 controls (e.g., A.9 Access control, A.12 Operations security, A.14 System acquisition).\n\nCloud services often provide ISO 27001 certifications for their infrastructure. Your job: extend the ISMS to cover your cloud workloads, configure controls according to the standard, and maintain records for auditors."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "ISO 27001 Control 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "Which part of ISO 27001 contains the detailed security controls?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The main body",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Annex A",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The introduction",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The glossary",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Annex A lists the reference control objectives and controls.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "PCI DSS & HIPAA: Industry Specific 🏥💳",
+            "content": "- **PCI DSS 4.0**: 12 requirements (e.g., install and maintain a firewall, encrypt cardholder data, restrict access). In the cloud, you can use AWS WAF, encryption, and IAM to meet them. The provider’s PCI compliance (e.g., AWS is a Level 1 Service Provider) covers physical and some infrastructure.\n- **HIPAA**: Requires administrative, physical, and technical safeguards for Protected Health Information (PHI). AWS and Azure offer HIPAA eligible services; you must sign a Business Associate Agreement (BAA) and configure services correctly (e.g., encrypt PHI, log access)."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "GDPR: Data Privacy by Design 🇪🇺",
+            "content": "## Personal Data Protection\n\nGDPR applies to any organization processing personal data of EU residents. Key principles:\n- **Lawfulness, fairness, transparency**\n- **Purpose limitation**\n- **Data minimisation**\n- **Storage limitation**\n- **Integrity and confidentiality**\n\nIn the cloud, this means: know where your data is (data residency), encrypt it, have a Data Processing Agreement (DPA) with the provider, and be able to delete data upon request (right to erasure)."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "tip",
+            "title": "Map Frameworks to Cloud Services 🗺️",
+            "content": "Use the **AWS Artifact** portal to access AWS compliance reports. Azure and GCP have similar trust centers. Many CSPM tools automatically map technical controls to framework requirements, saving weeks of work."
+        }
+    ]
+}

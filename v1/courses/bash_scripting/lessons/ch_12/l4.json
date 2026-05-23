@@ -1,0 +1,117 @@
+{
+    "id": "l4",
+    "chapterId": "ch_12",
+    "title": "awk Programming: Control Flow & Functions ⚙️",
+    "description": "Implement logic with if, while, for, arrays, and string/numeric functions in awk.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "awk Scripting",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "awk as a Programming Language 💻",
+            "content": "## Beyond Print\n\nawk supports:\n- `if (condition) statement` / `if-else`\n- `while`, `for`, `do-while` loops\n- Arrays (associative by default)\n- Arithmetic and string functions\n- User‑defined functions\n\nThis turns awk into a powerful data‑manipulation engine."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Conditional Action",
+            "content": "Print users with UID >= 1000:",
+            "codeSnippet": "awk -F: '{ if ($3 >= 1000) print $1 }' /etc/passwd",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "How do you write an if‑else in awk?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "if (x) { } else { }",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "if x then ... else ...",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "(x) ? { } : { }",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "awk doesn't support else",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "awk's syntax resembles C: `if (condition) statement else statement`, with curly braces for blocks.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Loops in awk 🔁",
+            "content": "## Process Fields or Repeat Actions\n\n- `for (i=1; i<=NF; i++)` – iterate over fields.\n- `for (key in array)` – iterate over array indices.\n- `while (condition) { ... }`\n\nExample: reverse fields:\n```awk\n{ for(i=NF; i>=1; i--) printf \"%s \", $i; print \"\" }\n```"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Loop Over Fields",
+            "content": "Print each field on its own line:",
+            "codeSnippet": "echo \"apple banana cherry\" | awk '{ for(i=1;i<=NF;i++) print \"Field \"i\": \"$i }'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "awk arrays are numerically indexed by default.",
+                "correctAnswer": false,
+                "explanation": "awk arrays are associative – the index is a string; numeric indices are converted to strings.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Associative Arrays in awk 🗃️",
+            "content": "## Count Occurrences, Group Data\n\n```awk\n{ count[$1]++ }\nEND { for (word in count) print word, count[word] }\n```\nThis is the classic word‑frequency counter. Arrays are created on first use."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "code",
+            "title": "Word Frequency",
+            "content": "Count how many times each word appears:",
+            "codeSnippet": "echo -e \"cat\\ndog\\ncat\\nbird\\ndog\\ndog\" | awk '{ a[$1]++ } END { for (w in a) print w, a[w] }'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_9",
+            "type": "text",
+            "title": "Built‑in Functions 🎨",
+            "content": "## String and Math\n\n- `length(str)`, `substr(str,pos,len)`, `index(str,sub)`\n- `tolower(str)`, `toupper(str)`\n- `split(str, array, sep)` – split a string into an array.\n- `int(num)`, `sqrt(num)`, `rand()`\n- `sprintf(format, ...)` – format output.\n\nThese make text transformation easy."
+        },
+        {
+            "id": "s_l4_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `awk 'BEGIN { srand(); print int(rand()*100) }'` to generate random numbers."
+        }
+    ]
+}

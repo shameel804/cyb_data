@@ -1,0 +1,112 @@
+{
+    "id": "l5",
+    "chapterId": "ch_4",
+    "title": "The `case` Statement 🗂️",
+    "description": "Branch elegantly with pattern matching. Perfect for menus and command parsing.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Pattern Branching",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "When `if` Gets Too Long 🧵",
+            "content": "## Enter `case`\n\nImagine testing a variable against many fixed values. An `if-elif` ladder can become ugly. `case` is a cleaner alternative.\n\nIt compares a value against patterns and executes the matching block.\n\nThink of it as a more powerful switch statement from other languages."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "case Syntax",
+            "content": "```bash\ncase $variable in\n  pattern1)\n    commands;;\n  pattern2)\n    commands;;\n  *)\n    default commands;;\nesac\n```\n`;;` ends each block. `esac` (case backwards) closes.",
+            "codeSnippet": "read -p \"Enter y/n: \" choice\ncase $choice in\n  y|Y) echo \"You said yes\" ;;\n  n|N) echo \"You said no\" ;;\n  *) echo \"Invalid\" ;;\nesac",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What terminates a pattern block inside a `case`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "done",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": ";;",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "fi",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "break",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Each pattern's commands end with a double semicolon `;;`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_l5_4",
+            "type": "text",
+            "title": "Powerful Pattern Matching 🎯",
+            "content": "## Beyond Fixed Strings\n\n`case` supports shell patterns (globs):\n- `*` – matches any string.\n- `?` – matches any single character.\n- `[abc]` – character class.\n- `[a-z]` – range.\n- `|` – separates multiple patterns (or).\n\nUse `*` as the catch‑all default."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "File Type Checker",
+            "content": "Examine extension:",
+            "codeSnippet": "read -p \"Filename: \" file\ncase $file in\n  *.txt) echo \"Text file\" ;;\n  *.jpg|*.png) echo \"Image file\" ;;\n  *.sh) echo \"Shell script\" ;;\n  *) echo \"Unknown type\" ;;\nesac",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "fill_blank",
+                "question": "In `case`, which symbol separates multiple patterns that should trigger the same action?",
+                "options": [],
+                "correctAnswer": "|",
+                "explanation": "The pipe `|` acts as an OR between patterns, e.g., `jpg|png)` matches either.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "A Complete Menu Script 📋",
+            "content": "## Practical Use‑Case\n\n`case` shines when building simple text menus. You can present options and let the user choose."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "code",
+            "title": "Menu Demo",
+            "content": "A basic options menu:",
+            "codeSnippet": "echo \"1. Show date\"\necho \"2. List files\"\necho \"3. Exit\"\nread -p \"Choice: \" opt\ncase $opt in\n  1) date ;;\n  2) ls ;;\n  3) exit ;;\n  *) echo \"Wrong option\" ;;\nesac",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `;;&` (Bash 4.0+) to fall through and test the next pattern, or `;&` to execute the next block unconditionally."
+        }
+    ]
+}

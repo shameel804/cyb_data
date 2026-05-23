@@ -1,0 +1,146 @@
+{
+    "id": "l5",
+    "chapterId": "ch_1",
+    "title": "Syntax, Indentation & Common Errors",
+    "description": "Understand Python’s strict formatting rules and how to decode error messages.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Getting Started",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Why Syntax Matters 💢",
+            "content": "# Python is a Grammar Nazi\n\nEvery language has rules. In Python:\n* **Indentation** defines blocks of code (no curly braces `{}`)\n* Colons `:` start a new block\n* Case sensitivity (`name` vs `Name`)\n\nViolate them, and Python yells at you. Let's learn the rules so you can yell back."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "The Holy Indentation Rule 📏",
+            "content": "# Use 4 Spaces (Not Tabs!)\n\n```python\nif True:\n    print(\"This is indented\")\nprint(\"This is back to normal\")\n```\n* The `if` line ends with `:`\n* The next line **must** be indented more than the `if`\n* All lines in the block must have the **exact same** indentation\n\n**Stick to 4 spaces per level.** Your editor can convert tabs to spaces."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "code",
+            "title": "Indentation Example",
+            "content": "Run this code:",
+            "codeSnippet": "x = 10\nif x > 5:\n    print(\"x is big\")\n    print(\"inside the if\")\nprint(\"outside\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_4",
+            "type": "quiz",
+            "title": "Indentation Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What happens if you mix tabs and spaces for indentation?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Python automatically fixes it",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "You'll get a TabError or inconsistent indentation",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The code runs fine as long as it looks aligned",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Python 3 disallows mixing tabs and spaces. Always use spaces (or configure your editor to insert spaces when you press Tab).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Comments & Blank Lines 📄",
+            "content": "# Whitespace That Doesn't Hurt\n\n* Blank lines are ignored – use them to separate logical sections\n* Comments (`#`) are ignored\n* You can indent comments to align with code:\n```python\nif True:\n    # explain the next line\n    print(\"Got it\")\n```"
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Case Sensitivity",
+            "content": "# `Print` is not `print`\n\nPython distinguishes uppercase and lowercase:\n```python\nprint(\"works\")\nPrint(\"Error\")  # NameError: name 'Print' is not defined\n```\nMost built‑in functions are lowercase. Variable names are case‑sensitive too."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Case Quiz 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "The variable `hack` and `Hack` refer to the same location in memory.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "Python treats uppercase and lowercase letters as different. `hack` and `Hack` are two distinct variables.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_8",
+            "type": "text",
+            "title": "Reading Error Messages 🔍",
+            "content": "# Don't Panic – Read the Traceback\n\nWhen an error occurs, Python shows a traceback:\n```\nTraceback (most recent call last):\n  File \"myscript.py\", line 3, in <module>\n    print(undefined_var)\nNameError: name 'undefined_var' is not defined\n```\nIt tells you:\n* The file and line number\n* The type of error (NameError, SyntaxError, etc.)\n* A description\n\n**Always start at the bottom line** – that's the actual error."
+        },
+        {
+            "id": "s_l5_9",
+            "type": "code",
+            "title": "Common Error Types",
+            "content": "You'll see these frequently:",
+            "codeSnippet": "# SyntaxError: missing punctuation or bad structure\nprint(\"missing quote)\n\n# IndentationError: unexpected indent\n print(\"extra space\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_10",
+            "type": "quiz",
+            "title": "Error Detective 🕵️",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_3",
+                "type": "multiple_choice",
+                "question": "What type of error does this cause? `print(\"hello)`",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "NameError",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "SyntaxError",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "IndentationError",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The missing closing quote is a syntax error; Python can't parse the line.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_11",
+            "type": "text",
+            "title": "Your New Superpower 🦸",
+            "content": "# Understand Errors = Fix Them Fast\n\nDon't fear red text. It's Python telling you exactly what's wrong. With practice, you'll spot mistakes in seconds."
+        },
+        {
+            "id": "s_l5_12",
+            "type": "text",
+            "title": "Chapter 1 Complete! 🏁",
+            "content": "# Great Job!\n\nYou've covered Python's role in hacking, installation, first program, interactive shell, and syntax rules. Take a breath, then tackle the Chapter Quiz and hands‑on tasks to lock in your knowledge."
+        }
+    ]
+}

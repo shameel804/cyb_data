@@ -1,0 +1,112 @@
+{
+    "id": "l2",
+    "chapterId": "ch_11",
+    "title": "Basic Patterns & Anchors ⚓",
+    "description": "Match literal text, start/end of line anchors, and the wildcard dot.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Core Syntax",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Literal Characters & The Dot 🅰️",
+            "content": "## The Simplest Pattern\n\nMost characters in regex match themselves: `cat` matches \"cat\". The **dot** (`.`) is the exception – it matches **any single character** except newline.\n\n- `c.t` matches \"cat\", \"cot\", \"cut\", \"c9t\", etc.\n- `..` matches any two characters.\n\nTo match a literal dot, escape it: `\\.`"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Dot in Action",
+            "content": "Find three‑letter words starting with 'b' and ending with 'g':",
+            "codeSnippet": "echo -e \"bag\\nbig\\nbug\\nbog\\nbang\" | grep -E 'b.g'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What does `c.t` match?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Only 'cat'",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Any three‑character string starting with 'c' and ending with 't'",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The literal string 'c.t'",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Any string containing 'c' and 't'",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`.` is a wildcard for exactly one character (except newline).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Anchors: ^ and $ 🎯",
+            "content": "## Pin to Start or End\n\n- `^` – matches the **start** of a line.\n- `$` – matches the **end** of a line.\n\nThus:\n- `^Hello` – lines that begin with \"Hello\".\n- `world$` – lines that end with \"world\".\n- `^$` – empty lines.\n\nAnchor doesn't consume characters, it asserts position."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Anchored Grep",
+            "content": "Find lines ending with a digit:",
+            "codeSnippet": "echo -e \"line1\\nline2\\nlineX\" | grep -E '[0-9]$'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "fill_blank",
+                "question": "What regex matches empty lines?",
+                "options": [],
+                "correctAnswer": "^$",
+                "explanation": "`^$` matches start immediately followed by end, i.e., a line with nothing in between.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Escaping Special Characters 🛡️",
+            "content": "## When You Need a Literal Dot or Star\n\nThese characters have special meaning in regex: `. ^ $ * + ? { } [ ] \\ | ( )`\n\nTo match them literally, prefix with a backslash `\\`. Example: `\\$` matches a dollar sign, `\\.` matches a period.\n\nInside `grep -E`, you need double backslashes only if the shell interprets them. Single backslash works inside quotes."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "Escape Example",
+            "content": "Find lines with a literal asterisk:",
+            "codeSnippet": "echo -e \"hello*\\nworld\" | grep '\\*'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use single quotes around your grep pattern to prevent the shell from interpreting `$`, `\\`, and other special characters before grep sees them."
+        }
+    ]
+}

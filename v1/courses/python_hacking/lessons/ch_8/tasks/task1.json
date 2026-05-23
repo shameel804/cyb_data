@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_8",
+    "title": "Robust Port Number Reader",
+    "description": "Write a script that repeatedly asks for a port number until a valid integer 1‑65535 is entered, handling errors gracefully.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Create a script `read_port.py` that uses a `while` loop to ask the user: \"Enter a port number: \". It should:\n- Accept the input.\n- Use `try/except` to convert it to an integer. If `ValueError`, print \"Invalid input; must be a number.\" and ask again.\n- If conversion succeeds, check if the port is in the range 1‑65535. If not, print \"Port out of range (1‑65535).\" and ask again.\n- If valid, print \"Port X accepted.\" and exit the loop.\n\nEnsure the script never crashes due to bad input. Use `break` to exit when a valid port is entered.",
+    "hints": [
+        "Use `input()` inside an infinite `while True:` loop.",
+        "Catch `ValueError` for non‑numeric input.",
+        "Use an `if` to check range, and if valid, `break`.",
+        "Don't forget to handle the case where the user just presses Enter."
+    ],
+    "expectedOutput": "Enter a port number: abc\nInvalid input; must be a number.\nEnter a port number: 99999\nPort out of range (1‑65535).\nEnter a port number: 22\nPort 22 accepted.",
+    "solutionCode": "while True:\n    user_input = input(\"Enter a port number: \")\n    try:\n        port = int(user_input)\n        if 1 <= port <= 65535:\n            print(f\"Port {port} accepted.\")\n            break\n        else:\n            print(\"Port out of range (1‑65535).\")\n    except ValueError:\n        print(\"Invalid input; must be a number.\")\n"
+}

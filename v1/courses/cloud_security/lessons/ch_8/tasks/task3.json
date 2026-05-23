@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_8",
+    "title": "Write a WAF Rule to Block a Specific Attack",
+    "description": "Write an AWS WAF rule that blocks requests containing SQL injection patterns in the body.",
+    "estimatedMinutes": 10,
+    "problemStatement": "## Scenario\nYour web application has been hit by SQL injection attempts. You want to create a custom AWS WAF rule to block requests that contain common SQL injection patterns (like ' OR '1'='1', DROP TABLE, UNION SELECT) in the request body (JSON payload).\n\n### Your Task\nWrite an AWS WAF rule JSON snippet that:\n- Inspects the body of the request.\n- Uses a SQL injection match statement (or a regex pattern set if you prefer).\n- Applies URL decode and HTML entity decode transformations.\n- Blocks the request when matched.\n- Has a priority of 10 and a name 'BlockSQLiBody'.\n\nYou may use the `SqliMatchStatement` or `ByteMatchStatement` with a regex pattern set. Provide the JSON structure and explain your choice.",
+    "hints": [
+        "AWS Managed Rules already have SQLi protection; a custom rule can be more specific.",
+        "Use `FieldToMatch` with `JsonBody` or `Body`.",
+        "`TextTransformations` remove obfuscation: e.g., URL decode, HTML entity decode."
+    ],
+    "expectedOutput": "A JSON snippet of an AWS WAF rule with explanation.",
+    "solutionCode": "{\n  \"Name\": \"BlockSQLiBody\",\n  \"Priority\": 10,\n  \"Action\": { \"Block\": {} },\n  \"Statement\": {\n    \"SqliMatchStatement\": {\n      \"FieldToMatch\": {\n        \"JsonBody\": {\n          \"MatchPattern\": { \"All\": {} },\n          \"MatchScope\": \"VALUE\",\n          \"InvalidFallbackBehavior\": \"EVALUATE_AS_STRING\"\n        }\n      },\n      \"TextTransformations\": [\n        { \"Type\": \"URL_DECODE\", \"Priority\": 0 },\n        { \"Type\": \"HTML_ENTITY_DECODE\", \"Priority\": 1 }\n      ]\n    }\n  }\n}\n\n**Explanation**: This rule uses `SqliMatchStatement`, which is specifically designed to detect SQL injection patterns. It inspects the values of all fields in the JSON body (the most common place for SQLi in APIs). `TextTransformations` decode URL encoding and HTML entities to catch obfuscated attacks. When matched, the request is immediately blocked, preventing the payload from reaching the backend."
+}

@@ -1,0 +1,108 @@
+{
+    "id": "l4",
+    "chapterId": "ch_15",
+    "title": "Final Testing & Packaging 📦",
+    "description": "Put it all together: test thoroughly, write usage docs, and make your script production‑ready.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Delivery",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Assemble the Final Script 🧩",
+            "content": "## Bring All Functions Together\n\nWe now have all the pieces. The final script should:\n1. Load config.\n2. Set up logging based on terminal detection.\n3. Call `check_disk`, exit if insufficient.\n4. Call `do_backup` for each source.\n5. Call `rotate_backups`.\n6. Log a final summary.\n\nEnsure every function returns a proper exit code and that failures cascade correctly."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Complete main Function",
+            "content": "Orchestration:",
+            "codeSnippet": "main() {\n  load_config\n  check_disk || exit 1\n  do_backup || exit 2\n  rotate_backups\n  log INFO \"Guardian run completed successfully\"\n}\nmain",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Why is it important to test the script with a dry‑run mode?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It runs faster",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To verify what actions would be taken without modifying the system",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Dry‑run is required by cron",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It replaces error handling",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A dry‑run prints the planned actions, allowing you to validate them before the real run.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Testing Strategy 🧪",
+            "content": "## Step‑by‑Step Verification\n\n1. **Unit test functions**: Source the script and call functions individually (`source cybron_guardian.sh; log INFO test`).\n2. **Dry‑run**: Implement a `$DRY_RUN` flag that echos actions instead of executing them.\n3. **Test with dummy data**: Create a small test directory and a temporary destination.\n4. **Check edge cases**: Missing config, empty source list, full disk simulation.\n5. **Verify with `shellcheck`**.\n6. **Run in cron and monitor logs**."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Dry‑Run Implementation",
+            "content": "Modify backup function:",
+            "codeSnippet": "if [ \"${DRY_RUN:-false}\" = true ]; then\n  log INFO \"[DRY] Would back up $dir to $BACKUP_DEST/$name\"\nelse\n  tar -czf \"$BACKUP_DEST/$name\" ...\nfi",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "You should run `shellcheck` on your script only once at the very end of development.",
+                "correctAnswer": false,
+                "explanation": "Linting regularly during development catches issues early and makes final cleanup easier.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Documentation & README 📄",
+            "content": "## Don't Forget the Manual\n\nEvery script should come with a short README or a `--help` flag:\n- Purpose\n- Dependencies (tar, mail, df)\n- Configuration file format\n- Example crontab entry\n- Log file location\n\nThis ensures anyone (including future you) can understand and maintain it."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "text",
+            "title": "Congratulations! 🎉",
+            "content": "## You Are Now a Bash Master\n\nYou've traversed from simple `echo` commands to building a fully‑fledged automation system. You understand:\n- Variables, loops, conditionals\n- Functions, arrays, and string processing\n- sed, awk, grep, and regex\n- Error handling, debugging, and security\n- Cron, at, and system integration\n\nTake this knowledge and automate the world!"
+        },
+        {
+            "id": "s_l4_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Keep a personal snippet library of common Bash patterns (logging, option parsing, temp files). Reuse them – don't rewrite."
+        }
+    ]
+}

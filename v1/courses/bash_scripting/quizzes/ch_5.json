@@ -1,0 +1,253 @@
+{
+    "id": "quiz_ch_5",
+    "chapterId": "ch_5",
+    "title": "Chapter 5 Quiz",
+    "description": "Test your knowledge of Bash loops: for, while, until, and loop control!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which of the following is a valid `for` loop syntax?",
+            "options": [
+                "for (i=0; i<10; i++) { }",
+                "for i in 1 2 3; do ... done",
+                "for i in [1,2,3]; do ... done",
+                "foreach i (1 2 3) ... end"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Bash uses `for var in list; do ... done`."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What brace expansion creates the sequence 10,20,30,40?",
+            "options": [
+                "{10..40..10}",
+                "{10-40-10}",
+                "{10:40:10}",
+                "[10..40..10]"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Brace expansion with step: `{start..end..step}`."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "How do you write a C‑style for loop to count from 1 to 5?",
+            "options": [
+                "for (( i=1; i<=5; i++ )); do ... done",
+                "for (i=1; i<=5; i++) ... end",
+                "for i=1 to 5 do ... done",
+                "for (( 1; 5; 1 )) do ... done"
+            ],
+            "correctAnswer": 0,
+            "explanation": "The syntax is `for (( expr1; expr2; expr3 )); do ... done`."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What does `for file in *; do echo $file; done` do?",
+            "options": [
+                "Prints the literal string '*'",
+                "Prints each file and directory in the current directory",
+                "Prints only directories",
+                "Causes an error"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`*` glob expands to all non‑hidden files/dirs, and the loop echoes each."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which `shopt` option prevents unmatched globs from being treated literally?",
+            "options": [
+                "shopt -s globstar",
+                "shopt -s dotglob",
+                "shopt -s nullglob",
+                "shopt -s extglob"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`nullglob` makes unmatched patterns expand to an empty list."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the main danger of using `for f in $(ls)`?",
+            "options": [
+                "It only lists hidden files",
+                "Filenames with spaces will be split into multiple items",
+                "It runs too slowly",
+                "It includes the '.' and '..' directories"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Word splitting on spaces causes filenames like 'my file.txt' to become two separate loop items."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "How do you read a file line‑by‑line safely in a `while` loop?",
+            "options": [
+                "while read line; do ... done < file",
+                "while IFS= read -r line; do ... done < file",
+                "while read -a line; do ... done < file",
+                "while read -n1 line; do ... done < file"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`IFS=` and `-r` together preserve whitespace and backslashes."
+        },
+        {
+            "id": "q8",
+            "type": "true_false",
+            "question": "An infinite `while true` loop can only be stopped with Ctrl+C or `kill`.",
+            "correctAnswer": false,
+            "explanation": "You can also exit with `break` inside a conditional, or `exit` to terminate the script."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What keyword ends all `while`, `for`, and `until` loops?",
+            "options": [
+                "fi",
+                "done",
+                "esac",
+                "end"
+            ],
+            "correctAnswer": 1,
+            "explanation": "All three loops close with `done`."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "How does `until` differ from `while`?",
+            "options": [
+                "`until` loops run exactly once",
+                "`until` runs while the condition is false; `while` runs while the condition is true",
+                "They are identical",
+                "`until` cannot use `break`"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`until` is the logical opposite."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "When does the following loop stop? `until [ -f /tmp/flag ]; do sleep 1; done`",
+            "options": [
+                "Never",
+                "When /tmp/flag is deleted",
+                "When /tmp/flag exists",
+                "After exactly 10 iterations"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`-f` checks for a regular file; the loop continues until that condition becomes true."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What does `continue` do inside a loop?",
+            "options": [
+                "Exits the entire script",
+                "Terminates the loop",
+                "Skips the rest of the current iteration and continues with the next",
+                "Restarts the loop from the first iteration"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`continue` jumps to the next iteration's condition check."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "If you have nested loops and want to break out of the outer loop from inside the inner one, you use:",
+            "options": [
+                "break 1",
+                "break 2",
+                "break all",
+                "exit"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`break 2` breaks out of two levels of loops."
+        },
+        {
+            "id": "q14",
+            "type": "fill_blank",
+            "question": "Complete the `while` loop that counts down from 5 to 1:\ncount=5\nwhile [ $count -__ 0 ]; do\n  echo $count\n  count=$((count - 1))\ndone",
+            "options": [],
+            "correctAnswer": "gt",
+            "explanation": "`-gt 0` keeps looping while count is greater than 0."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What will this script output?\n```bash\nfor i in 1 2 3; do\n   echo $i\n   break\n   echo after\ndone\n```",
+            "options": [
+                "1 after 2 after 3 after",
+                "1",
+                "1 after",
+                "1 2 3"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`break` exits the loop immediately after echoing '1', so 'after' and the rest are skipped."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which of these correctly uses command substitution in a `for` loop?",
+            "options": [
+                "for user in $(cut -d: -f1 /etc/passwd); do echo $user; done",
+                "for user in (cut -d: -f1 /etc/passwd); do echo $user; done",
+                "for user in `cut -d: -f1 /etc/passwd`; do echo $user; done",
+                "Both A and C are correct"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Both `$(...)` and backticks work; A uses modern syntax, C uses older style."
+        },
+        {
+            "id": "q17",
+            "type": "true_false",
+            "question": "An `until` loop always executes the body at least once.",
+            "correctAnswer": false,
+            "explanation": "If the condition is initially true, the body is skipped entirely – same as `while` with false condition."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "What does `while : ; do ... done` do?",
+            "options": [
+                "Nothing – `:` is invalid",
+                "An infinite loop, because `:` always returns true",
+                "A loop that runs exactly once",
+                "A loop that runs only if a file named ':' exists"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`:` is a shell built‑in that always returns true (success), so the loop is infinite."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "How can you make a `for` loop iterate over all `.txt` files but handle the case where none exist?",
+            "options": [
+                "Use `for f in *.txt; do ... done` alone",
+                "Use `shopt -s nullglob` before the loop",
+                "Use `if [ -f *.txt ]` before",
+                "It's impossible"
+            ],
+            "correctAnswer": 1,
+            "explanation": "With `nullglob`, the loop simply doesn't run if no files match."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What will `for ((i=0; i<3; i++)); do echo $i; done` output?",
+            "options": [
+                "0 1 2",
+                "1 2 3",
+                "0 1 2 3",
+                "Error"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Starts at 0, condition i<3, so prints 0, 1, 2."
+        }
+    ]
+}

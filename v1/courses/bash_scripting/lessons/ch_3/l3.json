@@ -1,0 +1,111 @@
+{
+    "id": "l3",
+    "chapterId": "ch_3",
+    "title": "Reading User Input ⌨️",
+    "description": "Make interactive scripts with the `read` command – ask questions and capture answers.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Interactivity",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The `read` Command 📥",
+            "content": "## Talk to Your User\n\n`read` pauses the script and waits for the user to type something (and press Enter). It stores the input in a variable.\n\nSyntax: `read variable_name`\n\nYou can read multiple values: `read first last` splits the input on spaces.\n\nOften combined with `-p` to show a prompt: `read -p \"Enter name: \" username`."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Simple read",
+            "content": "Ask for a name and greet:",
+            "codeSnippet": "read -p \"What's your name? \" name\necho \"Hello, $name!\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which `read` option shows a prompt message?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "-m",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "-p",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "-s",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "-e",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-p` allows you to display a prompt string before reading input.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Silent Input with -s 🤫",
+            "content": "## Reading Passwords\n\n`-s` (silent) hides the user's typing – perfect for passwords.\n\n```bash\nread -sp \"Password: \" pass\necho  # new line\necho \"Password set.\"\n```\nNo characters are echoed back."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Secret Mode",
+            "content": "Try hiding your input:",
+            "codeSnippet": "read -sp \"Enter secret: \" secret\necho\necho \"Your secret is $secret\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "The `-s` flag makes `read` ignore spaces in input.",
+                "correctAnswer": false,
+                "explanation": "`-s` suppresses echoing, making input silent. It does not affect whitespace handling.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Reading Multiple Variables 🎯",
+            "content": "## Splitting Input\n\nIf you give `read` several variable names, the input is split by spaces (or characters in `$IFS`) and assigned in order.\n\n```bash\nread first last\necho \"First: $first, Last: $last\"\n```\nIf there are more words than variables, the last variable gets the remainder.\n\nYou can also read into an **array** (later chapter) with `-a`."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "code",
+            "title": "Multi‑word Input",
+            "content": "Capture full name:",
+            "codeSnippet": "echo \"Enter full name:\"\nread first last\necho \"Hello, $first $last!\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Timeout Input\nUse `-t seconds` to limit waiting. If the user doesn't respond in time, `read` returns an error (exit code >0)."
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_6",
+    "title": "Build a Utility Library",
+    "description": "Create a reusable library of functions and write a script that sources and uses them.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You're building a foundation for all your future scripts. Create a library file called `utils.sh` with the following functions:\n\n1. `print_header` – accepts a string and prints it as a centered title within a line of dashes.\n2. `confirm` – asks the user a yes/no question and returns 0 for yes, 1 for no. Use `read -p`.\n3. `is_root` – returns 0 if the script is run by root (EUID 0), else 1. (Use `$EUID`).\n\nThen write a script `admin_tool.sh` that:\n- Sources `utils.sh` (checking it exists).\n- Calls `print_header` to display \"Admin Tool\".\n- Checks if the user is root using `is_root`. If not root, print an error to stderr and exit.\n- If root, ask for confirmation \"Proceed with system update?\" and if yes, print \"Updating...\" (simulate); otherwise, print \"Aborted.\".\n\nMake both files. Test by running `./admin_tool.sh` (not as root initially, then with sudo).",
+    "hints": [
+        "`print_header`: use `echo` and a loop to create dashes, or a simple underline.",
+        "`confirm`: `read -p \"$1 (y/n) \" ans`; check if `$ans` is 'y' or 'Y'.",
+        "`is_root`: `[ $EUID -eq 0 ]`.",
+        "Sourcing: `[ -f utils.sh ] && source utils.sh || { echo 'utils.sh missing'; exit 1; }`."
+    ],
+    "expectedOutput": "For non-root: error message; for root with 'y': header and 'Updating...'; with 'n': 'Aborted.'.",
+    "solutionCode": "#!/bin/bash\n# utils.sh\n\nprint_header() {\n  local title=\"$1\"\n  local width=40\n  local dashes=$(printf '%*s' \"$width\" | tr ' ' '-')\n  echo \"$dashes\"\n  printf \"%*s\\n\" $(( (${#title}+width)/2 )) \"$title\"\n  echo \"$dashes\"\n}\n\nconfirm() {\n  read -p \"$1 (y/n) \" ans\n  case $ans in\n    [yY]*) return 0 ;;\n    *) return 1 ;;\n  esac\n}\n\nis_root() {\n  [ $EUID -eq 0 ]\n}\n\n# -----\n#!/bin/bash\n# admin_tool.sh\n\nif [ ! -f utils.sh ]; then\n  echo \"Error: utils.sh not found\" >&2\n  exit 1\nfi\nsource utils.sh\n\nprint_header \"Admin Tool\"\n\nif ! is_root; then\n  echo \"This script must be run as root.\" >&2\n  exit 1\nfi\n\nif confirm \"Proceed with system update?\"; then\n  echo \"Updating...\"\nelse\n  echo \"Aborted.\"\nfi"
+}

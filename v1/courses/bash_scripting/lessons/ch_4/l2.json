@@ -1,0 +1,112 @@
+{
+    "id": "l2",
+    "chapterId": "ch_4",
+    "title": "`if-else` and `elif` Ladders 🪜",
+    "description": "Add alternative paths with `else` and multiple conditions with `elif`.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Branching",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Two Roads: `else` 🛤️",
+            "content": "## Choose Your Own Adventure\n\n`if` runs code when a condition is true. What about when it's false? Use `else`.\n\n```bash\nif [ condition ]; then\n   commands_if_true\nelse\n   commands_if_false\nfi\n```\nExactly one of the two blocks will execute."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Welcome Script with else",
+            "content": "Greet a known user:",
+            "codeSnippet": "read -p \"Enter username: \" user\nif [ \"$user\" = \"admin\" ]; then\n  echo \"Welcome back, admin!\"\nelse\n  echo \"Access denied.\"\nfi",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What does the `else` block do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It runs when the `if` condition is true",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It runs when the `if` condition is false",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It runs always",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It never runs",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The `else` block only executes if the `if` condition evaluates to false.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Multiple Choices: `elif` 🧩",
+            "content": "## A Ladder of Tests\n\nFor more than two cases, chain with `elif` (else-if):\n\n```bash\nif [ condition1 ]; then\n   ...\nelif [ condition2 ]; then\n   ...\nelif [ condition3 ]; then\n   ...\nelse\n   default_action\nfi\n```\nIt checks conditions top to bottom and runs the first true block."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Grade Classifier",
+            "content": "Translate a score into a letter grade:",
+            "codeSnippet": "read -p \"Score (0-100): \" score\nif [ $score -ge 90 ]; then\n  grade=\"A\"\nelif [ $score -ge 80 ]; then\n  grade=\"B\"\nelif [ $score -ge 70 ]; then\n  grade=\"C\"\nelif [ $score -ge 60 ]; then\n  grade=\"D\"\nelse\n  grade=\"F\"\nfi\necho \"Your grade: $grade\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "fill_blank",
+                "question": "What keyword is used to add extra conditions between `if` and `else`?",
+                "options": [],
+                "correctAnswer": "elif",
+                "explanation": "`elif` (short for else-if) allows testing multiple conditions sequentially.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Nesting `if` Inside `if` 🪆",
+            "content": "## Deeper Decisions\n\nYou can place an entire `if` statement inside another:\n\n```bash\nif [ condition1 ]; then\n   if [ condition2 ]; then\n      echo \"Both true\"\n   fi\nfi\n```\nUse indentation to keep code readable."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "Nested Security Check",
+            "content": "Check admin and then password:",
+            "codeSnippet": "if [ \"$user\" = \"admin\" ]; then\n   if [ \"$pass\" = \"secret\" ]; then\n     echo \"Access granted\"\n   else\n     echo \"Wrong password\"\n   fi\nelse\n   echo \"Unknown user\"\nfi",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Too many nested `if`s? Consider using `case` or functions to keep your script tidy."
+        }
+    ]
+}

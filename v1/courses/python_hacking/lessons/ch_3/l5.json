@@ -1,0 +1,164 @@
+{
+    "id": "l5",
+    "chapterId": "ch_3",
+    "title": "Type Conversion: Making Data Play Nice 🔄",
+    "description": "Convert between strings, numbers, and more – because input is rarely perfect.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Data Types",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "When Worlds Collide",
+            "content": "# You Can't Add Strings and Integers\n\n```python\n\"Port: \" + 80   # TypeError!\n```\nPython needs explicit conversion. That's where `int()`, `str()`, `float()`, and `bool()` come in. They create new objects of the target type."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "str() – Anything to String",
+            "content": "# Convert Numbers to Text\n\n```python\nport = 80\nmessage = \"Port: \" + str(port)\nprint(message)  # Port: 80\n```\nAlso works on floats and booleans."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "code",
+            "title": "str() Demo",
+            "content": "Concatenate safely:",
+            "codeSnippet": "target = \"192.168.1.1\"\nport = 8080\nresult = target + \":\" + str(port)\nprint(result)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_4",
+            "type": "quiz",
+            "title": "str() 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What does `str(3.14)` return?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "3.14",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "\"3.14\"",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "3",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "str() converts the float to its string representation.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "int() – String to Integer",
+            "content": "# Extract Numbers from Text\n\n```python\nport_str = \"8080\"\nport_num = int(port_str)\nprint(port_num + 1)  # 8081\n```\nThe string must look like a valid integer, else `ValueError`.\n\nAlso works with floats (truncates decimal): `int(9.9)` → `9`."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "code",
+            "title": "int() with Base",
+            "content": "Convert binary/hex strings to integer:",
+            "codeSnippet": "hex_port = \"0x1F90\"\ndec_port = int(hex_port, 16)\nprint(dec_port)  # 8080",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "int() 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "What is the result of `int(\"100\", 2)`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "100",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "4",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "error",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Interpreting the string '100' as base 2 (binary) yields 4 in decimal.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_8",
+            "type": "text",
+            "title": "float() – String to Float",
+            "content": "# When You Need Decimals\n\n```python\nversion = float(\"3.11\")\nprint(version + 0.01)  # 3.12\n```\nWorks similarly to int(), but accepts a decimal point."
+        },
+        {
+            "id": "s_l5_9",
+            "type": "code",
+            "title": "float() Parsing",
+            "content": "Extract timeout from a config:",
+            "codeSnippet": "timeout_str = \"2.5\"\ntimeout_sec = float(timeout_str)\nprint(f\"Timeout set to {timeout_sec}s\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_10",
+            "type": "quiz",
+            "title": "float() 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_3",
+                "type": "true_false",
+                "question": "`float(\"3.14.15\")` will produce 3.14.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "That string has two dots, causing a ValueError.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_11",
+            "type": "text",
+            "title": "bool() – Truthiness to Boolean",
+            "content": "# Convert Any Value to True/False\n\n```python\nprint(bool(1))        # True\nprint(bool(0))        # False\nprint(bool(\"\"))       # False\nprint(bool(\"hack\"))   # True\n```\nUseful when you want to explicitly test emptiness."
+        },
+        {
+            "id": "s_l5_12",
+            "type": "code",
+            "title": "Handling Errors Gracefully",
+            "content": "When conversion fails, Python raises an error. You can catch it (later):",
+            "codeSnippet": "user_input = \"abc\"\ntry:\n    port = int(user_input)\nexcept ValueError:\n    print(\"Invalid port number!\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_13",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use `.isdigit()` to Check First\n\nStrings have a method `.isdigit()` that returns True if all characters are digits. It helps avoid conversion errors."
+        },
+        {
+            "id": "s_l5_14",
+            "type": "text",
+            "title": "Type Juggle Master",
+            "content": "# You Can Now Make Data Cooperate\n\nWith conversion functions, you can handle user input, parse logs, and build flexible tools. Next, we'll make output beautiful with f‑strings."
+        }
+    ]
+}

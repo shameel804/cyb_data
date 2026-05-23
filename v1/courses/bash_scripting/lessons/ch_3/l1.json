@@ -1,0 +1,97 @@
+{
+    "id": "l1",
+    "chapterId": "ch_3",
+    "title": "Meeting Variables 📦",
+    "description": "Discover what variables are, how to create them, and why they’re the backbone of scripting.",
+    "xpReward": 20,
+    "estimatedMinutes": 5,
+    "section": "Variable Basics",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "What is a Variable? 🏷️",
+            "content": "## A Label for Data\n\nImagine you have a box. You put a piece of paper inside that says \"Hello\". You stick a label on the box that says **greeting**. Later, instead of remembering what's inside, you just ask for **greeting**.\n\nIn Bash:\n- A **variable** is a name that stores a value (text, number, etc.).\n- You create it with `NAME=VALUE` (no spaces around `=`).\n- You use it by putting a `$` in front: `$NAME`.\n\nVariables let you reuse data without retyping it."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which of the following correctly creates a variable in Bash?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "name = Alice",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "name=Alice",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "$name=Alice",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Alice=name",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Bash variable assignment has NO spaces around the equal sign. `name=Alice` is correct.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "code",
+            "title": "Your First Variable 🎉",
+            "content": "Create a variable and print it with `echo`.",
+            "codeSnippet": "greeting=\"Hello, Cybron!\"\necho $greeting",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Dollar Sign Magic ✨",
+            "content": "## Referencing Variables\n\nWhen you write `$greeting`, Bash replaces it with the value of `greeting`. This is called **variable expansion**.\n\n- Without `$`, you're talking about the name itself.\n- With `$`, you're asking for the contents.\n\n```bash\ncolor=blue\necho color   # prints 'color'\necho $color  # prints 'blue'\n```"
+        },
+        {
+            "id": "s_l1_5",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "fill_blank",
+                "question": "What symbol do you use before a variable name to get its value?",
+                "options": [],
+                "correctAnswer": "$",
+                "explanation": "The dollar sign `$` triggers variable expansion, giving you the stored value.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_6",
+            "type": "code",
+            "title": "Reusing Variables 🔁",
+            "content": "Change the value and watch the output change.",
+            "codeSnippet": "name=\"Alice\"\necho \"Hello $name\"\nname=\"Bob\"\necho \"Hello $name\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_7",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Capitalise Names\nBy convention, global variables are often UPPERCASE (e.g., `USER`, `HOME`). Your own variables can be lowercase to avoid conflicts."
+        }
+    ]
+}

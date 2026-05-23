@@ -1,0 +1,317 @@
+{
+    "id": "quiz_ch_7",
+    "chapterId": "ch_7",
+    "title": "Chapter 7 Quiz",
+    "description": "Test your mastery of advanced strings, regex, file I/O, paths, and structured data.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What does `','.join(['A','B','C'])` return?",
+            "options": [
+                "A,B,C",
+                "A B C",
+                "ABC",
+                "[A,B,C]"
+            ],
+            "correctAnswer": 0,
+            "explanation": "join() inserts the separator between elements."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "How does `partition()` differ from `split()`?",
+            "options": [
+                "It returns a list",
+                "It splits on the first occurrence and returns a 3‑tuple (before, separator, after)",
+                "It splits on every occurrence",
+                "It only works with digits"
+            ],
+            "correctAnswer": 1,
+            "explanation": "partition() always returns a tuple of three strings."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "Which method checks if a string consists only of digits?",
+            "options": [
+                "isalpha()",
+                "isdigit()",
+                "isalnum()",
+                "isnumeric()"
+            ],
+            "correctAnswer": 1,
+            "explanation": "isdigit() returns True for all‑digit strings."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What does the regex pattern `\\d+` match?",
+            "options": [
+                "Exactly one digit",
+                "One or more digits",
+                "Any character",
+                "A backslash and d"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`\\d` is digit, `+` is one or more."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which function returns all non‑overlapping matches of a pattern in a string?",
+            "options": [
+                "re.search()",
+                "re.match()",
+                "re.findall()",
+                "re.sub()"
+            ],
+            "correctAnswer": 2,
+            "explanation": "findall() returns a list of matches."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "In the regex `r\"User: (\\w+), Role: (\\w+)\"`, what does `(\\w+)` represent?",
+            "options": [
+                "A literal parenthesis",
+                "A capturing group for one or more word characters",
+                "An optional character",
+                "The start of the string"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Parentheses create capturing groups; `\\w+` matches word characters."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "How do you open a file for reading in Python?",
+            "options": [
+                "open('f.txt')",
+                "open('f.txt', 'r')",
+                "Both A and B",
+                "file('f.txt')"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Default mode is 'r', so both are valid."
+        },
+        {
+            "id": "q8",
+            "type": "true_false",
+            "question": "The `with` statement automatically closes the file when the block is exited, even if an exception occurs.",
+            "correctAnswer": true,
+            "explanation": "The context manager guarantees cleanup."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What does `f.readlines()` return?",
+            "options": [
+                "A single string",
+                "A list of lines, each including the newline character",
+                "A generator of lines",
+                "The number of lines"
+            ],
+            "correctAnswer": 1,
+            "explanation": "readlines() returns a list of all lines with newlines."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which file mode overwrites existing content?",
+            "options": [
+                "'r'",
+                "'a'",
+                "'w'",
+                "'x'"
+            ],
+            "correctAnswer": 2,
+            "explanation": "'w' truncates the file before writing."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What is the difference between modes 'a' and 'w'?",
+            "options": [
+                "'a' reads, 'w' writes",
+                "'a' appends data, 'w' overwrites",
+                "'a' is for ASCII, 'w' for text",
+                "No difference"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Append adds to the end; write erases existing content."
+        },
+        {
+            "id": "q12",
+            "type": "fill_blank",
+            "question": "To ensure a directory exists before writing a file, you can use `Path('dir').mkdir(parents=True, ________=True)`.",
+            "options": [
+                "exist_ok",
+                "force",
+                "overwrite",
+                "create"
+            ],
+            "correctAnswer": "exist_ok",
+            "explanation": "`exist_ok=True` prevents an error if the directory already exists."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What does `Path('file.txt').stem` return?",
+            "options": [
+                "file.txt",
+                "file",
+                "txt",
+                "file."
+            ],
+            "correctAnswer": 1,
+            "explanation": "`.stem` is the filename without the extension."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Which method recursively finds all `.log` files under a directory?",
+            "options": [
+                "Path.iterdir()",
+                "Path.rglob('*.log')",
+                "Path.glob('*.log')",
+                "os.listdir()"
+            ],
+            "correctAnswer": 1,
+            "explanation": "rglob (recursive glob) searches all subdirectories."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What does `csv.DictReader` do?",
+            "options": [
+                "Writes dictionaries to a CSV",
+                "Reads CSV rows as dictionaries using the first row as column names",
+                "Reads CSV rows as lists",
+                "Converts CSV to JSON"
+            ],
+            "correctAnswer": 1,
+            "explanation": "DictReader maps header fields to dictionary keys."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which function converts a JSON string to a Python object?",
+            "options": [
+                "json.load()",
+                "json.dumps()",
+                "json.loads()",
+                "json.dump()"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`loads` (load string) parses JSON from a string."
+        },
+        {
+            "id": "q17",
+            "type": "true_false",
+            "question": "JSON keys must always be strings.",
+            "correctAnswer": true,
+            "explanation": "In JSON, object keys are always strings (quoted)."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "How can you safely join two path components?",
+            "options": [
+                "Use string concatenation with '+'",
+                "Use `os.path.join()` or the `/` operator with pathlib Path",
+                "Always use backslashes",
+                "Use a comma"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Both `os.path.join` and the `/` operator handle OS‑specific separators."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What does `re.sub(r'\\s+', ' ', 'a   b')` produce?",
+            "options": [
+                "'a b'",
+                "'a   b'",
+                "'ab'",
+                "'a,b'"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Replaces one or more whitespace with a single space."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Why do we often use `line.strip()` when reading lines from a file?",
+            "options": [
+                "To convert to lowercase",
+                "To remove the trailing newline and surrounding whitespace",
+                "To split the line into words",
+                "To check if the line is empty"
+            ],
+            "correctAnswer": 1,
+            "explanation": "strip() removes `\\n` and any leading/trailing spaces."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "Which mode opens a file for both reading and writing without truncating?",
+            "options": [
+                "'w+'",
+                "'r+'",
+                "'a+'",
+                "'rw'"
+            ],
+            "correctAnswer": 1,
+            "explanation": "'r+' opens for reading and writing, file must exist, no truncation."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "In the regex pattern `r'\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}'`, what does `{1,3}` mean?",
+            "options": [
+                "Exactly 1 or 3 digits",
+                "Between 1 and 3 digits",
+                "At least 3 digits",
+                "1 or 3 repetitions"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`{min,max}` matches between min and max occurrences."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "What is the advantage of using `with open(...) as f:` over `f = open(...); ... ; f.close()`?",
+            "options": [
+                "It's shorter",
+                "It automatically closes the file even if an error occurs",
+                "It's faster",
+                "All of the above"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The context manager ensures cleanup, which is the main benefit."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "Given a list `data = ['host','port','status']`, how to write it as a CSV row using `csv.writer`?",
+            "options": [
+                "writer.write_row(data)",
+                "writer.writerow(data)",
+                "writer.writerows([data])",
+                "Both B and C"
+            ],
+            "correctAnswer": 3,
+            "explanation": "`writerow` writes one list as a row; `writerows` takes list of rows."
+        },
+        {
+            "id": "q25",
+            "type": "true_false",
+            "question": "In Python, JSON and Python dicts are identical in structure (keys don't have to be strings).",
+            "correctAnswer": false,
+            "explanation": "JSON keys must be strings; Python dict keys can be many types."
+        }
+    ]
+}

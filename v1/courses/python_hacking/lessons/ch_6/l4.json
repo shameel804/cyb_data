@@ -1,0 +1,149 @@
+{
+    "id": "l4",
+    "chapterId": "ch_6",
+    "title": "Scope & Lifetime: Where Variables Live 🌍",
+    "description": "Master local vs global variables to avoid bugs and keep your code secure.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Functions",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Variables Aren't Visible Everywhere",
+            "content": "# Scope Determines Where a Name is Valid\n\n* **Local scope**: variables defined inside a function. They exist only while the function runs.\n* **Global scope**: variables defined at the top level of a script. Accessible everywhere, but dangerous.\n\n```python\ntarget = \"global_host\"  # global variable\n\ndef scan():\n    local_port = 80     # local variable\n    print(target)       # can see global\nscan()\nprint(local_port)       # Error! local_port doesn't exist here\n```"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Local vs Global",
+            "content": "Test it:",
+            "codeSnippet": "x = 10\ndef change():\n    x = 20\n    print(\"Inside:\", x)\nchange()\nprint(\"Outside:\", x)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Scope Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What is the output of the previous code?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Inside: 20 Outside: 10",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Inside: 20 Outside: 20",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Inside: 10 Outside: 10",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Assigning `x = 20` inside the function creates a new local variable; the global `x` is unchanged.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "The `global` Keyword – Modifying Globals",
+            "content": "# If You Must Change a Global Variable\n\n```python\nopen_ports = []\n\ndef add_port(port):\n    global open_ports\n    open_ports.append(port)\n```\n`global` tells Python you're referring to the global variable. Use sparingly! Too many globals make code hard to debug and test."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "global Demo",
+            "content": "Track scan results:",
+            "codeSnippet": "scanned = 0\ndef scan():\n    global scanned\n    scanned += 1\n    print(\"Scans:\", scanned)\nscan()\nscan()",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "global 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "You need the `global` keyword to read a global variable inside a function.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "Reading does not require `global`; only assigning to the global name does.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "The LEGB Rule for Name Resolution",
+            "content": "# Python Searches in This Order:\n\n1. **L**ocal – inside the current function\n2. **E**nclosing – any outer functions (nested)\n3. **G**lobal – module level\n4. **B**uilt-in – built‑in names like `print`, `len`\n\nThis is why local variables can shadow (hide) globals."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "code",
+            "title": "Enclosing Scope (Nested Functions)",
+            "content": "Demonstrate LEGB:",
+            "codeSnippet": "x = \"global\"\ndef outer():\n    x = \"outer\"\n    def inner():\n        print(\"Inner:\", x)  # enclosing\n    inner()\n    print(\"Outer:\", x)\nouter()\nprint(\"Global:\", x)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_9",
+            "type": "quiz",
+            "title": "LEGB 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "multiple_choice",
+                "question": "What does `inner()` print?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "global",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "outer",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Error",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The nearest enclosing scope defines `x = \"outer\"`, so inner sees that.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_10",
+            "type": "text",
+            "title": "Nonlocal – Modifying Enclosing Variables",
+            "content": "# Inside a Nested Function\n\n```python\ndef outer():\n    count = 0\n    def inner():\n        nonlocal count\n        count += 1\n        return count\n    return inner\n\ncounter = outer()\nprint(counter())  # 1\nprint(counter())  # 2\n```\n`nonlocal` works like `global` but for the enclosing (non‑global) scope."
+        },
+        {
+            "id": "s_l4_11",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Minimize Global State\n\nInstead of globals, return values and pass them as parameters. Functions should be self‑contained testable units. This is especially important in security tools where unintended state can cause vulnerabilities."
+        },
+        {
+            "id": "s_l4_12",
+            "type": "text",
+            "title": "Scope Under Control",
+            "content": "# Next: Tiny Anonymous Functions\n\nNow you know how variables live and die. Let's explore lambda functions – one‑liners for quick jobs."
+        }
+    ]
+}

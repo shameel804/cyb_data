@@ -1,0 +1,247 @@
+{
+    "id": "quiz_ch_8",
+    "chapterId": "ch_8",
+    "title": "Chapter 8 Quiz: Application Security & DevSecOps",
+    "description": "Test your knowledge of DevSecOps, CI/CD security, API protection, and WAFs.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the main philosophy behind DevSecOps?",
+            "options": [
+                "Security is added after development is complete",
+                "Security is integrated into every stage of the development lifecycle",
+                "Only the security team handles security",
+                "Developers should not worry about security"
+            ],
+            "correctAnswer": 1,
+            "explanation": "DevSecOps shifts security left, making it a continuous and shared responsibility."
+        },
+        {
+            "id": "q2",
+            "type": "fill_blank",
+            "question": "The practice of performing security tests early in the SDLC is known as shifting ______.",
+            "options": [
+                "right",
+                "left",
+                "up",
+                "down"
+            ],
+            "correctAnswer": "left",
+            "explanation": "Shifting left means starting security activities earlier in the development process."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "SAST tools scan running applications for vulnerabilities.",
+            "correctAnswer": false,
+            "explanation": "SAST (Static Application Security Testing) analyzes source code without executing it."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which type of tool would you use to find a known CVE in a Node.js library?",
+            "options": [
+                "SAST",
+                "SCA (Dependency Scanning)",
+                "DAST",
+                "WAF"
+            ],
+            "correctAnswer": 1,
+            "explanation": "SCA tools check third‑party libraries against vulnerability databases like NVD."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What is the best way to store a database password used by a CI/CD pipeline?",
+            "options": [
+                "Hardcode it in the pipeline script",
+                "Store it in a secrets manager and retrieve it at runtime",
+                "Commit it to the git repository in an encrypted file",
+                "Set it as an environment variable in plaintext in the build agent"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Secrets managers provide encryption, access control, and rotation. Hardcoding leads to breaches."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "A developer accidentally pushes an AWS access key to GitHub. The key should be rotated immediately, and a secret scanner should be added to the CI pipeline.",
+            "correctAnswer": true,
+            "explanation": "Once exposed, keys must be rotated. Pre‑commit and pipeline scanners help prevent future leaks."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Broken Object Level Authorization (BOLA) in an API occurs when:",
+            "options": [
+                "The API is not using HTTPS",
+                "The API fails to check if the requester owns the requested object",
+                "The API has no rate limiting",
+                "The API uses JWT instead of OAuth"
+            ],
+            "correctAnswer": 1,
+            "explanation": "BOLA is caused by missing or weak object ownership checks, e.g., user can access another user's data by changing an ID."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which cloud service provides a managed Web Application Firewall?",
+            "options": [
+                "AWS KMS",
+                "AWS WAF",
+                "Amazon GuardDuty",
+                "AWS Shield"
+            ],
+            "correctAnswer": 1,
+            "explanation": "AWS WAF is a web application firewall that protects against common exploits."
+        },
+        {
+            "id": "q9",
+            "type": "fill_blank",
+            "question": "A WAF operates at Layer ______ of the OSI model.",
+            "options": [
+                "3",
+                "4",
+                "7",
+                "2"
+            ],
+            "correctAnswer": "7",
+            "explanation": "WAFs inspect HTTP traffic, which is application layer (Layer 7)."
+        },
+        {
+            "id": "q10",
+            "type": "true_false",
+            "question": "Rate limiting is an effective defense against credential stuffing attacks.",
+            "correctAnswer": true,
+            "explanation": "Rate limiting restricts the number of login attempts per IP/user, slowing down credential stuffing."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which type of security testing requires the application to be running?",
+            "options": [
+                "SAST",
+                "DAST",
+                "Secret scanning",
+                "Dependency scanning"
+            ],
+            "correctAnswer": 1,
+            "explanation": "DAST tests a live, running application by sending malicious requests."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is the primary function of a JWT (JSON Web Token) in API security?",
+            "options": [
+                "Encrypt all API traffic",
+                "Provide a signed, verifiable token containing user claims",
+                "Rate limit requests",
+                "Scan for SQL injection"
+            ],
+            "correctAnswer": 1,
+            "explanation": "JWT is used for stateless authentication and authorization, carrying signed claims."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which AWS service can act as an authorizer for an API Gateway, validating JWT tokens?",
+            "options": [
+                "Amazon S3",
+                "AWS Lambda",
+                "AWS WAF",
+                "Amazon CloudFront"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Lambda authorizers (custom authorizers) validate tokens and generate IAM policies."
+        },
+        {
+            "id": "q14",
+            "type": "true_false",
+            "question": "Input validation should only be performed on the client side for better performance.",
+            "correctAnswer": false,
+            "explanation": "Client‑side validation can be bypassed. Server‑side validation is mandatory for security."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "An organization wants to test how their application reacts to SQL injection without affecting real users. Which approach is best?",
+            "options": [
+                "Run SAST on the source code",
+                "Run DAST against a staging environment",
+                "Deploy a WAF in production",
+                "Perform a code review"
+            ],
+            "correctAnswer": 1,
+            "explanation": "DAST simulates attacks on a live staging instance safely."
+        },
+        {
+            "id": "q16",
+            "type": "fill_blank",
+            "question": "The DevSecOps model relies on the three pillars: People, Process, and ______.",
+            "options": [
+                "Technology",
+                "Profit",
+                "Planning",
+                "Power"
+            ],
+            "correctAnswer": "Technology",
+            "explanation": "People, process, and technology together enable a successful DevSecOps culture."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which WAF rule action should you use initially when deploying a new rule to avoid false positives?",
+            "options": [
+                "Block",
+                "Allow",
+                "Count",
+                "CAPTCHA"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Count mode logs matches without blocking, allowing you to tune the rule."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "IAST tools require an agent inside the application and can identify the exact line of vulnerable code.",
+            "correctAnswer": true,
+            "explanation": "IAST combines static and dynamic analysis by instrumenting the running application."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is the main benefit of using an API gateway like Amazon API Gateway?",
+            "options": [
+                "It replaces the need for a database",
+                "It centralizes authentication, rate limiting, and request validation",
+                "It makes applications run faster",
+                "It automatically fixes all code bugs"
+            ],
+            "correctAnswer": 1,
+            "explanation": "API gateways provide a single control point for API security policies."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which tool can prevent you from accidentally committing secrets into a Git repository?",
+            "options": [
+                "SonarQube",
+                "truffleHog",
+                "OWASP ZAP",
+                "AWS WAF"
+            ],
+            "correctAnswer": 1,
+            "explanation": "truffleHog scans git history for high‑entropy strings and known secret patterns."
+        },
+        {
+            "id": "q21",
+            "type": "true_false",
+            "question": "A WAF can replace the need for secure coding practices.",
+            "correctAnswer": false,
+            "explanation": "WAF is a safety net, not a substitute for fixing vulnerabilities at the source code level."
+        }
+    ]
+}

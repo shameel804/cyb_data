@@ -1,0 +1,104 @@
+{
+    "id": "l3",
+    "chapterId": "ch_10",
+    "title": "Building a TCP Client & Server 🖥️↔️💻",
+    "description": "Write a complete echo client and server, learning about bind, listen, accept, and data exchange.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Networking",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Server Side: Bind, Listen, Accept",
+            "content": "# The Server Lifecycle\n\n1. Create a socket.\n2. **`bind((host, port))`** – claim a port on the machine.\n3. **`listen(backlog)`** – start listening for connections.\n4. **`accept()`** – block until a client connects; returns a new socket and client address.\n5. Communicate with the client using the new socket.\n6. Close."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Minimal TCP Server",
+            "content": "An echo server that sends back whatever it receives:",
+            "codeSnippet": "import socket\n\nHOST = '127.0.0.1'  # localhost\nPORT = 9999\n\nwith socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:\n    server.bind((HOST, PORT))\n    server.listen(1)\n    print(f\"Listening on {HOST}:{PORT}\")\n    conn, addr = server.accept()\n    with conn:\n        print(f\"Connected by {addr}\")\n        data = conn.recv(1024)\n        if data:\n            conn.sendall(data)\n        print(\"Data echoed.\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Server Steps 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What does `bind()` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Connects to a remote host",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Assigns a local address and port to the socket",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Starts listening for connections",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "bind() tells the OS 'I want to use this port'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "The Client Side",
+            "content": "# Connect and Send\n\n```python\nimport socket\n\nwith socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client:\n    client.connect(('127.0.0.1', 9999))\n    client.sendall(b'Hello, Server!')\n    data = client.recv(1024)\n    print('Received:', repr(data))\n```\nThe client sends data and then waits for the response."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Complete Echo Client",
+            "content": "Run after the server is started:",
+            "codeSnippet": "import socket\n\nHOST = '127.0.0.1'\nPORT = 9999\n\nwith socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:\n    s.connect((HOST, PORT))\n    s.sendall(b'Echo this!')\n    data = s.recv(1024)\n    print(data.decode())",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Client‑Server 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "The `accept()` method returns a new socket dedicated to the client connection.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "The original server socket continues listening; accept returns a new socket for communication.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Handling Multiple Clients (Briefly)",
+            "content": "# The simple server above handles one client. To handle many, we'd loop `accept()` or use threading. For now, understand the single‑client flow. Later, we can extend."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "warning",
+            "title": "Port Already in Use",
+            "content": "## If you get `Address already in use`\n\nThat means the port is still held by a previous run. Use `server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)` before `bind()` to allow reuse."
+        },
+        {
+            "id": "s_l3_9",
+            "type": "text",
+            "title": "Next: Port Scanning",
+            "content": "# Now that you can connect, we'll try many ports rapidly – this is a port scanner!"
+        }
+    ]
+}

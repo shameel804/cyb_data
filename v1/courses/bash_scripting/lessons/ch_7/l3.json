@@ -1,0 +1,120 @@
+{
+    "id": "l3",
+    "chapterId": "ch_7",
+    "title": "Cutting & Sorting Data ✂️",
+    "description": "Extract columns with cut, order lines with sort, and remove duplicates with uniq.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Data Manipulation",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The `cut` Command ✂️",
+            "content": "## Slice and Dice Text\n\n`cut` extracts sections from each line of a file:\n- `-d` – delimiter (default TAB).\n- `-f` – field number(s) to extract (e.g., `-f1,3` or `-f1-3`).\n- `-c` – character positions.\n\nExample: `cut -d: -f1,7 /etc/passwd` (username and shell)."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "cut in Action",
+            "content": "Extract usernames from /etc/passwd:",
+            "codeSnippet": "cut -d: -f1 /etc/passwd | head -n 5",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What would `cut -d, -f2 data.csv` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Delete the second field",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Print only the second comma‑separated field",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Print the first two fields",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Count commas in the file",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-d,` sets comma as delimiter; `-f2` extracts the second field.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Sorting with `sort` 📊",
+            "content": "## Bring Order to Chaos\n\n`sort` sorts lines alphabetically or numerically:\n- `-n` – numeric sort.\n- `-r` – reverse order.\n- `-k` – sort by a specific column (e.g., `-k2`).\n- `-t` – field delimiter.\n- `-u` – unique (remove duplicates; but `uniq` is more common)."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Sort by Size",
+            "content": "List files sorted by size (human‑readable):",
+            "codeSnippet": "ls -lh | sort -hk5",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "`sort` without options arranges lines in reverse alphabetical order.",
+                "correctAnswer": false,
+                "explanation": "Default sort is ascending alphabetical (A–Z, a–z).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Removing Duplicates with `uniq` 🧹",
+            "content": "## Only Adjacent Lines\n\n`uniq` filters out repeated lines that are **adjacent**. Often paired with `sort`:\n- `sort file | uniq` – returns unique lines.\n- `-c` – prefix lines with count of occurrences.\n- `-d` – only print duplicate lines.\n- `-u` – only print unique (non‑duplicate) lines."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "code",
+            "title": "uniq with Count",
+            "content": "Find how many times each word appears:",
+            "codeSnippet": "echo -e \"apple\\nbanana\\napple\" | sort | uniq -c",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_9",
+            "type": "code",
+            "title": "A Complete Pipeline 🔗",
+            "content": "Extract shells from /etc/passwd, count usage, and show most popular:",
+            "codeSnippet": "cut -d: -f7 /etc/passwd | sort | uniq -c | sort -nr",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Always `sort` before `uniq`. The combination `sort -u` often replaces `sort | uniq` in a single command."
+        }
+    ]
+}

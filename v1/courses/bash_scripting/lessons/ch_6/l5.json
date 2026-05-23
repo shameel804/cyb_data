@@ -1,0 +1,118 @@
+{
+    "id": "l5",
+    "chapterId": "ch_6",
+    "title": "Advanced Functions & Best Practices 🏗️",
+    "description": "Explore recursion, error handling, naming conventions, and writing robust function libraries.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Mastery",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Recursion: A Function Calling Itself 🔄",
+            "content": "## The Hall of Mirrors\n\nA **recursive** function calls itself to solve a smaller version of the same problem. Every recursive function needs:\n- A **base case** that stops the recursion.\n- A **recursive step** that moves closer to the base case.\n\nExample: factorial: `n! = n * (n-1)!` with `1! = 1`."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "Factorial Function",
+            "content": "Recursive implementation:",
+            "codeSnippet": "factorial() {\n  if [ $1 -le 1 ]; then\n    echo 1\n  else\n    local prev=$(factorial $(( $1 - 1 )))\n    echo $(( $1 * prev ))\n  fi\n}\nresult=$(factorial 5)\necho \"5! = $result\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What must every recursive function have to avoid infinite loops?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A loop",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A local variable",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A base case (stopping condition)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A return statement",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The base case returns a value without further recursion, preventing infinite calls.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Robust Error Handling 🚨",
+            "content": "## Your Function as a Black Box\n\nA well‑written function:\n- Checks its input (`$#` for correct number, `-z` for emptiness).\n- Returns a meaningful exit code (0 for success, 1 for failure, etc.).\n- Prints error messages to stderr: `echo \"Error: ...\" >&2`.\n- Does NOT exit the whole script unless it's intended; use `return` instead."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "Safe Copy Function",
+            "content": "Validate and report:",
+            "codeSnippet": "safe_copy() {\n  if [ $# -ne 2 ]; then\n    echo \"Usage: safe_copy src dst\" >&2\n    return 1\n  fi\n  cp \"$1\" \"$2\" 2>/dev/null\n  if [ $? -eq 0 ]; then\n    echo \"Copied $1 to $2\"\n    return 0\n  else\n    echo \"Copy failed\" >&2\n    return 1\n  fi\n}",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "fill_blank",
+                "question": "To send an error message from a function to the script's stderr, you write `echo \"Error\" ___`.",
+                "options": [],
+                "correctAnswer": ">&2",
+                "explanation": "`>&2` redirects the `echo` output to standard error, keeping it separate from normal output.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Naming and Documentation 📝",
+            "content": "## Code That Speaks\n\n- Use lowercase names with underscores: `parse_log()`, `send_alert()`.\n- Prefix “internal” helpers with `_` to indicate they are private: `_validate`.\n- Add a comment block above each function:\n```bash\n# Usage: get_extension filename\n# Returns: file extension without dot\n```"
+        },
+        {
+            "id": "s_l5_8",
+            "type": "text",
+            "title": "Avoiding Side Effects 💊",
+            "content": "## Be a Good Neighbour\n\n- Always `local` your loop counters and temporary variables.\n- Do not change global state unless explicitly designed (e.g., a `main` function).\n- Prefer `echo` for output, `return` for status.\n- Use `trap` to clean up temporary files if the function fails (advanced)."
+        },
+        {
+            "id": "s_l5_9",
+            "type": "code",
+            "title": "Main Pattern",
+            "content": "Wrap the whole script logic in a `main` function:\n```bash\nmain() {\n  parse_args \"$@\"\n  process_files\n}\nmain \"$@\"\n```\nThis keeps the script organised and testable.",
+            "codeSnippet": "main() {\n  echo \"Starting...\"\n  # ...\n}\nmain \"$@\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `type -t function_name` to check if a function exists before calling it. Returns `function` if defined, else empty."
+        }
+    ]
+}

@@ -1,0 +1,118 @@
+{
+    "id": "l1",
+    "chapterId": "ch_6",
+    "title": "Why Functions? Automate & Reuse 🧩",
+    "description": "Understand the power of functions – turning spaghetti code into a clean, modular toolkit.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Functions",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Don't Repeat Yourself (DRY)",
+            "content": "# Functions: The Cure for Repetitive Code\n\nEver copied and pasted the same scan logic into five different scripts? That's a maintenance nightmare. **Functions** let you define a block of code once and call it whenever needed.\n\nThink of a function like a recipe: you write the ingredients and steps, then bake a cake whenever you want."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "code",
+            "title": "From Spaghetti to Lasagna",
+            "content": "Without function:\n```python\n# check port on host1\nif port_open(\"10.0.0.1\", 80):\n    print(\"Open\")\n# check port on host2\nif port_open(\"10.0.0.2\", 80):\n    print(\"Open\")\n```\nWith function:\n```python\ndef scan_port(host, port):\n    # complex logic here\n    return is_open\n```\nNow you just call `scan_port(host, port)` anytime!",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Why Functions? 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the primary benefit of using functions?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Making the code run faster",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Avoiding repetition and organizing code logically",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Hiding all code from the user",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Functions promote code reuse, readability, and modularity.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Defining a Function – The Syntax 📐",
+            "content": "# `def function_name(parameters):`\n\n```python\ndef greet():\n    print(\"Hello, Hacker!\")\n```\n* **`def`** keyword tells Python \"I'm about to define a function\"\n* **`greet`** is the function name (follow variable naming rules)\n* **Parentheses** `()` can hold optional parameters (we'll add them soon)\n* **Colon** `:` ends the header\n* **Indented block** is the function body"
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Calling a Function",
+            "content": "Define then call:",
+            "codeSnippet": "def greet():\n    print(\"Target acquired!\")\n\ngreet()\ngreet()",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Define & Call 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "What is the output of this?\n```python\ndef show():\n    print(\"A\")\nshow()\nshow()\n```",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A (once)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A A",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Error",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The function is called twice, each printing 'A'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "Why Functions Are Crucial in Hacking",
+            "content": "# Build Your Own Toolkit\n\n* **Scanning:** `scan_tcp(host, port)` – use it everywhere\n* **Brute-force:** `try_login(user, passwd)` – loop over lists\n* **Parsing:** `extract_banner(data)` – process responses\n* **Reporting:** `log_result(message)` – consistent output\n\nEach function acts like a micro‑tool. You combine them into a full weapon."
+        },
+        {
+            "id": "s_l1_8",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Naming Functions: Verb + Noun\n\nUse descriptive names like `check_port()`, `calculate_hash()`, `parse_banner()`. It makes your code read like English."
+        },
+        {
+            "id": "s_l1_9",
+            "type": "text",
+            "title": "Next: Passing Data In",
+            "content": "# Now We Need Parameters\n\nYour functions can't only print fixed text. Let's teach them to accept input so they become truly reusable."
+        }
+    ]
+}

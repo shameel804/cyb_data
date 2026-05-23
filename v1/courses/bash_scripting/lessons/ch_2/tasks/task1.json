@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_2",
+    "title": "Explorer's Journal",
+    "description": "Create a directory structure for a project and navigate it, listing contents at each step.",
+    "estimatedMinutes": 10,
+    "problemStatement": "As an interstellar archivist, you must organise a new mission's data. Follow these steps exactly:\n\n1. From your home directory, create a folder called `mission-logs`.\n2. Inside `mission-logs`, create three subfolders: `captain`, `science`, `engineer`.\n3. Navigate into the `science` folder.\n4. Using relative paths, create a file named `scan.txt` inside the `captain` folder (hint: use touch with a relative path).\n5. Go back to `mission-logs` and list all its contents, including hidden files.\n6. Show the long listing of the `captain` directory from the `mission-logs` folder using a relative path.\n\nDocument each command you used as comments in a script called `explorer.sh`. Make it executable and run it.",
+    "hints": [
+        "Use `mkdir -p` to create nested directories in one line.",
+        "`touch` can create files in other directories: `touch ../captain/scan.txt` from `science`.",
+        "To list all files: `ls -la`.",
+        "Relative path: `ls -l captain` from the parent."
+    ],
+    "expectedOutput": "Directories created: mission-logs/captain, science, engineer. File scan.txt exists in captain. Listing shows all three dirs and potentially scan.txt.",
+    "solutionCode": "#!/bin/bash\n# Explorer's Journal Script\n\ncd ~  # ensure starting at home\nmkdir -p mission-logs/{captain,science,engineer}\ncd mission-logs/science\ntouch ../captain/scan.txt\ncd ..  # back to mission-logs\necho \"Contents of mission-logs (including hidden):\"\nls -la\necho \"Long listing of captain directory:\"\nls -l captain"
+}

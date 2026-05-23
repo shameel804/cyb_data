@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_9",
+    "title": "Simple Command‑Line Scanner",
+    "description": "Accept a target IP and port range from command‑line arguments using sys.argv and scan using simulated function.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Create a script `cli_scanner.py` that reads command‑line arguments: the first argument is the target IP, the second is the start port, and the third is the end port. If arguments are missing, print usage and exit. Then, using a loop, print \"Scanning <IP> port <port>...\" for each port in the range (inclusive).\n\nExample: `python cli_scanner.py 192.168.1.1 20 25` should output:\n```\nScanning 192.168.1.1 port 20...\nScanning 192.168.1.1 port 21...\n...\nScanning 192.168.1.1 port 25...\n```\n\nSince we can't pass real command‑line args in this environment, simulate by assigning to sys.argv at the top of your script for testing, but structure the code as if real. Use `sys.argv`.",
+    "hints": [
+        "Check `len(sys.argv) < 4`, print usage and sys.exit(1).",
+        "Convert port args to int with try/except in case of invalid input.",
+        "Loop `for port in range(start, end+1):`.",
+        "Use f‑strings for output."
+    ],
+    "expectedOutput": "Scanning messages for each port in range.",
+    "solutionCode": "import sys\n\n# Simulate command line for testing\nif len(sys.argv) < 4:\n    sys.argv = ['cli_scanner.py', '192.168.1.1', '20', '25']\n\nif len(sys.argv) < 4:\n    print(\"Usage: python cli_scanner.py <target> <start_port> <end_port>\")\n    sys.exit(1)\n\ntarget = sys.argv[1]\ntry:\n    start = int(sys.argv[2])\n    end = int(sys.argv[3])\nexcept ValueError:\n    print(\"Ports must be integers\")\n    sys.exit(1)\n\nfor port in range(start, end+1):\n    print(f\"Scanning {target} port {port}...\")\n"
+}

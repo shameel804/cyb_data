@@ -1,0 +1,103 @@
+{
+    "id": "l1",
+    "chapterId": "ch_6",
+    "title": "Functions: Your Script's Toolkit 🧰",
+    "description": "Learn what functions are, how to define and call them, and why they make your scripts modular.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Function Basics",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "What is a Function? 🍰",
+            "content": "## A Reusable Recipe\n\nImagine you have a favourite cake recipe. Instead of writing the steps every time you bake, you write them once on a card and just refer to the card. A **function** is that recipe card for Bash commands.\n\n- Group commands under a name.\n- Call the name to run the whole block.\n- Avoid repetition, reduce errors, and make scripts easier to read."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "code",
+            "title": "Defining a Function ✍️",
+            "content": "Two equivalent syntaxes (both valid):\n```bash\nfunction_name() {\n  commands\n}\n```\n```bash\nfunction function_name {\n  commands\n}\n```",
+            "codeSnippet": "say_hello() {\n  echo \"Hello, World!\"\n}\nsay_hello",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "How do you call a function named `deploy` in Bash?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "call deploy",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "deploy",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "deploy()",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "function deploy",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Simply use the function name as a command. The parentheses are only used in the definition.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Why Bother? 🤷",
+            "content": "## The DRY Principle: Don't Repeat Yourself\n\n- **Maintainability**: Change code once, not in twenty places.\n- **Readability**: `check_disk_space` is clearer than 15 lines of `df` and `awk`.\n- **Testability**: Test a function independently of the rest of the script.\n- **Reusability**: Copy or source the function into other scripts."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Function with Parameters",
+            "content": "A function can accept arguments just like a script:",
+            "codeSnippet": "greet() {\n  echo \"Hello, $1!\"\n}\ngreet \"Cybron\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "fill_blank",
+                "question": "If you call `greet Alice Bob`, what does `$1` inside the function hold?",
+                "options": [],
+                "correctAnswer": "Alice",
+                "explanation": "`$1` is the first argument, so 'Alice'. `$2` would be 'Bob'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "Definition Before Call ⏳",
+            "content": "## Order Matters\n\nBash reads the script top to bottom. You must **define** a function before you **call** it.\n\n```bash\n# Wrong – error\nhello\nhello() { echo hi; }\n\n# Correct\nhello() { echo hi; }\nhello\n```"
+        },
+        {
+            "id": "s_l1_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Name functions with a verb‑noun style: `backup_files`, `validate_input`, `print_help`. This makes your code self‑documenting."
+        }
+    ]
+}

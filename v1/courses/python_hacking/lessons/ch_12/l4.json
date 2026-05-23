@@ -1,0 +1,98 @@
+{
+    "id": "l4",
+    "chapterId": "ch_12",
+    "title": "Web Recon Module: HTTP/HTTPS Probes 🌐",
+    "description": "Fetch HTTP headers, page titles, and server info using `requests` and `BeautifulSoup`.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Building the Tool",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Why a Separate Web Module?",
+            "content": "# HTTP/HTTPS are Special\n\nPort 80 and 443 indicate web servers, but they deserve deeper inspection. We can:\n- Fetch HTTP headers (Server, X‑Powered‑By, etc.)\n- Get the page title\n- Detect technologies (WordPress, Apache, etc.)\n\nWe'll create `web.py` with a function `web_recon(host, port=80, use_ssl=False)` that returns a dict with the gathered info."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Basic HTTP Recon Function",
+            "content": "Using `requests`:",
+            "codeSnippet": "import requests\nfrom bs4 import BeautifulSoup\n\ndef web_recon(host, port=80, use_ssl=False, timeout=5):\n    scheme = 'https' if use_ssl else 'http'\n    url = f\"{scheme}://{host}:{port}\"\n    try:\n        resp = requests.get(url, timeout=timeout, allow_redirects=True)\n        resp.raise_for_status()\n        soup = BeautifulSoup(resp.text, 'html.parser')\n        title = soup.title.string.strip() if soup.title else 'No title'\n        headers = dict(resp.headers)\n        return {\n            'status_code': resp.status_code,\n            'title': title,\n            'server': headers.get('Server', 'Unknown'),\n            'content_type': headers.get('Content-Type', ''),\n            'headers': headers\n        }\n    except Exception as e:\n        return {'error': str(e)}",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Web Recon 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What does `allow_redirects=True` do in `requests.get`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Prevents redirects",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Follows HTTP redirects automatically",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Sends a redirect response",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "It follows 3xx redirects like a browser.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Handling SSL/TLS Errors",
+            "content": "# Self‑Signed Certificates\n\nDuring internal pen tests, you'll encounter servers with invalid certificates. Set `verify=False` to ignore SSL errors (with a warning suppression).\n\n```python\nimport urllib3\nurllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)\nresp = requests.get(url, verify=False)\n```\nBut be cautious – only use in a controlled lab."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Improved web_recon with SSL Ignore",
+            "content": "Add an `ignore_ssl` parameter:",
+            "codeSnippet": "def web_recon(host, port=80, use_ssl=False, timeout=5, ignore_ssl=False):\n    scheme = 'https' if use_ssl else 'http'\n    url = f\"{scheme}://{host}:{port}\"\n    try:\n        verify = not ignore_ssl\n        resp = requests.get(url, timeout=timeout, verify=verify)\n        # ... rest\n    except requests.exceptions.SSLError as e:\n        if ignore_ssl:\n            return web_recon(host, port, use_ssl, timeout, ignore_ssl=False)  # fallback?\n        else:\n            return {'error': f'SSL Error: {e}'}\n    except Exception as e:\n        return {'error': str(e)}",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "SSL Handling 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "Setting `verify=False` in a production hacking tool is always safe.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "It disables SSL certificate validation, making you vulnerable to MITM attacks. Use only on trusted internal networks.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Technology Fingerprinting",
+            "content": "# Beyond Headers\n\nYou can search the HTML for keywords like `wp-content` (WordPress), `jquery`, or generator meta tags to identify technologies.\n\n```python\nif 'wp-content' in resp.text:\n    print('WordPress detected')\n```\nWe can add simple fingerprints to `web_recon`."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "text",
+            "title": "Web Module Ready",
+            "content": "# We'll save this in `web.py`\n\nIt will be called from `main.py` for ports 80 and 443. Next, let's assemble everything."
+        }
+    ]
+}

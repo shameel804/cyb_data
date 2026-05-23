@@ -1,0 +1,112 @@
+{
+    "id": "l3",
+    "chapterId": "ch_9",
+    "title": "Managing Cron Jobs 🛠️",
+    "description": "List, edit, backup, and remove crontab entries. Understand system‑wide cron directories.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Cron Management",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Common Crontab Commands 🧾",
+            "content": "## Beyond `-l` and `-e`\n\n- `crontab -e` – edit the user's crontab.\n- `crontab -l` – list jobs.\n- `crontab -r` – remove the entire crontab (careful!).\n- `crontab filename` – install a crontab from a file (overwrites existing).\n- `crontab -u username -l` – view another user's crontab (requires root)."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Backup Your Crontab",
+            "content": "Save your current jobs to a file:",
+            "codeSnippet": "crontab -l > mycron.backup",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "How do you delete all your cron jobs?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "crontab -d",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "crontab -r",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "crontab -e and delete lines manually",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "crontab -c",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`-r` removes the crontab entirely. Editing and deleting lines also works, but `-r` is the nuclear option.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Editing Tips ✍️",
+            "content": "## Avoiding Mistakes\n\n- Always backup: `crontab -l > backup`.\n- After editing, list again to verify: `crontab -l`.\n- Use comments (`#`) to document jobs.\n- Set `MAILTO=\"\"` to disable email (cron emails output to the user by default).\n- Set `SHELL=/bin/bash` at the top if you need Bash‑specific features."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "A Well‑Organised Crontab",
+            "content": "Example:",
+            "codeSnippet": "SHELL=/bin/bash\nMAILTO=admin@example.com\n# Backup every night at 2:05 AM\n5 2 * * * /opt/backup.sh\n# Disk usage report every Monday at 9 AM\n0 9 * * 1 /opt/report.sh",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "fill_blank",
+                "question": "To disable email from cron, set the variable `___=\"\"` in the crontab.",
+                "options": [],
+                "correctAnswer": "MAILTO",
+                "explanation": "Setting `MAILTO=\"\"` (empty string) prevents cron from sending mail.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "System‑Wide Cron Directories 📂",
+            "content": "## The `/etc/cron.d`, `cron.daily` etc.\n\nBesides user crontabs, there are system directories:\n- `/etc/crontab` – system‑wide crontab (root only).\n- `/etc/cron.d/` – extra system crontab files.\n- `/etc/cron.hourly/`, `cron.daily/`, `cron.weekly/`, `cron.monthly/` – directories containing scripts run at those intervals (managed by `run-parts`).\n\nYou rarely need these unless you're a system admin."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "code",
+            "title": "List System Cron Jobs",
+            "content": "Look at the system crontab (requires sudo):",
+            "codeSnippet": "cat /etc/crontab",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "If you need root privileges for a cron job, use `sudo crontab -e` to edit the root user's crontab."
+        }
+    ]
+}

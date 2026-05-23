@@ -1,0 +1,119 @@
+{
+    "id": "l4",
+    "chapterId": "ch_10",
+    "title": "Port Scanning: The Connect Scan 🔍",
+    "description": "Automate port discovery by attempting TCP connections – build a basic but effective port scanner.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Scanning",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "What is a Port Scan?",
+            "content": "# Find Open Doors\n\nA port scanner tries to connect to a range of ports on a target. If the connection succeeds, the port is open (listening). If it's refused, the port is closed. If it times out, it might be filtered by a firewall.\n\nWe'll build a simple TCP connect scan. It's the most reliable but also the easiest to detect."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Basic Connect Scan Loop",
+            "content": "Scan ports 75-85 on localhost:",
+            "codeSnippet": "import socket\n\ntarget = '127.0.0.1'\nfor port in range(75, 86):\n    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n    s.settimeout(0.5)\n    result = s.connect_ex((target, port))\n    if result == 0:\n        print(f\"Port {port}: OPEN\")\n    s.close()",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "connect_ex() 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Why use `connect_ex()` instead of `connect()` for scanning?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It's faster",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It returns an error code instead of raising an exception",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It encrypts the connection",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "connect_ex() returns 0 on success, otherwise an error number, so we can easily check without try/except.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Handling Timeouts & Firewalls",
+            "content": "# A port that doesn't respond could be filtered\n\nIf a firewall silently drops packets, `connect_ex()` will eventually timeout (or return an error like `ETIMEDOUT`). We set a short timeout (`settimeout(0.5)`) to avoid waiting forever.\n\nA connection refused means the port is closed (the server sent a RST). No response or timeout usually means filtered."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Scanner with Progress & Error Handling",
+            "content": "Complete example scanning a remote host (use a safe target like scanme.nmap.org, port 22,80):",
+            "codeSnippet": "import socket\n\ntarget = 'scanme.nmap.org'\nports = [22, 80, 443]\n\nfor port in ports:\n    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n    s.settimeout(2)\n    ret = s.connect_ex((target, port))\n    if ret == 0:\n        print(f\"Port {port}: OPEN\")\n    else:\n        # Could check ret for specific errors\n        print(f\"Port {port}: CLOSED/FILTERED\")\n    s.close()",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Port States 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "What does a 'connection refused' response indicate?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Port is open",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Port is closed (no service listening)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Firewall blocked the probe",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "If the server sends a RST packet, the port is closed.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Improving Speed: Threading (Concept)",
+            "content": "# A single‑threaded scan of 1000 ports can be slow. Using `threading` or `asyncio` we can scan many ports concurrently. We'll touch threading later; for now, understand the sequential scan."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use `socket.getservbyport(port)` to get the service name\n\n```python\nimport socket\ntry:\n    service = socket.getservbyport(80)\n    print(service)  # 'http'\nexcept:\n    pass\n```\nIt consults the system's services file."
+        },
+        {
+            "id": "s_l4_9",
+            "type": "text",
+            "title": "Next: Banner Grabbing",
+            "content": "# Open ports are great, but what's running? Let's grab banners."
+        }
+    ]
+}

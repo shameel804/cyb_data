@@ -1,0 +1,149 @@
+{
+    "id": "l2",
+    "chapterId": "ch_8",
+    "title": "try & except: Building Safety Nets 🥅",
+    "description": "Catch exceptions before they crash your script – graceful degradation for real‑world hacking tools.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Error Handling",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Problem with Crashes",
+            "content": "# A Single Error Stops Everything\n\nIf your port scanner crashes on port 100 out of 1000, you lose all previous results. Hacking tools must be resilient.\n\n`try`/`except` lets you say: \"Try this risky code. If it fails, do this instead – don't crash.\""
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Basic try/except",
+            "content": "Catch any exception (too broad!):",
+            "codeSnippet": "try:\n    port = int(\"abc\")\nexcept:\n    print(\"Invalid port, using default 80\")\n    port = 80\nprint(f\"Scanning port {port}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "try/except Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "true_false",
+                "question": "A bare `except:` catches every possible exception, including system exits.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "Yes, it catches everything – which can hide serious bugs. Usually avoid it.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Catch Specific Exceptions",
+            "content": "# Be Precise: `except ValueError:`\n\n```python\ntry:\n    port = int(user_input)\nexcept ValueError:\n    print(\"Port must be a number\")\n```\n* Only catches `ValueError`; other errors still crash (so you notice them).\n* You can handle multiple different types with multiple `except` blocks."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Multiple except Clauses",
+            "content": "Handle different errors differently:",
+            "codeSnippet": "try:\n    with open('wordlist.txt') as f:\n        data = f.read()\nexcept FileNotFoundError:\n    print(\"Wordlist missing, using default\")\nexcept PermissionError:\n    print(\"Cannot read wordlist – check permissions\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Specific Exceptions 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "Why is `except Exception:` better than bare `except:`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It runs faster",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It doesn't catch KeyboardInterrupt or SystemExit",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It's exactly the same",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Bare except catches system‑level exceptions that should usually propagate; `except Exception` is safer.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Catching Multiple Types in One Block",
+            "content": "# Use a Tuple\n\n```python\ntry:\n    risky_code()\nexcept (ValueError, TypeError) as e:\n    print(f\"Input error: {e}\")\n```\nThe `as e` captures the exception object – you can print it or log it."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "Accessing the Exception Object",
+            "content": "See the error message:",
+            "codeSnippet": "try:\n    int(\"abc\")\nexcept ValueError as ve:\n    print(f\"Conversion failed: {ve}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_9",
+            "type": "quiz",
+            "title": "Exception Object 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "multiple_choice",
+                "question": "What does `except (A, B) as e:` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Catches A or B, and binds the exception to e",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Catches both A and B simultaneously",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Syntax error",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "It catches any of the listed exception types and assigns the instance to e.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_10",
+            "type": "text",
+            "title": "Where to Place try/except",
+            "content": "# Wrap the Smallest Risky Block\n\nDon't wrap your whole script in one giant try block – it makes debugging hard.\n\nGood:\n```python\nfor host in hosts:\n    try:\n        scan(host)\n    except ConnectionError:\n        print(f\"{host} unreachable, skipping\")\n```\nThis way, one failed host doesn't stop the entire scan."
+        },
+        {
+            "id": "s_l2_11",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Log Exceptions, Don't Hide Them\n\n```python\nimport traceback\ntry:\n    dangerous()\nexcept Exception:\n    traceback.print_exc()   # prints full traceback without crashing\n```\nThis is excellent for logging while continuing execution."
+        },
+        {
+            "id": "s_l2_12",
+            "type": "text",
+            "title": "Next: else and finally",
+            "content": "# We can catch errors. Now let's add code that runs only on success (`else`) and cleanup code that always runs (`finally`)."
+        }
+    ]
+}

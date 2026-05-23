@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_14",
+    "title": "Secure User Search Script",
+    "description": "Build a script that safely searches for a string in a file using proper quoting and validation.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You need to write `safe_search.sh` that takes two arguments: a filename and a search pattern. It should:\n\n1. Validate that exactly two arguments are provided; if not, print usage and exit.\n2. Check that the file exists and is a regular readable file.\n3. Use `grep` to search for the pattern in the file, but **safely**: the pattern must be passed as a fixed string, not as a regex, to avoid injection of special characters. Use `grep -F` (or `fgrep`) to treat the pattern literally.\n4. The script must quote all variables properly to handle filenames with spaces.\n5. Use `set -u` to catch any unset variables.\n6. If the pattern is found, print \"Pattern found.\" and exit 0; otherwise \"Pattern not found.\" and exit 1.\n\nTest with a file containing special characters like `*`, `[`, `]` to ensure literal matching.",
+    "hints": [
+        "Use `grep -Fq \"$pattern\" \"$file\"` – `-F` fixed string, `-q` quiet.",
+        "Check argument count: `[ $# -ne 2 ]`.",
+        "File test: `[ -f \"$file\" -a -r \"$file\" ]`.",
+        "`set -u` at the top."
+    ],
+    "expectedOutput": "Pattern found. (or not found)",
+    "solutionCode": "#!/bin/bash\nset -u\n\nif [ $# -ne 2 ]; then\n  echo \"Usage: $0 <filename> <pattern>\" >&2\n  exit 2\nfi\n\nfile=\"$1\"\npattern=\"$2\"\n\nif [ ! -f \"$file\" ] || [ ! -r \"$file\" ]; then\n  echo \"Error: cannot read file '$file'\" >&2\n  exit 2\nfi\n\nif grep -Fq \"$pattern\" \"$file\"; then\n  echo \"Pattern found.\"\n  exit 0\nelse\n  echo \"Pattern not found.\"\n  exit 1\nfi"
+}

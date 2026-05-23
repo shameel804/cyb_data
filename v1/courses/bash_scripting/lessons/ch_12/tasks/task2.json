@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_12",
+    "title": "Apache Log Report",
+    "description": "Parse an Apache access log with sed and awk to produce a formatted report of top URLs and error rates.",
+    "estimatedMinutes": 20,
+    "problemStatement": "Given an Apache combined access log `access.log`, write a script `log_report.sh` that:\n\n1. Accepts the log file as an argument.\n2. Uses `sed` to filter for valid log entries (e.g., lines starting with an IP address).\n3. Extracts the requested URL (the 7th field in a standard combined log).\n4. Identifies the number of requests that returned an HTTP status of 5xx (errors, found in the 9th field).\n5. Prints a report containing:\n   - \"Top 5 URLs:\" followed by the URLs and their counts.\n   - \"Total requests: X\"\n   - \"Server errors (5xx): Y\"\n   - \"Error rate: Z%\" (errors/total*100, formatted to 2 decimal places).\n\nHandle errors gracefully (e.g., exit if the log file is not found).",
+    "hints": [
+        "Filter with sed: `sed -n '/^[0-9]/p' access.log`.",
+        "Extract the URL path using: `awk '{ print $7 }'`.",
+        "Sort the URLs by count: pipe your extracted URLs to `sort | uniq -c | sort -nr | head -5`.",
+        "Calculate the error rate with `bc`: `echo \"scale=2; $errors*100/$total\" | bc`."
+    ],
+    "expectedOutput": "Top 5 URLs:\n /index.html: 150\n /api/data: 120\n /login: 100\n /images/logo.png: 80\n /static/style.css: 75\nTotal requests: 600\nServer errors (5xx): 15\nError rate: 2.50%",
+    "solutionCode": "#!/bin/bash\n# log_report.sh\n\nlog=\"$1\"\nif [ ! -f \"$log\" ]; then\n  echo \"Log not found\" >&2\n  exit 1\nfi\n\n# Filter valid lines with sed to a temporary file\nsed -n '/^[0-9]/p' \"$log\" > /tmp/access_clean.log\n\n# Count total valid requests\ntotal=$(wc -l < /tmp/access_clean.log)\n\n# Count 5xx errors\nerrors=$(awk '$9 ~ /^5/' /tmp/access_clean.log | wc -l)\n\necho \"Top 5 URLs:\"\nawk '{print $7}' /tmp/access_clean.log | sort | uniq -c | sort -nr | head -5 | awk '{printf \" %s: %d\\n\", $2, $1}'\necho \"Total requests: $total\"\necho \"Server errors (5xx): $errors\"\necho \"Error rate: $(echo \"scale=2; $errors*100/$total\" | bc)%\"\n\n# Clean up\nrm -f /tmp/access_clean.log"
+}

@@ -1,0 +1,104 @@
+{
+    "id": "l4",
+    "chapterId": "ch_7",
+    "title": "Serverless Fortress: Functions Under Guard ⚡",
+    "description": "Least privilege execution roles, environment variables, and dependency scanning.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Serverless Doesn't Mean No Security 🔍",
+            "content": "# The Execution Role Is Your Crown\n\nWith AWS Lambda, Azure Functions, or Google Cloud Functions, you don't see the OS. But your **execution role** (IAM role) decides what the function can touch.\n\n- **Attach a dedicated role per function**, not one for all.\n- **Least privilege**: If the function writes to a DynamoDB table, allow only that table, not all tables.\n- **Avoid the wildcard** `\"Resource\": \"*\"` – always scope to specific ARNs.\n\n*The function code executes with this role's permissions. An injection flaw could grant an attacker that power.*"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Serverless IAM 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "A Lambda function needs to read from an S3 bucket 'my-data'. What is the most secure IAM policy?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "s3:GetObject on arn:aws:s3:::my-data/*",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "s3:* on *",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "s3:List* on *",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "AdministratorAccess",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Only grant the specific action on the exact resource. Avoid wildcards.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Environment Variables & Secrets 🕵️",
+            "content": "## Don't Store Passwords in Plaintext\n\nMany developers put database credentials in Lambda environment variables. This is dangerous because:\n- They appear in console, logs, and possibly in memory.\n- **Better**: Use AWS Secrets Manager or Parameter Store (with encryption), and retrieve the secret at runtime.\n- Even better: Use IAM‑based authentication (e.g., RDS IAM authentication) instead of passwords.\n\n*Environment variables are not a secrets store. Treat them as potentially exposed.*"
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "Retrieve a Secret at Runtime (Python)",
+            "content": "Instead of hardcoding, fetch the secret:",
+            "codeSnippet": "import boto3\nfrom botocore.exceptions import ClientError\n\ndef get_secret():\n    secret_name = \"prod/myapp/db\"\n    session = boto3.session.Session()\n    client = session.client(service_name='secretsmanager')\n    try:\n        response = client.get_secret_value(SecretId=secret_name)\n        return response['SecretString']\n    except ClientError as e:\n        raise e",
+            "codeLanguage": "python",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Dependency & Code Vulnerabilities 🐛",
+            "content": "- **Scan dependencies** for known CVEs (npm audit, pip‑audit, OWASP Dependency‑Check).\n- **Keep functions small and focused** – reduces blast radius.\n- **Use a layer for shared dependencies**, but lock their versions.\n- **Enable code signing** (AWS Lambda code signing) to ensure only approved code can be deployed.\n- **Set a timeout** to prevent runaway functions (but also ensure it's long enough for normal operation).\n\n*Serverless applications are just software – all secure coding practices still apply.*"
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Secrets Handling 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "Lambda environment variables are automatically encrypted at rest and in transit, so it's safe to put database passwords there.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "They are encrypted at rest (using Lambda key), but they can be viewed in the console and by anyone with `lambda:GetFunctionConfiguration` permission. Use a secrets manager.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "tip",
+            "title": "VPC + Serverless 🔌",
+            "content": "If your Lambda needs to access resources in a VPC (e.g., RDS), deploy it into the VPC. Use VPC endpoints for DynamoDB/S3 to keep traffic private. Ensure the Lambda execution role allows the necessary ENI creation."
+        }
+    ]
+}

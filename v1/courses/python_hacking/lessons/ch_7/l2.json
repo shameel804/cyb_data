@@ -1,0 +1,220 @@
+{
+    "id": "l2",
+    "chapterId": "ch_7",
+    "title": "Regex: Pattern Matching for Hackers 🔍",
+    "description": "Unlock regular expressions to find IPs, emails, and vulnerabilities in raw text with precision.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Strings & Files",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "When Strings Methods Aren't Enough",
+            "content": "# Regex to the Rescue\n\nExtracting an IP address from a messy log line, finding all email addresses, matching specific formats – regular expressions (regex) define search patterns.\n\nPython's `re` module provides functions: `search()`, `findall()`, `match()`, `sub()`, `split()`."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Basic Patterns: Literals & Metacharacters",
+            "content": "# Raw Strings: `r\"pattern\"`\n\n* Literal characters match themselves: `p` matches 'p'.\n* Metacharacters: `.` (any char), `^` (start), `$` (end), `*` (0+), `+` (1+), `?` (0 or 1), `{n}` (exact n), `[]` (character set), `|` (or), `()` (group).\n\n```python\nimport re\nresult = re.search(r\"port\", \"open port 22\")\nif result:\n    print(\"Found\")\n```\nUse raw strings `r\"\"` to avoid escaping backslashes."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "code",
+            "title": "Simple Search",
+            "content": "Find a port number pattern (digit(s)):",
+            "codeSnippet": "import re\nline = \"Listening on port 443\"\nmatch = re.search(r\"\\d+\", line)\nif match:\n    print(\"Port:\", match.group())  # 443",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "Regex Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What does `\\d+` match?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Exactly one digit",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "One or more digits",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A literal backslash and d",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`\\d` is a digit, `+` means one or more.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Character Classes & Quantifiers",
+            "content": "# `[abc]`, `[a-z]`, `[^0-9]`, `\\w`, `\\s`, `\\D`\n\n* **`[0-9]`** – any digit; equivalent to `\\d`.\n* **`[a-zA-Z]`** – any letter.\n* **`\\w`** – word character (letter, digit, underscore).\n* **`\\s`** – whitespace (space, tab, newline).\n* **`\\W`, `\\S`** – non‑word, non‑whitespace.\n\nCombine with quantifiers: `{2,4}` – between 2 and 4 times, `*` – zero or more, `+` – one or more, `?` – optional."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "code",
+            "title": "Matching an IP Address (Simplified)",
+            "content": "Pattern: `\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}`\n```python\nimport re\ntext = \"Target: 192.168.1.1 and 10.0.0.2\"\nips = re.findall(r\"\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\", text)\nprint(ips)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "IP Pattern 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "Why do we escape the dot in the IP regex?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To make it a literal dot, since `.` means any character",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It's optional",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To match a range",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Without backslash, `.` would match any character; `\\.` matches only a dot.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_8",
+            "type": "text",
+            "title": "Groups & Capturing",
+            "content": "# Parentheses `()` Capture Parts of the Match\n\n```python\nmatch = re.search(r\"User: (\\w+), Role: (\\w+)\", log)\nprint(match.group(0))  # whole match\nprint(match.group(1))  # username\nprint(match.group(2))  # role\n```\nYou can also name groups: `(?P<name>pattern)`."
+        },
+        {
+            "id": "s_l2_9",
+            "type": "code",
+            "title": "Capturing a Service Banner",
+            "content": "Extract software and version:",
+            "codeSnippet": "import re\nbanner = \"Apache/2.4.41 (Ubuntu)\"\nmatch = re.search(r\"(\\S+)/(\\S+) \", banner)\nif match:\n    print(\"Software:\", match.group(1), \"Version:\", match.group(2))",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_10",
+            "type": "quiz",
+            "title": "Groups 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "true_false",
+                "question": "`match.group(0)` returns the first captured group.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "Group 0 is the entire matched string; captured groups start at 1.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_11",
+            "type": "text",
+            "title": "re.findall() – Get All Matches",
+            "content": "# Returns a List\n\n```python\ntext = \"user1@a.com, user2@b.org\"\npattern = r\"\\b[\\w.-]+@[\\w.-]+\\.\\w+\\b\"\nemails = re.findall(pattern, text)\n```\n* If the pattern has groups, `findall()` returns list of tuples.\n* Use `re.finditer()` for an iterator of match objects."
+        },
+        {
+            "id": "s_l2_12",
+            "type": "code",
+            "title": "Find All Port Numbers",
+            "content": "Log: \"Ports: 22, 80, 443, 8080\"",
+            "codeSnippet": "import re\nlog = \"Ports: 22, 80, 443, 8080\"\nports = re.findall(r\"\\d{2,4}\", log)\nprint(ports)  # ['22', '80', '443', '8080']",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_13",
+            "type": "text",
+            "title": "re.sub() – Search and Replace",
+            "content": "# Like str.replace() on Steroids\n\n```python\nmasked = re.sub(r\"\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\", \"[REDACTED]\", log)\n```\n* Use backreferences `\\1`, `\\2` to reuse captured groups in replacement.\n```python\n# Swap last name, first name\nname = \"Doe, John\"\nswapped = re.sub(r\"(\\w+), (\\w+)\", r\"\\2 \\1\", name)\n# John Doe\n```"
+        },
+        {
+            "id": "s_l2_14",
+            "type": "code",
+            "title": "Reformat Date",
+            "content": "Change \"2024-02-29\" to \"29/02/2024\":",
+            "codeSnippet": "import re\ndate = \"2024-02-29\"\nnew_date = re.sub(r\"(\\d{4})-(\\d{2})-(\\d{2})\", r\"\\3/\\2/\\1\", date)\nprint(new_date)",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_15",
+            "type": "quiz",
+            "title": "re.sub() 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_4",
+                "type": "multiple_choice",
+                "question": "What does `re.sub(r'\\s+', ' ', text)` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Removes all whitespace",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Replaces one or more whitespace characters with a single space",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Splits on whitespace",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`\\s+` matches multiple spaces/tabs/newlines and replaces with one space.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_16",
+            "type": "text",
+            "title": "Compiling Regex for Performance",
+            "content": "# If You Use the Same Pattern Many Times\n\n```python\npattern = re.compile(r\"\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\")\nips = pattern.findall(log)\n```\nSaves re‑compilation. `re` module caches internally, but explicit compiling is cleaner."
+        },
+        {
+            "id": "s_l2_17",
+            "type": "warning",
+            "title": "Greedy vs Lazy Matching ⚠️",
+            "content": "## `.*` is greedy – matches as much as possible.\n\n```python\nhtml = \"<p>First</p> <p>Second</p>\"\nre.findall(r\"<p>.*</p>\", html)\n# returns ['<p>First</p> <p>Second</p>'] (one match)\n```\nUse `.*?` for non‑greedy: `re.findall(r\"<p>.*?</p>\", html)` gives two."
+        },
+        {
+            "id": "s_l2_18",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Test Regexes Online\n\nTools like regex101.com help debug patterns. Always test with sample data."
+        },
+        {
+            "id": "s_l2_19",
+            "type": "text",
+            "title": "Next: Reading Files",
+            "content": "# Now you can find patterns in strings. Let's apply regex to real files – wordlists, logs, configs."
+        }
+    ]
+}

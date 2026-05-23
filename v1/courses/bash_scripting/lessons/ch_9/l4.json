@@ -1,0 +1,118 @@
+{
+    "id": "l4",
+    "chapterId": "ch_9",
+    "title": "One‑Time Tasks with at ⏰",
+    "description": "Schedule a single future command with at, check the queue, and remove pending jobs.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "At Command",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "When You Don't Need Repetition 🎯",
+            "content": "## `at` – Run Once at a Specific Time\n\nCron is for recurring tasks. For one‑off jobs (like \"run this script at 3 PM tomorrow\"), use `at`.\n\nThe `at` daemon (`atd`) must be running. You schedule a job by piping commands to `at` or interactively."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Schedule a Command",
+            "content": "Run a script in 5 minutes:",
+            "codeSnippet": "echo \"/home/alice/cleanup.sh\" | at now + 5 minutes",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What does `echo 'touch /tmp/done' | at midnight` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Schedules the command to run at the next midnight",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Runs the command immediately",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It's an error because no time is given",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Schedules it for midnight every day",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`at midnight` interprets 'midnight' as the next occurrence of 00:00.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Time Specifications 🕐",
+            "content": "## Flexible and Human‑Readable\n\n`at` accepts many formats:\n- `now + 2 hours`\n- `5:30 PM`\n- `noon tomorrow`\n- `teatime` (4 PM)\n- `midnight`\n- `today + 3 days`\n- Absolute: `2026-06-01 14:30`"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Interactive at Session",
+            "content": "Type commands directly:",
+            "codeSnippet": "at 10:00 <<< \"echo 'Meeting at 10!' | wall\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "fill_blank",
+                "question": "To schedule a job 1 hour from now, you write `echo cmd | at now + 1 ___`",
+                "options": [],
+                "correctAnswer": "hour",
+                "explanation": "`now + 1 hour` (or `hours`) is valid.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Managing the at Queue 📋",
+            "content": "## List, Inspect, and Delete\n\n- `atq` – list pending jobs with job IDs.\n- `at -c jobid` – show the command/script that will run.\n- `atrm jobid` – remove a job from the queue.\n\nExample:\n```bash\natq                # see jobs\natrm 3             # delete job with ID 3\n```"
+        },
+        {
+            "id": "s_l4_8",
+            "type": "code",
+            "title": "View and Cancel",
+            "content": "Check your queue and remove a job:",
+            "codeSnippet": "atq\n# at -c 5    # inspect job 5\natrm 5",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_9",
+            "type": "warning",
+            "title": "⚠️ Environment Again",
+            "content": "Like cron, `at` runs with a limited environment. Use absolute paths and set necessary variables inside the commands."
+        },
+        {
+            "id": "s_l4_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `batch` instead of `at` to run a job when system load is low (the job runs once, but deferred until load drops)."
+        }
+    ]
+}

@@ -1,0 +1,149 @@
+{
+    "id": "l5",
+    "chapterId": "ch_5",
+    "title": "Breaking Free: `break` and `continue` 🛑",
+    "description": "Control the flow inside loops – stop early when you find a target, or skip unwanted items.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Loops",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Need to Interrupt",
+            "content": "# Loops Don't Have to Run to Completion\n\n* Found the password? Stop trying more.\n* Port is filtered? Skip deeper scan of that port.\n\n`break` exits the loop entirely. `continue` skips the rest of the current iteration and jumps to the next."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "break Example",
+            "content": "Exit loop when target is found:",
+            "codeSnippet": "targets = [\"host1\", \"host2\", \"vulnerable_host\", \"host3\"]\nfor host in targets:\n    print(f\"Scanning {host}\")\n    if \"vulnerable\" in host:\n        print(\"Found target!\")\n        break\nprint(\"Scan stopped\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "break 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "true_false",
+                "question": "`break` immediately terminates the entire loop, skipping any remaining iterations.",
+                "options": [],
+                "correctAnswer": true,
+                "explanation": "break jumps out of the loop entirely.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "continue: Skip This Iteration",
+            "content": "# Move to the Next Item\n\n```python\nports = [22, 80, -1, 443, 0]\nfor port in ports:\n    if port <= 0:\n        print(f\"Skipping invalid port {port}\")\n        continue\n    print(f\"Scanning port {port}\")\n```\nWhen `continue` is hit, the remaining code in the loop body is skipped, and the loop proceeds to the next item."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "continue Demo",
+            "content": "Skip even ports:",
+            "codeSnippet": "for port in range(80, 86):\n    if port % 2 == 0:\n        print(f\"Skipping even port {port}\")\n        continue\n    print(f\"Probing odd port {port}\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "continue 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "What is printed by:\n```python\nfor i in range(5):\n    if i == 2:\n        continue\n    print(i)\n```",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "0 1 2 3 4",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "0 1 3 4",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "2",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "When i=2, continue skips the print; other i values print.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "break in while Loops",
+            "content": "# Works Exactly the Same\n\n```python\nattempts = 0\nwhile attempts < 10:\n    password = get_password()\n    if password == \"secret\":\n        print(\"Cracked\")\n        break\n    attempts += 1\n```\nBreak exits the while loop, even though the condition might still be True."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "code",
+            "title": "while + break",
+            "content": "Simulate a retry loop that stops on success or max tries:",
+            "codeSnippet": "max_tries = 3\ntried = 0\nwhile True:\n    if tried >= max_tries:\n        print(\"Max attempts reached\")\n        break\n    # simulate attempt\n    success = (tried == 2)  # succeeds on third try\n    if success:\n        print(\"Success!\")\n        break\n    print(\"Failed, retrying...\")\n    tried += 1",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_9",
+            "type": "quiz",
+            "title": "break in while 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_3",
+                "type": "multiple_choice",
+                "question": "If `break` is inside a nested loop, which loop does it exit?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The innermost loop containing the break",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "All loops",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The outer loop",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "break only exits the nearest enclosing loop.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_10",
+            "type": "text",
+            "title": "Using Flags Instead of break (Sometimes Clearer)",
+            "content": "# You Can Use a Boolean\n\n```python\nfound = False\nfor item in items:\n    if condition(item):\n        found = True\n        break\n```\nAfter the loop, check `found` to decide next action."
+        },
+        {
+            "id": "s_l5_11",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Avoid Too Many breaks; It Can Be Confusing\n\nIf a loop has several `break` statements, consider refactoring into a function with `return` for clarity."
+        },
+        {
+            "id": "s_l5_12",
+            "type": "text",
+            "title": "What's Next?",
+            "content": "# Nested Loops and the Mysterious `else` on Loops\n\nCombine loops for grid searches, and learn the `else` clause that runs when a loop finishes without `break`."
+        }
+    ]
+}

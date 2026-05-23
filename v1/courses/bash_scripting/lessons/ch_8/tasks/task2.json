@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_8",
+    "title": "File Collector & Menu",
+    "description": "Use `mapfile` to collect files, then present a menu to pick and display one.",
+    "estimatedMinutes": 20,
+    "problemStatement": "Create a script `file_menu.sh` that:\n\n1. Asks the user for a directory path (or uses current directory by default).\n2. Checks the directory exists.\n3. Uses `mapfile` to read all filenames (not full paths) from that directory into an indexed array `files`.\n4. If the array is empty, print \"No files found\" and exit.\n5. Display a numbered menu using `select` (or a manual `for` loop with `read`) allowing the user to pick a file.\n6. When a file is chosen, use `cat` to display its contents (if it's a regular file). If it's a directory, print \"[directory]\".\n7. Loop the menu until the user selects the quit option (add a \"Quit\" entry to the menu).\n\nTest with a directory containing a few files.",
+    "hints": [
+        "`mapfile -t files < <(ls -1 \"$dir\")` to get filenames (or use `find`).",
+        "For select: `select fname in \"${files[@]}\" \"Quit\"; do ...`.",
+        "When building the full path, use `$dir/$fname`.",
+        "Remember to check if the selected item is a regular file or directory with `[ -f ]` / `[ -d ]`."
+    ],
+    "expectedOutput": "Menu with filenames and Quit; selecting a file prints its content; selecting Quit exits.",
+    "solutionCode": "#!/bin/bash\n# file_menu.sh\n\nread -p \"Enter directory [.] : \" dir\ndir=\"${dir:-.}\"\nif [ ! -d \"$dir\" ]; then\n  echo \"Error: not a directory\" >&2\n  exit 1\nfi\n\nmapfile -t files < <(ls -1 \"$dir\" 2>/dev/null)\nif [ ${#files[@]} -eq 0 ]; then\n  echo \"No files found.\"\n  exit 0\nfi\n\nPS3=\"Choose a file (or Quit): \"\nselect fname in \"${files[@]}\" \"Quit\"; do\n  if [ \"$fname\" = \"Quit\" ]; then\n    break\n  elif [ -n \"$fname\" ]; then\n    path=\"$dir/$fname\"\n    if [ -f \"$path\" ]; then\n      cat \"$path\"\n    elif [ -d \"$path\" ]; then\n      echo \"[directory]\"\n    else\n      echo \"[unknown]\"\n    fi\n  else\n    echo \"Invalid choice\"\n  fi\ndone"
+}

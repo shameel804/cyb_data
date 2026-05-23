@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_9",
+    "title": "One‑Time Cleanup with at",
+    "description": "Write a script that cleans a temporary directory, then schedule it with `at` to run at midnight.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You have a directory `~/temp` that fills up with junk during the day. Create a script `clean_temp.sh` that:\n\n1. Checks if `~/temp` exists; if not, prints an error and exits.\n2. Lists the files to be deleted (for logging).\n3. Removes all files inside `~/temp` (not the directory itself).\n4. Logs the action with a timestamp to `~/clean_temp.log`.\n\nThen, schedule this script to run once at the next midnight using the `at` command. Provide the exact `at` command used (as a comment or in your script). After scheduling, verify with `atq` that the job is pending.\n\nFinally, after the job executes (or you cancel it), check the log file to confirm it worked.",
+    "hints": [
+        "Script: `rm -rf \"$HOME/temp\"/*` careful with spaces.",
+        "Log: `echo \"$(date): Cleaned $count files\" >> ~/clean_temp.log`.",
+        "Schedule: `echo \"$HOME/clean_temp.sh\" | at midnight`.",
+        "Check queue: `atq`. Cancel: `atrm <id>`."
+    ],
+    "expectedOutput": "Job scheduled; later, log file shows a midnight cleanup entry.",
+    "solutionCode": "#!/bin/bash\n# clean_temp.sh – remove files in ~/temp\nTARGET=\"$HOME/temp\"\nLOGFILE=\"$HOME/clean_temp.log\"\n\nif [ ! -d \"$TARGET\" ]; then\n  echo \"Error: $TARGET does not exist\" >&2\n  exit 1\nfi\n\ncount=$(ls -1 \"$TARGET\" 2>/dev/null | wc -l)\nrm -rf \"$TARGET\"/*\necho \"$(date): Cleaned $count files from $TARGET\" >> \"$LOGFILE\""
+}

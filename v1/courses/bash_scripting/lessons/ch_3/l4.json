@@ -1,0 +1,112 @@
+{
+    "id": "l4",
+    "chapterId": "ch_3",
+    "title": "Environment & Exported Variables 🌍",
+    "description": "Learn the difference between shell and environment variables, and how to pass data to child processes.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Scope",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Shell vs. Environment Variables 🔄",
+            "content": "## Two Scopes\n\n- **Shell variables** exist only in the current shell session. If you run a script or a new shell, they aren't visible.\n- **Environment variables** are passed to child processes (subshells, scripts, commands).\n\nEvery shell variable starts as a shell variable. To promote it to environment, use `export`."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Demonstrate Scope",
+            "content": "Create a variable, then run a child bash that tries to see it:",
+            "codeSnippet": "myvar=\"hello\"\nbash -c 'echo $myvar'  # prints nothing (unless exported)",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What keyword makes a variable available to child processes?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "global",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "export",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "public",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "set",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The `export` command turns a shell variable into an environment variable, visible to subprocesses.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "Export and See",
+            "content": "Now the child sees it:",
+            "codeSnippet": "export myvar=\"hello\"\nbash -c 'echo $myvar'",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Common Environment Variables 📋",
+            "content": "## Built‑in Goodies\n\n- `HOME` – your home directory.\n- `USER` – your username.\n- `PATH` – directories searched for commands.\n- `SHELL` – path to your current shell.\n- `PWD` – current working directory (usually).\n\nYou can view all environment variables with `env` or `printenv`."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "code",
+            "title": "Inspect Environment",
+            "content": "List all environment variables:",
+            "codeSnippet": "printenv",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "fill_blank",
+                "question": "Which environment variable holds your username?",
+                "options": [],
+                "correctAnswer": "USER",
+                "explanation": "`$USER` (or `$LOGNAME`) typically stores the current user's name.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_8",
+            "type": "text",
+            "title": "How Export Works ⚙️",
+            "content": "## Export at Assignment\n\nYou can export and assign in one step:\n```bash\nexport VAR=value\n```\nOr later:\n```bash\nVAR=value\nexport VAR\n```\n\n**Remember**: changes to an environment variable in a child do **not** affect the parent."
+        },
+        {
+            "id": "s_l4_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Keep It Clean\nAvoid exporting too many variables; it can pollute the environment and cause unexpected behaviour in other programs."
+        }
+    ]
+}

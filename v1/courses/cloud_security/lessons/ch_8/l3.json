@@ -1,0 +1,110 @@
+{
+    "id": "l3",
+    "chapterId": "ch_8",
+    "title": "API Security: Protect Your Endpoints 🔌",
+    "description": "Authentication, authorization, rate limiting, and input validation for APIs.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "APIs Are the New Front Door 🚪",
+            "content": "# Every App Is an API These Days\n\nMicroservices, mobile apps, and single‑page applications talk through APIs. If your API is insecure, your entire backend is exposed.\n\n**Common API threats (OWASP API Security Top 10):**\n- Broken Object Level Authorization (BOLA)\n- Broken Authentication\n- Excessive Data Exposure\n- Lack of Resources & Rate Limiting\n- Mass Assignment\n\n*APIs don't have a UI to protect them; they must be secure at the code level.*"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "API Risk 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which OWASP API risk involves a user accessing another user's data by changing an ID in the URL?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Broken Authentication",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Broken Object Level Authorization (BOLA)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Mass Assignment",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Rate Limiting",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "BOLA occurs when the API doesn't properly check that the requesting user owns the object identified by an ID (e.g., /api/orders/123).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Strong Authentication & Authorization 🔑",
+            "content": "## Who Are You and What Can You Do?\n\n- **Use OAuth 2.0 / OpenID Connect** for user‑facing APIs. Never roll your own auth protocol.\n- **API Keys** for server‑to‑server communication; store them in a secrets manager, rotate regularly.\n- **JWT (JSON Web Tokens)**: Signed tokens that carry user info and expiry. Validate signature, issuer, and expiry on every request.\n- **Fine‑grained authorization**: Enforce that a user can only view their own resources. This is not just authentication!\n\n*Authentication says you are Alice. Authorization says Alice can only see her own orders, not Bob's.*"
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "API Gateway Lambda Authorizer (AWS) 🔐",
+            "content": "A simple Lambda authorizer that validates a JWT token before allowing the request to reach the backend:",
+            "codeSnippet": "exports.handler = async (event) => {\n  const token = event.authorizationToken;\n  try {\n    const decoded = jwt.verify(token, process.env.JWT_SECRET);\n    return {\n      principalId: decoded.sub,\n      policyDocument: {\n        Version: '2012-10-17',\n        Statement: [{ Action: 'execute-api:Invoke', Effect: 'Allow', Resource: event.methodArn }]\n      },\n      context: { userId: decoded.sub }\n    };\n  } catch (err) {\n    throw new Error('Unauthorized');\n  }\n};",
+            "codeLanguage": "javascript",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Rate Limiting & Throttling ⏱️",
+            "content": "## Prevent Abuse and Brute‑Force\n\n- **Rate limiting** restricts how many requests a client can make in a time window.\n- **Prevents**: DDoS attempts, credential stuffing, and API scraping.\n- **Implement at the API gateway level** (AWS API Gateway, Azure API Management) rather than in application code.\n- **Use a token bucket algorithm** or sliding window.\n\n*Set sensible limits. 1000 requests per second for authenticated users might be fine; 10 per second for a login endpoint.*"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Rate Limiting 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "Rate limiting is only useful for paid APIs to enforce billing tiers.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Rate limiting is a critical security control that prevents brute‑force attacks, scraping, and helps maintain availability.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Input Validation: Never Trust the Client 🚫",
+            "content": "## Assume Every Request Is Malicious\n\n- **Validate and sanitize all inputs**: Query parameters, headers, JSON body, even things like User‑Agent.\n- **Use strict schema validation** (e.g., JSON Schema). Reject unexpected fields to prevent mass assignment.\n- **Encode output** to prevent injection attacks (HTML encoding for web, proper escaping for databases).\n- **Use parameterized queries** for databases – never concatenate strings into SQL.\n\n*Input validation is the most basic defense, yet still the most frequently missed.*"
+        },
+        {
+            "id": "s_l3_8",
+            "type": "tip",
+            "title": "Use an API Gateway 🚪",
+            "content": "Cloud API gateways (AWS API Gateway, Azure API Management, Apigee) centralize authentication, rate limiting, request validation, and monitoring. Don't reinvent these wheels in every microservice."
+        }
+    ]
+}

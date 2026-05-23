@@ -1,0 +1,117 @@
+{
+    "id": "l1",
+    "chapterId": "ch_14",
+    "title": "The Power of Proper Quoting 🛡️",
+    "description": "Master quoting rules – double vs single, escaping, and how they prevent injection and word splitting.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Defensive Coding",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Quoting: Your First Line of Defence 🔐",
+            "content": "## Why Quotes Matter\n\nQuotes control how Bash interprets spaces and special characters. Without them, your script can behave unpredictably – opening doors to injection attacks.\n\n- Double quotes `\" \"` allow variable expansion but prevent word splitting and globbing.\n- Single quotes `' '` suppress all expansion.\n- Backslash `\\` escapes a single character.\n\n**Golden Rule**: always double‑quote variable expansions unless you explicitly want word splitting."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "code",
+            "title": "The Unquoted Disaster 💥",
+            "content": "Imagine a file named `my file.txt` – unquoted `$f` splits into two words!",
+            "codeSnippet": "f=\"my file.txt\"\n# BAD: ls $f tries to list 'my' and 'file.txt'\nls $f\n# GOOD: ls \"$f\" treats it as one argument\nls \"$f\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What happens when you use `rm $file` and `$file` contains spaces?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It removes the file safely",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It may attempt to delete multiple files (word splitting)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It fails with a syntax error",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It quotes the variable automatically",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Unquoted expansions undergo word splitting, so a filename with spaces becomes multiple arguments, potentially deleting unintended files.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Double Quotes Save Variables 🧾",
+            "content": "## Preserve the Original Value\n\nDouble quotes keep the expanded value as a single argument. They also prevent globbing (`*` and `?` are not expanded).\n\n```bash\necho \"$var\"           # safe\ngrep \"$pattern\" file  # safe\n```\nEven if you think the variable won't contain spaces, defensive quoting costs nothing."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Glob Expansion Blocked",
+            "content": "Without quotes, a variable containing `*` can wreak havoc:",
+            "codeSnippet": "pattern=\"*\"\n# BAD: echo $pattern lists all files!\n# GOOD:\necho \"$pattern\"",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "Double quotes prevent variable expansion.",
+                "correctAnswer": false,
+                "explanation": "Double quotes still allow variable (`$var`) and command (`$(cmd)`) expansion; they only suppress word splitting and globbing.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "Single Quotes: Literal Fortress 🏰",
+            "content": "## When You Need Raw Strings\n\nSingle quotes lock everything inside – no variable, command, or escape is processed (except a single quote can't appear inside single quotes).\n\nUse them for:\n- Fixed strings with special characters\n- Awk/sed scripts where `$` has different meaning\n- Passing regex patterns to grep that contain `$`"
+        },
+        {
+            "id": "s_l1_8",
+            "type": "code",
+            "title": "Single vs Double Demo",
+            "content": "Compare outputs:",
+            "codeSnippet": "price=5\necho \"The cost is $price\"  # The cost is 5\necho 'The cost is $price'  # The cost is $price",
+            "codeLanguage": "bash_scripting",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_9",
+            "type": "text",
+            "title": "Escaping with Backslash ✂️",
+            "content": "## Disable a Single Character\n\nTo include a literal quote or dollar sign inside double quotes, escape it: `\"He said \\\"hello\\\"\"`.\n\nA backslash at the end of a line continues the command on the next line (line continuation)."
+        },
+        {
+            "id": "s_l1_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "Use `printf '%q' \"$var\"` to see how Bash would quote a string safely for reuse – perfect for logging variables with special characters."
+        }
+    ]
+}

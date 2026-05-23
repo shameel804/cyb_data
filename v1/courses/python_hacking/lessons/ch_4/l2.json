@@ -1,0 +1,149 @@
+{
+    "id": "l2",
+    "chapterId": "ch_4",
+    "title": "Adding `else` and `elif`: Multiple Branches 🌿",
+    "description": "Handle multiple scenarios elegantly with else and elif, the traffic cops of your code.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Control Flow",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Beyond Yes/No",
+            "content": "# Real Hacking Has Many Outcomes\n\nA port scan can find a port: open, closed, filtered. A login can be: success, wrong password, account locked. Use `else` and `elif` (else‑if) to define multiple branches."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "The if‑else Duo",
+            "content": "`else` catches everything the `if` misses:",
+            "codeSnippet": "port_status = \"open\"\nif port_status == \"open\":\n    print(\"Service detected!\")\nelse:\n    print(\"Service not found.\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "else Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "true_false",
+                "question": "You can have an `else` without an `if`.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "`else` must follow an `if` block.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "`elif` – Checking Another Condition",
+            "content": "# Short for \"else if\"\n\nWhen you need more than two paths, chain `elif`:\n```python\nresponse_code = 200\nif response_code == 200:\n    print(\"OK\")\nelif response_code == 404:\n    print(\"Not Found\")\nelif response_code == 500:\n    print(\"Server Error\")\nelse:\n    print(\"Unknown code\")\n```\nIt checks conditions in order, first match wins."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "elif in Action",
+            "content": "Classify a port by its number:",
+            "codeSnippet": "port = 22\nif port < 1024:\n    print(\"Well‑known port\")\nelif 1024 <= port < 49152:\n    print(\"Registered port\")\nelse:\n    print(\"Dynamic/private port\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "elif Order 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "What will `x=10; if x>5: print('A'); elif x>8: print('B')` output?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "B",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A and B",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The first true condition (x>5) runs; `elif` is skipped.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "The else is Optional",
+            "content": "# You Can End with elif Too\n\n```python\nif threat_level == \"critical\":\n    print(\"Evacuate!\")\nelif threat_level == \"high\":\n    print(\"Alert security\")\n# if neither, do nothing\n```\nBut it's often safer to have a final `else` to catch unexpected cases – like a default in a switch statement."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "Login Simulation",
+            "content": "A realistic login check with multiple outcomes:",
+            "codeSnippet": "user = \"admin\"\npassw = \"hack123\"\nattempt_u = \"admin\"\nattempt_p = \"wrong\"\n\nif attempt_u != user:\n    print(\"User not found\")\nelif attempt_p != passw:\n    print(\"Wrong password\")\nelse:\n    print(\"Login successful!\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_9",
+            "type": "quiz",
+            "title": "Login Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "multiple_choice",
+                "question": "If `attempt_u = \"root\"` and `user = \"admin\"`, what is printed?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Login successful!",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Wrong password",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "User not found",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "The first condition `attempt_u != user` is true, so that block runs.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_10",
+            "type": "text",
+            "title": "Avoid Overlapping Conditions",
+            "content": "# Order Matters for Efficiency\n\nPut the most specific or most common condition first. If you have broad catches, place them later.\n```python\n# Bad\nif port > 0:\n    print(\"valid\")\nelif port == 80:\n    print(\"HTTP\")  # never reached\n```\nAlways structure logically."
+        },
+        {
+            "id": "s_l2_11",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Use `if/elif` Instead of Many `if`s\n\nWhen only one branch should run, use `elif`. Separate `if` statements are independent and could all execute, which may not be what you want."
+        },
+        {
+            "id": "s_l2_12",
+            "type": "text",
+            "title": "What's Next?",
+            "content": "# Nesting – Conditions Inside Conditions\n\nSometimes a decision depends on another decision. Next lesson: nesting ifs for fine‑grained control."
+        }
+    ]
+}

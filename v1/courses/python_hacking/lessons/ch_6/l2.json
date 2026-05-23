@@ -1,0 +1,173 @@
+{
+    "id": "l2",
+    "chapterId": "ch_6",
+    "title": "Parameters & Arguments: Feeding Data 📥",
+    "description": "Learn how to pass information into functions using positional, keyword, and default arguments.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Functions",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Customizing Behavior",
+            "content": "# A Function Without Parameters is Limited\n\n```python\ndef greet():\n    print(\"Hello, Hacker!\")\n```\nAlways the same. Instead, we want:\n```python\ndef greet(name):\n    print(f\"Hello, {name}!\")\n\ngreet(\"Alice\")\ngreet(\"Bob\")\n```\nNow the function is flexible."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Basic Parameter",
+            "content": "Pass a target IP:",
+            "codeSnippet": "def scan(target):\n    print(f\"Scanning {target}...\")\n\nscan(\"192.168.1.1\")\nscan(\"10.0.0.2\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Parameters 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What will `scan(\"server\")` print?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Scanning server...",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Scanning target...",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Error",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The string 'server' is passed to the parameter `target`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Positional vs Keyword Arguments",
+            "content": "# Two Ways to Pass Values\n\n**Positional:** order matters\n```python\ndef attack(host, port):\n    print(f\"Attacking {host}:{port}\")\nattack(\"10.0.0.1\", 80)   # host=10.0.0.1, port=80\n```\n**Keyword:** name explicitly, order can change\n```python\nattack(port=443, host=\"server.com\")\n```\nMixing: positional first, then keyword."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Keyword Arguments",
+            "content": "Clarify meaning:",
+            "codeSnippet": "def connect(ip, port, protocol=\"TCP\"):\n    print(f\"{protocol} connection to {ip}:{port}\")\n\nconnect(\"10.0.0.1\", 443, protocol=\"UDP\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Argument Styles 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "`connect(port=22, \"10.0.0.1\")` is valid Python.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "Positional arguments cannot appear after keyword arguments.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Default Parameters – Optional Arguments",
+            "content": "# Provide a Fallback Value\n\n```python\ndef scan(host, port=80):\n    print(f\"Scanning {host}:{port}\")\n\nscan(\"10.0.0.1\")          # port defaults to 80\nscan(\"10.0.0.1\", 443)     # overrides default\n```\nThis is incredibly useful: most web scans target port 80, but you can override when needed."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "Default Parameter Example",
+            "content": "Function for brute‑forcing with default attempts:",
+            "codeSnippet": "def brute_force(user, wordlist, max_attempts=1000):\n    print(f\"Trying up to {max_attempts} passwords for {user}\")\n\nbrute_force(\"admin\", [\"pass\", \"123\"])        # max_attempts=1000\nbrute_force(\"root\", [\"toor\"], max_attempts=5) # override",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_9",
+            "type": "warning",
+            "title": "Mutable Default Parameters ☠️",
+            "content": "## Never use a mutable object like list or dict as default!\n\n```python\n# BAD\ndef add_target(target, targets=[]):\n    targets.append(target)\n    return targets\n```\nThe default list is created once and shared across calls. Use `None` instead:\n```python\ndef add_target(target, targets=None):\n    if targets is None:\n        targets = []\n    targets.append(target)\n    return targets\n```"
+        },
+        {
+            "id": "s_l2_10",
+            "type": "quiz",
+            "title": "Defaults 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "multiple_choice",
+                "question": "What value is used for `p` if we call `def test(p=22): print(p); test()`?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "None",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "22",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Error",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "When no argument is passed, the default 22 is used.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_11",
+            "type": "text",
+            "title": "Arbitrary Arguments: *args and **kwargs",
+            "content": "# When You Don't Know How Many\n\n* `*args` collects extra positional arguments into a tuple\n* `**kwargs` collects extra keyword arguments into a dictionary\n\n```python\ndef attack_all(*targets):\n    for t in targets:\n        print(f\"Attacking {t}\")\n\nattack_all(\"host1\", \"host2\", \"host3\")\n```\nUse `**kwargs` for optional configuration:\n```python\ndef scan(host, **options):\n    timeout = options.get(\"timeout\", 5)\n    verbose = options.get(\"verbose\", False)\n```"
+        },
+        {
+            "id": "s_l2_12",
+            "type": "code",
+            "title": "*args in Action",
+            "content": "A flexible pinger:",
+            "codeSnippet": "def ping(*hosts):\n    for h in hosts:\n        print(f\"Pinging {h}\")\n\nping(\"1.1.1.1\", \"8.8.8.8\", \"192.168.1.1\")",
+            "codeLanguage": "python_hacking",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_13",
+            "type": "quiz",
+            "title": "*args 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_4",
+                "type": "true_false",
+                "question": "`*args` receives arguments as a list.",
+                "options": [],
+                "correctAnswer": false,
+                "explanation": "It's a tuple, not a list, but you can iterate over it similarly.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_14",
+            "type": "text",
+            "title": "Parameters Mastery Achieved",
+            "content": "# Time to Return Something\n\nYou can now send data into functions. Next lesson: getting data out with `return`."
+        }
+    ]
+}

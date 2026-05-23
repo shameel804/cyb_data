@@ -1,0 +1,15 @@
+{
+    "id": "task4",
+    "chapterId": "ch_6",
+    "title": "Recursive Directory Listing Simulator",
+    "description": "Implement a recursive function to print a nested structure like a file tree.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Build a script `tree.py` that contains a recursive function `print_tree(node, indent=0)`. The `node` parameter will be a dictionary representing a folder/file structure. For example:\n```python\nfs = {\n    \"name\": \"/\",\n    \"type\": \"dir\",\n    \"children\": [\n        {\"name\": \"etc\", \"type\": \"dir\", \"children\": [\n            {\"name\": \"passwd\", \"type\": \"file\"},\n            {\"name\": \"shadow\", \"type\": \"file\"}\n        ]},\n        {\"name\": \"root\", \"type\": \"dir\", \"children\": []},\n        {\"name\": \"tmp\", \"type\": \"file\"}\n    ]\n}\n```\nThe function should print each entry with indentation (e.g., 4 spaces per level) and the type: \"[DIR] name\" or \"[FILE] name\". If type is \"dir\" and there are children, recursively call on each child. Test with the given structure.",
+    "hints": [
+        "Base case: type 'file' just print. For 'dir', print name, then loop over children and call print_tree with indent+4.",
+        "Indentation: `print(' '*indent + ...)`",
+        "Be mindful of recursion; no infinite loops because it's a tree."
+    ],
+    "expectedOutput": "[DIR] /\n    [DIR] etc\n        [FILE] passwd\n        [FILE] shadow\n    [DIR] root\n    [FILE] tmp",
+    "solutionCode": "def print_tree(node, indent=0):\n    prefix = ' ' * indent\n    if node['type'] == 'dir':\n        print(f\"{prefix}[DIR] {node['name']}\")\n        for child in node.get('children', []):\n            print_tree(child, indent + 4)\n    else:\n        print(f\"{prefix}[FILE] {node['name']}\")\n\nfs = {\n    'name': '/',\n    'type': 'dir',\n    'children': [\n        {'name': 'etc', 'type': 'dir', 'children': [\n            {'name': 'passwd', 'type': 'file'},\n            {'name': 'shadow', 'type': 'file'}\n        ]},\n        {'name': 'root', 'type': 'dir', 'children': []},\n        {'name': 'tmp', 'type': 'file'}\n    ]\n}\n\nprint_tree(fs)"
+}

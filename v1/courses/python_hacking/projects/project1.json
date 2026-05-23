@@ -1,0 +1,25 @@
+{
+    "id": "project1",
+    "title": "Port Sentinel: Multi‑Threaded Scanner & Banner Grabber",
+    "description": "Build a fast TCP port scanner with banner grabbing that identifies services and saves a detailed report.",
+    "difficulty": "Beginner",
+    "estimatedHours": "2-3",
+    "problemStatement": "Your mission is to create a command‑line tool called **Port Sentinel** (`port_sentinel.py`) that performs TCP connect scanning on a target host, identifies open ports, and attempts to grab banners to identify running services.\n\n## Core Features\n1. **Resolve Hostname**: Accept a target (IP or domain) and resolve it to an IP address using `socket.gethostbyname()`.\n2. **Multi‑Threaded Scanning**: Use `concurrent.futures.ThreadPoolExecutor` to scan a range of ports concurrently (e.g., 1‑1024 or custom). Limit threads to 100 to avoid resource exhaustion.\n3. **Banner Grabbing**: For each open port, attempt to grab a banner:\n   - If port is 80, 443, or 8080, send `HEAD / HTTP/1.0\\r\\n\\r\\n` and read the response.\n   - For other ports, just receive whatever the server sends.\n   - Set a timeout (2 seconds) and handle exceptions gracefully.\n4. **Service Identification**: Use `socket.getservbyport()` for well‑known ports; otherwise mark as `unknown`.\n5. **Report Generation**: Save results as a CSV file (`scan_report.csv`) with columns: port, service, banner. Also print a summary to the console.\n6. **Command‑Line Arguments**: Use `sys.argv` to accept target, port range (`-p start-end`), and optional output filename (`-o filename`). Default range: 1-1024, default output: `scan_report`.\n\n## Example Usage\n```bash\npython port_sentinel.py scanme.nmap.org -p 1-100 -o my_scan\n```\n\n## Expected Console Output\n```\nScanning scanme.nmap.org (45.33.32.156) ports 1-100...\nPort 22: SSH - SSH-2.0-OpenSSH_6.6.1p1...\nPort 80: HTTP - HTTP/1.1 200 OK...\nPort 443: HTTPS - ...\nScan complete. 3 ports open. Report saved to my_scan.csv.\n```\n\n## Report Format (CSV)\n```csv\nport,service,banner\n22,ssh,\"SSH-2.0-OpenSSH_6.6.1p1...\"\n80,http,\"HTTP/1.1 200 OK...\"\n443,https,\"...\"\n```",
+    "requirements": [
+        "Script must use `socket` for low‑level TCP connections.",
+        "Scanning must be multi‑threaded using `concurrent.futures.ThreadPoolExecutor`.",
+        "Banner grabbing must include a short timeout (2 seconds) and handle exceptions without crashing.",
+        "For HTTP services (ports 80,443,8080,8443), send a valid HTTP HEAD request to trigger a response.",
+        "Results must be saved to CSV with proper quoting of banner strings (they may contain commas/newlines).",
+        "Use `if __name__ == '__main__':` guard so the script can be imported as a module.",
+        "Handle invalid hostnames gracefully and print an error message."
+    ],
+    "hints": [
+        "Wrap `gethostbyname` in try/except to catch `socket.gaierror`.",
+        "Create a `scan_port(host, port, timeout)` function that returns `(port, is_open)`. Use `socket.connect_ex()` to avoid raising exceptions.",
+        "Use `csv.writer` with `quoting=csv.QUOTE_ALL` to safely store banners.",
+        "Use `ThreadPoolExecutor` with `as_completed` to process results as they arrive, but sort final list by port.",
+        "Banner grabbing: for non‑HTTP ports, just call `s.recv(1024)` after connect."
+    ],
+    "expectedOutput": "A working script that produces correct CSV and console output when run against a test target (like localhost with a running service)."
+}

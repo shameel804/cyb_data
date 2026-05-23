@@ -1,0 +1,278 @@
+{
+    "id": "quiz_ch_8",
+    "chapterId": "ch_8",
+    "title": "Chapter 8 Quiz",
+    "description": "Test your mastery of error handling: tracebacks, try/except/else/finally, raising exceptions, custom errors, and debugging.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which error type occurs when you try to access a variable that hasn't been defined?",
+            "options": [
+                "TypeError",
+                "ValueError",
+                "NameError",
+                "SyntaxError"
+            ],
+            "correctAnswer": 2,
+            "explanation": "NameError is raised when a local or global name is not found."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What does a SyntaxError indicate?",
+            "options": [
+                "The code logic is wrong",
+                "Python cannot parse the code because of a typo or incorrect structure",
+                "A module is missing",
+                "The program ran out of memory"
+            ],
+            "correctAnswer": 1,
+            "explanation": "SyntaxError means the code violates Python's grammar rules."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "What will `int(\"abc\")` raise?",
+            "options": [
+                "TypeError",
+                "ValueError",
+                "NameError",
+                "IndexError"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The string cannot be converted to an integer, causing ValueError."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "In a traceback, where is the actual error description located?",
+            "options": [
+                "The first line",
+                "The middle of the traceback",
+                "The last line",
+                "The line with the filename"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The last line shows the exception type and message."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What is the purpose of a `try` block?",
+            "options": [
+                "To define a function",
+                "To mark code that might raise an exception",
+                "To import modules",
+                "To loop over items"
+            ],
+            "correctAnswer": 1,
+            "explanation": "try contains the code that may throw an exception."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "A bare `except:` clause is the best way to handle exceptions.",
+            "correctAnswer": false,
+            "explanation": "Bare except catches everything, including KeyboardInterrupt and SystemExit, hiding bugs."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "How can you catch both ValueError and TypeError in a single except block?",
+            "options": [
+                "except ValueError, TypeError:",
+                "except (ValueError, TypeError) as e:",
+                "except ValueError + TypeError:",
+                "You cannot"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Use a tuple of exception types."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What does `as e` do in an `except` clause?",
+            "options": [
+                "Creates an alias for the exception module",
+                "Binds the exception instance to the variable e",
+                "Raises the exception again",
+                "It's a syntax error"
+            ],
+            "correctAnswer": 1,
+            "explanation": "It captures the exception object so you can inspect it."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "When does the `else` block in a try/except/else execute?",
+            "options": [
+                "Always after the try block",
+                "Only if an exception was caught",
+                "Only if no exception occurred in the try block",
+                "Only if a finally block is present"
+            ],
+            "correctAnswer": 2,
+            "explanation": "else runs on the successful path, after the try block and before finally."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is the purpose of the `finally` block?",
+            "options": [
+                "To handle exceptions that weren't caught",
+                "To execute code regardless of whether an exception occurred or not",
+                "To run only if an exception occurred",
+                "To terminate the program"
+            ],
+            "correctAnswer": 1,
+            "explanation": "finally is for cleanup that must always happen (close files, release locks)."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "A `finally` block will execute even if the `try` block contains a `return` statement.",
+            "correctAnswer": true,
+            "explanation": "Yes, finally runs before the function actually returns."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which statement is used to intentionally trigger an exception?",
+            "options": [
+                "catch",
+                "throw",
+                "raise",
+                "error"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`raise` creates an exception."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What does a bare `raise` do inside an `except` block?",
+            "options": [
+                "Raises a new RuntimeError",
+                "Re‑raises the caught exception",
+                "Exits the program",
+                "Ignores the exception"
+            ],
+            "correctAnswer": 1,
+            "explanation": "It re‑raises the currently handled exception."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "How do you create a custom exception class?",
+            "options": [
+                "By inheriting from BaseException",
+                "By inheriting from Exception",
+                "By calling exception()",
+                "By using the `custom` keyword"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Typically you subclass Exception (or a more specific one)."
+        },
+        {
+            "id": "q15",
+            "type": "fill_blank",
+            "question": "The function used to enter the interactive Python debugger is ________.",
+            "options": [
+                "breakpoint()",
+                "pdb.set_trace()",
+                "debug()",
+                "trace()"
+            ],
+            "correctAnswer": "breakpoint()",
+            "explanation": "breakpoint() (Python 3.7+) drops into pdb; pdb.set_trace() also works."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What does the pdb command `n` do?",
+            "options": [
+                "Step into a function",
+                "Continue execution until the next breakpoint",
+                "Execute the next line, staying in the current function",
+                "Print the value of a variable"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`n` (next) executes the current line and stops at the next line in the same frame."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which Python feature is best for checking programmer errors that should never happen?",
+            "options": [
+                "if/else",
+                "print()",
+                "assert",
+                "raise"
+            ],
+            "correctAnswer": 2,
+            "explanation": "assert is used for internal consistency checks during development."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "You should use assertions to validate user input in a production script.",
+            "correctAnswer": false,
+            "explanation": "Assertions can be disabled globally; they're not for runtime data validation."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What does `try: ... except ValueError: ... else: ... finally: ...` – if a ValueError is raised, which blocks execute?",
+            "options": [
+                "except only",
+                "except and finally",
+                "else and finally",
+                "try, except, else, finally"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The except catches the error, then finally runs. else is skipped."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What error is raised by `1 / 0`?",
+            "options": [
+                "ValueError",
+                "ZeroDivisionError",
+                "ArithmeticError",
+                "TypeError"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Division by zero raises ZeroDivisionError."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "How can you view the full traceback without crashing the program?",
+            "options": [
+                "print(error)",
+                "traceback.print_exc()",
+                "error.show()",
+                "log.error()"
+            ],
+            "correctAnswer": 1,
+            "explanation": "traceback.print_exc() prints the traceback to stderr; the program continues."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "What is an advantage of using `with` for file handling instead of try/finally?",
+            "options": [
+                "It's faster",
+                "It ensures the file is closed automatically even if an error occurs, with less code",
+                "It allows multiple files at once",
+                "It's the only way to read files"
+            ],
+            "correctAnswer": 1,
+            "explanation": "with statement is syntactic sugar for try/finally, guaranteeing resource release."
+        }
+    ]
+}

@@ -1,0 +1,247 @@
+{
+    "id": "quiz_ch_7",
+    "chapterId": "ch_7",
+    "title": "Chapter 7 Quiz: Compute Security",
+    "description": "Test your knowledge of securing virtual machines, containers, serverless, and automation.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which AWS service can provide temporary, audited SSH access to EC2 instances without opening port 22?",
+            "options": [
+                "AWS WAF",
+                "EC2 Instance Connect",
+                "Security Groups",
+                "NAT Gateway"
+            ],
+            "correctAnswer": 1,
+            "explanation": "EC2 Instance Connect uses IAM and temporary keys for SSH access, reducing exposure."
+        },
+        {
+            "id": "q2",
+            "type": "fill_blank",
+            "question": "A pre‑hardened, patched OS image used to launch all instances is called a ______ image.",
+            "options": [
+                "golden",
+                "silver",
+                "base",
+                "standard"
+            ],
+            "correctAnswer": "golden",
+            "explanation": "Golden images ensure consistent, secure deployments."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "Running a container as root has no additional security risks because containers are isolated by namespaces.",
+            "correctAnswer": false,
+            "explanation": "Root in a container can still escalate to host privileges if a kernel vulnerability exists; non‑root is strongly recommended."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What is the primary purpose of a multi‑stage Docker build?",
+            "options": [
+                "To increase build speed",
+                "To keep the final image small and free of build tools",
+                "To run multiple services in one container",
+                "To enable hot reloading"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Multi‑stage builds separate build dependencies from the runtime image, reducing attack surface."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which Kubernetes feature controls pod‑to‑pod communication?",
+            "options": [
+                "RBAC",
+                "Network Policies",
+                "Pod Security Standards",
+                "Service Accounts"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Network Policies define which pods can talk to each other."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "Serverless functions eliminate all security responsibilities for the customer.",
+            "correctAnswer": false,
+            "explanation": "You still secure the code, dependencies, IAM role, and secrets."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What is the safest way to provide a database password to a Lambda function?",
+            "options": [
+                "Hardcode it in the source code",
+                "Store it in an environment variable",
+                "Fetch it at runtime from AWS Secrets Manager",
+                "Put it in a public S3 bucket"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Secrets Manager encrypts and manages the secret, and you retrieve it on demand."
+        },
+        {
+            "id": "q8",
+            "type": "fill_blank",
+            "question": "The security principle that grants a Lambda function only permissions needed for its task is ______ privilege.",
+            "options": [
+                "least",
+                "maximum",
+                "absolute",
+                "functional"
+            ],
+            "correctAnswer": "least",
+            "explanation": "Least privilege minimizes damage if the function is compromised."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Which tool can scan Terraform files for security misconfigurations?",
+            "options": [
+                "Docker Bench",
+                "Checkov",
+                "Trivy",
+                "AWS Inspector"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Checkov is an IaC scanning tool that checks for misconfigurations like open security groups."
+        },
+        {
+            "id": "q10",
+            "type": "true_false",
+            "question": "Immutability in infrastructure means you never change running servers; you replace them with new ones built from an updated image.",
+            "correctAnswer": true,
+            "explanation": "Immutable infrastructure prevents drift and ensures consistent security states."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which Linux kernel mechanism can enforce mandatory access controls on processes?",
+            "options": [
+                "UFW",
+                "iptables",
+                "SELinux",
+                "systemd"
+            ],
+            "correctAnswer": 2,
+            "explanation": "SELinux and AppArmor are mandatory access control systems."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is a key advantage of using AWS Systems Manager Session Manager over traditional SSH?",
+            "options": [
+                "Faster connection speed",
+                "No need to open inbound SSH ports or manage key pairs",
+                "It's cheaper",
+                "It automatically patches the OS"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Session Manager uses IAM and does not require exposed SSH ports."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "You need to prevent a container from writing to its filesystem. What should you set?",
+            "options": [
+                "ReadOnlyRootFilesystem: true",
+                "AllowPrivilegeEscalation: false",
+                "runAsNonRoot: true",
+                "Drop all capabilities"
+            ],
+            "correctAnswer": 0,
+            "explanation": "ReadOnlyRootFilesystem makes the root filesystem read‑only, preventing writes."
+        },
+        {
+            "id": "q14",
+            "type": "true_false",
+            "question": "It is acceptable to use the latest Docker image tag in a production Kubernetes deployment because it always has the most recent security patches.",
+            "correctAnswer": false,
+            "explanation": "`latest` is mutable and can introduce untested changes. Pin to a specific digest for deterministic, secure deployments."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Which AWS service can automatically scan EC2 instances for missing patches and vulnerabilities?",
+            "options": [
+                "Amazon GuardDuty",
+                "AWS Inspector",
+                "Amazon Macie",
+                "AWS Shield"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Inspector assesses instances for vulnerabilities and deviations from best practices."
+        },
+        {
+            "id": "q16",
+            "type": "fill_blank",
+            "question": "In Kubernetes, the security context field that prevents a container from gaining more privileges than its parent process is ______.",
+            "options": [
+                "allowPrivilegeEscalation",
+                "readOnlyRootFilesystem",
+                "runAsNonRoot",
+                "seccompProfile"
+            ],
+            "correctAnswer": "allowPrivilegeEscalation",
+            "explanation": "Setting allowPrivilegeEscalation: false prevents processes from gaining additional privileges."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What is the recommended way to manage SSH keys for a large fleet of EC2 instances?",
+            "options": [
+                "Use the same key pair for all instances",
+                "Store private keys in an S3 bucket",
+                "Use EC2 Instance Connect or Session Manager with IAM",
+                "Embed keys in the AMI"
+            ],
+            "correctAnswer": 2,
+            "explanation": "These services eliminate long‑lived keys and provide auditable, temporary access."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "You should rebuild your container images regularly to include the latest security patches from the base image.",
+            "correctAnswer": true,
+            "explanation": "Regular rebuilds incorporate updated base layers, reducing known vulnerabilities."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "Which of the following helps prevent secrets from being accidentally committed to a git repository?",
+            "options": [
+                "Checkov",
+                "git‑secrets or truffleHog",
+                "Docker Scout",
+                "AWS Config"
+            ],
+            "correctAnswer": 1,
+            "explanation": "git‑secrets and truffleHog scan commits for potential secrets and block the push."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "A Lambda function's execution role is too permissive. Which service helps you identify unused permissions?",
+            "options": [
+                "AWS CloudTrail",
+                "IAM Access Analyzer",
+                "AWS Config",
+                "Amazon Inspector"
+            ],
+            "correctAnswer": 1,
+            "explanation": "IAM Access Analyzer identifies resources shared externally and helps refine policies; for unused permissions, IAM Access Advisor is also useful, but Access Analyzer is the closest among options."
+        },
+        {
+            "id": "q21",
+            "type": "true_false",
+            "question": "The CIS Benchmarks provide specific hardening guides for various operating systems and cloud services.",
+            "correctAnswer": true,
+            "explanation": "CIS Benchmarks are globally recognized security configuration standards."
+        }
+    ]
+}
