@@ -1,0 +1,95 @@
+{
+    "id": "l1",
+    "chapterId": "ch_5",
+    "title": "Digital Signatures: The Virtual Ink 🖊️",
+    "description": "Understand what makes a digital signature – it’s more than an electronic squiggle.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "A Signature You Can’t Forge 🔏",
+            "content": "# Digital Signature – The Cryptographic Equivalent of a Handwritten Signature\n\nA digital signature is a mathematical scheme for verifying the **authenticity** and **integrity** of a digital message or document.\n\n- It proves that the message was created by a known sender (**authentication**).\n- It proves that the message was not altered in transit (**integrity**).\n- The sender **cannot deny** having sent it (**non‑repudiation**).\n\nUnlike a pen‑and‑ink signature, it’s practically impossible to forge without the private key."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "The Two‑Key Magic Again 🔑",
+            "content": "Digital signatures rely on asymmetric cryptography:\n- **Private key** is used to **sign** the message.\n- **Public key** is used by anyone to **verify** the signature.\n\nSo if Alice wants to sign a contract:\n1. She signs the document with her private key.\n2. Bob (or the whole world) can verify the signature with Alice’s public key.\n\nThis binds Alice to the document – she cannot later claim she never signed it."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which security property is uniquely provided by digital signatures (not just encryption)?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Confidentiality",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Non‑repudiation",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Availability",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Access control",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Non‑repudiation ensures the signer cannot deny having signed the document. Encryption alone doesn’t provide this.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Signing vs. Encryption – Same Keys, Different Order 🔄",
+            "content": "In encryption:\n- Encrypt with **public** key, decrypt with **private** key.\n- Provides confidentiality.\n\nIn signing:\n- Sign (encrypt hash) with **private** key, verify (decrypt hash) with **public** key.\n- Provides authenticity + integrity.\n\nAlthough the math is similar (especially in RSA), the purpose is completely different.\n\nThink of it as: encryption hides the letter; signature proves who wrote it."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "tip",
+            "title": "Don’t Sign the Whole Message 🐘",
+            "content": "## Signing a large file directly is slow. Instead, we sign the **hash** of the message. That’s what we’ll cover next."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Public/Private Roles 🎭",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "To verify a digital signature, you need the signer’s private key.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. Verification uses the signer’s public key. The private key stays secret.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

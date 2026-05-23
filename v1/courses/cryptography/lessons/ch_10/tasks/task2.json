@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_10",
+    "title": "Verify a Merkle Proof",
+    "description": "Given a transaction, a Merkle root, and a proof (list of sibling hashes and directions), verify inclusion.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Implement a function `verify_merkle_proof(tx_hash: str, merkle_root: str, proof: list) -> bool`.\n\n- `tx_hash` is the hex hash of the transaction (already hashed).\n- `merkle_root` is the expected root hash.\n- `proof` is a list of tuples `(sibling_hash, direction)` where `sibling_hash` is a hex string, and `direction` is `'left'` or `'right'` indicating whether the sibling is on the left or right when concatenating (i.e., if direction is 'left', the sibling comes first in the concatenation: `sibling + current`). The current hash starts as `tx_hash`.\n\nIterate through the proof: combine current hash with sibling based on direction, compute double‑SHA256 of the concatenation, update current hash. After all proof steps, check if the final computed hash equals `merkle_root`.\n\n**Use double SHA‑256** (hash the hash).\n\n**Example:**\n```\n# A tree with four leaves: H1, H2, H3, H4; root computed as doubleSHA256(H12 + H34)\n# To prove H2 is included, proof might be:\nproof = [\n    (H1, 'left'),   # H12 = doubleSHA256(H1 + H2)\n    (H34, 'right')  # root = doubleSHA256(H12 + H34)\n]\n```\nYou can test with known values.",
+    "hints": [
+        "`def double_sha256(data): return hashlib.sha256(hashlib.sha256(data).digest()).digest()`.",
+        "Start with `current = bytes.fromhex(tx_hash)`.",
+        "For each (sibling_hex, direction): sibling = bytes.fromhex(sibling_hex); if direction=='left': combined = sibling + current else: combined = current + sibling; current = double_sha256(combined).",
+        "Finally return `current.hex() == merkle_root`."
+    ],
+    "expectedOutput": "The function returning bool. Provide code.",
+    "solutionCode": "import hashlib\n\ndef verify_merkle_proof(tx_hash, merkle_root, proof):\n    def double_sha256(data):\n        return hashlib.sha256(hashlib.sha256(data).digest()).digest()\n\n    current = bytes.fromhex(tx_hash)\n    for sibling_hex, direction in proof:\n        sibling = bytes.fromhex(sibling_hex)\n        if direction == 'left':\n            combined = sibling + current\n        elif direction == 'right':\n            combined = current + sibling\n        else:\n            raise ValueError('Direction must be \"left\" or \"right\"')\n        current = double_sha256(combined)\n    return current.hex() == merkle_root\n"
+}

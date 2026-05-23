@@ -1,0 +1,101 @@
+{
+    "id": "l4",
+    "chapterId": "ch_5",
+    "title": "The Chain of Trust: Certificates & PKI 📜",
+    "description": "How digital certificates and certificate authorities create a global trust network.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Infrastructure",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Big Question: Whose Public Key Is This? 🤷",
+            "content": "# A digital signature verifies that a message came from the holder of a private key. But how do you know who that holder is?\n\nIf you download a software update, you need to know that the public key you have actually belongs to the developer, not an attacker.\n\nThis is the **public key authenticity problem**. We solve it with **digital certificates** and **Certificate Authorities (CAs)**."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Digital Certificates (X.509) 📄",
+            "content": "# A digital certificate is a document that binds a public key to an identity (person, domain, organisation).\n\nIt contains:\n- Subject: who owns the key (e.g., `www.example.com`).\n- Issuer: the CA that vouches for this binding.\n- Validity period.\n- The subject’s public key.\n- The CA’s **digital signature** over all of the above.\n\nThe certificate is essentially the CA saying, \"I verified that this public key belongs to `example.com`.\""
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "The Chain of Trust ⛓️",
+            "content": "# Trust flows from a root CA that you trust implicitly (pre‑installed in OS/browser).\n\n- Root CA signs an intermediate CA certificate.\n- Intermediate CA signs an end‑entity certificate (e.g., for a website).\n\nTo verify a website’s certificate, your browser:\n1. Checks the signature on the site’s certificate using the intermediate CA’s public key.\n2. Checks the intermediate CA’s certificate signature using the root CA’s public key.\n3. Trusts the root CA’s self‑signed certificate because it’s in the trust store.\n\nIf any link breaks, the certificate is rejected."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "quiz",
+            "title": "Trust Chain 🔗",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What does a CA do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Encrypts your data",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Vouches for the binding between an identity and a public key",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Creates symmetric keys",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Generates your private key",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A Certificate Authority verifies the identity and signs a certificate linking that identity to a public key.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Certificate Verification Steps ✅",
+            "content": "1. Check the certificate signature using the issuer’s public key.\n2. Verify the certificate is within its validity period.\n3. Check revocation status (CRL or OCSP) – has it been revoked?\n4. Verify the chain up to a trusted root.\n5. Ensure the domain name matches (for TLS).\n\nFailure at any step means the certificate is untrusted."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "Self‑Signed Certificates 👤",
+            "content": "## A self‑signed certificate is signed by its own private key. They aren’t trusted by default – you must manually add them to the trust store.\n\nThey’re fine for testing but dangerous in production because an attacker could swap the certificate with their own."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "PKI Reality 🛡️",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "If a root CA is compromised, all certificates signed by that CA are at risk.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "True. A compromised root CA can issue fraudulent certificates that will be trusted by all browsers.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

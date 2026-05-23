@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_11",
+    "title": "Implement Shamir's Secret Sharing",
+    "description": "Create functions to split a secret into shares and recover it using Lagrange interpolation over a prime field.",
+    "estimatedMinutes": 20,
+    "problemStatement": "You are building a secure key escrow system. Write two functions:\n\n1. `split_secret(secret: int, t: int, n: int, prime: int = 2**127 - 1) -> list`: Generates `n` shares of the secret using Shamir's (t, n)-threshold scheme over GF(prime). The secret must be less than prime. Return a list of tuples `(x, y)` where `x` from 1 to n, `y` the share value. Use `secrets.randbelow(prime)` for random coefficients.\n2. `recover_secret(shares: list, prime: int = 2**127 - 1) -> int`: Given a list of at least `t` shares (list of (x,y) tuples), reconstruct the secret using Lagrange interpolation at x=0. Assume `shares` contain enough distinct points. Use modular inverse (`pow(denom, -1, prime)`).\n\n**Example:**\n```\nshares = split_secret(123456789, 3, 5)\nrecovered = recover_secret(shares[:3])\nprint(recovered)  # 123456789\n```\n\n**Hints:**\n- Use Horner's method or direct polynomial evaluation.\n- Lagrange: `result = sum( y_i * product(-x_j/(x_i - x_j)) ) mod prime`.\n- Remember to handle negative denominators correctly using modular arithmetic.",
+    "hints": [
+        "Generate coefficients: `coeffs = [secret] + [secrets.randbelow(prime) for _ in range(t-1)]`.",
+        "For evaluation: `y = sum(c * (x**i) for i, c in enumerate(coeffs)) % prime`.",
+        "For Lagrange at 0: `secret = sum( y_i * product( -x_j * inv(x_i - x_j) ) ) % prime` where product iterates over all j != i.",
+        "Use `pow(denom, -1, prime)` for modular inverse."
+    ],
+    "expectedOutput": "Functions that correctly split and recover. Provide code.",
+    "solutionCode": "import secrets\n\ndef split_secret(secret, t, n, prime=2**127-1):\n    if t > n:\n        raise ValueError('t must be <= n')\n    if secret >= prime:\n        raise ValueError('Secret must be < prime')\n    coeffs = [secret] + [secrets.randbelow(prime) for _ in range(t-1)]\n    shares = []\n    for x in range(1, n+1):\n        y = 0\n        for power, coeff in enumerate(coeffs):\n            y = (y + coeff * pow(x, power, prime)) % prime\n        shares.append((x, y))\n    return shares\n\ndef recover_secret(shares, prime=2**127-1):\n    if len(shares) < 1:\n        raise ValueError('Need at least one share')\n    secret = 0\n    for i, (xi, yi) in enumerate(shares):\n        numerator = 1\n        denominator = 1\n        for j, (xj, _) in enumerate(shares):\n            if i != j:\n                numerator = (numerator * (-xj)) % prime\n                denominator = (denominator * (xi - xj)) % prime\n        lagrange_coeff = (yi * numerator * pow(denominator, -1, prime)) % prime\n        secret = (secret + lagrange_coeff) % prime\n    return secret\n"
+}

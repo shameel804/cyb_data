@@ -1,0 +1,272 @@
+{
+    "id": "quiz_ch_5",
+    "chapterId": "ch_5",
+    "title": "Chapter 5 Quiz",
+    "description": "Test your mastery of digital signatures, certificates, and PKI!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What property does a digital signature provide that a simple hash does NOT?",
+            "options": [
+                "Integrity",
+                "Authentication / non‑repudiation",
+                "Compression",
+                "Fast computation"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A signature proves who created the message and cannot be repudiated, which a plain hash alone can't provide."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "In RSA signatures, which key is used to create the signature?",
+            "options": [
+                "Public key",
+                "Private key",
+                "Session key",
+                "Pre‑shared key"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Signing uses the private key; verification uses the public key."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "Digital signatures provide confidentiality of the signed message.",
+            "correctAnswer": false,
+            "explanation": "False. Signatures ensure authenticity and integrity, not confidentiality. You need encryption for that."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Why do we hash the message before signing?",
+            "options": [
+                "To make the signature longer",
+                "To speed up signing and ensure security of the signature",
+                "To convert the message to uppercase",
+                "To hide the message contents"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Hashing reduces the message to a fixed, short size and protects against algebraic attacks."
+        },
+        {
+            "id": "q5",
+            "type": "fill_blank",
+            "question": "The standard padding scheme for RSA signatures that is provably secure is called RSA‑____.",
+            "options": [
+                "OAEP",
+                "PSS",
+                "PKCS",
+                "SSL"
+            ],
+            "correctAnswer": "PSS",
+            "explanation": "RSA‑PSS (Probabilistic Signature Scheme) is the recommended padding."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is a major risk of reusing the same nonce `k` in ECDSA signatures?",
+            "options": [
+                "Signature verification will be slower",
+                "The private key can be recovered",
+                "The certificate will expire sooner",
+                "The hash function becomes weak"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Nonce reuse leaks the private key algebraically. It has led to real‑world breakages."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What information does a typical X.509 certificate contain?",
+            "options": [
+                "Only the public key",
+                "Subject identity, public key, issuer, validity, signature",
+                "The private key",
+                "A signed hash of the website’s password"
+            ],
+            "correctAnswer": 1,
+            "explanation": "It binds an identity to a public key, signed by a CA, with validity dates."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "How does a browser initially trust a website's certificate?",
+            "options": [
+                "It asks the website for proof",
+                "It follows a chain of certificates to a pre‑trusted root CA",
+                "It trusts all certificates by default",
+                "It uses the website's private key"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The browser validates the certificate chain up to a trusted root CA in its trust store."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What does a CA's digital signature on a certificate represent?",
+            "options": [
+                "The CA has encrypted the certificate",
+                "The CA vouches that the public key belongs to the subject",
+                "The CA has created a new key pair",
+                "The CA has verified the server’s password"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The CA's signature attests that they have verified the identity and binding."
+        },
+        {
+            "id": "q10",
+            "type": "true_false",
+            "question": "A self‑signed certificate is automatically trusted by all browsers.",
+            "correctAnswer": false,
+            "explanation": "False. Self‑signed certificates are not trusted by default; they must be manually added."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What is the purpose of checking certificate revocation?",
+            "options": [
+                "To renew the certificate",
+                "To ensure the certificate hasn’t been compromised and revoked",
+                "To update the public key",
+                "To verify the hash algorithm"
+            ],
+            "correctAnswer": 1,
+            "explanation": "If a private key is compromised, the CA revokes the certificate; clients should check this."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which protocol is used to check certificate revocation status online?",
+            "options": [
+                "FTP",
+                "OCSP",
+                "SSH",
+                "SMTP"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Online Certificate Status Protocol (OCSP) allows clients to query the status of a specific certificate."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "In code signing, what happens if the code is altered after signing?",
+            "options": [
+                "The signature stays valid",
+                "The OS displays a warning or blocks execution",
+                "The code automatically re‑signs itself",
+                "The signature is updated automatically"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The signature verification will fail, and the OS will warn the user."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Which algorithm is commonly used for digital signatures in Bitcoin transactions?",
+            "options": [
+                "RSA",
+                "ECDSA",
+                "AES",
+                "HMAC"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Bitcoin uses ECDSA on the secp256k1 curve."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What is the main difference between a MAC (like HMAC) and a digital signature?",
+            "options": [
+                "MAC uses symmetric key; signature uses asymmetric keys",
+                "MAC is faster, but signature is more secure",
+                "MAC is reversible, signature is not",
+                "There is no difference"
+            ],
+            "correctAnswer": 0,
+            "explanation": "MAC requires a shared secret key, while digital signature uses a private/public key pair, enabling public verifiability."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "In a valid certificate chain, the root CA certificate is signed by an intermediate CA.",
+            "correctAnswer": false,
+            "explanation": "False. The root CA signs its own certificate (self‑signed) and signs the intermediate CA. The intermediate signs the end entity."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What does non‑repudiation mean in the context of digital signatures?",
+            "options": [
+                "The signer can pretend they didn't sign",
+                "The signer cannot deny having signed the message",
+                "The message was encrypted",
+                "The signature is anonymous"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Non‑repudiation prevents the signer from credibly denying their signature."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which step is NOT part of certificate verification?",
+            "options": [
+                "Check the issuer’s signature",
+                "Verify the certificate is within validity dates",
+                "Check the private key strength of the CA",
+                "Check revocation status"
+            ],
+            "correctAnswer": 2,
+            "explanation": "While the CA's private key must be secure, the verification process on the client does not directly test key strength; it relies on trust and the chain validation."
+        },
+        {
+            "id": "q19",
+            "type": "fill_blank",
+            "question": "The standard format for digital certificates is ____.",
+            "options": [
+                "X.509",
+                "RSA",
+                "PKI",
+                "SSL"
+            ],
+            "correctAnswer": "X.509",
+            "explanation": "X.509 is the ITU standard defining the format of public key certificates."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "ECDSA signatures consist of which two values?",
+            "options": [
+                "(r, s)",
+                "(x, y)",
+                "(p, q)",
+                "(hash, key)"
+            ],
+            "correctAnswer": 0,
+            "explanation": "An ECDSA signature is a pair (r, s)."
+        },
+        {
+            "id": "q21",
+            "type": "true_false",
+            "question": "RSA‑PSS is an older, deprecated padding scheme for RSA signatures.",
+            "correctAnswer": false,
+            "explanation": "False. RSA‑PSS is the newer, provably secure scheme; PKCS#1 v1.5 is older."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "What is the primary role of a public key infrastructure (PKI)?",
+            "options": [
+                "To generate symmetric keys",
+                "To manage the creation, distribution, and revocation of digital certificates",
+                "To encrypt internet traffic",
+                "To provide password storage"
+            ],
+            "correctAnswer": 1,
+            "explanation": "PKI encompasses the policies, roles, and technologies to manage certificates and public‑key encryption."
+        }
+    ]
+}

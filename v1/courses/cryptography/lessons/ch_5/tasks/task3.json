@@ -1,0 +1,16 @@
+{
+    "id": "task3",
+    "chapterId": "ch_5",
+    "title": "Certificate Chain Validator (Simplified)",
+    "description": "Validate a leaf certificate using a CA certificate by checking the digital signature.",
+    "estimatedMinutes": 20,
+    "problemStatement": "Given a leaf (end‑entity) certificate and a CA certificate (both as PEM bytes), write a function `validate_cert_chain(leaf_pem: bytes, ca_pem: bytes) -> bool` that:\n\n1. Loads both certificates using `x509.load_pem_x509_certificate`.\n2. Extracts the CA’s public key from `ca_cert.public_key()`.\n3. Verifies that the leaf certificate’s signature is valid by calling `ca_public_key.verify` with the leaf’s `tbs_certificate_bytes` and `signature` and the correct algorithm.\n4. Note: The leaf certificate contains `leaf.signature_hash_algorithm` and `leaf.signature` and the bytes to verify are `leaf.tbs_certificate_bytes`. Use `ca_public_key.verify(leaf.signature, leaf.tbs_certificate_bytes, padding.PKCS1v15(), leaf.signature_hash_algorithm)` (since most X.509 certs use PKCS1v15).\n5. Also check that the issuer of the leaf matches the subject of the CA.\n6. Return True if signature is valid and issuer matches, else False.\n\nThis is a simplified validation – real validation also checks dates, revocation, etc.\n\n**Hint:** Use `from cryptography import x509` and `from cryptography.hazmat.primitives.asymmetric import padding`.",
+    "hints": [
+        "`issuer_match = leaf_cert.issuer == ca_cert.subject`.",
+        "The signature algorithm: `leaf_cert.signature_hash_algorithm` is a HashAlgorithm instance; use it directly in `verify()`.",
+        "For padding, use `padding.PKCS1v15()` (most CAs sign with RSA and PKCS1v15, but there are exceptions. For this task, assume PKCS1v15).",
+        "Catch `InvalidSignature` to return False."
+    ],
+    "expectedOutput": "The function returns True for a valid certificate pair, False otherwise. Test with a real certificate chain (e.g., download from a website).",
+    "solutionCode": "from cryptography import x509\nfrom cryptography.hazmat.primitives.asymmetric import padding\nfrom cryptography.exceptions import InvalidSignature\n\ndef validate_cert_chain(leaf_pem, ca_pem):\n    leaf_cert = x509.load_pem_x509_certificate(leaf_pem)\n    ca_cert = x509.load_pem_x509_certificate(ca_pem)\n    \n    # Check issuer\n    if leaf_cert.issuer != ca_cert.subject:\n        return False\n    \n    # Verify signature\n    ca_public_key = ca_cert.public_key()\n    try:\n        ca_public_key.verify(\n            leaf_cert.signature,\n            leaf_cert.tbs_certificate_bytes,\n            padding.PKCS1v15(),\n            leaf_cert.signature_hash_algorithm\n        )\n        return True\n    except InvalidSignature:\n        return False\n"
+}

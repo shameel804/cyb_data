@@ -1,0 +1,104 @@
+{
+    "id": "l5",
+    "chapterId": "ch_3",
+    "title": "Elliptic Curve Cryptography: Smaller, Faster, Stronger 🌀",
+    "description": "The elegant geometry‑based crypto that is taking over the world.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Modern Asymmetric",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Why Move Beyond RSA? 🚀",
+            "content": "# RSA needs larger and larger keys to stay secure.\n\n- 2048‑bit RSA is common, 4096‑bit is emerging.\n- ECC provides **equivalent security with much smaller keys**. A 256‑bit ECC key ≈ 3072‑bit RSA key.\n\nSmaller keys mean faster computations, less bandwidth, and less storage – perfect for mobile, IoT, and blockchain.\n\nECC is based on the **elliptic curve discrete logarithm problem (ECDLP)**."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "What’s an Elliptic Curve? 📈",
+            "content": "# An elliptic curve is a set of points satisfying an equation like:\n`y² = x³ + ax + b`\n\nTogether with a **point at infinity** O, these points form a group. You can “add” two points to get a third on the curve.\n\n**Point addition** has a beautiful geometric definition: draw a line through two points; it intersects the curve at a third point; reflect across x‑axis to get the sum.\n\nThis group operation is what we use for crypto."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "ECC Basics 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "true_false",
+                "question": "A 256‑bit ECC key provides a similar security level to a 256‑bit RSA key.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. 256‑bit ECC is roughly equivalent to 3072‑bit RSA. ECC gives much more security per bit.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "ECC Key Generation & ECDH 🔑",
+            "content": "# Elliptic Curve Diffie‑Hellman (ECDH):\n\n- Agree on curve parameters (e.g., Curve25519, secp256r1).\n- Choose a base point `G` of large prime order.\n- **Alice:** private `a`, public `A = a * G` (scalar multiplication).\n- **Bob:** private `b`, public `B = b * G`.\n- Shared secret: `a * B = b * A = (ab) * G`.\n\nThe ECDLP states: given `G` and `a*G`, finding `a` is extremely hard.\n\nScalar multiplication is fast, inversion is hard."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "ECDH with Python (cryptography library)",
+            "content": "Real ECC with a modern curve:",
+            "codeSnippet": "from cryptography.hazmat.primitives.asymmetric import ec\nfrom cryptography.hazmat.primitives import hashes\nfrom cryptography.hazmat.primitives.kdf.hkdf import HKDF\n\n# Generate keys\nprivate_key = ec.generate_private_key(ec.SECP256R1())\npeer_public_key = ec.generate_private_key(ec.SECP256R1()).public_key()\n\n# ECDH shared secret\nshared_key = private_key.exchange(ec.ECDH(), peer_public_key)\nprint(shared_key.hex()[:20], '...')",
+            "codeLanguage": "python",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_6",
+            "type": "tip",
+            "title": "Popular Curves 📈",
+            "content": "## Not all curves are equal!\n- **Curve25519** (used in Signal, WireGuard, TLS 1.3) – fast, constant‑time, no tricky parameters.\n- **secp256r1** (NIST P‑256) – widely used in TLS.\n- Avoid curves with backdoors or weak parameters."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "ECC Security 🛡️",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "ECDH is the elliptic‑curve analogue of which protocol?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "RSA encryption",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Diffie‑Hellman key exchange",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "AES encryption",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "SHA‑256 hashing",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "ECDH is the elliptic‑curve version of Diffie‑Hellman, providing key exchange with smaller keys.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

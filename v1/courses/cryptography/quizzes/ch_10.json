@@ -1,0 +1,272 @@
+{
+    "id": "quiz_ch_10",
+    "chapterId": "ch_10",
+    "title": "Chapter 10 Quiz",
+    "description": "Test your blockchain cryptography knowledge – hashing, Merkle trees, proof‑of‑work, and digital signatures!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What links blocks together in a blockchain?",
+            "options": [
+                "The timestamp",
+                "The Merkle root",
+                "The hash of the previous block",
+                "The nonce"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Each block contains the cryptographic hash of the previous block, forming the chain."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "If an attacker changes a transaction in block 50, what happens to block 51?",
+            "options": [
+                "Nothing, block 51 is independent",
+                "Block 51’s previous hash no longer matches, breaking the chain",
+                "Block 51 automatically updates its previous hash",
+                "Block 51 becomes the new genesis block"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Block 51’s prev_hash points to the original block 50 hash. Changing block 50 changes its hash, so block 51’s pointer is now invalid."
+        },
+        {
+            "id": "q3",
+            "type": "mcq",
+            "question": "What is the purpose of a Merkle tree in a block?",
+            "options": [
+                "To encrypt transactions",
+                "To efficiently summarise and verify all transactions with a single root hash",
+                "To store transactions in alphabetical order",
+                "To compress the blockchain"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The Merkle root commits to all transactions, enabling lightweight verification."
+        },
+        {
+            "id": "q4",
+            "type": "true_false",
+            "question": "In a Merkle tree, if one leaf changes, the Merkle root stays the same.",
+            "correctAnswer": false,
+            "explanation": "False. Any change propagates up and alters the root."
+        },
+        {
+            "id": "q5",
+            "type": "fill_blank",
+            "question": "In Bitcoin, a miner must find a nonce such that the double‑SHA256 hash of the block header is _____ than the target.",
+            "options": [
+                "greater",
+                "less",
+                "equal",
+                "different"
+            ],
+            "correctAnswer": "less",
+            "explanation": "The hash must be numerically less than the target for the block to be valid."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Why is proof‑of‑work difficult to compute but easy to verify?",
+            "options": [
+                "The algorithm is secret",
+                "Verification requires only one hash computation",
+                "Miners use special hardware that verifiers don’t have",
+                "The target changes constantly"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Verifiers just hash the block header once and check if it meets the target. Miners must try millions of nonces."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What does the nonce in a Bitcoin block header represent?",
+            "options": [
+                "The number of transactions in the block",
+                "A random number miners vary to find a valid proof‑of‑work",
+                "The miner’s identification number",
+                "The block size"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The nonce is the variable that miners change to produce a hash meeting the difficulty target."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "How often does Bitcoin adjust its mining difficulty?",
+            "options": [
+                "Every block",
+                "Every 2016 blocks (≈2 weeks)",
+                "Every hour",
+                "Never"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Difficulty is recalculated every 2016 blocks to maintain a 10‑minute block time."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Which signature algorithm does Bitcoin use?",
+            "options": [
+                "RSA‑PSS",
+                "ECDSA on secp256k1",
+                "EdDSA on Curve25519",
+                "Schnorr signatures only"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Bitcoin uses ECDSA with the secp256k1 curve. (Schnorr signatures were added later with Taproot but ECDSA is the original)."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is a UTXO?",
+            "options": [
+                "A type of cryptocurrency",
+                "An unspent transaction output",
+                "A mining pool token",
+                "A unit of hash rate"
+            ],
+            "correctAnswer": 1,
+            "explanation": "UTXO = Unspent Transaction Output, representing a chunk of Bitcoin that can be spent."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "How is a Bitcoin address derived from a public key?",
+            "options": [
+                "It is the public key encoded in Base64",
+                "SHA‑256 then RIPEMD‑160, followed by checksum and Base58Check encoding",
+                "It is the private key hashed with MD5",
+                "It is the first 20 bytes of the public key"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Public key → SHA‑256 → RIPEMD‑160 → version byte + checksum → Base58Check."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Why is nonce reuse in ECDSA fatal?",
+            "options": [
+                "It makes the signature too long",
+                "It allows an attacker to recover the private key from two signatures",
+                "It causes the transaction to be delayed",
+                "It makes the hash function weaker"
+            ],
+            "correctAnswer": 1,
+            "explanation": "If the same nonce is used for two different messages, the private key can be algebraically derived."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "In proof‑of‑work, the block hash must be greater than the target to be valid.",
+            "correctAnswer": false,
+            "explanation": "False. The hash must be less than the target."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What does SPV stand for in Bitcoin?",
+            "options": [
+                "Secure Payment Verification",
+                "Simplified Payment Verification",
+                "Satoshi Protocol Version",
+                "Signature Proof Validation"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Simplified Payment Verification allows lightweight nodes to verify transactions without the full blockchain."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "How many hashes must be provided for a Merkle proof for a block with 1024 transactions?",
+            "options": [
+                "1",
+                "10",
+                "512",
+                "1024"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Log2(1024) = 10 sibling hashes along the path to the root."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What is the primary role of the digital signature in a Bitcoin transaction?",
+            "options": [
+                "To encrypt the transaction amount",
+                "To prove ownership of the UTXO being spent",
+                "To hide the sender’s IP address",
+                "To compress the transaction data"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The signature authorises spending the UTXO and proves control of the private key."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What is the purpose of the double‑SHA256 in Bitcoin (hashing twice)?",
+            "options": [
+                "To make the hash output shorter",
+                "To increase security and prevent length‑extension attacks",
+                "To comply with legal regulations",
+                "To speed up verification"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Double hashing adds a layer of protection against potential length‑extension and other attacks."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "A Merkle root can be used to verify that a transaction is NOT in a block.",
+            "correctAnswer": false,
+            "explanation": "False. A Merkle proof only proves inclusion. Proving non‑inclusion would require the full transaction set or a different structure."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What happens if two miners solve proof‑of‑work at roughly the same time?",
+            "options": [
+                "The network crashes",
+                "A temporary fork occurs; the longest chain eventually wins",
+                "Both blocks are permanently accepted",
+                "The miners split the reward"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A temporary fork occurs. Miners build on the block they see first; the chain with more accumulated work becomes the main chain."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which cryptographic property ensures that a blockchain is tamper‑evident?",
+            "options": [
+                "Symmetric encryption",
+                "Collision resistance of the hash function",
+                "Proof of authority",
+                "Digital signatures alone"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Collision resistance ensures that altering a block’s content changes its hash, breaking the chain."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "What is the role of the version byte in a Bitcoin address?",
+            "options": [
+                "It encrypts the public key",
+                "It indicates the address type (mainnet, testnet, etc.)",
+                "It makes the address shorter",
+                "It is a checksum"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The version byte identifies the network and address format (e.g., 0x00 for mainnet P2PKH)."
+        },
+        {
+            "id": "q22",
+            "type": "true_false",
+            "question": "The private key is stored in the blockchain so that anyone can verify signatures.",
+            "correctAnswer": false,
+            "explanation": "False. Only the public key (or its hash) is on the blockchain. The private key is never revealed."
+        }
+    ]
+}

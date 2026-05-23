@@ -1,0 +1,111 @@
+{
+    "id": "l2",
+    "chapterId": "ch_12",
+    "title": "Post‑Quantum Cryptography: A New Hope 🛡️",
+    "description": "Explore the five mathematical families that resist quantum attacks – lattices, codes, hashes, multivariate equations, and isogenies.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "What Makes a Problem Quantum‑Hard? 🧬",
+            "content": "# Post‑Quantum Cryptography (PQC) designs schemes based on mathematical problems that are believed to be hard even for quantum computers.\n\nThese problems come from different areas of mathematics:\n- **Lattices** – geometric structures of points in n‑dimensional space.\n- **Error‑correcting codes** – decoding a general linear code.\n- **Multivariate polynomials** – solving systems of quadratic equations.\n- **Hash‑based signatures** – security relies solely on hash function properties.\n- **Isogenies** – maps between elliptic curves.\n\nNone of these are known to be breakable by Shor’s algorithm."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Lattice‑Based Cryptography 🔢",
+            "content": "# A **lattice** is a regular grid of points in high‑dimensional space.\n\nThe core hard problem: **Learning With Errors (LWE)**.\n- Given a matrix A, and a vector b = A·s + e (where e is a small error), find the secret vector s.\n- Adding a small error makes the problem incredibly hard, both classically and quantumly.\n\n**Why it’s great:**\n- Very fast, small keys, versatile (KEMs, signatures, fully homomorphic encryption).\n- Used by NIST winners: **Kyber** (KEM) and **Dilithium** (signatures).\n\nThink of it like finding the exact combination of a lock when someone gives you a slightly blurred version of the combination numbers."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Lattice Intuition 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What is the name of the hard problem underlying most lattice‑based schemes?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Factoring",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Learning With Errors (LWE)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Discrete Logarithm",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Graph Isomorphism",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Learning With Errors (and its ring variant, Ring‑LWE) is the foundation for Kyber, Dilithium, and many others.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Code‑Based Cryptography 📟",
+            "content": "# Based on the difficulty of decoding a random linear error‑correcting code.\n\nThe classic scheme is **McEliece** (1978):\n- Public key is a scrambled version of a Goppa code.\n- Encryption adds random errors; decryption uses the secret code structure to correct them.\n\nPros: Very conservative (unbroken for 40+ years), fast encryption.\nCons: **Huge public keys** (up to 1 MB).\n\nA NIST finalist, McEliece is considered a long‑term safe choice despite the large key size."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Hash‑Based Signatures 🌲",
+            "content": "# Hash‑based signature schemes like **SPHINCS+** rely only on the security of hash functions.\n- Use Merkle trees and one‑time signatures (Lamport, Winternitz).\n- Security reduces to hash pre‑image resistance (quantum‑hard).\n\nPros: Minimal assumptions, mathematically simple.\nCons: Signatures are large (tens of KB), stateful variants (XMSS) need to track state.\n\nSPHINCS+ is stateless and was selected by NIST as a backup signature standard."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "tip",
+            "title": "No Single Magic Bullet 🎯",
+            "content": "## There is no universal PQC algorithm. Lattice schemes offer the best balance of size and speed, while code‑based and hash‑based provide diversity for defense‑in‑depth."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "PQC Families 🏡",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "Which PQC family uses Merkle trees and one‑time signatures?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Lattice‑based",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Code‑based",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Hash‑based",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Multivariate",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Hash‑based signatures (SPHINCS+, XMSS, LMS) build on the security of hash functions and Merkle trees.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

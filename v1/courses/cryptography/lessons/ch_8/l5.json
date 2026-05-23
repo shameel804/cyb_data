@@ -1,0 +1,104 @@
+{
+    "id": "l5",
+    "chapterId": "ch_8",
+    "title": "Perfect Secrecy & The One‑Time Pad 🛡️",
+    "description": "The holy grail of encryption – a cipher that is mathematically unbreakable, yet impractical.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Theory",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The One‑Time Pad (OTP) – Perfect Secrecy 🔑",
+            "content": "# The only encryption scheme that is **provably secure** (information‑theoretic security) is the One‑Time Pad.\n\nInvented by Gilbert Vernam in 1917 (and later proven by Shannon), it works as follows:\n1. The key is a **truly random** string of bits, **at least as long as the plaintext**.\n2. Encryption: `ciphertext = plaintext XOR key`.\n3. Decryption: `plaintext = ciphertext XOR key`.\n4. The key must be used **only once** and then destroyed.\n\nIf these conditions are met, the ciphertext gives an attacker **absolutely no information** about the plaintext (except its length)."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "code",
+            "title": "OTP in Python",
+            "content": "A toy OTP (using `secrets` for key generation):",
+            "codeSnippet": "import secrets\n\ndef otp_encrypt(plaintext):\n    key = secrets.token_bytes(len(plaintext))\n    ciphertext = bytes(p ^ k for p, k in zip(plaintext, key))\n    return ciphertext, key\n\nplain = b'Attack at dawn'\ncipher, key = otp_encrypt(plain)\nprint('Cipher:', cipher.hex())\nprint('Key:   ', key.hex())\n# To decrypt: plain = bytes(c ^ k for c, k in zip(cipher, key))",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "OTP Rules 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What makes the One‑Time Pad impractical for most applications?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It is too slow",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The key must be as long as the message, truly random, and used only once",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It can only encrypt numbers",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It requires a certificate authority",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The key management problem – generating, distributing, and protecting a key as long as the data – makes OTP unusable for bulk encryption.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Why OTP is Unbreakable 🛡️",
+            "content": "# Claude Shannon proved (1949) that OTP achieves **perfect secrecy**:\n\n- For any ciphertext, every possible plaintext of the same length is equally likely, given the unknown key.\n- An attacker with infinite computing power learns nothing new.\n\nBut the requirements are brutal:\n- Truly random key generation (not pseudo‑random!).\n- Secure key distribution (same length as message).\n- Never reuse any part of the key (two‑time pad disaster).\n\nViolating any of these breaks the perfect secrecy guarantee."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "From OTP to Modern Stream Ciphers 🌊",
+            "content": "# A stream cipher (like ChaCha20) mimics the OTP but uses a **pseudorandom keystream** derived from a short key and a nonce.\n\n- It is **computationally secure**, not information‑theoretically secure.\n- If the keystream is indistinguishable from random, the cipher is secure.\n- The OTP ideal is the inspiration – but we trade perfect security for practicality.\n\n**Never reuse a nonce with the same key!** Doing so turns a stream cipher into the two‑time pad, vulnerable to the crib attacks we studied."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "tip",
+            "title": "Real‑World OTP Usage 📡",
+            "content": "## One‑time pads are still used in ultra‑sensitive scenarios (diplomatic hotlines, spy communications) where the key can be physically transported before the message. For the internet, we rely on computationally secure ciphers."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Perfect Secrecy 🔐",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "AES‑256, used with a long random key, achieves perfect secrecy like the One‑Time Pad.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. AES is computationally secure, not information‑theoretically secure. Perfect secrecy requires a key as long as the message and true randomness.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

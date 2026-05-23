@@ -1,0 +1,114 @@
+{
+    "id": "l1",
+    "chapterId": "ch_12",
+    "title": "The Quantum Threat: Why RSA and ECC Might Fall 💥",
+    "description": "Learn how Shor’s algorithm breaks factoring and discrete logs, and how Grover’s algorithm halves symmetric security.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "The Problem",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "A Tale of Two Algorithms 🧪",
+            "content": "# Quantum computers aren’t just faster classical computers. They exploit superposition and entanglement to solve certain mathematical problems exponentially faster.\n\nTwo algorithms threaten current cryptography:\n- **Shor’s algorithm** (1994) – breaks RSA, ECC, Diffie‑Hellman, and all schemes based on factoring or discrete logs.\n- **Grover’s algorithm** (1996) – speeds up brute‑force searches, affecting symmetric ciphers and hash functions.\n\nWhen a large‑scale quantum computer arrives, almost all public‑key crypto in use today will be **trivially broken**."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "Shor’s Algorithm: Public‑Key Killer 🔓",
+            "content": "# Peter Shor showed that a quantum computer can factor a large integer N in polynomial time (O((log N)³)).\n\nThis breaks:\n- **RSA** – since its security relies on the hardness of factoring.\n- **Finite‑Field Diffie‑Hellman** – by solving the discrete logarithm problem.\n- **Elliptic Curve Cryptography** – by solving the elliptic curve discrete logarithm problem.\n\nA 2048‑bit RSA key, which would take a classical computer billions of years to factor, could be broken by a sufficiently large quantum computer in **hours**.\n\n**Impact:** All encrypted internet traffic (TLS, SSH, VPN) that uses RSA/ECDH key exchange would be decrypted retroactively if recorded today."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which algorithm allows a quantum computer to break RSA?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Grover's algorithm",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Shor's algorithm",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Diffie‑Hellman",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "AES",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Shor's algorithm can factor large numbers and solve discrete logs, breaking RSA and ECC.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Grover’s Algorithm: Squeezing Symmetric Security 🔍",
+            "content": "# Grover’s algorithm provides a quadratic speedup for unstructured search problems.\n\n- A classical brute‑force on a 128‑bit key takes 2¹²⁸ operations.\n- With Grover’s algorithm, an attacker only needs √(2¹²⁸) = 2⁶⁴ quantum operations.\n\nThis effectively **halves the security level** of symmetric ciphers:\n- AES‑128 → provides 64‑bit security against quantum attack.\n- AES‑256 → provides 128‑bit security (still safe).\n\n**Solution:** Double the key size. AES‑256 and SHA‑512 remain quantum‑resistant.\n\nHash functions are similarly affected: SHA‑256 collision resistance drops from 128 bits to ~85 bits."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Quantum Security Calculator",
+            "content": "A simple function to estimate quantum security bits:",
+            "codeSnippet": "def quantum_security(classical_bits, algo_type):\n    if algo_type == 'symmetric' or algo_type == 'hash_preimage':\n        return classical_bits / 2\n    elif algo_type == 'hash_collision':\n        return classical_bits / 3  # approx\n    else:  # RSA, ECC – broken by Shor\n        return 0\n\nprint(f\"AES-128 quantum security: {quantum_security(128, 'symmetric')} bits\")\nprint(f\"RSA-2048 quantum security: {quantum_security(112, 'asymmetric')} bits\")",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_6",
+            "type": "warning",
+            "title": "⚠️ Harvest Now, Decrypt Later",
+            "content": "## Attackers may be recording encrypted traffic today, waiting for a quantum computer to decrypt it later. Data with a long shelf‑life (medical records, state secrets) is already at risk."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "Grover’s Impact 📉",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "What is the effective quantum security of AES‑256?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "0 bits",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "128 bits",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "256 bits",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "64 bits",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Grover’s algorithm reduces the security to √(2²⁵⁶) = 2¹²⁸ operations, so 128 bits.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

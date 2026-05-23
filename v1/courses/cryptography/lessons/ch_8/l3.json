@@ -1,0 +1,104 @@
+{
+    "id": "l3",
+    "chapterId": "ch_8",
+    "title": "Known‑Plaintext & Chosen‑Plaintext Attacks 🎯",
+    "description": "When the attacker has a crib – how knowing a piece of plaintext unlocks many systems.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Attack Models",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Power of a Crib 🍭",
+            "content": "# A “crib” is a known or suspected fragment of plaintext.\n\n- In WWII, Allied codebreakers used predictable phrases like “Heil Hitler” or “weather report” to break Enigma.\n- Today, known headers (HTTP, JSON) can serve as cribs in protocol attacks.\n\nWith a crib, many ciphers become vulnerable, especially if the attacker can XOR, slide, or extract key material. This is the **known‑plaintext attack (KPA)** model."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Breaking a Stream Cipher with a Crib 🌊",
+            "content": "# If a stream cipher (like a reused‑nonce AES‑CTR) encrypts two messages with the same keystream:\n\n`C1 = P1 ⊕ K` and `C2 = P2 ⊕ K`\n\nIf we XOR C1 and C2, the keystream cancels out:\n\n`C1 ⊕ C2 = P1 ⊕ P2`\n\nNow, if we know part of P1 (the crib), we can recover the corresponding part of P2, and often extend to recover the entire keystream. This is a **two‑time pad** – devastating!"
+        },
+        {
+            "id": "s_l3_3",
+            "type": "code",
+            "title": "Two‑Time Pad Attack Simulation",
+            "content": "When the same nonce is reused in CTR mode:",
+            "codeSnippet": "from pwn import xor  # (use bytes XOR)\n# C1 = P1 ^ keystream, C2 = P2 ^ keystream\nC1 = bytes.fromhex('0d064614')  # dummy\nC2 = bytes.fromhex('1b0c1e1c')\nc1c2_xor = xor(C1, C2)  # = P1 ^ P2\n# If we know P1 = b'Hello'\nP1 = b'Hello'\nP2 = xor(P1, c1c2_xor[:len(P1)])\nprint(P2)  # reveals P2 (possibly more)",
+            "codeLanguage": "python",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_4",
+            "type": "quiz",
+            "title": "Crib Attack 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What property enables the two‑time pad attack on CTR mode?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The cipher uses a small block size",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The same keystream is XORed with two different plaintexts",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The key is too short",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The encryption is deterministic",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "When the nonce is reused, the same keystream is generated, and XORing the ciphertexts yields the XOR of the plaintexts.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Chosen‑Plaintext Attack (CPA) 🎯",
+            "content": "# In a CPA, the attacker can obtain ciphertexts for plaintexts they choose.\n\nThis models real scenarios where:\n- The enemy can feed data into your encryption device.\n- The attacker can trigger automated responses.\n\nModern ciphers must be **IND‑CPA secure** (indistinguishable under chosen‑plaintext attack). This is why randomised encryption and authenticated encryption (AEAD) are mandatory.\n\n**Example:** The attack on ECB mode (the penguin image) is a chosen‑plaintext attack – the attacker can craft patterns and see them in the ciphertext."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Differential & Linear Cryptanalysis (Brief) ⚛️",
+            "content": "# These are mathematical techniques that attack block ciphers by analysing how differences in input relate to differences in output.\n\n- **Differential Cryptanalysis** – Biham & Shamir 1991. Study how specific input differences propagate with high probability, leaking key bits.\n- **Linear Cryptanalysis** – Matsui 1993. Find linear approximations of the cipher’s behaviour, then use statistical tests to recover the key.\n\nDES was vulnerable; AES was designed to resist both. Understanding these drives modern cipher design."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "CPA & Modern Crypto 🛡️",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "A cipher that produces the same ciphertext every time for a given plaintext (deterministic encryption) is secure against CPA.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. Deterministic encryption leaks equality and patterns, making it vulnerable to CPA. Randomised or nonce‑based encryption is required.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

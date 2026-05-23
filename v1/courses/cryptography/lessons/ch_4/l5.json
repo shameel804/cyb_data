@@ -1,0 +1,104 @@
+{
+    "id": "l5",
+    "chapterId": "ch_4",
+    "title": "HMAC: Keyed Hashing for Authentication 🔏",
+    "description": "Combine a secret key with a hash function to produce a message authentication code.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Advanced",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "What is a MAC? 🔖",
+            "content": "# A Message Authentication Code (MAC) is a short piece of information used to authenticate a message – confirming both its integrity and authenticity.\n\nUnlike a simple hash, a MAC uses a **secret key**. Only someone with that key can generate or verify the MAC.\n\nThink of it like a wax seal on a letter: you need the royal signet ring (the key) to make the seal, and anyone can verify it if they know what the ring looks like (but the verifier also needs the key)."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "HMAC Construction 🛠️",
+            "content": "# HMAC (Hash‑based MAC) combines a cryptographic hash function (like SHA‑256) with a secret key.\n\n**Formula:**\n```\nHMAC(K, m) = H( (K' ⊕ opad) || H( (K' ⊕ ipad) || m) )\n```\n- `K'` is the key padded to the block size.\n- `opad` and `ipad` are fixed constants (outer/inner padding).\n- `||` is concatenation.\n\nThis construction prevents length‑extension attacks and allows any iterative hash to be turned into a MAC."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "code",
+            "title": "HMAC‑SHA256 in Python",
+            "content": "Generate and verify an HMAC:",
+            "codeSnippet": "import hashlib, hmac\n\nkey = b'secret_key'\nmessage = b'Important data'\n\n# Generate HMAC\nh = hmac.new(key, message, hashlib.sha256)\nprint(h.hexdigest())\n\n# Verify\nh2 = hmac.new(key, message, hashlib.sha256)\nif hmac.compare_digest(h.digest(), h2.digest()):\n    print('Message authentic')\nelse:\n    print('Tampered!')",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_4",
+            "type": "quiz",
+            "title": "HMAC Basics 🔑",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What does HMAC provide that a plain hash does not?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Confidentiality",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Authentication and integrity with a shared secret",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Compression",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Faster computation",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "HMAC uses a secret key to provide message authentication, proving that the message came from someone who knows the key and has not been altered.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Where HMAC Shines ✨",
+            "content": "# Common uses:\n\n- **JWT (JSON Web Tokens)** – Signing tokens with HMAC‑SHA256.\n- **API authentication** – Sending a signature alongside the request.\n- **TLS record authentication** – Ensuring each data record hasn’t been tampered.\n- **Cookie signing** – Preventing cookie tampering in web apps.\n\nHMAC ensures that even if the communication channel is compromised, an attacker can’t forge valid messages without the key."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "warning",
+            "title": "⚠️ Use Constant‑Time Comparison",
+            "content": "## Always use `hmac.compare_digest()` (or equivalent) to compare MACs.\n\nNormal string comparison leaks timing information, which can be exploited. `compare_digest` runs in constant time."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Security Detail 🛡️",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "An attacker who can see an HMAC tag can recover the secret key if the hash function is weak.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "True. HMAC's security relies on the underlying hash's resistance to collision and pre‑image attacks. A broken hash compromises HMAC.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,105 @@
+{
+    "id": "l4",
+    "chapterId": "ch_2",
+    "title": "Transposition Ciphers: Rail Fence & Columnar 🚂",
+    "description": "Rearrange the order of letters – a completely different paradigm from substitution.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Classic Ciphers",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Transposition: Jumble the Order ✂️",
+            "content": "# Instead of changing the letters, we change their positions.\n\n- The plaintext letters stay the same, but their order is shuffled according to a pattern.\n- The key is the pattern (e.g., number of rails, column order).\n- Frequency analysis alone doesn’t break it, because letter counts are preserved.\n\n**Two famous types:**\n- **Rail Fence Cipher**\n- **Columnar Transposition**"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Rail Fence Cipher 🛤️",
+            "content": "Write the message in a zig‑zag pattern across several 'rails', then read row‑by‑row.\n\n**Example with 3 rails:**\n\nPlaintext: `WE ARE DISCOVERED FLEE AT ONCE`\n\nZig‑zag:\n```\nW . . . E . . . C . . . R . . . L . . . T . . . E\n. E . R . D . S . O . E . E . F . E . A . O . C .\n. . A . . . I . . . V . . . D . . . E . . . N . .\n```\n\nCiphertext (row by row): `WECRL TEERD SOEEF EAOC AIVD EN`"
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Rail Fence Puzzle 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "If you use 2 rails, what is the ciphertext of 'HELLO'?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "HLELO",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "HOELL",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "ELLOH",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "LHOLE",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Two rails: H L O on top row, E L on bottom row. Row‑by‑row: H L O E L → HLELO.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Columnar Transposition 📊",
+            "content": "Write the message in rows of a fixed width (the keyword length). Then read columns in the alphabetical order of the keyword.\n\n**Example keyword:** `ZEBRAS` (6 letters)\n\nPlaintext: `WE ARE DISCOVERED FLEE AT ONCE` (remove spaces)\n\nGrid (6 columns):\n```\nZ E B R A S\n--------- \nW E A R E D\nI S C O V E\nR E D F L E\nE A T O N C\nE Q X Y Z Q   (padding)\n```\n\nRead columns in order of keyword letters: A first, then B, etc.\nA‑column: E V L N Z → ciphertext: `EVLNZ ...` (full ciphertext longer)."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "tip",
+            "title": "Double Transposition 🔐",
+            "content": "## Applying columnar transposition twice with different keywords makes it much harder to break.\n\nThis was used in WWII by both sides. But with computers and known plaintext attacks, it can still be cracked."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Transposition vs Substitution 🤔",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "What is a key advantage of transposition over simple substitution?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It changes letters to hide frequency",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It preserves letter frequencies, foiling basic frequency analysis",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It is unbreakable",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It requires no key",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Transposition retains letter counts, so single‑letter frequency analysis alone doesn’t work; an attacker must also figure out the positional permutation.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

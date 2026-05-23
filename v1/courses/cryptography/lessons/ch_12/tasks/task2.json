@@ -1,0 +1,17 @@
+{
+    "id": "task2",
+    "chapterId": "ch_12",
+    "title": "Hybrid Key Exchange Simulator",
+    "description": "Simulate a hybrid key exchange that combines ECDH with a dummy post‑quantum KEM to produce a final shared secret.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You need to demonstrate how a hybrid key exchange works. Write a function `hybrid_shared_secret()` that:\n\n1. Generates a classical ECDH shared secret using the SECP256R1 curve (you can use `ec.generate_private_key` and `exchange` from the `cryptography` library).\n2. Simulates a post‑quantum KEM by:\n   - Generating a random PQ shared secret (32 bytes) using `secrets.token_bytes(32)`.\n   - Generating a dummy ciphertext (e.g., 768 random bytes) to represent the KEM encapsulation.\n3. Combines the two secrets using HKDF‑SHA256 to derive a 32‑byte final key.\n4. Returns the final key, the ECDH public key bytes, and the dummy KEM ciphertext.\n\n**Function signature:** `hybrid_shared_secret() -> (bytes, bytes, bytes)` returning `(final_key, ecdh_public_bytes, pq_ciphertext)`.\n\n**Note:** This is a simulation – in a real system, you’d use a real PQC library.\n\n**Example usage:**\n```\nkey, ec_pub, pq_ct = hybrid_shared_secret()\nprint(f\"Hybrid key (hex): {key.hex()[:10]}...\")\nprint(f\"EC pub length: {len(ec_pub)} bytes\")\nprint(f\"PQ ciphertext length: {len(pq_ct)} bytes\")\n```",
+    "hints": [
+        "Import `ec` from `cryptography.hazmat.primitives.asymmetric`.",
+        "Import `HKDF`, `hashes` from cryptography.hazmat.primitives.kdf.hkdf and hashes.",
+        "For ECDH: `priv = ec.generate_private_key(ec.SECP256R1())`, `pub = priv.public_key()`, `pub_bytes = pub.public_bytes(encoding=serialization.Encoding.X962, format=serialization.PublicFormat.UncompressedPoint)`. Need also a peer private key; you can generate a second key pair for the peer.",
+        "Use `shared_ec = priv.exchange(ec.ECDH(), peer_pub)`.",
+        "Derive final key: `HKDF(algorithm=hashes.SHA256(), length=32, salt=None, info=b'hybrid-demo').derive(shared_ec + pq_secret)`."
+    ],
+    "expectedOutput": "Function returning the three byte strings. Provide code.",
+    "solutionCode": "import secrets\nfrom cryptography.hazmat.primitives.asymmetric import ec\nfrom cryptography.hazmat.primitives import serialization, hashes\nfrom cryptography.hazmat.primitives.kdf.hkdf import HKDF\n\ndef hybrid_shared_secret():\n    # Generate key pairs for both sides (simulate Alice and Bob)\n    alice_priv = ec.generate_private_key(ec.SECP256R1())\n    alice_pub = alice_priv.public_key()\n    bob_priv = ec.generate_private_key(ec.SECP256R1())\n    bob_pub = bob_priv.public_key()\n    \n    # Classical ECDH shared secret\n    shared_ec = alice_priv.exchange(ec.ECDH(), bob_pub)\n    \n    # Dummy PQ KEM: random shared secret and fake ciphertext\n    pq_secret = secrets.token_bytes(32)\n    pq_ciphertext = secrets.token_bytes(768)  # simulate Kyber ciphertext\n    \n    # Hybrid derivation\n    hkdf = HKDF(\n        algorithm=hashes.SHA256(),\n        length=32,\n        salt=None,\n        info=b'hybrid-demo'\n    )\n    final_key = hkdf.derive(shared_ec + pq_secret)\n    \n    # Serialize Alice's public key for sharing\n    ec_pub_bytes = alice_pub.public_bytes(\n        encoding=serialization.Encoding.X962,\n        format=serialization.PublicFormat.UncompressedPoint\n    )\n    \n    return final_key, ec_pub_bytes, pq_ciphertext\n"
+}

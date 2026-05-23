@@ -1,0 +1,17 @@
+{
+    "id": "task1",
+    "chapterId": "ch_3",
+    "title": "Toy RSA Key Generation & Encryption",
+    "description": "Given two small primes, compute the RSA keys and use them to encrypt and decrypt a number.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You are building a tiny RSA demonstration. Your task is to write three functions:\n\n1. `generate_keys(p, q, e)` – Given two distinct primes `p` and `q`, and a public exponent `e`, compute and return the public key `(n, e)` and private key `(n, d)`.\n2. `rsa_encrypt(plain_int, pub_key)` – Encrypt the integer `plain_int` using the public key `(n, e)`. Return ciphertext.\n3. `rsa_decrypt(cipher_int, priv_key)` – Decrypt using the private key `(n, d)`. Return original integer.\n\nYou may assume Python 3.8+ where `pow(x, -1, mod)` computes the modular inverse. Use `pow` with three arguments for modular exponentiation.\n\n**Example:**\n```\npub, priv = generate_keys(61, 53, 17)\nc = rsa_encrypt(123, pub)\nm = rsa_decrypt(c, priv)\nprint(m)  # should be 123\n```\n\nEdge cases: plaintext must be less than n. Test with numbers smaller than n.",
+    "hints": [
+        "n = p * q",
+        "phi = (p-1) * (q-1)",
+        "d = pow(e, -1, phi)  # modular inverse",
+        "Encryption: cipher = pow(message, e, n)",
+        "Decryption: message = pow(cipher, d, n)"
+    ],
+    "expectedOutput": "Functions that work for the given small primes; tests will call and check output.",
+    "solutionCode": "def generate_keys(p, q, e):\n    n = p * q\n    phi = (p-1) * (q-1)\n    d = pow(e, -1, phi)\n    return (n, e), (n, d)\n\ndef rsa_encrypt(plain_int, pub_key):\n    n, e = pub_key\n    return pow(plain_int, e, n)\n\ndef rsa_decrypt(cipher_int, priv_key):\n    n, d = priv_key\n    return pow(cipher_int, d, n)\n"
+}

@@ -1,0 +1,24 @@
+{
+    "id": "project1",
+    "title": "Secure File Vault",
+    "description": "Build a command‑line tool that encrypts and decrypts files using AES‑256‑GCM with a password‑derived key, ensuring confidentiality and integrity.",
+    "difficulty": "Beginner",
+    "estimatedHours": "2-4",
+    "problemStatement": "You are building a personal file encryption tool called `securevault`. It should allow users to securely store files on an untrusted cloud service or USB drive.\n\nYour tool will:\n- Accept a password from the user.\n- Derive a strong 256‑bit key using PBKDF2‑HMAC‑SHA256 with a randomly generated salt.\n- Encrypt the file content with AES‑256‑GCM (which provides both confidentiality and integrity).\n- Prepend the salt and the GCM nonce to the output file (so they can be recovered for decryption).\n- Use a constant‑time comparison when verifying the authentication tag (GCM handles this automatically, but you must ensure the library is used correctly).\n\nThe tool must be a single Python script with two commands:\n- `encrypt <input_file> <output_file> <password>`\n- `decrypt <input_file> <output_file> <password>`\n\n**Detailed Requirements:**\n1. The key derivation must use `hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 600_000, dklen=32)`. The salt is 16 random bytes generated via `os.urandom`.\n2. For encryption, use `Crypto.Cipher.AES.new(key, AES.MODE_GCM, nonce=nonce)`. The nonce must be 12 random bytes.\n3. Store the output file as: `salt (16 bytes) + nonce (12 bytes) + ciphertext + tag`. The tag is obtained after `cipher.encrypt_and_digest(plaintext)` and is automatically appended by the library; you may store it explicitly if you wish, but GCM mode will append the tag. For clarity, concatenate `ciphertext + tag` and store them.\n4. During decryption, read the salt and nonce from the file, derive the key, then decrypt. The library will verify the tag and raise an exception if it's invalid.\n5. Handle invalid passwords gracefully (catch `ValueError` or `MACCheckError` from pycryptodome).\n6. Use the `argparse` module for a clean CLI.\n\n**Constraints:**\n- Do not store the password anywhere; the user must supply it each time.\n- The output file format must be exactly as described.\n- The program must work on any file (binary safe).\n\nThis project tests your understanding of symmetric encryption, key derivation, salt, nonce, and authenticated encryption (Chapter 2, 4, 9).",
+    "requirements": [
+        "Accept password from command line and derive a 256‑bit key using PBKDF2 with a 16‑byte random salt.",
+        "Encrypt file data with AES‑256‑GCM using a 12‑byte random nonce.",
+        "Store salt, nonce, ciphertext, and tag in a single output file in that order.",
+        "Decrypt by reading salt and nonce, re‑deriving key, and verifying the GCM tag.",
+        "Gracefully handle wrong passwords with an error message and non‑zero exit code.",
+        "Use Python and the `pycryptodome` library (install with `pip install pycryptodome`)."
+    ],
+    "hints": [
+        "Salt is not secret; prepending it to the file is fine. Nonce must be unique per encryption but not secret.",
+        "PBKDF2 iteration count: 600,000 as per OWASP recommendations for SHA‑256.",
+        "AES‑GCM automatically appends the tag after ciphertext when you use `encrypt_and_digest()`. Simply store the concatenated bytes.",
+        "Use `cipher.nonce` to retrieve the nonce after creation.",
+        "Remember to read and write files in binary mode (`'rb'`, `'wb'`)."
+    ],
+    "expectedOutput": "The script should be runnable as described. Encrypt a file and then decrypt it; the output must be identical to the original. Using a wrong password during decryption must result in a clear error and no output file."
+}

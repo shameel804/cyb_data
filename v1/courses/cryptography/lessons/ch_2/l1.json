@@ -1,0 +1,95 @@
+{
+    "id": "l1",
+    "chapterId": "ch_2",
+    "title": "Symmetric Encryption Deep Dive 🔍",
+    "description": "Revisit the symmetric model, understand key sizes and the impossible key‑distribution problem.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The One‑Key Rule 🔐",
+            "content": "# Symmetric Encryption = Same Key\n\nBoth **Alice** and **Bob** use the **exact same secret key** to encrypt and decrypt.\n\n- **Encryption:** `Ciphertext = Encrypt(Plaintext, Key)`\n- **Decryption:** `Plaintext = Decrypt(Ciphertext, Key)`\n\nIf Eve learns the key, she can read everything. So the key must be kept **absolutely confidential**."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "Why Symmetric? ⚡",
+            "content": "Symmetric ciphers are:\n- **Fast** – can encrypt gigabytes per second in hardware.\n- **Compact** – require less code and memory.\n- **Proven** – AES has withstood decades of public attack.\n\nThey are the workhorses of cryptography: used for **data at rest** (disk encryption) and **data in transit** (TLS session data).\n\nBut there’s a huge catch…"
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What must Alice and Bob both possess to use symmetric encryption?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A public key",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The same secret key",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A certificate",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A quantum computer",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Symmetric encryption requires the same secret key on both sides.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Key Distribution Problem 🚫",
+            "content": "If Alice and Bob have never met, how do they agree on a secret key over an insecure channel?\n\n- They can’t just email it – Eve would see it.\n- They could meet in person, but that doesn’t scale.\n- **Key distribution centres** exist, but they become a single point of failure.\n\nThis is the very problem that led to the invention of **asymmetric cryptography** (Chapter 3). Meanwhile, symmetric ciphers are often used after a key has been securely exchanged via asymmetric means."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "tip",
+            "title": "Key Size = Strength 💪",
+            "content": "## How big should the key be?\n\n- **128‑bit** – enough for all civilian use (AES‑128).\n- **192‑bit** – rarely used, but exists.\n- **256‑bit** – paranoid level, used for top‑secret documents.\n\nA key of length *n* bits has **2^n** possible values. Brute‑forcing 2^128 keys is astronomically hard."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Brute‑Force Reality 🚀",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "A 40‑bit key can be broken in minutes with modern hardware.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "True. 40‑bit keys were used in old Wi‑Fi (WEP) and could be cracked in seconds. Today’s minimum is 128 bits.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

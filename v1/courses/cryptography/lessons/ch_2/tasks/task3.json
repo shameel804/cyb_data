@@ -1,0 +1,16 @@
+{
+    "id": "task3",
+    "chapterId": "ch_2",
+    "title": "Rail Fence Cipher",
+    "description": "Encrypt a message by writing it in a zig‑zag across multiple rails.",
+    "estimatedMinutes": 10,
+    "problemStatement": "Implement the Rail Fence cipher encryption with a given number of rails.\n\n**Requirements:**\n- Write `rail_fence_encrypt(text: str, rails: int) -> str`.\n- The `text` is a string of uppercase letters without spaces.\n- `rails` is at least 2.\n- Return the ciphertext by reading the rails row‑by‑row.\n\n**Example:**\n```\nrail_fence_encrypt('WEAREDISCOVEREDFLEEATONCE', 3) → 'WECRLTEERDSOEEFEAOCAIVDEN'\n```\n(Note: output cleaned of spaces, exact string above.)",
+    "hints": [
+        "Create a list of strings, one per rail. Initialize them as empty.",
+        "Iterate through the plaintext. Keep a variable for current rail and a direction (+1 or -1). When you hit the top or bottom rail, reverse direction.",
+        "Add each character to the current rail's string.",
+        "Finally, concatenate all rails together."
+    ],
+    "expectedOutput": "Paste your function; tests will call `rail_fence_encrypt('WEAREDISCOVEREDFLEEATONCE', 3)` and expect the string shown.",
+    "solutionCode": "def rail_fence_encrypt(text, rails):\n    if rails == 1:\n        return text\n    fence = [''] * rails\n    rail = 0\n    direction = 1  # 1 = down, -1 = up\n    for char in text:\n        fence[rail] += char\n        rail += direction\n        if rail == 0 or rail == rails - 1:\n            direction *= -1\n    return ''.join(fence)\n"
+}

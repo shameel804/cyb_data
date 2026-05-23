@@ -1,0 +1,114 @@
+{
+    "id": "l3",
+    "chapterId": "ch_5",
+    "title": "RSA Signatures & ECDSA ⚙️",
+    "description": "The two dominant signature algorithms – how they work and how to use them safely.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Algorithms",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "RSA Signatures – The Classic 📜",
+            "content": "# RSA can be used for both encryption and signatures.\n\nFor signing:\n- The signer hashes the message, then applies a **padding scheme**, then computes `signature = padded_hash^d mod n`.\n- The verifier computes `padded_hash = signature^e mod n` and checks the padding and hash.\n\n**Crucial:** Never do raw `signature = hash^d mod n`. It's completely insecure without padding.\n\nTwo standard padding schemes:\n- **PKCS#1 v1.5** – older, still widely supported.\n- **RSA‑PSS (Probabilistic Signature Scheme)** – newer, provably secure, recommended."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "RSA Signature with Python (cryptography library)",
+            "content": "Example using RSA‑PSS and SHA‑256:",
+            "codeSnippet": "from cryptography.hazmat.primitives.asymmetric import rsa, padding\nfrom cryptography.hazmat.primitives import hashes\n\n# Generate keys\nprivate_key = rsa.generate_private_key(65537, 2048)\npublic_key = private_key.public_key()\n\n# Sign\nmessage = b'Important document'\nsignature = private_key.sign(\n    message,\n    padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH),\n    hashes.SHA256()\n)\n\n# Verify\ntry:\n    public_key.verify(\n        signature, message,\n        padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH),\n        hashes.SHA256()\n    )\n    print('Valid signature')\nexcept Exception:\n    print('Invalid signature')",
+            "codeLanguage": "python",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "RSA Signing 📝",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Why is raw RSA signing (hash^d mod n) insecure?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It is too slow",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It is vulnerable to existential forgery without padding",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The private key is exposed",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It can only sign numbers, not text",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Without proper padding, an attacker can forge signatures by exploiting the mathematical structure of RSA. Padding prevents this.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "ECDSA – Elliptic Curve Digital Signature Algorithm 🌀",
+            "content": "# ECDSA is the elliptic curve counterpart of the Digital Signature Algorithm (DSA).\n\nIt uses the same ECC math (point multiplication) to produce a signature consisting of two integers `(r, s)`.\n\nAdvantages over RSA signatures:\n- Much smaller signatures (e.g., 64 bytes for P‑256 vs. 256 bytes for RSA‑2048).\n- Faster signing and verification.\n\nUsed in Bitcoin, TLS, SSH, and many modern protocols."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "How ECDSA Works (Simplified) ⚙️",
+            "content": "1. Hash the message (e.g., SHA‑256).\n2. Choose a random nonce `k` (critical – must be unique and unpredictable!).\n3. Compute `(x1, y1) = k * G` (G is the curve base point).\n4. `r = x1 mod n` (n is the curve order).\n5. `s = k⁻¹ * (hash + r * privateKey) mod n`.\n\nThe signature is `(r, s)`.\n\nVerification reverses the math.\n\n**The cardinal sin:** Reusing the same nonce `k` for two different signatures leaks the private key! This has caused several real‑world breaches (e.g., Sony PlayStation 3 hack)."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "warning",
+            "title": "⚠️ Nonce Reuse Kills ECDSA",
+            "content": "## If the same nonce `k` is used to sign two different messages, an attacker can recover the private key algebraically. Always generate a cryptographically strong random `k` (deterministic ECDSA, RFC 6979, is safest)."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "ECDSA Smarts 🧪",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "Why is ECDSA preferred over RSA for many modern applications?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It uses symmetric keys",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Smaller signatures and faster operations",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It is unbreakable",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "No need for a hash function",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "ECDSA offers compact signatures and high speed, making it ideal for mobile, IoT, and blockchain.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

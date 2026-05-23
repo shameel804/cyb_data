@@ -1,0 +1,272 @@
+{
+    "id": "quiz_ch_6",
+    "chapterId": "ch_6",
+    "title": "Chapter 6 Quiz",
+    "description": "Test your knowledge of SSL/TLS, HTTPS, certificates, and the real‑world web security!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What does TLS stand for?",
+            "options": [
+                "Transport Layer Security",
+                "Transmission Line Security",
+                "Terminal Link Service",
+                "Top Level Security"
+            ],
+            "correctAnswer": 0,
+            "explanation": "TLS = Transport Layer Security."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which of the following is NOT a guarantee of TLS?",
+            "options": [
+                "Confidentiality",
+                "Integrity",
+                "Availability",
+                "Authentication"
+            ],
+            "correctAnswer": 2,
+            "explanation": "TLS ensures confidentiality, integrity, and authentication, but not availability (that’s a system resilience concern)."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "HTTP without TLS encrypts the data, but doesn’t verify the server’s identity.",
+            "correctAnswer": false,
+            "explanation": "False. Plain HTTP has no encryption at all; data is sent in plaintext."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which TLS version removed RSA key transport and made forward secrecy mandatory?",
+            "options": [
+                "TLS 1.0",
+                "TLS 1.1",
+                "TLS 1.2",
+                "TLS 1.3"
+            ],
+            "correctAnswer": 3,
+            "explanation": "TLS 1.3 removed static RSA and only supports forward‑secure key exchange."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What is the first message in a TLS handshake?",
+            "options": [
+                "ServerHello",
+                "ClientHello",
+                "Certificate",
+                "Finished"
+            ],
+            "correctAnswer": 1,
+            "explanation": "ClientHello initiates the handshake."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which component of a cipher suite determines how the symmetric keys are exchanged?",
+            "options": [
+                "The bulk encryption algorithm",
+                "The MAC algorithm",
+                "The key exchange method",
+                "The hash function"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The key exchange method (e.g., ECDHE, RSA) specifies how the shared secret is established."
+        },
+        {
+            "id": "q7",
+            "type": "fill_blank",
+            "question": "The cipher suite 'TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256' uses ____ for authentication.",
+            "options": [
+                "ECDHE",
+                "RSA",
+                "AES",
+                "SHA256"
+            ],
+            "correctAnswer": "RSA",
+            "explanation": "RSA is the authentication algorithm; the server’s certificate uses an RSA public key."
+        },
+        {
+            "id": "q8",
+            "type": "true_false",
+            "question": "ECDHE key exchange provides forward secrecy.",
+            "correctAnswer": true,
+            "explanation": "True. Ephemeral keys ensure past sessions remain secure even if the long‑term key is later compromised."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What is the purpose of the Server Name Indication (SNI) extension?",
+            "options": [
+                "To enable multiple websites on the same IP address with different certificates",
+                "To encrypt the server’s name",
+                "To speed up the handshake",
+                "To request a client certificate"
+            ],
+            "correctAnswer": 0,
+            "explanation": "SNI tells the server which host the client wants, allowing different certificates per host on the same IP."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which validation level simply proves domain control?",
+            "options": [
+                "Extended Validation (EV)",
+                "Organization Validation (OV)",
+                "Domain Validation (DV)",
+                "Individual Validation (IV)"
+            ],
+            "correctAnswer": 2,
+            "explanation": "DV certificates only verify domain ownership, typically via email or DNS challenge."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What is a wildcard certificate?",
+            "options": [
+                "A certificate that has no expiration date",
+                "A certificate that covers all domains on the internet",
+                "A certificate that covers any subdomain of a given domain (e.g., *.example.com)",
+                "A certificate that is self‑signed"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Wildcard cert matches any single‑level subdomain under a domain."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What does Certificate Transparency achieve?",
+            "options": [
+                "Encrypts the certificate",
+                "Creates a public, append‑only log of all issued certificates",
+                "Replaces CAs",
+                "Makes certificates free"
+            ],
+            "correctAnswer": 1,
+            "explanation": "CT logs record all certificates, enabling detection of mis‑issuance."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What is a drawback of certificate pinning?",
+            "options": [
+                "It makes connections slower",
+                "If the pinned key is lost, the application may break until updated",
+                "It is incompatible with TLS 1.3",
+                "It weakens encryption"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Pinning creates a hard dependency; losing the key or cert can lock users out."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Which protocol automates certificate issuance and renewal?",
+            "options": [
+                "SSH",
+                "ACME",
+                "OCSP",
+                "SCT"
+            ],
+            "correctAnswer": 1,
+            "explanation": "ACME (Automated Certificate Management Environment) is used by Let’s Encrypt."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "In TLS 1.3, how many cipher suites are defined?",
+            "options": [
+                "Hundreds",
+                "5 mandatory AEAD suites",
+                "Only 1",
+                "It depends on the server"
+            ],
+            "correctAnswer": 1,
+            "explanation": "TLS 1.3 defines five cipher suites, all authenticated encryption."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "TLS 1.3 handshake always requires 2 round trips.",
+            "correctAnswer": false,
+            "explanation": "False. TLS 1.3 can complete in 1‑RTT, and even 0‑RTT for resumed sessions."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What does ESNI/ECH aim to protect?",
+            "options": [
+                "The server’s private key",
+                "The cipher suite negotiation",
+                "The hostname in the ClientHello",
+                "The HTTP response body"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Encrypted SNI/ECH encrypts the server name indication to prevent eavesdropping on which sites you visit."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Why is post‑quantum cryptography being integrated into TLS?",
+            "options": [
+                "To make the handshake faster",
+                "To prepare for the threat of quantum computers breaking RSA and ECC",
+                "To add more cipher suites",
+                "To replace certificates"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Quantum computers could break current asymmetric algorithms; post‑quantum algorithms are resistant."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "During certificate validation, what must match between the certificate and the website URL?",
+            "options": [
+                "The issuer name",
+                "The serial number",
+                "The Common Name or a SAN entry",
+                "The public key size"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The browser checks that the hostname equals the CN or one of the SANs."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "In a TLS 1.3 handshake, the server’s certificate is sent in plaintext so the client can verify it immediately.",
+            "correctAnswer": false,
+            "explanation": "False. In TLS 1.3, the server’s certificate is encrypted, protecting the server’s identity from passive observers."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "Which of the following is an AEAD cipher used in TLS?",
+            "options": [
+                "AES‑CBC",
+                "AES‑GCM",
+                "3DES",
+                "RC4"
+            ],
+            "correctAnswer": 1,
+            "explanation": "AES‑GCM is an AEAD mode, providing both encryption and authentication in one."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "What is a typical use of OCSP in TLS?",
+            "options": [
+                "To generate session keys",
+                "To check whether a certificate has been revoked",
+                "To encrypt the ClientHello",
+                "To negotiate cipher suites"
+            ],
+            "correctAnswer": 1,
+            "explanation": "OCSP (Online Certificate Status Protocol) provides revocation checking."
+        }
+    ]
+}

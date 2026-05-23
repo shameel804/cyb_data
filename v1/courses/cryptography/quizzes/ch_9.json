@@ -1,0 +1,246 @@
+{
+    "id": "quiz_ch_9",
+    "chapterId": "ch_9",
+    "title": "Chapter 9 Quiz",
+    "description": "Test your knowledge of password security – hashing, salting, key stretching, and best practices!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Why is a simple SHA‑256 hash insufficient for storing passwords?",
+            "options": [
+                "It produces a too‑short output",
+                "It is too fast and vulnerable to rainbow tables and brute‑force",
+                "It is reversible",
+                "It requires a secret key"
+            ],
+            "correctAnswer": 1,
+            "explanation": "SHA‑256 is designed to be fast. That speed allows attackers to test billions of guesses per second."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What does a salt primarily protect against?",
+            "options": [
+                "Brute‑force attacks",
+                "Rainbow table attacks",
+                "Phishing",
+                "SQL injection"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A unique salt makes precomputed rainbow tables ineffective because each password requires its own table."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "The salt must be stored separately from the hash to remain secure.",
+            "correctAnswer": false,
+            "explanation": "False. The salt can be stored alongside the hash; it does not need to be secret."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "A secret value added to passwords and stored outside the database is called a ____.",
+            "options": [
+                "salt",
+                "pepper",
+                "nonce",
+                "token"
+            ],
+            "correctAnswer": "pepper",
+            "explanation": "A pepper is a secret known to the application but not stored in the database, adding an extra layer of defence."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which algorithm is the winner of the Password Hashing Competition and is currently recommended?",
+            "options": [
+                "PBKDF2",
+                "bcrypt",
+                "Argon2",
+                "scrypt"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Argon2 won the competition in 2015 and is the recommended choice for new systems."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the main advantage of Argon2 over PBKDF2?",
+            "options": [
+                "It uses a salt",
+                "It is memory‑hard, making GPU/ASIC attacks much harder",
+                "It is faster",
+                "It doesn’t require a salt"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Memory‑hardness forces attackers to use significant RAM per guess, limiting parallelisation."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "In bcrypt, what does the cost factor control?",
+            "options": [
+                "The length of the salt",
+                "The number of rounds of the underlying Blowfish key schedule",
+                "The size of the output hash",
+                "The length of the password"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The cost factor is logarithmic; it determines how many times the key setup is repeated, making the hash slower."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What is the purpose of key stretching?",
+            "options": [
+                "To make the hash output longer",
+                "To make brute‑force attacks more computationally expensive",
+                "To compress the password",
+                "To generate a key for encryption"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Key stretching intentionally slows down the hashing process to increase attacker cost."
+        },
+        {
+            "id": "q9",
+            "type": "true_false",
+            "question": "PBKDF2 is memory‑hard and therefore resistant to ASIC attacks.",
+            "correctAnswer": false,
+            "explanation": "False. PBKDF2 is only CPU‑bound; it can be accelerated by GPU/ASIC. It is not memory‑hard."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "How should you handle password verification timing to prevent user enumeration?",
+            "options": [
+                "Return immediately on user not found",
+                "Always perform the hash comparison even if the user doesn’t exist",
+                "Use a faster hash for non‑existent users",
+                "Return a generic error before hashing"
+            ],
+            "correctAnswer": 1,
+            "explanation": "To avoid leaking whether a user exists, the server should perform the same work regardless, e.g., by verifying a dummy hash."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which variant of Argon2 is recommended for most applications?",
+            "options": [
+                "Argon2d",
+                "Argon2i",
+                "Argon2id",
+                "Argon2x"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Argon2id combines the benefits of Argon2d (high GPU resistance) and Argon2i (side‑channel resistance)."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What does a pepper protect against that a salt does not?",
+            "options": [
+                "Rainbow tables",
+                "Database‑only breaches where the attacker doesn't have the application secret",
+                "Brute‑force attacks",
+                "Phishing"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Since the pepper is not in the database, an attacker who only steals the database still cannot test passwords offline without the pepper."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What is a good iteration count for PBKDF2‑HMAC‑SHA256 as of recent recommendations?",
+            "options": [
+                "1,000",
+                "10,000",
+                "600,000",
+                "1,000,000,000"
+            ],
+            "correctAnswer": 2,
+            "explanation": "OWASP recommends at least 600,000 iterations for PBKDF2‑SHA256 in 2023+."
+        },
+        {
+            "id": "q14",
+            "type": "true_false",
+            "question": "You should store plaintext passwords in a secure vault, not hash them.",
+            "correctAnswer": false,
+            "explanation": "False. Passwords should never be stored in plaintext. They must be hashed with a strong, salted, slow algorithm."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What is the typical output format of bcrypt?",
+            "options": [
+                "$2b$12$somesalt...hash...",
+                "$argon2id$v=19$...",
+                "$pbkdf2‑sha256$...",
+                "$6$..."
+            ],
+            "correctAnswer": 0,
+            "explanation": "bcrypt hashes start with $2a$ or $2b$ followed by cost and salt."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Why should password strength be validated during registration?",
+            "options": [
+                "To save storage space",
+                "To reduce the likelihood of easy dictionary attacks even if the hash is stolen",
+                "To comply with the hashing algorithm’s input size",
+                "To enforce uniqueness"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Stronger passwords resist brute‑force and dictionary attacks, adding defence in depth."
+        },
+        {
+            "id": "q17",
+            "type": "fill_blank",
+            "question": "The technique of iterating a hash many times to increase computational cost is called key ____.",
+            "options": [
+                "expansion",
+                "derivation",
+                "stretching",
+                "wrapping"
+            ],
+            "correctAnswer": "stretching",
+            "explanation": "Key stretching refers to making a weak password act like a stronger key by applying many iterations."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which attack does Argon2’s memory‑hardness specifically hinder?",
+            "options": [
+                "Rainbow table attacks",
+                "GPU/ASIC accelerated brute‑force",
+                "SQL injection",
+                "Cross‑site scripting"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Memory‑hardness requires large amounts of RAM per password guess, which is expensive on GPUs and ASICs."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is the correct sequence for secure password verification with pepper and Argon2?",
+            "options": [
+                "Hash(password), then add pepper and verify",
+                "Combine pepper + password, then verify against stored hash",
+                "Decrypt stored hash, compare with password",
+                "Combine salt + password, hash, then compare"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The pepper is combined with the password before hashing; verification uses the same combination."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "Once a password hash is stored with bcrypt, it can never be upgraded to a stronger algorithm.",
+            "correctAnswer": false,
+            "explanation": "False. You can re‑hash on next successful login, transparently upgrading the stored hash."
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_5",
+    "title": "RSA Signature Signer",
+    "description": "Load a private key, sign a message using RSA‑PSS, and output the signature.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You are building a document signing tool. Write a Python function `sign_message(private_key_pem: bytes, message: bytes) -> bytes` that:\n\n1. Loads the RSA private key from the PEM bytes (use `serialization.load_pem_private_key`).\n2. Signs the message using RSA‑PSS with SHA‑256 and maximum salt length.\n3. Returns the signature as raw bytes.\n\nAlso write a helper `load_private_key(path: str) -> bytes` that reads the PEM file into bytes (for testing).\n\n**Hint:** Use `cryptography.hazmat.primitives.asymmetric.padding.PSS`, `hashes.SHA256()`, `padding.PSS.MAX_LENGTH`.\n\nExample PEM file content (for testing you can generate your own):\n```\n-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n```\n\nBut for the task, we will test with a known key.",
+    "hints": [
+        "Import from cryptography.hazmat.primitives.serialization.",
+        "Use `private_key.sign(message, padding, algorithm)` where algorithm is `hashes.SHA256()`.",
+        "The padding object needs `mgf=padding.MGF1(hashes.SHA256())` and `salt_length`."
+    ],
+    "expectedOutput": "The `sign_message` function returns a signature that can be verified with the corresponding public key. Test by generating a key pair first.",
+    "solutionCode": "from cryptography.hazmat.primitives.asymmetric import padding\nfrom cryptography.hazmat.primitives import hashes, serialization\n\ndef load_private_key(path):\n    with open(path, 'rb') as f:\n        return f.read()\n\ndef sign_message(private_key_pem, message):\n    private_key = serialization.load_pem_private_key(\n        private_key_pem,\n        password=None\n    )\n    signature = private_key.sign(\n        message,\n        padding.PSS(\n            mgf=padding.MGF1(hashes.SHA256()),\n            salt_length=padding.PSS.MAX_LENGTH\n        ),\n        hashes.SHA256()\n    )\n    return signature\n"
+}

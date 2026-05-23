@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_6",
+    "title": "Extract Certificate Info from a Website",
+    "description": "Connect to a website over TLS and display its certificate chain, subject, issuer, and validity dates.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You are building a TLS auditor. Write a Python script that does the following:\n\n1. Imports `ssl` and `socket`.\n2. Creates a default SSL context (use `ssl.create_default_context()`).\n3. Wraps a socket and connects to a given hostname (e.g., `www.example.com`) on port 443.\n4. Retrieves the certificate as a dictionary using `sslsocket.getpeercert()`.\n5. Prints:\n   - Subject (in a readable format)\n   - Issuer\n   - Not Before date\n   - Not After date\n   - Subject Alternative Names (if present)\n6. Closes the connection.\n\nMake sure to handle the case where the site uses SNI (set `server_hostname`).\n\n**Example output:**\n```\nSubject: {'commonName': 'www.example.org', ...}\nIssuer: {'commonName': 'DigiCert Global G2 TLS RSA SHA256 2020 CA1', ...}\nNot Before: May 1 00:00:00 2025 GMT\nNot After: May 1 23:59:59 2026 GMT\nSANs: ['www.example.org', 'example.com']\n```\n\nWrite the function `get_cert_info(hostname: str) -> dict` returning the dict with keys `subject`, `issuer`, `notBefore`, `notAfter`, `sans`.",
+    "hints": [
+        "Set `server_hostname=hostname` in `create_default_context()` and `wrap_socket()`.",
+        "The certificate is a dict; subject and issuer are tuples of tuples. Convert to a dict with `dict(x[0] for x in ...)`? Actually subject is list of (OID, value); can use `ssl.DER_cert_to_PEM_cert`? Simpler: just print the dict as is for this task.",
+        "To get SANs: the cert dict has 'subjectAltName' key – it contains a tuple of tuples (type, value). Type 2 is DNS name. Extract those strings.",
+        "Use `socket.create_connection((hostname, 443))` and wrap with SSL."
+    ],
+    "expectedOutput": "Function returns a dict with the required fields; printing should show the information as example.",
+    "solutionCode": "import ssl\nimport socket\n\ndef get_cert_info(hostname):\n    context = ssl.create_default_context()\n    with socket.create_connection((hostname, 443)) as sock:\n        with context.wrap_socket(sock, server_hostname=hostname) as ssock:\n            cert = ssock.getpeercert()\n            subject = dict(x[0] for x in cert['subject'])\n            issuer = dict(x[0] for x in cert['issuer'])\n            not_before = cert['notBefore']\n            not_after = cert['notAfter']\n            sans = []\n            for entry in cert.get('subjectAltName', []):\n                typ, val = entry\n                if typ == 'DNS':\n                    sans.append(val)\n            return {\n                'subject': subject,\n                'issuer': issuer,\n                'notBefore': not_before,\n                'notAfter': not_after,\n                'sans': sans\n            }\n"
+}

@@ -1,0 +1,104 @@
+{
+    "id": "l5",
+    "chapterId": "ch_10",
+    "title": "Signing Transactions: Your Digital Signature in Bitcoin ✍️",
+    "description": "How ECDSA keys prove ownership and authorise transfers without revealing your private key.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Ownership",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Coins Are Just Unspent Transaction Outputs (UTXOs) 💰",
+            "content": "# In Bitcoin, there are no accounts. Instead, the ledger tracks **UTXOs**: unspent outputs of previous transactions.\n\nEach UTXO has a locking script (usually “pay to public key hash”). To spend it, you must provide:\n- Your **public key** matching the hash.\n- A valid **digital signature** proving you own the corresponding private key.\n\nThe signature covers the spending transaction details, preventing anyone from altering it later."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Elliptic Curve Digital Signature Algorithm (ECDSA) 🌀",
+            "content": "# Bitcoin uses ECDSA with the **secp256k1** curve.\n\n- Private key: a random 256‑bit number `d`.\n- Public key: point `Q = d * G` on the curve.\n- Bitcoin address: derived by hashing the public key (SHA‑256 then RIPEMD‑160) and encoding in Base58Check.\n\nTo sign a transaction:\n1. Hash the transaction data (double SHA‑256).\n2. Generate a random nonce `k` (must be unique per signature!).\n3. Compute `(r, s) = ECDSA_sign(private_key, tx_hash)`.\n4. Attach the signature and public key to the transaction input."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "code",
+            "title": "ECDSA Signing & Verification (Python with `coincurve`)",
+            "content": "Simplified example (conceptual):",
+            "codeSnippet": "from coincurve import PrivateKey, PublicKey\n\n# Generate key pair\npriv = PrivateKey()\npub = priv.public_key\n\n# Message (transaction hash)\nmsg = b'This is a transaction hash'\n\n# Sign\nsig = priv.sign(msg)\n\n# Verify\npub.verify(sig, msg)  # returns True\n# Note: real Bitcoin uses double‑SHA256 and specific encoding",
+            "codeLanguage": "python",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_4",
+            "type": "quiz",
+            "title": "Signature Ownership 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What does a Bitcoin transaction signature prove?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The sender knows the recipient’s public key",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The sender owns the private key corresponding to the UTXO address",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The transaction amount is correct",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The block is valid",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The signature authorises spending the UTXO, proving control of the private key linked to the address.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "From Private Key to Address 🏷️",
+            "content": "# Bitcoin address generation pipeline:\n\n1. Private key → public key (secp256k1 point).\n2. Public key → SHA‑256 → RIPEMD‑160 → public key hash (20 bytes).\n3. Prepend version byte (0x00 for mainnet).\n4. Append first 4 bytes of double SHA‑256 checksum.\n5. Encode with Base58Check.\n\n**Example:**\n- Private key: (big secret number)\n- Address: `1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa` (Satoshi’s genesis address)\n\nThe address is a hash of the public key, not the public key itself – adding a layer of abstraction."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "warning",
+            "title": "⚠️ Nonce Reuse is Fatal",
+            "content": "## In ECDSA, reusing the same `k` for two different transactions leaks the private key. This happened with the PlayStation 3 hack and some Bitcoin wallets. Always use RFC 6979 deterministic nonces."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Key to Address 🔐",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "A Bitcoin address is simply the public key encoded in Base58.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. The address is derived by hashing the public key (SHA‑256 + RIPEMD‑160), then adding a checksum and encoding.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

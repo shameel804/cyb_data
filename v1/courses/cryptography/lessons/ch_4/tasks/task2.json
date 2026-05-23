@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_4",
+    "title": "Password Hasher with Salt",
+    "description": "Implement a basic password storage system using SHA‑256 and a random salt (educational only).",
+    "estimatedMinutes": 15,
+    "problemStatement": "Build a tiny user registration/login simulation. Write two functions:\n\n1. `hash_password(password: str) -> (str, str)`: Generates a random 16‑byte salt (hex encoded). Computes `hash = SHA‑256(salt_hex + password).hexdigest()`. Returns a tuple `(salt_hex, hash)`.\n2. `check_password(password: str, salt_hex: str, expected_hash: str) -> bool`: Recomputes the hash using the given salt and password, and compares to `expected_hash`.\n\n**Important:** This is for learning – real systems should use bcrypt/argon2. For this task, use `hashlib` and `os.urandom()`.\n\n**Example:**\n```\nsalt, hashed = hash_password('secret123')\nprint(check_password('secret123', salt, hashed))  # True\nprint(check_password('wrong', salt, hashed))      # False\n```",
+    "hints": [
+        "Use `os.urandom(16).hex()` to generate a random salt string.",
+        "Concatenate salt and password strings before hashing.",
+        "Compare hashes with `==` (or constant‑time compare for extra credit)."
+    ],
+    "expectedOutput": "Functions that correctly hash and verify passwords with a salt.",
+    "solutionCode": "import hashlib\nimport os\n\ndef hash_password(password):\n    salt = os.urandom(16).hex()\n    combined = salt + password\n    hashed = hashlib.sha256(combined.encode()).hexdigest()\n    return salt, hashed\n\ndef check_password(password, salt, expected_hash):\n    combined = salt + password\n    computed_hash = hashlib.sha256(combined.encode()).hexdigest()\n    return computed_hash == expected_hash\n"
+}

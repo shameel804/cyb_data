@@ -1,0 +1,104 @@
+{
+    "id": "l4",
+    "chapterId": "ch_8",
+    "title": "Side‑Channel & Implementation Attacks ⚡",
+    "description": "The math is perfect, but the hardware isn't. Learn how timing, power, and errors leak keys.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Modern Threats",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Beyond the Math: Physics Leaks Keys 🧪",
+            "content": "# A cipher can be mathematically unbreakable but trivially broken in practice if its implementation leaks information.\n\nSide‑channel attacks do not attack the algorithm; they attack the **implementation**.\n\n- **Timing attacks** – measure how long operations take.\n- **Power analysis** – measure electricity consumption.\n- **Electromagnetic emanations** – radio signals from the chip.\n- **Cache attacks** – exploit CPU cache behaviour.\n\nThese are real‑world threats used to extract keys from smart cards, SGX enclaves, and even remote servers."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Timing Attack: Password Check Example 🕰️",
+            "content": "# A naive string comparison returns early on the first wrong byte:\n\n```python\ndef check_password(input_pwd):\n    for i in range(len(correct_pwd)):\n        if input_pwd[i] != correct_pwd[i]:\n            return False  # early exit\n    return True\n```\n\nBy measuring the response time, an attacker can guess the password character by character: a longer time means more characters matched.\n\n**Defence:** Constant‑time comparison (`hmac.compare_digest()`)."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "code",
+            "title": "Simulating a Timing Leak",
+            "content": "A simple example (exaggerated) of guessing a secret byte by byte:",
+            "codeSnippet": "import time\nsecret = b'secret'\ndef check(guess):\n    for i in range(len(secret)):\n        if guess[i] != secret[i]:\n            return i  # number of matching chars\n        time.sleep(0.1)  # artificial delay to amplify\n    return len(secret)\n\n# Attacker can guess each byte by finding which gives the highest return value.",
+            "codeLanguage": "python",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_4",
+            "type": "quiz",
+            "title": "Timing Leak 🔓",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "true_false",
+                "question": "Constant‑time string comparison functions are slower but protect against timing attacks.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "True. They always compare all bytes regardless of mismatch, eliminating timing differences.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Fault Injection & Power Analysis ⚡",
+            "content": "# **Power analysis** – the power consumption of a chip depends on the operations being performed. Differential Power Analysis (DPA) correlates power traces with key guesses, breaking AES‑128 in minutes on unprotected hardware.\n\n**Fault injection** – by glitching voltage, clock, or shining a laser, an attacker can cause a single bit‑flip during encryption. Comparing correct and faulty ciphertexts can reveal the key (Differential Fault Analysis).\n\nThese attacks are why bank cards use hardened chips, and why constant‑time, no‑branch code is essential."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "Cache Attacks (Meltdown/Spectre) 💥",
+            "content": "## Even remote attackers can exploit CPU caches to leak data across isolation boundaries. Flush+Reload, Prime+Probe – these attacks measure cache timing to detect which memory was accessed. They have been used to steal AES keys from co‑located VMs."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "Side‑Channel Defence 🛡️",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "Which of the following is a side‑channel attack?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Brute‑forcing a key by trying all possibilities",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Measuring the time taken to encrypt to infer key bits",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Decrypting a message with the correct key",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Using a known plaintext to find the key",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Timing analysis is a side‑channel because it exploits implementation characteristics, not mathematical flaws.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

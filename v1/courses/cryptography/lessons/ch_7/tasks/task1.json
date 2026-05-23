@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_7",
+    "title": "Build a Base64 Encoder",
+    "description": "Implement a Base64 encoder from scratch, converting arbitrary bytes to a Base64 string.",
+    "estimatedMinutes": 20,
+    "problemStatement": "To truly understand Base64, you must implement it yourself. Write a function `custom_b64encode(data: bytes) -> str` that:\n\n1. Takes arbitrary bytes.\n2. Pads the input with null bytes if needed so its length is a multiple of 3.\n3. Processes 3 bytes at a time (24 bits) and splits into four 6‑bit indices.\n4. Maps each 6‑bit index (0‑63) to a character from the standard Base64 alphabet:\n   `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/`\n5. Replaces the appropriate number of trailing characters with `=` based on the original length modulo 3:\n   - If original length % 3 == 1 → last two chars replaced with `=`.\n   - If % 3 == 2 → last one char replaced with `=`.\n   - If % 3 == 0 → no padding.\n6. Returns the Base64 string.\n\nDo **not** use the built‑in `base64` module for this. Use pure Python with bitwise operations.\n\n**Example:**\n```\ncustom_b64encode(b'Man')   → 'TWFu'\ncustom_b64encode(b'Ma')    → 'TWE='\ncustom_b64encode(b'M')     → 'TQ=='\n```",
+    "hints": [
+        "Accumulate 3 bytes into a 24‑bit integer: `b = (byte1 << 16) | (byte2 << 8) | byte3`.",
+        "Extract 6‑bit indices: `(b >> 18) & 0x3F`, `(b >> 12) & 0x3F`, `(b >> 6) & 0x3F`, `b & 0x3F`.",
+        "Keep track of original length to decide padding. You can pad the input with zero bytes for processing, but remember how many were real.",
+        "Build the result string, then slice off trailing characters and append `=` as needed."
+    ],
+    "expectedOutput": "The function returns the correct Base64 string as in the examples.",
+    "solutionCode": "def custom_b64encode(data):\n    alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'\n    result = []\n    padding = 0\n    original_len = len(data)\n    # Process full 3‑byte chunks\n    for i in range(0, original_len - (original_len % 3), 3):\n        chunk = (data[i] << 16) | (data[i+1] << 8) | data[i+2]\n        result.append(alphabet[(chunk >> 18) & 0x3F])\n        result.append(alphabet[(chunk >> 12) & 0x3F])\n        result.append(alphabet[(chunk >> 6) & 0x3F])\n        result.append(alphabet[chunk & 0x3F])\n    # Handle the remaining 1 or 2 bytes\n    rem = original_len % 3\n    if rem == 1:\n        chunk = data[-1] << 16\n        result.append(alphabet[(chunk >> 18) & 0x3F])\n        result.append(alphabet[(chunk >> 12) & 0x3F])\n        result.append('=')\n        result.append('=')\n    elif rem == 2:\n        chunk = (data[-2] << 16) | (data[-1] << 8)\n        result.append(alphabet[(chunk >> 18) & 0x3F])\n        result.append(alphabet[(chunk >> 12) & 0x3F])\n        result.append(alphabet[(chunk >> 6) & 0x3F])\n        result.append('=')\n    return ''.join(result)\n"
+}

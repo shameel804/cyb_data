@@ -1,0 +1,101 @@
+{
+    "id": "l5",
+    "chapterId": "ch_6",
+    "title": "TLS 1.3 & The Future of HTTPS 🚀",
+    "description": "Discover the speed and security improvements in TLS 1.3 and what’s next.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Modern & Future",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "What’s New in TLS 1.3? ⚡",
+            "content": "# TLS 1.3 is a major redesign for speed and security.\n\nKey improvements:\n- **Reduced handshake** – 1‑RTT (instead of 2), sometimes 0‑RTT for resumed connections.\n- **Only forward‑secure key exchanges** – DHE and ECDHE mandatory; RSA key transport removed.\n- **Simpler cipher suites** – only 5 AEAD suites (AES‑GCM, ChaCha20‑Poly1305).\n- **Encrypted handshake** – the Server Certificate and other messages are encrypted, improving privacy.\n- **Removal of dangerous features** – renegotiation, compression, static RSA, CBC mode."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "The 1‑RTT Handshake (simplified) 🚄",
+            "content": "# 1. ClientHello includes a key share (client’s ephemeral ECDH public key) right away.\n2. Server replies with ServerHello + its key share + encrypted Certificate & Finished.\n3. Client finishes with its encrypted Finished.\n\nBy the time the server sends its first response, secure data can be sent simultaneously. This cuts a full round trip.\n\nWith 0‑RTT (using a pre‑shared key from a previous session), data can be sent in the first packet – but with some replay risk."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "TLS 1.3 Speed 🏎️",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What enables 0‑RTT in TLS 1.3?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A pre‑shared key from a previous session",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "RSA key transport",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "ECDSA signatures",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "CBC mode encryption",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "0‑RTT uses a PSK (Pre‑Shared Key) established in an earlier session to immediately start sending data.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Encrypted SNI (ESNI) & Privacy 🕶️",
+            "content": "# The Server Name Indication (SNI) tells the server which host the client wants, sent in ClientHello. In TLS 1.2, SNI is in plaintext, so a network observer can see which sites you visit even if the traffic is encrypted.\n\n**Encrypted SNI (ESNI)** / **Encrypted ClientHello (ECH)** in TLS 1.3 encrypts the SNI, hiding the destination from snoopers.\n\nCombined with DNS‑over‑HTTPS, this makes censorship and surveillance much harder."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Post‑Quantum TLS 🧬",
+            "content": "# Large‑scale quantum computers could break RSA and ECC. The TLS ecosystem is preparing:\n\n- NIST is standardising post‑quantum algorithms (lattice‑based, code‑based, etc.).\n- Experiments already integrate post‑quantum key exchange (e.g., CRYSTALS‑Kyber) into TLS handshake alongside classical ECDHE.\n- Hybrid mode: use both classical and PQ key exchange, so security holds if either is secure.\n\nTLS 1.3 can already negotiate these experimental algorithms. Migration will be gradual."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "tip",
+            "title": "Stay Up to Date 📆",
+            "content": "## Always run the latest TLS libraries (OpenSSL, BoringSSL, etc.) with secure defaults. Test your servers with SSL Labs to catch weak configurations."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Future‑Proof 💡",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "TLS 1.3 supports RSA key transport as an option for backward compatibility.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. RSA key transport has been removed entirely from TLS 1.3; only forward‑secure methods remain.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

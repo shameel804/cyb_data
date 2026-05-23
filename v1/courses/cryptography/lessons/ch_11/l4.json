@@ -1,0 +1,114 @@
+{
+    "id": "l4",
+    "chapterId": "ch_11",
+    "title": "Schnorr & Beyond: ZKPs in the Real World 🌐",
+    "description": "From the classic Schnorr identification protocol to ZK‑SNARKs and blockchain applications.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Zero‑Knowledge",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Schnorr’s Identification Protocol 🆔",
+            "content": "# Claus Schnorr invented a simple interactive ZKP for proving knowledge of a discrete logarithm.\n\n**Setup:** Prover has private key `x`; public key is `X = g^x mod p` (familiar from Diffie‑Hellman).\n\nProtocol:\n1. Prover picks random `r`, sends commitment `R = g^r mod p`.\n2. Verifier sends random challenge `c`.\n3. Prover computes response `s = r + c*x mod q` (q is the group order), sends `s`.\n4. Verifier checks: `g^s ≡ R * X^c (mod p)`.\n\nIf the prover knows `x`, the check holds. The verifier learns nothing about `x` because `r` masks it."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Schnorr Protocol in Python (toy)",
+            "content": "A simplified demo (no real security parameters):",
+            "codeSnippet": "import secrets\n\n# Public parameters (tiny for demo)\np = 23  # prime\ng = 5   # generator\nq = 22  # order (p-1) -- in real life, a large prime order subgroup\n\n# Prover's secret\nx = 7  # private key\nX = pow(g, x, p)  # public key\n\n# Interactive proof\nr = secrets.randbelow(q)\nR = pow(g, r, p)  # commitment\n\n# Verifier challenge (simulated by hash later)\nc = secrets.randbelow(q)  # in real, random challenge from verifier\n\ns = (r + c * x) % q  # response\n\n# Verifier checks\nlhs = pow(g, s, p)\nrhs = (R * pow(X, c, p)) % p\nprint('Proof valid:', lhs == rhs)",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Schnorr Check ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "In Schnorr's protocol, what prevents the prover from faking a proof without knowing x?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The commitment R",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The random challenge c chosen by the verifier",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The public key X",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The group order q",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The verifier's unpredictable challenge forces the prover to commit to R before knowing c, preventing cheating.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Fiat‑Shamir: Making It Non‑Interactive 🧪",
+            "content": "# To make Schnorr non‑interactive, we replace the verifier's random challenge `c` with the hash of the public information and the commitment.\n\n`c = H(X || R || message)`\n\nThe prover computes `R`, then `c`, then `s`. The proof is `(R, s)`. Any verifier can recompute `c` and check the equation.\n\nThis is the **Fiat‑Shamir heuristic** and it's used in Schnorr signatures (EdDSA, Bitcoin's Taproot Schnorr sigs). It turns an interactive proof into a digital signature!"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "ZK‑SNARKs & ZK‑STARKs: Next‑Gen ZKPs 🚀",
+            "content": "# **ZK‑SNARK** (Zero‑Knowledge Succinct Non‑Interactive Argument of Knowledge):\n- Generates tiny, constant‑size proofs (e.g., 288 bytes).\n- Very fast verification.\n- Requires a trusted setup (toxic waste).\n- Used by Zcash, Ethereum L2 scaling.\n\n**ZK‑STARK** (Scalable Transparent ARgument of Knowledge):\n- No trusted setup required.\n- Larger proofs but faster prover.\n- Post‑quantum secure.\n- Used by StarkWare.\n\nBoth allow proving arbitrary computations without revealing inputs – the holy grail of privacy."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "The Future is Zero‑Knowledge 🔮",
+            "content": "## ZKPs are moving from theory to mass adoption. With ZK‑rollups, billions of transactions can be compressed into a single proof, making blockchains scalable while maintaining security and privacy."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "ZKP Types 🤖",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "What does the 'S' in ZK‑SNARK stand for?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Secure",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Succinct",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Symmetric",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Scalable",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "SNARK = Succinct Non‑interactive ARgument of Knowledge. Succinct means the proof is small and fast to verify.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

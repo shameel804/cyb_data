@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_2",
+    "title": "Vigenère Cipher",
+    "description": "Implement a polyalphabetic cipher that shifts each letter by a key‑dependent amount.",
+    "estimatedMinutes": 15,
+    "problemStatement": "The Vigenère cipher uses a repeating keyword to determine the shift for each letter. For example, with keyword 'KEY', the first letter shifts by K's position (10), second by E (4), third by Y (24), then repeat.\n\n**Requirements:**\n- Write `vigenere_encrypt(plaintext: str, keyword: str) -> str`.\n- Both inputs are uppercase letters only (no spaces, no punctuation).\n- For each plaintext letter at position i, shift by the alphabetic index of `keyword[i % len(keyword)]` (A=0, B=1, …).\n- Wrap around as in Caesar.\n- Example:\n  ```\n  vigenere_encrypt('ATTACKATDAWN', 'LEMON') → 'LXFOPVEFRNHR'\n  ```\n\n**Note:** Standard Vigenère uses a table, but we can achieve the same with modular arithmetic.",
+    "hints": [
+        "Determine the shift for each character of the keyword: `shift = ord(k) - 65`.",
+        "Apply Caesar shift to plaintext letter: `cipher = chr((ord(p) - 65 + shift) % 26 + 65)`.",
+        "Cycle through the keyword using modulo."
+    ],
+    "expectedOutput": "Paste your function; tests will call `vigenere_encrypt('ATTACKATDAWN', 'LEMON')` and expect 'LXFOPVEFRNHR'.",
+    "solutionCode": "def vigenere_encrypt(plaintext, keyword):\n    result = ''\n    key_len = len(keyword)\n    for i, p in enumerate(plaintext):\n        if 'A' <= p <= 'Z':\n            shift = ord(keyword[i % key_len]) - 65\n            encrypted = chr((ord(p) - 65 + shift) % 26 + 65)\n            result += encrypted\n        else:\n            result += p\n    return result\n"
+}

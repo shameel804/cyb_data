@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_11",
+    "title": "Simple Schnorr‑Like ZKP",
+    "description": "Build functions for an interactive zero‑knowledge proof of a discrete logarithm using small numbers.",
+    "estimatedMinutes": 15,
+    "problemStatement": "You will implement a prover and verifier for a discrete‑log knowledge proof (like Schnorr but simplified to modulo arithmetic).\n\nGiven public parameters: prime `p` and generator `g`. The prover knows secret `x` and has public key `h = g^x mod p`.\n\nWrite two functions:\n\n1. `prover_commit(p, g) -> (r, R)`: Generates a random `r` (1 < r < p-1), computes `R = g^r mod p`, returns `(r, R)`.\n2. `prover_response(r, c, x, q) -> s`: Computes `s = (r + c * x) % q`, where `q` is the order of the group (for simplicity, `q = p-1`).\n3. `verifier_check(g, h, R, c, s, p) -> bool`: Checks if `pow(g, s, p) == (R * pow(h, c, p)) % p`.\n\nDemonstrate the proof flow:\n```\np = 23  # small prime for demo\ng = 5\nx = 7   # secret\nh = pow(g, x, p)  # public key\n\n# Prover\nr, R = prover_commit(p, g)\nc = 3  # verifier's challenge (random in practice)\ns = prover_response(r, c, x, p-1)\n\n# Verifier\nvalid = verifier_check(g, h, R, c, s, p)\nprint(valid)  # should be True\n```\n\n**Hints:**\n- For challenge, use a fixed integer like 3 for testing; in real protocol it's random.\n- Ensure modular arithmetic is correct.\n- `q` can be `p-1` in this toy example.",
+    "hints": [
+        "`R = pow(g, r, p)`.",
+        "`s = (r + c * x) % (p-1)` – use the group order.",
+        "Check both sides: LHS = `pow(g, s, p)`, RHS = `(R * pow(h, c, p)) % p`."
+    ],
+    "expectedOutput": "Functions as described; the demonstration should print True.",
+    "solutionCode": "import secrets\n\ndef prover_commit(p, g):\n    r = secrets.randbelow(p-2) + 1  # 1 to p-2\n    R = pow(g, r, p)\n    return r, R\n\ndef prover_response(r, c, x, q):\n    return (r + c * x) % q\n\ndef verifier_check(g, h, R, c, s, p):\n    lhs = pow(g, s, p)\n    rhs = (R * pow(h, c, p)) % p\n    return lhs == rhs\n"
+}

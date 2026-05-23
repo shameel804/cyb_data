@@ -1,0 +1,114 @@
+{
+    "id": "l3",
+    "chapterId": "ch_3",
+    "title": "RSA: The Granddaddy of Public‑Key 💪",
+    "description": "Learn the RSA algorithm – key generation, encryption, decryption, and why it’s secure.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Core Algorithms",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "RSA – Named After Its Creators 🏆",
+            "content": "# Rivest, Shamir, Adleman (1977)\n\nRSA is the first practical public‑key system and still widely used.\n\nIt relies on the **difficulty of factoring large composite numbers**. If you multiply two huge primes, it’s easy. But given only the product, finding the original primes is extremely hard.\n\n**The key sizes** today range from 2048 to 4096 bits."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "RSA Key Generation 🔑",
+            "content": "# Step‑by‑step:\n\n1. Choose two large prime numbers `p` and `q` (secret).\n2. Compute `n = p * q` – this is the modulus, part of public key.\n3. Compute Euler’s totient `φ(n) = (p-1)*(q-1)` – secret.\n4. Choose public exponent `e` such that `1 < e < φ(n)` and `gcd(e, φ(n)) = 1` (commonly 65537).\n5. Compute private exponent `d` such that `e * d ≡ 1 (mod φ(n))` – i.e., modular inverse.\n\n**Public key:** `(n, e)`\n**Private key:** `(n, d)` (keep `p`, `q`, `φ(n)` secret too)."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Key Generation Check 🔍",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "In RSA, what is the public modulus?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "p * q",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "(p-1)*(q-1)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "e * d",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "p + q",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "n = p * q is the modulus, part of the public key.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "RSA Encryption & Decryption 📬",
+            "content": "# Encryption:\n- Convert plaintext message `M` (as a number < n).\n- Compute ciphertext `C = M^e mod n`.\n\n# Decryption:\n- Compute `M = C^d mod n`.\n\nMagic: Because `e` and `d` are multiplicative inverses modulo `φ(n)`, Euler’s theorem guarantees that decryption works.\n\n> Without knowing `d`, you’d have to factor `n` to find `φ(n)`, which is infeasible for large `n`."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Toy RSA Example (Tiny Numbers)",
+            "content": "We'll generate keys and encrypt/decrypt a number:",
+            "codeSnippet": "p = 61\nq = 53\nn = p * q  # 3233\nphi = (p-1)*(q-1)  # 3120\ne = 17  # public exponent\nd = pow(e, -1, phi)  # modular inverse (Python 3.8+), d=2753\n\nmessage = 123\ncipher = pow(message, e, n)  # 855\ndecrypted = pow(cipher, d, n)  # 123 back\nprint(cipher, decrypted)",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_6",
+            "type": "warning",
+            "title": "⚠️ Don't use RSA directly on messages!",
+            "content": "## RSA is rarely used to encrypt data directly. It’s slow and needs padding (like OAEP) to be secure against chosen‑ciphertext attacks.\n\nIn practice, RSA encrypts a symmetric key, then the data is encrypted with AES (hybrid encryption)."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "RSA Security 🛡️",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "What must an attacker do to break RSA without the private key?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Guess the message",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Factor the modulus n into p and q",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Find the public exponent e",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Use a rainbow table",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "If an attacker can factor n, they can compute φ(n) and then d. Factoring large numbers is the core assumption of RSA security.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

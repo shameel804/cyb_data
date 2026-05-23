@@ -1,0 +1,101 @@
+{
+    "id": "l5",
+    "chapterId": "ch_5",
+    "title": "Signatures in Action: Code, Email, Web 🌐",
+    "description": "From software updates to encrypted emails, see where digital signatures touch your daily life.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Applications",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Code Signing 🖥️",
+            "content": "# When you download an executable (.exe, .dmg, .apk), the operating system checks its digital signature.\n\n- The developer signs the software with their private key.\n- A certificate chain links that key to a trusted CA.\n- If valid, the OS shows the publisher’s name; otherwise, it warns you.\n\nCode signing prevents malware from masquerading as legitimate software and ensures the code hasn’t been tampered with after signing."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "Email Signing (S/MIME & PGP) ✉️",
+            "content": "# S/MIME (Secure/Multipurpose Internet Mail Extensions) and PGP/GPG sign emails.\n\n- The sender’s email client signs the email body using the sender’s private key.\n- The recipient’s client verifies the signature using the sender’s public key (from a certificate or keyserver).\n- A valid signature proves the email really came from that sender and hasn’t been altered.\n\nThis is how organisations protect against phishing and email spoofing."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "Email Signing 📬",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "true_false",
+                "question": "A valid digital signature on an email guarantees that no one else read the email contents.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. The signature proves authenticity and integrity, not confidentiality. The email might still be sent in plaintext.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "SSL/TLS Server Authentication 🔒",
+            "content": "# When you connect to `https://google.com`, your browser receives the server’s certificate.\n\nThe browser verifies the certificate chain and extracts the server’s public key. Then, during the TLS handshake, the server **signs** a piece of the handshake using its private key, proving it owns that certificate.\n\nThis prevents man‑in‑the‑middle attacks – a fake server cannot produce a valid signature for the real certificate’s public key."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Document Signing & eIDAS 📜",
+            "content": "# In the EU, the eIDAS regulation recognises qualified digital signatures as legally equivalent to handwritten signatures.\n\n- Uses qualified certificates stored on secure devices (smart cards, HSMs).\n- Guarantees the signer’s identity and the document’s integrity.\n- Widely used in government, banking, and legal contracts.\n\nDigital signatures are not just cryptographic toys – they are legally binding instruments."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "tip",
+            "title": "JWT & API Signing 🔐",
+            "content": "## JSON Web Tokens can be signed with a private key (JWS). The API server verifies with the public key. This is a lightweight, stateless authentication mechanism that powers modern microservices."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Real‑World Recall 🌍",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "Which of the following primarily relies on digital signatures for its security?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Password hashing",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Code signing for software updates",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Data compression",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "File encryption with AES",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Code signing uses digital signatures to verify the integrity and origin of software.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

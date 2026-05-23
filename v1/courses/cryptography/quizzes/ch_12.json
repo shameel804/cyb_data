@@ -1,0 +1,246 @@
+{
+    "id": "quiz_ch_12",
+    "chapterId": "ch_12",
+    "title": "Chapter 12 Quiz",
+    "description": "Test your knowledge of post‑quantum cryptography – the threat, the algorithms, and the migration!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What does Shor’s algorithm do?",
+            "options": [
+                "Speeds up brute‑force search",
+                "Solves factoring and discrete logarithms efficiently on a quantum computer",
+                "Encrypts data using quantum entanglement",
+                "Generates truly random numbers"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Shor’s algorithm provides polynomial‑time factoring and discrete log, breaking RSA and ECC."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What is the effective security level of AES‑128 against a quantum computer using Grover’s algorithm?",
+            "options": [
+                "0 bits",
+                "64 bits",
+                "128 bits",
+                "256 bits"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Grover’s algorithm reduces the search space to √(2¹²⁸) = 2⁶⁴, so 64 bits."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "Grover’s algorithm completely breaks AES‑256.",
+            "correctAnswer": false,
+            "explanation": "False. Grover’s reduces AES‑256 to 128‑bit security, which is still considered safe."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which of the following is a lattice‑based post‑quantum algorithm?",
+            "options": [
+                "RSA",
+                "AES",
+                "Kyber",
+                "SPHINCS+"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Kyber is a lattice‑based KEM; SPHINCS+ is hash‑based."
+        },
+        {
+            "id": "q5",
+            "type": "fill_blank",
+            "question": "The hard problem underlying many lattice schemes is called Learning ____ Errors.",
+            "options": [
+                "With",
+                "From",
+                "Without",
+                "Against"
+            ],
+            "correctAnswer": "With",
+            "explanation": "Learning With Errors (LWE) is the foundational problem."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which post‑quantum algorithm is primarily a key encapsulation mechanism (KEM)?",
+            "options": [
+                "Dilithium",
+                "Falcon",
+                "Kyber",
+                "SPHINCS+"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Kyber is a KEM; Dilithium and Falcon are signatures."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Why are hash‑based signatures like SPHINCS+ considered quantum‑safe?",
+            "options": [
+                "They use quantum random numbers",
+                "Their security relies only on pre‑image resistance of hash functions, which quantum attacks only partially weaken",
+                "They use quantum entanglement",
+                "They are based on integer factoring"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Hash pre‑image resistance remains strong even with Grover's algorithm (e.g., SHA‑256 still provides 128‑bit pre‑image resistance)."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What is a major drawback of the McEliece cryptosystem?",
+            "options": [
+                "Weak security",
+                "Very large public key size",
+                "Slow encryption speed",
+                "Relies on factoring"
+            ],
+            "correctAnswer": 1,
+            "explanation": "McEliece public keys can be hundreds of kilobytes to over a megabyte."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What is the purpose of a hybrid (classical + PQC) scheme?",
+            "options": [
+                "To reduce bandwidth",
+                "To ensure security if either the classical or PQC algorithm is broken",
+                "To make the system faster",
+                "To comply with export regulations"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Hybrid mode provides defense‑in‑depth during the transition."
+        },
+        {
+            "id": "q10",
+            "type": "true_false",
+            "question": "NIST has standardized only one post‑quantum signature algorithm.",
+            "correctAnswer": false,
+            "explanation": "False. NIST standardized multiple: Dilithium (primary), Falcon, and SPHINCS+ (backup)."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which NIST PQC standard is derived from CRYSTALS‑Dilithium?",
+            "options": [
+                "FIPS 203",
+                "FIPS 204",
+                "FIPS 205",
+                "FIPS 186"
+            ],
+            "correctAnswer": 1,
+            "explanation": "FIPS 204 is ML‑DSA, based on Dilithium. FIPS 203 is ML‑KEM (Kyber), FIPS 205 is SLH‑DSA (SPHINCS+)."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What does 'harvest now, decrypt later' refer to?",
+            "options": [
+                "Stealing private keys from servers",
+                "Recording encrypted traffic today to decrypt once quantum computers become available",
+                "Farming cryptocurrency with quantum computers",
+                "Using classical computers to break quantum encryption"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Attackers may store encrypted data now, awaiting future quantum capabilities to break it."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which of the following is NOT a post‑quantum cryptographic family?",
+            "options": [
+                "Lattice‑based",
+                "Code‑based",
+                "Hash‑based",
+                "Elliptic curve"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Elliptic curve crypto is broken by Shor's algorithm, so it is not post‑quantum."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Why is crypto agility important for the PQC transition?",
+            "options": [
+                "To make algorithms faster",
+                "To allow easy swapping of cryptographic algorithms without rewriting entire systems",
+                "To reduce key sizes",
+                "To eliminate the need for certificates"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Crypto agility means systems can be reconfigured to use new algorithms, essential for a smooth migration."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "What is the primary advantage of Falcon over Dilithium?",
+            "options": [
+                "Larger signatures",
+                "Smaller signatures",
+                "Faster signing",
+                "Larger public keys"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Falcon produces significantly more compact signatures, useful for bandwidth‑limited applications."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What does the 'KEM' in CRYSTALS‑Kyber stand for?",
+            "options": [
+                "Key Encryption Module",
+                "Key Encapsulation Mechanism",
+                "Kernel Encryption Method",
+                "Key Exchange Module"
+            ],
+            "correctAnswer": 1,
+            "explanation": "KEM = Key Encapsulation Mechanism, used to securely establish a shared secret."
+        },
+        {
+            "id": "q17",
+            "type": "true_false",
+            "question": "Post‑quantum algorithms are immune to all quantum attacks, including Grover's algorithm.",
+            "correctAnswer": false,
+            "explanation": "False. PQC algorithms resist Shor's algorithm, but symmetric components still need to account for Grover's (e.g., using 256‑bit hashes)."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which of these is a hash‑based signature scheme selected by NIST?",
+            "options": [
+                "Kyber",
+                "Dilithium",
+                "SPHINCS+",
+                "McEliece"
+            ],
+            "correctAnswer": 2,
+            "explanation": "SPHINCS+ is the stateless hash‑based signature."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is the typical increase in public key size when moving from RSA‑2048 to Kyber‑768?",
+            "options": [
+                "Decrease to 100 bytes",
+                "Increase to about 3x larger (≈1,100 bytes)",
+                "Increase to 32 KB",
+                "No change"
+            ],
+            "correctAnswer": 1,
+            "explanation": "RSA‑2048 public key is ~256 bytes; Kyber‑768 public key is ~1,184 bytes, roughly 3x larger."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "It is recommended to turn off all classical encryption immediately after deploying a PQC algorithm.",
+            "correctAnswer": false,
+            "explanation": "False. A gradual, hybrid approach is recommended to maintain security while trust in PQC is built."
+        }
+    ]
+}

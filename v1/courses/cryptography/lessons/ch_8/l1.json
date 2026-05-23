@@ -1,0 +1,114 @@
+{
+    "id": "l1",
+    "chapterId": "ch_8",
+    "title": "What is Cryptanalysis? 🕵️",
+    "description": "Understand the attacker’s toolkit: goals, assumptions, and why we need to think like the enemy.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Cryptanalysis = Codebreaking 🔓",
+            "content": "# Cryptanalysis is the science of breaking cryptographic systems.\n\nIt’s the flip side of cryptography. While cryptographers build locks, cryptanalysts pick them. Understanding how ciphers are broken is the only way to build secure ones.\n\n**Goal:** Recover the plaintext, the key, or find a weakness that allows forgeries or information leakage – without being given the secret key.\n\n> “He who defends everything defends nothing.” – Know your enemy’s weapons."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "Kerckhoffs’ Principle (From the Attacker’s View) 💡",
+            "content": "# “The system must not require secrecy and can be stolen by the enemy without causing trouble.” – Auguste Kerckhoffs, 1883\n\nIn cryptanalysis, we assume the adversary knows **everything about the cryptosystem except the key**.\n\n- The algorithm, source code, protocols, key sizes are public.\n- Security must rely solely on the secrecy of the key.\n\nThis principle is fundamental. Any attempt to hide the algorithm is “security through obscurity” – it almost always fails."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "In Kerckhoffs’ principle, what is assumed to be known by the attacker?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The secret key",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The algorithm and system design",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The plaintext",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Nothing",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The attacker knows everything about the system except the key.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Attack Models: What Does Eve Know? 👁️",
+            "content": "# Not all attackers have the same capabilities. Cryptanalysis classifies attacks by what the adversary possesses:\n\n- **Ciphertext‑only attack** – Eve only has a set of ciphertexts.\n- **Known‑plaintext attack (KPA)** – Eve has some plaintext–ciphertext pairs.\n- **Chosen‑plaintext attack (CPA)** – Eve can obtain the encryption of plaintexts she chooses.\n- **Chosen‑ciphertext attack (CCA)** – Eve can obtain decryption of ciphertexts she chooses.\n- **Side‑channel attack** – Eve measures physical characteristics (timing, power) during execution.\n\nModern ciphers are designed to resist even the strongest of these (CPA/CCA)."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "A Simple Brute‑Force Simulation",
+            "content": "Show how Eve might brute‑force a Caesar cipher (only 25 keys):",
+            "codeSnippet": "ciphertext = 'KHOOR'\nfor shift in range(1, 26):\n    plain = ''\n    for ch in ciphertext:\n        if 'A' <= ch <= 'Z':\n            plain += chr((ord(ch) - 65 - shift) % 26 + 65)\n        else:\n            plain += ch\n    print(f'Shift {shift:2}: {plain}')",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Think Like an Attacker 🔥",
+            "content": "## The best way to secure a system is to try to break it yourself. This is why ethical hacking and security audits exist. In this chapter, you’ll wear the black hat – for good."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "Attack Model Quiz 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "If an attacker can trick a server into decrypting arbitrary ciphertexts, what attack model is this?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Ciphertext‑only",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Known‑plaintext",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Chosen‑plaintext",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Chosen‑ciphertext",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Chosen‑ciphertext attack (CCA) allows the attacker to decrypt selected ciphertexts and use the results to recover the key.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

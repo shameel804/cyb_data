@@ -1,0 +1,252 @@
+{
+    "id": "quiz_ch_11",
+    "chapterId": "ch_11",
+    "title": "Chapter 11 Quiz",
+    "description": "Test your knowledge of secret sharing and zero‑knowledge proofs!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary purpose of secret sharing?",
+            "options": [
+                "To encrypt a secret so only one person can read it",
+                "To split a secret into pieces so that a threshold number is required to reconstruct it",
+                "To compress a secret for storage",
+                "To create a digital signature"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Secret sharing distributes a secret among participants, requiring a minimum number of shares to recover it."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "In a (k, n)-threshold scheme, how many shares are needed to recover the secret?",
+            "options": [
+                "1",
+                "n",
+                "k",
+                "k+1"
+            ],
+            "correctAnswer": 2,
+            "explanation": "At least k shares (the threshold) are required to reconstruct the secret."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "In a (3,5)-Shamir scheme, if an attacker obtains 2 shares, they can deduce some bits of the secret.",
+            "correctAnswer": false,
+            "explanation": "False. With fewer than threshold shares, the secret remains information‑theoretically hidden – no information is leaked."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What mathematical structure does Shamir's Secret Sharing use?",
+            "options": [
+                "Elliptic curves",
+                "Polynomials over a finite field",
+                "RSA encryption",
+                "Merkle trees"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Shamir's scheme uses a polynomial of degree t‑1 over a finite field; the secret is the constant term."
+        },
+        {
+            "id": "q5",
+            "type": "fill_blank",
+            "question": "In Shamir's scheme, the secret is stored as the ____ term of the polynomial.",
+            "options": [
+                "leading",
+                "constant",
+                "quadratic",
+                "random"
+            ],
+            "correctAnswer": "constant",
+            "explanation": "The secret is the constant coefficient a0 of the polynomial."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the main advantage of using a finite field in Shamir's scheme?",
+            "options": [
+                "It is faster than real numbers",
+                "It avoids rounding errors and ensures mathematical exactness",
+                "It makes the shares shorter",
+                "It allows negative shares"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Finite field arithmetic is exact and all values are uniformly distributed, which is essential for security."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Which of the following is a valid (t, n) threshold scheme?",
+            "options": [
+                "(5, 3) where 5 shares are needed out of 3 total",
+                "(3, 5) where 3 shares are needed out of 5 total",
+                "(0, 5) where no shares are needed",
+                "(5, 5) where 6 shares must be generated"
+            ],
+            "correctAnswer": 1,
+            "explanation": "(3,5) means 3 shares are required out of 5 total shares."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What are the three properties of a zero‑knowledge proof?",
+            "options": [
+                "Confidentiality, Integrity, Availability",
+                "Completeness, Soundness, Zero‑Knowledge",
+                "Encryption, Decryption, Hashing",
+                "Simplicity, Speed, Security"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Completeness (true statements can be proven), Soundness (false statements cannot be proven), Zero‑Knowledge (verifier learns nothing else)."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "In the cave analogy for zero‑knowledge proofs, what does Peggy (the prover) demonstrate?",
+            "options": [
+                "She knows the secret word by saying it loudly",
+                "She can always exit from the path Victor requests, proving knowledge of the magic word",
+                "She has a map of the cave",
+                "She is faster than Victor"
+            ],
+            "correctAnswer": 1,
+            "explanation": "By exiting from the requested side, Peggy proves she can cross the secret door without revealing the word."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "In Schnorr's identification protocol, what does the prover send first?",
+            "options": [
+                "The secret key x",
+                "A commitment R = g^r",
+                "The challenge c",
+                "The response s"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The prover picks a random r and sends the commitment R = g^r to the verifier."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What does the Fiat‑Shamir heuristic transform?",
+            "options": [
+                "A symmetric cipher into an asymmetric one",
+                "An interactive proof into a non‑interactive one",
+                "A hash function into a stream cipher",
+                "A secret sharing scheme into an encryption scheme"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Fiat‑Shamir replaces the verifier's random challenge with a hash, making the proof non‑interactive."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What does ZK‑SNARK stand for?",
+            "options": [
+                "Zero‑Knowledge Secure Non‑interactive Argument of Random Knowledge",
+                "Zero‑Knowledge Succinct Non‑interactive Argument of Knowledge",
+                "Zero‑Knowledge Symmetric Non‑interactive Argument of Keys",
+                "Zero‑Knowledge Simple Network Argument of Random Keys"
+            ],
+            "correctAnswer": 1,
+            "explanation": "SNARK = Succinct Non‑interactive ARgument of Knowledge."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "ZK‑STARKs require a trusted setup.",
+            "correctAnswer": false,
+            "explanation": "False. STARKs are transparent and do not require a trusted setup, unlike many SNARKs."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is a practical application of zero‑knowledge proofs in blockchain?",
+            "options": [
+                "Mining blocks faster",
+                "ZK‑rollups that batch transactions and prove validity with a single proof",
+                "Storing large files on‑chain",
+                "Generating random numbers"
+            ],
+            "correctAnswer": 1,
+            "explanation": "ZK‑rollups use zero‑knowledge proofs to compress many transactions into a small validity proof, scaling blockchains."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "In Schnorr's protocol, what prevents an attacker from impersonating the prover without knowing x?",
+            "options": [
+                "The commitment R hides x",
+                "The random challenge c, chosen after the commitment, makes it impossible to fake the response",
+                "The public key X is encrypted",
+                "The protocol uses a trusted third party"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The prover must commit to R before knowing c; without x, they cannot compute the correct s for an arbitrary c."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which of the following is NOT a property of zero‑knowledge proofs?",
+            "options": [
+                "Completeness",
+                "Soundness",
+                "Zero‑knowledge",
+                "Reversibility"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Reversibility is not a ZKP property. The other three are the core ones."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Why must the random coefficients in Shamir's scheme be truly random?",
+            "options": [
+                "To make the shares look random",
+                "To ensure that fewer than t shares give no information about the secret",
+                "To satisfy legal requirements",
+                "To speed up computation"
+            ],
+            "correctAnswer": 1,
+            "explanation": "If coefficients are predictable, an attacker might narrow down possible polynomials. Perfect randomness guarantees information‑theoretic secrecy."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which method is used to reconstruct the secret from shares in Shamir's scheme?",
+            "options": [
+                "Quadratic formula",
+                "Lagrange interpolation",
+                "Merkle tree hashing",
+                "Discrete Fourier transform"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Lagrange interpolation recovers the unique polynomial passing through the given points, and thus the constant term."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "A zero‑knowledge proof can convince a verifier that a statement is true with 100% certainty in a single round.",
+            "correctAnswer": false,
+            "explanation": "Typically ZKPs have a small soundness error (e.g., 1/2 per round) and need multiple rounds or use cryptographic assumptions for a single proof."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is the main difference between interactive and non‑interactive ZKPs?",
+            "options": [
+                "Interactive requires a trusted third party; non‑interactive does not",
+                "Interactive requires multiple message exchanges; non‑interactive uses a single proof that can be verified offline",
+                "Interactive uses symmetric keys; non‑interactive uses asymmetric keys",
+                "There is no difference"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Interactive ZKPs involve back‑and‑forth communication; non‑interactive ZKPs are self‑contained proofs verifiable without interaction."
+        }
+    ]
+}

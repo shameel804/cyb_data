@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_3",
+    "title": "Modular Inverse Finder",
+    "description": "Write a function to compute the modular inverse using the extended Euclidean algorithm.",
+    "estimatedMinutes": 10,
+    "problemStatement": "In RSA key generation, you need to compute the modular inverse `d` such that `e * d ≡ 1 (mod φ)`. While Python 3.8+ offers `pow(e, -1, φ)`, older versions don’t.\n\nImplement your own `mod_inverse(a, m)` that returns the integer `x` such that `(a * x) % m == 1`. If the inverse doesn’t exist (gcd(a,m) ≠ 1), return `None`.\n\n**Example:**\n```\nprint(mod_inverse(17, 3120))  # should return 2753 (since 17*2753 mod 3120 = 1)\nprint(mod_inverse(2, 4))      # None\n```\n\n**Hint:** Use the extended Euclidean algorithm that returns gcd and coefficients.",
+    "hints": [
+        "Extended Euclidean algorithm: given a, b, find x, y such that a*x + b*y = gcd(a,b).",
+        "If gcd(a, m) == 1, then a*x + m*y = 1, so x mod m is the inverse.",
+        "Be careful with negative x – add m until positive."
+    ],
+    "expectedOutput": "Function returning integer or None; test as shown.",
+    "solutionCode": "def mod_inverse(a, m):\n    def extended_gcd(a, b):\n        if a == 0:\n            return b, 0, 1\n        gcd, x1, y1 = extended_gcd(b % a, a)\n        x = y1 - (b // a) * x1\n        y = x1\n        return gcd, x, y\n    gcd, x, y = extended_gcd(a, m)\n    if gcd != 1:\n        return None\n    return x % m\n"
+}

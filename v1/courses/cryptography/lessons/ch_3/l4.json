@@ -1,0 +1,104 @@
+{
+    "id": "l4",
+    "chapterId": "ch_3",
+    "title": "Diffie‑Hellman: The Key Exchange Game Changer 🔄",
+    "description": "How two parties agree on a shared secret over a public channel without ever sending it.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Core Algorithms",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Problem: Shared Secret Over an Insecure Line 📡",
+            "content": "# Alice and Bob want to agree on a symmetric key, but Eve is eavesdropping.\n\nThey can’t just send the key – Eve would see it. Diffie‑Hellman (1976) solves this brilliantly.\n\nThey each generate a **public** and **private** value locally, exchange public values, and compute an identical **shared secret** that Eve cannot derive."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "The Protocol Step by Step 🪜",
+            "content": "# Public parameters (agreed in advance):\n- A large prime `p`\n- A generator `g` (a number that is a primitive root modulo `p`)\n\n**Alice:**\n- Chooses private `a` (random)\n- Computes public `A = g^a mod p` and sends to Bob\n\n**Bob:**\n- Chooses private `b` (random)\n- Computes public `B = g^b mod p` and sends to Alice\n\n**Shared secret:**\n- Alice computes `s = B^a mod p`\n- Bob computes `s = A^b mod p`\n\nBoth get `g^(ab) mod p`. Eve sees only `A` and `B`; computing `a` or `b` requires solving the **discrete logarithm problem**, which is hard."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "DH Check 🧮",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What mathematical problem secures Diffie‑Hellman?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Factoring large numbers",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Discrete logarithm problem",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Quadratic residuosity",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Graph isomorphism",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "DH relies on the difficulty of computing discrete logarithms modulo a large prime.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "Toy DH Example",
+            "content": "Using tiny numbers to see it work:",
+            "codeSnippet": "p = 23  # prime\ng = 5   # generator\n\n# Alice\na = 6  # private\nA = pow(g, a, p)  # 5^6 mod 23 = 8\n\n# Bob\nb = 15  # private\nB = pow(g, b, p)  # 5^15 mod 23 = 19\n\n# Shared secret\ns_alice = pow(B, a, p)  # 19^6 mod 23 = 2\ns_bob   = pow(A, b, p)  # 8^15 mod 23 = 2\nprint(s_alice, s_bob)  # 2 2",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_5",
+            "type": "warning",
+            "title": "⚠️ Plain DH is vulnerable to man‑in‑the‑middle!",
+            "content": "## Eve can intercept and replace public values, establishing separate shared secrets with Alice and Bob.\n\nThis is why DH in practice is **authenticated** using digital signatures (Chapter 5). The combination is called **authenticated key exchange**."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "Ephemeral vs Static 🕐",
+            "content": "## Ephemeral DH (DHE) uses fresh keys for each session, providing **forward secrecy**. If a long‑term key is compromised later, past sessions remain secure."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "True or False? 🎲",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "In Diffie‑Hellman, the shared secret is ever transmitted over the network.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. The shared secret is computed locally; only the public values A and B are transmitted.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

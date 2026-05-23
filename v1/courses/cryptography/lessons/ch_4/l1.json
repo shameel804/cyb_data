@@ -1,0 +1,117 @@
+{
+    "id": "l1",
+    "chapterId": "ch_4",
+    "title": "What's a Hash Function? 🧬",
+    "description": "Learn the core concept: a one‑way function that turns any data into a fixed‑size digest.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "A Digital Fingerprint 👆",
+            "content": "# Hash Function\n\nA **hash function** takes an input (or 'message') of **any size** and produces a **fixed‑size string of bytes**. This output is called the **hash value**, **digest**, or simply **hash**.\n\nThink of it like a meat grinder: you put in a whole cow (the data) and out comes a sausage (the hash). The same cow always gives the same sausage, but you can't reconstruct the cow from the sausage."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "code",
+            "title": "See it in Python",
+            "content": "Using hashlib to create a SHA‑256 hash:",
+            "codeSnippet": "import hashlib\n\nmessage = b'Hello, Cryptography!'\nhash_object = hashlib.sha256(message)\ndigest = hash_object.hexdigest()\nprint(digest)\n# 2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the output of a hash function called?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Ciphertext",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Digest",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Signature",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Key",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The output is commonly called a digest, hash, or hash value.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Key Properties of a Good Hash 📋",
+            "content": "# 1. Deterministic – Same input always yields the same hash.\n# 2. Fast to compute – For any given input, hash computation is efficient.\n# 3. Pre‑image resistance (one‑way) – Given a hash, it's infeasible to find any input that hashes to it.\n# 4. Second pre‑image resistance – Given an input and its hash, infeasible to find a different input with the same hash.\n# 5. Collision resistance – Infeasible to find any two different inputs that produce the same hash.\n# 6. Avalanche effect – A tiny change in input (flipping one bit) drastically changes the hash."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Avalanche Effect in Action",
+            "content": "Change one character – the whole hash changes.",
+            "codeSnippet": "import hashlib\n\nh1 = hashlib.sha256(b'hello').hexdigest()\nh2 = hashlib.sha256(b'Hello').hexdigest()\nprint(h1[:10], '...')\nprint(h2[:10], '...')\nprint(h1 == h2)  # False",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Hashing ≠ Encryption 🔐",
+            "content": "## Encryption is reversible (with the key). Hashing is one‑way – you cannot 'decrypt' a hash.\n\nHashes are used for integrity and fingerprinting, not for hiding data. Never store secrets by hashing alone without proper protections (salting, stretching)."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "Property Check 📋",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "Which property ensures you can't find an input that matches a given hash?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Collision resistance",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Pre‑image resistance",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Avalanche effect",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Second pre‑image resistance",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Pre‑image resistance means given hash H, it's hard to find any M such that hash(M) = H.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

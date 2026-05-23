@@ -1,0 +1,117 @@
+{
+    "id": "l3",
+    "chapterId": "ch_7",
+    "title": "Hexadecimal & URL Encoding 🔗",
+    "description": "How hex and percent‑encoding turn bytes into human‑readable and URL‑safe strings.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Encodings",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Hexadecimal: The Programmer’s Hex Dump 🧮",
+            "content": "# Hexadecimal (base‑16) uses digits 0–9 and letters A–F to represent 4 bits per character.\n\n- Each byte (8 bits) becomes two hex digits (e.g., `0xFF`).\n- Widely used in memory dumps, colour codes (#FF0000), and debug output.\n\n**Example:**\n- Binary `01001101` → hex `4D`\n- String `Hello` → hex `48 65 6C 6C 6F`\n\nIt’s a compact, human‑readable representation of binary data. No key required."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Hex Encoding in Python",
+            "content": "Converting bytes to/from hex string:",
+            "codeSnippet": "data = b'Hello'\nhex_str = data.hex()  # '48656c6c6f'\nprint(hex_str)\n\n# Decoding\nrestored = bytes.fromhex(hex_str)\nprint(restored)  # b'Hello'",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Hex Quick 🧪",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "How many hex digits represent a 32‑bit integer?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "4",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "8",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "16",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "32",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "32 bits / 4 bits per hex digit = 8 hex digits.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "URL Encoding (Percent‑Encoding) 🔗",
+            "content": "# URLs can only contain a limited set of characters (unreserved: A‑Z, a‑z, 0‑9, -_.~).\n\n**Percent‑encoding** replaces unsafe characters with `%` followed by two hex digits representing the byte.\n\n- Space → `%20`\n- `#` → `%23`\n- `é` (UTF‑8 byte 0xC3 0xA9) → `%C3%A9`\n\nThis ensures that special characters (like `&` in query strings) are transmitted safely."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "URL Encoding in Python",
+            "content": "Using `urllib.parse`:",
+            "codeSnippet": "from urllib.parse import quote, unquote\n\noriginal = 'Hello World & Friends!'\nencoded = quote(original)\nprint(encoded)  # 'Hello%20World%20%26%20Friends%21'\n\ndecoded = unquote(encoded)\nprint(decoded)  # 'Hello World & Friends!'",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Unicode in URLs 🌏",
+            "content": "## Internationalized Domain Names (IDN) use Punycode (`xn--...`) to encode non‑ASCII characters. Percent‑encoding is used for the path and query parts."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "URL Encoding Check 🔍",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "What does percent‑encoding of the character `+` look like?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "%20",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "%2B",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "%2F",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "%3A",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "ASCII code for + is 43 decimal = 2B hex, so %2B.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,98 @@
+{
+    "id": "l2",
+    "chapterId": "ch_9",
+    "title": "Salt & Pepper: Seasoning Your Hashes 🧂🌶️",
+    "description": "Learn how salt and pepper turn identical passwords into completely different, un‑precomputable hashes.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Defences",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Salt: A Unique Random Friend 🧂",
+            "content": "# A **salt** is a random string generated for each password, stored alongside the hash.\n\n- Even if two users have the same password, their hashes will be different.\n- Rainbow tables become useless: the attacker would need a separate table for each salt.\n- Salt does **not** need to be secret, just globally unique (or at least unique per service).\n\n**Process:**\n1. Generate a random salt (at least 16 bytes).\n2. Compute `hash = H(salt || password)`.\n3. Store `salt` and `hash` in the database."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Salted SHA‑256 (for illustration)",
+            "content": "A salted hash is better than unsalted, but still too fast:",
+            "codeSnippet": "import hashlib, os\n\ndef hash_password(password):\n    salt = os.urandom(16).hex()\n    h = hashlib.sha256((salt + password).encode()).hexdigest()\n    return f'{salt}${h}'  # store this\n\nstored = hash_password('hunter2')\nprint(stored)",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Salt Smarts 🧂",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What is the primary purpose of a salt?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To make the hash longer",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To prevent precomputed attacks like rainbow tables",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To encrypt the password",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To speed up verification",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Salt makes each hash unique, so precomputed tables are ineffective.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Pepper: The Secret Ingredient 🌶️",
+            "content": "# A **pepper** is a secret, fixed value added to all passwords before hashing, stored separately from the database.\n\n- If only the database is breached, the attacker does not have the pepper.\n- Can be a single secret key stored in the application config or a hardware security module (HSM).\n- Adds a layer of defence in depth.\n\n**Hashing with salt + pepper:**\n`hash = bcrypt(salt + password + pepper)`\n\nEven with the salt, the attacker must guess or obtain the pepper to test passwords offline."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "warning",
+            "title": "⚠️ Pepper Management",
+            "content": "## If you lose the pepper, all passwords become invalid. Store it securely with backups. Rotating a pepper requires re‑hashing all passwords, which is complex."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Salt vs Pepper 🆚",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "The salt must be kept secret like the pepper.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. Salt can be public, stored alongside the hash. Its purpose is uniqueness, not secrecy.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

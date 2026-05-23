@@ -1,0 +1,104 @@
+{
+    "id": "l3",
+    "chapterId": "ch_12",
+    "title": "The NIST Competition & Leading Algorithms 🏆",
+    "description": "Meet the winners: Kyber, Dilithium, Falcon, SPHINCS+ – and compare their key sizes, speeds, and security levels.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Standards",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "NIST PQC Standardization 📜",
+            "content": "# In 2016, NIST began an open competition to select quantum‑resistant algorithms, similar to the AES contest.\n\nAfter three rounds, in 2024 they announced the first standards:\n- **CRYSTALS‑Kyber** – Key Encapsulation Mechanism (KEM).\n- **CRYSTALS‑Dilithium** – Digital Signature.\n- **FALCON** – Digital Signature (compact, faster verification).\n- **SPHINCS+** – Stateless hash‑based signature (backup).\n\nDraft standards: FIPS 203 (ML‑KEM, based on Kyber), FIPS 204 (ML‑DSA, based on Dilithium), FIPS 205 (SLH‑DSA, based on SPHINCS+).\n\nThese are now moving into production systems."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Kyber: The KEM Champion 🔑",
+            "content": "# Kyber is a lattice‑based key encapsulation mechanism – it securely establishes a shared secret between two parties.\n\n- Based on the **Module‑LWE** problem.\n- Key sizes (Level 1 = AES‑128 equivalent):\n  - Public key: 800 bytes\n  - Ciphertext: 768 bytes\n- Very fast: microseconds to generate keys, encapsulate, decapsulate.\n\nKyber will replace RSA and ECDH in TLS, SSH, and VPNs. It’s the primary standard."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Dilithium & Falcon: Quantum‑Safe Signatures ✍️",
+            "content": "# **CRYSTALS‑Dilithium** (Module‑LWE):\n- Public key: 1,312 bytes; signature: 2,420 bytes (Level 3, ~AES‑192 equivalent).\n- Fast signing and verification.\n- Recommended as the primary signature standard.\n\n**Falcon** (NTRU lattice):\n- Smaller signature (666–1,280 bytes), but signing requires floating‑point arithmetic, tricky to implement in constant time.\n- Good for bandwidth‑constrained environments.\n\n**SPHINCS+** (hash‑based):\n- Large signatures (17‑49 KB), but relies only on hash security. It’s the fallback if lattice problems are ever broken."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "Key Sizes Comparison Table",
+            "content": "Using a dictionary to compare key/signature sizes (bytes):",
+            "codeSnippet": "pqc_sizes = {\n    'RSA‑2048': {'type': 'KEM', 'pub': 256, 'ct/sig': 256},\n    'Kyber‑768': {'type': 'KEM', 'pub': 1184, 'ct': 1088},\n    'ECDSA P‑256': {'type': 'Sig', 'pub': 64, 'sig': 64},\n    'Dilithium‑3': {'type': 'Sig', 'pub': 1952, 'sig': 3293},\n    'Falcon‑512': {'type': 'Sig', 'pub': 897, 'sig': 666},\n    'SPHINCS+‑128s': {'type': 'Sig', 'pub': 32, 'sig': 7856}\n}\nfor alg, info in pqc_sizes.items():\n    print(f\"{alg}: pub={info['pub']}B, {'ct' if info['type']=='KEM' else 'sig'}={info.get('ct',info['sig'])}B\")",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_5",
+            "type": "quiz",
+            "title": "NIST Winners 🏅",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which algorithm is NIST's primary standard for post‑quantum digital signatures?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Kyber",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Dilithium",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "McEliece",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "SPHINCS+",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "CRYSTALS‑Dilithium (ML‑DSA) is the primary recommended digital signature standard.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Larger Keys, Manageable Overhead 📦",
+            "content": "## PQC keys are larger than classical ones, but often still within a few KB. For most internet applications, the overhead is acceptable and already being tested in real‑world deployments (e.g., Chrome, Cloudflare)."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Signature Sizes 📏",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "SPHINCS+ signatures are smaller than Dilithium signatures.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. SPHINCS+ signatures are much larger (tens of KB) compared to Dilithium's few KB.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

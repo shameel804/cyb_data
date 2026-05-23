@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_4",
+    "title": "SHA‑256 File Integrity Checker",
+    "description": "Write a Python function that computes the SHA‑256 digest of a file and verifies it against a known hash.",
+    "estimatedMinutes": 10,
+    "problemStatement": "You are responsible for verifying software downloads. Write a function `verify_file_integrity(file_path, expected_hash)` that:\n\n- Reads the file in binary mode.\n- Computes its SHA‑256 hash using `hashlib`.\n- Returns `True` if the hex digest matches `expected_hash` (case‑insensitive), `False` otherwise.\n- Handles `FileNotFoundError` and returns `False` with a printed message.\n\n**Example usage:**\n```\nexpected = '2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824'\nif verify_file_integrity('hello.txt', expected):\n    print('File is authentic.')\n```\n\nTest with a small text file you create.",
+    "hints": [
+        "Open file with `open(file_path, 'rb')`.",
+        "Use `hashlib.sha256()` and `update()` with chunks if file is large, or `f.read()` all for small files.",
+        "Compare using `.hexdigest().lower() == expected_hash.lower()`."
+    ],
+    "expectedOutput": "The function returning True or False. Example test case: file containing 'Hello, Cryptography!' should match the hash above.",
+    "solutionCode": "import hashlib\n\ndef verify_file_integrity(file_path, expected_hash):\n    try:\n        with open(file_path, 'rb') as f:\n            file_data = f.read()\n            computed_hash = hashlib.sha256(file_data).hexdigest()\n            return computed_hash.lower() == expected_hash.lower()\n    except FileNotFoundError:\n        print(f'File {file_path} not found.')\n        return False\n"
+}

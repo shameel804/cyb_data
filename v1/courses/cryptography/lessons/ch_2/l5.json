@@ -1,0 +1,104 @@
+{
+    "id": "l5",
+    "chapterId": "ch_2",
+    "title": "The King: AES (Advanced Encryption Standard) 👑",
+    "description": "The cipher that won a worldwide competition and now secures almost everything.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Modern Symmetric",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "From Competition to Standard 🏆",
+            "content": "# The AES Story\n\nIn 1997, the U.S. NIST called for a new encryption standard to replace DES. Out of 15 submissions from around the world, **Rijndael** (by Joan Daemen and Vincent Rijmen) was chosen in 2001.\n\n**Why Rijndael?**\n- Excellent security and performance on many platforms (8‑bit smart cards to supercomputers).\n- Simple, elegant design resistant to known attacks.\n\nToday, AES is **ubiquitous**: HTTPS, WPA2/WPA3 Wi‑Fi, disk encryption (BitLocker, FileVault), VPNs, and more."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "text",
+            "title": "AES Core Specs ⚙️",
+            "content": "# Block Cipher: encrypts data in **128‑bit (16‑byte) blocks**.\n\nKey sizes:\n- **AES‑128** – 10 rounds\n- **AES‑192** – 12 rounds\n- **AES‑256** – 14 rounds\n\nMore rounds = more security margin. Even AES‑128 is considered secure far into the future.\n\n**Operations per round:** SubBytes, ShiftRows, MixColumns, AddRoundKey – all working on a 4×4 byte matrix (the state)."
+        },
+        {
+            "id": "s_l5_3",
+            "type": "quiz",
+            "title": "AES Essentials 🔑",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is the block size of AES?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "64 bits",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "128 bits",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "256 bits",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Variable",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "AES always operates on 128‑bit blocks, regardless of key size.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Why AES Is Trusted 🛡️",
+            "content": "# No practical attack on full‑round AES has been found.\n\n- The best known attacks are **theoretical** and require astronomical resources.\n- The algorithm is open for public scrutiny, and thousands of researchers have tried (and failed) to break it.\n- It is fast both in software (using AES‑NI hardware instructions) and in dedicated hardware.\n\n**Bottom line:** When used correctly, AES is bulletproof."
+        },
+        {
+            "id": "s_l5_5",
+            "type": "code",
+            "title": "AES in Python (with PyCryptodome)",
+            "content": "A minimal example using a library:",
+            "codeSnippet": "from Crypto.Cipher import AES\nfrom Crypto.Random import get_random_bytes\n\nkey = get_random_bytes(16)  # 128-bit key\ndata = b'Secret Message 12'  # exactly 16 bytes\n\ncipher = AES.new(key, AES.MODE_ECB)\nciphertext = cipher.encrypt(data)\nprint(ciphertext.hex())",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l5_6",
+            "type": "warning",
+            "title": "⚠️ ECB mode is dangerous!",
+            "content": "## Never use ECB (Electronic Codebook) for anything serious.\n\nECB encrypts each block independently, so identical plaintext blocks produce identical ciphertext blocks – revealing patterns (like a penguin image!). We'll learn proper modes in the next lesson."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Security Reality ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "AES‑128 can be broken with a quantum computer using Grover's algorithm.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "True, but only in theory – Grover’s algorithm reduces security to 2^64 operations, still enormously hard. AES‑256 is considered quantum‑safe.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

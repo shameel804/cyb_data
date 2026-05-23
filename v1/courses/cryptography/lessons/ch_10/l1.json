@@ -1,0 +1,98 @@
+{
+    "id": "l1",
+    "chapterId": "ch_10",
+    "title": "What is a Blockchain? 🔗",
+    "description": "Discover the high‑level concept: a chain of blocks linked by cryptographic hashes.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "A Digital Ledger That Nobody Controls 📒",
+            "content": "# Blockchain is a distributed, append‑only ledger.\n\nImagine a Google Doc that everyone can view, nobody can delete, and where every edit is permanently recorded in a chain of cryptographically sealed blocks.\n\n- **Block:** a batch of valid transactions.\n- **Chain:** blocks linked together using hash pointers.\n- **Distributed:** thousands of copies across the world, constantly synchronising.\n\nThere is no central bank, no single server. Trust emerges from mathematics, not institutions."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "The Block Structure 🧱",
+            "content": "# Each block contains:\n\n- **Block header:**\n  - Previous block’s hash (the link!)\n  - Timestamp\n  - Merkle root (hash of all transactions)\n  - Nonce (for proof‑of‑work)\n  - Difficulty target\n- **Transaction list:** the actual data (e.g., “Alice sends 5 BTC to Bob”).\n\nThe previous block’s hash is a **hash pointer** – it points to the previous block *and* cryptographically commits to its entire content."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What cryptographic primitive links blocks together in a blockchain?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Digital signatures",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Hash of the previous block",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Symmetric encryption",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Proof of stake",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Each block contains the cryptographic hash of the previous block, forming an unbreakable chain.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "code",
+            "title": "Simplest Blockchain Python Model",
+            "content": "A toy blockchain with just a list of blocks and hash linking:",
+            "codeSnippet": "import hashlib, time\n\nclass Block:\n    def __init__(self, data, prev_hash):\n        self.timestamp = time.time()\n        self.data = data\n        self.prev_hash = prev_hash\n        self.hash = self._compute_hash()\n\n    def _compute_hash(self):\n        content = f'{self.timestamp}{self.data}{self.prev_hash}'\n        return hashlib.sha256(content.encode()).hexdigest()\n\n# Genesis block\nblock0 = Block('Genesis', '0')\nblock1 = Block('Alice pays Bob 5', block0.hash)\nprint(block1.prev_hash == block0.hash)  # True",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_5",
+            "type": "tip",
+            "title": "Blockchain ≠ Only Cryptocurrency 💡",
+            "content": "## The same technology is used for supply chain tracking, digital identity, voting systems, and more. It’s a general‑purpose trust machine."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Block Structure 📋",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "The previous block's hash is stored in the current block's header.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "True. It's the primary mechanism that creates the chain.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

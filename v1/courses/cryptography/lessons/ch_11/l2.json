@@ -1,0 +1,104 @@
+{
+    "id": "l2",
+    "chapterId": "ch_11",
+    "title": "Shamir’s Secret Sharing: Polynomial Magic 🪄",
+    "description": "How a polynomial curve lets you split a secret into any (t,n) threshold with mathematical elegance.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Secret Sharing",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Polynomials to the Rescue 📈",
+            "content": "# Adi Shamir (the 'S' in RSA) invented a beautiful scheme using polynomials over a finite field.\n\nA **polynomial of degree (t‑1)** is uniquely determined by **t points** on its curve, but fewer than t points give infinitely many possible polynomials – and thus no information about the secret.\n\n**How it works:**\n1. The secret is the constant term of the polynomial.\n2. Random coefficients are chosen for the higher-degree terms.\n3. Shares are points `(x, f(x))` on that polynomial.\n4. With t points, Lagrange interpolation recovers the polynomial and thus the secret."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Step‑by‑Step (t=3, n=5) 🪜",
+            "content": "1. Choose a prime `p` larger than the secret (we work in modulo p).\n2. The secret `S` is the constant term `a0`.\n3. Pick random coefficients `a1, a2` (for degree 2).\n4. Polynomial: `f(x) = a0 + a1*x + a2*x² (mod p)`.\n5. Generate 5 shares: evaluate at x=1..5 → `(1, f(1)), (2, f(2)), ...`.\n6. Distribute the shares. Any 3 points allow Lagrange interpolation to recover `a0`.\n\nIf an attacker has only 2 points, for every possible secret S there's a polynomial passing through those two points – perfect secrecy."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "code",
+            "title": "Shamir Implementation in Python",
+            "content": "Using the `secrets` module and finite field arithmetic:",
+            "codeSnippet": "import secrets\nfrom functools import reduce\n\n# Simple modular arithmetic helpers\ndef modinv(a, p):\n    return pow(a, -1, p)  # Python 3.8+\n\ndef evaluate_poly(coeffs, x, p):\n    result = 0\n    for coeff in reversed(coeffs):  # Horner's method\n        result = (result * x + coeff) % p\n    return result\n\ndef shamir_split(secret, t, n, p=2**127-1):  # a known prime\n    if t > n:\n        raise ValueError(\"t must be <= n\")\n    coeffs = [secret] + [secrets.randbelow(p) for _ in range(t-1)]\n    shares = [(i, evaluate_poly(coeffs, i, p)) for i in range(1, n+1)]\n    return shares, p\n\ndef shamir_recover(shares, p):\n    # Lagrange interpolation at x=0\n    secret = 0\n    for i, (xi, yi) in enumerate(shares):\n        numerator = denominator = 1\n        for j, (xj, _) in enumerate(shares):\n            if i != j:\n                numerator = (numerator * (-xj)) % p\n                denominator = (denominator * (xi - xj)) % p\n        lagrange = (yi * numerator * modinv(denominator, p)) % p\n        secret = (secret + lagrange) % p\n    return secret\n\n# Example\nS = 123456789\nshares, prime = shamir_split(S, 3, 5)\nrecovered = shamir_recover(shares[:3], prime)\nprint(recovered == S)  # True",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "Shamir Smarts 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "In Shamir's (t,n) scheme, what degree polynomial is used?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "t",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "t-1",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "n-1",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "n",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A polynomial of degree t-1 requires t points to uniquely determine, matching the threshold.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Why Finite Field? 🔢",
+            "content": "# Working with integers modulo a large prime ensures:\n- Arithmetic is exact (no floating-point errors).\n- Uniform distribution of possible polynomials.\n- Computations are efficient and secure.\n\nIf we used real numbers, rounding errors and the infinite number of possible polynomials would break the scheme."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "warning",
+            "title": "⚠️ Randomness Must Be Strong",
+            "content": "## The random coefficients must be truly unpredictable. If the random generator is weak, an attacker might be able to guess the polynomial from fewer shares. Use `secrets` module or a CSPRNG."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "Shamir Understanding 📐",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "With Shamir's (3,5) scheme, having 3 shares guarantees recovery but having 4 shares might cause a different secret to be recovered.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. Any subset of 3 or more shares will recover the same unique polynomial and secret. 4 shares give the same result.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

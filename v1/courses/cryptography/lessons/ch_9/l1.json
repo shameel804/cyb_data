@@ -1,0 +1,114 @@
+{
+    "id": "l1",
+    "chapterId": "ch_9",
+    "title": "Passwords: The Weakest Link 🎯",
+    "description": "Understand why passwords are still the primary target and how cryptographic attacks work against them.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "The Problem",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Password Paradox 🔐",
+            "content": "# Humans choose weak, memorable strings; attackers build massive rigs to guess them.\n\nAlmost every web service uses passwords. But passwords are inherently weak:\n- Short, predictable, reused across sites.\n- Stored on servers that get breached.\n\nCryptography can’t fix human memory, but it can ensure that even if the database is stolen, the passwords remain **computationally infeasible** to recover."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "How Attackers Get Passwords 🕵️",
+            "content": "1. **Phishing** – tricking users into typing their password on a fake site.\n2. **Credential stuffing** – using leaked username/password pairs from other breaches.\n3. **Database breach** – stealing the server’s password store.\n4. **Brute‑force / dictionary attacks** – trying many possibilities against a hash.\n5. **Rainbow tables** – precomputed hash → password mappings.\n\nWe focus on #3, #4, #5 – the cryptographic defences."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which attack relies on precomputed hash lookups?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Brute‑force",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Rainbow tables",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Phishing",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Man‑in‑the‑middle",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Rainbow tables are precomputed tables that map hash values to passwords, making lookup extremely fast.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Evolution of Password Storage 🧬",
+            "content": "# 1990s: Plain text in database → disaster.\n# 2000s: Unsalted MD5/SHA‑1 → rainbow tables break them in seconds.\n# 2005+: Salted hashes, but still too fast → GPU brute‑force (billions per second).\n# Today: **Memory‑hard key stretching** (bcrypt, Argon2) tuned to be as slow as the user can tolerate.\n\nEach step added a layer of defence as attackers got more powerful."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "A Simple (Insecure) Hash Store",
+            "content": "The naïve approach that still exists in legacy systems:",
+            "codeSnippet": "import hashlib\n# DO NOT DO THIS\npassword = 'hunter2'\nstored_hash = hashlib.sha256(password.encode()).hexdigest()\nprint(stored_hash)  # easily looked up in a rainbow table",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Hash ≠ Password Storage ✅",
+            "content": "## A simple hash is not enough. You need a **password‑specific** hash function that is deliberately slow and includes a unique salt."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "Attack Modes 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "Why are fast hashes like SHA‑256 dangerous for passwords?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "They produce a fixed output size",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Attackers can test billions of guesses per second on GPUs",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "They are reversible",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "They require a secret key",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The speed of SHA‑256 enables massive brute‑force attacks. Password hashes must be intentionally slow.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

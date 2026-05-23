@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_9",
+    "title": "Upgrade to bcrypt",
+    "description": "Replace the SHA‑256 store with bcrypt, using the library for salt generation and verification.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Build a new class `BcryptPasswordStore` with the same interface as task1, but using the `bcrypt` library. It should:\n\n- `register(username, password)`: Use `bcrypt.hashpw(password.encode(), bcrypt.gensalt())` to generate a salted hash. Store the hash (bytes) as a string (decode to utf‑8). Return True. Raise ValueError if user exists.\n- `login(username, password)`: Retrieve the stored hash (decode to bytes), use `bcrypt.checkpw(password.encode(), hashed)` to verify.\n\n**Example:**\n```\nstore = BcryptPasswordStore()\nstore.register('alice', 'secret123')\nassert store.login('alice', 'secret123') == True\nassert store.login('alice', 'wrong') == False\n```\n\nUse `bcrypt` version >= 3.2.0. (Assume it’s installed).",
+    "hints": [
+        "`bcrypt.gensalt()` returns bytes; `bcrypt.hashpw` returns bytes. Store `hashed.decode('utf-8')`.",
+        "In login, fetch string, `hashed_bytes = stored.encode('utf-8')`.",
+        "`bcrypt.checkpw` returns bool."
+    ],
+    "expectedOutput": "The class works with bcrypt. Tests will call register and login.",
+    "solutionCode": "import bcrypt\n\nclass BcryptPasswordStore:\n    def __init__(self):\n        self._users = {}\n\n    def register(self, username, password):\n        if username in self._users:\n            raise ValueError('User already exists')\n        hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())\n        self._users[username] = hashed.decode('utf-8')\n        return True\n\n    def login(self, username, password):\n        stored = self._users.get(username)\n        if not stored:\n            return False\n        hashed_bytes = stored.encode('utf-8')\n        return bcrypt.checkpw(password.encode(), hashed_bytes)\n"
+}

@@ -1,0 +1,104 @@
+{
+    "id": "l4",
+    "chapterId": "ch_7",
+    "title": "When Encoding Meets Security: Obfuscation ≠ Protection 🛑",
+    "description": "Why people mistake encoding for encryption, and real‑world examples of this dangerous fallacy.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Security",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Obfuscation Trap 🕳️",
+            "content": "# “It looks like garbage, so it must be secure.” – Wrong!\n\nMany developers fall into the trap of thinking Base64 or hex provide any security. They don’t. Encoding adds **zero confidentiality**.\n\n- Base64 of a password is just as sensitive as the plain password.\n- ROT13 (a shift cipher with shift 13) is an encoding, not encryption.\n- Obfuscation in source code (like storing secrets in Base64) is security by obscurity – a weak defence.\n\nAttackers recognize encoding schemes instantly and reverse them."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Real‑World Horror Stories 💀",
+            "content": "# 1. **HTTP Basic Authentication:** Credentials are sent as `Base64(username:password)`. Not encrypted! Anyone intercepting the HTTP request can decode the credentials.\n\n2. **APIs that return Base64‑encoded secrets:** Some REST APIs return API keys “encrypted” via Base64 – easily decoded.\n\n3. **Storing secrets in config files as Base64:** DevOps tools sometimes store passwords encoded. A simple decode reveals them.\n\n4. **JavaScript code obfuscation using Base64:** `eval(atob('...'))` – trivial to reverse."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Spot the Issue 🔎",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "An API returns an API key as Base64. What is the security problem?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It is too long",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Anyone who intercepts it can decode the key",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Base64 adds 33% overhead, slowing the API",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The key cannot be used in HTTP headers",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Base64 provides no secrecy. If intercepted, the plaintext key is exposed immediately.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "How to Do It Right ✅",
+            "content": "# When you need confidentiality, use real encryption.\n\n- Use **AES** with a secret key, or **RSA/ECDH** to protect data.\n- For passwords, use **hashing** (bcrypt, argon2), not encoding.\n- If you must store sensitive data in a text format, encrypt it first, then Base64‑encode the ciphertext (for transport).\n\nEncoding is for **formatting**, not **protecting**. Combine encoding with encryption when you need to transmit ciphertext through a text‑only channel."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Correct Flow: Encrypt then Encode",
+            "content": "How to securely send encrypted data as text:",
+            "codeSnippet": "from Crypto.Cipher import AES\nimport base64\n# Encrypt\ncipher = AES.new(key, AES.MODE_GCM)\nciphertext, tag = cipher.encrypt_and_digest(data)\n# Encode for transport\nencoded_ciphertext = base64.b64encode(ciphertext + tag)\n# Now send encoded_ciphertext",
+            "codeLanguage": "python",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_6",
+            "type": "warning",
+            "title": "⚠️ Never use encoding alone for secrets!",
+            "content": "## Encoding is not a security layer. Treat encoded secrets as plaintext secrets. Use environment variables, vaults, and proper encryption."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "Final Clarification 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "Storing a database password in a configuration file as a Base64 string is secure.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. Base64 is reversible without a key. Anyone with access to the config file can decode the password.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_9",
+    "title": "Build a Salted SHA‑256 Password Store",
+    "description": "Write a Python class that registers and authenticates users using salted SHA‑256 (for learning).",
+    "estimatedMinutes": 15,
+    "problemStatement": "Create a class `SimplePasswordStore` that simulates a user database in memory (a dict). It must:\n\n- `register(username, password)`: Generate a random 16‑byte salt, hash with `sha256(salt + password)`, store `{'salt': salt.hex(), 'hash': hash.hex()}`. Return True. Raise ValueError if user already exists.\n- `login(username, password)`: Fetch stored data, recompute the hash with the same salt, compare. Return True/False.\n\nThis is for educational purposes only; do NOT use SHA‑256 in real systems.\n\n**Example:**\n```\nstore = SimplePasswordStore()\nstore.register('alice', 'secret123')\nassert store.login('alice', 'secret123') == True\nassert store.login('alice', 'wrong') == False\n```",
+    "hints": [
+        "Use `hashlib.sha256`.",
+        "Generate salt with `os.urandom(16)`.",
+        "Store as hex strings.",
+        "Comparison: compute hash and compare hex strings."
+    ],
+    "expectedOutput": "The class methods work as described. Provide the class definition.",
+    "solutionCode": "import hashlib\nimport os\n\nclass SimplePasswordStore:\n    def __init__(self):\n        self._users = {}\n\n    def register(self, username, password):\n        if username in self._users:\n            raise ValueError('User already exists')\n        salt = os.urandom(16)\n        h = hashlib.sha256(salt + password.encode()).hexdigest()\n        self._users[username] = {'salt': salt.hex(), 'hash': h}\n        return True\n\n    def login(self, username, password):\n        record = self._users.get(username)\n        if not record:\n            return False\n        salt = bytes.fromhex(record['salt'])\n        expected_hash = record['hash']\n        computed_hash = hashlib.sha256(salt + password.encode()).hexdigest()\n        return computed_hash == expected_hash\n"
+}

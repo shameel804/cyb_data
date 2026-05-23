@@ -1,0 +1,82 @@
+{
+    "id": "sq_cryptography_3",
+    "title": "Bug Hunt: Crypto Defenses",
+    "triggerChapterIndex": 8,
+    "metadata": {
+        "type": "debug"
+    },
+    "questions": [
+        {
+            "id": "sq_cryptography_3_q1",
+            "type": "multiple_choice",
+            "question": "Find the security bug in this password storage code.",
+            "codeSnippet": "import hashlib\n\ndef store_password(password):\n    # BUG: no salt\n    return hashlib.sha256(password.encode()).hexdigest()\n\nprint(store_password('secret'))",
+            "bugLineIndex": 4,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Storing passwords with a raw, unsalted SHA‑256 hash makes rainbow table attacks trivial. A unique random salt must be added.",
+            "xpReward": 20,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_cryptography_3_q2",
+            "type": "multiple_choice",
+            "question": "Find the bug in this AES‑GCM encryption code.",
+            "codeSnippet": "from Crypto.Cipher import AES\nkey = b'Sixteen byte key'\nnonce = b'Unique nonce'\ncipher = AES.new(key, AES.MODE_GCM, nonce=nonce)\nciphertext1, tag1 = cipher.encrypt_and_digest(b'Attack')\ncipher2 = AES.new(key, AES.MODE_GCM, nonce=nonce)  # BUG: nonce reused\nciphertext2, tag2 = cipher2.encrypt_and_digest(b'Retreat')",
+            "bugLineIndex": 5,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Reusing the same nonce with the same key in AES‑GCM completely breaks security; an attacker can recover plaintext or forge messages. Each encryption must use a unique nonce.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_cryptography_3_q3",
+            "type": "multiple_choice",
+            "question": "Spot the timing leak in this password verification function.",
+            "codeSnippet": "def check_password(user_input, stored_hash):\n    for i in range(len(user_input)):\n        if user_input[i] != stored_hash[i]:\n            return False  # BUG: early exit leaks timing\n    return True",
+            "bugLineIndex": 3,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The early return on the first mismatched character allows timing attacks to guess the hash byte‑by‑byte. Use constant‑time comparison instead.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_cryptography_3_q4",
+            "type": "multiple_choice",
+            "question": "Identify the vulnerability in this encryption code.",
+            "codeSnippet": "from Crypto.Cipher import AES\nkey = b'16 byte key abcde'\ncipher = AES.new(key, AES.MODE_ECB)  # BUG: ECB mode\ndata = b'Very sensitive data block1'\nencrypted = cipher.encrypt(data)",
+            "bugLineIndex": 2,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "ECB mode encrypts identical plaintext blocks into identical ciphertext blocks, revealing patterns. A secure mode like CBC or GCM should be used.",
+            "xpReward": 20,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_cryptography_3_q5",
+            "type": "multiple_choice",
+            "question": "Find the weakness in this key generation.",
+            "codeSnippet": "import random\nkey = random.randbytes(16)  # BUG: not cryptographically secure",
+            "bugLineIndex": 1,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The `random` module is not suitable for cryptographic key generation. Use `secrets.token_bytes()` or a CSPRNG.",
+            "xpReward": 20,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_cryptography_3_q6",
+            "type": "multiple_choice",
+            "question": "What is wrong with this AES‑CBC setup?",
+            "codeSnippet": "from Crypto.Cipher import AES\niv = b'1234567890123456'  # BUG: hardcoded static IV\nkey = b'secret key 12345'\ncipher = AES.new(key, AES.MODE_CBC, iv)",
+            "bugLineIndex": 1,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "A hardcoded, static IV defeats the purpose of CBC mode – identical plaintexts will produce identical ciphertexts under the same key. IVs must be unique and unpredictable.",
+            "xpReward": 20,
+            "difficulty": 1
+        }
+    ]
+}

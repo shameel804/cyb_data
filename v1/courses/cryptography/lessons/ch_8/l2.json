@@ -1,0 +1,111 @@
+{
+    "id": "l2",
+    "chapterId": "ch_8",
+    "title": "Ciphertext‑Only Attacks: Frequency Strikes Back 📊",
+    "description": "Learn to crack monoalphabetic ciphers with nothing but the ciphertext, a computer, and statistics.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Classic Attacks",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Power of Letter Frequencies 📈",
+            "content": "# English (and every natural language) has a unique statistical fingerprint.\n\nIn a long English text:\n- **E** is most frequent (~12.7%), then **T, A, O, I, N, S, H, R**.\n- Common digrams: **TH, HE, IN, ER, AN**.\n- Common trigrams: **THE, AND, ING**.\n\nA **monoalphabetic substitution cipher** preserves these patterns – each plaintext letter always maps to the same ciphertext letter. By counting ciphertext letter frequencies and matching them to English frequencies, we can break the cipher without a key."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Frequency Counter in Python",
+            "content": "Start by counting characters in the ciphertext:",
+            "codeSnippet": "from collections import Counter\ncipher = 'ZOL JVKL...'  # long ciphertext\nclean = [c for c in cipher.upper() if c.isalpha()]\ncounts = Counter(clean)\ntotal = sum(counts.values())\nfreq = {ch: cnt/total for ch, cnt in counts.items()}\nfor ch in sorted(freq, key=freq.get, reverse=True):\n    print(f'{ch}: {freq[ch]:.3f}')",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Frequency Insight 📊",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "In a long English ciphertext, the letter 'X' appears 12% of the time. What is a good first guess?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "X → T",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "X → E",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "X → A",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "X → Z",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "'E' is the most frequent letter in English (~12.7%), so a high‑frequency ciphertext letter likely maps to 'E'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Beyond Single Letters: Digrams & Pattern Matching 🔤",
+            "content": "# Once you’ve mapped the most frequent letters, look for common patterns.\n\n- Repeated bigrams like “TH”, “HE”, “IN” help solidify mappings.\n- Short words: the most common one‑letter word is “A” or “I”; two‑letter words like “OF”, “TO”, “IN”.\n- Apostrophes: a letter before an apostrophe is often ‘T’ (don’t, can’t).\n\n**Index of Coincidence (IC)** is a numeric measure that helps identify whether a cipher is monoalphabetic. English text has IC ≈ 0.0667, while random text has IC ≈ 0.0385. A high IC indicates a simple substitution."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "code",
+            "title": "Index of Coincidence Calculator",
+            "content": "IC = Σ (ni * (ni-1)) / (N * (N-1)) where ni = count of letter i.",
+            "codeSnippet": "def index_of_coincidence(text):\n    clean = [c for c in text.upper() if c.isalpha()]\n    N = len(clean)\n    if N <= 1:\n        return 0\n    counts = Counter(clean)\n    numerator = sum(n * (n - 1) for n in counts.values())\n    return numerator / (N * (N - 1))\n\nenglish_ic = index_of_coincidence(some_english_text)\nprint(english_ic)  # ~0.066",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "IC Interpretation 🧮",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "A ciphertext has an Index of Coincidence of 0.041. What does this suggest?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It is definitely unencrypted English",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It is likely a polyalphabetic cipher or random data",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It is a Caesar cipher",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It is a perfect cipher",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A low IC (close to 0.038) suggests a flat frequency distribution, typical of polyalphabetic ciphers or random bytes, not a simple substitution.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

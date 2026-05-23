@@ -1,0 +1,82 @@
+{
+    "id": "sq_cryptography_2",
+    "title": "Hash & Sign Prediction Challenge",
+    "triggerChapterIndex": 5,
+    "metadata": {
+        "type": "prediction"
+    },
+    "questions": [
+        {
+            "id": "sq_cryptography_2_q1",
+            "type": "code_output",
+            "question": "What is the output of this code?",
+            "codeSnippet": "import hashlib\nprint(len(hashlib.sha256(b'').hexdigest()))",
+            "correctOutput": "64",
+            "correctAnswer": "64",
+            "options": [],
+            "explanation": "SHA‑256 always produces a 256‑bit hash, which is represented as 64 hexadecimal characters.",
+            "xpReward": 25,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_cryptography_2_q2",
+            "type": "code_output",
+            "question": "What will be printed?",
+            "codeSnippet": "import base64\nprint(base64.b64encode(b'ab').decode())",
+            "correctOutput": "YWI=",
+            "correctAnswer": "YWI=",
+            "options": [],
+            "explanation": "Base64 encoding of the two bytes 'ab' yields 'YWI=' (with padding).",
+            "xpReward": 25,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_cryptography_2_q3",
+            "type": "code_output",
+            "question": "What is the output of this Caesar cipher?",
+            "codeSnippet": "def caesar(text, shift):\n    return ''.join(chr((ord(c)-65+shift)%26+65) for c in text)\nprint(caesar('HELLO', 3))",
+            "correctOutput": "KHOOR",
+            "correctAnswer": "KHOOR",
+            "options": [],
+            "explanation": "Shifting each uppercase letter by 3 gives KHOOR.",
+            "xpReward": 25,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_cryptography_2_q4",
+            "type": "code_output",
+            "question": "What does this code print?",
+            "codeSnippet": "import hmac, hashlib\nh = hmac.new(b'secret', b'msg', hashlib.sha256)\nprint(len(h.hexdigest()))",
+            "correctOutput": "64",
+            "correctAnswer": "64",
+            "options": [],
+            "explanation": "HMAC‑SHA256 produces a 256‑bit digest, represented as 64 hex chars.",
+            "xpReward": 25,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_cryptography_2_q5",
+            "type": "code_output",
+            "question": "What will be printed?",
+            "codeSnippet": "import base64\nprint(base64.b64decode(base64.b64encode(b'Test')).decode())",
+            "correctOutput": "Test",
+            "correctAnswer": "Test",
+            "options": [],
+            "explanation": "Encoding and decoding returns the original string.",
+            "xpReward": 25,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_cryptography_2_q6",
+            "type": "code_output",
+            "question": "What is the first 8 hex characters of the SHA‑256 hash of 'abc'?",
+            "codeSnippet": "import hashlib\nprint(hashlib.sha256(b'abc').hexdigest()[:8])",
+            "correctOutput": "ba7816bf",
+            "correctAnswer": "ba7816bf",
+            "options": [],
+            "explanation": "The SHA‑256 hash of 'abc' starts with ba7816bf... (standard test vector).",
+            "xpReward": 25,
+            "difficulty": 2
+        }
+    ]
+}

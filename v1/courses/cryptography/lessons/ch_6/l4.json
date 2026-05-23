@@ -1,0 +1,101 @@
+{
+    "id": "l4",
+    "chapterId": "ch_6",
+    "title": "Certificate Validation in Depth 🔬",
+    "description": "Beyond the padlock – wildcards, SANs, pinning, and Certificate Transparency.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "PKI in Action",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Domain Validation: Proving Ownership 📛",
+            "content": "# How does a CA know you own `example.com` before issuing a cert?\n\nThree levels of validation:\n- **Domain Validation (DV):** CA checks that you control the domain (via email to admin@, or adding a DNS TXT record). Just proves domain ownership.\n- **Organization Validation (OV):** CA verifies the legal organization name and domain.\n- **Extended Validation (EV):** Most rigorous – confirms legal entity, physical address, etc. Results in the green bar (now less prominent).\n\nDV certs are cheap and automated (Let’s Encrypt). They do NOT prove the organisation behind the site, only the domain."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Wildcards & Subject Alternative Names (SANs) 🌟",
+            "content": "# A certificate can cover multiple domains.\n\n- **Wildcard certificate:** `*.example.com` covers `www.example.com`, `mail.example.com`, but NOT `example.com` or `sub.www.example.com`.\n- **SAN (Subject Alternative Name):** Lists explicit domain names (`example.com`, `example.org`, `www.example.com`). A single cert can hold up to 100 SANs.\n\nWhen validating, the browser checks that the requested hostname matches either the Common Name (CN) or an entry in the SANs. SANs are preferred."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Certificate Fields 📋",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which field in an X.509 certificate allows listing multiple specific domains?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Issuer",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Subject Alternative Name (SAN)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Serial Number",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Public Key",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The SAN extension is used to list additional hostnames for the certificate.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Certificate Pinning: Trust No One (Maybe) 📌",
+            "content": "# Pinning means an app stores a copy of the server’s public key or certificate and rejects any other, even if it’s signed by a trusted CA.\n\n- Protects against a compromised CA issuing a fake certificate.\n- Used by some mobile apps and browsers (HTTP Public Key Pinning – HPKP, now deprecated due to risk of bricking).\n- Modern approach: **Certificate Transparency** and short‑lived certs.\n\nPinning is a double‑edged sword: if you lose the key, your app breaks."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Certificate Transparency (CT) 📢",
+            "content": "# CT is a system that logs all publicly trusted certificates in append‑only logs.\n\n- CAs must submit issued certificates to CT logs.\n- Domain owners can monitor logs for unauthorized certificates.\n- Browsers require CT compliance (in Chrome, all TLS certs must have CT proofs).\n\nThis makes it much harder for a CA to secretly issue a fake certificate without being caught."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "Let’s Encrypt & ACME 🆓",
+            "content": "## The ACME protocol automates DV certificate issuance, renewal, and revocation. Let’s Encrypt provides free TLS certificates to millions of sites. It’s a huge reason HTTPS adoption surged."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "CT & Pinning 🌐",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "Certificate Transparency logs are encrypted so only the domain owner can read them.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. CT logs are public and append‑only. Anyone can monitor them for certificates issued for any domain.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

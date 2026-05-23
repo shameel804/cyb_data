@@ -1,0 +1,17 @@
+{
+    "id": "task1",
+    "chapterId": "ch_12",
+    "title": "Quantum Security Calculator",
+    "description": "Write a function that computes the effective security bits of various cryptographic algorithms against quantum attacks.",
+    "estimatedMinutes": 15,
+    "problemStatement": "As a security architect, you need to assess the quantum threat to your cryptographic inventory. Write a function `quantum_security_level(algo: str, key_size: int) -> int` that returns the approximate quantum security in bits.\n\nRules:\n- For RSA and DSA: quantum security = 0 (completely broken by Shor).\n- For ECDSA/ECDH: quantum security = 0 (broken by Shor).\n- For AES: quantum security = key_size // 2 (Grover).\n- For SHA‑256 (pre‑image resistance): quantum security = key_size // 2 (Grover).\n- For SHA‑256 collision resistance: quantum security = key_size // 3 (approximation, actually √(2¹²⁸) ≈ 85 bits, but we'll use //3 for simplicity).\n- For any other algorithm, return -1 (unknown).\n\nUse the `algo` string (case‑insensitive): 'RSA', 'ECDSA', 'ECDH', 'AES', 'SHA-PREIMAGE', 'SHA-COLLISION'.\n\n**Example:**\n```\nprint(quantum_security_level('AES', 128))   # 64\nprint(quantum_security_level('RSA', 2048))  # 0\nprint(quantum_security_level('SHA-PREIMAGE', 256))  # 128\n```",
+    "hints": [
+        "Normalize algo: `algo = algo.upper()`.",
+        "For RSA, DSA, ECDSA, ECDH, return 0.",
+        "For AES, 'SHA-PREIMAGE', divide key_size by 2 (integer).",
+        "For 'SHA-COLLISION', divide key_size by 3.",
+        "Return -1 for anything else."
+    ],
+    "expectedOutput": "Function returning correct integer as per rules.",
+    "solutionCode": "def quantum_security_level(algo, key_size):\n    algo = algo.upper()\n    if algo in ('RSA', 'DSA', 'ECDSA', 'ECDH'):\n        return 0\n    elif algo in ('AES', 'SHA-PREIMAGE'):\n        return key_size // 2\n    elif algo == 'SHA-COLLISION':\n        return key_size // 3  # approximation\n    else:\n        return -1\n"
+}

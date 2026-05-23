@@ -1,0 +1,114 @@
+{
+    "id": "l4",
+    "chapterId": "ch_4",
+    "title": "Password Hashing: Beyond the Plain Hash 🧂",
+    "description": "Why SHA‑256 alone is dangerous for passwords – learn salting, pepper, and slow hashes.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Security",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Problem with Just Hashing Passwords 😱",
+            "content": "# Suppose a website stores `SHA‑256(password)` for each user.\n\n**Problem 1: Rainbow Tables** – Precomputed tables mapping hashes to common passwords allow instant lookup.\n**Problem 2: Fast hashes** – SHA‑256 is designed to be fast, so an attacker can try billions of guesses per second (brute‑force / dictionary attack).\n**Problem 3: Identical passwords** – Two users with the same password will have the same hash, revealing that fact."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Salting: A Unique Random String per Password 🧂",
+            "content": "# Salt = a random, unique string prepended (or appended) to the password before hashing.\n\n- Each user gets a different salt, even if they share the same password.\n- Stored alongside the hash (not secret).\n- Prevents rainbow table attacks because the attacker must compute a table for each salt.\n- Defeats identical‑password‑hash matching.\n\n**Process:**\n```\nsalt = random_bytes()\nhash = SHA‑256(salt + password)\nstore (salt, hash)\n```"
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "Salt Smarts 🧂",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What does a salt primarily protect against?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Brute‑force attacks",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Rainbow table attacks",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Man‑in‑the‑middle",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Phishing",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Salt makes precomputed rainbow tables infeasible because each salt requires its own table.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Key Stretching: Making Hashes Slow 🐌",
+            "content": "# To resist brute‑force, we want the hash to be **slow to compute** (a few hundred milliseconds per password).\n\nKey‑stretching algorithms achieve this by iterating a hash many thousands of times or using memory‑hard functions.\n\nPopular algorithms:\n- **bcrypt** – Adaptive, salted, uses Blowfish internally.\n- **scrypt** – Memory‑hard, designed to thwart hardware attacks.\n- **Argon2** – Winner of the Password Hashing Competition (2015). Recommended for new applications.\n- **PBKDF2** – Simple iterative hashing (e.g., SHA‑256 repeated 100,000 times)."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "code",
+            "title": "Password Hashing with bcrypt (Python)",
+            "content": "Example using the `bcrypt` library:",
+            "codeSnippet": "import bcrypt\n\npassword = b\"supersecret\"\nsalt = bcrypt.gensalt()  # includes a random salt\nhashed = bcrypt.hashpw(password, salt)\nprint(hashed)\n# b'$2b$12$...'\n\n# Verify\nif bcrypt.checkpw(password, hashed):\n    print(\"Access granted\")\nelse:\n    print(\"Wrong password\")",
+            "codeLanguage": "python",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "Pepper: An Extra Secret 🔥",
+            "content": "## Pepper is a secret value stored outside the database (e.g., in application code).\n\n`hash = bcrypt(salt + password + pepper)`\n\nEven if the database is stolen, the attacker needs the pepper to crack hashes. Adds defense‑in‑depth."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "Password Best Practice ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "Which of these is the most recommended for new password storage?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "MD5(password)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "SHA‑256(password + salt)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Argon2",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "bcrypt without a salt",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Argon2 is the winner of the Password Hashing Competition and is recommended for its memory‑hardness and flexibility.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

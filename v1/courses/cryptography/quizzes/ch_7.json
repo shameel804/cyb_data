@@ -1,0 +1,259 @@
+{
+    "id": "quiz_ch_7",
+    "chapterId": "ch_7",
+    "title": "Chapter 7 Quiz",
+    "description": "Test your knowledge of encoding, Base64, hex, URL encoding, and the security pitfalls!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary difference between encoding and encryption?",
+            "options": [
+                "Encoding uses a secret key, encryption does not",
+                "Encoding is reversible without a key, encryption requires a key",
+                "Encoding compresses data, encryption expands it",
+                "There is no difference"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Encoding uses a public algorithm and no key; encryption requires a secret key to reverse."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which of the following is an encoding scheme?",
+            "options": [
+                "AES",
+                "Base64",
+                "RSA",
+                "HMAC"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Base64 is a binary‑to‑text encoding. The others are encryption or MAC algorithms."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "Base64 can be used to securely store passwords.",
+            "correctAnswer": false,
+            "explanation": "False. Base64 provides no confidentiality; it is fully reversible. Passwords must be hashed."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "How many characters from the Base64 alphabet represent 3 bytes of data?",
+            "options": [
+                "2",
+                "3",
+                "4",
+                "6"
+            ],
+            "correctAnswer": 2,
+            "explanation": "3 bytes = 24 bits → 24 / 6 = 4 Base64 characters."
+        },
+        {
+            "id": "q5",
+            "type": "fill_blank",
+            "question": "The padding character used in Base64 is ____.",
+            "options": [
+                "+",
+                "/",
+                "=",
+                "*"
+            ],
+            "correctAnswer": "=",
+            "explanation": "The equals sign `=` is used for padding to make the output length a multiple of 4."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is a common use of Base64 encoding?",
+            "options": [
+                "Encrypting network traffic",
+                "Attaching files to emails (MIME)",
+                "Generating digital signatures",
+                "Deriving cryptographic keys"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Base64 encodes binary attachments into a text format for email transmission."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Which of the following statements is true about URL percent‑encoding?",
+            "options": [
+                "It encrypts the URL path",
+                "It replaces unsafe characters with %xx where xx is the hex code",
+                "It compresses the URL",
+                "It is a type of hashing"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Percent‑encoding encodes special characters using % followed by two hex digits."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What is the hex representation of the ASCII character 'A' (0x41)?",
+            "options": [
+                "41",
+                "61",
+                "7A",
+                "4D"
+            ],
+            "correctAnswer": 0,
+            "explanation": "ASCII code for 'A' is 65 decimal, which is 0x41 in hex."
+        },
+        {
+            "id": "q9",
+            "type": "true_false",
+            "question": "ROT13 is a secure encryption algorithm.",
+            "correctAnswer": false,
+            "explanation": "False. ROT13 is an encoding (a Caesar cipher with fixed shift 13) that provides no security."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is the output size increase when encoding binary data to Base64?",
+            "options": [
+                "~25% decrease",
+                "~33% increase",
+                "No change",
+                "~100% increase"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Base64 adds about 33% overhead (3 bytes become 4 characters)."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which Python module provides functions for Base64 encoding?",
+            "options": [
+                "hashlib",
+                "base64",
+                "binascii",
+                "encodings"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The `base64` module (or `binascii` as a lower‑level alternative) provides Base64 functions."
+        },
+        {
+            "id": "q12",
+            "type": "fill_blank",
+            "question": "The URL‑encoded form of a space character is ____.",
+            "options": [
+                "%20",
+                "%0A",
+                "+",
+                "%2B"
+            ],
+            "correctAnswer": "%20",
+            "explanation": "Space is encoded as %20 (hex ASCII 20)."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "HTTP Basic Authentication sends credentials in which format?",
+            "options": [
+                "Encrypted with AES",
+                "Base64 encoded",
+                "URL encoded",
+                "Hashed with SHA‑256"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Basic Auth encodes `username:password` in Base64, which is not secure unless transported over HTTPS."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What should you do before Base64‑encoding sensitive data for transport?",
+            "options": [
+                "Hash it",
+                "Encrypt it first",
+                "Compress it",
+                "Nothing; Base64 itself protects it"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Encrypt the data first to ensure confidentiality, then encode the ciphertext in Base64 for compatibility."
+        },
+        {
+            "id": "q15",
+            "type": "true_false",
+            "question": "Hexadecimal encoding provides better security than Base64 because it uses a different alphabet.",
+            "correctAnswer": false,
+            "explanation": "False. Neither hex nor Base64 provide any security; they are just different representations."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "In which scenario is encoding sufficient and encryption unnecessary?",
+            "options": [
+                "Sending a password over the internet",
+                "Preparing binary data for an email attachment",
+                "Storing credit card numbers",
+                "Transmitting military secrets"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Encoding is sufficient for format transformation where confidentiality is not required."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What does the `=` padding in Base64 indicate?",
+            "options": [
+                "The encoded data is encrypted",
+                "The original binary length wasn’t a multiple of 3 bytes",
+                "A checksum of the data",
+                "The end of the Base64 stream"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Padding `=` is added when the input length modulo 3 is 1 or 2, to make the character count multiple of 4."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which of these is an example of security by obscurity that relies on encoding?",
+            "options": [
+                "AES‑256 encryption",
+                "Storing an API key in Base64 inside client‑side JavaScript",
+                "Using bcrypt for password hashing",
+                "TLS certificate pinning"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Hiding a key via Base64 in client‑side code is merely obscurity; anyone can extract and decode it."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "Percent‑encoding in a URL makes the URL unreadable to an attacker.",
+            "correctAnswer": false,
+            "explanation": "False. An attacker can simply decode the URL; it provides no security."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is the correct order to securely transmit data as text?",
+            "options": [
+                "Encode → Encrypt",
+                "Encrypt → Encode",
+                "Hash → Encode",
+                "Encode → Hash"
+            ],
+            "correctAnswer": 1,
+            "explanation": "First encrypt to provide confidentiality, then encode the binary ciphertext into a text format."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "Which of the following is a valid Base64 character?",
+            "options": [
+                "?",
+                "+",
+                "%",
+                "~"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The Base64 alphabet includes A‑Z, a‑z, 0‑9, +, and /."
+        }
+    ]
+}

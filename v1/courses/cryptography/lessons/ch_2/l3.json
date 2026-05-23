@@ -1,0 +1,114 @@
+{
+    "id": "l3",
+    "chapterId": "ch_2",
+    "title": "Substitution Ciphers & Frequency Analysis 🔡",
+    "description": "Replace letters with a completely mixed alphabet – then watch statistics destroy it.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Classic Ciphers",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Monoalphabetic Substitution 📊",
+            "content": "# Caesar is a special case\n\nIn a **monoalphabetic substitution cipher**, each plaintext letter is replaced by a **fixed, but arbitrary, ciphertext letter**.\n\n- The key is the full mapping (a permutation of the alphabet).\n- Number of possible keys: **26!** (that’s ~4×10^26 – huge!)\n\nBrute‑forcing 26! keys is impossible. So is it secure? **No!**"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Frequency Analysis Breaks It 📈",
+            "content": "# The language reveals itself\n\nIn any long English text, some letters appear far more often than others:\n- **E** is the most common (~12.7%)\n- Then **T, A, O, I, N, S, H, R**\n\nIf in the ciphertext, `X` appears 12% of the time, we guess `X → E`. By matching frequencies of bigrams (TH, HE, IN) and common words, we can quickly recover the whole mapping."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "code",
+            "title": "Frequency Counter",
+            "content": "A tiny tool that counts letter frequencies in a ciphertext:",
+            "codeSnippet": "from collections import Counter\ncipher = 'LUXDZ NW ZDEOH...'  # example\ncounts = Counter(ch for ch in cipher if ch.isalpha())\nprint(counts.most_common(5))\n# Most common cipher letters likely map to E, T, A...",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_4",
+            "type": "quiz",
+            "title": "Why 26! Doesn't Help 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Why is a monoalphabetic cipher weak despite 26! possible keys?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Computers can brute‑force 26! keys",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The key is always very short",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Letter frequency patterns leak the plaintext",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The ciphertext is always longer",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Frequency analysis sidesteps the large key space by using language statistics – no need to brute‑force.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "The Atbash Cipher 🔃",
+            "content": "# A special historical substitution\n\n**Atbash** maps A↔Z, B↔Y, C↔X, … It's its own inverse, like ROT13.\n\nOriginally used in Hebrew texts, it's trivially broken because the mapping is fixed.\n\n**Example:** `HELLO` → `SVOOL`"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Polyalphabetic to the Rescue 🛟",
+            "content": "## Frequency analysis fails if you change the mapping per letter!\n\nThat’s the idea behind the **Vigenère cipher** (next lesson) – a different shift for each position, based on a keyword."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Identify the Technique 🔎",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "A ciphertext shows 'X' occurring 11% of the time, 'M' 8%, etc. The plaintext is likely English. What attack works?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Known‑plaintext attack",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Frequency analysis",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Side‑channel attack",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Man‑in‑the‑middle",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Frequency analysis exploits the non‑uniform distribution of letters in natural language.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,104 @@
+{
+    "id": "l3",
+    "chapterId": "ch_10",
+    "title": "Merkle Trees: Efficient Verification 🌲",
+    "description": "How a tree of hashes lets you prove a transaction is in a block with just log(N) data.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Data Structures",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Why a Merkle Tree? 🤷",
+            "content": "# A block contains thousands of transactions. To verify that a transaction is included, you could download the whole block – expensive.\n\n**Merkle tree** solves this:\n- All transaction hashes are leaves.\n- Pairs of hashes are concatenated and hashed to form parent nodes.\n- The **Merkle root** is a single hash that summarises every transaction.\n\nTo prove a transaction is in the block, you only need the **Merkle proof**: a path of sibling hashes up to the root. O(log N) data instead of O(N)."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Building a Merkle Tree 🏗️",
+            "content": "# 1. Hash each transaction → leaf hashes.\n2. If odd number of nodes, duplicate the last one.\n3. Pair up nodes, concatenate, hash → parent nodes.\n4. Repeat until you get a single hash – the Merkle root.\n\n**Example (4 transactions):**\n```\n        Root\n       /    \\\n    H12      H34\n   /  \\     /  \\\n H1  H2   H3  H4\n```\nH12 = SHA256(H1 + H2)\nRoot = SHA256(H12 + H34)"
+        },
+        {
+            "id": "s_l3_3",
+            "type": "code",
+            "title": "Python Merkle Root Calculation",
+            "content": "Given a list of transaction strings, compute the Merkle root using double SHA‑256:",
+            "codeSnippet": "import hashlib\n\ndef double_sha256(data):\n    return hashlib.sha256(hashlib.sha256(data).digest()).digest()\n\ndef merkle_root(txns):\n    if not txns:\n        return None\n    hashes = [double_sha256(tx.encode()) for tx in txns]\n    while len(hashes) > 1:\n        if len(hashes) % 2 == 1:\n            hashes.append(hashes[-1])\n        new_hashes = []\n        for i in range(0, len(hashes), 2):\n            concat = hashes[i] + hashes[i+1]\n            new_hashes.append(double_sha256(concat))\n        hashes = new_hashes\n    return hashes[0].hex()\n\nroot = merkle_root(['Alice pays Bob 5', 'Bob pays Carol 3', 'Carol pays Dave 2'])\nprint(root)",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_4",
+            "type": "quiz",
+            "title": "Merkle Proof 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "How many sibling hashes do you need to prove a transaction is in a block with 1024 transactions?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "1023",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "10",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "512",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "1",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A balanced binary tree has height log2(N). For N=1024, log2=10, so you need about 10 sibling hashes to reconstruct the root.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Merkle Proof in Action 🔍",
+            "content": "# A **SPV (Simplified Payment Verification)** node in Bitcoin doesn’t download the whole blockchain. It asks a full node for:\n- The block header containing the Merkle root.\n- A Merkle proof for its transaction.\n\nThe SPV node hashes the transaction, combines with the sibling hashes up the tree, and checks if the final result equals the Merkle root. If yes, the transaction is confirmed."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Merkle Tree ≠ Merkle–Damgård 🧐",
+            "content": "## Don’t confuse the Merkle tree (data structure) with the Merkle–Damgård construction (hash function design). Both are named after Ralph Merkle, but they are different concepts."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Merkle Application 🌐",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "A Merkle root changes if any transaction in the block is altered.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "True. The Merkle root is a cryptographic commitment to all transactions; altering any leaf changes the root.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

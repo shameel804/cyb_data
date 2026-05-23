@@ -1,0 +1,272 @@
+{
+    "id": "quiz_ch_8",
+    "chapterId": "ch_8",
+    "title": "Chapter 8 Quiz",
+    "description": "Test your cryptanalysis skills – from frequency attacks to side‑channels and the One‑Time Pad!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What does Kerckhoffs’ Principle state?",
+            "options": [
+                "The algorithm must be kept secret",
+                "The system’s security must rely only on the secrecy of the key",
+                "Only symmetric ciphers are secure",
+                "Keys must be changed every hour"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Kerckhoffs’ Principle says the algorithm can be public; security depends only on the key."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What type of attack involves the adversary being able to decrypt ciphertexts of their choice?",
+            "options": [
+                "Ciphertext‑only",
+                "Known‑plaintext",
+                "Chosen‑plaintext",
+                "Chosen‑ciphertext"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Chosen‑ciphertext attack (CCA) gives the attacker access to a decryption oracle."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "In a monoalphabetic substitution cipher, frequency analysis fails because the mapping is random.",
+            "correctAnswer": false,
+            "explanation": "False. Frequency analysis works because letter frequencies are preserved, not destroyed."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which statistic helps determine if a ciphertext is likely a simple substitution or a polyalphabetic cipher?",
+            "options": [
+                "Entropy",
+                "Index of Coincidence",
+                "Standard deviation",
+                "Chi‑squared test"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Index of Coincidence measures the likelihood that two randomly selected letters are the same; it distinguishes monoalphabetic from polyalphabetic."
+        },
+        {
+            "id": "q5",
+            "type": "fill_blank",
+            "question": "The term for a known or suspected piece of plaintext used in an attack is a ____.",
+            "options": [
+                "Crib",
+                "Nonce",
+                "Token",
+                "Digest"
+            ],
+            "correctAnswer": "Crib",
+            "explanation": "A crib is a known plaintext fragment used to break a cipher."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What happens if you use the same keystream twice in a stream cipher?",
+            "options": [
+                "The cipher becomes unbreakable",
+                "An attacker can XOR the two ciphertexts to cancel the keystream",
+                "The encryption speed doubles",
+                "Nothing, it’s still secure"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Reusing the same keystream allows C1 ⊕ C2 = P1 ⊕ P2, leaking plaintext relationships."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Which cipher mode is especially vulnerable to a two‑time pad attack when nonce is reused?",
+            "options": [
+                "CBC",
+                "CTR",
+                "GCM",
+                "Both CTR and GCM"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Both CTR and GCM (which uses CTR for encryption) suffer keystream reuse if nonces repeat."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What is the primary defence against timing attacks?",
+            "options": [
+                "Using longer keys",
+                "Constant‑time operations",
+                "Increasing the number of rounds",
+                "Using a hash function"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Constant‑time code ensures execution time does not depend on secret data."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Differential cryptanalysis relies on:",
+            "options": [
+                "Analysing the difference between two plaintexts and how it propagates through the cipher",
+                "Guessing the key randomly",
+                "Exploiting a weak random number generator",
+                "Measuring power consumption"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Differential cryptanalysis studies the propagation of input differences to leak key bits."
+        },
+        {
+            "id": "q10",
+            "type": "true_false",
+            "question": "Side‑channel attacks exploit mathematical weaknesses in the cipher algorithm.",
+            "correctAnswer": false,
+            "explanation": "False. They exploit implementation weaknesses, such as timing or power variations, not the algorithm itself."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What is a key requirement for the One‑Time Pad to be perfectly secure?",
+            "options": [
+                "The key must be reused for multiple messages",
+                "The key must be truly random and at least as long as the message",
+                "The key must be a fixed length",
+                "The plaintext must be compressed"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Perfect secrecy requires a random key of length equal to the message, used only once."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Why is the One‑Time Pad not widely used?",
+            "options": [
+                "It is mathematically insecure",
+                "Key distribution and management are impractical for large data",
+                "It requires public‑key infrastructure",
+                "It is slower than AES"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The need for a key as long as the message and secure key distribution makes it infeasible for most applications."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "How do modern stream ciphers differ from the One‑Time Pad?",
+            "options": [
+                "They use a pseudorandom keystream derived from a short key and nonce",
+                "They don’t XOR the plaintext",
+                "They encrypt the key instead of the data",
+                "They never use a nonce"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Stream ciphers expand a short secret key into a pseudorandom keystream, sacrificing perfect secrecy for practicality."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "A fault injection attack typically:",
+            "options": [
+                "Modifies the cipher’s algorithm",
+                "Induces a hardware error to produce a faulty output and deduce the key",
+                "Steals the key from a certificate",
+                "Forces a timing leak"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Fault attacks deliberately cause computational errors and analyse the results to recover key material."
+        },
+        {
+            "id": "q15",
+            "type": "true_false",
+            "question": "Constant‑time comparison only matters for password checking, not for cryptographic MAC verification.",
+            "correctAnswer": false,
+            "explanation": "False. MAC verification must also be constant‑time to prevent timing side‑channels that leak valid tags."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which of the following is NOT a side‑channel?",
+            "options": [
+                "Power consumption",
+                "Electromagnetic radiation",
+                "Ciphertext length",
+                "Execution time"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Ciphertext length is an output of the algorithm (often observable), but it is not a physical side‑channel like power or timing."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What does IND‑CPA stand for?",
+            "options": [
+                "Independent Cipher Protection Algorithm",
+                "Indistinguishability under Chosen‑Plaintext Attack",
+                "Integral Cipher Padding Assurance",
+                "Internal Cipher Parameter Audit"
+            ],
+            "correctAnswer": 1,
+            "explanation": "IND‑CPA is the security notion that ciphertexts should be indistinguishable from random even if the attacker chooses plaintexts."
+        },
+        {
+            "id": "q18",
+            "type": "fill_blank",
+            "question": "The technique of studying power traces to extract keys is called Differential ____ Analysis.",
+            "options": [
+                "Timing",
+                "Power",
+                "Frequency",
+                "Fault"
+            ],
+            "correctAnswer": "Power",
+            "explanation": "Differential Power Analysis (DPA) correlates power consumption with key guesses."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "Why does deterministic encryption fail IND‑CPA?",
+            "options": [
+                "It is too slow",
+                "The same plaintext always encrypts to the same ciphertext, leaking equality",
+                "It cannot handle large files",
+                "It uses a fixed IV"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Deterministic encryption reveals when two plaintexts are identical, breaking indistinguishability."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is the main difference between known‑plaintext and chosen‑plaintext attacks?",
+            "options": [
+                "Known‑plaintext: attacker chooses the plaintext; chosen‑plaintext: attacker only observes ciphertexts",
+                "Known‑plaintext: attacker has some plaintext/ciphertext pairs; chosen‑plaintext: attacker can encrypt arbitrary plaintexts",
+                "They are the same",
+                "Known‑plaintext is always more powerful"
+            ],
+            "correctAnswer": 1,
+            "explanation": "KPA uses whatever plaintext is available; CPA allows the attacker to select plaintexts for encryption."
+        },
+        {
+            "id": "q21",
+            "type": "true_false",
+            "question": "A cipher with a 256‑bit key is immune to all side‑channel attacks because the key is too large.",
+            "correctAnswer": false,
+            "explanation": "False. Side‑channel attacks bypass key size entirely by exploiting physical leakage; they can break AES‑256 just as easily if implementation is weak."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "What makes a ciphertext‑only attack harder than a known‑plaintext attack?",
+            "options": [
+                "The attacker has less information to work with",
+                "The attacker needs more computing power",
+                "Ciphertext‑only attacks cannot be done on modern ciphers",
+                "Ciphertext‑only requires quantum computers"
+            ],
+            "correctAnswer": 0,
+            "explanation": "With only ciphertexts, the attacker has no verified plaintext to guide the break, making it more challenging."
+        }
+    ]
+}

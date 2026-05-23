@@ -1,0 +1,113 @@
+{
+    "id": "l4",
+    "chapterId": "ch_9",
+    "title": "Putting It All Together: Secure Password Storage 🏦",
+    "description": "Design a complete registration/login system using Argon2id, pepper, and best practices.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Implementation",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Secure Storage Blueprint 📋",
+            "content": "# A state‑of‑the‑art password storage system:\n\n1. **Generate a strong random salt** per user (at least 16 bytes).\n2. **Optionally add a pepper** stored outside the database (e.g., in a secure vault).\n3. **Hash with Argon2id** (or bcrypt/PBKDF2 as fallback) using a high cost.\n4. **Store** the algorithm identifier, parameters, salt, and hash in one string (like Argon2’s modular crypt format).\n5. **Never store plaintext**. Not even for “password recovery” – use time‑limited reset tokens."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Registration Flow 🆕",
+            "content": "1. User submits `username` and `password`.\n2. Validate password strength (minimum length, complexity).\n3. Generate a random salt.\n4. Look up pepper from secure storage.\n5. Compute `hash = argon2id.hash(salt + password + pepper)` (Argon2 handles its own salt).\n6. Store `username`, `hash` (which includes salt and parameters).\n7. Respond success."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "code",
+            "title": "Registration Example (Argon2)",
+            "content": "Simplified registration logic:",
+            "codeSnippet": "from argon2 import PasswordHasher\nph = PasswordHasher()\ndef register(username, password):\n    pepper = get_pepper()  # from secure config\n    combined = pepper + password\n    hashed = ph.hash(combined)\n    db.save(username, hashed)",
+            "codeLanguage": "python",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_4",
+            "type": "quiz",
+            "title": "Registration Check 📝",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Where should the pepper be stored?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "In the same database table as the hashes",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "In a separate secure vault or application configuration",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "In the user’s cookie",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It doesn’t matter; pepper can be public",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Pepper must be kept secret and separate from the database to protect against database‑only breaches.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Login Flow 🚪",
+            "content": "1. User submits `username` and `password`.\n2. Fetch the stored hash from the database.\n3. Retrieve the pepper.\n4. Combine pepper + password.\n5. Verify using `argon2id.verify(stored_hash, combined)`.\n6. If true, authenticate. If false, reject.\n\n**Important:** The verification must be **constant‑time** (Argon2’s verify handles this) to prevent username enumeration via timing."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "code",
+            "title": "Login Example",
+            "content": "Verification with Argon2:",
+            "codeSnippet": "def login(username, password):\n    stored_hash = db.get_hash(username)\n    if not stored_hash:\n        # Still compute hash to prevent timing user enumeration\n        ph.hash('dummy')\n        return False\n    pepper = get_pepper()\n    combined = pepper + password\n    try:\n        ph.verify(stored_hash, combined)\n        return True\n    except:\n        return False",
+            "codeLanguage": "python",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_7",
+            "type": "tip",
+            "title": "Upgrade Hashes Over Time 🔄",
+            "content": "## If you later increase Argon2 cost or switch algorithms, re‑hash the password on successful login and replace the stored hash. This transparently upgrades old hashes."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "quiz",
+            "title": "Secure Login ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "It’s safe to store the pepper in the same database as long as it’s encrypted.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. If the database is breached, encrypted pepper may be decryptable if the key is also compromised. Best practice is to keep the pepper entirely separate.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

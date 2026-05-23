@@ -1,0 +1,266 @@
+{
+    "id": "quiz_ch_4",
+    "chapterId": "ch_4",
+    "title": "Chapter 4 Quiz",
+    "description": "Test your knowledge of hash functions, algorithms, and their real‑world applications!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which property ensures that a small change in input produces a drastically different hash?",
+            "options": [
+                "Collision resistance",
+                "Pre‑image resistance",
+                "Avalanche effect",
+                "Second pre‑image resistance"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The avalanche effect means that a one‑bit change results in a completely different hash output."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What is the output size of SHA‑256 in bits?",
+            "options": [
+                "128",
+                "160",
+                "256",
+                "512"
+            ],
+            "correctAnswer": 2,
+            "explanation": "SHA‑256 produces a 256‑bit (32‑byte) digest."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "MD5 is still acceptable for verifying the integrity of files against malicious tampering.",
+            "correctAnswer": false,
+            "explanation": "False. MD5 is broken; an attacker can craft a malicious file with the same MD5 hash. Use SHA‑256."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What attack does salting primarily prevent in password storage?",
+            "options": [
+                "Brute‑force attacks",
+                "Rainbow table attacks",
+                "SQL injection",
+                "Phishing"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Salting ensures that precomputed rainbow tables are useless because each salt requires its own table."
+        },
+        {
+            "id": "q5",
+            "type": "fill_blank",
+            "question": "The standard hash function used in Bitcoin's proof‑of‑work is SHA‑_____.",
+            "options": [
+                "1",
+                "256",
+                "3",
+                "512"
+            ],
+            "correctAnswer": "256",
+            "explanation": "Bitcoin uses double SHA‑256 (SHA‑256 applied twice) as its hash function."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which of the following is a key‑stretching algorithm designed to be slow and memory‑hard?",
+            "options": [
+                "MD5",
+                "SHA‑256",
+                "Argon2",
+                "HMAC"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Argon2 is a modern, memory‑hard key‑derivation function for password hashing."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What does HMAC stand for?",
+            "options": [
+                "Hashed Message Authentication Code",
+                "Hash‑based Message Authentication Code",
+                "High‑speed Message Authentication Cipher",
+                "Hypertext Message Authentication Code"
+            ],
+            "correctAnswer": 1,
+            "explanation": "HMAC = Hash‑based Message Authentication Code."
+        },
+        {
+            "id": "q8",
+            "type": "true_false",
+            "question": "HMAC provides confidentiality of the message.",
+            "correctAnswer": false,
+            "explanation": "False. HMAC ensures integrity and authenticity, not confidentiality. The message itself remains unencrypted."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Which SHA‑2 variant produces a 512‑bit digest?",
+            "options": [
+                "SHA‑224",
+                "SHA‑256",
+                "SHA‑384",
+                "SHA‑512"
+            ],
+            "correctAnswer": 3,
+            "explanation": "SHA‑512 outputs 512 bits (64 bytes)."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Why are fast hashes like SHA‑256 unsuitable for password storage on their own?",
+            "options": [
+                "They produce too short a digest",
+                "Attackers can test billions of passwords per second",
+                "They are reversible",
+                "They require a public key"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The speed of SHA‑256 allows massive brute‑force attacks. Key‑stretching algorithms deliberately slow down the process."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What is a Merkle tree?",
+            "options": [
+                "A data structure where each leaf is a hash, and each internal node is a hash of its children",
+                "A tree used in sorting algorithms",
+                "An encryption tree",
+                "A network topology"
+            ],
+            "correctAnswer": 0,
+            "explanation": "A Merkle tree recursively hashes pairs of nodes to produce a single root hash, enabling efficient verification."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which hash algorithm is based on the sponge construction (Keccak)?",
+            "options": [
+                "MD5",
+                "SHA‑1",
+                "SHA‑2",
+                "SHA‑3"
+            ],
+            "correctAnswer": 3,
+            "explanation": "SHA‑3 is based on the Keccak sponge construction."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "A cryptographic hash function should be reversible if you know the algorithm.",
+            "correctAnswer": false,
+            "explanation": "False. Hash functions are one‑way; they should not be reversible."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "In Git, what purpose do commit hashes serve?",
+            "options": [
+                "Encrypt the source code",
+                "Uniquely identify the commit and its entire history",
+                "Speed up network transfer",
+                "Authenticate the developer"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Git's commit hash identifies the specific commit and, through parent hashes, the entire history."
+        },
+        {
+            "id": "q15",
+            "type": "fill_blank",
+            "question": "The constant‑time comparison function in Python's hmac module is called hmac.________.",
+            "options": [
+                "compare",
+                "compare_digest",
+                "verify",
+                "equals"
+            ],
+            "correctAnswer": "compare_digest",
+            "explanation": "hmac.compare_digest() prevents timing attacks."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What is the primary security difference between a checksum (CRC32) and a cryptographic hash?",
+            "options": [
+                "Checksums are faster",
+                "Cryptographic hashes are designed to resist intentional collisions",
+                "Checksums are one‑way, hashes are reversible",
+                "There is no difference"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Cryptographic hashes are designed against attackers crafting collisions; checksums only protect against accidental errors."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which password hashing function is currently recommended as the winner of the Password Hashing Competition?",
+            "options": [
+                "bcrypt",
+                "scrypt",
+                "Argon2",
+                "PBKDF2"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Argon2 won the Password Hashing Competition in 2015."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "Using a pepper in password storage adds security only if the pepper is stored in the database alongside the salt.",
+            "correctAnswer": false,
+            "explanation": "False. The pepper should be kept secret and separate from the database (e.g., in a hardware security module)."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is a collision in hashing?",
+            "options": [
+                "Two different inputs producing the same hash",
+                "The hash function crashing",
+                "Two hashes that look similar",
+                "A hash that is too short"
+            ],
+            "correctAnswer": 0,
+            "explanation": "A collision occurs when distinct inputs produce the same hash output, breaking collision resistance."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which of the following is NOT a hash function?",
+            "options": [
+                "SHA‑256",
+                "MD5",
+                "AES",
+                "BLAKE2"
+            ],
+            "correctAnswer": 2,
+            "explanation": "AES is a symmetric encryption algorithm, not a hash function."
+        },
+        {
+            "id": "q21",
+            "type": "true_false",
+            "question": "SHA‑3 was designed as an immediate replacement for SHA‑2 and is mandated for all new systems.",
+            "correctAnswer": false,
+            "explanation": "False. SHA‑3 is an alternative, not a mandatory replacement. SHA‑2 remains secure and widely used."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "Why does HMAC use two nested hash operations with ipad and opad?",
+            "options": [
+                "To double the speed",
+                "To prevent length‑extension attacks and provide security proof",
+                "To compress the key",
+                "It is purely historical"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The nested structure prevents length‑extension attacks and allows HMAC to be proven secure under weaker assumptions."
+        }
+    ]
+}

@@ -1,0 +1,104 @@
+{
+    "id": "l1",
+    "chapterId": "ch_6",
+    "title": "The Web Before TLS: Why HTTP Sucks 😱",
+    "description": "Learn why HTTP without TLS is an eavesdropper’s paradise and what threats TLS solves.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "The Problem",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "HTTP = Everything in Plain Sight 👁️",
+            "content": "# Hypertext Transfer Protocol (HTTP) sends data as raw text across the network.\n\n- No encryption – anyone on the same Wi‑Fi can read your passwords, credit cards, private messages.\n- No authentication – you don’t know if the server is really your bank or a fake.\n- No integrity – an attacker can modify the webpage or inject malware.\n\nHTTP is like sending a postcard: the postman (and everyone at the sorting office) can read and modify it."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "The Three Amigos of TLS 🤠🤠🤠",
+            "content": "# TLS (Transport Layer Security) adds three critical protections on top of TCP:\n\n1. **Confidentiality** – Encryption prevents eavesdropping.\n2. **Authentication** – The server (and optionally the client) proves its identity using certificates.\n3. **Integrity** – A Message Authentication Code (MAC) prevents tampering.\n\nTogether, these turn the postcard into a locked, signed, tamper‑proof briefcase."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which of these is NOT a protection provided by TLS?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Encryption of data",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Server identity verification",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Faster page loading",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Tamper detection",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "TLS might slow things a bit due to encryption overhead, but does not inherently speed up loading. It provides security, not performance.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "A Brief History: SSL → TLS 📜",
+            "content": "# SSL (Secure Sockets Layer) was created by Netscape in the 90s. TLS is its successor.\n\n- SSL 1.0 – never released.\n- SSL 2.0, 3.0 – both broken, now deprecated.\n- TLS 1.0 (1999) – slight upgrade of SSL 3.0.\n- TLS 1.1 – deprecated.\n- TLS 1.2 (2008) – still widely used, secure if configured properly.\n- TLS 1.3 (2018) – modern, simpler, faster, and more secure.\n\nToday, “SSL” is often used as a generic term, but we mean TLS. Always use TLS 1.2 or 1.3."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Plain HTTP – A Wiretap Demo",
+            "content": "Using curl to see the plaintext leakage (no encryption):",
+            "codeSnippet": "# Capture network traffic on plain HTTP\ncurl -v http://example.com\n\n# In the output, everything is visible: headers, HTML, cookies.\n# With HTTPS (curl https://...), you'd see only encrypted binary.\n",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Always Check the Padlock 🔒",
+            "content": "## Look for the padlock icon and `https://` in your browser. If it’s missing, assume everything you type or see can be intercepted. Never enter passwords on HTTP pages."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "History Sense 📅",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "SSL 3.0 is still secure and recommended for modern servers.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. SSL 3.0 is vulnerable to POODLE and other attacks, and has been deprecated for years.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

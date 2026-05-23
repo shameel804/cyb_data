@@ -1,0 +1,114 @@
+{
+    "id": "l2",
+    "chapterId": "ch_5",
+    "title": "How Signing Works: Hash & Sign 🛡️",
+    "description": "Learn the universal recipe for creating unforgeable digital signatures.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Core Mechanics",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Two‑Step Recipe 👨‍🍳",
+            "content": "# Creating a digital signature:\n\n1. **Hash** the message (e.g., SHA‑256) → a fixed‑size digest.\n2. **Encrypt** the hash with the signer’s **private key** → the signature.\n\nThe signature is then attached to the original message.\n\nWhy hash first? Because hashes are short, fast, and the signature algorithm only works on small inputs. Also, hashing protects against certain attacks."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Conceptual Pseudocode",
+            "content": "A simplified view of signing and verification:",
+            "codeSnippet": "# Signing\ndigest = SHA256(message)\nsignature = RSA_encrypt(private_key, digest)\n\n# Verification\ndigest1 = RSA_decrypt(public_key, signature)\ndigest2 = SHA256(message)\nif digest1 == digest2:\n    print(\"Signature valid\")\nelse:\n    print(\"Invalid signature\")",
+            "codeLanguage": "python",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Order of Operations ⛓️",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What is the correct sequence for signing a message?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Encrypt message, then hash the ciphertext",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Hash message, then encrypt the hash with private key",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Hash the message, then hash it again",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Encrypt message with private key, then hash",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "We hash the message to get a digest, then encrypt (or sign) that digest with the private key.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Verification in Detail 🔍",
+            "content": "# To verify a signature:\n\n1. Compute the SHA‑256 hash of the received message (`digest2`).\n2. Decrypt the signature using the signer’s **public key** to get `digest1`.\n3. If `digest1` and `digest2` match, the signature is valid.\n\nThis proves:\n- The message hasn’t been altered (hash matches).\n- Only the owner of the private key could have produced the signature.\n\nIf either the message or the signature is tampered with, the hashes won’t match."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "warning",
+            "title": "⚠️ Real Systems Use Padding",
+            "content": "## The simple ‘decrypt hash’ model is only a mental model. Real signature algorithms (RSA‑PSS, ECDSA) use sophisticated padding and encoding to prevent attacks. Never implement the raw ‘sign hash’ yourself."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "tip",
+            "title": "Signature vs. MAC 🆚",
+            "content": "## A MAC (like HMAC) requires a shared secret key. A digital signature uses asymmetric keys, so anyone can verify without knowing a secret.\n\nThat’s why signatures are used for public verifiability – like software downloads."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "Verification Insight 🔎",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "During verification, the signature is 'decrypted' with the public key to obtain:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The original plaintext",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The message hash that the signer computed",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The signer’s private key",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A random number",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "We retrieve the hash that was signed, then compare with the fresh hash of the received message.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,104 @@
+{
+    "id": "l1",
+    "chapterId": "ch_11",
+    "title": "Splitting Secrets: Why & How ✂️",
+    "description": "Understand the problem of single points of failure and how secret sharing distributes trust.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Secret Sharing",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Problem: One Key, One Point of Failure 🔑",
+            "content": "# Imagine you encrypt your company's entire database with a single AES key. If that key is lost, the data is gone forever. If it’s stolen, everything is exposed.\n\nYou could give copies of the key to several trusted people, but that increases the chance of leakage.\n\n**Secret sharing** solves this dilemma: split a secret into multiple pieces (shares) such that:\n- The secret can be reconstructed only when a sufficient number of shares are combined.\n- Fewer than that threshold give **zero information** about the secret."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "Threshold Schemes (t of n) 📊",
+            "content": "# A (t, n)-threshold scheme divides a secret into n shares and requires at least t shares to recover it.\n\n- **t = threshold** – the minimum number of shares to reconstruct.\n- **n = total number of shares**.\n\n**Example:** (3, 5)-threshold means 5 managers each hold one share. Any 3 can unlock the safe. Any 2 learn nothing.\n\nPerfect for:\n- Nuclear launch codes (requires multiple officers).\n- Cryptographic key escrow.\n- Distributed storage of root CA keys."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "In a (3,5)-threshold scheme, what can 2 shares reveal about the secret?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The entire secret",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Half of the secret",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Absolutely nothing",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A checksum of the secret",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "With fewer than threshold shares, the secret is information‑theoretically hidden – all possible secrets are equally likely.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Simple but Insecure: XOR Splitting ⚠️",
+            "content": "# The simplest (2,2)-scheme: split secret S into two shares X and Y such that S = X ⊕ Y.\n\n- Generate random X, compute Y = S ⊕ X.\n- Give X to Alice, Y to Bob. Neither piece alone reveals anything.\n\nBut this doesn't scale to arbitrary thresholds. For that we need something more powerful: **Shamir's Secret Sharing**."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "XOR Split in Python",
+            "content": "A toy (2,2) secret sharing:",
+            "codeSnippet": "import secrets\n\ndef split_secret(secret):\n    share1 = secrets.token_bytes(len(secret))\n    share2 = bytes(s ^ s1 for s, s1 in zip(secret, share1))\n    return share1, share2\n\ndef recover(share1, share2):\n    return bytes(s1 ^ s2 for s1, s2 in zip(share1, share2))\n\nsecret = b'Launch codes'\ns1, s2 = split_secret(secret)\nassert recover(s1, s2) == secret\nprint('Recovered!')",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Information‑Theoretic Security 🔐",
+            "content": "## Secret sharing can provide perfect, information‑theoretic secrecy – not just computational. Even with infinite computing power, an attacker with insufficient shares cannot learn the secret."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "XOR Scheme 🔑",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "In the XOR (2,2) scheme, knowing one share gives you partial information about the secret.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. A single share is completely random and independent of the secret; it reveals nothing.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

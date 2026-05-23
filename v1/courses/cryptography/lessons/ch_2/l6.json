@@ -1,0 +1,109 @@
+{
+    "id": "l6",
+    "chapterId": "ch_2",
+    "title": "Modern Symmetric Ciphers & Modes of Operation ⚙️",
+    "description": "Meet other ciphers and learn the crucial difference between ECB, CBC, CTR, and GCM.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Modern Symmetric",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "Beyond AES: Other Symmetric Ciphers 🌐",
+            "content": "# The family portrait\n\n- **DES** (Data Encryption Standard) – 56‑bit key, now broken.\n- **3DES** – Apply DES three times; effective key 112 bits, slow, being phased out.\n- **Blowfish / Twofish** – Fast, flexible; Twofish was an AES finalist.\n- **ChaCha20** – A stream cipher designed for speed on mobile devices without AES hardware.\n\nChaCha20 is used in TLS 1.3 and WireGuard VPN. It's extremely fast in software."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "The Crucial Part: Modes of Operation 🏗️",
+            "content": "# Block ciphers encrypt only fixed‑size blocks. How do we encrypt data longer than 16 bytes?\n\n**Modes of operation** define how to chain blocks together.\n\n- **ECB (Electronic Codebook)** – Each block independently. **Never use.** Patterns visible.\n- **CBC (Cipher Block Chaining)** – XOR previous ciphertext with current plaintext. Requires an **IV**.\n- **CTR (Counter)** – Turns block cipher into a stream cipher. Encrypts a counter and XORs with plaintext.\n- **GCM (Galois/Counter Mode)** – CTR + authentication. Provides both **confidentiality and integrity**."
+        },
+        {
+            "id": "s_l6_3",
+            "type": "code",
+            "title": "CBC vs CTR Visual",
+            "content": "CBC encryption (requires padding):\n```\nC0 = IV\nC_i = E(P_i ⊕ C_{i-1})\n```\n\nCTR encryption (no padding needed):\n```\nkeystream = E(nonce || counter)\ncipher = plaintext ⊕ keystream\n```\n\nCTR is popular because it's parallelisable and avoids the padding oracle attacks that plague CBC.",
+            "codeLanguage": "text",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_4",
+            "type": "quiz",
+            "title": "Mode Smarts 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "Which mode provides both encryption and authentication?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "ECB",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "CBC",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "CTR",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "GCM",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "GCM is an AEAD (Authenticated Encryption with Associated Data) mode. It encrypts like CTR and adds an authentication tag.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "Initialisation Vector (IV / Nonce) 🎲",
+            "content": "# Most modes require a random (or unique) starting value to ensure different ciphertexts even for identical plaintexts under the same key.\n\n- **IV** – used in CBC, must be unpredictable.\n- **Nonce** – used in CTR/GCM, must be unique, but can be predictable (like a counter).\n\nIf you reuse an IV/Nonce with the same key, security collapses – attackers can recover plaintext or even forge messages."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "warning",
+            "title": "IV Reuse Disaster 🚨",
+            "content": "## In CTR/GCM, reusing the nonce with the same key completely breaks confidentiality.\n\nTwo ciphertexts encrypted with the same keystream can be XORed to cancel out the keystream, leaving the XOR of the two plaintexts. This is how the infamous **KRACK attack** on WPA2 worked."
+        },
+        {
+            "id": "s_l6_7",
+            "type": "tip",
+            "title": "Best Practice Today ✅",
+            "content": "## Always use an AEAD mode like **AES‑GCM** or **ChaCha20‑Poly1305**.\n\nThey give you both encryption and tamper detection in one step. And never, ever implement the underlying cipher yourself – use a well‑audited library!"
+        },
+        {
+            "id": "s_l6_8",
+            "type": "quiz",
+            "title": "Final Mode Check ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "true_false",
+                "question": "CTR mode requires padding the plaintext to a multiple of the block size.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. CTR mode generates a keystream and XORs it byte‑by‑byte, so no padding is needed.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

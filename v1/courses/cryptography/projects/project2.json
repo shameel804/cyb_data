@@ -1,0 +1,25 @@
+{
+    "id": "project2",
+    "title": "Mini Secure Messaging Protocol",
+    "description": "Create a simulated secure communication channel that performs a Diffie‑Hellman key exchange, authenticates with digital signatures, and encrypts messages with AES‑GCM.",
+    "difficulty": "Intermediate",
+    "estimatedHours": "3-5",
+    "problemStatement": "You will implement a simplified version of a TLS‑like handshake and secure channel between two Python scripts (simulating a client and a server). The protocol should provide confidentiality, integrity, and mutual authentication.\n\n**Protocol Outline:**\n1. Both client and server generate ECDH key pairs (using `ec.SECP384R1()`).\n2. Server also has a long‑term RSA key pair used for signing its ephemeral ECDH public key (its certificate). The server’s RSA public key is assumed to be pre‑shared or embedded (no PKI).\n3. Client connects (via localhost sockets for demonstration) and initiates the handshake:\n   - Client sends its ECDH public key.\n   - Server responds with its ECDH public key, a signature over that public key using its RSA private key (RSA‑PSS, SHA‑256), and its RSA public key (so client can verify).\n4. Both sides compute the ECDH shared secret and then derive a symmetric session key using HKDF‑SHA256:\n   `session_key = HKDF(algorithm=SHA256(), length=32, salt=None, info=b'mini-tls').derive(shared_secret)`\n5. After the handshake, the client can send a confidential message to the server, encrypted with AES‑256‑GCM using the session key and a unique nonce per message (a simple counter). The server decrypts and prints it.\n6. The server can also send a reply, encrypted similarly.\n\n**Implementation details:**\n- Use Python’s `socket` module for communication over `localhost` (pick a fixed port, e.g., 12345).\n- Serialize public keys and signatures to bytes using `serialization` module. For sending multiple pieces of data, prefix each message with a 4‑byte length (big‑endian).\n- For the signature, use `padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH)`.\n- For HKDF, use `from cryptography.hazmat.primitives.kdf.hkdf import HKDF`.\n- Counters for nonce: start at 0, increment after each encryption (both sides maintain their own counter). Nonce is the 12‑byte big‑endian representation of the counter.\n\n**Project Structure:**\nCreate two scripts: `server.py` and `client.py`. Run the server first, then the client. The client sends a test message, prints the server’s reply, then exits.\n\n**Security Constraints:**\n- Validate the server’s signature before proceeding. If invalid, the client must terminate the connection.\n- Ensure the GCM nonce is never reused with the same session key.\n- Use proper exception handling for socket errors.\n\nThis project synthesises ECDH key exchange, RSA digital signatures, HKDF key derivation, and AES‑GCM encryption – drawing from Chapters 3, 5, 4, and 2.",
+    "requirements": [
+        "Implement an ECDH key exchange between client and server.",
+        "Server must sign its ephemeral public key with an RSA private key; client must verify.",
+        "Derive a 32‑byte session key using HKDF from the shared secret.",
+        "Encrypt messages with AES‑256‑GCM using a monotonically increasing counter as nonce (12 bytes).",
+        "Client must authenticate the server before sending any confidential data.",
+        "Use sockets for communication on localhost.",
+        "No third‑party PKI; assume the client has the server’s RSA public key embedded."
+    ],
+    "hints": [
+        "Generate RSA keys once (save to files) and load them in the server; hardcode the public key in the client for simplicity.",
+        "Use `struct.pack('!I', len(data))` to prefix lengths.",
+        "Counter nonce: `nonce = counter.to_bytes(12, 'big')`.",
+        "Server should listen with `sock.listen(1)` and accept a single connection.",
+        "Use `cryptography` library for all primitives (pip install cryptography)."
+    ],
+    "expectedOutput": "Running `server.py` starts the server. Running `client.py` connects, performs the handshake, sends a message (e.g., 'Hello, secure server!'), and prints the server’s reply ('Message received: Hello, secure server!'). The server prints the received message and sends the reply. Any signature failure results in an error and termination."
+}

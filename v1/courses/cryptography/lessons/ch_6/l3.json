@@ -1,0 +1,104 @@
+{
+    "id": "l3",
+    "chapterId": "ch_6",
+    "title": "Cipher Suites: The Lock’s Settings ⚙️",
+    "description": "Decode those cryptic TLS cipher suite strings and learn what they negotiate.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Details",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "What’s a Cipher Suite? 🧬",
+            "content": "# A cipher suite is a named combination of algorithms that defines the security for a TLS connection.\n\nIt specifies:\n- Key exchange method (e.g., ECDHE)\n- Authentication algorithm (e.g., RSA, ECDSA)\n- Bulk encryption cipher (e.g., AES‑GCM, ChaCha20‑Poly1305)\n- Message authentication code (MAC) or AEAD\n\nExample (TLS 1.2):\n`TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256`\n\nThis reads as: ECDHE key exchange, RSA certificate signing, AES‑128‑GCM for encryption, SHA‑256 for PRF/MAC."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "Breaking Down the String 🧵",
+            "content": "# `TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256`\n\n- `TLS_` – protocol\n- `ECDHE` – key exchange (Elliptic Curve Diffie‑Hellman Ephemeral)\n- `RSA` – authentication (server’s certificate uses RSA public key)\n- `WITH` – separates key exchange from encryption\n- `AES_128_GCM` – symmetric cipher and mode (AES with 128‑bit key, Galois/Counter Mode, which is AEAD)\n- `SHA256` – pseudo‑random function and hash for key derivation.\n\nTLS 1.3 uses a much simpler suite format: `TLS_AES_128_GCM_SHA256` (key exchange and authentication are handled separately)."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Cipher Suite Decode 🔍",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "In the suite 'TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256', what is the authentication algorithm?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "RSA",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "ECDHE",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "ECDSA",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "CHACHA20",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The third component, 'ECDSA', indicates the server's certificate uses ECDSA for signing.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Common Cipher Suites & Security 🛡️",
+            "content": "# Which suites are strong?\n\n**Good (TLS 1.2):**\n- `ECDHE_RSA_WITH_AES_128_GCM_SHA256`\n- `ECDHE_ECDSA_WITH_AES_256_GCM_SHA384`\n- `ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256`\n\n**Weak (avoid):**\n- Any suite with `NULL` (no encryption)\n- Export‑grade (weak keys)\n- RC4, 3DES, CBC without proper mitigations\n- MD5 for hashing\n\nTLS 1.3 has only five ciphers suites, all AEAD and forward‑secret: `TLS_AES_128_GCM_SHA256`, `TLS_AES_256_GCM_SHA384`, `TLS_CHACHA20_POLY1305_SHA256`, and two others."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "code",
+            "title": "Check a Server’s Cipher Suites",
+            "content": "Using Python ssl module to list offered suites (TLS 1.2 context):",
+            "codeSnippet": "import ssl, socket\n\nctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)\n# We can iterate ciphers but better: connect and get negotiated cipher\nconn = ctx.wrap_socket(socket.socket(), server_hostname='example.com')\nconn.connect(('example.com', 443))\nprint(conn.cipher())\n# Example output: ('ECDHE-RSA-AES256-GCM-SHA384', 'TLSv1.2', 256)\nconn.close()",
+            "codeLanguage": "python",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Harden Your Server 💪",
+            "content": "## Tools like Mozilla’s SSL Configuration Generator give you the best TLS settings. Disable old protocols and weak ciphers. Use TLS 1.2+ only."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Suite Selection 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "A cipher suite with 'NULL' encryption provides confidentiality.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. NULL means no encryption; data is sent in the clear, though it may be authenticated.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

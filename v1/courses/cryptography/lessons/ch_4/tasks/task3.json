@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_4",
+    "title": "HMAC Message Authenticator",
+    "description": "Create a function that signs and verifies messages using HMAC‑SHA256.",
+    "estimatedMinutes": 10,
+    "problemStatement": "You need to ensure that a message hasn't been tampered with and comes from someone with the secret key. Implement two functions:\n\n1. `sign_message(key: str, message: str) -> str`: Given a key and message (both strings), generate the HMAC‑SHA256 hex digest. Use `key.encode()` and `message.encode()`.\n2. `verify_signature(key: str, message: str, signature: str) -> bool`: Return True if the signature matches a freshly computed HMAC for the given key and message. Use `hmac.compare_digest()` for comparison.\n\n**Example:**\n```\nsig = sign_message('secret', 'Hello')\nprint(verify_signature('secret', 'Hello', sig))  # True\nprint(verify_signature('secret', 'Hello!', sig)) # False\n```",
+    "hints": [
+        "Import `hmac` and `hashlib`.",
+        "HMAC: `hmac.new(key.encode(), message.encode(), hashlib.sha256).hexdigest()`.",
+        "For verification, compute a new HMAC and compare with `hmac.compare_digest()`."
+    ],
+    "expectedOutput": "The functions as described. Test with the given example.",
+    "solutionCode": "import hmac\nimport hashlib\n\ndef sign_message(key, message):\n    h = hmac.new(key.encode(), message.encode(), hashlib.sha256)\n    return h.hexdigest()\n\ndef verify_signature(key, message, signature):\n    good_sig = hmac.new(key.encode(), message.encode(), hashlib.sha256).digest()\n    try:\n        hmac.compare_digest(good_sig, bytes.fromhex(signature))\n    except ValueError:\n        return False\n    return hmac.compare_digest(good_sig, bytes.fromhex(signature))\n"
+}

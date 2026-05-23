@@ -1,0 +1,98 @@
+{
+    "id": "l2",
+    "chapterId": "ch_2",
+    "title": "Classic Ciphers: Caesar & ROT13 🏛️",
+    "description": "The grandfather of all ciphers – shift letters and feel like a Roman spy.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Classic Ciphers",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "How Caesar Shifts Work 🔄",
+            "content": "# The Caesar Cipher (Shift Cipher)\n\n- Choose a **shift key** `k` (1–25).\n- Replace each letter with the one `k` positions later in the alphabet.\n- Wrap around: after Z comes A.\n\n**Example with k=3:**\n- A → D, B → E, …, X → A, Y → B, Z → C\n\n**Plaintext:** `ATTACK AT DAWN`\n**Ciphertext:** `DWWDFN DW GDZQ`"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "Python Caesar",
+            "content": "A clean implementation that handles uppercase and preserves spaces:",
+            "codeSnippet": "def caesar(text, shift):\n    result = ''\n    for ch in text:\n        if 'A' <= ch <= 'Z':\n            result += chr((ord(ch) - 65 + shift) % 26 + 65)\n        else:\n            result += ch\n    return result\n\nprint(caesar('ATTACK AT DAWN', 3))\n# DWWDFN DW GDZQ",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Shift Sense 📐",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "If plaintext 'YES' becomes 'BHV' under Caesar, what is the shift?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "2",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "3",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "4",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "5",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Y→B is shift 3 (Y=24, B=1, (24+3) mod 26 = 1). Check: E→H, S→V. All consistent.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "ROT13 – The Self‑Inverse 🔁",
+            "content": "# ROT13 is Caesar with shift 13\n\nBecause 13 is exactly half of 26, **applying ROT13 twice** returns the original text!\n\n- `ROT13(ROT13(plaintext)) = plaintext`\n\nThis was used on early internet forums to hide spoilers or offensive jokes.\n\n**Example:** `HELLO` → `URYYB` → `HELLO`"
+        },
+        {
+            "id": "s_l2_5",
+            "type": "tip",
+            "title": "Security? Zero. 🛑",
+            "content": "## Caesar is Not Encryption\n\nThere are only 25 possible keys. A computer can try all of them in milliseconds. \nIt is a **teaching tool**, not a security tool.\n\n**Never use a Caesar cipher to protect real data.**"
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "ROT13 Reality 💡",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "ROT13 provides strong confidentiality.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. ROT13 is obfuscation, not encryption. Anyone who recognises the algorithm can instantly reverse it.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

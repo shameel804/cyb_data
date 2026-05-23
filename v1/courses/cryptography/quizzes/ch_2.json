@@ -1,0 +1,292 @@
+{
+    "id": "quiz_ch_2",
+    "chapterId": "ch_2",
+    "title": "Chapter 2 Quiz",
+    "description": "Test your mastery of symmetric cryptography, from Caesar to AES!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the key distribution problem in symmetric cryptography?",
+            "options": [
+                "The key is too long",
+                "Both parties must securely agree on a secret key beforehand",
+                "The cipher runs too slowly",
+                "There is no standard algorithm"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Symmetric crypto requires both sides to have the same secret key. Exchanging that key securely without a prior secure channel is the key distribution problem."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "A Caesar cipher with shift 7 would turn 'HELLO' into what?",
+            "options": [
+                "OLSSV",
+                "URYYB",
+                "KHOOR",
+                "DAHHK"
+            ],
+            "correctAnswer": 0,
+            "explanation": "H→O (shift 7), E→L, L→S, O→V. So HELLO → OLSSV."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "ROT13 is a special case of Caesar cipher with shift 13.",
+            "correctAnswer": true,
+            "explanation": "True."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Why is a monoalphabetic substitution cipher weak despite 26! possible keys?",
+            "options": [
+                "The key is always the same length",
+                "It can be broken by frequency analysis",
+                "The ciphertext is always uppercase",
+                "Computers can try all 26! keys quickly"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Frequency analysis uses the natural statistical properties of the language to break the cipher without needing to search the key space."
+        },
+        {
+            "id": "q5",
+            "type": "fill_blank",
+            "question": "The Atbash cipher maps A to ___.",
+            "options": [
+                "A",
+                "Z",
+                "N",
+                "M"
+            ],
+            "correctAnswer": "Z",
+            "explanation": "Atbash maps A↔Z, B↔Y, etc."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which cipher works by writing the plaintext in a zig‑zag pattern across multiple rows?",
+            "options": [
+                "Caesar",
+                "Vigenère",
+                "Rail Fence",
+                "Columnar Transposition"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The Rail Fence cipher uses a zig‑zag writing and reads rows."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "What is the primary difference between substitution and transposition ciphers?",
+            "options": [
+                "Substitution uses keys, transposition doesn’t",
+                "Substitution changes letters, transposition rearranges order",
+                "Transposition is always more secure",
+                "Substitution is faster"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Substitution replaces characters with different ones; transposition permutes the order of the characters."
+        },
+        {
+            "id": "q8",
+            "type": "true_false",
+            "question": "The Vigenère cipher is a polyalphabetic substitution cipher.",
+            "correctAnswer": true,
+            "explanation": "True. It uses multiple Caesar shifts based on a keyword, making it polyalphabetic."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "What was the name of the algorithm selected as AES?",
+            "options": [
+                "Twofish",
+                "Serpent",
+                "Rijndael",
+                "Blowfish"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Rijndael was selected as the AES."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is the block size of AES?",
+            "options": [
+                "64 bits",
+                "128 bits",
+                "256 bits",
+                "512 bits"
+            ],
+            "correctAnswer": 1,
+            "explanation": "AES always operates on 128‑bit blocks."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "How many rounds does AES‑256 perform?",
+            "options": [
+                "10",
+                "12",
+                "14",
+                "16"
+            ],
+            "correctAnswer": 2,
+            "explanation": "AES‑256 uses 14 rounds."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which mode of operation should NEVER be used because it reveals patterns?",
+            "options": [
+                "CBC",
+                "CTR",
+                "GCM",
+                "ECB"
+            ],
+            "correctAnswer": 3,
+            "explanation": "ECB mode encrypts identical plaintext blocks into identical ciphertext blocks, leaking patterns."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What does an Initialisation Vector (IV) prevent?",
+            "options": [
+                "Brute‑force attacks",
+                "Identical plaintexts producing identical ciphertexts under the same key",
+                "The cipher running too slowly",
+                "Padding errors"
+            ],
+            "correctAnswer": 1,
+            "explanation": "An IV ensures different ciphertexts even for the same plaintext, which prevents pattern leakage."
+        },
+        {
+            "id": "q14",
+            "type": "true_false",
+            "question": "CTR mode requires plaintext padding.",
+            "correctAnswer": false,
+            "explanation": "False. CTR mode acts like a stream cipher and does not require padding."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Which modern cipher is designed for fast software performance on mobile devices?",
+            "options": [
+                "DES",
+                "AES",
+                "ChaCha20",
+                "3DES"
+            ],
+            "correctAnswer": 2,
+            "explanation": "ChaCha20 was designed by D. J. Bernstein for high speed in software, especially on CPUs without AES hardware instructions."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What does AEAD stand for?",
+            "options": [
+                "Advanced Encryption And Decryption",
+                "Authenticated Encryption with Associated Data",
+                "Automatic Error And Detection",
+                "Asymmetric Encryption Algorithm Design"
+            ],
+            "correctAnswer": 1,
+            "explanation": "AEAD modes (like GCM) provide both confidentiality and authenticity/integrity."
+        },
+        {
+            "id": "q17",
+            "type": "fill_blank",
+            "question": "The attack that reuses a nonce in CTR mode to XOR ciphertexts is related to the _____ attack on WPA2.",
+            "options": [
+                "BEAST",
+                "KRACK",
+                "POODLE",
+                "Heartbleed"
+            ],
+            "correctAnswer": "KRACK",
+            "explanation": "KRACK (Key Reinstallation AttaCK) exploited nonce reuse in WPA2's CTR‑based protocol."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "AES‑128 is currently considered insecure because quantum computers can break it easily.",
+            "correctAnswer": false,
+            "explanation": "False. Even with Grover’s algorithm, AES‑128 would have 2^64 security, which is still extremely difficult. It's not considered broken today."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "Which of the following is a stream cipher?",
+            "options": [
+                "AES",
+                "3DES",
+                "ChaCha20",
+                "RSA"
+            ],
+            "correctAnswer": 2,
+            "explanation": "ChaCha20 is a stream cipher. AES and 3DES are block ciphers (though they can be used in streaming modes)."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "In columnar transposition, what determines the order columns are read?",
+            "options": [
+                "The length of the keyword",
+                "The alphabetical order of the keyword letters",
+                "The shift value",
+                "The number of rails"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Columns are read based on the alphabetical sorting of the keyword’s letters."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "Why is DES no longer considered secure?",
+            "options": [
+                "It uses public‑key cryptography",
+                "Its 56‑bit key can be brute‑forced",
+                "It is too slow",
+                "It does not support modes of operation"
+            ],
+            "correctAnswer": 1,
+            "explanation": "DES’s 56‑bit key space is too small; custom hardware can brute‑force it in hours."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "What is the main benefit of using GCM over CBC?",
+            "options": [
+                "GCM is always faster",
+                "GCM provides built‑in authentication",
+                "GCM uses smaller keys",
+                "GCM does not require an IV"
+            ],
+            "correctAnswer": 1,
+            "explanation": "GCM combines encryption with an authentication tag, ensuring both confidentiality and integrity."
+        },
+        {
+            "id": "q23",
+            "type": "true_false",
+            "question": "It is safe to reuse the same IV with AES‑CBC as long as the key is different.",
+            "correctAnswer": false,
+            "explanation": "IV reuse with the same key is dangerous. With different keys, each encryption has its own context, but IV should still be unpredictable for CBC to avoid chosen‑plaintext attacks."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "Which of these is NOT a block cipher mode of operation?",
+            "options": [
+                "ECB",
+                "CBC",
+                "CFB",
+                "RSA"
+            ],
+            "correctAnswer": 3,
+            "explanation": "RSA is an asymmetric algorithm, not a block cipher mode."
+        }
+    ]
+}

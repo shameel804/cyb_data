@@ -1,0 +1,105 @@
+{
+    "id": "l3",
+    "chapterId": "ch_11",
+    "title": "Zero‑Knowledge Proofs: Prove Without Revealing 🕵️",
+    "description": "The magic of convincing someone you know a secret without telling them what it is.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Zero‑Knowledge",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "What Is a Zero‑Knowledge Proof? 🤯",
+            "content": "# A zero‑knowledge proof (ZKP) is a cryptographic protocol where one party (the Prover) convinces another party (the Verifier) that a statement is true, without revealing **any information beyond the validity of the statement itself**.\n\nThree properties:\n1. **Completeness** – If the statement is true, an honest prover can convince the verifier.\n2. **Soundness** – If the statement is false, no cheating prover can convince the verifier (except with negligible probability).\n3. **Zero‑Knowledge** – The verifier learns nothing except that the statement is true."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "The Classic Analogy: The Cave of Ali Baba 🏞️",
+            "content": "# A famous story by Jean‑Jacques Quisquater:\n\nThere’s a circular cave with a secret door at the back. Peggy (Prover) knows the magic word to open it; Victor (Verifier) wants to be convinced but doesn't want to learn the word.\n\n1. Peggy enters the cave and randomly chooses the left or right path.\n2. Victor shouts from outside which path to come back from.\n3. If Peggy knows the word, she can always exit from the requested path by crossing through the secret door if needed.\n4. If she doesn't know it, she has 50% chance of guessing correctly.\n\nAfter 20 successful rounds, Victor is convinced (probability of cheating = 1 in 2^20). Yet he never learned the magic word."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "ZKP Properties 📋",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which property ensures that a cheating prover cannot fool the verifier?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Completeness",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Soundness",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Zero‑knowledge",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Privacy",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Soundness guarantees that false statements cannot be proven true, except with negligible probability.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Interactive vs Non‑Interactive ZKPs 🔄",
+            "content": "# **Interactive ZKP:** Prover and Verifier exchange multiple messages (like the cave story).\n\n**Non‑Interactive ZKP (NIZK):** The prover can generate a single proof that anyone can verify offline without interaction.\n\n- Interactive ZKPs often require random challenges from the verifier.\n- NIZK can be constructed using the **Fiat‑Shamir heuristic**: replace the verifier's random challenge with a hash of the transcript up to that point.\n\nNIZK is what makes ZKPs practical for blockchains (ZK‑SNARKs, ZK‑STARKs)."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Why Zero‑Knowledge Matters 🌍",
+            "content": "# Applications of ZKPs:\n- **Authentication without passwords** – prove you know a password without sending it.\n- **Blockchain scaling** – ZK‑rollups batch thousands of transactions off‑chain and prove validity on‑chain with a tiny proof.\n- **Digital identity** – prove you are over 18 without revealing your birthdate.\n- **Privacy coins** – prove a transaction is valid without showing amounts or addresses (Zcash).\n\nZero‑knowledge is the ultimate privacy‑preserving cryptographic tool."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "ZKP Analogy 🔦",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "In the cave analogy, what prevents Victor from learning the magic word?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Peggy never speaks the word; she only demonstrates she can cross the door",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The cave has soundproof walls",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Victor is blindfolded",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The magic word changes every time",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Peggy proves knowledge by action (exiting from the requested path), never by revealing the word itself.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

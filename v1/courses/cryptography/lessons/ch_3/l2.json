@@ -1,0 +1,129 @@
+{
+    "id": "l2",
+    "chapterId": "ch_3",
+    "title": "Modular Arithmetic: The Math Behind It 🧮",
+    "description": "Understand clock arithmetic, modular exponentiation, and inverses – the toolkit for asymmetric crypto.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Math Primer",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Why Math? 🧪",
+            "content": "# Asymmetric crypto is built on mathematical problems that are easy to compute one way, but incredibly hard to reverse without a secret.\n\n- RSA: Multiplying large primes is easy; factoring the product is hard.\n- Diffie‑Hellman: Modular exponentiation is easy; discrete log is hard.\n- ECC: Point multiplication on a curve is easy; the elliptic curve discrete log is hard.\n\nWe need to understand **modular arithmetic** to see how they work."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Modulo: The Remainder Operator 🕰️",
+            "content": "# Clock Arithmetic\n\nWhen we say `15 mod 12 = 3`, it means 15 divided by 12 leaves remainder 3. It's like a 12‑hour clock: 15:00 is 3 PM.\n\nIn code:\n```\n15 % 12   → 3\n```\n\nModular arithmetic works in a circle. Numbers “wrap around” after the modulus."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "code",
+            "title": "Modulo in Python",
+            "content": "Working with a modulus `n`:",
+            "codeSnippet": "n = 7\nprint(10 % n)   # 3\nprint(25 % n)   # 4\nprint((3 + 5) % n)  # 1\nprint((3 * 4) % n)  # 5 (12 mod 7 = 5)",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "Quick Modulo 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What is 23 mod 5?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "4",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "3",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "5",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "2",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "23 = 4*5 + 3, so remainder 3.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Modular Exponentiation 🔥",
+            "content": "# In RSA and DH we compute things like `g^a mod n`.\n\nEven if `g` and `a` are huge, we can compute this efficiently using **repeated squaring** (also called exponentiation by squaring).\n\nExample: `3^4 mod 5`\n- 3^2 = 9 → 9 mod 5 = 4\n- 3^4 = (3^2)^2 = 4^2 = 16 → 16 mod 5 = 1\n\nThis keeps numbers small, even when powers are astronomical."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "code",
+            "title": "Modular Exponentiation in Python",
+            "content": "Python’s built‑in `pow` can do modular exponentiation efficiently:",
+            "codeSnippet": "base = 3\nexp = 4\nmod = 5\nresult = pow(base, exp, mod)  # fast modular exponentiation\nprint(result)  # 1",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Modular Inverses 🔄",
+            "content": "# The inverse of `a` modulo `n` is a number `b` such that `(a * b) mod n = 1`.\n\nFor example, inverse of 3 modulo 7 is 5 because `(3*5)=15, 15 mod 7 = 1`.\n\nInverses are crucial for RSA key generation. They exist only when `a` and `n` are coprime (gcd = 1).\n\n**Extended Euclidean Algorithm** finds them efficiently."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "tip",
+            "title": "Math Tip 💡",
+            "content": "## Don’t roll your own crypto math!\n\nIn practice, you use libraries like Python’s `cryptography` or `pycryptodome`, which handle all modular arithmetic safely and in constant time.\n\nOur goal here is to understand the magic behind the curtain."
+        },
+        {
+            "id": "s_l2_9",
+            "type": "quiz",
+            "title": "Modular Inverse 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "What is the modular inverse of 2 modulo 5?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "2",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "3",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "4",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "1",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "2 * 3 = 6, and 6 mod 5 = 1. So 3 is the inverse.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

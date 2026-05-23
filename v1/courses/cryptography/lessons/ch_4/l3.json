@@ -1,0 +1,104 @@
+{
+    "id": "l3",
+    "chapterId": "ch_4",
+    "title": "Integrity & Fingerprinting: Real‑World Uses 🔍",
+    "description": "See how hashes verify downloads, power Git, and build blockchains.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Applications",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "File Integrity Verification 📁",
+            "content": "# You download a 2 GB operating system ISO. How do you know it wasn't corrupted or tampered with?\n\n1. The official site publishes the expected SHA‑256 hash.\n2. After downloading, you compute the hash of the file.\n3. If the hashes match, the file is intact.\n\nEven a single bit flip would completely change the hash (avalanche effect). This is the simplest and most powerful application of hashing."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "code",
+            "title": "Verify a File Hash",
+            "content": "Check a downloaded file against its known digest:",
+            "codeSnippet": "import hashlib\n\nexpected_hash = 'abc123...'  # from the official site\nwith open('downloaded.iso', 'rb') as f:\n    file_hash = hashlib.sha256(f.read()).hexdigest()\nif file_hash == expected_hash:\n    print('File is authentic!')\nelse:\n    print('File is CORRUPTED or tampered!')",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_3",
+            "type": "quiz",
+            "title": "Integrity Concept 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "A hacker changes one byte in a file. What happens to its SHA‑256 hash?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The hash stays the same",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The hash changes unpredictably",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Only the last few characters change",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The hash becomes longer",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The avalanche effect causes the entire hash to change dramatically, making tampering evident.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "Git & Merkle Trees 🌲",
+            "content": "# Git uses SHA‑1 (soon SHA‑256) to identify commits, files, and trees.\n\n- Every commit is a hash of the content + parent commit hash + metadata.\n- This creates a **Merkle tree** – a tree of hashes where leaf nodes are file blobs, and internal nodes are hashes of child hashes.\n\nMerkle trees allow efficient verification of large data structures. A single root hash can verify the entire state."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Blockchain: The Hash Chain 🔗",
+            "content": "# Bitcoin’s blockchain is a chain of blocks, each containing a hash of the previous block.\n\n- Changing a block would change its hash, breaking the chain.\n- To tamper with a block, you'd need to recompute all subsequent blocks – which requires enormous computational power (proof‑of‑work).\n- Hash chaining ensures immutability."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Checksums vs Cryptographic Hashes ⚖️",
+            "content": "## CRC32, Adler‑32 are fast checksums used to detect accidental errors (like network glitches). They are NOT cryptographic; an attacker can easily craft a collision. Always use a cryptographic hash (SHA‑256) when security is needed."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Real‑World Use 🔗",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "In Bitcoin, each block contains the hash of the previous block to ensure immutability.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "True. The hash of the previous block is part of the current block, chaining them together.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

@@ -1,0 +1,104 @@
+{
+    "id": "l1",
+    "chapterId": "ch_7",
+    "title": "The Big Confusion: Encoding vs Encryption 🤯",
+    "description": "Clarify the fundamental difference: encoding transforms data without a secret key.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Not All Scrambled Data is Encrypted 🤔",
+            "content": "# Many people see `SGVsbG8=` and think it’s encrypted. It’s not! It’s just **Base64 encoded**.\n\n- **Encoding** transforms data into a different format using a **public**, reversible algorithm.\n- **Encryption** scrambles data using a **secret key** so only someone with the key can reverse it.\n\nThe key difference: **encoding has no key**. Anyone can decode it if they know the scheme.\n\nEncoding is about **compatibility**, encryption is about **confidentiality**."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "Why Do We Encode? 🌐",
+            "content": "# Encoding solves the problem of transmitting or storing data in environments that may not support raw binary.\n\n- Email was originally text‑only; attachments use Base64 to turn binary into safe text.\n- URLs can’t contain spaces or special characters; URL encoding replaces them.\n- JSON strings must be valid UTF‑8; Unicode escaping encodes non‑ASCII.\n- Hex is used for human‑readable dumps of binary.\n\nEncoding makes data **transport‑friendly**, not secret."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the primary purpose of encoding?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To keep data secret",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To make data compatible with a transport or storage medium",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To compress data",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To generate a signature",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Encoding transforms data into a format that can be safely transmitted or stored, not to hide it.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "code",
+            "title": "Decoding is Trivial (No Key!)",
+            "content": "Anyone can decode Base64 instantly:",
+            "codeSnippet": "import base64\nencoded = b'SGVsbG8gd29ybGQ='\ndecoded = base64.b64decode(encoded)\nprint(decoded)  # b'Hello world'",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Encoding vs. Hashing vs. Encryption 🆚",
+            "content": "# Quick comparison:\n\n| Feature        | Encoding       | Hashing       | Encryption       |\n|----------------|----------------|---------------|------------------|\n| Reversible?    | Yes (no key)   | No (one‑way)  | Yes (with key)   |\n| Secret key?    | None           | None          | Required         |\n| Output size    | Variable       | Fixed         | Variable         |\n| Purpose        | Compatibility  | Integrity     | Confidentiality  |\n\nConfusing these is a common security mistake."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Golden Rule 🏅",
+            "content": "## If you can reverse the transformation without a key, it’s not encryption. Always use proper cryptographic encryption when confidentiality is needed."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "True or False? 🎲",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "Base64 encoding provides confidentiality because the output looks random.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. It looks random but is completely reversible without any secret – it offers zero confidentiality.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

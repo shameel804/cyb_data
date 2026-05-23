@@ -1,0 +1,104 @@
+{
+    "id": "l4",
+    "chapterId": "ch_12",
+    "title": "Migrating to a Quantum‑Safe Future 🚀",
+    "description": "Crypto agility, hybrid schemes, and practical steps to protect data against future quantum attacks.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Implementation",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Roadmap to PQC Adoption 🗺️",
+            "content": "# Transitioning the world’s cryptography will take a decade or more.\n\nThe strategy:\n1. **Inventory** – Identify all places where cryptography is used (TLS, SSH, PKI, hardware tokens).\n2. **Crypto agility** – Design systems so that algorithms and keys can be swapped without rewriting the entire infrastructure.\n3. **Hybrid mode** – Use both classical and PQC algorithms together during the transition.\n4. **Continuous testing** – Deploy in test environments, measure performance, check compatibility.\n5. **Full migration** – Eventually deprecate vulnerable classical algorithms.\n\nMajor companies (Google, Cloudflare, Apple) are already deploying hybrid PQ schemes in production."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "text",
+            "title": "Hybrid Encryption: Belt and Suspenders 🔗",
+            "content": "# A **hybrid scheme** combines a classical algorithm (e.g., ECDH) with a PQC algorithm (e.g., Kyber).\n\nThe shared secret is the concatenation (or KDF) of both outputs: `shared = KDF( ecdh_secret || kyber_secret )`.\n\n**Why hybrid?**\n- If either scheme is broken, the other still protects the communication.\n- Provides defense‑in‑depth and eases the transition.\n- Allows gradual confidence building in new algorithms.\n\n**Example:** TLS 1.3 with hybrid key exchange uses both X25519 (classical) and Kyber‑768 (PQC)."
+        },
+        {
+            "id": "s_l4_3",
+            "type": "code",
+            "title": "Toy Hybrid Key Exchange (Conceptual)",
+            "content": "Simulating hybrid key agreement:",
+            "codeSnippet": "import secrets\nfrom cryptography.hazmat.primitives.asymmetric import ec\nfrom cryptography.hazmat.primitives.kdf.hkdf import HKDF\nfrom cryptography.hazmat.primitives import hashes\n\n# Classical ECDH\nec_priv = ec.generate_private_key(ec.SECP256R1())\nec_pub = ec_priv.public_key()\npeer_ec_priv = ec.generate_private_key(ec.SECP256R1())\npeer_ec_pub = peer_ec_priv.public_key()\nshared_ec = ec_priv.exchange(ec.ECDH(), peer_ec_pub)\n\n# Hypothetical PQ KEM (simulated)\n# In reality: ct, pq_shared = Kyber.encapsulate(peer_pq_pub)\n# For demo, just a random 32 bytes\npq_shared = secrets.token_bytes(32)\nct = secrets.token_bytes(768)  # fake ciphertext\n\n# Hybrid shared secret\nhybrid = HKDF(algorithm=hashes.SHA256(), length=32, salt=None, info=b'hybrid').derive(shared_ec + pq_shared)\nprint(f'Hybrid key: {hybrid.hex()[:16]}...')",
+            "codeLanguage": "python",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_4",
+            "type": "quiz",
+            "title": "Hybrid Thinking 🔄",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Why are hybrid (classical + PQC) schemes recommended during migration?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To increase key sizes to confuse attackers",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "So that security holds even if either the classical or PQC algorithm is broken",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Because quantum computers require two keys at once",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To meet legal requirements",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Hybrid schemes combine the security of both algorithms; a break in one does not compromise the system.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Challenges Ahead ⚠️",
+            "content": "# Migrating billions of devices isn’t trivial:\n- **IoT devices** with limited memory may struggle with larger PQC keys and signatures.\n- **Hardware security modules (HSMs)** need firmware updates or replacement.\n- **Certificate infrastructure** (PKI) must support new algorithms and hybrid chains.\n- **Long‑term data** already archived: can’t retroactively protect past transmissions.\n\nStart planning now, especially if you design systems with a 10‑year lifespan."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "Crypto Agility is Key 🔧",
+            "content": "## Design your applications so that the algorithm, key size, and parameters are configurable, not hard‑coded. This makes future upgrades seamless."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "PQC Readiness 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "Once a PQC standard is deployed, all classical algorithms should be immediately turned off for maximum security.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. A gradual hybrid approach is safer; classical algorithms still provide security in the near term while trust in PQC builds.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

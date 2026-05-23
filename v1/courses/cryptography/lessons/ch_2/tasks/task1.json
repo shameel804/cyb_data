@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_2",
+    "title": "Monoalphabetic Substitution Encryptor",
+    "description": "Create an encryption function that maps each letter using a provided substitution alphabet.",
+    "estimatedMinutes": 10,
+    "problemStatement": "You are a cryptographer in the 16th century. Build a function that takes a plaintext and a substitution alphabet (a shuffled version of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ') and produces the ciphertext.\n\n**Requirements:**\n- Write a function `sub_encrypt(plaintext: str, cipher_alphabet: str) -> str`.\n- `plaintext` contains only uppercase letters (no spaces).\n- `cipher_alphabet` is a 26‑character string where the first character replaces 'A', second replaces 'B', etc.\n- The function must preserve any non‑letter characters unchanged.\n- Example:\n  ```\n  alphabet = 'ZYXWVUTSRQPONMLKJIHGFEDCBA'  # reversed\n  sub_encrypt('HELLO', alphabet) → 'SVOOL'\n  ```",
+    "hints": [
+        "Find the index of each plaintext letter in the normal alphabet (A=0, B=1, …).",
+        "Use that index to pick the corresponding character from `cipher_alphabet`.",
+        "Build a dictionary mapping for speed if you prefer."
+    ],
+    "expectedOutput": "Paste your function; tests will call `sub_encrypt('HELLO', 'ZYXWVUTSRQPONMLKJIHGFEDCBA')` and expect 'SVOOL'.",
+    "solutionCode": "def sub_encrypt(plaintext, cipher_alphabet):\n    normal = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'\n    result = ''\n    for ch in plaintext:\n        if ch in normal:\n            idx = normal.index(ch)\n            result += cipher_alphabet[idx]\n        else:\n            result += ch\n    return result\n"
+}

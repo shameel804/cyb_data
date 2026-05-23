@@ -1,0 +1,292 @@
+{
+    "id": "quiz_ch_3",
+    "chapterId": "ch_3",
+    "title": "Chapter 3 Quiz",
+    "description": "Test your knowledge of asymmetric cryptography – RSA, Diffie‑Hellman, ECC, and hybrid encryption!",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the main advantage of asymmetric over symmetric encryption?",
+            "options": [
+                "Faster encryption speed",
+                "No need for a pre‑shared secret key",
+                "Smaller ciphertext",
+                "Simpler algorithms"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Asymmetric crypto allows secure communication without prior key exchange; the public key can be shared openly."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "In RSA, what is the relationship between the public and private exponents?",
+            "options": [
+                "They are the same",
+                "Their product is 1 modulo φ(n)",
+                "They add up to n",
+                "They are both random"
+            ],
+            "correctAnswer": 1,
+            "explanation": "e * d ≡ 1 (mod φ(n)). The private exponent d is the modular inverse of e."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "RSA encryption is fast enough to encrypt large files directly.",
+            "correctAnswer": false,
+            "explanation": "False. RSA is slow and is almost always used to encrypt a symmetric key, not bulk data."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which mathematical problem secures RSA?",
+            "options": [
+                "Discrete logarithm",
+                "Integer factorization",
+                "Graph colouring",
+                "Knapsack problem"
+            ],
+            "correctAnswer": 1,
+            "explanation": "RSA’s security is based on the difficulty of factoring the product of two large primes."
+        },
+        {
+            "id": "q5",
+            "type": "fill_blank",
+            "question": "In Diffie‑Hellman, the public values A and B are computed as g^a mod p and g^b mod p. The shared secret is g^(__) mod p.",
+            "options": [
+                "a+b",
+                "ab",
+                "a/b",
+                "a^b"
+            ],
+            "correctAnswer": "ab",
+            "explanation": "Both parties compute g^(ab) mod p."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the discrete logarithm problem?",
+            "options": [
+                "Given g and g^a mod p, find a",
+                "Given p and q, factor n",
+                "Given a curve, find its order",
+                "Find two large primes"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Discrete log: given base g and result h = g^a mod p, find the exponent a."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Why is elliptic curve cryptography attractive compared to RSA?",
+            "options": [
+                "It is simpler to understand",
+                "It provides equivalent security with much smaller keys",
+                "It does not require random numbers",
+                "It is not based on any hard problem"
+            ],
+            "correctAnswer": 1,
+            "explanation": "ECC keys are much shorter for the same security level, improving performance and bandwidth."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which operation is fundamental to ECC?",
+            "options": [
+                "Modular exponentiation",
+                "Point addition / scalar multiplication",
+                "Prime factorization",
+                "Discrete logarithm in integers"
+            ],
+            "correctAnswer": 1,
+            "explanation": "ECC relies on scalar multiplication of a point on the curve."
+        },
+        {
+            "id": "q9",
+            "type": "true_false",
+            "question": "ECDH is used for digital signatures, not key exchange.",
+            "correctAnswer": false,
+            "explanation": "False. ECDH (Elliptic Curve Diffie‑Hellman) is a key exchange protocol. ECDSA is the signature algorithm."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "In a hybrid cryptosystem, what does the symmetric key encrypt?",
+            "options": [
+                "The recipient’s public key",
+                "The bulk message data",
+                "The digital signature",
+                "The private key"
+            ],
+            "correctAnswer": 1,
+            "explanation": "After the symmetric key is exchanged via asymmetric crypto, it encrypts the actual message efficiently."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What is forward secrecy?",
+            "options": [
+                "The ability to recover old keys",
+                "Past sessions remain secure even if long‑term keys are later compromised",
+                "Encryption that runs forward only",
+                "A method to predict future keys"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Forward secrecy (PFS) ensures that session keys are ephemeral; compromising a long‑term key doesn’t reveal past sessions."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which Diffie‑Hellman variant provides forward secrecy?",
+            "options": [
+                "Static DH",
+                "Ephemeral DH (DHE)",
+                "Anonymous DH",
+                "RSA key transport"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Ephemeral Diffie‑Hellman generates new key pairs per session, so compromise of long‑term secrets doesn’t expose past session keys."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "In RSA, the private exponent d can be derived from the public key if the attacker knows p and q.",
+            "correctAnswer": true,
+            "explanation": "True. If p and q are known, φ(n) = (p-1)(q-1) can be computed, then d = e⁻¹ mod φ(n)."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Which curve is widely used for fast, secure ECC and is recommended by many modern protocols?",
+            "options": [
+                "secp256k1 (Bitcoin curve)",
+                "Curve25519",
+                "P‑521",
+                "BrainpoolP256r1"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Curve25519 is designed for high speed and constant‑time implementation, used in Signal, WireGuard, etc."
+        },
+        {
+            "id": "q15",
+            "type": "fill_blank",
+            "question": "The function used to compute a modular inverse is the extended ________ algorithm.",
+            "options": [
+                "Fermat",
+                "Euclidean",
+                "Miller",
+                "Rabin"
+            ],
+            "correctAnswer": "Euclidean",
+            "explanation": "The extended Euclidean algorithm finds the multiplicative inverse modulo n."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "In TLS, what purpose does the server’s certificate serve during the handshake?",
+            "options": [
+                "To store the session key",
+                "To authenticate the server and provide its public key",
+                "To encrypt the handshake messages",
+                "To compress data"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The certificate binds the server’s identity to its public key, allowing the client to authenticate the server."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which of the following is NOT an asymmetric algorithm?",
+            "options": [
+                "RSA",
+                "Diffie‑Hellman",
+                "AES",
+                "ECDSA"
+            ],
+            "correctAnswer": 2,
+            "explanation": "AES is a symmetric algorithm."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "You can publish your private key as long as you keep your public key secret.",
+            "correctAnswer": false,
+            "explanation": "False. The private key must remain secret; the public key is meant to be public."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is the standard public exponent commonly used in RSA?",
+            "options": [
+                "3",
+                "17",
+                "65537",
+                "10001"
+            ],
+            "correctAnswer": 2,
+            "explanation": "65537 (2^16+1) is a common choice because it’s prime and has a simple binary representation, speeding up encryption."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is the main vulnerability of basic, unauthenticated Diffie‑Hellman?",
+            "options": [
+                "Brute‑force attack",
+                "Man‑in‑the‑middle attack",
+                "Timing attack",
+                "Factoring attack"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Without authentication, an attacker can intercept and replace the public keys, establishing separate shared secrets with each party."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "In RSA, what is φ(n) when n = p*q?",
+            "options": [
+                "p*q",
+                "p+q",
+                "(p-1)*(q-1)",
+                "(p+1)*(q+1)"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Euler’s totient for a product of two distinct primes is (p-1)(q-1)."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "Which operation turns a block cipher into a stream cipher in some modes?",
+            "options": [
+                "Hashing",
+                "Counter mode (CTR)",
+                "Signature generation",
+                "Key wrapping"
+            ],
+            "correctAnswer": 1,
+            "explanation": "CTR mode uses a counter that is encrypted, producing a keystream that is XORed with the plaintext, creating a stream cipher."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "Why is modular exponentiation efficient even for huge exponents?",
+            "options": [
+                "Computers are just very fast",
+                "Repeated squaring algorithm reduces the number of operations",
+                "The numbers are small in memory",
+                "It is always O(1)"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Exponentiation by squaring computes powers in logarithmic time, keeping it fast even for 2048‑bit exponents."
+        },
+        {
+            "id": "q24",
+            "type": "true_false",
+            "question": "A 256‑bit ECC key is roughly as secure as a 256‑bit RSA key.",
+            "correctAnswer": false,
+            "explanation": "False. A 256‑bit ECC key provides similar security to a 3072‑bit RSA key."
+        }
+    ]
+}

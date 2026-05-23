@@ -1,0 +1,116 @@
+{
+    "id": "l2",
+    "chapterId": "ch_4",
+    "title": "The Hash Family: MD5, SHA‑1, SHA‑2, SHA‑3 👨‍👩‍👦",
+    "description": "Journey through the evolution of hashing algorithms – from broken to battle‑tested.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Algorithms",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Merkle–Damgård Construction 🏗️",
+            "content": "# Many classic hashes (MD5, SHA‑1, SHA‑2) use the same blueprint:\n\n1. Pad the message to a multiple of the block size.\n2. Process the message in sequential blocks.\n3. Use a compression function that mixes the current block with the internal state.\n4. Output the final state as the hash.\n\nThis design is called the **Merkle–Damgård construction**. It's simple and well‑studied, but has weaknesses (length‑extension attacks)."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "MD5: The Fallen Giant ⚰️",
+            "content": "# MD5 (Message Digest 5) produces a 128‑bit hash.\n\n- Once widely used for file integrity and password storage.\n- **Broken**: collisions can be generated in seconds on a laptop.\n- **Never use** for security purposes. It's only acceptable for non‑cryptographic checksums.\n\n**Remember:** MD5 is dead for cryptography."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "MD5 Warning ⚠️",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "true_false",
+                "question": "MD5 is still considered secure for SSL certificates.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. MD5 is completely broken for cryptographic use due to collision attacks.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "SHA‑1: The Retired Workhorse 🐢",
+            "content": "# SHA‑1 produces a 160‑bit hash.\n\n- Designed by NSA, published by NIST in 1995.\n- Widely used in Git, older certificates.\n- **Collision found in 2017** (SHAttered attack). Phased out.\n\nGit still uses SHA‑1 internally, but is transitioning to SHA‑256."
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "SHA‑2: The Current Gold Standard 🥇",
+            "content": "# The SHA‑2 family: SHA‑224, SHA‑256, SHA‑384, SHA‑512.\n\n- Same Merkle–Damgård design but larger internal states.\n- **SHA‑256** (256‑bit) is the most popular. Used in TLS, Bitcoin, software verification.\n- No practical collision found. Considered secure for years to come.\n\n**SHA‑512** is faster on 64‑bit processors and provides even larger security margin."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "code",
+            "title": "SHA‑256 vs SHA‑512",
+            "content": "Compare output sizes:",
+            "codeSnippet": "import hashlib\n\ndata = b'abc'\nprint('SHA‑256:', hashlib.sha256(data).hexdigest())  # 64 hex chars\nprint('SHA‑512:', hashlib.sha512(data).hexdigest())  # 128 hex chars",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "SHA‑3: The New Generation 🆕",
+            "content": "# SHA‑3 is based on a completely different construction: **Keccak** (sponge function).\n\n- Winner of a NIST competition, standardized in 2015.\n- Not a replacement for SHA‑2 yet, but a backup with different internal design.\n- Resistant to length‑extension attacks.\n\nIt’s the future, but SHA‑2 remains the safe choice for now."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "tip",
+            "title": "Which One Should I Use? 🤷",
+            "content": "## For new applications:\n- **SHA‑256** (or SHA‑384) from the SHA‑2 family.\n- Use **SHA‑3** if you want a different design for defense‑in‑depth.\n- Avoid MD5 and SHA‑1 for any security‑sensitive context."
+        },
+        {
+            "id": "s_l2_9",
+            "type": "quiz",
+            "title": "Algorithm Choice 🧪",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "Which of these is NOT a member of the SHA‑2 family?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "SHA‑256",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "SHA‑512",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "SHA‑384",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "SHA‑3",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "SHA‑3 is a separate standard (Keccak). SHA‑224, SHA‑256, SHA‑384, SHA‑512 form SHA‑2.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

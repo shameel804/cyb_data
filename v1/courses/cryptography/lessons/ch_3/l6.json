@@ -1,0 +1,95 @@
+{
+    "id": "l6",
+    "chapterId": "ch_3",
+    "title": "Hybrid Encryption & The Real World 🌐",
+    "description": "How asymmetric and symmetric encryption combine to secure everything from TLS to PGP.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Application",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "Best of Both Worlds 🤝",
+            "content": "# Asymmetric crypto solves key distribution but is slow for bulk data.\n# Symmetric crypto is fast but needs a shared secret.\n\n**Solution:** Use asymmetric to securely exchange a random symmetric session key, then use that session key with AES to encrypt the actual data.\n\nThis is called a **hybrid cryptosystem** and is how virtually all secure internet communication works."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "text",
+            "title": "TLS Handshake (Simplified) 🔐",
+            "content": "# When you visit `https://example.com`:\n\n1. Browser connects, server sends certificate with public key.\n2. Browser verifies certificate (more in Chapter 5).\n3. Browser generates a random symmetric key (session key).\n4. Browser encrypts session key with server’s public key (RSA/ECDH) and sends it.\n5. Server decrypts session key with its private key.\n6. Now both share a symmetric key; all further data is encrypted with AES‑GCM or ChaCha20.\n\nThis is the **TLS handshake** in a nutshell."
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "Hybrid Check 🔄",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "In TLS, what is typically encrypted with the server’s public key?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The entire webpage",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A symmetric session key",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The client’s password",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The server’s private key",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The client generates a symmetric session key and encrypts it with the server’s public key to share it securely.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "PGP/GPG: Email Encryption 📧",
+            "content": "# Pretty Good Privacy uses hybrid encryption for emails:\n\n- Generates a random symmetric key for the message body.\n- Encrypts message with symmetric cipher (e.g., AES).\n- Encrypts the symmetric key with recipient’s public key.\n- Both encrypted message and encrypted key are sent together.\n\nThis keeps email sizes manageable while ensuring only the intended recipient can decrypt."
+        },
+        {
+            "id": "s_l6_5",
+            "type": "tip",
+            "title": "Key Wrapping 🎁",
+            "content": "## The process of encrypting a symmetric key with an asymmetric key is called **key wrapping**.\n\nIt’s a standard operation in crypto libraries. Always use a library, never invent your own wrapping mechanism."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "quiz",
+            "title": "Real‑World Hybrid 🌍",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "true_false",
+                "question": "Once the symmetric session key is established in TLS, the private key is used for all subsequent data encryption.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. After the handshake, only the symmetric session key is used. The private key is no longer involved.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

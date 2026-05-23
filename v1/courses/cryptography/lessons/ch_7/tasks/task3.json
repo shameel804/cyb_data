@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_7",
+    "title": "Detect Encoding vs Encryption",
+    "description": "Write a heuristic function that classifies a string as Base64, hex, or encrypted/random.",
+    "estimatedMinutes": 10,
+    "problemStatement": "Given a string, you want to guess whether it’s Base64‑encoded, hex‑encoded, or something else (e.g., encrypted ciphertext or just random). Write a function `classify_encoding(s: str) -> str` that returns one of:\n- `'base64'` if the string looks like Base64 (only characters A‑Z, a‑z, 0‑9, +, /, =, with length a multiple of 4).\n- `'hex'` if the string looks like hex (only characters 0‑9, a‑f, A‑F, and length even).\n- `'unknown'` otherwise.\n\nAlso check edge cases: empty string, mixed content. Remember that a very short string might coincidentally match both; give priority to `hex` if it contains only hex digits and no Base64‑specific characters like `+` `/` (though Base64 includes hex digits as well). Use a more precise rule:\n- If all chars are in Base64 alphabet and length % 4 == 0 (ignoring possible whitespace? assume no whitespace) → `'base64'`\n- Else if all chars are hex digits and length % 2 == 0 → `'hex'`\n- Else `'unknown'`\n\n**Example:**\n```\nclassify_encoding('SGVsbG8=') → 'base64'\nclassify_encoding('48656c6c6f') → 'hex'\nclassify_encoding('Hello!') → 'unknown'\n```",
+    "hints": [
+        "Define sets for valid characters: `set('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=')` for Base64, `set('0123456789abcdefABCDEF')` for hex.",
+        "Check the length constraints to avoid false positives.",
+        "Base64 length must be multiple of 4. Hex length must be even."
+    ],
+    "expectedOutput": "The function returns the classification as a string.",
+    "solutionCode": "def classify_encoding(s):\n    if not s:\n        return 'unknown'\n    base64_chars = set('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=')\n    hex_chars = set('0123456789abcdefABCDEF')\n    is_base64 = set(s).issubset(base64_chars) and len(s) % 4 == 0\n    is_hex = set(s).issubset(hex_chars) and len(s) % 2 == 0\n    if is_base64 and not is_hex:\n        return 'base64'\n    elif is_hex and not is_base64:\n        return 'hex'\n    elif is_base64 and is_hex:\n        # Prefer base64 if it contains base64‑specific chars\n        if any(c in '+/=' for c in s):\n            return 'base64'\n        # Otherwise, it's ambiguous; could be hex only, but base64 also fits\n        return 'base64'\n    else:\n        return 'unknown'\n"
+}

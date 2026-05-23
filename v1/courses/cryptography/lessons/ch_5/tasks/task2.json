@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_5",
+    "title": "Signature Verifier",
+    "description": "Verify an RSA‑PSS signature using the signer’s public key.",
+    "estimatedMinutes": 10,
+    "problemStatement": "Now create the verification function. Write `verify_signature(public_key_pem: bytes, message: bytes, signature: bytes) -> bool`:\n\n1. Load the RSA public key from PEM bytes.\n2. Use `public_key.verify()` with the same RSA‑PSS parameters (SHA‑256, max salt length).\n3. Return `True` if verification succeeds, `False` if it raises an `InvalidSignature` exception.\n\nImport `InvalidSignature` from `cryptography.exceptions`.\n\n**Example:**\n```\n# after signing with private key\nsig = sign_message(priv_key_pem, b'Hello')\nassert verify_signature(pub_key_pem, b'Hello', sig) == True\nassert verify_signature(pub_key_pem, b'Hello!', sig) == False\n```",
+    "hints": [
+        "Use `serialization.load_pem_public_key(public_key_pem)`.",
+        "The verify method throws `InvalidSignature` on failure.",
+        "Catch that exception and return False."
+    ],
+    "expectedOutput": "The function returns True for a valid signature, False otherwise.",
+    "solutionCode": "from cryptography.exceptions import InvalidSignature\nfrom cryptography.hazmat.primitives.asymmetric import padding\nfrom cryptography.hazmat.primitives import hashes, serialization\n\ndef verify_signature(public_key_pem, message, signature):\n    public_key = serialization.load_pem_public_key(public_key_pem)\n    try:\n        public_key.verify(\n            signature,\n            message,\n            padding.PSS(\n                mgf=padding.MGF1(hashes.SHA256()),\n                salt_length=padding.PSS.MAX_LENGTH\n            ),\n            hashes.SHA256()\n        )\n        return True\n    except InvalidSignature:\n        return False\n"
+}

@@ -1,0 +1,138 @@
+{
+    "id": "l3",
+    "chapterId": "ch_9",
+    "title": "Key Stretching: Making Hashes Slow 🐢",
+    "description": "Discover bcrypt, PBKDF2, and Argon2 — the algorithms that turn a fast hash into a bruteforce‑resistant fortress.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Algorithms",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Need for Slowness ⏱️",
+            "content": "# Offline brute‑force attacks scale with hash speed. If a GPU can compute 1 billion SHA‑256 hashes per second, a 6‑character lowercase password (308 million combinations) falls in under a second.\n\n**Key stretching** makes each password guess expensive. By iterating the hash thousands or millions of times, or requiring large amounts of memory, we increase the attacker’s cost dramatically.\n\nGoal: The legitimate user experiences a barely‑noticeable delay (say 300ms), while the attacker’s cost skyrockets."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "text",
+            "title": "PBKDF2: Simple Iteration 🔁",
+            "content": "# Password‑Based Key Derivation Function 2 (PBKDF2) applies a pseudorandom function (HMAC‑SHA256) many times.\n\n- `DK = PBKDF2(PRF, Password, Salt, c, dkLen)`\n- `c` = iteration count (e.g., 600,000 for SHA‑256).\n- Can be scaled up as hardware improves.\n\n**Pros:** Simple, widely available, NIST standard.\n**Cons:** Not memory‑hard; GPUs and ASICs can still accelerate it. Better than a single hash, but not the best choice today."
+        },
+        {
+            "id": "s_l3_3",
+            "type": "code",
+            "title": "PBKDF2 in Python",
+            "content": "Using the hashlib built‑in:",
+            "codeSnippet": "import hashlib, os\nsalt = os.urandom(16)\npassword = b'hunter2'\ndk = hashlib.pbkdf2_hmac('sha256', password, salt, 600_000)\nprint(dk.hex())",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l3_4",
+            "type": "quiz",
+            "title": "PBKDF2 Check ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What is the main weakness of PBKDF2 compared to bcrypt or Argon2?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It doesn’t use a salt",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It is not memory‑hard, so GPU/ASIC attacks are still feasible",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It is too slow for servers",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It produces a too‑short hash",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "PBKDF2 uses simple iteration; special‑purpose hardware can still brute‑force quickly. Memory‑hard functions impede such hardware.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "bcrypt: The Classic Slow Hash 🐌",
+            "content": "# bcrypt is based on the Blowfish cipher and includes a **cost factor** that exponentially increases the work.\n\n- Output format: `$2b$[cost]$[22‑char salt][hash]`\n- Cost of 10 means 2^10 = 1024 iterations (internal).\n- Built‑in salt, no need to manage separately.\n- Resistant to GPU acceleration because it uses a modified key schedule that’s memory‑intensive.\n\nStill a solid choice, but newer algorithms surpass it."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "code",
+            "title": "bcrypt in Python",
+            "content": "Using the `bcrypt` library:",
+            "codeSnippet": "import bcrypt\npassword = b'hunter2'\nsalt = bcrypt.gensalt(rounds=12)  # 2^12 iterations\nhashed = bcrypt.hashpw(password, salt)\nprint(hashed)\n# Verify\nif bcrypt.checkpw(password, hashed):\n    print('Access granted')",
+            "codeLanguage": "python",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Argon2: The Champion 🏆",
+            "content": "# Winner of the Password Hashing Competition (2015). Argon2 has three variants:\n\n- **Argon2d** – data‑dependent memory access, maximally resistant to GPU cracking.\n- **Argon2i** – data‑independent, resistant to side‑channel attacks.\n- **Argon2id** – hybrid, recommended for most applications.\n\nParameters:\n- Time cost (iterations)\n- Memory cost (KB)\n- Parallelism (threads)\n\nIt’s memory‑hard: an attacker needs a huge amount of RAM per guess, making ASIC/GPU attacks very expensive."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "code",
+            "title": "Argon2 in Python",
+            "content": "Using `argon2‑cffi` library:",
+            "codeSnippet": "from argon2 import PasswordHasher\nph = PasswordHasher()\nhash = ph.hash('hunter2')\nprint(hash)  # $argon2id$v=19$m=65536,t=3,p=4$...\n# Verify\nph.verify(hash, 'hunter2')",
+            "codeLanguage": "python",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_9",
+            "type": "tip",
+            "title": "Tuning Parameters ⚙️",
+            "content": "## Set the cost to the maximum your server can handle without frustrating users (e.g., 0.5s per login). Re‑tune every year as hardware improves."
+        },
+        {
+            "id": "s_l3_10",
+            "type": "quiz",
+            "title": "Algorithm Choice 🧪",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "Which of these is the most recommended password hashing algorithm for new applications?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "SHA‑256 with salt",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "PBKDF2",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "bcrypt",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Argon2id",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Argon2id is the current gold standard, providing both memory‑hardness and side‑channel resistance.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

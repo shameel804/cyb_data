@@ -1,0 +1,98 @@
+{
+    "id": "l2",
+    "chapterId": "ch_10",
+    "title": "Hash Chaining & Immutability ⛓️",
+    "description": "See why changing any block in the middle breaks the whole chain – and how this enforces integrity.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Core Mechanism",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Domino Effect 🁸",
+            "content": "# Because each block’s hash depends on its content AND the previous block’s hash, altering one block changes its hash.\n\n- The next block’s `prev_hash` no longer matches, breaking the chain.\n- You’d have to recompute **every subsequent block’s hash** to fix the chain.\n- But blocks are protected by proof‑of‑work (costly to recompute).\n\nThis makes the ledger **tamper‑evident** and, with enough work, **immutable**."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "text",
+            "title": "Tampering Example 🔨",
+            "content": "# Suppose Eve changes a transaction in block 50 to give herself millions.\n\n1. Block 50’s data changes → its hash changes.\n2. Block 51’s `prev_hash` now points to the old hash – mismatch.\n3. To fix it, Eve must recompute block 51’s hash, but that requires finding a new valid proof‑of‑work.\n4. She must also recompute block 52, 53, … all the way to the latest block, outpacing the honest network.\n\nGiven the current hash rate, catching up and overtaking the honest chain is astronomically expensive."
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Immutability Logic 🧩",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "If an attacker changes a transaction in block 100, what must they do to make the chain valid again?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Only recompute block 100’s hash",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Recompute the proof‑of‑work for block 100 and all subsequent blocks",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Change the nonce of block 99",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Nothing; the chain self‑heals",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Altering block 100 changes its hash, so all later blocks must be recomputed to maintain the chain, each with new proof‑of‑work.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Check Chain Integrity",
+            "content": "A function that verifies the chain is intact:",
+            "codeSnippet": "def is_chain_valid(chain):\n    for i in range(1, len(chain)):\n        current = chain[i]\n        previous = chain[i-1]\n        if current.prev_hash != previous.hash:\n            return False\n        if current.hash != current._compute_hash():\n            return False\n    return True\n\n# Tampering detection\nchain[1].data = 'Fake data'\nchain[1].hash = chain[1]._compute_hash()  # fix own hash\nprint(is_chain_valid(chain))  # False, because next block's prev_hash no longer matches",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l2_5",
+            "type": "tip",
+            "title": "Longest Chain Rule 📏",
+            "content": "## In Bitcoin, the valid chain is the one with the most accumulated proof‑of‑work (usually the longest). Honest miners build on the longest chain, ensuring consensus."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Chain Integrity ✅",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "A blockchain is completely immutable; no one can ever rewrite history.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. Immutability is probabilistic. An attacker with >50% of the hash power could rewrite history, but it's extremely expensive.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

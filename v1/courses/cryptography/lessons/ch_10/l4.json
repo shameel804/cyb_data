@@ -1,0 +1,104 @@
+{
+    "id": "l4",
+    "chapterId": "ch_10",
+    "title": "Proof of Work: The Cryptographic Puzzle ⛏️",
+    "description": "How miners compete to find a special nonce that makes the block hash small enough.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Consensus",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Puzzle: Find a Low Hash 🎯",
+            "content": "# Proof‑of‑work (PoW) is a cryptographic challenge that requires massive computational effort to solve, but is trivial to verify.\n\nIn Bitcoin, a miner must find a **nonce** (a number) such that when the block header is double‑SHA256 hashed, the resulting hash is **less than a target** (i.e., starts with many zeros).\n\n- `H = SHA256(SHA256(block_header_with_nonce))`\n- If `H < target`, the block is valid.\n- The target adjusts every 2016 blocks to keep the average block time at 10 minutes.\n\nMiners try nonce after nonce until they find one. This is **hashcash**‑style PoW."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "code",
+            "title": "Mini Mining Simulator",
+            "content": "A tiny proof‑of‑work example with an artificial low‑difficulty target:",
+            "codeSnippet": "import hashlib\n\ndef mine(block_data, difficulty):\n    target = 2 ** (256 - difficulty)  # simplified target\n    nonce = 0\n    while True:\n        header = f'{block_data}{nonce}'.encode()\n        h = int.from_bytes(hashlib.sha256(header).digest(), 'big')\n        if h < target:\n            return nonce, h\n        nonce += 1\n\nnonce, hash_val = mine('Alice pays Bob 1 BTC', 20)\nprint(f'Found nonce {nonce} with hash {hash_val:064x}')",
+            "codeLanguage": "python",
+            "canRunCode": true
+        },
+        {
+            "id": "s_l4_3",
+            "type": "quiz",
+            "title": "PoW Check ⛏️",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What must a miner find to create a valid block in Bitcoin?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A nonce that makes the block hash larger than the target",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A nonce such that the double‑SHA256 hash is below the target",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The private key of the previous block",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A secret encryption key",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The block hash must be numerically less than the difficulty target, achieved by varying the nonce.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Why PoW Provides Security 🔒",
+            "content": "# PoW makes it extremely expensive to rewrite history.\n\n- To alter a past block, an attacker must redo the PoW for that block and all subsequent blocks faster than the honest network produces new blocks.\n- This requires controlling >50% of the total network hash rate – a 51% attack.\n- The cost of such an attack is astronomical (electricity, hardware).\n\nPoW also solves the **double‑spending** problem without a central authority. The longest chain is the agreed‑upon truth."
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Difficulty Adjustment ⚙️",
+            "content": "# Every 2016 blocks (≈2 weeks), the network adjusts the target to keep block time ≈ 10 minutes.\n\n- If blocks are mined too fast (hash rate increased), difficulty rises.\n- If too slow, difficulty falls.\n\nThis self‑regulating mechanism ensures a predictable coin issuance and stable network, regardless of how many miners join or leave."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "Energy Debate ⚡",
+            "content": "## PoW consumes significant electricity. Alternatives like Proof‑of‑Stake (Ethereum’s Casper) replace mining with economic stake. But PoW remains the most battle‑tested consensus mechanism."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "PoW Security 🛡️",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "If a miner finds a valid nonce, everyone else must trust that the block is correct without verifying.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. Validation is instant: any node can hash the block header and check if it meets the target. PoW is easy to verify.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

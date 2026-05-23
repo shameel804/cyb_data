@@ -1,0 +1,104 @@
+{
+    "id": "l1",
+    "chapterId": "ch_3",
+    "title": "The Asymmetric Revolution 🔑🔑",
+    "description": "Discover the magic of public‑key cryptography and why it solved the key distribution nightmare.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Foundations",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "One Key to Lock, Another to Unlock 🗝️",
+            "content": "# Asymmetric = Two different, mathematically linked keys.\n\n- **Public Key:** Can be shared with anyone. Used to **encrypt** a message or verify a signature.\n- **Private Key:** Kept absolutely secret. Used to **decrypt** or create a signature.\n\n> Imagine a mailbox: anyone can drop a letter through the slot (public key), but only the postman with the physical key can open it (private key)."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "text",
+            "title": "Why It’s a Revolution 🚀",
+            "content": "Before asymmetric crypto, if Alice and Bob wanted to communicate securely, they had to meet in person or use a trusted courier to exchange a symmetric key.\n\n**With asymmetric crypto:**\n1. Bob generates a key pair and publishes his public key.\n2. Alice encrypts the message with Bob’s public key.\n3. Only Bob, with the matching private key, can decrypt it.\n\nNo prior secret needed! This solves the **key distribution problem**."
+        },
+        {
+            "id": "s_l1_3",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "In asymmetric cryptography, which key must be kept secret?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Public key",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Private key",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Both keys",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Neither key",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The private key must remain secret; the public key can be broadcast to the world.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "The Two-Way Magic 🔁",
+            "content": "Asymmetric keys work both ways:\n- **Encryption:** Encrypt with recipient’s public key, decrypt with their private key (confidentiality).\n- **Digital Signature:** Sign with your own private key, anyone verifies with your public key (authentication & integrity).\n\nThis dual nature is what makes digital identity and secure e‑commerce possible."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "code",
+            "title": "Conceptual Example (Pseudocode)",
+            "content": "A simplified view (real algorithms use large numbers):",
+            "codeSnippet": "// Alice encrypts message for Bob\nciphertext = encrypt(bob_public_key, plaintext)\nsend(ciphertext)\n\n// Bob decrypts\nplaintext = decrypt(bob_private_key, ciphertext)\n\n// Bob signs a message\nsignature = sign(bob_private_key, message)\n// Anyone can verify\nisValid = verify(bob_public_key, message, signature)",
+            "codeLanguage": "javascript",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Key Size Matters 📏",
+            "content": "## Asymmetric keys are much larger than symmetric keys.\nA 128‑bit symmetric key is roughly as strong as a 3072‑bit RSA key!\n\nThat’s why we combine the two (hybrid encryption) – we’ll learn that later."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "True or False? 🎲",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "You should share your private key with trusted friends so they can send you encrypted messages.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "False. Never share your private key. Only your public key should be shared for encryption.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

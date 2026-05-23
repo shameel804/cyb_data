@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_7",
+    "title": "Build a URL Percent‑Encoder",
+    "description": "Write a custom percent‑encoding function that follows the RFC 3986 unreserved characters rules.",
+    "estimatedMinutes": 15,
+    "problemStatement": "Implement a function `percent_encode(text: str) -> str` that encodes a string for safe inclusion in a URL component (e.g., query parameter value).\n\n- Characters A‑Z, a‑z, 0‑9, and `-_.~` should be left unchanged (unreserved).\n- All other characters must be replaced with `%XX` where XX is the two‑digit uppercase hexadecimal representation of the UTF‑8 byte(s) of that character.\n- For multi‑byte characters (e.g., 'é'), encode each UTF‑8 byte sequentially.\n- For simplicity, assume the input string does not contain lone surrogates.\n\n**Example:**\n```\npercent_encode('Hello World!') → 'Hello%20World%21'\npercent_encode('café') → 'caf%C3%A9'\n```\n\nDo not use `urllib.parse.quote` for encoding logic; implement the byte‑by‑byte transformation manually.",
+    "hints": [
+        "Encode the input string to UTF‑8 bytes: `text.encode('utf-8')`.",
+        "Iterate over each byte. If byte is in the unreserved set (use a set or character range check), output `chr(byte)`. Else, output `%{byte:02X}`.",
+        "A clean way is: `unreserved = set(b'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.~')`."
+    ],
+    "expectedOutput": "The function returns the correct percent‑encoded string as in examples.",
+    "solutionCode": "def percent_encode(text):\n    # Unreserved characters as per RFC 3986 (bytes)\n    unreserved = set(b'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_.~')\n    result = []\n    for byte in text.encode('utf-8'):\n        if byte in unreserved:\n            result.append(chr(byte))\n        else:\n            result.append(f'%{byte:02X}')\n    return ''.join(result)\n"
+}

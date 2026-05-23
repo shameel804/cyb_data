@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_3",
+    "title": "Diffie‑Hellman Shared Secret",
+    "description": "Implement the DH key exchange to compute the shared secret from given parameters.",
+    "estimatedMinutes": 10,
+    "problemStatement": "Implement a function `dh_shared_secret(p, g, private_a, public_B)` that computes the shared secret for Alice, given:\n- prime `p`\n- generator `g`\n- Alice's private key `private_a`\n- Bob's public value `public_B`\n\nAlso implement `compute_public(p, g, private)` that computes the public value `g^private mod p`.\n\n**Example:**\n```\np = 23\ng = 5\na_private = 6\nb_private = 15\nA = compute_public(p, g, a_private)  # 8\nB = compute_public(p, g, b_private)  # 19\nshared_alice = dh_shared_secret(p, g, a_private, B)  # 2\nshared_bob = dh_shared_secret(p, g, b_private, A)    # 2\nprint(shared_alice == shared_bob)  # True\n```\n\nUse Python’s built‑in `pow` for efficient modular exponentiation.",
+    "hints": [
+        "public = pow(g, private, p)",
+        "shared = pow(public_received, my_private, p)"
+    ],
+    "expectedOutput": "Functions returning integers; the example should work as described.",
+    "solutionCode": "def compute_public(p, g, private):\n    return pow(g, private, p)\n\ndef dh_shared_secret(p, g, my_private, other_public):\n    return pow(other_public, my_private, p)\n"
+}
