@@ -1,0 +1,145 @@
+{
+    "id": "l2",
+    "chapterId": "ch_1",
+    "title": "Golden Rules of Forensics 🏆",
+    "description": "Master the four core principles that keep evidence admissible and trustworthy.",
+    "xpReward": 25,
+    "estimatedMinutes": 6,
+    "section": "Introduction",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Four Pillars 🏛️",
+            "content": "# Core Principles of Digital Forensics\n\nEvery action you take must follow these rules to ensure evidence stands up in court.\n\n1. **Minimize Data Alteration** – Handle original evidence as little as possible.\n2. **Account for All Changes** – If you must change something, document it.\n3. **Maintain a Chain of Custody** – Know who touched what, when, and why.\n4. **Follow a Repeatable Process** – Another examiner should be able to reproduce your steps."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Principle Pop Quiz 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Why is it crucial to minimize alteration of original evidence?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To save time",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To prevent data corruption that could make evidence inadmissible",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Because original devices are expensive",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To avoid viruses",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Any change to original evidence can be challenged in court, so forensic methods aim to work on copies or with minimal impact.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "code",
+            "title": "See It: Hashing for Integrity 🔐",
+            "content": "A hash is a digital fingerprint. By comparing hashes before and after imaging, you prove the copy is identical.",
+            "codeSnippet": "# Linux example\nmd5sum evidence.dd\n# Windows example\ncertutil -hashfile evidence.dd MD5",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "Hash Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "What is the primary purpose of a cryptographic hash in forensics?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To encrypt the data",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To verify data integrity",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To hide file contents",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To increase file size",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Hashing generates a unique fixed-size string that changes if the file changes. Matching hashes confirm no alteration occurred.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Chain of Custody 🔗",
+            "content": "## Every Touch Matters\n\nA chain of custody is a detailed log that tracks evidence from collection to court. It includes:\n- Who collected the item\n- When and where it was found\n- Every person who handled it and why\n- Storage conditions\n\nThink of it like a **package tracking number** but for evidence – you must know where it’s been every second."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "warning",
+            "title": "⚠️ Broken Chain = Lost Case",
+            "content": "If the chain of custody is incomplete, the evidence can be ruled inadmissible. **Document everything** – even a coffee break that interrupted your imaging process."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "Chain Reaction 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "true_false",
+                "question": "It is acceptable to hand over a suspect's hard drive to a colleague for analysis without logging the transfer if you're both on the same team.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Every transfer must be documented in the chain of custody, regardless of team relationship, to preserve evidence integrity.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_8",
+            "type": "text",
+            "title": "Repeatability & Documentation 📝",
+            "content": "Your notes should be so thorough that **another qualified examiner** could pick up your case file and replicate your analysis. Use:\n- Timestamped logs\n- Screenshots of every critical step\n- Clear language, no assumptions"
+        },
+        {
+            "id": "s_l2_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use a Forensic Template\n\nCreate a standard operating procedure (SOP) for common tasks. It not only saves time but also demonstrates consistency – a hallmark of professional forensics."
+        }
+    ]
+}

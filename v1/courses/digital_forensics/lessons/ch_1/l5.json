@@ -1,0 +1,170 @@
+{
+    "id": "l5",
+    "chapterId": "ch_1",
+    "title": "Evidence Essentials 🔎",
+    "description": "Understand the nature of digital evidence, its volatility, and the chain of custody that protects it.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Introduction",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "What Makes Digital Evidence Special? 💾",
+            "content": "# Characteristics of Digital Evidence\n\nDigital data is:\n- **Latent**: Not visible to the naked eye – you need tools to extract it.\n- **Fragile**: Easily altered or destroyed (a single click can wipe logs).\n- **Voluminous**: Terabytes of data may hide a few relevant bytes.\n- **Persistent**: Unlike human memory, deleted files often leave traces."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "Character Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "true_false",
+                "question": "Digital evidence is usually visible without special tools.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Digital evidence is latent; it requires forensic tools and techniques to reveal its presence and meaning.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Order of Volatility ⚡",
+            "content": "When collecting evidence, capture the most volatile data first, because it disappears quickly. The general order:\n\n1. **Registers / CPU cache** (nanoseconds)\n2. **RAM** (lost when powered off)\n3. **Network connections / running processes** (seconds to minutes)\n4. **Disk storage** (persists but can be overwritten)\n5. **Backups / archives** (most stable)\n\nFollowing this order preserves crucial transient data."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "quiz",
+            "title": "Volatility Order 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "According to the order of volatility, which should be collected first?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Hard drive image",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Running processes and RAM",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Email archives",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Backup tapes",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "RAM and running processes are extremely volatile and vanish when a machine is shut down, so they must be captured first.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Chain of Custody Deep Dive 🔗",
+            "content": "A robust chain of custody form should include:\n- **Item description**: Make, model, serial number.\n- **Collection info**: Date, time, location, collector's name.\n- **Every transfer**: Who received it, when, purpose.\n- **Storage details**: Locked cabinet number, temperature, access controls.\n\n> \"If you didn't write it down, it didn't happen.\""
+        },
+        {
+            "id": "s_l5_6",
+            "type": "code",
+            "title": "Example: Timestamped Notes",
+            "content": "Forensic examiners often use scripts or logging tools to automatically record actions. A simple example:",
+            "codeSnippet": "# Save command history with timestamps\necho \"$(date): Starting disk image acquisition\" >> case_notes.txt\nsha256sum /dev/sdb >> case_notes.txt",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Custody Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_3",
+                "type": "true_false",
+                "question": "Chain of custody only needs to record who initially collected the evidence.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "It must track every person and action from collection to court, creating a complete audit trail.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_8",
+            "type": "text",
+            "title": "Hashing: The Integrity Seal 🔐",
+            "content": "Before and after any operation, compute a hash (MD5, SHA-1, SHA-256) of the evidence. Matching hashes prove nothing changed.\n\n- **Acquisition hash**: Taken right after imaging.\n- **Verification hash**: Taken after analysis to confirm no accidental alteration.\n\nIf they don't match, your evidence is compromised."
+        },
+        {
+            "id": "s_l5_9",
+            "type": "warning",
+            "title": "⚠️ Never Work on the Original",
+            "content": "Always create a forensic image (bit-by-bit copy) and analyze that. Use write-blockers to prevent any changes to the original media."
+        },
+        {
+            "id": "s_l5_10",
+            "type": "quiz",
+            "title": "Image Integrity 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_4",
+                "type": "multiple_choice",
+                "question": "What is the main reason to use a write-blocker when acquiring evidence?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To speed up the imaging process",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To prevent any writes to the original evidence drive",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To encrypt the data",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To compress the image file",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A write-blocker ensures the source drive is read-only, preserving the integrity of the original evidence.",
+                "xpReward": 10
+            }
+        }
+    ]
+}

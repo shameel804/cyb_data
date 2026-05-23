@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_1",
+    "title": "Evidence Source Identification",
+    "description": "Given a corporate insider threat scenario, list all potential digital evidence sources.",
+    "estimatedMinutes": 10,
+    "problemStatement": "**Scenario:** A mid-sized company suspects that a recently fired IT administrator stole proprietary source code. The employee's office has been sealed, and their company-issued laptop, external hard drive, and mobile phone were collected. The company also uses cloud-based email and a shared network drive.\n\nYour task is to **list every potential digital evidence source** that could contain traces of the theft. Consider computer forensics, mobile, network, cloud, and any other relevant subfields.\n\n**Format your response as a bulleted list** describing each source and what type of evidence you might find there. Example:\n- Laptop hard drive: recently accessed files, USB connection logs, browser history.\n- ...",
+    "hints": [
+        "Think about where the employee might have copied the code – external drives, cloud storage, email attachments?",
+        "Don't forget logs: system logs, firewall logs, file server audit logs.",
+        "Mobile phones may hold authentication apps or personal cloud accounts synced with work data."
+    ],
+    "expectedOutput": "A comprehensive list covering at least 8 distinct evidence sources with brief explanations.",
+    "solutionCode": "1. Employee's company laptop: file system artifacts (MAC times, LNK files, jump lists), recent documents, USB device connection history, browser cache, password vaults.\n2. External hard drive seized: may contain direct copies of source code; examine deleted files and partitions.\n3. Employee's mobile phone: email app data, cloud sync clients (Dropbox, Google Drive), chat applications with file transfer history.\n4. Company email server (cloud): sent/received emails with attachments, login IP addresses, access timestamps.\n5. Shared network drive: file access audit logs, recent file copies or moves.\n6. Firewall / proxy logs: large outbound data transfers, connections to known cloud storage services.\n7. VPN or remote access logs: times and IP addresses of remote logins, especially after termination.\n8. Cloud storage services (via corporate SSO or personal accounts): access logs, file uploads, sharing activity.\n9. Building access control system logs: times of physical presence to correlate with digital activity.\n10. Any personal devices brought on premises (BYOD) if policy allows – could have synced data."
+}

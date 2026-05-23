@@ -1,0 +1,140 @@
+{
+    "id": "l2",
+    "chapterId": "ch_2",
+    "title": "Identification & Assessment 🕵️‍♂️",
+    "description": "Learn to scope an investigation and locate every possible piece of digital evidence.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Investigation Process",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Start With Why 🎯",
+            "content": "# Understanding the Incident\n\nBefore hunting for evidence, define the **allegation** or **suspected crime**. This shapes everything.\n\n- Is it data theft? Malware infection? Harassment?\n- Who is involved? (Insiders, external attackers)\n- What assets are affected? (Databases, laptops, cloud drives)\n\n**Interview** key personnel: IT staff, managers, the victim if appropriate. Document every conversation."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Scope Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Why is interviewing IT staff a critical first step?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To assign blame",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To understand the network topology and baseline behavior",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To delete suspicious files",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To obtain passwords",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "IT staff know the environment: which servers hold sensitive data, what normal traffic looks like, and recent changes.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Evidence Source Mapping 🗺️",
+            "content": "## Where Could the Data Hide?\n\nCreate an **evidence source inventory** based on the incident type:\n\n| Incident Type        | Likely Sources                                       |\n|----------------------|------------------------------------------------------|\n| Data theft (internal) | Laptops, USB drives, cloud storage, email, printers |\n| Malware outbreak     | Firewall logs, IDS alerts, RAM, infected endpoints   |\n| Website defacement   | Web server logs, file system timestamps, FTP logs    |\n\nDon’t overlook: IoT devices, backup tapes, surveillance cameras."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "Source IQ 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "In a corporate data leak investigation, which of these is likely LEAST relevant?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Email server logs",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Building access badges",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A nearby smart refrigerator logs",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Cloud storage audit trails",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Unless the refrigerator was somehow used to exfiltrate data (extremely unlikely), it's not relevant. Focus on probable sources first.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Prioritizing by Volatility ⚡",
+            "content": "Once sources are identified, rank them by volatility. Data that disappears quickly must be captured first:\n\n1. **RAM & running processes**\n2. **Network connections / ARP cache**\n3. **System event logs**\n4. **Disk partitions**\n5. **Backup media**\n\nThis list becomes your **collection roadmap**."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "warning",
+            "title": "⚠️ Don't Over-Scope",
+            "content": "If you seize every device in the building, you may violate privacy rights and waste resources. Focus on the **probable cause** area. The scope can always be expanded later with proper justification."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "Volatility Sequence 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "fill_blank",
+                "question": "In a live system investigation, the first piece of evidence you should capture is the contents of ___.",
+                "options": [
+                    "hard drive",
+                    "RAM",
+                    "email server",
+                    "USB drive"
+                ],
+                "correctAnswer": "RAM",
+                "explanation": "RAM is extremely volatile and holds running processes, encryption keys, and network connections that are lost on power-off.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "Live System Triage Script",
+            "content": "A simple example of a Linux triage script to grab volatile data (run from a trusted USB):",
+            "codeSnippet": "#!/bin/bash\ndate >> collection.log\nwho >> collection.log\nnetstat -an >> collection.log\nps aux >> collection.log\narp -a >> collection.log",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use Checklists!\n\nNever rely on memory. Use standard checklists (like NIST's or SANS posters) to ensure you don't miss volatile data during identification."
+        }
+    ]
+}

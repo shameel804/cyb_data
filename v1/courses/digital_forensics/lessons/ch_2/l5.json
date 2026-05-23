@@ -1,0 +1,151 @@
+{
+    "id": "l5",
+    "chapterId": "ch_2",
+    "title": "Analysis & Reconstruction 🧩",
+    "description": "Turn raw data into a coherent story – timeline events, correlate findings, and draw conclusions.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Investigation Process",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Detective Mindset 🧠",
+            "content": "# Moving from What to Why\n\nExamination gave you files and logs. Analysis answers:\n- **What** exactly happened?\n- **When** did it happen?\n- **Who** was responsible?\n- **How** did they do it?\n\nThis is where you test hypotheses and reconstruct the sequence of events. You become a digital archaeologist."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "Analysis IQ 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Analysis differs from examination because it:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Focuses on creating forensic images",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Interprets data to form conclusions about the incident",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Deletes irrelevant files",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Uses write-blockers",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Analysis is the interpretive phase where you draw conclusions and reconstruct events based on extracted evidence.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Timeline Analysis ⏳",
+            "content": "## The Backbone of Reconstruction\n\nCreate a unified timeline from multiple sources:\n- **MAC times** (Modified, Accessed, Changed) from the file system.\n- **Event logs** (Windows Event Logs, syslog).\n- **Browser history**.\n- **Email timestamps**.\n\nTools like **Log2timeline/Plaso** can automatically generate a super timeline.\n\nExample: You see a document modified at 2:15 PM, email attachment sent at 2:17 PM, USB insertion at 2:14 PM – you've just traced the exfiltration."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "Timeline with Plaso",
+            "content": "Generate a super timeline from a disk image.",
+            "codeSnippet": "# log2timeline.py /cases/timeline.plaso image.dd\n# psort.py -o l2tcsv /cases/timeline.plaso > timeline.csv",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_5",
+            "type": "quiz",
+            "title": "Timeline Importance 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "File system timestamps alone are enough to build a complete incident timeline.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "A robust timeline requires correlation of multiple sources (logs, browser history, metadata) because file timestamps can be manipulated or incomplete.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Link Analysis 🔗",
+            "content": "## Connecting the Dots\n\nIdentify relationships between entities (people, accounts, IPs, files). Tools like **Maltego** or even an Excel pivot table can visualize:\n- Which user accounts accessed a sensitive file\n- Which IPs connected before and after a breach\n- Which email addresses communicated\n\nThis helps answer “who?” and maps insider networks."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Hypothesis Testing 🧪",
+            "content": "Avoid **confirmation bias** – don’t latch onto the first theory. Instead:\n\n1. Formulate multiple hypotheses (e.g., “user accidentally emailed file” vs “malicious insider”)\n2. Search for evidence that disproves each.\n3. The surviving hypothesis is your conclusion.\n\nAlways document alternative theories and explain why they were eliminated."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "quiz",
+            "title": "Bias Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_3",
+                "type": "multiple_choice",
+                "question": "What is the biggest risk during the analysis phase?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Running out of disk space",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Confirmation bias",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Slow CPU",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Write-blocker failure",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Confirmation bias leads investigators to ignore contradictory evidence. Rigorous hypothesis testing is the antidote.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_9",
+            "type": "text",
+            "title": "Correlation Rules 🧮",
+            "content": "In network forensics, analysts create rules: “If a user downloads an RDP tool, then connects to an external IP within 5 minutes, it's suspicious.”\n\nDuring analysis you can apply these rules across your timelines to automatically flag high-risk sequences."
+        },
+        {
+            "id": "s_l5_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use the 'Know-Nothing' Test\n\nPretend you know nothing about the case. Does the evidence alone still point to your conclusion? If not, you're relying on assumptions."
+        }
+    ]
+}

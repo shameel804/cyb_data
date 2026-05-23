@@ -1,0 +1,141 @@
+{
+    "id": "l3",
+    "chapterId": "ch_2",
+    "title": "Collection & Preservation 📦",
+    "description": "Master the art of seizing digital evidence safely without altering a single byte.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Investigation Process",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Handle With Care 🩺",
+            "content": "# The Golden Hour of Collection\n\nCollection is the most critical phase – a mistake here can destroy evidence forever.\n\nKey principles:\n- **Minimize impact**: Touch the original as little as possible.\n- **Document everything**: Photos, serial numbers, cable connections.\n- **Use write-blockers**: Hardware or software that prevents modification.\n- **Create forensic images**: Not simple copies, but sector-by-sector clones."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Collection Knowledge 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "true_false",
+                "question": "A standard file copy (Ctrl+C) of a suspect's hard drive is sufficient for forensic analysis.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "A file copy misses slack space, deleted files, and system areas. A forensic image captures every sector.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Imaging Methods 📸",
+            "content": "## Bit-for-Bit Cloning\n\nA **forensic image** is an exact physical or logical copy:\n\n- **Physical image**: Copies every sector, including unallocated space (slack, deleted files). Largest, most complete.\n- **Logical image**: Copies only active files and folders. Smaller but misses hidden data.\n- **Targeted image**: Captures specific folders or file types. Used in triage.\n\nCommon formats: raw (dd), E01 (EnCase), AFF (Advanced Forensic Format)."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "dd – The Swiss Army Knife",
+            "content": "Create a raw image using dd (Linux). Always combine with hashing.",
+            "codeSnippet": "# Image a drive with dd and compute hash simultaneously\ndd if=/dev/sdb of=/mnt/evidence/image.dd bs=4M status=progress\nsha256sum /dev/sdb > original_hash.txt\nsha256sum /mnt/evidence/image.dd > image_hash.txt\n# Compare hashes to verify integrity.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "quiz",
+            "title": "Image Type 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "Which type of image is most likely to contain deleted file fragments?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Logical image",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Physical image",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Targeted image",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "File copy",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Physical images include unallocated and slack space where deleted file fragments reside.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Hardware Write-Blockers 🔒",
+            "content": "## The Ultimate Safety Net\n\nA write-blocker sits between the evidence drive and your acquisition machine. It allows read commands but blocks write commands.\n\n- **Tableau**, **WiebeTech**, **Logicube** are popular brands.\n- Software write-blockers exist (e.g., registry tweaks in Windows) but are less reliable.\n\nAlways test your write-blocker before use!"
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Write-Blocker Wisdom 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "true_false",
+                "question": "A hardware write-blocker is only needed when you suspect the evidence drive is damaged.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Write-blockers must be used with every original evidence drive to prevent accidental writes, regardless of condition.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_8",
+            "type": "text",
+            "title": "Live vs. Dead Acquisition ⚡",
+            "content": "- **Dead acquisition**: The system is powered off. You image the hard drive. Safe, but you lose RAM and network state.\n- **Live acquisition**: System is running. You capture RAM and volatile data first, then optionally image the disk (which may be altered by the collection tools).\n\nChoose based on the case. If the computer is off, leave it off. If it's on and there's a risk of losing valuable volatile data, perform live collection by a trained expert."
+        },
+        {
+            "id": "s_l3_9",
+            "type": "warning",
+            "title": "⚠️ Live Collection Risk",
+            "content": "Running tools on a live system changes it – new processes, memory allocations, log entries. Always document every command you run and its expected impact. The hash of the disk may no longer match a future image."
+        },
+        {
+            "id": "s_l3_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Photograph Everything\n\nBefore touching a computer, photograph the screen, cables, and any external drives. If the screen shows a running program, that's volatile evidence. A picture freezes it."
+        }
+    ]
+}

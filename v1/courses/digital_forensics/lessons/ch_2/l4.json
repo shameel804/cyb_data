@@ -1,0 +1,145 @@
+{
+    "id": "l4",
+    "chapterId": "ch_2",
+    "title": "Examination & Extraction 🔬",
+    "description": "Filter mountains of data, extract key artifacts, and prepare evidence for deep analysis.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Investigation Process",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "From Image to Information 📊",
+            "content": "# What Happens in Examination?\n\nYou now have a forensic image – a huge pile of 1s and 0s. Examination converts this raw data into human-readable information.\n\nActivities:\n- Mount the image read-only.\n- Parse file system structures.\n- Recover deleted files.\n- Extract specific artifacts (emails, browser history, registry hives).\n- Filter out known-good files (hash sets).\n\nIt’s like sorting a room full of documents into labelled folders."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Exam Purpose 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "The main goal of examination is to:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Write the final report",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Prepare data for analysis by extracting and organizing it",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Arrest the suspect",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Delete irrelevant files",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Examination reduces the vast amount of raw data to a manageable, relevant dataset for deeper analysis.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "File Carving 🔪",
+            "content": "## Recovering the Unseen\n\nWhen a file is deleted, the OS just marks its space as free. The data often remains until overwritten. **File carving** scans the raw image for file signatures (headers/footers) and extracts the data.\n\n- A JPEG starts with `FF D8 FF` and ends with `FF D9`.\n- A PDF starts with `%PDF`.\n\nTools like **Foremost**, **Scalpel**, and **PhotoRec** automate carving.\n\nCarving can recover fragments even if the file system is damaged!"
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "Carving with Foremost",
+            "content": "Recover deleted images from a raw image file.",
+            "codeSnippet": "# foremost -t all -i image.dd -o /output_folder\n# -t all : carve all file types\n# -i : input image\n# -o : output directory",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "quiz",
+            "title": "Carving Concept 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "File carving can only recover files that are still listed in the file system.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Carving works on raw disk sectors and doesn't rely on the file system's directory structure, so it can recover deleted or orphaned files.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Filtering with Hash Sets #️⃣",
+            "content": "## Ignore the Noise\n\nAn average hard drive has thousands of system files (DLLs, EXEs). Known-good hash sets (like NIST NSRL) let you exclude these from review, so you focus on user-created or suspicious files.\n\n- **Known-good**: Ignore (Windows system files).\n- **Known-bad**: Flag immediately (malware hashes).\n- **Unknown**: The interesting files for human review.\n\nTools like Autopsy can apply hash filtering automatically."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "Hash Filtering 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "multiple_choice",
+                "question": "What is the purpose of a known-good hash set?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To identify malicious files",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To exclude trusted system files from review",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To encrypt the evidence",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To verify image integrity",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Known-good hash sets list files from clean OS installations, allowing examiners to ignore them and focus on unique or suspicious files.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_8",
+            "type": "text",
+            "title": "Keyword Searches & Indexing 🔎",
+            "content": "Modern forensic tools build a text index of the entire image, enabling instant searches for:\n- Email addresses\n- Credit card numbers\n- Specific phrases\n- Base64 encoded strings\n\nThis turns a needle-in-a-haystack problem into a quick query."
+        },
+        {
+            "id": "s_l4_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Don't Miss Encrypted Data\n\nIf you find a password-protected ZIP or an encrypted container, flag it for offline cracking. The most incriminating evidence is often locked away."
+        }
+    ]
+}

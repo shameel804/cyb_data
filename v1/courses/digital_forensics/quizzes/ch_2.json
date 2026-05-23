@@ -1,0 +1,293 @@
+{
+    "id": "quiz_ch_2",
+    "chapterId": "ch_2",
+    "title": "Chapter 2 Quiz",
+    "description": "Test your knowledge of the forensic investigation process, from identification to reporting.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the correct order of phases in the standard digital forensic lifecycle?",
+            "options": [
+                "Collection, Identification, Examination, Analysis, Reporting",
+                "Identification, Collection, Examination, Analysis, Reporting",
+                "Examination, Analysis, Identification, Collection, Reporting",
+                "Analysis, Examination, Collection, Identification, Reporting"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The lifecycle begins with identifying evidence sources, then collecting them, examining the data, analyzing findings, and reporting."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which phase involves capturing volatile data such as RAM?",
+            "options": [
+                "Examination",
+                "Identification",
+                "Collection",
+                "Analysis"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Collection is the phase where evidence is gathered, including volatile data like RAM."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "During examination, the original evidence drive should be directly browsed to find key files quickly.",
+            "correctAnswer": false,
+            "explanation": "Examination is performed on the forensic image, never the original. Direct browsing would alter timestamps and compromise evidence."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What is file carving?",
+            "options": [
+                "Encrypting files for protection",
+                "Recovering files based on header/footer signatures without file system metadata",
+                "Creating a directory listing",
+                "Deleting files securely"
+            ],
+            "correctAnswer": 1,
+            "explanation": "File carving scans raw data for known file headers and footers to recover files even if they are deleted or the file system is damaged."
+        },
+        {
+            "id": "q5",
+            "type": "fill_blank",
+            "question": "The tool used to create a super timeline from multiple log and file system sources is called ______.",
+            "options": [
+                "Wireshark",
+                "Volatility",
+                "Plaso",
+                "dd"
+            ],
+            "correctAnswer": "Plaso",
+            "explanation": "Log2timeline/Plaso is designed to generate a super timeline that correlates timestamps from various evidence sources."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which type of forensic image is most complete?",
+            "options": [
+                "Logical image",
+                "Physical image",
+                "Targeted image",
+                "Backup image"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A physical image copies every sector, including unallocated space and slack space, capturing all potential data."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "A hardware write-blocker only prevents write commands; it does not affect read commands.",
+            "correctAnswer": true,
+            "explanation": "Write-blockers allow read operations while blocking any write attempts to the source drive."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What is the primary purpose of a known-good hash set?",
+            "options": [
+                "To detect malware",
+                "To verify image integrity",
+                "To filter out known system files and reduce the data for review",
+                "To crack passwords"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Known-good hash sets exclude standard OS and application files, allowing examiners to focus on user-created or suspicious files."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "During which phase is the chain of custody most actively maintained and documented?",
+            "options": [
+                "Reporting",
+                "Analysis",
+                "Collection",
+                "Examination"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Chain of custody begins at collection and must be updated through every transfer, but it's initiated and heavily documented during the collection phase."
+        },
+        {
+            "id": "q10",
+            "type": "true_false",
+            "question": "A forensic report should blend facts and the examiner's personal opinions without distinguishing between them.",
+            "correctAnswer": false,
+            "explanation": "Facts and opinions must be clearly separated. Opinions should be explicitly labeled and based on evidence."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which of the following is an example of a volatile data source?",
+            "options": [
+                "A backup tape",
+                "A hard disk drive",
+                "Running processes in RAM",
+                "An optical disk"
+            ],
+            "correctAnswer": 2,
+            "explanation": "RAM contents are lost when power is removed, making them highly volatile."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is the primary risk of live acquisition?",
+            "options": [
+                "It takes longer",
+                "It may alter the evidence on the running system",
+                "It requires special hardware write-blockers",
+                "It cannot capture RAM"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Running tools on a live system changes it (new processes, logs) and may overwrite unallocated space."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which tool is commonly used for disk imaging on Linux?",
+            "options": [
+                "Volatility",
+                "Autopsy",
+                "dd",
+                "Wireshark"
+            ],
+            "correctAnswer": 2,
+            "explanation": "dd is a command-line utility that can create raw forensic images of drives."
+        },
+        {
+            "id": "q14",
+            "type": "true_false",
+            "question": "The analysis phase is purely technical and does not require considering alternative hypotheses.",
+            "correctAnswer": false,
+            "explanation": "Good analysis involves hypothesis testing and eliminating alternative explanations to avoid confirmation bias."
+        },
+        {
+            "id": "q15",
+            "type": "fill_blank",
+            "question": "The process of eliminating known system files from a forensic review using hash databases is called ______.",
+            "options": [
+                "file carving",
+                "hash filtering",
+                "imaging",
+                "indexing"
+            ],
+            "correctAnswer": "hash filtering",
+            "explanation": "Hash filtering uses known hash sets to automatically exclude files, speeding up examination."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which section of a forensic report would contain a high-level summary for non-technical readers?",
+            "options": [
+                "Appendices",
+                "Methodology",
+                "Executive Summary",
+                "Findings"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The executive summary provides a concise overview of the investigation and key conclusions in plain language."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "During identification, what factor most determines the priority of evidence collection?",
+            "options": [
+                "Size of the hard drive",
+                "Volatility of the data",
+                "Brand of the device",
+                "Age of the computer"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Highly volatile data (RAM, network state) is captured first because it disappears quickly."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "An examiner should include speculative theories in the official report if they seem plausible.",
+            "correctAnswer": false,
+            "explanation": "Reports must be based on evidence. Speculation without factual basis undermines credibility."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What does MAC times stand for?",
+            "options": [
+                "Modified, Accessed, Created",
+                "Moved, Archived, Copied",
+                "Mandatory Access Control",
+                "Media Access Control"
+            ],
+            "correctAnswer": 0,
+            "explanation": "MAC times (Modified, Accessed, Created/Changed) are file system timestamps crucial for timeline analysis."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which phase typically involves using keyword searches and indexing?",
+            "options": [
+                "Collection",
+                "Examination",
+                "Reporting",
+                "Identification"
+            ],
+            "correctAnswer": 1,
+            "explanation": "During examination, large data sets are filtered and searched to locate relevant information."
+        },
+        {
+            "id": "q21",
+            "type": "true_false",
+            "question": "A forensic report should be written in highly technical jargon to demonstrate the examiner's expertise.",
+            "correctAnswer": false,
+            "explanation": "Reports should be understandable to non-technical audiences like judges and juries; plain language is preferred."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "What is the main advantage of a hardware write-blocker over a software one?",
+            "options": [
+                "It is cheaper",
+                "It operates independently of the OS, reducing risk of misconfiguration",
+                "It is faster",
+                "It can encrypt the drive"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Hardware write-blockers are physical devices that intercept commands at the hardware level, making them more reliable and OS-independent."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "When an investigator eliminates a suspect hypothesis because evidence contradicts it, this is an example of:",
+            "options": [
+                "Confirmation bias",
+                "Chain of custody",
+                "Hypothesis testing",
+                "Data carving"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Hypothesis testing involves formulating and trying to disprove alternative explanations, a key part of rigorous analysis."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "What is the role of an expert witness in court?",
+            "options": [
+                "To advocate for the prosecution",
+                "To decide the verdict",
+                "To educate the court on technical matters based on evidence",
+                "To provide emotional testimony"
+            ],
+            "correctAnswer": 2,
+            "explanation": "An expert witness explains technical findings neutrally, helping the judge and jury understand the evidence."
+        },
+        {
+            "id": "q25",
+            "type": "true_false",
+            "question": "Once the report is written, the investigation lifecycle ends and no further actions are needed.",
+            "correctAnswer": false,
+            "explanation": "The lifecycle can be iterative – new evidence may require going back to identification, and testimony or appeals may follow."
+        }
+    ]
+}
