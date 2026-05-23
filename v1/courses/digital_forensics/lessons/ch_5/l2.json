@@ -1,0 +1,171 @@
+{
+    "id": "l2",
+    "chapterId": "ch_5",
+    "title": "NTFS Internals",
+    "description": "Unlock the Master File Table, attributes, journals, and the secrets of NTFS deletion and recovery.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "File System Analysis",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The NTFS Masterpiece 💎",
+            "content": "# NTFS: More Than Meets the Eye\n\nNew Technology File System (NTFS) is a journaling, metadata‑rich file system. Everything is a file, including the system structures. The heart is the **Master File Table (MFT)**.\n\nKey features:\n- 64‑bit addressing, huge volumes.\n- Compression, encryption (EFS), sparse files.\n- Hard links, symbolic links, alternate data streams.\n- Transactional journaling for crash recovery."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "NTFS Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What is the core metadata structure that tracks every file and directory in NTFS?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "FAT",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "$Bitmap",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Master File Table (MFT)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Boot Sector",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The MFT contains a record for every file and folder, including itself ($MFT).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "MFT File Records 📇",
+            "content": "## Inside a Record\n\nEach MFT record is typically 1024 bytes (1 KB). The first 16 records are reserved for metafiles ($MFT, $MFTMirr, $LogFile, $Volume, $Bitmap, $Boot, etc.).\n\nA record starts with a header (`FILE` signature), then a sequence of **attributes**. Each attribute has a header (type, length, resident flag) and a body.\n\nImportant attributes:\n- `$STANDARD_INFORMATION` (0x10): MACB timestamps, flags.\n- `$FILE_NAME` (0x30): File name, parent directory, additional timestamps.\n- `$DATA` (0x80): The actual file content, either resident or non‑resident.\n- `$INDEX_ROOT` / `$INDEX_ALLOCATION`: For directories."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "Attribute ID 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "Which NTFS attribute type holds the primary timestamps (MACB) of a file?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "$FILE_NAME (0x30)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "$DATA (0x80)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "$STANDARD_INFORMATION (0x10)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "$INDEX_ROOT (0x90)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The $STANDARD_INFORMATION attribute contains the primary set of timestamps and file attributes.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Resident vs Non‑Resident Data 🏠➡️🗄️",
+            "content": "Small files (usually < ~900 bytes) store their $DATA directly inside the MFT record – this is **resident data**. The attribute body contains the actual bytes.\n\nLarger files use **non‑resident $DATA**, which lists **data runs** – sequences of clusters on disk. A run is described as `<offset, length>` pairs (VCN to LCN mapping).\n\nForensic implication: Deleted resident files can survive even if their data clusters are overwritten, as long as the MFT record is not reused."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Resident Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "true_false",
+                "question": "If a file's $DATA attribute is resident, its content can be recovered even if the original clusters are zeroed.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Resident data lives inside the MFT record itself, not in clusters, so cluster overwrite does not affect it.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "The MFT Bitmap & Deletion 🗑️",
+            "content": "NTFS tracks free/used records via the **$Bitmap** metafile. When a file is deleted:\n\n1. The MFT record's in‑use flag (`FILE` header, byte 22) is set to 0x00 (free).\n2. The $Bitmap bit for that record is cleared.\n3. The clusters allocated to non‑resident $DATA are marked free in the volume bitmap.\n4. The USN Journal ($UsnJrnl) logs the deletion event.\n\nThe MFT record itself is not immediately zeroed, allowing recovery of metadata and (if resident) data."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "code",
+            "title": "Examine MFT Record with TSK",
+            "content": "Use `istat` to display attributes of an MFT entry.",
+            "codeSnippet": "istat -f ntfs image.dd 42   # examine file record 42\n# Output shows sequence number, attributes, resident data, and runlist.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_9",
+            "type": "quiz",
+            "title": "MFT Deletion Flag 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_4",
+                "type": "fill_blank",
+                "question": "In a freed MFT record, the in‑use flag byte at offset 22 is set to ___.",
+                "options": [
+                    "0x01",
+                    "0x00",
+                    "0xFF",
+                    "0xDE"
+                ],
+                "correctAnswer": "0x00",
+                "explanation": "The FILE signature is still present, but the flag is 0x00 to indicate the record is free.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_10",
+            "type": "text",
+            "title": "NTFS Journals: $LogFile & $UsnJrnl 📝",
+            "content": "**$LogFile**: Transaction log for metadata changes. Records redo/undo operations. Can reveal traces of file operations even after deletion.\n\n**$UsnJrnl (Update Sequence Number Journal)**: A persistent log of file changes (creation, deletion, modification, rename). It retains records until the journal wraps. Even if a file is permanently deleted, its USN record may still exist, showing the file name, MFT reference, and timestamp of the deletion.\n\nBoth are forensic goldmines for timeline reconstruction and proving file existence."
+        },
+        {
+            "id": "s_l2_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Parse $UsnJrnl with USN Record Carver\n\nTools like `usncarve.py` (from Plaso) or `MFTECmd` can parse the $UsnJrnl stream to recover historical file names and actions."
+        }
+    ]
+}

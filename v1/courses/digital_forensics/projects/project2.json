@@ -1,0 +1,23 @@
+{
+    "id": "project2",
+    "title": "Investigate an Insider Threat Case",
+    "description": "Given a forensic image and artifact exports, analyze Windows artifacts to trace data exfiltration, timeline events, and produce a professional forensic report.",
+    "difficulty": "Intermediate",
+    "estimatedHours": "4-6",
+    "problemStatement": "**Scenario:** You are provided with a forensic image (`case002.dd`) of a Windows 10 laptop belonging to a former employee, Alice Johnson, who is suspected of stealing proprietary source code before resigning. The company's IT department also exported the Security event log (`Security.evtx`) and the NTUSER.DAT registry hive from Alice's profile.\n\nYour mission is to:\n1. **Mount the image** or use Autopsy to analyze the following artifacts:\n   - **LNK files** in `Recent` folder – find any references to the company's source code repository path (`\\\\server\\code\\ProjectX`).\n   - **Jump Lists** – identify if Alice opened any source code files via Notepad++ or Visual Studio Code.\n   - **Recycle Bin** – check for any deleted files with names like `ProjectX_Source.zip` and recover the deletion metadata.\n   - **Prefetch files** – determine if a file archiver (e.g., 7z.exe) or a secure deletion tool was executed.\n   - **USBSTOR registry key** (in the SYSTEM hive – you can use the image or a provided export) – find evidence of a USB drive connection around the time of the incident.\n2. **Parse the Security event log** (`Security.evtx`) and identify:\n   - Any suspicious logons (e.g., RDP from an unusual IP) around the time.\n   - Event ID 4688 (Process Creation) if enabled, showing the execution of archiving or wiping tools.\n3. **Examine the NTUSER.DAT hive** for:\n   - **UserAssist** entries related to execution of archiving programs (e.g., 7zFM.exe, WinRAR.exe).\n   - **RecentDocs** to see recently opened files.\n   - **MountPoints2** to confirm drive letter assignment for the USB device.\n4. **Correlate all timestamps** to build a timeline of the exfiltration. Determine:\n   - When was the USB inserted?\n   - When were the source files accessed/copied?\n   - When was the archive created?\n   - When was a secure deletion tool (if any) run?\n5. **Write a forensic report** with sections: Executive Summary, Methodology, Findings, Timeline, and Expert Opinion. Use evidence referencing and separate facts from opinions.\n\nYou may use Autopsy (with its ingest modules), Eric Zimmerman's tools (LECmd, PECmd, RBCmd), RegRipper, and Event Log Explorer to extract data. Provide your findings in the report, along with relevant screenshot references (placeholder if no real images).\n\n**Note:** The provided image is simulated, but you are expected to describe the exact steps and the type of evidence you would find, assuming the artifacts exist. For this project, create a narrative with plausible timestamps and artifact descriptions.",
+    "requirements": [
+        "The report must include a clear timeline of events based on artifact timestamps.",
+        "At least three different types of Windows artifacts must be correlated (e.g., LNK, Prefetch, Recycle Bin).",
+        "The USB device connection must be evidenced through USBSTOR registry key and MountPoints2.",
+        "Any findings of secure deletion tools must be supported by Prefetch, UserAssist, and possibly Event Logs.",
+        "The report must distinguish between fact and expert opinion, with opinion clearly labeled."
+    ],
+    "hints": [
+        "Use Autopsy's Ingest Modules to automatically extract LNK, Prefetch, Jump Lists, and Recycle Bin artifacts.",
+        "For USBSTOR, mount the SYSTEM hive using Registry Explorer or use `reglookup` on the image's `Windows/System32/config/SYSTEM`.",
+        "Event log parsing: Use EvtxECmd or Event Log Explorer; look for event ID 4624 (logon type 10) and 4688.",
+        "Timeline: Combine timestamps from LNK files (target file times), Prefetch (embedded last run), and Recycle Bin ($I files). Convert all to UTC for correlation.",
+        "In your report, create a table like: `Time (UTC), Event, Source Artifact`."
+    ],
+    "expectedOutput": "A professional forensic report (PDF or DOCX) containing all required sections, a timeline graphic or table, and properly referenced evidence items. The report should be written in plain language suitable for management while maintaining technical accuracy."
+}

@@ -1,0 +1,157 @@
+{
+    "id": "l3",
+    "chapterId": "ch_9",
+    "title": "Android Forensics Deep Dive 🤖",
+    "description": "Extract evidence from Android – partitions, SQLite databases, ADB, and common artifacts.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Mobile Forensics",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Android Architecture Overview 🏗️",
+            "content": "# The Android File System\n\nAndroid runs on a Linux kernel, with the main storage partitioned:\n- `/boot` – kernel and ramdisk\n- `/system` – OS files\n- `/data` – user apps and data (the forensic goldmine)\n- `/cache` – temporary files\n- `/recovery` – recovery partition\n- `/sdcard` – internal shared storage (often emulated)\n\nThe `/data` partition contains `data.db` databases for contacts, SMS, call logs, and all user‑installed apps.\n\nFile systems: EXT4, F2FS, and YAFFS2 (older). Understanding partition layout is crucial for carving deleted data."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Partition Knowledge 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which Android partition holds user‑installed apps and their data?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "/system",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "/boot",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "/data",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "/cache",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The `/data` partition contains user applications, settings, and the `com.android.providers.*` databases."
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Key Android Artifacts 📱",
+            "content": "## SQLite Databases Everywhere\n\nMost Android data is stored in SQLite databases under `/data/data/<package>/`. Key ones:\n- **Contacts**: `/data/data/com.android.providers.contacts/databases/contacts2.db`\n- **SMS/MMS**: `/data/data/com.android.providers.telephony/databases/mmssms.db`\n- **Call Logs**: `/data/data/com.android.providers.contacts/databases/calllog.db`\n- **Browser History**: in app packages like Chrome (`/data/data/com.android.chrome/app_chrome/Default/History`)\n- **Wi‑Fi connections**: `/data/misc/wifi/wpa_supplicant.conf`\n- **GPS / Location**: in Google Play Services or individual map apps.\n\nDeleted records often persist in the database file's **write‑ahead log (WAL)** or **journal** until a checkpoint. Tools like `sqlite3` or `WalAnalyzer` can recover them."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "Recover Deleted SMS from WAL",
+            "content": "Use `sqlite3` to examine the database and its WAL file:",
+            "codeSnippet": "sqlite3 mmssms.db\nsqlite> .log on\nsqlite> PRAGMA integrity_check;\n# To extract WAL content, use a tool like 'wal_dump' or forensic suite.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "quiz",
+            "title": "SQLite Journals 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "When a record is deleted from an SQLite database, it is immediately removed from the WAL file.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "The WAL contains uncommitted changes and can retain deleted records until the database is checkpointed and the WAL file is overwritten."
+            }
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "ADB Triage Commands 🛠️",
+            "content": "If the device is unlocked and USB debugging is enabled, ADB can pull live data:\n- `adb shell dumpsys` → System services (battery, wifi, app ops)\n- `adb shell logcat` → Live logs (if buffer hasn't wrapped)\n- `adb pull /data/data/com.android.providers.telephony/databases/mmssms.db`\n- `adb shell content query --uri content://sms` (for SMS)\n\nThese are non‑intrusive and useful for triage before a full acquisition.\n\nAlways note that ADB creates temporary files on the device, so document actions."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "ADB Commands 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "fill_blank",
+                "question": "The `adb pull` command copies a file from the device to the examiner's computer. The syntax is `adb pull <remote> ___`.",
+                "options": [
+                    "<local>",
+                    "--local",
+                    "--dest",
+                    "here"
+                ],
+                "correctAnswer": "<local>",
+                "explanation": "`adb pull /sdcard/file.txt C:\\evidence\\` copies the file to the local path specified."
+            }
+        },
+        {
+            "id": "s_l3_8",
+            "type": "text",
+            "title": "Media & Location Evidence 📸📍",
+            "content": "**Photos/Videos:** Usually stored in `/sdcard/DCIM/` or app‑specific directories. EXIF metadata may contain GPS coordinates.\n\n**Location History:** Google Maps Timeline stores location data in `com.google.android.gms` databases (e.g., `gmm_myplaces.db`). Also, `SystemApexLocation` apps.\n\n**Geotagged media and location history** can place a suspect at a crime scene.\n\n**Bluetooth/Wi‑Fi logs:** Can show device proximity and previously connected access points (useful for geo‑positioning)."
+        },
+        {
+            "id": "s_l3_9",
+            "type": "quiz",
+            "title": "EXIF GPS 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_4",
+                "type": "true_false",
+                "question": "If a photo is shared via a messaging app, the EXIF GPS data is always stripped.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Some apps strip metadata, but others retain it. It depends on the app's settings and how the file is sent."
+            }
+        },
+        {
+            "id": "s_l3_10",
+            "type": "text",
+            "title": "App Artifacts – Social, Chat, Email 💬",
+            "content": "Each app has its own schema:\n- **WhatsApp**: `/data/data/com.whatsapp/databases/msgstore.db` (encrypted with key in `files/`)\n- **Telegram**: `/data/data/org.telegram.messenger/files/cache4.db` (local, decrypted if logged in)\n- **Facebook Messenger**: SQLite databases with threads.\n- **Snapchat**: Very limited; disappears; but some metadata remains.\n\nOften the decryption key can be retrieved from the same phone (e.g., WhatsApp key stored in `/data/data/com.whatsapp/files/key`)."
+        },
+        {
+            "id": "s_l3_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use Android Debug Bridge Backup for Quick Extract\n\nEven without root, `adb backup` can grab WhatsApp data if the app allows backup. It's a good first step before more invasive methods."
+        }
+    ]
+}

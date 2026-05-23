@@ -1,0 +1,159 @@
+{
+    "id": "l2",
+    "chapterId": "ch_12",
+    "title": "Writing for the Court ⚖️",
+    "description": "Learn to translate technical findings into clear, admissible language for judges and juries.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Reporting",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Non‑Technical Audience 👥",
+            "content": "# Write for the Judge, Not the IT Department\n\nYour report may be read by a judge, jury, or corporate board – people who may not know what an IP address is. Your job is to **educate**, not to impress with jargon.\n\nGuidelines:\n- Replace \"SHA‑256 hash\" with \"a unique digital fingerprint.\"\n- Replace \"TCP SYN scan\" with \"a reconnaissance technique to find open network doors.\"\n- Define acronyms the first time.\n- Use analogies (a file system is like a library catalog).\n\nIf your grandmother could understand the report, you’re on the right track."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Audience Awareness 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Why should a forensic report avoid excessive technical jargon?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To keep the report short",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Because the reader may not have a technical background and must understand the findings",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To hide weaknesses in the analysis",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To comply with software license agreements",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The report's primary purpose is communication to non‑expert decision‑makers.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Language & Clarity ✍️",
+            "content": "## Active Voice, Simple Words\n\n- Use **active voice**: \"The tool recovered the file\" instead of \"The file was recovered by the tool.\"\n- Avoid vague terms like \"possibly,\" \"may have\" without qualification.\n- Be precise: \"The file was deleted at 14:05 UTC\" not \"sometime in the afternoon.\"\n- Use consistent tense.\n\nBullet points and short paragraphs improve readability. Headings guide the reader."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Example: Bad vs Good Reporting",
+            "content": "**Bad:** \"Anomalous network traffic was detected emanating from the host indicative of potential C2 beaconing activity over port 443.\"\n**Good:** \"The computer contacted an unknown server every 30 minutes. This pattern is often a sign that the computer was under remote control.\"",
+            "codeLanguage": "plaintext",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "Language Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "Using technical terms like 'MFT record' without explanation is acceptable if the audience includes the judge.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Judges and juries are rarely technical experts; terms must be explained or replaced with plain language.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Evidence Referencing & Transparency 📎",
+            "content": "Link every factual statement to an evidence source. Use a unique identifier for each piece of evidence.\n\nExample: \"The USB drive (Item 002) contained a file named `project.zip` (SHA‑256: abc123).\"\n\nThis allows anyone to verify your claims by examining the same evidence. It also demonstrates chain of custody continuity.\n\nIf you rely on a tool’s output, name the tool, version, and command used."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "Evidence Links 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "fill_blank",
+                "question": "To allow verification, every finding should reference the ___ on which it is based.",
+                "options": [
+                    "investigator's hunch",
+                    "evidence item",
+                    "suspect's statement",
+                    "news article"
+                ],
+                "correctAnswer": "evidence item",
+                "explanation": "Findings must be traceable to specific evidence items (hard drive, image file, log export)."
+            }
+        },
+        {
+            "id": "s_l2_8",
+            "type": "text",
+            "title": "Dealing with Uncertainty 🎲",
+            "content": "Sometimes evidence is inconclusive. Acknowledge this honestly:\n\n- \"The presence of the tool does not necessarily prove execution; however, the Prefetch file shows it was run.\"\n- \"No evidence of exfiltration was found on the laptop, but the USB drive was not available for examination.\"\n\nNever overstate. Your integrity is your most valuable asset.\n\n**Don’t say** \"The suspect definitely stole the files\" unless you have incontrovertible proof. **Say** \"The evidence shows the suspect copied the files to a USB drive and then deleted them.\""
+        },
+        {
+            "id": "s_l2_9",
+            "type": "quiz",
+            "title": "Integrity in Reporting 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_4",
+                "type": "true_false",
+                "question": "If you are unsure about a finding, it is better to leave it out than to include speculation.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Including unsupported speculation damages credibility and could mislead the court.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_10",
+            "type": "text",
+            "title": "Visualizing Evidence 📊",
+            "content": "Use screenshots, diagrams, and timelines. Label them clearly (e.g., \"Figure 1 – Screenshot of deleted file entry\").\n\nA screenshot of a hex editor showing the 0xE5 deletion marker speaks louder than a paragraph describing it.\n\nEnsure all visuals are of high quality and that sensitive data is redacted if necessary."
+        },
+        {
+            "id": "s_l2_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Have a Non‑Technical Colleague Review\n\nBefore finalizing, ask someone with no forensic background to read the report. If they understand what you did and what you found, you’ve succeeded."
+        }
+    ]
+}

@@ -1,0 +1,299 @@
+{
+    "id": "quiz_ch_3",
+    "chapterId": "ch_3",
+    "title": "Chapter 3 Quiz",
+    "description": "Test your knowledge of data representation, endianness, storage structures, file systems, metadata, and slack space.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "How many bits are in a nibble?",
+            "options": [
+                "2",
+                "4",
+                "8",
+                "16"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A nibble consists of 4 bits (half a byte)."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What hexadecimal value corresponds to binary 11011001?",
+            "options": [
+                "D9",
+                "C9",
+                "B8",
+                "E1"
+            ],
+            "correctAnswer": 0,
+            "explanation": "1101 = D, 1001 = 9, so D9."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "Little‑endian systems store the most significant byte at the lowest memory address.",
+            "correctAnswer": false,
+            "explanation": "Little‑endian stores the least significant byte first."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "The hex value 0x2A equals decimal ___.",
+            "options": [
+                "40",
+                "42",
+                "50",
+                "32"
+            ],
+            "correctAnswer": "42",
+            "explanation": "2A = (2 * 16) + 10 = 32 + 10 = 42."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What is the traditional sector size on hard drives?",
+            "options": [
+                "128 bytes",
+                "256 bytes",
+                "512 bytes",
+                "4096 bytes"
+            ],
+            "correctAnswer": 2,
+            "explanation": "512 bytes was the standard for decades, though 4K sectors are now common."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which partition table scheme is limited to 2 TB drives?",
+            "options": [
+                "GPT",
+                "MBR",
+                "APM",
+                "Dynamic Disk"
+            ],
+            "correctAnswer": 1,
+            "explanation": "MBR uses 32‑bit LBA, capping at 2 TB. GPT supports larger."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "A file of 10 KB on an NTFS volume with 4 KB clusters will have 2 KB of slack space.",
+            "correctAnswer": true,
+            "explanation": "10 KB occupies 3 clusters (12 KB), leaving 2 KB slack."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "What does the FAT file system use to track which clusters belong to a file?",
+            "options": [
+                "inode",
+                "MFT record",
+                "File Allocation Table",
+                "Superblock"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The FAT is a linked‑list map of cluster chains."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Which NTFS metafile contains a journal of file changes useful for forensics?",
+            "options": [
+                "$MFT",
+                "$Bitmap",
+                "$UsnJrnl",
+                "$LogFile"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The USN Journal ($UsnJrnl) logs file operations like creation, deletion, and modifications."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What does the magic byte 'FF D8 FF' indicate?",
+            "options": [
+                "PNG image",
+                "JPEG image",
+                "PDF document",
+                "ZIP archive"
+            ],
+            "correctAnswer": 1,
+            "explanation": "FF D8 FF is the start of a JPEG/JFIF file."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "On FAT32, deleting a file sets the first character of its directory entry to 0xE5.",
+            "correctAnswer": true,
+            "explanation": "FAT marks deleted files by replacing the first byte of the name with 0xE5, making recovery straightforward."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which timestamp is typically updated when file permissions are changed on Linux?",
+            "options": [
+                "mtime",
+                "atime",
+                "ctime",
+                "crtime"
+            ],
+            "correctAnswer": 2,
+            "explanation": "ctime (change time) reflects metadata modifications, including permissions."
+        },
+        {
+            "id": "q13",
+            "type": "fill_blank",
+            "question": "The area of a cluster that is not used by the file it contains is called ___.",
+            "options": [
+                "unallocated space",
+                "slack space",
+                "partition gap",
+                "volume shadow"
+            ],
+            "correctAnswer": "slack space",
+            "explanation": "Slack space (file slack) is the unused portion of a file's last cluster."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is the primary challenge of recovering deleted files from an SSD?",
+            "options": [
+                "They use FAT32",
+                "TRIM and wear leveling erase or relocate data",
+                "They don't have sectors",
+                "They are encrypted by default"
+            ],
+            "correctAnswer": 1,
+            "explanation": "TRIM commands and garbage collection aggressively wipe unused blocks on SSDs."
+        },
+        {
+            "id": "q15",
+            "type": "true_false",
+            "question": "A file renamed from 'secret.doc' to 'system.dll' will change its magic bytes.",
+            "correctAnswer": false,
+            "explanation": "Renaming does not alter file content; magic bytes remain the same. Only metadata/extension changes."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which Linux command displays file timestamps including birth time?",
+            "options": [
+                "ls -l",
+                "file",
+                "stat",
+                "dd"
+            ],
+            "correctAnswer": 2,
+            "explanation": "stat shows detailed timestamps, including Birth on supported filesystems."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which structure is located at LBA 0 on an MBR‑partitioned disk?",
+            "options": [
+                "Volume Boot Record",
+                "GPT header",
+                "Master Boot Record",
+                "$MFT"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The MBR resides in the first sector (LBA 0)."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "In NTFS, small files can be stored entirely within the MFT record (resident data).",
+            "correctAnswer": true,
+            "explanation": "NTFS stores tiny files (< ~900 bytes) directly in the MFT as a resident $DATA attribute."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What tool can extract slack space from a forensic image?",
+            "options": [
+                "Wireshark",
+                "Volatility",
+                "blkls",
+                "netstat"
+            ],
+            "correctAnswer": 2,
+            "explanation": "blkls (from The Sleuth Kit) can extract unallocated space or slack."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is endianness primarily concerned with?",
+            "options": [
+                "File sizes",
+                "Byte order of multi‑byte values",
+                "Cluster sizes",
+                "Directory structures"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Endianness defines the byte ordering for numbers that span multiple bytes."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "In a FAT directory entry, how is the starting cluster stored?",
+            "options": [
+                "Big‑endian",
+                "Little‑endian",
+                "Middle‑endian",
+                "Variable"
+            ],
+            "correctAnswer": 1,
+            "explanation": "FAT uses little‑endian for all integer fields, including the starting cluster."
+        },
+        {
+            "id": "q22",
+            "type": "true_false",
+            "question": "File carving relies on the file system's directory entries to locate files.",
+            "correctAnswer": false,
+            "explanation": "Carving works independently of file system structures; it scans raw data for magic bytes."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "Which of the following is a valid NTFS timestamp attribute?",
+            "options": [
+                "$DATA",
+                "$INDEX_ROOT",
+                "$STANDARD_INFORMATION",
+                "$OBJECT_ID"
+            ],
+            "correctAnswer": 2,
+            "explanation": "$STANDARD_INFORMATION contains the primary MAC timestamps for a file."
+        },
+        {
+            "id": "q24",
+            "type": "fill_blank",
+            "question": "The command `hexdump -C` displays file contents in ___ format.",
+            "options": [
+                "decimal",
+                "octal",
+                "hexadecimal",
+                "binary"
+            ],
+            "correctAnswer": "hexadecimal",
+            "explanation": "hexdump -C shows canonical hex+ASCII view."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "Why is it important for forensic examiners to understand binary and hex?",
+            "options": [
+                "To write faster reports",
+                "To interpret raw data when tools fail or to verify tool findings",
+                "To create malware",
+                "To bypass encryption"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Deep understanding of raw data enables manual validation, tool troubleshooting, and recovery of evidence hidden from automated tools."
+        }
+    ]
+}

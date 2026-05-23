@@ -1,0 +1,140 @@
+{
+    "id": "l2",
+    "chapterId": "ch_4",
+    "title": "Imaging Tools & Formats 🛠️",
+    "description": "Explore industry‑standard tools like dd, FTK Imager, and formats from raw to E01.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Data Acquisition",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Toolbox 🧰",
+            "content": "# Forensic Imaging Tools\n\nChoosing the right tool is crucial. The most common are:\n\n- **dd** (Data Dumper): Built into Linux/Unix, creates raw images.\n- **FTK Imager**: Free GUI tool from Exterro; creates raw, E01, and AFF.\n- **Guymager**: Linux‑based, optimized for fast forensic imaging.\n- **EnCase**: Commercial suite; creates proprietary `.E01` files.\n- **dcfldd**: Enhanced `dd` with hashing, progress, and logging.\n\nEach has strengths. For a beginner, FTK Imager is a great start."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Tool Awareness 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which free, GUI‑based tool is widely used for creating forensic images on Windows?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "dd",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "FTK Imager",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Volatility",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Autopsy",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "FTK Imager provides a user‑friendly graphical interface and supports multiple forensic formats.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "code",
+            "title": "Using dd – The Classic",
+            "content": "Create a raw image with `dd`. Always hash the source and image to verify integrity.",
+            "codeSnippet": "# Image a drive, show progress, and hash\ndd if=/dev/sdb of=/mnt/evidence/case001.dd bs=4M status=progress\n# Calculate SHA‑256 of original and image\nsha256sum /dev/sdb > source.hash\nsha256sum /mnt/evidence/case001.dd > image.hash\n# Compare – they must match!",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "dd Parameters 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "fill_blank",
+                "question": "In the dd command, the parameter that specifies the input file is ___.",
+                "options": [
+                    "of",
+                    "if",
+                    "bs",
+                    "count"
+                ],
+                "correctAnswer": "if",
+                "explanation": "'if' stands for 'input file' and tells dd where to read from.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Forensic Image Formats 📦",
+            "content": "## Raw, E01, AFF – What's the Difference?\n\n| Format | Description | Pros | Cons |\n|--------|-------------|------|------|\n| **raw (dd)** | Sector‑by‑sector copy, no metadata | Simple, universal | No compression, no hash embedded |\n| **E01 (EWF)** | EnCase Evidence File, supports compression, embedded hashes | Compressed, metadata‑rich | Proprietary but widely supported |\n| **AFF** | Advanced Forensic Format, open standard | Compression, encryption, metadata | Slightly less common |\n\nMost tools can convert between formats. E01 is very popular in law enforcement."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Format Features 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "multiple_choice",
+                "question": "Which forensic image format can store a hash of the image internally for integrity checks?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Raw (dd)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "E01 (EWF)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "ISO",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Zip",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "E01 format embeds a hash of the data within the file, allowing verification without separate hash files.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "FTK Imager Walkthrough 🖥️",
+            "content": "FTK Imager lets you create images via a simple wizard:\n\n1. **Select Source**: Physical drive, logical drive, or folder.\n2. **Select Destination**: Image file (raw, E01, SMART).\n3. **Set Options**: Compression level, fragmentation, password.\n4. **Verify**: Automatically computes MD5/SHA‑1.\n\nIt also mounts images read‑only for quick viewing."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Always Verify with Multiple Hashes\n\nEven if FTK Imager shows a match, independently verify with command‑line tools (e.g., `sha256sum`). This dual verification adds credibility."
+        },
+        {
+            "id": "s_l2_9",
+            "type": "text",
+            "title": "Remote & Network Imaging 🌐",
+            "content": "Sometimes evidence is on a server you cannot physically access. Tools like **FTK Imager** (with F‑Response) or **EnCase Enterprise** allow imaging over the network.\n\n- Ensure encryption is used to protect data in transit.\n- Document the network path and any access credentials.\n- Risk: Network imaging may miss sectors that change during acquisition."
+        }
+    ]
+}

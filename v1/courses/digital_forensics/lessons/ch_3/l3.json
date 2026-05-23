@@ -1,0 +1,145 @@
+{
+    "id": "l3",
+    "chapterId": "ch_3",
+    "title": "Storage Anatomy: Sectors to Partitions 💾",
+    "description": "Understand how hard drives and SSDs organize data physically and logically, from platters to partition tables.",
+    "xpReward": 25,
+    "estimatedMinutes": 8,
+    "section": "Computer Forensics Fundamentals",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Physical vs Logical Storage 🧊",
+            "content": "# The Layers of a Drive\n\nA storage device has multiple layers:\n\n- **Physical**: Platters, tracks, sectors (on HDD); flash cells (on SSD).\n- **Logical**: How the OS sees the drive – a linear array of **Logical Block Addresses (LBAs)**.\n\nHistorically, a **sector** was 512 bytes, but modern drives may use 4096‑byte (4K) sectors. The OS still sees 512‑byte emulation sometimes."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Sector Size 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What is the traditional sector size for most hard drives?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "128 bytes",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "256 bytes",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "512 bytes",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "1024 bytes",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "512 bytes per sector has been the standard for decades, though newer drives use 4096‑byte sectors.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Clusters (Allocation Units) 📦",
+            "content": "## Where Efficiency Meets Waste\n\nThe OS doesn’t allocate one sector at a time – it groups sectors into **clusters** (also called allocation units).\n\n- FAT32: cluster size can be up to 32 KB.\n- NTFS: typically 4 KB (4K) but configurable.\n\nA 1‑byte file still consumes one whole cluster. The unused space inside that cluster is **file slack** – a goldmine for forensics."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "quiz",
+            "title": "Cluster Concept 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "A 3 KB file on a file system with 4 KB clusters will occupy exactly 3 KB on disk.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "It occupies one full 4 KB cluster; the remaining 1 KB is slack space that may contain old data.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Partition Tables 📊",
+            "content": "## Splitting the Drive\n\nA drive can be divided into partitions, each with its own file system. The partition table tells the OS where each begins and ends.\n\n- **MBR (Master Boot Record)**: Old standard, located in the first sector (LBA 0). Can hold up to 4 primary partitions. Uses 32‑bit LBA, limited to 2 TB.\n- **GPT (GUID Partition Table)**: Modern, part of UEFI. Uses 64‑bit LBAs, supports huge drives, stores backup header at end of disk.\n\nFrom a forensic perspective, the partition table is the first thing you examine."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "code",
+            "title": "View MBR with dd + xxd",
+            "content": "Extract the first sector (512 bytes) to see the MBR and partition entries.",
+            "codeSnippet": "dd if=/dev/sda of=mbr.bin bs=512 count=1\nxxd mbr.bin | less  # Scroll to 0x1BE for partition entries.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "MBR vs GPT 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "multiple_choice",
+                "question": "Which partition table scheme supports disks larger than 2 TB?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "MBR",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "GPT",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "FAT",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "NTFS",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "GPT uses 64‑bit addressing, allowing it to handle drives much larger than 2 TB.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_8",
+            "type": "text",
+            "title": "Volume Boot Record (VBR) 🚀",
+            "content": "Each partition starts with a VBR (also called boot sector). It contains:\n- Jump instruction to boot code.\n- BIOS Parameter Block (BPB): describes the file system (bytes per sector, sectors per cluster, etc.).\n- Signature `55 AA` at offset 510‑511.\n\nIf the VBR is damaged, the partition may appear unformatted. Forensics can reconstruct it."
+        },
+        {
+            "id": "s_l3_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Always Check for Host Protected Areas (HPA) and Device Configuration Overlays (DCO)\n\nDrives can hide a small area from the OS, used by manufacturers – or by criminals to stash evidence. Tools like `hdparm` can detect and remove HPA/DCO."
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_11",
+    "title": "Find Hidden Data: Stego & Hidden Volume",
+    "description": "Using provided files, determine if an image contains steganography and if a container has a hidden volume.",
+    "estimatedMinutes": 20,
+    "problemStatement": "**Scenario:** From a suspect's USB drive, you recovered two files: `beach.jpg` (size: 2.5 MB) and `archive.tc` (a VeraCrypt container, size: 50 MB). The suspect claims `beach.jpg` is just a vacation photo, and `archive.tc` contains only some personal tax documents (total 3 MB).\n\nYour task:\n\n1. Run a steganography detection tool on `beach.jpg`. The tool (StegExpose) returns a score of 0.85 (scale 0‑1, >0.5 suspicious). Explain what this indicates and what next steps you would take to extract hidden data if you had a password hint (e.g., 'password123').\n2. For `archive.tc`, you mount it with the suspect's provided password. Inside, you see only 3 MB of tax PDFs. However, the container file is 50 MB. Explain why this is suspicious and what anti‑forensic technique it suggests.\n3. Describe how you would attempt to prove the existence of a hidden volume. Is it possible to definitively prove its existence without the password?\n4. If you later found a text file on the suspect's desktop containing 'hidden_pass: secret#2026', how would you test if it unlocks a hidden volume? (Explain the steps with VeraCrypt).\n\nProvide detailed forensic reasoning.",
+    "hints": [
+        "High StegExpose score suggests LSB steganography. Use Steghide with `steghide extract -sf beach.jpg -p password123`.",
+        "A VeraCrypt container where the used space is much smaller than the total size may contain a hidden volume.",
+        "Hidden volumes are designed for plausible deniability; without the password, the free space appears random.",
+        "Mount the container with the hidden volume password using VeraCrypt's 'Hidden Volume' option."
+    ],
+    "expectedOutput": "Explanation of findings and steps to confirm hidden data.",
+    "solutionCode": "1. StegExpose score 0.85 strongly indicates steganography. The next step is to attempt extraction with known or guessed passwords. Since the hint 'password123' exists, run: `steghide extract -sf beach.jpg -p password123`. If successful, hidden data is revealed.\n2. The container is 50 MB but only holds 3 MB of data. VeraCrypt hidden volumes occupy the free space of the outer volume. The remaining space likely contains a hidden volume, which is undetectable without the correct password.\n3. Without the hidden volume password, you cannot definitively prove its existence because the free space is filled with random data (standard for VeraCrypt). However, you can note the size discrepancy and the suspect's inconsistent claim, which raises suspicion.\n4. To test: Open VeraCrypt, select the `archive.tc` file, click 'Mount', and when prompted for the outer volume password, enter the suspect's provided password. Then, when mounting, select 'Hidden Volume' and enter 'secret#2026' as the hidden volume password. If it mounts, the hidden volume is revealed and can be examined."
+}

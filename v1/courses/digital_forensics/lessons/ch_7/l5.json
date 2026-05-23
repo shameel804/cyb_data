@@ -1,0 +1,185 @@
+{
+    "id": "l5",
+    "chapterId": "ch_7",
+    "title": "Advanced Artifacts & Case Study 📋",
+    "description": "Recover encryption keys, credentials, and reconstruct user activity from memory dumps.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Memory Forensics",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Treasure Trove of Secrets 🔐",
+            "content": "# Credentials and Keys in RAM\n\nOne of the most valuable uses of memory forensics is extracting credentials that never hit the disk.\n\n- **LSASS (Local Security Authority Subsystem Service)**: Contains NTLM hashes, Kerberos tickets, and sometimes clear‑text passwords.\n- **BitLocker keys**: Can be extracted if the system was running.\n- **TrueCrypt/VeraCrypt**: Passphrases or cache keys in memory.\n- **RDP credentials**: cached in `mstsc.exe` process.\n\nPlugin: **mimikatz** integration in Volatility, or standalone `mimikatz` on a memory dump."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "Credential Extraction 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Which Windows process is the primary target for dumping password hashes from memory?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "svchost.exe",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "explorer.exe",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "lsass.exe",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "winlogon.exe",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "lsass.exe handles authentication and stores credentials in memory, making it a prime target.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Mimikatz & Volatility 🛠️",
+            "content": "Mimikatz can be used against a memory dump (offline) by first extracting the lsass process memory:\n\n1. Use `procdump` or `windows.memmap` in Volatility to dump the `lsass.exe` process.\n2. Run `mimikatz` on the dump:\n   ```\n   sekurlsa::minidump lsass.dmp\n   sekurlsa::logonPasswords\n   ```\n\nThis reveals NTLM hashes, Kerberos tickets, and sometimes clear‑text passwords (if WDigest is enabled).\n\nVolatility 3 also has a plugin `windows.hashdump` to retrieve cached hashes."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "Volatility 3 hashdump",
+            "content": "Dump password hashes from SAM in memory.",
+            "codeSnippet": "vol.py -f memory.raw windows.hashdump\n# Output: user:rid:lm_hash:ntlm_hash:::",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_5",
+            "type": "quiz",
+            "title": "Hash Extraction 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "The `windows.hashdump` plugin can extract NTLM hashes from a memory dump without needing the SYSTEM hive.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "It typically requires the SYSTEM hive's boot key to decrypt the SAM; Volatility can extract the boot key from memory as well, but it essentially needs the SYSTEM registry in memory.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Encryption Key Recovery 🔑",
+            "content": "Full‑disk encryption tools store keys in memory when the volume is mounted.\n\n- **BitLocker**: The Full Volume Encryption Key (FVEK) can be extracted using `bitlocker` plugin (Volatility) or `Elcomsoft Forensic Disk Decryptor`.\n- **TrueCrypt/VeraCrypt**: Passphrases or master keys may reside in the process memory of the application, or in kernel structures.\n\nIf the system was live and the drive was unlocked, a memory dump can be the key to accessing the disk."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Encryption Artifacts 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_3",
+                "type": "multiple_choice",
+                "question": "What must be true for BitLocker keys to be recoverable from a memory dump?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The system was powered off",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The encrypted volume was mounted/unlocked at the time of the dump",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The TPM must be present",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The password must be known",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The keys are only present in RAM when the volume is unlocked; otherwise they are not loaded.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_8",
+            "type": "text",
+            "title": "User Activity Reconstruction 🧩",
+            "content": "Memory also holds artifacts of user actions:\n- **Clipboard contents**: Plugin `clipboard` (Vol 2) extracts text from the clipboard.\n- **Command history**: Cmd.exe and PowerShell store typed commands in memory (plugin `cmdscan`, `consoles`).\n- **MUICache**: Executed programs' full paths.\n- **Notepad**: Plugin `notepad` (Vol 2) can recover text from Notepad process memory.\n\nThese can prove what a user was doing right before the system was seized."
+        },
+        {
+            "id": "s_l5_9",
+            "type": "code",
+            "title": "Extract Console History (Vol 3)",
+            "content": "Use `windows.cmdline` for process command lines; for cmd history, Volatility 2 had `cmdscan`; Vol 3 may need `windows.consoles` or manual carving.",
+            "codeSnippet": "vol.py -f memory.raw windows.consoles\n# Shows console buffers including command history.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_10",
+            "type": "quiz",
+            "title": "Clipboard & Commands 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_4",
+                "type": "true_false",
+                "question": "The 'consoles' plugin can recover commands that were typed into a Command Prompt, even if the window was closed.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Console history buffers remain in memory until overwritten, so closed prompts can still be parsed.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_11",
+            "type": "text",
+            "title": "Case Study Walk‑Through 📝",
+            "content": "# Putting It All Together\n\n**Scenario**: A user reports a ransomware infection. The machine is still on, and you capture a memory dump and a disk image.\n\n1. **Profile detection**: `imageinfo` → Win10x64.\n2. **Process analysis**: `psscan` reveals a suspicious `notepad.exe` running with a child process `cmd.exe` (unusual). `cmdline` shows `vssadmin delete shadows /all` – shadow copy deletion.\n3. **Network**: `netscan` shows an outbound connection from `ransomware.exe` to a known C2 IP.\n4. **Malware scan**: `malfind` on `explorer.exe` detects injected code with PAGE_EXECUTE_READWRITE.\n5. **Credentials**: Dump `lsass.exe` and use Mimikatz to obtain the user's password hash for further investigation.\n6. **Console history**: `consoles` shows the attacker executed the ransomware manually via command line.\n\nThis holistic approach identifies the malware, its actions, and the attacker's method."
+        },
+        {
+            "id": "s_l5_12",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Automate with Volatility Workbench or MemProcFS\n\nTools like MemProcFS mount the memory dump as a virtual file system, letting you browse artifacts with regular file tools. It's a massive time‑saver."
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_11",
+    "title": "Detect Free Space Wiping and Tool Execution",
+    "description": "Analyze a forensic image to find evidence that CCleaner was used to wipe free space and identify what traces remain.",
+    "estimatedMinutes": 20,
+    "problemStatement": "**Scenario:** You have a disk image of a suspect's Windows 10 machine. The suspect claims they never deleted any evidence. Your task is to:\n\n1. Examine the Prefetch folder (`C:\\Windows\\Prefetch`) and locate the Prefetch file for CCleaner.exe. What is the filename format, and what information can you extract from it? (Assume the file `CCLEANER64.EXE-12345678.pf` exists, with a last run date of 2026-04-01 18:00 UTC and run count of 4).\n2. Check the unallocated space in the image. Using a hex editor or FTK Imager, you observe large areas filled with `00` bytes, especially in the area that previously held the Documents folder. Explain what this indicates and how it relates to the CCleaner execution.\n3. Look at the registry key `HKLM\\SOFTWARE\\Piriform\\CCleaner`. It shows a value `(App)CCleaner` with installation date and last usage timestamp. What additional evidence does this provide?\n4. The USN Journal (if available) shows records of CCleaner64.exe being executed and numerous files being deleted at that time. How does this strengthen the case?\n5. Summarize your findings and explain why the suspect's claim is likely false.\n\nProvide the forensic reasoning and steps.",
+    "hints": [
+        "Prefetch files have the pattern `<EXENAME>-<HASH>.pf` and contain run count and embedded last run time.",
+        "Zero-filled unallocated space is unnatural; a normal system would have random data remnants.",
+        "Registry entries for applications often record usage details.",
+        "USN Journal tracks file operations (even if the files themselves are gone)."
+    ],
+    "expectedOutput": "A comprehensive analysis of each artifact and the conclusion.",
+    "solutionCode": "1. Prefetch: `CCLEANER64.EXE-12345678.pf` shows the program ran at least 4 times, last run 2026-04-01 18:00 UTC. This proves CCleaner was executed.\n2. Unallocated space filled with zeros: This matches the pattern of CCleaner's 'Wipe Free Space' function, which overwrites unallocated clusters with zeros. The suspect's Documents folder area being zeroed indicates deliberate wiping.\n3. Registry key: The presence of CCleaner's configuration key with a last usage timestamp matching the Prefetch time corroborates the tool's use and ties it to that session.\n4. USN Journal entries: The journal records CCleaner64.exe being created/modified/executed, and immediately after, a series of file deletions in the Documents folder. This shows CCleaner actively deleting files before wiping free space.\n5. Conclusion: The suspect's claim is false. The combination of CCleaner execution proof, zero-filled unallocated space, registry evidence, and USN journal activity demonstrates intentional wiping of evidence after the incident."
+}

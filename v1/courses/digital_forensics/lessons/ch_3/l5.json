@@ -1,0 +1,139 @@
+{
+    "id": "l5",
+    "chapterId": "ch_3",
+    "title": "Metadata & File Signatures 🕵️",
+    "description": "Master MAC times and magic bytes – the hidden clues that reveal when and what a file really is.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Computer Forensics Fundamentals",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Timestamps That Tell Tales ⏰",
+            "content": "# MAC Times\n\nEvery file has timestamps – collectively called **MAC times** (or MACB):\n\n- **M**odified: Last time file content changed.\n- **A**ccessed: Last time file was read (often disabled for performance).\n- **C**hanged (or Created): Metadata change or file birth.\n- **B**irth (on some file systems): Original creation time.\n\nThese timestamps are crucial for timeline reconstruction."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "Timestamp Pop Quiz 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Which timestamp is updated when a file's permissions are changed?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Modified",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Accessed",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Changed (CTime)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Created",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "On many systems (like Unix), ctime updates when file metadata (permissions, owner) changes, not just content.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Timestamps on Different File Systems 🖥️",
+            "content": "- **NTFS**: Stores four timestamps in $STANDARD_INFORMATION and $FILE_NAME attributes. $SI times can be modified by user, $FN times are more accurate (set by kernel).\n- **FAT**: Only modified date/time, and accessed date (no creation time in older FAT; FAT32 has create date/time).\n- **ext4**: Stores atime, mtime, ctime, and crtime (birth time).\n\nAlways note that timestamps can be manipulated (timestomping) – don't treat them as absolute truth."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "View Timestamps with stat",
+            "content": "On Linux, `stat` shows all timestamps for a file.",
+            "codeSnippet": "stat suspicious.docx\n# Output:\n#  Access: 2026-02-15 09:30:00 ...\n#  Modify: 2026-02-15 09:29:45 ...\n#  Change: 2026-02-15 09:30:00 ...\n#  Birth: 2026-02-15 09:29:45 ...",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_5",
+            "type": "quiz",
+            "title": "Timestomping Awareness 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "File timestamps can never be altered intentionally.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Tools exist to modify timestamps (timestomping) to mislead investigators. That's why correlation with other sources is essential.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "File Signatures (Magic Bytes) 🪄",
+            "content": "## Identity Beyond Extension\n\nA file's true type is determined by its **magic bytes** – a specific sequence at the beginning of the file.\n\n| File Type | Hex Signature |\n|-----------|---------------|\n| JPEG      | FF D8 FF E0   |\n| PNG       | 89 50 4E 47   |\n| PDF       | 25 50 44 46   |\n| ZIP       | 50 4B 03 04   |\n| EXE       | 4D 5A         |\n\nRenaming a .exe to .docx doesn't change its magic bytes. Forensic tools check the header to identify true file types, even if extension is missing."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "code",
+            "title": "Check Signature with file Command",
+            "content": "Linux's `file` command uses the magic database to identify file types.",
+            "codeSnippet": "file --mime-type unknown_file\n# Output: application/pdf (even if renamed to .txt)",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_8",
+            "type": "quiz",
+            "title": "Magic Bytes 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_3",
+                "type": "fill_blank",
+                "question": "The magic bytes for a ZIP file are ___.",
+                "options": [
+                    "50 4B",
+                    "89 50",
+                    "FF D8",
+                    "4D 5A"
+                ],
+                "correctAnswer": "50 4B",
+                "explanation": "ZIP files start with 50 4B 03 04, but the first two bytes 'PK' (50 4B) are the signature.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_9",
+            "type": "warning",
+            "title": "⚠️ Mismatched Extensions = Suspicious",
+            "content": "A .jpg file with a PDF header is often a sign of data hiding or malware. Always verify file signatures during examination."
+        },
+        {
+            "id": "s_l5_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use a Custom Signature File\n\nTools like **TrID** or **Autopsy** can scan for thousands of signatures. But you can also create your own for proprietary file types."
+        }
+    ]
+}

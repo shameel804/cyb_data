@@ -1,0 +1,17 @@
+{
+    "id": "task1",
+    "chapterId": "ch_13",
+    "title": "Design a Cloud Evidence Collection Plan",
+    "description": "Given a scenario where an employee exfiltrated data via OneDrive, design an evidence collection strategy for Microsoft 365.",
+    "estimatedMinutes": 20,
+    "problemStatement": "**Scenario:** An insider threat is suspected of uploading sensitive company documents to their personal OneDrive account from a corporate laptop. The company uses Microsoft 365 (Office 365) and Azure AD. The suspect's account has been suspended, but the data may still exist in their corporate OneDrive and the personal account (if synced). As the forensic investigator, you cannot access the personal account directly without legal authority.\n\nYour task: **Create a cloud evidence collection plan** that outlines:\n\n1. What data you can collect from the corporate Microsoft 365 environment and how (tools/commands).\n2. How you would preserve that data (legal hold, export).\n3. What logs would show the upload activity (e.g., Unified Audit Log, Azure AD sign‑ins).\n4. How to handle the personal OneDrive (legal process, potential synchronization on the corporate laptop).\n5. Chain of custody considerations for cloud evidence.\n\nWrite a concise, bullet‑point plan suitable for an incident response manager.",
+    "hints": [
+        "Use Security & Compliance Center to search mailbox and OneDrive.",
+        "Microsoft 365 Unified Audit Log records file uploads, downloads, and access.",
+        "The suspect's corporate laptop may still have local sync folders (cached OneDrive files). Image it as well.",
+        "For personal OneDrive, recommend a legal hold request or subpoena to Microsoft.",
+        "Always export to a forensically sound location and hash the export."
+    ],
+    "expectedOutput": "A clear, actionable collection plan.",
+    "solutionCode": "Plan:\n- **Corporate OneDrive**: Use Microsoft Purview eDiscovery to create a case, place a legal hold on the suspect's account, and search for sensitive keywords. Export the results to a PST/individual files. Hash the export immediately.\n- **Unified Audit Log**: In Microsoft Purview, search the audit log for activities by the suspect (e.g., FileUploaded, FileDownloaded, FileSyncUploadedFull) filtering by the date range. Export the CSV log.\n- **Azure AD Logs**: Collect sign‑in logs (including IP addresses) and audit logs for the user account via Azure Portal or Graph API.\n- **Corporate Laptop**: Since the laptop may have a local OneDrive folder, perform a standard forensic image (write‑blocker, physical) and later analyze the OneDrive cache (`%USERPROFILE%\\OneDrive`). Look for sync logs and orphaned files.\n- **Personal OneDrive**: Identify the personal account email. Advise legal counsel to obtain a subpoena/warrant for Microsoft to preserve and provide the personal OneDrive contents. Provide the account identifier (email) and timeframe.\n- **Chain of custody**: Document all eDiscovery search queries, export times, and user actions. Store all exports on a forensically wiped drive and hash (SHA‑256). Keep a log of all API interactions.\n- **Integration**: Correlate the upload timestamps from the audit log with the laptop's file system timestamps to prove the file existed on the laptop before upload."
+}

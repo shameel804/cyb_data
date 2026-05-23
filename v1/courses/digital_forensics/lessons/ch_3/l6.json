@@ -1,0 +1,151 @@
+{
+    "id": "l6",
+    "chapterId": "ch_3",
+    "title": "Slack Space & Unallocated Realms 👻",
+    "description": "Enter the twilight zones where deleted data hides: file slack, unallocated space, and carving gold.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Computer Forensics Fundamentals",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "The Ghosts in the Machine 👻",
+            "content": "# Slack Space vs Unallocated Space\n\nDigital evidence lives in the cracks:\n\n- **File Slack**: Space between the end of a file's data and the end of its allocated cluster(s). It can hold fragments of previously deleted files.\n- **Unallocated Space**: Clusters marked as free by the file system. May contain intact deleted files or fragments.\n\nBoth areas are invisible to the user but very visible to an examiner."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "quiz",
+            "title": "Space Terminology 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "What is the area called that exists between the logical end of a file and the end of the cluster?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Unallocated space",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Slack space",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Partition gap",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Master Boot Record",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "File slack (or cluster slack) is the wasted space inside the last cluster allocated to a file.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_3",
+            "type": "text",
+            "title": "Types of Slack 🪆",
+            "content": "## RAM Slack and Drive Slack\n\n- **RAM Slack**: In older systems, from the end of file data to the end of the sector (if cluster = multiple sectors). Modern OSes zero this.\n- **Drive Slack (File Slack)**: The remaining sectors in the cluster after the file's last sector. May contain fragments of previous files that occupied that cluster.\n\nExample: 4 KB cluster, file is 1500 bytes. First 1500 bytes are file; the next 10 bytes are RAM slack (if sector 512 bytes, file ends mid‑sector); then the rest of the 4K is drive slack – potentially full of old data."
+        },
+        {
+            "id": "s_l6_4",
+            "type": "code",
+            "title": "Capture Slack with Blkls",
+            "content": "The Sleuth Kit's `blkls` extracts unallocated blocks and slack space.",
+            "codeSnippet": "blkls -s image.dd > slack_data.bin\n# -s : extract slack space\n# Then grep or strings to search.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_5",
+            "type": "quiz",
+            "title": "Slack Knowledge 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "true_false",
+                "question": "Slack space only exists at the end of large files.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Any file whose size is not an exact multiple of the cluster size will have slack space at the end of its last cluster.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_6",
+            "type": "text",
+            "title": "Unallocated Space Deep Dive 🌌",
+            "content": "## The Dark Matter\n\nWhen a file is deleted, its clusters are marked as free in the file system's allocation bitmap (NTFS) or FAT chain (FAT). The data remains in those clusters until they are reused by a new file.\n\n- **Carving**: Scanning unallocated space for file headers/footers to recover files even without file system metadata.\n- **String search**: Looking for keywords (emails, passwords) across the entire unallocated area.\n\nCrucial for cases where the user has emptied the Recycle Bin and reformatted the drive."
+        },
+        {
+            "id": "s_l6_7",
+            "type": "quiz",
+            "title": "Carving Territory 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_3",
+                "type": "multiple_choice",
+                "question": "Which technique is used to recover files from unallocated space without file system records?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Hash filtering",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "File carving",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Indexing",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Write‑blocking",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "File carving looks for file signatures in raw data streams, independent of directory entries.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_8",
+            "type": "text",
+            "title": "SSD TRIM: A New Challenge ⚡",
+            "content": "SSDs use the TRIM command to proactively erase deleted data blocks for performance. This makes recovery of deleted files from SSDs much harder than from HDDs.\n\nHowever, TRIM isn't instantaneous, and some data may linger in unallocated space if the drive hasn't garbage collected yet. Collect evidence quickly."
+        },
+        {
+            "id": "s_l6_9",
+            "type": "warning",
+            "title": "⚠️ Wear Leveling on SSDs",
+            "content": "SSDs constantly move data around (wear leveling). The physical location of a logical block may change. Forensic imaging with a write‑blocker still captures the current logical state, but you may miss old copies that have been TRIM‑ed."
+        },
+        {
+            "id": "s_l6_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Combine Carving with Metadata\n\nWhen you carve a file, try to find any remaining metadata (like file name from directory entries) to restore the full picture. Tools like PhotoRec do the carving, but manual correlation is often needed."
+        }
+    ]
+}

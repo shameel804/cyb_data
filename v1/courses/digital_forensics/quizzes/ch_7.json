@@ -1,0 +1,299 @@
+{
+    "id": "quiz_ch_7",
+    "chapterId": "ch_7",
+    "title": "Chapter 7 Quiz",
+    "description": "Test your knowledge of memory forensics: acquisition, Volatility, malware detection, and advanced artifacts.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which of the following is the primary reason to perform memory forensics?",
+            "options": [
+                "To recover deleted files",
+                "To analyze the active state of a system, including running processes and network connections",
+                "To bypass disk encryption",
+                "To create a backup of the hard drive"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Memory forensics captures volatile data that is lost when the system is powered off."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What is the first step in analyzing a memory dump with Volatility?",
+            "options": [
+                "Run netscan",
+                "Dump lsass.exe",
+                "Identify the correct OS profile",
+                "Check for hidden processes"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Without the right profile, Volatility cannot correctly interpret the memory structures."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "The hibernation file (hiberfil.sys) contains a compressed memory image and can be analyzed with Volatility.",
+            "correctAnswer": true,
+            "explanation": "Volatility supports hibernation files directly or after conversion with hibr2dmp."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "The Volatility plugin that scans for _EPROCESS structures to find hidden processes is called ___.",
+            "options": [
+                "pslist",
+                "psscan",
+                "pstree",
+                "cmdline"
+            ],
+            "correctAnswer": "psscan",
+            "explanation": "psscan carves for `_EPROCESS` objects in physical memory, bypassing the linked list."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which memory acquisition tool is a loadable kernel module for Linux?",
+            "options": [
+                "DumpIt",
+                "WinPmem",
+                "LiME",
+                "FTK Imager"
+            ],
+            "correctAnswer": 2,
+            "explanation": "LiME (Linux Memory Extractor) is specifically designed for Linux memory acquisition."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What does the Volatility malfind plugin detect?",
+            "options": [
+                "Corrupted system files",
+                "Suspicious memory regions indicative of code injection",
+                "Hidden network connections",
+                "Deleted registry keys"
+            ],
+            "correctAnswer": 1,
+            "explanation": "malfind looks for executable memory pages not backed by a file, a hallmark of injected code."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "It is impossible to retrieve NTLM password hashes from a memory dump.",
+            "correctAnswer": false,
+            "explanation": "NTLM hashes can be extracted from the LSASS process or the SAM hive in memory using tools like Mimikatz or the hashdump plugin."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which Windows process typically stores user credentials in memory?",
+            "options": [
+                "svchost.exe",
+                "lsass.exe",
+                "csrss.exe",
+                "wininit.exe"
+            ],
+            "correctAnswer": 1,
+            "explanation": "LSASS (Local Security Authority Subsystem Service) manages authentication and holds credentials."
+        },
+        {
+            "id": "q9",
+            "type": "fill_blank",
+            "question": "The Volatility command to display network connections is ___.",
+            "options": [
+                "netscan",
+                "netstat",
+                "connscan",
+                "sockets"
+            ],
+            "correctAnswer": "netscan",
+            "explanation": "In both Volatility 2 and 3, netscan (or windows.netscan) enumerates TCP and UDP endpoints."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Why is it recommended to run the acquisition tool from external media?",
+            "options": [
+                "To increase the dump speed",
+                "To prevent overwriting potential evidence on the suspect's drive",
+                "Because it's required by the tool's license",
+                "To make the tool run as administrator"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Writing the memory dump to the suspect's drive would destroy data. External media protects the original disk."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What is Direct Kernel Object Manipulation (DKOM) used for by rootkits?",
+            "options": [
+                "Encrypting network traffic",
+                "Hiding processes or drivers by altering kernel data structures",
+                "Injecting code into browsers",
+                "Increasing system performance"
+            ],
+            "correctAnswer": 1,
+            "explanation": "DKOM modifies kernel objects like `_EPROCESS` ActiveProcessLinks to unlink a process, hiding it from system tools."
+        },
+        {
+            "id": "q12",
+            "type": "true_false",
+            "question": "A process found by psscan but missing from pslist is definitively proof of a rootkit.",
+            "correctAnswer": false,
+            "explanation": "It's a strong indicator, but could be a benign artifact or result of acquisition timing. Further investigation is necessary."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which Volatility 3 plugin can be used to retrieve the command line arguments of a specific process?",
+            "options": [
+                "windows.pslist",
+                "windows.cmdline",
+                "windows.psscan",
+                "windows.dlllist"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`windows.cmdline` displays the full command line for each process or a specific PID."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What information can be extracted from the Windows clipboard in a memory dump?",
+            "options": [
+                "Only text copied in the last hour",
+                "The last copied text, if still in memory",
+                "Images and files",
+                "Nothing, clipboard is always encrypted"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The clipboard stores the last copied item in memory; Volatility's `clipboard` plugin can extract it if not overwritten."
+        },
+        {
+            "id": "q15",
+            "type": "true_false",
+            "question": "A memory dump of a machine with BitLocker enabled can only be useful if the volume was unlocked at the time of capture.",
+            "correctAnswer": true,
+            "explanation": "The encryption keys are only present in RAM when the volume is mounted/unlocked."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which file, if present on disk, serves as a pre‑captured memory image from hibernation?",
+            "options": [
+                "pagefile.sys",
+                "hiberfil.sys",
+                "swapfile.sys",
+                "ntuser.dat"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`hiberfil.sys` is the hibernation file that stores the system's memory when it hibernates."
+        },
+        {
+            "id": "q17",
+            "type": "fill_blank",
+            "question": "To dump the memory of the lsass.exe process for credential extraction, you can use the Volatility plugin ___.",
+            "options": [
+                "procdump",
+                "malfind",
+                "psscan",
+                "moddump"
+            ],
+            "correctAnswer": "procdump",
+            "explanation": "procdump (Vol 2) or windows.memmap (Vol 3) can extract a process's memory space."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "What is the main benefit of using a tool like MemProcFS?",
+            "options": [
+                "It captures memory images",
+                "It mounts a memory dump as a virtual file system for easy browsing of artifacts",
+                "It encrypts memory dumps",
+                "It performs real‑time malware scanning"
+            ],
+            "correctAnswer": 1,
+            "explanation": "MemProcFS creates a virtual file tree from a memory image, allowing you to navigate processes, network, registry, etc., with standard file tools."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "In the context of memory forensics, what does PAGE_EXECUTE_READWRITE memory indicate?",
+            "options": [
+                "A valid system DLL",
+                "Potentially malicious code, as it's rare for legitimate code to be both writable and executable",
+                "A memory‑mapped file",
+                "An encrypted region"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Memory that is simultaneously writable and executable is a common indicator of injected shellcode or malicious activity."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which command would you use to list all network connections in Volatility 3?",
+            "options": [
+                "vol.py -f mem.raw windows.pslist",
+                "vol.py -f mem.raw windows.netscan",
+                "vol.py -f mem.raw windows.malfind",
+                "vol.py -f mem.raw windows.consoles"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`windows.netscan` enumerates network connections with process association."
+        },
+        {
+            "id": "q21",
+            "type": "true_false",
+            "question": "A memory dump can be analyzed on a different operating system than the one it was captured from, as long as Volatility has the correct profile.",
+            "correctAnswer": true,
+            "explanation": "Volatility is platform‑independent for analysis; you can analyze a Windows memory dump on Linux."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "What does the `consoles` plugin in Volatility 3 recover?",
+            "options": [
+                "Registry hives",
+                "Console command history from Command Prompt and PowerShell",
+                "Network sockets",
+                "Clipboard contents"
+            ],
+            "correctAnswer": 1,
+            "explanation": "`windows.consoles` extracts input and output from console buffers."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "Which of the following is NOT a recommended step when acquiring a memory dump?",
+            "options": [
+                "Run the acquisition tool from a trusted USB drive",
+                "Hash the memory image after capture",
+                "Reboot the system first to clear memory",
+                "Document the tool name and version"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Rebooting would destroy all volatile data; you should capture the current state without rebooting."
+        },
+        {
+            "id": "q24",
+            "type": "true_false",
+            "question": "The `windows.hashdump` plugin can retrieve NTLM hashes from a memory dump without any additional registry hive.",
+            "correctAnswer": false,
+            "explanation": "It needs the boot key from the SYSTEM hive in memory to decrypt the SAM hashes."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "Which acquisition tool is a free, dedicated RAM capture utility from Magnet Forensics?",
+            "options": [
+                "FTK Imager",
+                "Magnet RAM Capture",
+                "LiME",
+                "WinPmem"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Magnet RAM Capture is a standalone tool specifically designed for capturing memory with a small footprint."
+        }
+    ]
+}

@@ -1,0 +1,167 @@
+{
+    "id": "l5",
+    "chapterId": "ch_9",
+    "title": "App Artifacts & Cloud Sync ☁️",
+    "description": "Dig into WhatsApp, Telegram, social media, GPS data, and how cloud sync can mirror evidence.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Mobile Forensics",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The App Data Goldmine ⛏️",
+            "content": "# Beyond Default Apps\n\nUsers spend most of their time in third‑party apps. Each leaves its own set of artifacts. We'll examine the most forensically relevant:\n\n- **Encrypted messengers** (WhatsApp, Signal, Telegram)\n- **Social media** (Facebook, Instagram, TikTok)\n- **Dating apps** (Tinder, Bumble)\n- **Email clients** (Outlook, Gmail)\n- **GPS/Navigation** (Google Maps, Waze)\n- **File sharing/Cloud storage** (Dropbox, Google Drive)\n\nMany of these are backed by cloud data, so correlating device and cloud evidence paints the full picture."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "App Ecosystem 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Which of the following apps stores its messages in an encrypted database on Android?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Facebook Messenger",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "WhatsApp",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Instagram Direct",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Twitter DM",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "WhatsApp uses an SQLCipher‑encrypted database (`msgstore.db`); the key is stored in the app's files."
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "WhatsApp Decryption & Artifacts 🔓",
+            "content": "**Android:** Key path: `/data/data/com.whatsapp/files/key` (a 158‑byte file containing the AES key). Database: `msgstore.db` (current) and `msgstore-YYYY-MM-DD.1.db.crypt*` (daily backups).\n**iOS:** Key stored in the iOS keychain (retrievable with an agent extraction). Database: `ChatStorage.sqlite` (encrypted).\n\nForensic tools like **WhatsApp Viewer** or **Cellebrite Physical Analyzer** can decrypt given the key.\n\nArtifacts: messages, timestamps, sender/recipient, media (in `Media` folder), call logs (WhatsApp calls), and statuses.\n\nDeleted messages may be recoverable from the backup databases or via the WAL journal."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "Extract WhatsApp Key (Rooted Android)",
+            "content": "If the device is rooted, pull the key file directly:",
+            "codeSnippet": "adb pull /data/data/com.whatsapp/files/key\n# Then use a decryption tool with the key and msgstore.db",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_5",
+            "type": "quiz",
+            "title": "WhatsApp Key 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "WhatsApp's encryption key can be obtained from an iTunes backup if the backup is encrypted.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "An encrypted iTunes backup can include keychain items, from which the WhatsApp key can be extracted using tools like Elcomsoft Phone Breaker."
+            }
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Other Messengers – Telegram, Signal 📨",
+            "content": "**Telegram:** Data stored in `/data/data/org.telegram.messenger/files/cache4.db` (SQLite, plaintext if logged in). Contains messages, contacts, stickers. Deleted messages are often recoverable from the database until compacted. Secret chats are end‑to‑end encrypted and device‑specific.\n\n**Signal:** Extremely hardened. Messages are encrypted in a SQLite database (`signal.db`), with the key protected by the OS keystore. Decryption is very challenging without root or jailbreak.\n\n**iMessage:** On iOS, `sms.db` also contains iMessages, including attachments. The database is plain SQLite but file‑based encryption may apply."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Signal Encryption 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_3",
+                "type": "fill_blank",
+                "question": "Signal's message database is encrypted and the decryption key is stored in the ___.",
+                "options": [
+                    "SIM card",
+                    "Secure Enclave / Trusted Execution Environment",
+                    "microSD card",
+                    "cloud server"
+                ],
+                "correctAnswer": "Secure Enclave / Trusted Execution Environment",
+                "explanation": "On modern devices, the database key is protected by hardware‑backed keystore mechanisms."
+            }
+        },
+        {
+            "id": "s_l5_8",
+            "type": "text",
+            "title": "GPS & Location Artifacts 🗺️",
+            "content": "Location data comes from multiple sources:\n- **EXIF metadata** in photos\n- **Cell tower location history** (in iOS `Cache.sqlite` and Android telephony databases)\n- **Wi‑Fi access points** (`com.android.providers.settings` for Wi‑Fi connections)\n- **Google Location History** (if enabled, accessible via Google Takeout or device data)\n- **Fitness trackers** (Health app, Google Fit)\n\nCombining these can pinpoint a device's movements with high accuracy over time."
+        },
+        {
+            "id": "s_l5_9",
+            "type": "quiz",
+            "title": "Location Sources 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_4",
+                "type": "multiple_choice",
+                "question": "Which of the following is NOT a typical source of location data on a smartphone?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "EXIF data in photos",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Cell tower connection logs",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "SIM card IMSI",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Wi‑Fi network connection history",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "IMSI is a subscriber identifier, not a location. It can indicate which network was used, but not physical location without additional cell tower data."
+            }
+        },
+        {
+            "id": "s_l5_10",
+            "type": "text",
+            "title": "Cloud Syncing – Duplicate Evidence ☁️",
+            "content": "Many apps sync to the cloud, providing an alternative source of evidence:\n- **Google Drive** (Android backups, WhatsApp backups)\n- **iCloud** (device backups, photos, notes)\n- **Dropbox**, **OneDrive**, **Box** (file sync)\n- **Social media** cloud data (Facebook, Instagram messages accessible via warrant to the provider)\n\nCloud data can fill gaps when the physical device is damaged, wiped, or unavailable. It's also harder for the suspect to destroy.\n\nAlways include cloud‑based evidence in your investigation plan, with proper legal process."
+        },
+        {
+            "id": "s_l5_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## WhatsApp iCloud Backup\n\nWhatsApp backups on iCloud may be unencrypted or encrypted with a key stored in the iCloud Keychain. With proper legal authority, you can obtain both the backup and key from Apple."
+        }
+    ]
+}

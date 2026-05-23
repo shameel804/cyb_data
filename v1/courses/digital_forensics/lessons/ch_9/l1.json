@@ -1,0 +1,119 @@
+{
+    "id": "l1",
+    "chapterId": "ch_9",
+    "title": "The Mobile Landscape 📱",
+    "description": "Discover the unique challenges and opportunities of mobile forensics – from SIM cards to apps.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Mobile Forensics",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Welcome to Pocket-Sized Evidence 📱",
+            "content": "# Why Mobile Forensics?\n\nSmartphones are digital diaries – they store calls, messages, photos, GPS locations, browsing history, and app data. They often hold the key to:\n\n- Personal communications (WhatsApp, Signal)\n- Financial transactions (banking apps, mobile wallets)\n- Location tracking (Google Maps, Find My)\n- Health data (steps, heart rate)\n- Cloud authentication (second‑factor tokens)\n\nMobile forensics is the process of recovering and analyzing this evidence while respecting encryption and legal constraints."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Mobile Data Richness 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Why are smartphones considered a treasure trove for forensic investigators?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "They have the fastest processors",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "They store a wide variety of personal and behavioral data",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "They are always connected to Wi‑Fi",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "They run only one operating system",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Smartphones integrate location, communication, health, and financial data, providing a detailed picture of a user's life.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "The Mobile Ecosystem 🍃",
+            "content": "## Two Giants, Many Challenges\n\n**Android**: Open‑source, various manufacturers (Samsung, Xiaomi, etc.), different versions, and a wide range of security levels.\n**iOS**: Closed ecosystem, Apple‑controlled, consistent updates, strong encryption.\n\nBoth platforms present their own forensic hurdles:\n- Encryption (File‑Based Encryption, Full Disk Encryption)\n- Secure Enclave / Trusted Execution Environment\n- User‑applied passcodes and biometric locks\n- Jailbreak/root detection and counter‑measures\n\nThis lesson will map the landscape before we dive into acquisition."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "Platform Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "Android and iOS devices use the same file system and security model.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Android uses ext4/f2fs, iOS uses APFS/HFS+; their security models differ significantly."
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "SIM Cards & Removable Storage 📇",
+            "content": "Although less common with eSIM, physical SIM cards can still contain:\n- **IMSI** (International Mobile Subscriber Identity)\n- **Contacts** and **SMS** (on older devices)\n- **Network information**\n\nMicroSD cards (external storage) may hold photos, documents, and app data. They can be imaged with traditional write‑blockers.\n\nAlways seize and image external storage separately."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "SIM Card Data 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_3",
+                "type": "fill_blank",
+                "question": "The unique identifier stored on a SIM card that identifies the subscriber to the network is the ___.",
+                "options": [
+                    "IMEI",
+                    "IMSI",
+                    "ICCID",
+                    "MSISDN"
+                ],
+                "correctAnswer": "IMSI",
+                "explanation": "IMSI (International Mobile Subscriber Identity) is stored on the SIM and used by the network for authentication."
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "Forensic Approaches Overview 🗺️",
+            "content": "There are three main acquisition levels:\n1. **Logical**: Copies active files and databases (e.g., via backup, ADB backup, iTunes backup). Fast, but misses deleted data.\n2. **Filesystem**: Accesses the full file system (requires root/jailbreak or an unlocked bootloader). Contains more metadata but still no unallocated space.\n3. **Physical**: Bit‑by‑bit image of the flash memory chip (via JTAG, chip‑off, or ISP). Captures everything, including deleted data, but is highly invasive and requires specialized hardware.\n\nWe'll explore each in detail in the next lesson."
+        },
+        {
+            "id": "s_l1_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Network Isolation\n\nImmediately after seizure, place the device in a Faraday bag or airplane mode to prevent remote wipe. Then connect to a shielded power source to avoid data loss."
+        }
+    ]
+}

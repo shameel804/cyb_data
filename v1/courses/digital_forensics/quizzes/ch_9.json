@@ -1,0 +1,299 @@
+{
+    "id": "quiz_ch_9",
+    "chapterId": "ch_9",
+    "title": "Chapter 9 Quiz",
+    "description": "Test your knowledge of mobile forensics: acquisition methods, Android and iOS artifacts, app analysis, and cloud evidence.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which of the following is the least intrusive mobile acquisition method?",
+            "options": [
+                "Physical (chip‑off)",
+                "Filesystem",
+                "Logical",
+                "JTAG"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Logical acquisition copies active files via backup APIs without modifying the device."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What does the 'adb backup' command require on an Android device?",
+            "options": [
+                "Root access",
+                "USB Debugging enabled",
+                "Unlocked bootloader",
+                "Developer mode turned off"
+            ],
+            "correctAnswer": 1,
+            "explanation": "USB Debugging must be enabled for ADB to communicate with the device."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "A logical acquisition can recover deleted files from unallocated space.",
+            "correctAnswer": false,
+            "explanation": "Logical acquisition only captures active files; it does not access unallocated space."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "The Android partition that holds user apps and their data is ___.",
+            "options": [
+                "/system",
+                "/data",
+                "/cache",
+                "/boot"
+            ],
+            "correctAnswer": "/data",
+            "explanation": "`/data` contains user‑installed applications, settings, and key databases."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which iOS backup method includes passwords and Health data?",
+            "options": [
+                "Unencrypted iTunes backup",
+                "Encrypted iTunes backup",
+                "iCloud backup (standard)",
+                "Quick Start transfer"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Only an encrypted iTunes backup (or encrypted Finder backup) saves passwords and Health data."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the purpose of the Secure Enclave in iOS devices?",
+            "options": [
+                "Store the user's photos",
+                "Handle graphics rendering",
+                "Protect encryption keys and handle passcode verification",
+                "Manage network connections"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The Secure Enclave is a coprocessor that secures sensitive cryptographic operations."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "WhatsApp's message database on Android is encrypted and requires a key file stored in the app's private directory.",
+            "correctAnswer": true,
+            "explanation": "The key is located at `/data/data/com.whatsapp/files/key`."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which of the following is a physical acquisition method that requires removing the memory chip?",
+            "options": [
+                "JTAG",
+                "ISP",
+                "Chip‑Off",
+                "Logical extraction"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Chip‑off involves desoldering the NAND/eMMC chip and reading it with an external reader."
+        },
+        {
+            "id": "q9",
+            "type": "fill_blank",
+            "question": "The iOS database that logs user activity such as app usage and device events is called ___.",
+            "options": [
+                "sms.db",
+                "knowledgeC.db",
+                "contacts.db",
+                "call_history.db"
+            ],
+            "correctAnswer": "knowledgeC.db",
+            "explanation": "`knowledgeC.db` records a wide range of system events including app launches, battery level, and location."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is a BFU state in iOS forensics?",
+            "options": [
+                "After the device has been unlocked at least once since boot",
+                "Before the device has been unlocked after boot – limited data accessible",
+                "After a full backup has been performed",
+                "When the device is in recovery mode"
+            ],
+            "correctAnswer": 1,
+            "explanation": "BFU (Before First Unlock) means many files are still encrypted and inaccessible until the passcode is entered."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "iCloud backups can be accessed without any authentication if the device is physically connected.",
+            "correctAnswer": false,
+            "explanation": "You need Apple ID credentials or a valid authentication token, often requiring legal authority."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which of the following apps stores its messages in a plaintext SQLite database (if logged in) on Android?",
+            "options": [
+                "WhatsApp",
+                "Telegram",
+                "Signal",
+                "Facebook Messenger"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Telegram's local database (`cache4.db`) is a plain SQLite file when the user is logged in."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What is the main forensic benefit of using a write‑blocker during mobile forensic acquisition?",
+            "options": [
+                "It speeds up the transfer",
+                "It prevents the device from being modified during extraction",
+                "It bypasses the lock screen",
+                "It decrypts the file system"
+            ],
+            "correctAnswer": 1,
+            "explanation": "While hardware write‑blockers are for traditional drives, the concept in mobile is to avoid writing to the device; specialized tools ensure read‑only access."
+        },
+        {
+            "id": "q14",
+            "type": "true_false",
+            "question": "A Checkm8 exploit works on all iPhone models including iPhone 12 and newer.",
+            "correctAnswer": false,
+            "explanation": "Checkm8 is a bootrom exploit for A5–A11 devices (up to iPhone X). A12 and newer are not vulnerable."
+        },
+        {
+            "id": "q15",
+            "type": "fill_blank",
+            "question": "On Android, the database file for SMS/MMS is typically named ___.",
+            "options": [
+                "contacts2.db",
+                "mmssms.db",
+                "calllog.db",
+                "telephony.db"
+            ],
+            "correctAnswer": "mmssms.db",
+            "explanation": "`mmssms.db` stores SMS and MMS messages under `/data/data/com.android.providers.telephony/databases/`."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What is a Faraday bag used for in mobile forensics?",
+            "options": [
+                "To speed up data transfer",
+                "To protect the device from physical damage",
+                "To isolate the device from network signals and prevent remote wipe",
+                "To decrypt the file system"
+            ],
+            "correctAnswer": 2,
+            "explanation": "A Faraday bag blocks radio signals, preventing the device from receiving commands like remote wipe."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which iOS version introduced File‑Based Encryption (FBE)?",
+            "options": [
+                "iOS 8",
+                "iOS 9",
+                "iOS 10",
+                "iOS 12"
+            ],
+            "correctAnswer": 2,
+            "explanation": "iOS 10 introduced FBE, encrypting each file with its own key."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "Android's `adb shell` command can be used without USB debugging enabled.",
+            "correctAnswer": false,
+            "explanation": "USB debugging must be enabled for ADB to establish a shell."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "Which tool is specifically designed for decryption and analysis of iOS backups?",
+            "options": [
+                "Wireshark",
+                "Elcomsoft Phone Breaker",
+                "Volatility",
+                "FTK Imager"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Elcomsoft Phone Breaker can unlock encrypted iTunes backups and download iCloud data."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What does the acronym IMSI stand for?",
+            "options": [
+                "International Mobile Station Identity",
+                "International Mobile Subscriber Identity",
+                "Integrated Mobile System Identifier",
+                "Internal Memory Storage Index"
+            ],
+            "correctAnswer": 1,
+            "explanation": "IMSI identifies the subscriber account in the mobile network."
+        },
+        {
+            "id": "q21",
+            "type": "true_false",
+            "question": "Deleted WhatsApp messages may be recovered from the daily backup databases stored on the device.",
+            "correctAnswer": true,
+            "explanation": "WhatsApp keeps local backups (`msgstore-YYYY-MM-DD.1.db.crypt*`), which may contain older messages including deleted ones."
+        },
+        {
+            "id": "q22",
+            "type": "fill_blank",
+            "question": "The Android package name for Google Play Services is ___.",
+            "options": [
+                "com.android.vending",
+                "com.google.android.gms",
+                "com.google.android.apps.photos",
+                "com.android.chrome"
+            ],
+            "correctAnswer": "com.google.android.gms",
+            "explanation": "Google Play Services is identified by `com.google.android.gms`."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "Which iPhone models are vulnerable to the Checkm8 exploit?",
+            "options": [
+                "All iPhones",
+                "iPhone 5s to iPhone X",
+                "iPhone XS and later",
+                "iPhone 4 and earlier"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Checkm8 affects A5–A11 chips, covering iPhone 5s through iPhone X."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "What is the purpose of the 'adb backup' command?",
+            "options": [
+                "To restore a device to factory settings",
+                "To create a full physical image of the device",
+                "To create a logical backup of the device's data",
+                "To unlock the bootloader"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`adb backup` generates an Android backup (.ab) file containing app data and settings."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "Why is it important to photograph the screen of a seized mobile device?",
+            "options": [
+                "To prove the device was working",
+                "To capture volatile evidence such as open apps and notifications",
+                "To record the device's IMEI",
+                "To store as a backup"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The screen may show active conversations, notifications, or apps that could disappear after the device locks or reboots."
+        }
+    ]
+}

@@ -1,0 +1,299 @@
+{
+    "id": "quiz_ch_6",
+    "chapterId": "ch_6",
+    "title": "Chapter 6 Quiz",
+    "description": "Test your knowledge of Windows Registry, event logs, LNK files, Prefetch, Shellbags, Recycle Bin, and more.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which Windows registry hive stores user‑specific settings for the currently logged‑on user?",
+            "options": [
+                "HKLM",
+                "HKCU",
+                "HKU",
+                "HKCR"
+            ],
+            "correctAnswer": 1,
+            "explanation": "HKEY_CURRENT_USER (HKCU) is a pointer to the logged‑on user's profile under HKU."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What is the primary file that holds a user's HKCU hive on disk?",
+            "options": [
+                "SYSTEM",
+                "SOFTWARE",
+                "NTUSER.DAT",
+                "SAM"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Each user's registry settings are stored in NTUSER.DAT within their profile folder."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "UserAssist registry values record program execution from the command line only.",
+            "correctAnswer": false,
+            "explanation": "UserAssist tracks GUI‑based program launches (via Explorer), not command‑line executions (unless the GUI launched cmd.exe)."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "Which registry key is most useful for determining when a USB storage device was last connected?",
+            "options": [
+                "HKLM\\SYSTEM\\CurrentControlSet\\Enum\\USBSTOR",
+                "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RecentDocs",
+                "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion",
+                "HKCU\\Software\\Microsoft\\Internet Explorer\\TypedURLs"
+            ],
+            "correctAnswer": 0,
+            "explanation": "USBSTOR enumerates connected USB devices; the LastWrite time of each subkey indicates the last connection."
+        },
+        {
+            "id": "q5",
+            "type": "fill_blank",
+            "question": "Event ID ___ in the Security log indicates a successful logon.",
+            "options": [
+                "4624",
+                "4625",
+                "4688",
+                "4634"
+            ],
+            "correctAnswer": "4624",
+            "explanation": "4624 is logged for every successful logon, with logon type indicating the method (2 = console, 10 = RDP)."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What event ID signifies that the Windows event log was cleared?",
+            "options": [
+                "4625",
+                "1102",
+                "4688",
+                "7045"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Event 1102 in the Security log is generated when the audit log is cleared."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "LNK files contain the target file's MAC timestamps at the time the LNK was created or updated.",
+            "correctAnswer": true,
+            "explanation": "Yes, the Property Store within an LNK file includes the target file's creation, modification, and access times as they were when the shortcut was last modified."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Where are automatic Jump Lists stored on Windows 10?",
+            "options": [
+                "C:\\Windows\\Prefetch",
+                "C:\\Users\\<user>\\AppData\\Roaming\\Microsoft\\Windows\\Recent\\AutomaticDestinations",
+                "C:\\Windows\\System32\\config",
+                "C:\\$Recycle.Bin"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Automatic Jump Lists are `.automaticDestinations-ms` files in the Recent\\AutomaticDestinations folder."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Which artifact provides the run count and last execution time of applications, along with a list of loaded modules?",
+            "options": [
+                "Shellbags",
+                "Prefetch",
+                "Amcache",
+                "SRUM"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Prefetch files contain run count, last run time(s), and files/dlls loaded during startup."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What do Shellbags record?",
+            "options": [
+                "Network connections",
+                "Folder view settings and folder access history",
+                "Installed applications",
+                "Deleted file names"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Shellbags track Explorer folder access, storing preferences that persist even after the folder is removed."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "The Amcache.hve file records executable files that have been run, along with their first execution timestamp.",
+            "correctAnswer": true,
+            "explanation": "Amcache (Application Experience) tracks executed programs, installation evidence, and first run time."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "On Windows 10, what does the $I file in the Recycle Bin contain?",
+            "options": [
+                "The original file content",
+                "A copy of the MFT record",
+                "Metadata (original name, path, deletion date)",
+                "Nothing"
+            ],
+            "correctAnswer": 2,
+            "explanation": "$I files store the original file metadata; $R files store the content."
+        },
+        {
+            "id": "q13",
+            "type": "fill_blank",
+            "question": "Volume Shadow Copies can be enumerated using the command ___ on a live system.",
+            "options": [
+                "vssadmin list shadows",
+                "vsslist",
+                "shadowcopy -e",
+                "vssadmin query"
+            ],
+            "correctAnswer": "vssadmin list shadows",
+            "explanation": "The command `vssadmin list shadows` shows available volume shadow copies."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Which log file is the primary source for RDP connection events?",
+            "options": [
+                "Security.evtx",
+                "System.evtx",
+                "Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx",
+                "Application.evtx"
+            ],
+            "correctAnswer": 2,
+            "explanation": "TerminalServices-LocalSessionManager logs events 21/25 with source IP and username."
+        },
+        {
+            "id": "q15",
+            "type": "true_false",
+            "question": "A Prefetch file is deleted when its corresponding executable is deleted.",
+            "correctAnswer": false,
+            "explanation": "Prefetch files persist independently of the executable, providing historical execution evidence."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which registry key contains the last execution time of all executables via the Background Activity Moderator?",
+            "options": [
+                "HKLM\\SYSTEM\\CurrentControlSet\\Services\\bam\\State\\UserSettings",
+                "HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\AppCompatFlags",
+                "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\UserAssist",
+                "HKLM\\SYSTEM\\CurrentControlSet\\Enum\\USBSTOR"
+            ],
+            "correctAnswer": 0,
+            "explanation": "The BAM key records executable paths and last execution timestamps."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What is the purpose of the SRUM database?",
+            "options": [
+                "Store system restore points",
+                "Track application resource usage, network data, and execution times",
+                "Manage user passwords",
+                "Encrypt the file system"
+            ],
+            "correctAnswer": 1,
+            "explanation": "SRUM (System Resource Usage Monitor) logs per‑application network and energy usage, and execution duration."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "The Thumbcache files in Windows 10 can store thumbnail images of deleted pictures.",
+            "correctAnswer": true,
+            "explanation": "Thumbcache retains thumbnails even after the original images are deleted, providing visual evidence."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "Which tool is specifically designed to parse Windows Prefetch files?",
+            "options": [
+                "LECmd",
+                "PECmd",
+                "RBCmd",
+                "JLECmd"
+            ],
+            "correctAnswer": 1,
+            "explanation": "PECmd (Prefetch Explorer Command line) is part of Zimmerman's tools for parsing Prefetch files."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What does a logon type of 5 represent in event 4624?",
+            "options": [
+                "Interactive (console)",
+                "RemoteInteractive (RDP)",
+                "Service",
+                "Network (net use)"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Logon type 5 is Service, used for service accounts starting a service."
+        },
+        {
+            "id": "q21",
+            "type": "fill_blank",
+            "question": "The file extension for modern Windows event logs is ___.",
+            "options": [
+                ".evt",
+                ".log",
+                ".evtx",
+                ".etl"
+            ],
+            "correctAnswer": ".evtx",
+            "explanation": "Vista and later use XML‑based .evtx files."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "Which artifact is most useful for proving that a specific folder on an encrypted container was opened?",
+            "options": [
+                "Prefetch",
+                "Shellbags",
+                "Amcache",
+                "MFT"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Shellbags record folder access regardless of drive type, including mounted encrypted volumes."
+        },
+        {
+            "id": "q23",
+            "type": "true_false",
+            "question": "The UserAssist registry key uses plaintext executable paths on Windows 10.",
+            "correctAnswer": false,
+            "explanation": "On Windows 10, the path is ROT13‑encoded; on earlier versions it was plaintext but with GUID subkeys."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "Which log event indicates that a new service was installed on the system?",
+            "options": [
+                "4624",
+                "4688",
+                "7045",
+                "1102"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Event ID 7045 in the System log is generated when a new service is installed."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "Why are LNK files valuable even after the target file is deleted?",
+            "options": [
+                "They contain a full copy of the target file",
+                "They store the target file's name, path, and timestamps",
+                "They are encrypted",
+                "They are hidden"
+            ],
+            "correctAnswer": 1,
+            "explanation": "LNK files retain metadata about the target file, surviving its deletion."
+        }
+    ]
+}

@@ -1,0 +1,145 @@
+{
+    "id": "l3",
+    "chapterId": "ch_5",
+    "title": "exFAT & Other File Systems",
+    "description": "Explore exFAT, ext4, and HFS+ – how they store data and what forensics reveals.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "File System Analysis",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Beyond FAT & NTFS 🌍",
+            "content": "# The Wider World of File Systems\n\nInvestigators often encounter:\n- **exFAT**: Optimized for flash storage, used on large SD cards and USB drives.\n- **ext4**: Default Linux file system.\n- **HFS+ / APFS**: Apple's file systems (HFS+ legacy, APFS modern).\n\nEach stores metadata differently, but the forensic principles – timestamps, deletion marks, allocation maps – apply universally."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "File System Diversity 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which file system was designed by Microsoft for large flash storage media?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "NTFS",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "FAT32",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "exFAT",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "ext4",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "exFAT overcomes FAT32 file size and volume size limitations and is tailored for SDXC cards and large USBs.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "exFAT: The FAT Successor 📀",
+            "content": "exFAT uses a **File Allocation Table** similar to FAT, but with significant improvements:\n- No short/long file name split – file names are stored in a **directory entry set** (multiple 32‑byte entries).\n- **Bitmap** for free cluster tracking (no FAT chain needed for free space).\n- **Up‑case table** for case‑insensitive name comparison.\n- Timestamps include UTC offset.\n\nDeletion: Directory entry set's first entry type is changed to 0x05 (deleted). The FAT chain is cleared (clusters marked as free). The directory entry still contains name and timestamps."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "quiz",
+            "title": "exFAT Deletion 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "In exFAT, deleting a file completely erases its directory entry, leaving no trace of the file name.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "The entry set remains, but the first entry type is changed to 0x05, preserving the file name and timestamps for recovery.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "ext4: Linux's Journaled FS 🐧",
+            "content": "ext4 divides the volume into **block groups**, each with a superblock copy, group descriptors, block bitmap, inode bitmap, and inode table.\n\n- **inodes**: Contain metadata (permissions, timestamps, block pointers). 128 or 256 bytes.\n- **Extents**: Instead of block pointers, ext4 uses extent trees for contiguous runs.\n- **Journal**: Records metadata changes; can be used to replay recent operations.\n\nDeleted file: inode's link count becomes 0, block/extent pointers are zeroed, making recovery harder. However, the journal may still contain the old pointers."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "code",
+            "title": "Extract ext4 Journal with TSK",
+            "content": "Use `ext4magic` or `debugfs` to inspect journal remnants.",
+            "codeSnippet": "debugfs -R 'logdump -a' /dev/sda2 | less",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "HFS+: Apple's Legacy 🍏",
+            "content": "HFS+ uses a **Catalog File** (B‑tree) to map file names to **Catalog Node IDs (CNIDs)**. Each file has a **Catalog Node Record** containing timestamps, permissions, and **extent descriptors** (start block, count).\n\nDeletion: Record is removed from the catalog B‑tree, but the inode (CNID) may be reused later. Extent information is lost. Recovery relies on carving from unallocated space and journal analysis.\n\nForensic tools like BlackLight and Recon Imager can parse HFS+ structures."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "quiz",
+            "title": "ext4 vs HFS+ 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "multiple_choice",
+                "question": "Which file system uses a Catalog File B‑tree for name resolution?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "ext4",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "exFAT",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "HFS+",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "NTFS",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "HFS+ uses a catalog B‑tree to map file names to CNIDs, not a flat table or MFT.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Know Your Target\n\nAlways identify the file system before attempting recovery. Use `fsstat` from TSK or `file -s` on the image. Different file systems require different parsing."
+        }
+    ]
+}

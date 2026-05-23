@@ -1,0 +1,17 @@
+{
+    "id": "task2",
+    "chapterId": "ch_13",
+    "title": "Deepfake Analysis Workflow",
+    "description": "Propose a step‑by‑step workflow to analyze a suspicious video file and determine if it is a deepfake.",
+    "estimatedMinutes": 15,
+    "problemStatement": "**Scenario:** A video allegedly showing a CEO making incriminating statements has surfaced. The CEO denies it, claiming it's a deepfake. You are given the original video file (`ceo_confession.mp4`).\n\nYour task: **Outline a workflow** to determine if the video is authentic or AI‑generated. Include:\n\n1. Metadata analysis – what specific metadata fields would you look for?\n2. Visual artifact inspection – what to look for visually (e.g., facial inconsistencies, lighting).\n3. AI‑based detection – name at least two tools you could use and what they check.\n4. Source verification – how would you trace the video's origin?\n5. Final conclusion – how would you phrase your opinion if the analysis was inconclusive?\n\nWrite the workflow as a numbered list with explanations.",
+    "hints": [
+        "EXIF or video metadata may show creation software, modification dates, camera model.",
+        "Visual inspection: lip‑sync errors, blinking, skin texture, inconsistent backgrounds.",
+        "Tools: Microsoft Video Authenticator, Deepware scanner.",
+        "Check blockchain‑based content authenticity platforms if the CEO claims it was recorded on a verified device (e.g., Truepic).",
+        "If inconclusive, state that the video could not be authenticated or disproven with available methods."
+    ],
+    "expectedOutput": "A thorough analysis workflow.",
+    "solutionCode": "1. **Metadata Analysis**: Use `exiftool ceo_confession.mp4` to extract metadata. Look for: software tags (e.g., 'DeepFaceLab', 'FakeApp'), creation/modification timestamps, encoding tool. A mismatch between creation date and alleged recording date is suspicious. Absence of camera metadata (make/model) is a red flag.\n2. **Visual Artifact Inspection**: Play the video frame‑by‑frame. Look for: inconsistent lighting on the face vs. background, irregular blinking patterns (deepfakes often have abnormal blinking), blurring or artifacts around the mouth/eyes, and background warping. Use a video editor to enhance contrast.\n3. **AI‑Based Detection Tools**: Submit the video to:\n   - **Microsoft Video Authenticator**: Analyzes subtle fading artifacts from AI generation. Provides a confidence score.\n   - **Deepware**: Scans for known deepfake signatures and faces. Note any positive results.\n   Also, run the video through a reverse image search of a frame (Google Images, Yandex) to see if it matches known source footage.\n4. **Source Verification**: Interview the CEO about where the video was recorded. If it was on a smartphone, check if the phone's content can be analyzed for the original. Look for the original file in cloud backups or social media. Trace the file's distribution path: email, social media upload, etc. Identify the first uploader and investigate that account.\n5. **Conclusion**: If the AI tools give a high confidence of manipulation, state: \"It is my expert opinion that this video has been synthetically generated or altered based on consistent indicators detected by multiple forensic tools.\" If inconclusive: \"The video does not contain definitive markers of AI generation, but I cannot rule out a sophisticated deepfake. The source of the video could not be authenticated.\""
+}

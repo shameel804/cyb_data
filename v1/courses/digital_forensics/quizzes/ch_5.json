@@ -1,0 +1,299 @@
+{
+    "id": "quiz_ch_5",
+    "chapterId": "ch_5",
+    "title": "Chapter 5 Quiz",
+    "description": "Test your knowledge of FAT, NTFS, exFAT, file recovery, data carving, and forensic tools.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which structure in FAT holds the cluster chain for a file?",
+            "options": [
+                "Boot sector",
+                "Directory entry",
+                "File Allocation Table",
+                "Root directory"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The FAT itself contains the cluster chain; the directory entry only points to the first cluster."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What is the signature (magic) at the beginning of an NTFS MFT record?",
+            "options": [
+                "FILE",
+                "MFT0",
+                "NTFS",
+                "FILE0"
+            ],
+            "correctAnswer": 0,
+            "explanation": "MFT records start with the ASCII string 'FILE'."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "In FAT32, a deleted file's directory entry first byte becomes 0x00.",
+            "correctAnswer": false,
+            "explanation": "It becomes 0xE5; 0x00 marks an unused entry."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "The NTFS attribute type 0x80 is the ___ attribute.",
+            "options": [
+                "$STANDARD_INFORMATION",
+                "$FILE_NAME",
+                "$DATA",
+                "$INDEX_ROOT"
+            ],
+            "correctAnswer": "$DATA",
+            "explanation": "0x80 is the $DATA attribute where file content resides."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What happens to a resident $DATA attribute when its file is deleted in NTFS?",
+            "options": [
+                "It is immediately zeroed",
+                "It remains in the MFT record until the record is reused",
+                "It is moved to the $LogFile",
+                "It is encrypted"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Resident data stays in the record because the record is only marked free, not wiped."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which NTFS metafile logs file operations even after deletion?",
+            "options": [
+                "$MFT",
+                "$Bitmap",
+                "$UsnJrnl",
+                "$Volume"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The Update Sequence Number Journal retains a history of file changes."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "exFAT uses a single directory entry per file, just like FAT32.",
+            "correctAnswer": false,
+            "explanation": "exFAT uses a directory entry set of multiple 32‑byte entries for each file."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which ext4 structure contains metadata and block pointers for a file?",
+            "options": [
+                "Superblock",
+                "inode",
+                "Block group descriptor",
+                "Journal"
+            ],
+            "correctAnswer": 1,
+            "explanation": "inodes store all metadata about a file except the name."
+        },
+        {
+            "id": "q9",
+            "type": "fill_blank",
+            "question": "The hex string 'FF D8 FF' is the magic bytes for a ___ file.",
+            "options": [
+                "PNG",
+                "ZIP",
+                "JPEG",
+                "PDF"
+            ],
+            "correctAnswer": "JPEG",
+            "explanation": "JPEG files begin with FF D8 FF."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What is the primary limitation of simple header‑footer carving?",
+            "options": [
+                "It only works on FAT",
+                "It cannot handle fragmented files",
+                "It requires a write blocker",
+                "It is too slow"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Fragmented files have data scattered, and simple carvers assume contiguity."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which TSK command displays the partition table of a disk image?",
+            "options": [
+                "fsstat",
+                "fls",
+                "mmls",
+                "icat"
+            ],
+            "correctAnswer": 2,
+            "explanation": "mmls parses the MBR/GPT and lists partitions."
+        },
+        {
+            "id": "q12",
+            "type": "true_false",
+            "question": "The Sleuth Kit's `icat` can recover a deleted file if its MFT record still holds a valid runlist.",
+            "correctAnswer": true,
+            "explanation": "icat reads the runlist from the MFT entry and extracts the clusters, even if the file is deleted."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which tool is a graphical front‑end for The Sleuth Kit?",
+            "options": [
+                "PhotoRec",
+                "Volatility",
+                "Autopsy",
+                "Wireshark"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Autopsy provides a GUI on top of TSK."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "In FAT32, the BPB field 'sectors per cluster' is stored at which offset in the boot sector?",
+            "options": [
+                "0x0B",
+                "0x0D",
+                "0x13",
+                "0x24"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Sectors per cluster is at offset 0x0D (13 decimal) in the BPB."
+        },
+        {
+            "id": "q15",
+            "type": "true_false",
+            "question": "A FAT directory entry with attribute 0x0F is a Long File Name entry.",
+            "correctAnswer": true,
+            "explanation": "0x0F is the attribute combination for LFN entries."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Which of the following is a common file carving tool?",
+            "options": [
+                "dcfldd",
+                "Foremost",
+                "mmls",
+                "chkdsk"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Foremost carves files based on headers, footers, and internal structure."
+        },
+        {
+            "id": "q17",
+            "type": "fill_blank",
+            "question": "In NTFS, the in‑use flag for an MFT record is at offset ___ (decimal) within the record.",
+            "options": [
+                "16",
+                "22",
+                "42",
+                "56"
+            ],
+            "correctAnswer": "22",
+            "explanation": "Offset 22 (0x16) stores the sequence number and flags; the in‑use flag is bit 0."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "What does exFAT use to track free clusters?",
+            "options": [
+                "FAT chain",
+                "Bitmap",
+                "MFT",
+                "inode bitmap"
+            ],
+            "correctAnswer": 1,
+            "explanation": "exFAT has a separate allocation bitmap, not relying on FAT for free space."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "On Linux ext4, deletion typically:",
+            "options": [
+                "Zeroes the file's inode block pointers",
+                "Preserves block pointers for easy recovery",
+                "Moves the file to a trash folder",
+                "Encrypts the file"
+            ],
+            "correctAnswer": 0,
+            "explanation": "ext4 zeros the extent tree in the inode, making recovery difficult without the journal."
+        },
+        {
+            "id": "q20",
+            "type": "true_false",
+            "question": "Autopsy's 'Recent Activity' ingest module can parse USB device connection history from the registry.",
+            "correctAnswer": true,
+            "explanation": "Yes, it pulls USB-related registry keys to show device connection timestamps."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "When manually recovering a FAT file, which byte sequence signals end of cluster chain in FAT16?",
+            "options": [
+                "0x0000",
+                "0xFFFF",
+                "0xE5E5",
+                "0x0002"
+            ],
+            "correctAnswer": 1,
+            "explanation": "0xFFFF (or range 0xFFF8–0xFFFF) is the end of chain marker."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "Which NTFS attribute stores the original short (8.3) file name?",
+            "options": [
+                "$STANDARD_INFORMATION",
+                "$FILE_NAME",
+                "$DATA",
+                "$VOLUME_NAME"
+            ],
+            "correctAnswer": 1,
+            "explanation": "$FILE_NAME contains the file name (both long and short) and parent reference."
+        },
+        {
+            "id": "q23",
+            "type": "true_false",
+            "question": "PhotoRec can recover files even after a quick format of the partition.",
+            "correctAnswer": true,
+            "explanation": "Quick format only erases metadata; data clusters remain, allowing carving to succeed."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "What is the typical size of an NTFS MFT file record?",
+            "options": [
+                "512 bytes",
+                "1024 bytes",
+                "4096 bytes",
+                "8192 bytes"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Each MFT record is usually 1024 bytes (1 KB), though it can be 4096 in some configurations."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "Which of the following is NOT a benefit of file carving?",
+            "options": [
+                "Can recover files without any file system metadata",
+                "Works on formatted drives",
+                "Always reconstructs fragmented files perfectly",
+                "Supports many file types"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Carving struggles with fragmentation; perfect reconstruction is not guaranteed."
+        }
+    ]
+}

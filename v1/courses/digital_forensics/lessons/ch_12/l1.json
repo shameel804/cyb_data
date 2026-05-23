@@ -1,0 +1,214 @@
+{
+    "id": "l1",
+    "chapterId": "ch_12",
+    "title": "The Forensic Report Blueprint 📝",
+    "description": "Master the anatomy of an effective forensic report: sections, content, and the fact‑opinion divide.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Reporting",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Why a Great Report Matters 📄",
+            "content": "# The Deliverable That Defines Your Investigation\n\nYour forensic report is the **primary product** of your work. It’s what the court, management, or client will read and judge. No matter how brilliant your analysis, a poorly written report can destroy your credibility.\n\nA good report:\n- Tells a **clear, chronological story** backed by evidence.\n- Allows **another examiner** to replicate your process.\n- Separates **fact from opinion**.\n- Withstands **cross‑examination** and scrutiny.\n\nThink of the report as a bridge between your technical world and the non‑technical audience."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Report Purpose 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the most critical function of a forensic report?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To showcase the examiner’s technical vocabulary",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To communicate findings clearly and accurately to a non‑technical audience",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "To serve as a draft for the final court ruling",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To list every tool used without explanation",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The report must be understandable to judges, juries, or managers while maintaining technical accuracy.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Standard Report Structure 🏗️",
+            "content": "## The Sections Every Report Needs\n\nMost forensic reports follow a common structure:\n\n1. **Title Page & Case Information** – Case number, examiner name, date.\n2. **Executive Summary** – One‑page high‑level overview.\n3. **Case Background** – Why the investigation was initiated.\n4. **Scope & Objectives** – What was examined and what questions were asked.\n5. **Methodology** – Tools used, acquisition process, hash verification, chain of custody summary.\n6. **Findings** – Detailed factual results, evidence item references.\n7. **Timeline** – Chronological sequence of events.\n8. **Conclusions / Expert Opinion** – What the evidence indicates, clearly marked as opinion.\n9. **Appendices** – Raw logs, tool output, examiner CV, hash lists.\n\nWe’ll dive into each section."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "Structure Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "In which report section would you place a high‑level summary for a busy executive or judge?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Findings",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Methodology",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Executive Summary",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Appendices",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The Executive Summary condenses the entire report into a brief, plain‑language overview.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Executive Summary & Case Background 📋",
+            "content": "**Executive Summary:** Keep it under one page. Answer: Who, what, when, where, and the conclusion. No jargon.\n\n**Case Background:** Describe how the evidence was obtained, the requestor, and the alleged incident. This sets the context.\n\nExample:\n> \"On March 5, 2026, the HR department requested an investigation of employee John Doe’s company laptop for suspected data theft. The laptop was seized and imaged following standard procedures.\""
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "Methodology – Prove Your Rigor 🔬",
+            "content": "## Document Every Step\n\nThis section shows you followed a **forensically sound** process:\n- Imaging tool (version, write‑blocker model, hash algorithm).\n- Source and destination media.\n- Hash values (source and image).\n- Analysis tools (Autopsy, Volatility, etc.).\n- Settings and filters used.\n\nA fellow examiner should be able to **replicate** your actions.\n\n> \"The laptop SSD (SN: XYZ) was imaged using Tableau T35u write‑blocker and FTK Imager 4.7. SHA‑256 hashes matched: ab12...\""
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "Methodology Importance 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_3",
+                "type": "true_false",
+                "question": "The methodology section is optional if the findings are clearly presented.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "It is essential to demonstrate that a reliable, repeatable process was followed, without which findings may be challenged.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_8",
+            "type": "text",
+            "title": "Findings: Just the Facts 📊",
+            "content": "## Binary, Timestamps, Hashes\n\nEach finding should be a standalone factual statement, linked to evidence:\n- What artifact was found (file path, registry key, log entry).\n- Its content (if text) or metadata.\n- Timestamps (converted to local time, with timezone).\n\nUse evidence item numbers (e.g., \"Item 001 – Laptop image\").\n\n**Never mix interpretation here.** For example:\n> Fact: \"File `secret.docx` (Item 001) was last modified at 14:00 UTC on Jan 10, 2026.\"\n> Opinion: \"This suggests the user altered the document just before sending the email.\"\n\nThe latter belongs in Conclusions."
+        },
+        {
+            "id": "s_l1_9",
+            "type": "quiz",
+            "title": "Fact vs Opinion 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_4",
+                "type": "multiple_choice",
+                "question": "Which of the following belongs in the Findings section?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "\"The suspect intentionally deleted the emails to cover their tracks.\"",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "\"The file 'sales_leads.xlsx' was deleted at 09:15 UTC, as recorded in the Recycle Bin $I file.\"",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "\"It is my opinion that the insider threat was planned.\"",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "\"The computer was probably used for illegal activities.\"",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Findings should state verifiable facts; opinions are reserved for the conclusions section.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_10",
+            "type": "text",
+            "title": "Timeline & Visual Aids ⏳",
+            "content": "A visual timeline can be extremely powerful. Plot events chronologically, color‑coding by source (File System, Event Log, Email, etc.).\n\nTools: Excel, Timeline Explorer, or dedicated timeline software.\n\nA timeline helps the audience grasp the sequence and spot suspicious coincidences."
+        },
+        {
+            "id": "s_l1_11",
+            "type": "text",
+            "title": "Conclusions & Expert Opinion 💬",
+            "content": "This is where you answer the investigative questions. Explicitly label as **Expert Opinion** if you are giving an opinion. Provide reasoning based on the findings.\n\nExample:\n> \"Based on the evidence, it is my professional opinion that the user knowingly copied confidential files to an external USB drive and then attempted to conceal the activity by running CCleaner.\"\n\nAlways stay within your expertise. Do not speculate on areas outside your competence."
+        },
+        {
+            "id": "s_l1_12",
+            "type": "quiz",
+            "title": "Opinion Formulation 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_5",
+                "type": "true_false",
+                "question": "An expert opinion can include speculation about the suspect's motives without supporting evidence.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Opinions must be grounded in the evidence; speculation undermines credibility.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_13",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use Appendices Liberally\n\nPut lengthy logs, tool outputs, and hash lists in appendices. This keeps the main report readable while preserving completeness."
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_7",
+    "title": "Hunt Hidden Malware with Malfind & Netscan",
+    "description": "Use Volatility to detect injected code and trace malicious network connections.",
+    "estimatedMinutes": 15,
+    "problemStatement": "**Scenario:** Continuing the investigation of `suspicious.raw`, you need to determine if any legitimate processes are compromised and to where data might be exfiltrated.\n\n1. Run `malfind` (Volatility 2) or `windows.malfind` (Vol 3) on the memory dump. The output indicates that `explorer.exe` (PID 1000) has a memory region at address 0x12340000 with PAGE_EXECUTE_READWRITE protection, containing hex bytes that decode to a known Meterpreter shellcode.\n   - Provide the command used.\n   - Interpret the finding.\n\n2. Run `netscan` (Volatility 2) or `windows.netscan` (Vol 3) and find an ESTABLISHED connection from `explorer.exe` to a remote IP `203.0.113.50` on port 4444.\n   - Provide the command.\n   - Explain why this is suspicious.\n\n3. Based on these findings, what actions would you recommend next to the incident response team?\n\n**Output:** A concise incident analysis and recommended actions.",
+    "hints": [
+        "malfind: `vol.py -f suspicious.raw --profile=Win10x64_19041 malfind -p 1000`",
+        "netscan: `vol.py -f suspicious.raw --profile=Win10x64_19041 netscan`",
+        "Meterpreter commonly uses reflective DLL injection into explorer.exe."
+    ],
+    "expectedOutput": "Commands, analysis, and next steps.",
+    "solutionCode": "1. Command: vol.py -f suspicious.raw --profile=Win10x64_19041 malfind -p 1000\n   Finding: A memory region in explorer.exe is flagged with PAGE_EXECUTE_READWRITE and contains Meterpreter shellcode. This indicates that the explorer.exe process has been injected with a remote access Trojan (RAT) payload, likely via process injection.\n\n2. Command: vol.py -f suspicious.raw --profile=Win10x64_19041 netscan\n   Output: ESTABLISHED connection from explorer.exe (PID 1000) to 203.0.113.50:4444. Port 4444 is a default Metasploit/Meterpreter port, confirming a live attacker connection.\n\n3. Recommendations:\n   - Isolate the machine from the network immediately.\n   - Capture network traffic to/from the malicious IP.\n   - Scan other systems for the same IOCs.\n   - Reimage the compromised machine; do not trust any data.\n   - Use the extracted shellcode to create YARA rules for wider detection."
+}

@@ -1,0 +1,171 @@
+{
+    "id": "l1",
+    "chapterId": "ch_5",
+    "title": "FAT File System Deep Dive",
+    "description": "Master the internals of FAT: boot sector, FAT tables, directory entries, and how deletion works.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "File System Analysis",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "FAT: The Classic Blueprint 📜",
+            "content": "# Why Master FAT?\n\nThe File Allocation Table (FAT) family – FAT12, FAT16, FAT32, exFAT – is the most widely supported file system. It rules USB drives, memory cards, and legacy systems.\n\nUnderstanding FAT at the hex level allows you to:\n- Recover deleted files when tools fail.\n- Manually parse directory entries.\n- Understand slack space and data hiding.\n\nWe'll dissect its anatomy layer by layer."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "FAT Scope 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which of these is NOT a member of the FAT family?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "FAT12",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "FAT16",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "FAT32",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "FAT64",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "There is no FAT64; exFAT is sometimes called FAT64 informally but the official family does not include it as FAT64.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Volume Boot Record (VBR) 🚀",
+            "content": "## The Starting Point\n\nThe first sector of a FAT volume is the boot sector (LBA 0). It contains:\n- **Jump instruction** (3 bytes) to skip the BPB and execute boot code.\n- **BIOS Parameter Block (BPB)**: describes the file system geometry – bytes per sector, sectors per cluster, number of FATs, root entry count (FAT12/16), total sectors, etc.\n- **Extended BPB**: for FAT32, includes sectors per FAT, root directory cluster, FSinfo sector.\n- **Signature** `55 AA` at offset 510–511.\n\nIf the VBR is damaged, the volume may appear RAW. Forensics can reconstruct the BPB from known values."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "code",
+            "title": "View VBR with xxd",
+            "content": "Extract and examine the first 512 bytes of a FAT32 partition.",
+            "codeSnippet": "dd if=/dev/sdb1 of=vbr.bin bs=512 count=1\nxxd vbr.bin | head -n 20\n# Look for OEM name, bytes per sector (offset 0x0B), etc.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_5",
+            "type": "quiz",
+            "title": "BPB Knowledge 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "fill_blank",
+                "question": "The BPB field that specifies the number of bytes per sector is located at offset ___ (hex).",
+                "options": [
+                    "0x0B",
+                    "0x0D",
+                    "0x11",
+                    "0x15"
+                ],
+                "correctAnswer": "0x0B",
+                "explanation": "Bytes per sector is a 16‑bit little‑endian value at offset 0x0B (11 decimal) in the boot sector.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "The FAT Table Itself 🗺️",
+            "content": "## The Cluster Map\n\nThe File Allocation Table is an array of entries, each corresponding to a cluster in the data area. It functions as a **linked list**:\n\n- `0x0000` (FAT16) or `0x00000000` (FAT32) = free cluster.\n- `0x0002` – `0xFFEF` (FAT16) = next cluster in chain.\n- `0xFFF0` – `0xFFF6` (FAT16) = reserved.\n- `0xFFF7` = bad cluster.\n- `0xFFF8` – `0xFFFF` = end of chain (last cluster).\n\nThere are typically two copies of the FAT (FAT0 and FAT1) for redundancy."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "FAT Entry 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_3",
+                "type": "multiple_choice",
+                "question": "In FAT16, which hex value indicates the last cluster of a file?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "0x0000",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "0xFFFF",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "0x0002",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "0xFFF7",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "0xFFFF (or 0xFFF8–0xFFFF) marks the end of a cluster chain.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_8",
+            "type": "text",
+            "title": "Directory Entries 📄",
+            "content": "## The File Index\n\nDirectories are special files (or a fixed area in FAT12/16) containing 32‑byte entries:\n\n- Bytes 0–7: Short file name (8.3). First byte `0xE5` = deleted.\n- Byte 11: Attributes (0x01 read‑only, 0x02 hidden, 0x04 system, 0x08 volume label, 0x10 subdirectory, 0x20 archive).\n- Bytes 14–17: Created time & date.\n- Bytes 18–19: Last accessed date.\n- Bytes 20–21: High word of first cluster (FAT32).\n- Bytes 22–25: Last modified time & date.\n- Bytes 26–27: Low word of first cluster.\n- Bytes 28–31: File size (bytes).\n\nTo find the data, you use the starting cluster and follow the FAT chain."
+        },
+        {
+            "id": "s_l1_9",
+            "type": "quiz",
+            "title": "Directory Entry Fields 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_4",
+                "type": "true_false",
+                "question": "A directory entry with first byte 0xE5 indicates a valid, active file.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "0xE5 as the first byte of a directory entry marks the file as deleted.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_10",
+            "type": "text",
+            "title": "Long File Names (LFN) 🏷️",
+            "content": "FAT supports long file names by using additional 32‑byte entries before the short entry. Each LFN entry stores up to 13 Unicode characters. They have attribute 0x0F and an ordinal byte (last LFN has bit 6 set).\n\nForensically, LFNs can be partially recovered even after deletion, giving the original long name."
+        },
+        {
+            "id": "s_l1_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Manual FAT Recovery\n\nIf a directory entry is overwritten but the FAT chain remains, you can still recover the file content by carving and guessing the extension from magic bytes."
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_3",
+    "title": "Hex Detective: Identify the File",
+    "description": "Analyse hex dumps to determine file types and extract metadata manually.",
+    "estimatedMinutes": 15,
+    "problemStatement": "**Scenario:** You are given three raw hex snippets from different files, each starting at offset 0. Your task is to:\n\n1. Identify the file type of each based on its magic bytes.\n2. For any file where it's possible, extract the file size (if encoded) from the given bytes, stating the endianness you assumed.\n3. Explain how you arrived at your conclusions.\n\n**Hex Snippets:**\n\nSnippet A (first 16 bytes):\n`89 50 4E 47 0D 0A 1A 0A 00 00 00 0D 49 48 44 52`\n\nSnippet B (first 16 bytes):\n`50 4B 03 04 14 00 00 00 00 00 00 00 00 00 00 00`\n\nSnippet C (first 16 bytes):\n`25 50 44 46 2D 31 2E 34 0A 25 E2 E3 CF D3 0D 0A`\n\nProvide your answer as a bulleted list.",
+    "hints": [
+        "Check common magic bytes: JPEG (FF D8), PNG (89 50 4E 47), PDF (%PDF = 25 50 44 46), ZIP (50 4B 03 04).",
+        "File size is often not in the first few bytes for these formats, but some contain size info later. Don't guess if not present; state that it's not determinable from the snippet.",
+        "Endianness is usually little‑endian for file metadata in ZIP and PNG, but the magic bytes themselves are not affected."
+    ],
+    "expectedOutput": "Clear identification of the three file types with reasoning. A note about inability to extract file size from these short headers.",
+    "solutionCode": "Snippet A: 89 50 4E 47 matches the PNG magic bytes (89 'PNG'). The following bytes (0D 0A 1A 0A) are part of the PNG signature. File size is not determinable from the first 16 bytes; it's stored later in the IHDR chunk.\n\nSnippet B: 50 4B 03 04 is the signature for a ZIP archive (PK..). The rest of the header contains version, flags, etc. Actual file size (uncompressed) is not in these 16 bytes; it's in the local file header, usually after the file name, at offset 18‑21 (compressed) and 22‑25 (uncompressed) after the file name length. So not extractable from snippet.\n\nSnippet C: 25 50 44 46 = '%PDF', a PDF document. The version appears as '‑1.4' in ASCII. File size is not stored in the header; you'd need to parse the trailer or /Size entry. Not extractable from this snippet.\n\nConclusion: A = PNG, B = ZIP, C = PDF."
+}

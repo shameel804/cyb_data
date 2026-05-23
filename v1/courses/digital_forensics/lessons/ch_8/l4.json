@@ -1,0 +1,176 @@
+{
+    "id": "l4",
+    "chapterId": "ch_8",
+    "title": "Intrusion Detection & Traffic Anomalies 🚨",
+    "description": "Spot port scans, DoS attacks, beaconing, and other signs of malicious activity.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Network Forensics",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Spotting the Bad Guys 🦹",
+            "content": "# Traffic Never Lies (But Attackers Try)\n\nMalicious activity leaves footprints in network traffic. By recognizing patterns, you can detect:\n- **Reconnaissance** (port scans, sweeps)\n- **Exploitation** (buffer overflows, SQLi)\n- **Command & Control** (beaconing, unusual protocols)\n- **Exfiltration** (large outbound transfers)\n\nWe'll use Wireshark and simple statistics to hunt for these patterns."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Anomaly Awareness 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which of these is a typical sign of network reconnaissance?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A single HTTP GET request",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Many SYN packets to different ports on one host",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A DNS query for google.com",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A regular ARP request",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Multiple SYN packets targeting various ports indicate a port scan."
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Port Scans & Sweeps 🔍",
+            "content": "## SYN, Connect, and Stealth Scans\n\n**SYN scan**: Attacker sends SYN, target replies SYN‑ACK, attacker may not complete handshake. Look for many SYN packets without subsequent ACKs.\n- Wireshark filter: `tcp.flags.syn == 1 and tcp.flags.ack == 0`\n\n**Connect scan**: Full handshake, then RST. Look for rapid succession of SYN‑SYN/ACK‑ACK‑RST.\n\n**UDP scan**: Many ICMP 'Destination Unreachable' replies.\n\n**Ping sweep**: Many ICMP Echo Requests to a range of IPs.\n\nStatistics > Endpoints can quickly show which hosts were targeted."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "Find SYN Scans with tshark",
+            "content": "List unique destination IPs that received SYN packets without ACK.",
+            "codeSnippet": "tshark -r capture.pcap -Y \"tcp.flags.syn==1 and tcp.flags.ack==0\" -T fields -e ip.dst | sort | uniq -c | sort -nr",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "quiz",
+            "title": "Scan Identification 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "fill_blank",
+                "question": "A port scan that completes the three‑way handshake and then sends RST is a ___ scan.",
+                "options": [
+                    "SYN",
+                    "Connect",
+                    "UDP",
+                    "NULL"
+                ],
+                "correctAnswer": "Connect",
+                "explanation": "A full connect scan establishes a connection and then tears it down, leaving a clear pattern."
+            }
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Denial of Service (DoS/DDoS) ⛈️",
+            "content": "Flood attacks overwhelm a resource. Patterns:\n- **SYN flood**: Mass SYNs with no completions, filling the connection queue.\n- **UDP flood**: Large volume of UDP packets to random ports.\n- **Amplification**: Small request generates large response (DNS, NTP, Memcached). Look for asymmetric traffic.\n- **HTTP flood**: Legitimate‑looking GET/POST requests at high rate.\n\nDetect via packet rate spikes, connection counts, and unusual packet sizes."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "DoS Indicators 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "true_false",
+                "question": "A sudden burst of incoming UDP packets from many sources to one IP is likely a DDoS amplification attack.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Amplification attacks use reflection, causing many sources to send large replies to a victim."
+            }
+        },
+        {
+            "id": "s_l4_8",
+            "type": "text",
+            "title": "Beaconing & Command and Control 📡",
+            "content": "## Regular Heartbeats\n\nMalware often 'calls home' at regular intervals (beaconing). Detect by:\n- Periodic outbound connections (e.g., every 60 seconds) to the same IP/domain.\n- Small packet sizes (keep‑alives).\n- Unusual protocols (IRC, custom TCP/UDP).\n\nUse Wireshark's I/O Graph to visualize spikes. Filter by `ip.dst == <suspicious IP>` and look for consistent intervals.\n\nAlso check for long‑lived connections that shouldn't exist (e.g., a workstation connecting to a foreign IP on port 4444 for hours)."
+        },
+        {
+            "id": "s_l4_9",
+            "type": "code",
+            "title": "Detect Beaconing with tshark",
+            "content": "Extract timestamps of connections to a suspect IP and check for regular gaps.",
+            "codeSnippet": "tshark -r capture.pcap -Y \"ip.dst==10.99.99.99 and tcp.flags.syn==1\" -T fields -e frame.time_epoch",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_10",
+            "type": "quiz",
+            "title": "Beaconing Pattern 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_4",
+                "type": "multiple_choice",
+                "question": "Which characteristic best describes beaconing traffic?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Random intervals, large payloads",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Regular, periodic intervals, small payloads",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Only during business hours",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Always uses port 80",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Beaconing is usually consistent in timing to maintain a connection or check in."
+            }
+        },
+        {
+            "id": "s_l4_11",
+            "type": "text",
+            "title": "Data Exfiltration Clues 📤",
+            "content": "Look for:\n- Outbound connections to unusual countries or cloud IPs.\n- Large outbound data (GBs) compared to baseline.\n- Non‑standard protocols (DNS tunnels, ICMP exfiltration).\n- HTTP POST requests with large payloads to unlikely destinations.\n\nStatistics > Protocol Hierarchy gives a high‑level view of traffic volumes by protocol. A spike in 'Unknown' or 'DNS' with excessive bytes can indicate tunneling."
+        },
+        {
+            "id": "s_l4_12",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use Conversation Filters\n\nWireshark's 'Conversations' window (Statistics menu) shows all pairs of communicating IPs, along with bytes and duration. Sort by bytes to quickly find the top talkers."
+        }
+    ]
+}

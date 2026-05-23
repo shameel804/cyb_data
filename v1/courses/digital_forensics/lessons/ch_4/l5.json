@@ -1,0 +1,176 @@
+{
+    "id": "l5",
+    "chapterId": "ch_4",
+    "title": "Best Practices & Common Pitfalls 💡",
+    "description": "Handle SSDs, encrypted drives, HPA regions, and document everything like a pro.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Data Acquisition",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The SSD Challenge ⚡",
+            "content": "# Solid‑State Drives: Different Rules\n\nSSDs are not like spinning disks. Key differences:\n\n- **TRIM**: OS tells SSD to wipe blocks of deleted files, making recovery harder.\n- **Garbage Collection**: Background process that erases invalid pages.\n- **Wear Leveling**: Logical block addresses (LBAs) do not map to fixed physical locations.\n\n**Imaging SSDs**: Use a physical acquisition as soon as possible. Even with a write blocker, the SSD's internal controller may still modify data in the background, but this doesn't change the logical data you read at that moment. Hash verification still works."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "SSD Awareness 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "true_false",
+                "question": "A hardware write blocker can prevent all internal changes on an SSD, including garbage collection.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "A write blocker stops writes from the host, but it cannot stop the SSD's own controller from performing background operations like garbage collection.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Encrypted Drives 🔐",
+            "content": "## Full‑Disk Encryption (FDE)\n\nIf a drive is encrypted (BitLocker, FileVault, LUKS), you cannot read the data without the key. During acquisition:\n\n- If the system is **live and unlocked**, capture a memory dump and a logical image of the unlocked volume.\n- If the system is **off**, image the encrypted drive as a physical raw image. Later, attempt to obtain the key (from suspect, TPM chip, or via legal process).\n\nNever attempt to decrypt by brute‑forcing during acquisition – just image it and preserve the state."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "quiz",
+            "title": "Encryption Strategy 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "What is the recommended action when you encounter a powered‑off laptop with BitLocker encryption?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Turn it on and log in to decrypt",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Remove the drive, image it with a write blocker, and preserve the encrypted state",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Format the drive to remove encryption",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Give up",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Never power on an encrypted device; you may lose the ability to decrypt. Image the drive as‑is and work on obtaining the key later.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Host Protected Area (HPA) & DCO 🕳️",
+            "content": "A drive can be configured to report a smaller capacity than its actual size. The hidden area is called:\n\n- **HPA (Host Protected Area)**: Set via ATA command, hides sectors at the end.\n- **DCO (Device Configuration Overlay)**: Hides features or sectors, often used by manufacturers.\n\nCriminals have used HPA to hide data. Use tools like `hdparm` or specialized forensic tools to detect and temporarily remove HPA for imaging.\n\n```bash\nhdparm -N /dev/sda   # Check HPA status\nhdparm -N p<max> /dev/sda  # Temporarily remove HPA (risky!)\n```"
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "HPA Knowledge 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_3",
+                "type": "true_false",
+                "question": "A drive's physical size as reported by `fdisk` is always its true maximum capacity.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "HPA and DCO can make the drive report a smaller size, hiding sectors. Always check with `hdparm` or forensic tools.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Documentation During Acquisition 📋",
+            "content": "Your contemporaneous notes are vital. Record:\n\n- Make, model, serial number of the evidence drive.\n- Tool used (name, version).\n- Write blocker make/model/serial.\n- Hash algorithm and values.\n- Date, time, location.\n- Any anomalies (strange noises, errors).\n\nTake screenshots or photos of each step. These become part of the chain of custody and report."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "code",
+            "title": "Example Acquisition Log Entry",
+            "content": "A markdown sample log entry for your case notes.",
+            "codeSnippet": "**Acquisition Log – Case #2026‑045**\n- Date: 2026‑05‑10 09:15 UTC\n- Evidence Drive: Seagate ST1000LM048, S/N: Z7F3A9BQ\n- Write Blocker: Tableau T35u, S/N: TB2105, tested 2026‑05‑01\n- Tool: dcfldd v1.3.4\n- Image file: /mnt/evidence/case045.dd\n- Source SHA‑256: ab12... (full hash)\n- Image SHA‑256: ab12... (matches)\n- Notes: No errors. Drive imaged in 1h 12m.",
+            "codeLanguage": "plaintext",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_9",
+            "type": "warning",
+            "title": "⚠️ Avoid Common Mistakes",
+            "content": "- **Forgetting to test the write blocker**.\n- **Not hashing before and after**.\n- **Using USB hubs** that may interfere with write‑blocker commands.\n- **Booting the suspect machine accidentally**.\n- **Storing the image on an unencrypted drive** (case data must be protected)."
+        },
+        {
+            "id": "s_l5_10",
+            "type": "quiz",
+            "title": "Best Practices 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_4",
+                "type": "multiple_choice",
+                "question": "Why should you avoid using a USB hub during forensic imaging?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It increases transfer speed",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It may bypass write‑blocker protections or introduce errors",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It is too expensive",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It encrypts the data",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Some hubs do not pass through certain SCSI/ATA commands correctly, potentially allowing writes to slip through.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Mirror the Image\n\nImmediately after acquisition, create a working copy of the image. Keep the master image pristine and only analyse the copy. If something goes wrong, you still have the original image."
+        }
+    ]
+}

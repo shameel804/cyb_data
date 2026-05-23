@@ -1,0 +1,136 @@
+{
+    "id": "l1",
+    "chapterId": "ch_7",
+    "title": "The Power of RAM 🧠",
+    "description": "Discover why memory forensics is the key to uncovering what’s really happening on a system.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Memory Forensics",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Beyond the Hard Drive 🧊",
+            "content": "# Why RAM Holds the Truth\n\nTraditional disk forensics reveals what *was* stored. **Memory forensics** reveals what *is* happening right now — and what was happening moments before.\n\nRAM (Random Access Memory) contains:\n- Running processes and threads\n- Network connections and open ports\n- Encryption keys and passwords in cleartext\n- Malware that never touches disk\n- Clipboard contents, command histories\n\nWhen you shut down a computer, all this evaporates. That's why RAM is the most volatile and often the most valuable source of evidence."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Volatile Value 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the primary advantage of memory forensics over disk forensics?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It can recover deleted files",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It captures active system state and volatile data that disk analysis misses",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It works on encrypted drives without a password",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It is faster than disk imaging",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "RAM holds live processes, network connections, and other transient data that never touches the hard drive.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "The Order of Volatility (RAM's Place) ⚡",
+            "content": "Recall the order of volatility from Chapter 1. RAM is near the top, second only to CPU caches. It must be collected **first** in any live response.\n\n- Registers / CPU cache: nanoseconds\n- **RAM**: lost on power-off\n- Network state / running processes: minutes\n- Disk storage: persistent\n\nIf you pull the plug, you lose the entire running state. Memory forensics starts with a proper acquisition."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "Volatility Order 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "When a computer is unplugged, the data in RAM remains intact for several hours.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "RAM is volatile; without power, its contents are lost within seconds (unless frozen with specialized techniques).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "What You Can Find in a Memory Dump 🔍",
+            "content": "A complete RAM image is a snapshot of the entire operating system state. Forensics can extract:\n\n- **Process list**: including hidden and terminated processes\n- **Network connections**: TCP/UDP endpoints, listening ports\n- **DLLs loaded**: including injected malware libraries\n- **Registry in memory**: cached hives that may differ from disk\n- **User credentials**: LSA secrets, Kerberos tickets, clear‑text passwords\n- **Clipboard data**: recently copied text\n- **Console history**: commands typed in cmd/PowerShell\n- **Encryption keys**: BitLocker keys, TrueCrypt passphrases\n\nThis is the raw truth of what the system was doing at capture time."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Memory Artifacts 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_3",
+                "type": "multiple_choice",
+                "question": "Which of the following can be recovered from a memory dump?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Deleted files from the Recycle Bin",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Running processes and their command lines",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A full history of all USB connections",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The complete Windows registry as stored on disk",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Running processes, their command lines, and memory-resident data are directly extractable from a RAM dump.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "Memory Forensics vs. Live Response 🆚",
+            "content": "**Live response**: running commands on the live system (e.g., `pslist`, `netstat`). It's quick but alters the system.\n**Memory forensics**: capturing a full RAM image, then analyzing it offline on another machine. It's forensically sound and repeatable.\n\nWe'll focus on acquiring a memory image and then analyzing it with the Volatility Framework."
+        },
+        {
+            "id": "s_l1_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Memory + Disk = Complete Picture\n\nCombine a memory dump with a disk image. Memory shows current state; disk shows history and persistence. Together they form the strongest case."
+        }
+    ]
+}

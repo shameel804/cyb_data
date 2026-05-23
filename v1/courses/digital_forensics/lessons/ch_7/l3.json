@@ -1,0 +1,203 @@
+{
+    "id": "l3",
+    "chapterId": "ch_7",
+    "title": "Volatility Masterclass 🔧",
+    "description": "Learn to analyze memory images using the Volatility Framework – processes, network, and more.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Memory Forensics",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Meet Volatility 🛠️",
+            "content": "# The Swiss Army Knife of Memory Analysis\n\n**Volatility** is an open‑source framework (Python) for extracting digital artifacts from volatile memory (RAM) samples. It supports Windows, Linux, and macOS.\n\nIt works with raw dumps, crash dumps, hibernation files, and virtual machine snapshots.\n\nBasic workflow:\n1. **Identify the profile**: Determine the OS version and architecture.\n2. **Run plugins**: Process listing, network connections, registry, malware scanning, etc.\n3. **Extract artifacts**: Dump processes, files, or keys."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Volatility Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "What is the first step when analyzing a memory dump with Volatility?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Run the 'pslist' plugin",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Identify the correct OS profile",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Extract all files",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Hash the memory image",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Without the correct profile, Volatility cannot correctly interpret the memory structures.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Choosing the Right Profile 🎯",
+            "content": "Volatility uses a `--profile` parameter to tell it how to parse the memory structures (e.g., Win10x64_19041).\n\nTo identify the profile:\n- Use `imageinfo` plugin: `vol.py -f memory.raw imageinfo` (Volatility 2) or `vol.py -f memory.raw windows.info` (Volatility 3).\n- It examines the KDBG header, kernel version, and PE headers to suggest profiles.\n\nVolatility 3 simplifies this — most plugins auto‑detect the OS and version."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "Volatility 2 imageinfo Example",
+            "content": "Run `imageinfo` to get suggested profiles.",
+            "codeSnippet": "vol.py -f memory.raw imageinfo\n# Output: Suggested Profile(s) : Win10x64_19041, Win10x64_18362...",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "quiz",
+            "title": "Profile Importance 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "Using the wrong profile in Volatility may produce empty or incorrect results.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The profile defines the kernel data structures and offsets; a mismatch leads to parsing errors.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Process Analysis 👥",
+            "content": "## Plugins to List and Inspect Processes\n\n- **pslist**: List processes from the double‑linked list (`_EPROCESS`). Can be manipulated by rootkits (DKOM).\n- **psscan**: Scans memory for `_EPROCESS` structures, finds hidden processes.\n- **pstree**: Shows process parent‑child relationships (useful for spotting malicious child processes).\n- **cmdline**: Displays the command line arguments for each process.\n- **dlllist**: Lists loaded DLLs for a process.\n- **handles**: Shows open handles (files, mutexes) per process.\n\nUse both `pslist` and `psscan` to uncover hidden processes."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "code",
+            "title": "Volatility 3 Process Commands",
+            "content": "List processes and their command lines.",
+            "codeSnippet": "vol.py -f memory.raw windows.pslist\nvol.py -f memory.raw windows.psscan\nvol.py -f memory.raw windows.cmdline --pid 1234",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_8",
+            "type": "quiz",
+            "title": "Hidden Processes 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "multiple_choice",
+                "question": "Which Volatility plugin can detect hidden processes by scanning for _EPROCESS structures?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "pslist",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "psscan",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "pstree",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "dlllist",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "psscan uses signature scanning to find `_EPROCESS` objects, bypassing the standard linked list that rootkits may unlink.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_9",
+            "type": "text",
+            "title": "Network Artifacts 🌐",
+            "content": "Memory holds active network connections that may not appear in disk logs.\n\n- **netscan**: Scans for TCP and UDP endpoints (Volatility 2; in Vol 3 use `windows.netscan`).\n- **sockets**: Lists open sockets.\n- **connections**: Shows active connections (XP/2003 only for Volatility 2).\n\nYou can see:\n- IP addresses and ports\n- Process associated with each connection\n- State (LISTENING, ESTABLISHED, CLOSE_WAIT)\n\nThis helps trace malware communicating with C2 servers or data exfiltration."
+        },
+        {
+            "id": "s_l3_10",
+            "type": "code",
+            "title": "Volatility 3 netscan",
+            "content": "List network connections with associated processes.",
+            "codeSnippet": "vol.py -f memory.raw windows.netscan",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_11",
+            "type": "quiz",
+            "title": "Network Forensics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_4",
+                "type": "true_false",
+                "question": "The netscan plugin can show which process initiated a network connection.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "netscan resolves the owner process ID for each socket, linking network activity to a specific process.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_12",
+            "type": "text",
+            "title": "Registry in Memory 📋",
+            "content": "The registry hives loaded in memory can be accessed via `hivelist` (Vol 2) or `windows.registry.hivelist` (Vol 3). You can then print specific keys and values.\n\nThis is useful when the on‑disk hives are deleted or the machine was running with registry modifications not saved to disk (e.g., in‑memory patching).\n\n- **hivedump**: Recursively list all keys in a hive.\n- **printkey**: Display a specific key and its values."
+        },
+        {
+            "id": "s_l3_13",
+            "type": "code",
+            "title": "Registry Commands (Vol 3)",
+            "content": "List hives and print a key.",
+            "codeSnippet": "vol.py -f memory.raw windows.registry.hivelist\nvol.py -f memory.raw windows.registry.printkey --key \"Software\\Microsoft\\Windows\\CurrentVersion\"",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_14",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use Timeliner for Quick Overview\n\nVolatility's `timeliner` plugin generates a CSV of all timestamps found in memory (processes, threads, loaded modules, etc.), which you can import into Timeline Explorer."
+        }
+    ]
+}

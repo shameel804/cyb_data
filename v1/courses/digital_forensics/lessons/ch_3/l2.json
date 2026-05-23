@@ -1,0 +1,139 @@
+{
+    "id": "l2",
+    "chapterId": "ch_3",
+    "title": "Endianness & Binary Structures 🏗️",
+    "description": "Discover big‑endian vs little‑endian and why byte order can make or break your evidence interpretation.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Computer Forensics Fundamentals",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Byte Order War ⚔️",
+            "content": "# What is Endianness?\n\nWhen a number spans multiple bytes, the order of those bytes matters. Two philosophies:\n\n- **Big‑endian**: Most significant byte first (like writing a number left‑to‑right). Used in network protocols, some file formats.\n- **Little‑endian**: Least significant byte first. Intel x86 CPUs use this.\n\nExample: The 32‑bit hex value `0x12345678` stored at address 0x00:\n\n| Address | Big‑endian | Little‑endian |\n|---------|------------|---------------|\n| 0x00    | 12         | 78            |\n| 0x01    | 34         | 56            |\n| 0x02    | 56         | 34            |\n| 0x03    | 78         | 12            |"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Endian Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "In a little‑endian system, the byte at the lowest memory address holds the:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Most significant byte",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Least significant byte",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Middle byte",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Parity byte",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Little‑endian puts the least significant byte first, so the lowest address contains the 'small end'.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Why Forensics Cares 🔍",
+            "content": "## Don't Misread Evidence!\n\nIf you parse a timestamp stored in little‑endian but interpret it as big‑endian, you'll get a completely wrong date. File systems store metadata in specific endianness:\n\n- FAT file systems: little‑endian.\n- NTFS: little‑endian (since it runs on Windows/Intel).\n- Network captures (pcap): big‑endian.\n\nAlways check the specification of the artifact you’re analysing."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Spotting Endianness in Hex",
+            "content": "Given bytes `3C 00 00 00` at a FAT32 directory entry offset, it's little‑endian for 0x0000003C = 60 bytes (file size).",
+            "codeSnippet": "# Little‑endian interpretation:\n# 3C 00 00 00 = 0x0000003C = 60\n\n# If it were big‑endian, same bytes = 0x3C000000 = 1006632960 (wrong!)",
+            "codeLanguage": "plaintext",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "Endian Trap 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "If you see bytes '1A 00' in a little‑endian field representing a 16‑bit integer, the value is 26.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Little‑endian: 0x001A = 26. Big‑endian would be 0x1A00 = 6656, but the context tells us it's little‑endian.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Binary Structures in Forensics 🧱",
+            "content": "## Records, Headers, Fields\n\nFile systems and logs are built from **structured binary records**. For instance, an MBR partition entry is exactly 16 bytes:\n\n- Byte 0: boot indicator\n- Byte 1‑3: CHS start\n- Byte 4: partition type\n- Byte 5‑7: CHS end\n- Byte 8‑11: LBA start (little‑endian)\n- Byte 12‑15: sector count (little‑endian)\n\nUnderstanding these layouts lets you manually extract evidence when tools fail."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "Structure Insight 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "multiple_choice",
+                "question": "What does it mean if a forensic tool misinterprets a partition's start sector because of endianness?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The drive is encrypted",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The tool is parsing the field in the wrong byte order",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The partition is corrupt",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The evidence is not usable",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A wrong endian assumption can cause a tool to read an entirely different sector number, but the data is still valid if parsed correctly.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use a Hex Editor for Validation\n\nWhen you suspect a tool is giving odd numbers, open the raw image in a hex editor, navigate to the structure, and manually verify the byte order."
+        }
+    ]
+}

@@ -1,0 +1,130 @@
+{
+    "id": "l4",
+    "chapterId": "ch_6",
+    "title": "LNK Files & Jump Lists",
+    "description": "Decode shortcut files and automatic recent files to trace opened documents and network shares.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Windows Forensics",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Shortcut Files Tell Tales 📎",
+            "content": "# LNK (Link) Files\n\nWhenever a user opens a file (document, image, executable) or even a network share, Windows may create a **shortcut** (.lnk file). These are stored in:\n- `C:\\Users\\<user>\\AppData\\Roaming\\Microsoft\\Windows\\Recent`\n- `C:\\Users\\<user>\\AppData\\Roaming\\Microsoft\\Office\\Recent`\n\nLNK files contain:\n- Original file path\n- File size\n- MAC timestamps of the target file *at the time of access*\n- Volume serial number and network share path\n- Machine MAC address if on a network share\n\nThese are a goldmine for timeline analysis, even if the original file is deleted."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "LNK Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What type of information is stored inside an LNK file?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Only the name of the shortcut",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Target file path, timestamps, and volume serial",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Encrypted content of the target file",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "User's login credentials",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "LNK files contain extensive metadata about the target file, including its path, size, and MAC timestamps at the time the link was created or the file was accessed.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Anatomy of an LNK File 🔬",
+            "content": "An LNK file is a structured binary format. Key fields:\n- **Shell Link Header**: Flags, timestamps (creation, modification, access of the LNK itself).\n- **Link Target ID List**: ItemID lists that reconstruct the path.\n- **Link Info**: Location flags, volume serial number, network share info, drive type.\n- **Property Store**: additional timestamps, file size, etc.\n\nTool for parsing: `LECmd.exe` (Eric Zimmerman) or `lnk-parse` (Plaso)."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "Parse LNK with LECmd",
+            "content": "Extract metadata from all LNK files in a folder.",
+            "codeSnippet": "LECmd.exe -d C:\\Users\\jdoe\\AppData\\Roaming\\Microsoft\\Windows\\Recent --csv C:\\output",
+            "codeLanguage": "cmd",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "quiz",
+            "title": "LNK Metadata 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "The timestamps inside an LNK file reflect the current system time when the LNK file was created, not the target file's timestamps.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "LNK files store the target file's MAC timestamps (as captured when the LNK was created/updated) inside the Property Store, in addition to the LNK's own file system timestamps.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Jump Lists: Automatic Recent Files 📋",
+            "content": "## The Taskbar's Memory\n\nJump Lists (introduced in Windows 7) appear when you right‑click a taskbar icon. They are stored as:\n- **AutomaticDestinations-ms** files: System‑maintained, per‑application (hidden in `C:\\Users\\<user>\\AppData\\Roaming\\Microsoft\\Windows\\Recent\\AutomaticDestinations`).\n- **CustomDestinations-ms**: Pinned by user.\n\nEach file is a compound file containing a list of LNK‑like streams (MRU/MFU order). Parsing them reveals files opened with specific applications (e.g., `Notepad.exe`, `Excel.exe`).\n\nTool: `JLECmd.exe` (Zimmerman) can extract individual entries from Jump List files."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "Jump List ID 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "fill_blank",
+                "question": "Automatic Jump List files have the extension ___.",
+                "options": [
+                    ".lnk",
+                    ".aut",
+                    ".automaticDestinations-ms",
+                    ".jmp"
+                ],
+                "correctAnswer": ".automaticDestinations-ms",
+                "explanation": "The files are named with a GUID and end with `.automaticDestinations-ms`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_8",
+            "type": "text",
+            "title": "Network Evidence in LNK/Jump Lists 🌐",
+            "content": "If a user opens a file from a network share, the LNK (and thus a Jump List entry) will contain the UNC path (e.g., `\\\\server\\share\\file.doc`) and the MAC address of the network adapter that accessed it.\n\nThis is crucial for proving data exfiltration to a network location or insider threat access."
+        },
+        {
+            "id": "s_l4_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## LNK Files Survive Deletion\n\nEven after the target file is permanently deleted, its LNK shortcut in the Recent folder often persists, giving you the file name, path, and timestamps. Check that folder first during investigation."
+        }
+    ]
+}

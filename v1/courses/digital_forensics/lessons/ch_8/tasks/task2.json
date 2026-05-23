@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_8",
+    "title": "Flow Data Investigation – Locate the Leak",
+    "description": "Using provided NetFlow data snippets, identify which internal host exfiltrated data and to where.",
+    "estimatedMinutes": 15,
+    "problemStatement": "**Scenario:** You have NetFlow records from the corporate border router for June 1, 2026. A large amount of data is suspected to have been exfiltrated. The network uses private IP range 10.0.0.0/8. Using the flow records below, answer the questions.\n\n**Flow data (excerpt):**\n```\nStart          Src IP        Dst IP        Proto SrcPort DstPort Packets   Bytes\n10:00:00.000  10.0.1.25     8.8.8.8       17    12345    53      10       1200\n10:05:00.000  10.0.1.25     104.16.132.229 6     54321    443     50       35000\n10:10:00.000  10.0.1.25     185.22.123.5   6     4444     80      2000     5242880\n10:10:05.000  10.0.1.25     185.22.123.5   6     4444     80      1500     4194304\n10:15:00.000  10.0.1.50     10.0.1.200     6     22       22      500      40000\n10:20:00.000  10.0.1.25     203.0.113.99   17     53       53      8000     10240000\n```\n\n1. Which internal IP appears to be exfiltrating data? Why?\n2. To which external IP(s) was data likely exfiltrated?\n3. What protocol and port might have been used for the bulk transfer? Explain.\n4. One flow shows a large amount of DNS traffic (8000 packets, 10 MB) to an external IP. What could this indicate?\n5. Based on the flows, at approximately what time did the major exfiltration occur?\n\nProvide a narrative of the exfiltration scenario.",
+    "hints": [
+        "Look for internal IP sending large bytes to external IPs.",
+        "Port 80 traffic with that many bytes is suspicious; perhaps a POST request with data, or a non‑standard service on port 80.",
+        "High volume DNS could be tunneling.",
+        "Check flow start times and sizes."
+    ],
+    "expectedOutput": "Answers with justification.",
+    "solutionCode": "1. Internal IP 10.0.1.25 is exfiltrating data, as it has flows with large byte counts (5 MB, 4 MB, 10 MB) to external destinations.\n2. Data was likely exfiltrated to 185.22.123.5 (port 80) and possibly via DNS to 203.0.113.99.\n3. The bulk transfer likely used TCP port 80 to 185.22.123.5 (flows of 5 MB + 4 MB). This is not typical web browsing; it suggests an HTTP POST or reverse shell channel.\n4. The DNS flow (10 MB) to 203.0.113.99 indicates DNS tunneling: encoding data in DNS queries/responses to bypass firewalls.\n5. Major exfiltration occurred around 10:10 AM UTC, with two large transfers to 185.22.123.5 and a massive DNS flow starting at 10:20.\n\nScenario: At 10:10, 10.0.1.25 began exfiltrating a zip or database via an HTTP POST to 185.22.123.5 on port 80. At 10:20, it started DNS tunneling to a different IP, likely as a backup channel. Both are consistent with a deliberate data theft."
+}

@@ -1,0 +1,145 @@
+{
+    "id": "l2",
+    "chapterId": "ch_7",
+    "title": "Capturing the Ephemeral 💾",
+    "description": "Master the tools and techniques to acquire RAM dumps safely from live systems.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Memory Forensics",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Golden Rule of Acquisition 🛡️",
+            "content": "# Capture First, Analyze Later\n\nMemory acquisition must be done with minimal impact. Every tool you run loads into RAM, uses CPU, and alters the very evidence you are collecting.\n\nKey principles:\n- Use a trusted, digitally signed acquisition tool.\n- Run the tool from external media (USB) to avoid writing to the suspect disk.\n- Document the exact tool name, version, and command used.\n- Capture a full memory image, not just a process listing."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Acquisition Principles 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Why should a memory acquisition tool be run from an external USB drive?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To speed up the process",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To avoid overwriting evidence on the suspect's hard drive",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Because it requires special USB drivers",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To encrypt the output",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Running from USB prevents the tool and its output from writing to the suspect's disk, which could destroy evidence.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Acquisition Tools 📥",
+            "content": "## Trusted Options\n\n- **DumpIt** (Magnet Forensics): Simple, single-click tool for Windows. Creates a raw memory dump.\n- **Magnet RAM Capture**: Free, dedicated to capturing RAM with minimal footprint.\n- **FTK Imager**: Can capture memory in addition to disk imaging (File > Capture Memory).\n- **WinPmem** (part of Rekall framework): Command‑line, open‑source, supports various output formats.\n- **LiME** (Linux Memory Extractor): Loadable kernel module for Linux acquisition.\n- **AVML** (Microsoft): Portable Linux memory acquisition tool.\n- **Hibernation file** (`hiberfil.sys`): A frozen memory dump created when a computer hibernates.\n\nFor virtual machines, you can suspend or snapshot them; the `.vmem` or `.vmss` file contains RAM."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "DumpIt Command Example",
+            "content": "Run DumpIt from an elevated command prompt on Windows.",
+            "codeSnippet": "DumpIt.exe\n# Follow the on‑screen prompt. Output file: hostname‑date.raw",
+            "codeLanguage": "cmd",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "Acquisition Tools 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "fill_blank",
+                "question": "The Linux kernel module used for memory acquisition is called ___.",
+                "options": [
+                    "LiME",
+                    "WinPmem",
+                    "DumpIt",
+                    "AVML"
+                ],
+                "correctAnswer": "LiME",
+                "explanation": "LiME (Linux Memory Extractor) is a loadable kernel module for capturing RAM on Linux systems.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "WinPmem – Open‑Source Power 🔓",
+            "content": "WinPmem can produce raw, crash dump, or ELF formats. It uses a kernel driver to access physical memory.\n\n```\nwinpmem_mini.exe output.raw\n```\n\nThe `mini` variant has no dependencies. It's a favorite for scripting and remote collection.\n\nAlways verify the image with a hash after capture."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "code",
+            "title": "Hash the Memory Dump",
+            "content": "After acquisition, hash the dump to ensure integrity.",
+            "codeSnippet": "certutil -hashfile memory.raw SHA256\n# or on Linux: sha256sum memory.raw",
+            "codeLanguage": "cmd",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_8",
+            "type": "quiz",
+            "title": "Hashing Requirement 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "true_false",
+                "question": "It is acceptable to skip hashing a memory dump because RAM is constantly changing anyway.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Even though RAM changes during acquisition, hashing the final dump file proves it hasn't been modified after capture.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_9",
+            "type": "text",
+            "title": "Hibernation File & Crash Dumps 😴",
+            "content": "When a Windows machine hibernates, it writes the entire RAM to `C:\\hiberfil.sys`. This is a **compressed** memory image. Tools like **Volatility** can directly analyze this file, or you can decompress it using `hibr2dmp` (part of Volatility) to a raw dump.\n\nCrash dumps (`MEMORY.DMP`) also contain RAM snapshots. They are full kernel dumps but may not include all user space memory.\n\nBoth are invaluable when live acquisition isn't possible."
+        },
+        {
+            "id": "s_l2_10",
+            "type": "warning",
+            "title": "⚠️ Footprint Matters",
+            "content": "Running a memory acquisition tool consumes some RAM. It may overwrite the free memory pages of a terminated process. This is unavoidable, but using small, well‑designed tools minimizes the loss."
+        },
+        {
+            "id": "s_l2_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Capture Memory Before Disk on Live Systems\n\nAlways prioritize volatile data. If you decide to do live acquisition, grab RAM first, then image the hard drive. The RAM may contain keys to unlock the disk."
+        }
+    ]
+}

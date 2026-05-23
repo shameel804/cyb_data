@@ -1,0 +1,135 @@
+{
+    "id": "l4",
+    "chapterId": "ch_5",
+    "title": "File Deletion & Recovery Techniques",
+    "description": "Learn manual and tool‑based recovery of deleted files on FAT and NTFS step by step.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "File System Analysis",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Bringing Files Back from the Dead 💀➡️👻",
+            "content": "# The Recovery Mindset\n\nWhen a file is deleted, the data isn't always gone. Recovery involves:\n1. Locating the metadata remnants (directory entry, MFT record).\n2. Determining the data clusters (FAT chain, MFT runlist).\n3. Ensuring those clusters haven't been overwritten.\n4. Extracting and saving the file.\n\nWe'll cover manual techniques that give you full control."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Recovery Reality 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "true_false",
+                "question": "If a file's metadata is gone, the file can never be recovered.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Carving can recover file content even without any metadata, based solely on file signatures.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Manual FAT Recovery 📋",
+            "content": "## Step‑by‑Step\n\n1. **Find deleted entries**: Scan directory sectors for entries starting with 0xE5. The rest of the name (bytes 1‑7) remains.\n2. **Read starting cluster** (bytes 26‑27 + high word 20‑21 for FAT32).\n3. **Reconstruct cluster chain**: Walk the FAT table from the starting cluster, following entries until 0x0FFFFFFF (FAT32) or end marker.\n4. **Extract clusters**: Using `dd` or a hex editor, copy the data from those clusters into a new file.\n5. **Verify**: Check file size from directory entry and trim excess.\n\nTools: WinHex, Active@ Disk Editor, or custom scripts."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "FAT Chain Walk (Conceptual)",
+            "content": "A Python snippet to illustrate walking a FAT32 table.",
+            "codeSnippet": "def get_chain(start_cluster, fat_data):\n    chain = []\n    next = start_cluster\n    while next < 0x0FFFFFF8:\n        chain.append(next)\n        next = struct.unpack('<I', fat_data[next*4:next*4+4])[0] & 0x0FFFFFFF\n    return chain",
+            "codeLanguage": "python",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "quiz",
+            "title": "FAT Chain End 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "fill_blank",
+                "question": "In FAT32, a FAT entry of 0x0FFFFFFF indicates the ___.",
+                "options": [
+                    "free cluster",
+                    "bad cluster",
+                    "end of cluster chain",
+                    "reserved cluster"
+                ],
+                "correctAnswer": "end of cluster chain",
+                "explanation": "Values from 0x0FFFFFF8 to 0x0FFFFFFF mark the last cluster of a file.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "NTFS Deleted File Recovery 🖥️",
+            "content": "## Using the MFT\n\nEven after deletion, MFT records often remain marked as free (flag 0x00). If the record is not overwritten:\n\n1. **Scan $MFT for free records** with `fls -d` (TSK) or using a parser.\n2. **Examine $DATA attribute**: If resident, data is right there. If non‑resident, follow the runlist to get cluster addresses.\n3. **Check the runlist** – it remains in the record until the record is reused. The clusters may still hold the data if not overwritten.\n4. **Extract**: Using `icat` from TSK, you can recover file content by MFT entry number.\n\nCommand example: `icat -f ntfs image.dd <mft_entry> > recovered_file`"
+        },
+        {
+            "id": "s_l4_7",
+            "type": "code",
+            "title": "TSK Recovery of NTFS File",
+            "content": "List all files (including deleted) and recover one.",
+            "codeSnippet": "fls -f ntfs -r -d image.dd   # -d shows deleted\n# Output shows file name with * (deleted) and mft entry\nicat -f ntfs -r image.dd 48-128-1 > recovered.doc",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_8",
+            "type": "quiz",
+            "title": "MFT Recovery 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "true_false",
+                "question": "If an MFT record is marked as free, its data runlist is automatically zeroed.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "The runlist remains intact until the MFT record is reused and overwritten, allowing recovery of cluster pointers.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_9",
+            "type": "text",
+            "title": "Tools of the Trade 🧰",
+            "content": "- **The Sleuth Kit (TSK) + Autopsy**: Open‑source, command‑line and GUI.\n- **R‑Studio**: Commercial, excellent for RAID and damaged file systems.\n- **Recuva**: Free, Windows‑based, user‑friendly for quick recovery.\n- **TestDisk**: Partition and file recovery.\n- **WinHex**: Hex editor with disk imaging and FAT/NTFS parsing.\n\nChoose based on the case requirements and your comfort."
+        },
+        {
+            "id": "s_l4_10",
+            "type": "warning",
+            "title": "⚠️ Overwriting Danger",
+            "content": "Recovery must be performed on a forensic image, never the original. As soon as you install recovery software on the suspect drive, you may overwrite the very data you seek."
+        },
+        {
+            "id": "s_l4_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Correlate with Journals\n\nWhen recovering a file, check $UsnJrnl (NTFS) or journal (ext4) to confirm the file’s original name and deletion timestamp. This strengthens the evidentiary chain."
+        }
+    ]
+}

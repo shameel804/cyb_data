@@ -1,0 +1,171 @@
+{
+    "id": "l2",
+    "chapterId": "ch_6",
+    "title": "Registry Forensics: User Activity",
+    "description": "Extract evidence of user actions from UserAssist, RecentDocs, USB artifacts, and more.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Windows Forensics",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The User Footprint 👣",
+            "content": "# Registries That Spy on Users\n\nSeveral registry keys track user interactions:\n- **UserAssist**: Records GUI‑based program launches with run counts and last execution time.\n- **RecentDocs**: Lists recently opened files (by extension).\n- **TypedURLs**: URLs typed into Internet Explorer.\n- **MountPoints2**: Connected USB devices and mapped network drives.\n- **Shellbags**: Folder view settings (which folders were opened).\n\nWe'll dissect each one."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Activity Keys 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which registry key contains information about programs launched via the Windows GUI (with run count)?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "RecentDocs",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "MountPoints2",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "UserAssist",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "TypedURLs",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "UserAssist stores GUI‑based program execution data, including launch count and last execution time.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "UserAssist Key 🔍",
+            "content": "Located under `HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\UserAssist`.\n\nIt contains subkeys like `{CEBFF5CD-...}` and `{F4E57C4B-...}`. Each value name is a ROT13‑encoded (Win10+) or plain (Win7) program path. The binary data encodes:\n- Run count (bytes 4‑7)\n- Last run time (FILETIME at offset 60 or 72 depending on version).\n\nDecoding these reveals how many times a program was launched and when it was last used."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Parse UserAssist with RegRipper",
+            "content": "Use RegRipper to extract UserAssist entries.",
+            "codeSnippet": "rip.pl -r NTUSER.DAT -p userassist\n# Output: program path, run count, last run time.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "UserAssist Details 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "On Windows 10, UserAssist value names are ROT13‑encoded to obfuscate the program path.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Yes, Windows 10 applies ROT13 to the executable path to make it less human‑readable, but it's trivial to decode.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "RecentDocs & OfficeDocs 📄",
+            "content": "`HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\RecentDocs` tracks recently opened files, sorted by extension (`.txt`, `.pdf`, etc.). Each value is a binary string containing the file name, and the MRU (Most Recently Used) order.\n\n`HKCU\\Software\\Microsoft\\Office\\<version>\\<App>\\File MRU` records files opened in Office applications.\n\nThese entries remain after the file is deleted, providing evidence of document access."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "RecentDocs MRU 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "fill_blank",
+                "question": "The 'R' in MRU stands for ___.",
+                "options": [
+                    "Recently",
+                    "Read",
+                    "Retrieved",
+                    "Registered"
+                ],
+                "correctAnswer": "Recently",
+                "explanation": "MRU = Most Recently Used; it tracks the order of file access.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_8",
+            "type": "text",
+            "title": "USB Device History 🖱️",
+            "content": "## Mounted Devices and Portable Storage\n\n`HKLM\\SYSTEM\\CurrentControlSet\\Enum\\USBSTOR` lists every USB storage device ever connected. Each subkey is a device ID, containing vendor, product, and serial.\n\n`HKLM\\SOFTWARE\\Microsoft\\Windows Portable Devices\\Devices` shows similar info.\n\n`HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\MountPoints2` records which drive letters were assigned and contains a drive serial number.\n\nThe `Properties` value inside each device subkey of `Enum\\USBSTOR` includes the last connection time (LastWrite time of the key itself).\n\nThese keys collectively prove if a USB drive was plugged in, when, and what it was."
+        },
+        {
+            "id": "s_l2_9",
+            "type": "quiz",
+            "title": "USB Evidence 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_4",
+                "type": "multiple_choice",
+                "question": "Which registry key stores the serial number of connected USB storage devices?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "UserAssist",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "RecentDocs",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "HKLM\\SYSTEM\\CurrentControlSet\\Enum\\USBSTOR",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "HKLM\\SOFTWARE\\Microsoft",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "USBSTOR enumerates all USB mass storage devices, with the serial number embedded in the device instance ID.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_10",
+            "type": "text",
+            "title": "Network History & Typed URLs 🌐",
+            "content": "`HKCU\\Software\\Microsoft\\Internet Explorer\\TypedURLs` stores URLs that were typed into the IE address bar (not search queries).\n\n`HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Map Network Drive MRU` records mapped network shares.\n\nThese complement browser history artifacts for network activity."
+        },
+        {
+            "id": "s_l2_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use Registry Explorer for Quick Triage\n\nLoading a hive into Registry Explorer lets you visually browse and see LastWrite times. For bulk analysis, `regripper` or `KAPE` with registry modules are essential."
+        }
+    ]
+}

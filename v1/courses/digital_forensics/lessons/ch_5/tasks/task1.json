@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_5",
+    "title": "Decode a FAT Directory Entry",
+    "description": "Given a hex dump of a FAT32 directory entry, decode the file name, attributes, starting cluster, file size, and determine if it is deleted.",
+    "estimatedMinutes": 15,
+    "problemStatement": "**Scenario:** You are analyzing a FAT32 image and encounter the following 32‑byte directory entry at an offset. Interpret the hex data and answer the questions below.\n\nHex bytes (from offset 0x00 to 0x1F):\n`E5 4F 4F 50 59 20 20 20 54 58 54 20 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 00 00 10 00 00`\n\nUsing your knowledge of FAT directory entry structure (little‑endian fields):\n\n1. Is this file deleted? How can you tell?\n2. What is the short file name (consider the first byte 0xE5)?\n3. What is the file extension?\n4. What are the file attributes? (Byte 0x0B)\n5. What is the starting cluster? (Combine high word at 0x14 and low word at 0x1A)\n6. What is the file size in bytes? (Bytes 0x1C–0x1F)\n\nShow your calculations.",
+    "hints": [
+        "Remember FAT directory entry layout: name (8 bytes), extension (3 bytes), attributes (1 byte), reserved, high cluster (2 bytes), modified time/date, low cluster (2 bytes), file size (4 bytes).",
+        "The first byte 0xE5 means it's deleted. The original first character is lost but the rest of the name remains.",
+        "Attributes are at offset 0x0B (11 decimal)."
+    ],
+    "expectedOutput": "Answers to each question with explanations.",
+    "solutionCode": "1. Deleted: Yes. The first byte is 0xE5, which is the marker for a deleted file.\n2. Short name: The entry originally was '?OOPY   TXT'. The ? represents the replaced first character (0xE5). So the visible name is 'OOPY    TXT'.\n   - Bytes 0x00-0x07: E5 4F 4F 50 59 20 20 20 → ' OOPY   ' (with first as 0xE5).\n   - Bytes 0x08-0x0A: 54 58 54 → 'TXT'.\n3. Extension: TXT.\n4. Attributes: Byte 0x0B is 0x20 → binary 00100000, which is the Archive bit only. No read‑only, hidden, etc.\n5. Starting cluster: High word at 0x14-0x15 = 0x0000, low word at 0x1A-0x1B = 0x0003. Combined (little‑endian) = 0x00000003 → cluster 3.\n6. File size: Bytes 0x1C-0x1F = 0x00100000 (little‑endian) = 0x00001000 = 4096 bytes."
+}

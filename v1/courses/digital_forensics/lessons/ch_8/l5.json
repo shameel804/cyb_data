@@ -1,0 +1,127 @@
+{
+    "id": "l5",
+    "chapterId": "ch_8",
+    "title": "Flow Analysis & NetFlow 📊",
+    "description": "Use NetFlow/sFlow to summarize network activity and trace large‑scale data transfers.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Network Forensics",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "The Big Picture Without Every Packet 🖼️",
+            "content": "# Why Flow Data?\n\nFull packet capture is storage‑intensive and often not feasible for long periods. Flow data provides a **summary** of network conversations:\n- Source & destination IP\n- Source & destination port\n- Protocol\n- Packets & bytes transferred\n- Start/end timestamps\n\nIt’s like a phone bill – you see who called whom, when, and for how long, but not what they said. Yet it’s incredibly powerful for identifying suspicious patterns."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "Flow vs Packet 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is a key advantage of NetFlow over full packet capture?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It contains the actual payload of communications",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It requires less storage and can be kept for longer periods",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It captures every single packet",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It provides real‑time alerts",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Flow data summarizes conversations, making it compact and ideal for long‑term retention."
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "NetFlow, sFlow, IPFIX 📋",
+            "content": "- **NetFlow** (Cisco): Classic, versions 5 and 9. v9 is template‑based, flexible.\n- **sFlow**: Sampling‑based (statistical), reduces overhead on high‑speed links.\n- **IPFIX**: IETF standard based on NetFlow v9; widely supported.\n\nFlow data is exported by routers/switches to a collector (e.g., nfdump, SiLK, ELK).\n\nForensically, you can query flows to:\n- Find all communications to/from a suspect IP.\n- Detect horizontal port scans (one source, many destinations).\n- Identify large data transfers (exfiltration)."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "Analyze Flows with nfdump",
+            "content": "Query NetFlow data collected by nfcapd.",
+            "codeSnippet": "nfdump -r /flows/nfcapd.20260601 'host 192.168.1.100'\n# Displays all flows involving that IP.\n\n# Find top talkers by bytes:\nnfdump -r /flows/ -s record/bytes -n 10",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_5",
+            "type": "quiz",
+            "title": "NetFlow Tools 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "NetFlow version 5 can report fields like application name and URL.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "NetFlow v5 only includes basic 5‑tuple and bytes/packets; no application layer info."
+            }
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Trace Exfiltration with Flow Data 📤",
+            "content": "Steps:\n1. Identify baseline normal traffic (average outbound bytes per day).\n2. Look for spikes: `nfdump -r <file> -s record/bytes -n 100`\n3. Filter for outbound traffic from internal to external IPs during the spike.\n4. Check for common exfiltration ports (80, 443, 53, 8080) but also unusual ports.\n5. Pivot to full packet capture if available for the exact time.\n\nFlow data alone can prove that a large amount of data left the network."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Exfiltration Detection 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_3",
+                "type": "fill_blank",
+                "question": "A flow record showing a single internal host sending 5 GB to an external IP on port 53 is suspicious because it might indicate ___.",
+                "options": [
+                    "DNS tunneling",
+                    "HTTP browsing",
+                    "email traffic",
+                    "FTP transfer"
+                ],
+                "correctAnswer": "DNS tunneling",
+                "explanation": "Port 53 is DNS; large data transfers over it suggest tunneling to bypass firewalls."
+            }
+        },
+        {
+            "id": "s_l5_8",
+            "type": "text",
+            "title": "Correlating Flows with Logs 🔗",
+            "content": "Flow data becomes even more powerful when combined with:\n- **Firewall logs**: What traffic was allowed/denied?\n- **Proxy logs**: Which URLs were requested?\n- **IDS alerts**: Which flows triggered an alert?\n\nTools like **Security Onion** or **ELK Stack** can ingest and correlate all these.\n\nA typical workflow: IDS alert → extract source IP → query flows for that IP during the incident window → find other internal hosts contacted → investigate those hosts."
+        },
+        {
+            "id": "s_l5_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Keep At Least 90 Days of Flow Data\n\nMany regulations and best practices (like NIST) recommend retaining flow data for months. It’s your safety net when an incident is discovered late."
+        }
+    ]
+}

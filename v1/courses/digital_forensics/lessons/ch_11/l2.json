@@ -1,0 +1,123 @@
+{
+    "id": "l2",
+    "chapterId": "ch_11",
+    "title": "Encryption & Steganography: Hiding the Data 🔐",
+    "description": "Understand how encryption, steganography, and hidden volumes can conceal evidence from prying eyes.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Anti-Forensics & Countermeasures",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Encryption: The Ultimate Lock 🔒",
+            "content": "# When Data is Invisible Without a Key\n\nEncryption scrambles data so that only someone with the correct key can read it. When used properly, it makes forensic analysis impossible without that key.\n\nCommon encryption anti‑forensics:\n- **Full‑Disk Encryption (FDE)**: BitLocker, FileVault, LUKS – entire drive is encrypted.\n- **File‑level encryption**: EFS (Windows), encrypted ZIPs, PGP.\n- **Virtual encrypted containers**: VeraCrypt volumes that look like a single file.\n- **Encrypted communication**: WhatsApp, Signal end‑to‑end encryption hides message content.\n\nIf the suspect refuses to provide the key, the investigator must find alternative ways – memory capture (if the volume was mounted), key escrow, or brute‑forcing (rarely feasible)."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Encryption Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "What is the best chance to defeat full‑disk encryption forensically?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Brute‑force the password",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Capture the RAM while the system is running or unlocked",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Run a disk defragmenter",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Reformat the drive",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Encryption keys reside in memory while the drive is unlocked. A memory dump can extract them.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Steganography: Hiding in Plain Sight 👀",
+            "content": "## Concealing the Existence of Data\n\nEncryption hides content; steganography hides the very **existence** of data. It embeds secret information inside innocent‑looking carriers:\n\n- **Image steganography**: Hiding data in the least significant bits (LSB) of pixels.\n- **Audio steganography**: Echo hiding, phase coding.\n- **Video steganography**: Replacing insignificant frames.\n- **Text steganography**: Using whitespace, alternate spellings.\n\nCommon tools: Steghide, OpenStego, DeepSound.\n\nForensic detection: Statistical analysis (chi‑square test, RS analysis), looking for unusually large files, comparing original vs suspect images. Tools like **StegExpose**, **StegDetect** can flag suspicious files."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "Stego vs Crypto 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "Steganography encrypts data so that it cannot be read.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Steganography hides the existence of data, while encryption protects its content. They can be combined, but steganography alone doesn't encrypt.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Hidden Volumes & Plausible Deniability 📁",
+            "content": "VeraCrypt (successor of TrueCrypt) offers **hidden volumes** – a second encrypted volume inside the outer one. Under duress, the user can reveal the password to the outer volume, while the hidden volume remains undetectable.\n\nForensically, it's extremely difficult to prove the existence of a hidden volume without the password, because free space in a VeraCrypt container looks like random data.\n\nIf you suspect a hidden volume, compare the apparent file size with the container file size. A 10 GB container with only 2 GB of outer files might hint at a hidden volume."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Hidden Volume 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "fill_blank",
+                "question": "A VeraCrypt hidden volume is designed to provide ___ deniability.",
+                "options": [
+                    "absolute",
+                    "plausible",
+                    "legal",
+                    "zero"
+                ],
+                "correctAnswer": "plausible",
+                "explanation": "It allows the user to deny the hidden volume's existence, as its presence is indistinguishable from random data."
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "code",
+            "title": "Detecting LSB Steganography with StegExpose",
+            "content": "Use StegExpose to scan an image for hidden data.",
+            "codeSnippet": "java -jar StegExpose.jar image.jpg\n# Output: a score indicating likelihood of steganography.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Look for the Tools\n\nIf you find Steghide or OpenStego on the system, check recent files, registry, and jump lists for images that were processed. Also check command history for `steghide embed` commands."
+        }
+    ]
+}

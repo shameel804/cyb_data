@@ -1,0 +1,166 @@
+{
+    "id": "l6",
+    "chapterId": "ch_8",
+    "title": "Reconstructing Sessions & Data Exfiltration 🧵",
+    "description": "Carve files from PCAP, rebuild HTTP sessions, and trace stolen data.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Network Forensics",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "From Packets to Files 📁",
+            "content": "# Session Reconstruction\n\nA PCAP is a jumble of packets. Reconstructing the original files or conversations is like reassembling a shredded document.\n\nWe’ll cover:\n- **TCP stream reassembly**\n- **Extracting HTTP objects**\n- **Carving files from raw streams**\n- **Reconstructing emails (SMTP, POP3)**\n- **Tracing data theft**"
+        },
+        {
+            "id": "s_l6_2",
+            "type": "quiz",
+            "title": "Reassembly Concept 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "Which Wireshark feature reassembles the entire HTTP response, including the file download?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Packet Details pane",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Follow TCP Stream",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Display Filter",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Packet Bytes pane",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Follow TCP Stream reconstructs the ordered data from both directions."
+            }
+        },
+        {
+            "id": "s_l6_3",
+            "type": "text",
+            "title": "HTTP Object Extraction 🖼️",
+            "content": "Wireshark can automatically extract files transferred over HTTP:\n1. Go to **File > Export Objects > HTTP**.\n2. A list of all detected files appears (images, zip, executables, etc.).\n3. Select and save.\n\nThis is perfect for finding malware downloads or exfiltrated archives.\n\nFor HTTPS, you won't see the content unless you have the session keys (SSLKEYLOGFILE) or the server’s private key."
+        },
+        {
+            "id": "s_l6_4",
+            "type": "code",
+            "title": "Extract HTTP Objects with tshark",
+            "content": "Automate extraction of all HTTP response bodies.",
+            "codeSnippet": "tshark -r capture.pcap --export-objects \"http,/output/folder\"",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_5",
+            "type": "quiz",
+            "title": "HTTPS Limitation 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "true_false",
+                "question": "Wireshark can decrypt HTTPS traffic if you provide the private key of the server.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "With the server's private key (RSA key exchange), Wireshark can decrypt pre‑master secrets and decrypt the session (only if using RSA, not all suites)."
+            }
+        },
+        {
+            "id": "s_l6_6",
+            "type": "text",
+            "title": "Carving Files from Raw Streams 🔪",
+            "content": "Sometimes file transfers use custom protocols or are not automatically detected. You can manually carve files using:\n- **NetworkMiner**: Passive network forensic tool that reassembles files, extracts credentials.\n- **Xplico**: Open‑source, extracts application layer content (HTTP, IMAP, POP, SMTP, SIP, etc.).\n- **Bro/Zeek**: Network analysis framework; its file extraction script (`files.log`) logs all files transferred.\n\nIf you only have raw streams, identify file headers (magic bytes) in the TCP stream data and manually extract."
+        },
+        {
+            "id": "s_l6_7",
+            "type": "quiz",
+            "title": "Carving Tools 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_3",
+                "type": "fill_blank",
+                "question": "___ is a passive network forensic tool that can reassemble transferred files directly from a PCAP.",
+                "options": [
+                    "Wireshark",
+                    "NetworkMiner",
+                    "tcpdump",
+                    "nmap"
+                ],
+                "correctAnswer": "NetworkMiner",
+                "explanation": "NetworkMiner parses PCAPs and reconstructs files, certificates, and credentials."
+            }
+        },
+        {
+            "id": "s_l6_8",
+            "type": "text",
+            "title": "Email Reconstruction 📧",
+            "content": "SMTP (port 25), POP3 (110), IMAP (143) send emails in plaintext (if not encrypted). Wireshark can follow the TCP stream to see the raw email content, including headers, body, and even base64‑encoded attachments.\n\n- Filter: `smtp` or `pop` or `imf` (Internet Message Format).\n- Reconstruct attachments: manually decode base64 from the stream.\n\nThis can reveal the exact content of a phishing email or data exfiltration via email."
+        },
+        {
+            "id": "s_l6_9",
+            "type": "quiz",
+            "title": "Email Forensics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_4",
+                "type": "true_false",
+                "question": "If SMTP traffic is encrypted with STARTTLS, Wireshark can still see the email content without additional keys.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "STARTTLS upgrades the connection to TLS, encrypting the content; you’d need session keys to decrypt."
+            }
+        },
+        {
+            "id": "s_l6_10",
+            "type": "text",
+            "title": "Tracing Data Exfiltration 🔎",
+            "content": "## End‑to‑End Investigation\n\nScenario: Suspect emailed a ZIP file containing trade secrets to a personal address.\n\n1. Capture PCAP at the network border.\n2. Filter for SMTP traffic from the suspect's IP.\n3. Follow TCP stream to see the email.\n4. Identify base64‑encoded attachment (MIME).\n5. Export and decode the attachment → ZIP file.\n6. Hash the ZIP and compare with known company files.\n\nAlso correlate with email server logs for metadata. The network evidence proves the exfiltration occurred."
+        },
+        {
+            "id": "s_l6_11",
+            "type": "code",
+            "title": "Extract SMTP Attachment Manually",
+            "content": "After following the SMTP stream, save as raw. Use a script to decode base64.",
+            "codeSnippet": "# From the saved stream, use awk/sed to isolate the base64 block, then:\nbase64 -d encoded_part.txt > attachment.zip",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_12",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use Zeek for Automated Extraction\n\nZeek (formerly Bro) can automatically generate logs of all files transferred (files.log) and even extract them (if configured). It's a powerful companion to Wireshark for large‑scale analysis."
+        }
+    ]
+}

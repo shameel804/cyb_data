@@ -1,0 +1,240 @@
+{
+    "id": "quiz_ch_11",
+    "chapterId": "ch_11",
+    "title": "Chapter 11 Quiz",
+    "description": "Test your knowledge of anti‑forensics: data hiding, trail obfuscation, artifact wiping, and detection countermeasures.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary goal of anti‑forensics?",
+            "options": [
+                "To improve forensic tools",
+                "To make digital investigations more difficult or impossible",
+                "To automate forensic reports",
+                "To encrypt network traffic"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Anti‑forensics aims to hinder or prevent the recovery of digital evidence."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which NTFS attribute is more resistant to timestomping because it is set by the kernel?",
+            "options": [
+                "$STANDARD_INFORMATION",
+                "$FILE_NAME",
+                "$DATA",
+                "$INDEX_ROOT"
+            ],
+            "correctAnswer": 1,
+            "explanation": "$FILE_NAME timestamps are harder to tamper with than $STANDARD_INFORMATION."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "Encrypting a file is a form of anti‑forensics because it hinders analysis.",
+            "correctAnswer": true,
+            "explanation": "Encryption obscures content, making forensic examination impossible without the key."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "The Windows command `cipher /w:C:` is used to wipe ___ on drive C:.",
+            "options": [
+                "system files",
+                "free space",
+                "the MFT",
+                "registry hives"
+            ],
+            "correctAnswer": "free space",
+            "explanation": "`cipher /w:C:` overwrites free space to destroy deleted file remnants."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "What is a forensic indicator that CCleaner was used on a system?",
+            "options": [
+                "Deleted files are still present",
+                "A Prefetch file for CCleaner.exe",
+                "The desktop wallpaper changed",
+                "A new user account created"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Prefetch files record program execution, even if the executable is later deleted."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the main challenge with secure deletion on SSDs?",
+            "options": [
+                "SSDs are too slow",
+                "Wear leveling may leave old data in stale pages despite overwrite",
+                "SSDs don't support TRIM",
+                "SSDs use FAT32 only"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The FTL remaps logical addresses, so overwriting a logical address may not overwrite the physical page containing the original data."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "Steganography hides the content of a message, while encryption hides its existence.",
+            "correctAnswer": false,
+            "explanation": "It's the opposite: encryption hides content, steganography hides existence."
+        },
+        {
+            "id": "q8",
+            "type": "fill_blank",
+            "question": "A VeraCrypt hidden volume provides ___ deniability.",
+            "options": [
+                "absolute",
+                "plausible",
+                "legal",
+                "technical"
+            ],
+            "correctAnswer": "plausible",
+            "explanation": "The hidden volume is designed so its existence cannot be proven, allowing the user to plausibly deny its existence."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Which Event ID indicates that the Windows Security log was cleared?",
+            "options": [
+                "4624",
+                "4688",
+                "1102",
+                "4104"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Event 1102 is generated when the Security log is cleared."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "How can memory forensics defeat full‑disk encryption?",
+            "options": [
+                "By brute‑forcing the password",
+                "By capturing the encryption keys that reside in RAM while the volume is unlocked",
+                "By deleting the encryption software",
+                "By imaging the drive faster"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Encryption keys are present in memory when the drive is mounted; a memory dump can extract them."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "Unallocated space filled with all zeros is a strong sign of free space wiping.",
+            "correctAnswer": true,
+            "explanation": "Normal unallocated space contains random remnants; uniform patterns indicate intentional overwrite."
+        },
+        {
+            "id": "q12",
+            "type": "fill_blank",
+            "question": "The tool ___ can be used to detect steganography in images by statistical analysis.",
+            "options": [
+                "Wireshark",
+                "StegExpose",
+                "FTK Imager",
+                "PhotoRec"
+            ],
+            "correctAnswer": "StegExpose",
+            "explanation": "StegExpose analyzes LSB and other steganographic methods to score suspicion."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What does timestomping refer to?",
+            "options": [
+                "Overwriting file content",
+                "Manipulating file MAC timestamps to mislead investigators",
+                "Encrypting timestamps",
+                "Deleting log files"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Timestomping alters the recorded file times to confuse timeline analysis."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Which of the following is NOT an anti‑forensic technique?",
+            "options": [
+                "Using a write‑blocker to image a drive",
+                "Wiping free space with CCleaner",
+                "Encrypting a hard drive with BitLocker",
+                "Using timestomp to change file creation times"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Using a write‑blocker is a forensic best practice, not an anti‑forensic method."
+        },
+        {
+            "id": "q15",
+            "type": "true_false",
+            "question": "If the Windows Event Log is cleared, the event 1102 can never be deleted.",
+            "correctAnswer": false,
+            "explanation": "Attackers can also clear or prevent event 1102 from being logged through advanced memory manipulation."
+        },
+        {
+            "id": "q16",
+            "type": "fill_blank",
+            "question": "PowerShell script block logging records executed commands in Event ID ___.",
+            "options": [
+                "4624",
+                "4104",
+                "4688",
+                "1102"
+            ],
+            "correctAnswer": "4104",
+            "explanation": "Script block logging (4104) captures full PowerShell command text."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What is the best forensic defense against timestomping?",
+            "options": [
+                "Ignoring file timestamps",
+                "Comparing timestamps from multiple sources ($SI, $FN, USN Journal)",
+                "Using only the creation time",
+                "Re‑imaging the drive multiple times"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Cross‑referencing different timestamp sources can reveal discrepancies caused by stomping."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Why might a 10 GB VeraCrypt container with only 2 GB of visible data be suspicious?",
+            "options": [
+                "It indicates the container is corrupted",
+                "It could indicate a hidden volume inside the container",
+                "It means VeraCrypt failed to encrypt properly",
+                "It means the data was deleted"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The remaining space could be a hidden volume; the outer volume shows only 2 GB to mask the hidden one."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "Volume Shadow Copies can be a source of files that were later securely deleted.",
+            "correctAnswer": true,
+            "explanation": "VSS snapshots preserve previous versions, so even if the current file is wiped, an older snapshot may still have it."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which of the following is an anti‑forensic tool used for file shredding?",
+            "options": [
+                "Autopsy",
+                "Eraser",
+                "Wireshark",
+                "Volatility"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Eraser is a tool that securely overwrites files to prevent recovery."
+        }
+    ]
+}

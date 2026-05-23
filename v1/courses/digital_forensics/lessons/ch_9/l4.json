@@ -1,0 +1,178 @@
+{
+    "id": "l4",
+    "chapterId": "ch_9",
+    "title": "iOS Forensics Unlocked 🍏",
+    "description": "Analyze iOS devices, iTunes backups, iCloud data, and key artifacts like `knowledgeC.db`.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Mobile Forensics",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "iOS Security & File System 🛡️",
+            "content": "# Apple's Walled Garden\n\niOS devices are encrypted by default, using **File‑Based Encryption (FBE)** since iOS 10. Each file has its own encryption key, protected by the user's passcode via the Secure Enclave.\n\nThe file system is **APFS** (modern) or HFS+ (older).\n\nKey partitions:\n- `/private/var/mobile/` – user data (analogous to Android `/data`)\n- `/private/var/keybags/` – encryption key bags\n- `/private/var/mobile/Library/` – application data, preferences\n\nAccess to the full filesystem requires either an unlocked device, a trusted pairing record, or an exploit like **Checkm8** (bootrom exploit for A5‑A11 devices)."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "iOS Encryption 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What hardware component protects encryption keys in modern iOS devices?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The CPU cache",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The Secure Enclave",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The GPU",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The Neural Engine",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The Secure Enclave is a coprocessor that handles encryption keys and passcode verification."
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "iTunes Backup – The Standard Logical Extraction 💻",
+            "content": "An iTunes backup (now Finder on macOS Catalina+) creates a snapshot of the device. It can be encrypted (recommended) to include passwords and Health data.\n\n**Location:**\n- Windows: `%APPDATA%\\Apple Computer\\MobileSync\\Backup`\n- Mac: `~/Library/Application Support/MobileSync/Backup`\n\nThe backup contains a manifest.db (SQLite) with file list, status.plist, and encrypted files. Tools like **iBackupBot**, **Elcomsoft Phone Breaker**, or **Autopsy** can parse it.\n\n**You get:** SMS, call history, contacts, notes, safari history, camera roll, app data. No deleted files, and some apps may not be backed up if they opt out."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "Locate iTunes Backup (Windows)",
+            "content": "Navigate to the backup folder and look for manifest.db:",
+            "codeSnippet": "dir \"%APPDATA%\\Apple Computer\\MobileSync\\Backup\" /s\n# Each subfolder is a device UDID; inside are hashed files.",
+            "codeLanguage": "cmd",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "quiz",
+            "title": "iTunes Backup Contents 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "An unencrypted iTunes backup contains saved website passwords.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Passwords and Health data are only included in encrypted backups."
+            }
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Key iOS Artifacts 🗝️",
+            "content": "## Databases Worth Knowing\n\n- **SMS/iMessage**: `sms.db` in `HomeDomain/Library/SMS/`. Contains messages, attachments.\n- **Call History**: `call_history.db` (iOS 13+).\n- **Safari History**: `History.db` in Safari settings.\n- **Location**: `Cache.sqlite` (Consolidated.db) and `knowledgeC.db` (records user activities including app usage, battery, and location).\n- **Photos**: `Photos.sqlite` in Camera Roll.\n- **Notes**: `notes.sqlite`.\n- **Contacts**: `AddressBook.sqlitedb`.\n\nMost are plain SQLite databases. A logical backup provides these, but filesystem access gives the live database including WAL files (containing recent deleted records)."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "knowledgeC.db 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "multiple_choice",
+                "question": "What does the `knowledgeC.db` database record?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Only location data",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "App usage, battery, device events, and location",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "SMS messages",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Wi‑Fi passwords",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "knowledgeC is a system‑wide activity log that tracks app opens, device locks, power events, and more."
+            }
+        },
+        {
+            "id": "s_l4_8",
+            "type": "text",
+            "title": "Cloud Sources – iCloud & Synced Data ☁️",
+            "content": "Apple's iCloud can be a separate acquisition avenue:\n- **iCloud Backup**: Device backups to the cloud (if enabled). Can be downloaded with Apple ID and password (or token).\n- **iCloud Photos, Drive, Notes**: Sync across devices; may contain evidence not on the physical phone.\n- **iCloud Keychain**: Passwords.\n- **Find My**: Device location history.\n\nAcquiring iCloud data requires legal authority (search warrant for Apple, or consent). Tools like **Elcomsoft Phone Breaker** can authenticate and download cloud data."
+        },
+        {
+            "id": "s_l4_9",
+            "type": "quiz",
+            "title": "iCloud Data 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_4",
+                "type": "true_false",
+                "question": "iCloud backups can be accessed without the user's password if you have physical access to the device.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Access requires the Apple ID credentials or a valid authentication token; physical access alone is not enough."
+            }
+        },
+        {
+            "id": "s_l4_10",
+            "type": "text",
+            "title": "iOS Checkm8 & Advanced Acquisition 🔧",
+            "content": "For devices vulnerable to **Checkm8** (A5–A11, iPhone X and older), a bootrom exploit allows:\n- Full filesystem extraction without the passcode\n- Decryption of files using keybags\n- Access to the entire user data partition\n\nTools: **Checkra1n** (jailbreak), **Elcomsoft iOS Forensic Toolkit**.\n\nOn newer devices (A12+), exploitation is significantly harder, and many law enforcement agencies rely on external providers like **Cellebrite Premium**.\n\n**BFU (Before First Unlock)** vs **AFU (After First Unlock)** – after reboot, many files are encrypted until the user unlocks. AFU extraction yields much more data."
+        },
+        {
+            "id": "s_l4_11",
+            "type": "warning",
+            "title": "⚠️ BFU vs AFU",
+            "content": "If the device is in BFU state (just booted), only a limited set of data is accessible (e.g., call log, some notifications). Wait for AFU if possible, or use passcode acquisition."
+        },
+        {
+            "id": "s_l4_12",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Pair the Device with a Trusted Computer\n\nIf you can briefly unlock the device (with consent or passcode), pair it with your forensic workstation to establish a trusted relationship. This enables future logical acquisitions without unlocking again."
+        }
+    ]
+}

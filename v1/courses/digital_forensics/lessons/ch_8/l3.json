@@ -1,0 +1,197 @@
+{
+    "id": "l3",
+    "chapterId": "ch_8",
+    "title": "Protocol Analysis: From Ethernet to Application 📦",
+    "description": "Dissect headers of Ethernet, IP, TCP, UDP, HTTP, DNS, and more – layer by layer.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Network Forensics",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Layer‑by‑Layer Investigation 🔬",
+            "content": "# The Anatomy of a Packet\n\nEach protocol layer adds a header. By reading these headers, you can tell the story of a packet’s journey.\n\nWe’ll examine:\n- **Ethernet** (MAC addresses)\n- **IP** (source/destination IP, TTL, fragmentation)\n- **TCP** (ports, flags, sequence numbers, windows)\n- **UDP** (simple, connectionless)\n- **Application** (HTTP, DNS, etc.)\n\nLet’s start at the bottom."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Header Hierarchy 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which header appears first in a typical network packet?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "IP header",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "TCP header",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Ethernet header",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "HTTP header",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The Ethernet frame header is outermost, followed by IP, then TCP/UDP, then application."
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Ethernet & ARP 📮",
+            "content": "## The Link Layer\n\n- **Source & Destination MAC** (6 bytes each): identifies the physical devices on the local segment.\n- **EtherType**: 0x0800 for IPv4, 0x86DD for IPv6.\n\n**ARP (Address Resolution Protocol)**: Resolves IP to MAC. Forensically, ARP tables can show which MAC had which IP at a given time, useful when investigating MAC spoofing.\n\nLook for gratuitous ARP or ARP poisoning attacks (many ARP replies from different MACs)."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "quiz",
+            "title": "Ethernet Fields 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "A MAC address is 48 bits long and is globally unique.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "MAC addresses are 48 bits, theoretically unique, though spoofing is possible."
+            }
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "IP Header Deep Dive 🌍",
+            "content": "## The Internet Layer\n\nKey fields:\n- **Source IP / Destination IP** (32 bits each for IPv4).\n- **Time‑To‑Live (TTL)**: Decremented by each router. Initial values (64, 128, 255) can hint at the OS.\n- **Identification & Flags/Offset**: For fragmentation. Fragmented packets can bypass security controls – a common attack vector.\n- **Protocol**: 6 = TCP, 17 = UDP, 1 = ICMP.\n\nForensic tip: Check for overlapping fragments or tiny fragment attacks (flagging crafted IP headers)."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "code",
+            "title": "IP Header in Wireshark",
+            "content": "Wireshark expands the IP header clearly. Look at the flags: DF (Don't Fragment), MF (More Fragments).",
+            "codeSnippet": "# Wireshark display filter for fragmented IP packets:\nip.flags.mf == 1 or ip.frag_offset > 0",
+            "codeLanguage": "plaintext",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "IP Fragmentation 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "fill_blank",
+                "question": "In the IPv4 header, the 'Protocol' field value for TCP is ___.",
+                "options": [
+                    "6",
+                    "17",
+                    "1",
+                    "0x0800"
+                ],
+                "correctAnswer": "6",
+                "explanation": "IP protocol number 6 indicates TCP."
+            }
+        },
+        {
+            "id": "s_l3_8",
+            "type": "text",
+            "title": "TCP: The Reliable Workhorse 🐴",
+            "content": "## Transport Layer\n\nTCP provides ordered, error‑checked delivery. The header includes:\n- **Source & Destination Port** (16 bits): identifies the application.\n- **Sequence & Acknowledgment Numbers**: Used to reassemble the data stream.\n- **Flags (SYN, ACK, FIN, RST, PSH, URG)**: Control the connection lifecycle.\n- **Window Size**: Flow control; unusual values can indicate an attack.\n\n**Three‑Way Handshake**: SYN → SYN‑ACK → ACK. Missing handshake? May be a crafted packet or scan.\n\n**Reset (RST) attacks**: An attacker can tear down connections by spoofing RST packets."
+        },
+        {
+            "id": "s_l3_9",
+            "type": "quiz",
+            "title": "TCP Flags 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_4",
+                "type": "multiple_choice",
+                "question": "Which TCP flag combination initiates a connection?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "ACK",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "FIN",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "SYN",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "RST",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A SYN (Synchronize) flag is the first step of the three‑way handshake."
+            }
+        },
+        {
+            "id": "s_l3_10",
+            "type": "text",
+            "title": "UDP & ICMP 🚀",
+            "content": "**UDP**: Connectionless, simple. Useful for DNS, streaming. Forensics: look for unusually large UDP packets (amplification attacks).\n\n**ICMP**: Error reporting and diagnostics (ping). Can be used for tunneling data (ICMP tunneling) or reconnaissance (pingsweep).\n\nExample: `icmp.type == 8` (Echo request) and `icmp.type == 0` (Echo reply)."
+        },
+        {
+            "id": "s_l3_11",
+            "type": "text",
+            "title": "Application Layer: HTTP & DNS 📄",
+            "content": "**HTTP**: Request/response model. Methods (GET, POST), status codes (200 OK, 404 Not Found). Headers like User‑Agent, Referer reveal client info.\n- Follow HTTP stream to see full conversation.\n- Export Objects > HTTP to extract transferred files.\n\n**DNS**: Port 53. A record (IPv4), AAAA (IPv6), MX, CNAME. DNS queries can show which domains a host attempted to access, even if the connection failed.\n\n**DNS tunneling**: Suspicious long subdomains or TXT records with encoded data."
+        },
+        {
+            "id": "s_l3_12",
+            "type": "quiz",
+            "title": "Application Protocols 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_5",
+                "type": "true_false",
+                "question": "DNS typically uses TCP port 53 for all queries.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "DNS primarily uses UDP port 53; TCP is used for zone transfers and large responses."
+            }
+        },
+        {
+            "id": "s_l3_13",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Decode with 'Follow Stream'\n\nWireshark's 'Follow TCP Stream' or 'Follow UDP Stream' reconstructs the raw communication. For HTTP, it shows the full request/response, making it easy to spot malicious downloads or command and control traffic."
+        }
+    ]
+}

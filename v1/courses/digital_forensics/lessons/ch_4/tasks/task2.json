@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_4",
+    "title": "Hash Verification Exercise",
+    "description": "Given hashes, determine whether a forensic image is valid and identify potential tampering scenarios.",
+    "estimatedMinutes": 10,
+    "problemStatement": "**Scenario:** An examiner acquired an image of a suspect's USB drive. The following hashes were recorded:\n\n- **Source drive SHA‑256** (computed before imaging): `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`\n- **Image file SHA‑256** (computed after imaging): `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`\n- **Image file MD5** (also computed): `d41d8cd98f00b204e9800998ecf8427e`\n\nAnswer the following:\n1. Does the image appear to be a forensically sound copy? Why?\n2. What is unusual about these hashes? (Hint: look up the MD5 hash value.)\n3. What possible explanation could account for this hash value?\n4. If a second examiner later computed the SHA‑256 of the image file and obtained a different hash, what could that indicate?\n\nProvide your analysis in bullet points.",
+    "hints": [
+        "The MD5 `d41d8cd98f00b204e9800998ecf8427e` is a well‑known hash of an empty input.",
+        "SHA‑256 `e3b0c44...` is also the hash of an empty string.",
+        "Consider whether a drive can truly have a hash of empty input."
+    ],
+    "expectedOutput": "A clear explanation that the hashes represent an empty drive, indicating either the drive was empty, the imaging failed, or the hashing was performed on empty input.",
+    "solutionCode": "1. Yes, the hashes match, which normally indicates the image is identical to the source. However, the actual values raise suspicion.\n2. The MD5 `d41d8cd98f00b204e9800998ecf8427e` is the hash of an empty string (zero bytes). Similarly, the SHA‑256 `e3b0c44...` is also the hash of an empty input. This means both source and image apparently contain zero bytes of data.\n3. Possible explanations:\n   - The USB drive was truly empty (zero bytes). Very unusual unless it was never formatted or was wiped.\n   - The imaging tool did not read the drive correctly (e.g., wrong source device, write blocker malfunction).\n   - The hash was computed on an empty file by mistake.\n4. If a later examiner gets a different SHA‑256, it means the image file has been modified since the original acquisition (tampering, corruption, or a different file). This breaks the chain of custody.\n\nThis exercise demonstrates that not only must hashes match, but their values must be reasonable and expected; a drive with data should not have the hash of empty input."
+}

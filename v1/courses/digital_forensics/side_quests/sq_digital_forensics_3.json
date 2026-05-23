@@ -1,0 +1,70 @@
+{
+    "id": "sq_digital_forensics_3",
+    "title": "Packet & Memory Maze 🧩",
+    "triggerChapterIndex": 8,
+    "metadata": {
+        "type": "prediction"
+    },
+    "questions": [
+        {
+            "id": "sq_df_3_q1",
+            "type": "code_output",
+            "question": "What is the output of this tshark command?",
+            "codeSnippet": "tshark -r capture.pcap -Y \"http.request.method == POST\" -T fields -e http.file_data",
+            "correctOutput": "The raw POST body data (e.g., form data or uploaded file content) of HTTP requests.",
+            "correctAnswer": "The raw POST body data (e.g., form data or uploaded file content) of HTTP requests.",
+            "options": [],
+            "explanation": "This command filters for HTTP POST requests and extracts the file data (payload). It would display the contents of the POST body for each matching packet.",
+            "xpReward": 25,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_df_3_q2",
+            "type": "code_output",
+            "question": "Given this hex snippet from a Windows memory dump's `_EPROCESS` structure, what can you infer?",
+            "codeSnippet": "Offset: 0x1234  70 73 73 63 61 6E 00 00  ...",
+            "correctOutput": "The process name is 'psscan' (ASCII: p s s c a n). It might be the Volatility plugin's own process or a malware named 'psscan'.",
+            "correctAnswer": "The process name is 'psscan' (ASCII: p s s c a n).",
+            "options": [],
+            "explanation": "The bytes spell 'psscan' which could be a hidden malware process masquerading as a forensic tool.",
+            "xpReward": 25,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_df_3_q3",
+            "type": "code_output",
+            "question": "Predict the output of this Volatility 3 command:",
+            "codeSnippet": "vol.py -f mem.raw windows.netscan.NetScan | grep ESTABLISHED",
+            "correctOutput": "It will list all established network connections with their local/remote addresses, ports, and owning process IDs.",
+            "correctAnswer": "It will list all established network connections with their local/remote addresses, ports, and owning process IDs.",
+            "options": [],
+            "explanation": "The command filters netscan output to show only active, established connections.",
+            "xpReward": 25,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_df_3_q4",
+            "type": "code_output",
+            "question": "What does this Wireshark display filter return?",
+            "codeSnippet": "tcp.flags.syn == 1 && tcp.flags.ack == 0 && ip.dst == 10.0.0.5",
+            "correctOutput": "All SYN packets sent to IP 10.0.0.5 that do not have the ACK flag set, i.e., the initial step of a SYN scan or connection attempt.",
+            "correctAnswer": "All SYN packets sent to IP 10.0.0.5 that do not have the ACK flag set, i.e., the initial step of a SYN scan or connection attempt.",
+            "options": [],
+            "explanation": "This filter catches SYN scan packets targeting a specific host, which is a common reconnaissance technique.",
+            "xpReward": 25,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_df_3_q5",
+            "type": "code_output",
+            "question": "In a memory dump, you find a suspicious process with an executable path `C:\\Windows\\System32\\svchost.exe` (note the typo: svchost, not svchost). Predict what this indicates.",
+            "codeSnippet": "",
+            "correctOutput": "The process is likely malicious malware impersonating the legitimate `svchost.exe` by using a misspelled name.",
+            "correctAnswer": "The process is likely malicious malware impersonating the legitimate `svchost.exe` by using a misspelled name.",
+            "options": [],
+            "explanation": "The correct executable is svchost.exe; misspellings are a common disguise for malware.",
+            "xpReward": 25,
+            "difficulty": 1
+        }
+    ]
+}

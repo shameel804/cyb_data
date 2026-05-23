@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_3",
+    "title": "Slack Space Sleuth",
+    "description": "Calculate cluster slack and recover hidden strings from a raw sector.",
+    "estimatedMinutes": 15,
+    "problemStatement": "**Scenario:** A suspect saved a file named 'notes.txt' on a FAT32 volume with 8 KB clusters. The file size is 10,000 bytes. You obtain a raw image of the volume and locate the starting cluster of the file. You extract the entire cluster run (multiple clusters) that contains the file's data and slack.\n\n1. Calculate how many clusters are allocated to the file.\n2. Determine the amount of slack space (in bytes) at the end of the last cluster.\n3. Using a hex editor, you see the following ASCII text at offset 0x2800 (10,240 bytes from the start of the cluster run), which is beyond the file's 10,000 bytes: `{backup_passwords}`. Explain why this data appears and what forensic significance it has.\n\nAlso, if the cluster size were 4 KB instead, what would the slack size be?",
+    "hints": [
+        "Cluster count = ceil(file size / cluster size). Slack = (cluster count * cluster size) - file size.",
+        "The offset 0x2800 is decimal 10,240, which is > 10,000, so it's in the slack area.",
+        "Slack space can contain remnants of files that previously occupied those clusters."
+    ],
+    "expectedOutput": "Numerical answers and a brief explanation of slack space forensic value.",
+    "solutionCode": "Given: file size = 10,000 bytes, cluster size = 8 KB = 8192 bytes.\n\n1. Number of clusters = ceil(10000 / 8192) = ceil(1.2207) = 2 clusters.\n2. Slack space = (2 * 8192) - 10000 = 16384 - 10000 = 6384 bytes.\n3. The data '{backup_passwords}' lies in the slack space of the second cluster. This data is a remnant of a previous file that occupied the same cluster before it was freed and reallocated to 'notes.txt'. It is forensically significant because it reveals information the suspect may have tried to delete.\n\nIf cluster size was 4 KB (4096):\nceil(10000 / 4096) = ceil(2.441) = 3 clusters.\nSlack = (3 * 4096) - 10000 = 12288 - 10000 = 2288 bytes."
+}

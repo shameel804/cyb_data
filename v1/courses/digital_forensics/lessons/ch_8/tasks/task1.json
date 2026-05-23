@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_8",
+    "title": "Analyze a Suspicious PCAP – Port Scan & Exfiltration",
+    "description": "Given a PCAP file, identify a port scan, detect beaconing, and extract an HTTP object.",
+    "estimatedMinutes": 20,
+    "problemStatement": "**Scenario:** The SOC team has handed you a PCAP file `incident.pcap` captured from the corporate network during an alleged data breach. Your task is to perform the following analysis (you may describe the Wireshark or tshark commands you would use, and interpret the provided results):\n\n1. **Identify a port scan:** The IP 192.168.10.55 (internal) scanned the DMZ server at 10.0.0.5. Use a filter to find SYN packets without ACK. What command would you use, and how many such packets were found? (Assume result: 1524 packets).\n2. **Detect beaconing:** After the scan, the same internal IP started beaconing to an external IP 203.0.113.77 every 30 seconds on port 443. Use tshark to extract timestamps of SYN packets to that external IP and deduce the interval.\n3. **Extract an HTTP downloaded file:** During the incident, the host visited `http://malicious.example.com/tools/payload.exe`. Use Wireshark’s export objects feature or tshark to recover this file. What command would you run? (Assume the file's MD5 hash is a1b2c3...)\n4. **Find data exfiltration:** After the download, the internal host sent a large POST request to the same external IP with a ZIP file. Use the 'Follow TCP Stream' to view the HTTP POST request body. Describe how you would extract the ZIP attachment.\n\nProvide the analysis steps and conclusions.",
+    "hints": [
+        "For the port scan, use display filter `tcp.flags.syn==1 and tcp.flags.ack==0` and filter by source IP.",
+        "For beaconing, `tshark -r incident.pcap -Y \"ip.src==192.168.10.55 && ip.dst==203.0.113.77 && tcp.flags.syn==1\" -T fields -e frame.time_epoch` then compute differences.",
+        "HTTP export: `tshark --export-objects http,/output/folder`",
+        "POST body: In Wireshark, after following the stream, save the raw data and manually carve the ZIP by looking for 'PK' header."
+    ],
+    "expectedOutput": "Commands and interpreted results.",
+    "solutionCode": "1. Port scan detection: Filter `ip.src == 192.168.10.55 && tcp.flags.syn==1 && tcp.flags.ack==0`. Statistics > Summary shows 1524 such packets. This indicates a SYN scan of many ports on 10.0.0.5.\n\n2. Beaconing: `tshark -r incident.pcap -Y \"ip.src==192.168.10.55 && ip.dst==203.0.113.77 && tcp.flags.syn==1\" -T fields -e frame.time_epoch` outputs timestamps: 1717200000, 1717200030, 1717200060, ... Differences of 30 seconds confirm beaconing.\n\n3. HTTP object extraction: In Wireshark, File > Export Objects > HTTP, find payload.exe, save. MD5 verified as a1b2c3.... Command line: `tshark -r incident.pcap --export-objects \"http,/case/output\"`.\n\n4. Exfiltration: Follow TCP stream of the POST request. Save raw data. Look for 'PK' (0x50 0x4B) indicating ZIP start. Extract from that byte offset to the end of the stream. Unzip to reveal stolen data."
+}

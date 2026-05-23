@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_9",
+    "title": "Android SMS Recovery from WAL",
+    "description": "Given an mmssms.db and its WAL file, recover a deleted SMS message using SQLite commands.",
+    "estimatedMinutes": 15,
+    "problemStatement": "**Scenario:** You have an Android SMS database `mmssms.db` and its associated `mmssms.db-wal` file extracted from a suspect's phone. A witness claims the suspect deleted a critical text message. Your task is to:\n\n1. Open the database using `sqlite3` and list the existing tables to confirm the schema. What command would you use?\n2. Query the `sms` table to see currently stored messages. Write a query to show the `_id`, `address`, `body`, and `date` for the last 10 messages.\n3. The WAL file often contains deleted or uncommitted records. Use `sqlite3` to query the WAL file. Since `sqlite3` cannot directly query the WAL, explain how you would recover the deleted message using either a tool like `wal_dump` or by exporting the WAL content to a new database.\n4. After recovery, you find a deleted message with `_id = 456` and `body = 'Meet me at 9 pm'`. Based on your knowledge, explain why the message was recoverable and how the WAL file retains it.\n\nProvide the commands and explanation.",
+    "hints": [
+        "In sqlite3, `.tables` lists all tables.",
+        "To query: `SELECT _id, address, body, date FROM sms ORDER BY _id DESC LIMIT 10;`",
+        "You can use `wal_dump mmssms.db` to extract WAL frames, or use a forensic tool like 'Belkasoft Evidence Center'.",
+        "WAL (Write‑Ahead Log) stores recent changes before they are merged into the main database; deleted records may still exist there."
+    ],
+    "expectedOutput": "Commands and description of recovery process.",
+    "solutionCode": "1. Command: `sqlite3 mmssms.db` then `.tables` will list tables such as `sms`, `raw`, `attachments`, etc.\n2. Query: `SELECT _id, address, body, date FROM sms ORDER BY _id DESC LIMIT 10;`\n3. To recover from WAL: Use `wal_dump mmssms.db > wal_dump.txt` and search for the message. Alternatively, create a temporary copy of the database, force a checkpoint (`PRAGMA wal_checkpoint(TRUNCATE);`) and then query the database again; however, checkpointing may purge the WAL, so better to use a dedicated tool. Another method: use `sqlite3 mmssms.db \"SELECT * FROM main.sms\"` but that only sees committed records. So use `wal_dump` or a forensic suite.\n4. The message was recoverable because it was deleted but the transaction hadn't been fully checkpointed. The WAL held the uncommitted delete and the original record data as undo information, allowing recovery until the WAL was overwritten."
+}

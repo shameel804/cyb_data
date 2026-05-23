@@ -1,0 +1,16 @@
+{
+    "id": "task1",
+    "chapterId": "ch_7",
+    "title": "Identify the Profile and List Processes",
+    "description": "Given a memory dump and Volatility, determine the correct profile and extract process information.",
+    "estimatedMinutes": 15,
+    "problemStatement": "**Scenario:** You have a memory dump named `suspicious.raw` acquired from a Windows 10 x64 machine. Your task is to:\n\n1. Determine the correct Volatility 2 profile. Run `imageinfo` and interpret the output (you can assume it suggests `Win10x64_19041`).\n2. List all processes using `pslist` and identify any suspicious process by name (e.g., `notepad.exe` having a child `cmd.exe`). Provide the PID and PPID of that suspicious pair.\n3. Use `psscan` to check for hidden processes. Are there any processes present in `psscan` but absent in `pslist`? (Assume `psscan` reveals a process `stealth.exe` PID 4567 that is not in `pslist`.)\n4. Extract the command line of the suspicious `notepad.exe` process using `cmdline` or `windows.cmdline` (Vol 3) if you were using Vol 3. (Assume the command line is `\"C:\\Windows\\System32\\notepad.exe\" C:\\malware\\payload.bin`)\n5. Write a brief summary explaining why that process is suspicious.\n\n**Output:** Provide the commands you would run and the interpreted results.",
+    "hints": [
+        "Volatility 2: `vol.py -f suspicious.raw imageinfo`",
+        "pslist: `vol.py -f suspicious.raw --profile=Win10x64_19041 pslist`",
+        "psscan: `vol.py -f suspicious.raw --profile=Win10x64_19041 psscan`",
+        "cmdline: `vol.py -f suspicious.raw --profile=Win10x64_19041 cmdline -p <PID>`"
+    ],
+    "expectedOutput": "The profile, list of processes, detection of hidden process, command lines, and analysis.",
+    "solutionCode": "Commands:\n1. vol.py -f suspicious.raw imageinfo\n   → Suggested profile: Win10x64_19041\n\n2. vol.py -f suspicious.raw --profile=Win10x64_19041 pslist\n   Output shows notepad.exe (PID 1234) with PPID 1000 (explorer.exe), and cmd.exe (PID 1235) with PPID 1234 (child of notepad).\n\n3. vol.py -f suspicious.raw --profile=Win10x64_19041 psscan\n   Output includes stealth.exe (PID 4567) which is missing from pslist, indicating it may be hidden.\n\n4. vol.py -f suspicious.raw --profile=Win10x64_19041 cmdline -p 1234\n   → notepad.exe \"C:\\malware\\payload.bin\"\n\n5. Summary: notepad.exe opening a file from C:\\malware is extremely suspicious; notepad doesn't normally execute cmd.exe as a child, suggesting process injection or a malware dropper. The hidden stealth.exe further confirms malicious activity."
+}

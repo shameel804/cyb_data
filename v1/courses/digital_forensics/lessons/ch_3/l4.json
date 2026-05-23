@@ -1,0 +1,176 @@
+{
+    "id": "l4",
+    "chapterId": "ch_3",
+    "title": "File Systems: The Organisers 🗂️",
+    "description": "Explore FAT, NTFS, ext4 and how they track files, directories, and deleted data.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "Computer Forensics Fundamentals",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "What is a File System? 📁",
+            "content": "# The Index Card System\n\nA file system is the method the OS uses to store and retrieve files. Think of it as a library catalogue:\n\n- It tells which sectors belong to which file.\n- It tracks file names, sizes, timestamps.\n- It manages free space.\n\nCommon file systems:\n- **FAT** (File Allocation Table): Simple, used on USB drives.\n- **NTFS** (New Technology File System): Modern Windows, rich metadata.\n- **ext4** (Fourth Extended File System): Common on Linux.\n- **HFS+/APFS**: Apple file systems."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "File System Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which file system is most commonly found on USB flash drives?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "NTFS",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "ext4",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "FAT32",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "APFS",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "FAT32 is widely used for USB drives due to its simplicity and cross‑platform compatibility.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "FAT File System Deep Dive 🗄️",
+            "content": "## The Grandfather\n\nFAT has evolved: FAT12, FAT16, FAT32, exFAT. Key areas:\n\n- **Boot sector**: Contains BPB.\n- **FAT region**: A table that tracks cluster chains for each file. It's like a linked list.\n- **Root directory**: Lists files and subdirectories (in FAT12/16, fixed location; FAT32 can be anywhere).\n- **Data area**: Where file content lives.\n\nWhen a file is deleted, the FAT entry is set to 0x00, and the directory entry's first character is changed to 0xE5. But the data clusters remain intact until overwritten."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "FAT Directory Entry",
+            "content": "A 32‑byte directory entry in FAT contains:\n- Bytes 0‑7: file name (first byte 0xE5 if deleted)\n- Byte 11: attributes (read‑only, hidden, etc.)\n- Bytes 14‑15: time\n- Bytes 16‑17: date\n- Bytes 26‑27: starting cluster (little‑endian)\n- Bytes 28‑31: file size",
+            "codeSnippet": "Offset 0x00: 4E 41 4D 45 20 20 20 20   NAME    \n... 0x0B: 20 (attribute: archive)\n0x1A: 02 00 (start cluster = 2)\n0x1C: 3C 00 00 00 (file size = 60 bytes)",
+            "codeLanguage": "plaintext",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "quiz",
+            "title": "FAT Deletion 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "Deleting a file on a FAT32 drive immediately erases the file's data clusters.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Only the directory entry and FAT chain are marked as free; the data clusters remain until overwritten, allowing recovery.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "NTFS: The Modern Marvel 💎",
+            "content": "## Everything is a File\n\nNTFS stores metadata in the **Master File Table (MFT)**. Every file and directory has at least one MFT record (1 KB each).\n\n- **$MFT**: The MFT itself.\n- **$LogFile**: Journal for crash recovery.\n- **$Bitmap**: Tracks free/used clusters.\n- **$UsnJrnl**: Update Sequence Number Journal – a log of file changes.\n\nAttributes inside an MFT record: $STANDARD_INFORMATION (MAC times), $FILE_NAME, $DATA (the actual content if small enough to be resident), $OBJECT_ID, etc."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "MFT Magic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "multiple_choice",
+                "question": "What is the key database that NTFS uses to track all files and directories?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "FAT",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "$Bitmap",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Master File Table (MFT)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Boot Sector",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The MFT is the central structure of NTFS, containing a record for every file and directory.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_8",
+            "type": "text",
+            "title": "Resident vs Non‑Resident Data 🏠",
+            "content": "Small files (e.g., a few hundred bytes) can be stored directly inside the MFT record (resident). Larger files have non‑resident $DATA attributes that point to cluster runs.\n\nThis is forensically interesting: a deleted file's resident data may still be inside an orphaned MFT record, even if the clusters are reused."
+        },
+        {
+            "id": "s_l4_9",
+            "type": "text",
+            "title": "ext4: Linux's Workhorse 🐧",
+            "content": "ext4 uses **inodes** to store metadata (permissions, timestamps, pointers to data blocks). Directories are just special files listing name‑inode pairs.\n\n- Deleted file recovery is harder because pointers to data blocks are zeroed.\n- **Journal** can contain remnants of metadata changes.\n- **Superblock** and block groups define the layout."
+        },
+        {
+            "id": "s_l4_10",
+            "type": "quiz",
+            "title": "Cross‑FS Smarts 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_4",
+                "type": "true_false",
+                "question": "All file systems handle deleted files in exactly the same way.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "FAT, NTFS, ext4 each have unique deletion behaviors: FAT unlinks clusters, NTFS marks MFT entries as free, ext4 zeros block pointers.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## The $UsnJrnl is a Forensic Goldmine\n\nOn NTFS, even after file deletion, the USN Journal often retains a log of the file's name, modification, and deletion events. Check it before relying on carving."
+        }
+    ]
+}

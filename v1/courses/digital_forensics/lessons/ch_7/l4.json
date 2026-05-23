@@ -1,0 +1,160 @@
+{
+    "id": "l4",
+    "chapterId": "ch_7",
+    "title": "Malware & Rootkits in Memory 🐍",
+    "description": "Hunt hidden processes, injected code, and advanced stealth techniques hiding in RAM.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Memory Forensics",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Invisible Enemy 👻",
+            "content": "# Why Attackers Love RAM\n\nMalware authors use memory to hide code, avoid disk‑based AV detection, and maintain persistence. Memory analysis is often the **only** way to detect these threats.\n\nCommon techniques:\n- **Direct Kernel Object Manipulation (DKOM)**: Hiding processes by unlinking from the process list.\n- **DLL injection / Reflective DLL loading**: Malicious code injected into a legitimate process.\n- **Process Hollowing**: Replacing a legitimate process's code with malware.\n- **API Hooking**: Intercepting system calls to hide files, registry, or network connections.\n\nVolatility provides plugins to detect these stealth techniques."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Stealth Techniques 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What does DKOM stand for?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Dynamic Kernel Object Modification",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Direct Kernel Object Manipulation",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Disk Kernel Operation Mode",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Data Key Object Masking",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "DKOM involves directly modifying kernel objects (like `_EPROCESS` links) to hide processes or drivers.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Detecting Hidden Processes 🕵️‍♂️",
+            "content": "## The pslist vs psscan Discrepancy\n\n1. Run `pslist` — it shows processes via the `ActiveProcessLinks` list.\n2. Run `psscan` — it carves for `_EPROCESS` structures regardless of links.\n3. Compare the two lists: any process found by `psscan` but missing from `pslist` is **hidden**.\n\nAlso, `psxview` (Volatility 2) provides a cross‑reference table across multiple sources, highlighting discrepancies."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "Comparing pslist and psscan (Vol 3)",
+            "content": "Use Python to compare outputs, or visually inspect.",
+            "codeSnippet": "vol.py -f memory.raw windows.pslist > pslist.txt\nvol.py -f memory.raw windows.psscan > psscan.txt\n# Then diff or sort/compare PIDs.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "quiz",
+            "title": "Hidden Process Detection 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "If a process appears in psscan but not in pslist, it has definitely been hidden by a rootkit.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "It's a strong indicator of hiding, but could also be an artifact of acquisition timing. Further analysis (e.g., checking the process's executable, connections) is needed.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Injected Code Detection 💉",
+            "content": "Malware often injects code into legitimate processes like `explorer.exe` or `svchost.exe`. Volatility's **malfind** plugin identifies suspicious memory regions by looking for:\n- Executable memory (PAGE_EXECUTE_READWRITE) that is not backed by a mapped file.\n- Sections with the `MEM_IMAGE` flag set but without a file path.\n\n`malfind` output includes the start of the injected code (often shellcode), which you can further disassemble.\n\nVolatility 3: `windows.malfind`"
+        },
+        {
+            "id": "s_l4_7",
+            "type": "code",
+            "title": "Malfind Example",
+            "content": "Scan all processes for injected code.",
+            "codeSnippet": "vol.py -f memory.raw windows.malfind\n# Will show suspicious memory regions with hex dump and disassembly.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_8",
+            "type": "quiz",
+            "title": "Malfind Indicator 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "multiple_choice",
+                "question": "Which memory protection flag does malfind primarily look for as a sign of injection?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "PAGE_READONLY",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "PAGE_EXECUTE_READWRITE",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "PAGE_NOACCESS",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "PAGE_GUARD",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "PAGE_EXECUTE_READWRITE is suspicious because it's rarely used by legitimate code (which typically separates execution and data).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_9",
+            "type": "text",
+            "title": "API Hooks & SSDT 📡",
+            "content": "Rootkits may hook the System Service Descriptor Table (SSDT) or IAT (Import Address Table) to redirect system calls. Volatility plugins:\n- **ssdt**: Display the SSDT entries (Vol 2).\n- **apihooks**: Detect inline hooks in user‑mode and kernel‑mode APIs.\n- **driverhooks**: Look for hooks in kernel drivers.\n\nThese are advanced, but powerful for identifying stealth rootkits."
+        },
+        {
+            "id": "s_l4_10",
+            "type": "warning",
+            "title": "⚠️ False Positives Exist",
+            "content": "Some legitimate security software also injects code (e.g., antivirus). Always correlate malfind results with other indicators (network, registry) before concluding maliciousness."
+        },
+        {
+            "id": "s_l4_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Dump Suspicious Processes for Deeper Analysis\n\nUse `procdump` (Volatility 2) or `windows.dumpfiles` (Vol 3) to extract the executable of a suspicious process. Then scan it on a sandbox or with YARA rules."
+        }
+    ]
+}

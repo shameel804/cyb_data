@@ -1,0 +1,148 @@
+{
+    "id": "l1",
+    "chapterId": "ch_4",
+    "title": "The Art of Acquisition 🎯",
+    "description": "Understand what data acquisition means, its types, and when to use static vs live methods.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Data Acquisition",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Why Acquisition Matters 📥",
+            "content": "# The Foundation of Every Investigation\n\nData acquisition is the process of creating an exact copy of digital evidence so that the original remains untouched. Without a sound acquisition, your entire analysis can be challenged.\n\n**Goal:** Obtain a **forensically sound** copy – one that is identical to the original and whose integrity can be mathematically proven.\n\nThink of it like making a perfect photocopy of a historic document: you never work on the original again."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the primary reason for creating a forensic copy instead of working on the original evidence?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To save space on the original drive",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To prevent any changes to the original and maintain admissibility",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Because originals are usually encrypted",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "To increase processing speed",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A forensic copy preserves the original evidence in its pristine state, ensuring that no accidental alteration occurs during analysis.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Types of Acquisition 📋",
+            "content": "## Physical vs Logical vs Targeted\n\n- **Physical acquisition**: Copies every sector of the storage medium, including unallocated space, slack, and partition tables. Largest and most complete.\n- **Logical acquisition**: Copies only the active files and folders visible through the file system. Smaller, faster, but misses deleted data.\n- **Targeted acquisition**: Captures specific files or directories (e.g., only the `Documents` folder). Used in triage or when time is critical.\n\nWhenever possible, perform a **physical acquisition** to ensure nothing is missed."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "Acquisition Types 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "Which acquisition method would you choose to recover deleted files that are no longer listed in the file system?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Logical acquisition",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Physical acquisition",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Targeted acquisition",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "File copy via USB",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Physical acquisition captures every sector, including unallocated space where deleted data often resides.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Static (Dead‑Box) Acquisition 💀",
+            "content": "## The Safest Route\n\nIn a dead‑box acquisition, the suspect system is powered off. You remove the hard drive, attach it via a write blocker, and create an image.\n\n**Advantages:**\n- No risk of altering the original drive.\n- You can use hardware write blockers.\n- Environment is completely controlled.\n\n**Disadvantages:**\n- Lose volatile data (RAM, running processes).\n- If the drive is encrypted, you may never unlock it.\n\nIf the system is already off – **leave it off**! Do not power it on."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "warning",
+            "title": "⚠️ Never Power On a Seized Computer",
+            "content": "Powering on a computer boots the OS, modifies hundreds of files, destroys RAM contents, and could trigger remote wipe software. Always image the drive in a sterile environment."
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "Live Acquisition ⚡",
+            "content": "## When Time is Critical\n\nA live acquisition is performed while the computer is running. You capture volatile data first (RAM, network connections), then optionally image the disk.\n\n**Advantages:**\n- Preserves volatile evidence.\n- May capture decrypted volumes that are mounted.\n\n**Disadvantages:**\n- Running tools on the system changes it – new logs, processes, files.\n- Must document every action meticulously.\n- Requires advanced training.\n\nUse live acquisition **only** when the value of volatile data outweighs the risk of alteration."
+        },
+        {
+            "id": "s_l1_8",
+            "type": "quiz",
+            "title": "Live vs Dead 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_3",
+                "type": "true_false",
+                "question": "If a suspect computer is found powered on and running a financial fraud application, you should immediately pull the power cord.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Pulling the power would destroy RAM and possibly the running application's state. A trained examiner should first capture volatile data before shutting down safely.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_9",
+            "type": "text",
+            "title": "The Acquisition Plan 📝",
+            "content": "Before touching any device, create a written plan:\n\n1. Identify the evidence source (hard drive, phone, cloud).\n2. Determine acquisition method (physical/logical, static/live).\n3. Select tools and write‑blocker.\n4. Prepare documentation and chain of custody forms.\n5. Verify hashes after imaging.\n\nA plan prevents panic and preserves evidence."
+        },
+        {
+            "id": "s_l1_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Always Photograph the Scene\n\nBefore disconnecting anything, take high‑resolution photos of the computer screen, cable connections, and any external devices. This can later prove the state of the system at seizure."
+        }
+    ]
+}

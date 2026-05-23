@@ -1,0 +1,70 @@
+{
+    "id": "sq_digital_forensics_2",
+    "title": "Data Hunter 🐾",
+    "triggerChapterIndex": 5,
+    "metadata": {
+        "type": "debug"
+    },
+    "questions": [
+        {
+            "id": "sq_df_2_q1",
+            "type": "multiple_choice",
+            "question": "Find the bug: The examiner wants to carve JPEG images from an unallocated space export but his script only looks for header `FF D8 FF` and footer `FF D9`. What is the problem?",
+            "codeSnippet": "for f in unallocated/*.bin; do\n  start=$(grep -b -a -m 1 $'\\xff\\xd8\\xff' \"$f\" | head -1 | cut -d: -f1)\n  end=$(grep -b -a -m 1 $'\\xff\\xd9' \"$f\" | tail -1 | cut -d: -f1)\n  dd if=\"$f\" bs=1 skip=$start count=$((end-start+2)) of=\"recovered_$(basename $f).jpg\"\ndone",
+            "bugLineIndex": 3,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The script uses only the first header match and the last footer match, which might span multiple files; it can extract from one header to the very last footer, including data from other files. A proper carver should extract between matching header/footer pairs.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_df_2_q2",
+            "type": "multiple_choice",
+            "question": "Identify the error in this chain of custody attempt: The examiner documents the seizure but forgets to log the transfer from the evidence locker to the forensic lab.",
+            "codeSnippet": "",
+            "bugLineIndex": -1,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "Every handover must be documented in the chain of custody; a missing transfer breaks the chain and can render evidence inadmissible.",
+            "xpReward": 20,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_df_2_q3",
+            "type": "multiple_choice",
+            "question": "Debug this NTFS analysis: An examiner tries to recover a deleted file using `icat` with the MFT entry number, but `icat` returns no data. What is likely wrong?",
+            "codeSnippet": "icat -f ntfs image.dd 42",
+            "bugLineIndex": -1,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The examiner did not specify the partition offset (`-o`). The MFT entry is within a partition, so the start sector of the partition must be provided. The correct command would be `icat -f ntfs -o 2048 image.dd 42`.",
+            "xpReward": 20,
+            "difficulty": 2
+        },
+        {
+            "id": "sq_df_2_q4",
+            "type": "multiple_choice",
+            "question": "What is the issue in this timeline reconstruction? The investigator correlates file system timestamps from a suspect's laptop with email server logs but finds a one-hour discrepancy.",
+            "codeSnippet": "",
+            "bugLineIndex": -1,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "The laptop may be in a different time zone (or daylight savings mismatch) from the server. File system times are often UTC, while email server logs might be in local time. The examiner must convert all timestamps to a common reference.",
+            "xpReward": 20,
+            "difficulty": 1
+        },
+        {
+            "id": "sq_df_2_q5",
+            "type": "multiple_choice",
+            "question": "Find the anti‑forensic technique hidden in this hex dump: An examiner finds a FAT directory entry with first byte `0x00` and remaining bytes `4F 4F 50 59 20 20 20 54 58 54 ...`",
+            "codeSnippet": "Offset  0  1  2  3  4  5  6  7   ...\n0x00    00 4F 4F 50 59 20 20 20  ...",
+            "bugLineIndex": -1,
+            "options": [],
+            "correctAnswer": "",
+            "explanation": "A deleted entry would normally start with `0xE5`. `0x00` marks an unused entry. The remaining bytes spell 'OOPY   TXT', which may indicate someone tried to hide the deletion by clearing the first byte instead of leaving the normal `0xE5` marker. This could be an attempt to make recovery tools miss the deleted file.",
+            "xpReward": 20,
+            "difficulty": 2
+        }
+    ]
+}

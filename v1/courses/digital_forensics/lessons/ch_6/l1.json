@@ -1,0 +1,171 @@
+{
+    "id": "l1",
+    "chapterId": "ch_6",
+    "title": "Windows Registry Fundamentals",
+    "description": "Unlock the hierarchical database that controls Windows – understand hives, keys, and values.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Windows Forensics",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Brain of Windows 🧠",
+            "content": "# What Is the Registry?\n\nThe Windows Registry is a massive, hierarchical database where the OS, applications, and hardware store configuration settings. For a forensic examiner, it's a **treasure map** of user activity.\n\n- Every setting from desktop wallpaper to mounted USB devices is recorded here.\n- Changes leave timestamps, so you can trace when something happened.\n- It's stored in files called **hives** on disk.\n\nThink of the registry as Windows' diary – it records what the user did and when."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Registry Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is the primary function of the Windows Registry?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Store user passwords in plaintext",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Centralize configuration data for the OS and applications",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Manage network traffic",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Compress system files",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The registry is a hierarchical database that stores low‑level settings for the operating system and applications.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Root Keys (Hives) 🌳",
+            "content": "## The Five Main Hives\n\n- **HKEY_CLASSES_ROOT (HKCR)**: File association and COM object registration.\n- **HKEY_CURRENT_USER (HKCU)**: Settings for the currently logged‑on user (mapped from NTUSER.DAT).\n- **HKEY_LOCAL_MACHINE (HKLM)**: System‑wide settings for all users.\n- **HKEY_USERS (HKU)**: Profiles for all users on the machine (contains SIDs).\n- **HKEY_CURRENT_CONFIG (HKCC)**: Current hardware profile.\n\nForensically, we focus on HKLM and each user's NTUSER.DAT (loaded under HKU)."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "Hive Knowledge 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "fill_blank",
+                "question": "The registry hive that stores system‑wide settings (not user‑specific) is ___.",
+                "options": [
+                    "HKEY_CURRENT_USER",
+                    "HKEY_CLASSES_ROOT",
+                    "HKEY_LOCAL_MACHINE",
+                    "HKEY_USERS"
+                ],
+                "correctAnswer": "HKEY_LOCAL_MACHINE",
+                "explanation": "HKLM contains machine‑wide configuration, such as installed software and hardware driver settings.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Hive Files on Disk 💾",
+            "content": "## Where the Data Lives\n\nEach hive is stored in one or more files, usually in `C:\\Windows\\System32\\config` or the user profile.\n\n| Hive | File |\n|------|------|\n| HKEY_LOCAL_MACHINE\\SAM | SAM (Security Accounts Manager) |\n| HKEY_LOCAL_MACHINE\\SECURITY | SECURITY |\n| HKEY_LOCAL_MACHINE\\SOFTWARE | SOFTWARE |\n| HKEY_LOCAL_MACHINE\\SYSTEM | SYSTEM |\n| HKEY_USERS\\.DEFAULT | DEFAULT |\n| User profile (HKCU) | NTUSER.DAT (in `C:\\Users\\<user>`) |\n\nThese files can be parsed offline with tools like **Registry Explorer**, **RegRipper**, or `regedit` (loading hives)."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "code",
+            "title": "Extract NTUSER.DAT from a forensic image",
+            "content": "Using The Sleuth Kit, find and copy the hive file.",
+            "codeSnippet": "fls -f ntfs -r image.dd | grep -i ntuser.dat\n# Get the inode, then extract:\nicat -f ntfs image.dd <inode> > /cases/user_ntuser.dat",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "Hive File Location 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_3",
+                "type": "true_false",
+                "question": "A user's HKCU hive is stored in a file named USER.DAT in the user profile folder.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "It's named NTUSER.DAT, not USER.DAT.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_8",
+            "type": "text",
+            "title": "Keys, Subkeys, and Values 🗝️",
+            "content": "The registry hierarchy:\n- **Key**: A container (like a folder).\n- **Subkey**: A key within another key.\n- **Value**: Data stored under a key. Has a name, type, and data.\n\nCommon value types:\n- `REG_SZ`: String.\n- `REG_DWORD`: 32‑bit number.\n- `REG_BINARY`: Raw binary.\n- `REG_MULTI_SZ`: Multiple strings.\n\nExample: `HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ProgramFilesDir` → a REG_SZ with the path to Program Files."
+        },
+        {
+            "id": "s_l1_9",
+            "type": "quiz",
+            "title": "Value Types 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_4",
+                "type": "multiple_choice",
+                "question": "Which registry data type is used to store a 32‑bit integer?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "REG_SZ",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "REG_BINARY",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "REG_DWORD",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "REG_MULTI_SZ",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "REG_DWORD is a 32‑bit numeric value, often used for flags and timestamps.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_10",
+            "type": "text",
+            "title": "LastWrite Timestamps ⏱️",
+            "content": "Each key has a **LastWrite time** – the last time the key was modified (or any of its values). This is a 64‑bit FILETIME. It's extremely useful for timeline analysis, e.g., when a program was installed or a setting changed.\n\nTool: `Registry Explorer` shows this automatically. `regtime.pl` (RegRipper) extracts all key timestamps into a bodyfile for timeline tools."
+        },
+        {
+            "id": "s_l1_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Always Mount the SYSTEM Hive First\n\nThe SYSTEM hive contains the `CurrentControlSet` and the ComputerName. It also reveals the current time zone, which is crucial for converting FILETIME (UTC) to local time correctly."
+        }
+    ]
+}

@@ -1,0 +1,170 @@
+{
+    "id": "l3",
+    "chapterId": "ch_10",
+    "title": "Browser Forensics Fundamentals 🌐",
+    "description": "Dive into SQLite databases storing history, cookies, downloads, and bookmarks.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Email & Browser Forensics",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Browser as a Witness 👀",
+            "content": "# What Browsers Record\n\nWeb browsers are the gateway to the internet, and they silently record almost everything you do:\n\n- URLs visited (history)\n- Search terms\n- Cookies (tracking, session tokens)\n- Downloads\n- Bookmarks\n- Saved passwords\n- Form autofill data\n- Cache (copies of pages and images)\n\nEven “private” or “incognito” modes leave traces in memory, DNS cache, or logs if not properly cleared.\n\nWe’ll explore the artifacts left by Chrome, Firefox, Edge, and Safari."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Browser Data 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which of the following is NOT typically stored in a browser’s history database?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "URL visited",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Timestamp of visit",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Full content of the page (HTML)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Number of visits",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "History stores metadata (URL, title, visit time, count); the full page content is stored separately in the cache.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Chromium‑Based Browsers (Chrome, Edge, Brave) 🧬",
+            "content": "## The SQLite Goldmine\n\nProfile data is stored in:\n- Windows: `%USERPROFILE%\\AppData\\Local\\Google\\Chrome\\User Data\\Default`\n- Linux: `~/.config/google-chrome/Default`\n- macOS: `~/Library/Application Support/Google/Chrome/Default`\n\nKey databases:\n- **History**: `urls` table (URL, title, visit_count, last_visit_time). `visits` table (each visit with timestamp). Timestamps are in **Chrome epoch** (microseconds since 1601‑01‑01 UTC).\n- **Cookies**: `cookies` table (host_key, name, encrypted_value). Decryption requires the OS‑level DPAPI key (Windows) or Keychain (macOS).\n- **Downloads**: `downloads` table (target_path, start_time, end_time, total_bytes, url).\n- **Logins** (passwords): `login` table with encrypted password (requires DPAPI to decrypt).\n- **Web Data**: autofill, credit cards (also encrypted).\n- **Bookmarks**: JSON file (`Bookmarks`)."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "Query Chrome History with sqlite3",
+            "content": "Extract visited URLs with human‑readable timestamps:",
+            "codeSnippet": "sqlite3 History\nSELECT url, title, datetime(last_visit_time / 1000000 - 11644473600, 'unixepoch') \nFROM urls ORDER BY last_visit_time DESC LIMIT 10;",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "quiz",
+            "title": "Chrome Timestamps 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "fill_blank",
+                "question": "Chrome stores timestamps in microseconds since January 1, 1601. To convert to Unix epoch, you subtract ___ seconds.",
+                "options": [
+                    "11644473600",
+                    "978307200",
+                    "0",
+                    "1000000"
+                ],
+                "correctAnswer": "11644473600",
+                "explanation": "The difference between 1601 and 1970 is 11,644,473,600 seconds."
+            }
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Firefox Forensics 🦊",
+            "content": "Firefox uses SQLite databases as well (places.sqlite for history, cookies.sqlite, etc.) but its timestamps are in **PRTime** (microseconds since 1970‑01‑01).\n\nProfile location: `%APPDATA%\\Mozilla\\Firefox\\Profiles\\<random>.default-release`\n\n**Places.sqlite** tables:\n- `moz_places` (url, title, visit_count, last_visit_date)\n- `moz_historyvisits` (visit_date, place_id)\n\nCookies: `cookies.sqlite` (plaintext if not using master password).\nDownloads: `places.sqlite` `moz_annos` or `downloads.json`.\nBookmarks: `places.sqlite` `moz_bookmarks`.\n\nFirefox also stores `sessionstore‑backups` JSON files with open tabs from the last session."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Firefox Timestamps 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "multiple_choice",
+                "question": "How are timestamps stored in Firefox’s places.sqlite?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Seconds since 1970",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Microseconds since 1970",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Microseconds since 1601",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Milliseconds since 2000",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Firefox uses PRTime, microseconds since Unix epoch.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_8",
+            "type": "text",
+            "title": "Safari & Edge Artifacts 🍏🪟",
+            "content": "**Safari**: On macOS, history is in `~/Library/Safari/History.db` (SQLite). Cookies in `~/Library/Cookies/Cookies.binarycookies` (binary format). Timestamps are **seconds since 2001‑01‑01** (Apple CFAbsoluteTime).\n**Edge** (Chromium‑based): Same structure as Chrome, location under `%LOCALAPPDATA%\\Microsoft\\Edge\\User Data\\Default`.\n\nAll browsers share the same forensic principles: SQLite analysis for history, cookies, and logs."
+        },
+        {
+            "id": "s_l3_9",
+            "type": "quiz",
+            "title": "Browser Variety 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_4",
+                "type": "true_false",
+                "question": "Edge (Chromium) stores its history in the same database format as Chrome.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Both use SQLite with identical schema, just different profile folders.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_10",
+            "type": "text",
+            "title": "Decrypting Cookies & Passwords 🔓",
+            "content": "On Windows, Chrome encrypts cookies and passwords using **DPAPI** (Data Protection API). The key is derived from the user’s login password. Tools like **ChromePass**, **WebBrowserPassView**, or Python scripts with `dpapick` can decrypt offline if you have the user’s password or a DPAPI master key from the SAM/SECURITY hive.\n\nOn macOS, the Keychain holds the encryption key.\n\nForensically, this means you often need the user’s password or a forensic tool that can recover the DPAPI key from a memory dump or registry."
+        },
+        {
+            "id": "s_l3_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use NirSoft’s Browser Tools\n\nNirSoft offers free utilities (e.g., ChromeHistoryView, BrowsingHistoryView) that parse browser databases without needing to write SQL. Great for quick triage."
+        }
+    ]
+}

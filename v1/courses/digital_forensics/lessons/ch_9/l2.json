@@ -1,0 +1,173 @@
+{
+    "id": "l2",
+    "chapterId": "ch_9",
+    "title": "Acquisition Methods & Techniques 🔓",
+    "description": "Master logical, filesystem, and physical acquisition – and how to handle locked devices.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Mobile Forensics",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Acquisition Pyramid 🔺",
+            "content": "# Choosing the Right Method\n\nYour choice depends on:\n- Device model, OS version, and security patch level\n- Whether the device is locked or unlocked\n- Legal authority and consent\n- Available tools and budget\n\nFrom least to most intrusive:\n\n**Logical → Filesystem → Physical**\n\nThe deeper you go, the more data you can recover, but the higher the risk of damaging the device or evidence."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Acquisition Order 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which acquisition method gives the most complete copy, including deleted data?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Logical acquisition",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Filesystem acquisition",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Physical acquisition",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Cloud acquisition",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Physical acquisition creates a bit‑for‑bit image of the entire flash memory, including unallocated space."
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Logical Acquisition – Quick & Safe 💨",
+            "content": "## Via Backup APIs\n\nMost tools interact with the OS's backup mechanism:\n- **Android**: `adb backup` (deprecated in recent versions), or custom apps that use content providers.\n- **iOS**: iTunes‑style backup (unencrypted or encrypted).\n\n**What you get:**\n- Call logs, contacts, SMS/MMS\n- App data (if app allows backup) – WhatsApp, SMS, etc.\n- Media files (photos, videos)\n- Some device settings\n\n**Limitations:** No deleted data, no system logs, incomplete for many third‑party apps. Requires device to be unlocked and USB debugging enabled (Android) or trusted computer (iOS)."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Android ADB Backup Example",
+            "content": "If USB debugging is enabled and device is unlocked, create a backup:",
+            "codeSnippet": "adb backup -apk -shared -all -system -f android_backup.ab\n# -apk : backup APK files\n# -shared : shared storage (SD card)\n# -all : all apps (including non-system)\n# -system : system apps",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "ADB Backup Flag 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "fill_blank",
+                "question": "The `adb backup` command requires the device to have ___ enabled.",
+                "options": [
+                    "Bluetooth",
+                    "USB Debugging",
+                    "NFC",
+                    "Airplane mode"
+                ],
+                "correctAnswer": "USB Debugging",
+                "explanation": "USB Debugging (Developer Options) must be enabled for ADB commands to interact with the device."
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Filesystem Acquisition – Going Deeper 📂",
+            "content": "This method gains access to the device's root filesystem, often by:\n- **Exploiting a temporary root** via bootloader unlock or a known vulnerability.\n- **Using Checkm8 exploit** (iOS, up to iPhone X) for full filesystem access.\n- **Flashing a custom recovery** (TWRP) on Android.\n\nOnce access is gained, you can copy partitions (e.g., `/data`, `/system`) or even create a dd image of the userdata partition.\n\n**You get:** Deleted files (some), system logs, SQLite databases with journal files (can contain deleted records), app cache.\n\n**Risks:** Can trigger anti‑tamper mechanisms, void warranty, and is legally sensitive. Always document the process."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "quiz",
+            "title": "Filesystem Access 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "true_false",
+                "question": "Filesystem acquisition on Android always requires a physical chip‑off method.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "It can be done via software exploits (temporary root) or an unlocked bootloader, without touching the chip."
+            }
+        },
+        {
+            "id": "s_l2_8",
+            "type": "text",
+            "title": "Physical Acquisition (Chip‑Off / JTAG / ISP) 🧬",
+            "content": "## The Ultimate Extraction\n\nWhen the device is locked, damaged, or encrypted, and no logical/filesystem access is possible, physical methods are used:\n- **JTAG (Joint Test Action Group)**: Connects to test pins on the PCB to read memory.\n- **ISP (In‑System Programming)**: Similar, using flash memory communication pins.\n- **Chip‑Off**: Remove the NAND/eMMC chip and read it with a dedicated reader.\n\n**Outcome:** A raw dump of the entire storage chip – unallocated space, deleted files, and sometimes decryption keys if the chip supports it.\n\n**Challenges:** Extremely technical, permanent damage risk, must match the chip pinout, and encryption renders the dump useless without the key."
+        },
+        {
+            "id": "s_l2_9",
+            "type": "warning",
+            "title": "⚠️ Physical = Last Resort",
+            "content": "Chip‑off destroys the device. It should only be performed when absolutely necessary and by a qualified expert. Always obtain legal authorization."
+        },
+        {
+            "id": "s_l2_10",
+            "type": "quiz",
+            "title": "Physical Method 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_4",
+                "type": "multiple_choice",
+                "question": "Which physical acquisition technique requires removing the flash memory chip from the device?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "JTAG",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "ISP",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Chip‑Off",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "ADB backup",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Chip‑off involves physically desoldering the memory chip and reading it with an external programmer."
+            }
+        },
+        {
+            "id": "s_l2_11",
+            "type": "text",
+            "title": "Locked Devices & Bypass 🔐",
+            "content": "If the device is locked:\n- **Brute‑force** (slow, may trigger wipe).\n- **Vulnerability exploitation** (e.g., GreyKey for iOS, Cellebrite UFED Advanced Services).\n- **Legal methods**: compel suspect to unlock (biometrics or passcode, depending on jurisdiction).\n- **Extraction via DFU/recovery mode** limited to filesystem if not encrypted.\n\nAlways consult legal counsel before attempting any bypass."
+        },
+        {
+            "id": "s_l2_12",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Capture the Screen\n\nIf the device is unlocked when seized, immediately photograph the screen. Disable auto‑lock and keep the device awake while you prepare acquisition. A screen capture can preserve open app states."
+        }
+    ]
+}

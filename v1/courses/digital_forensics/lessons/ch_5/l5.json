@@ -1,0 +1,130 @@
+{
+    "id": "l5",
+    "chapterId": "ch_5",
+    "title": "Data Carving: Concepts & Methods",
+    "description": "Carve files from unallocated space using headers, footers, and smart carving algorithms.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "File System Analysis",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "When Metadata Fails 🚫",
+            "content": "# Enter the Carver\n\nData carving is the process of extracting files from a raw data stream (unallocated space, memory dumps) without the help of file system metadata. It relies on:\n\n- **Header/Footer signatures**: Most file types start with a specific byte sequence (magic bytes) and some end with a footer.\n- **File structure**: Carvers can validate the internal structure to reduce false positives.\n\nCarving is your last resort – but often finds the most hidden evidence."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "Carving Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Data carving is most useful when:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The file system is fully intact",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "File system metadata has been destroyed or is unavailable",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "You need a quick listing of active files",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "You are working on a write‑blocked original",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Carving bypasses the file system entirely, making it essential when directory entries or MFT records are missing.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Header/Footer Carving 🪓",
+            "content": "## Simple but Effective\n\nSearch for a known header (e.g., `FF D8 FF` for JPEG). Then extract data until a known footer (`FF D9` for JPEG) or until a maximum size is reached.\n\n| File Type | Header | Footer |\n|-----------|--------|--------|\n| JPEG | FF D8 FF | FF D9 |\n| PNG | 89 50 4E 47 | 49 45 4E 44 AE 42 60 82 |\n| PDF | 25 50 44 46 | 25 25 45 4F 46 |\n| ZIP | 50 4B 03 04 | (none, end of central directory) |\n\nSome formats lack footers; carvers rely on a new header or max size to stop."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "Carve JPEGs with Foremost",
+            "content": "Foremost reads raw data and outputs files sorted by type.",
+            "codeSnippet": "foremost -t jpeg -i unallocated.bin -o /recovered/\n# -t : file type (jpeg, pdf, etc.)\n# -i : input\n# -o : output folder",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_5",
+            "type": "quiz",
+            "title": "JPEG Carving 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "fill_blank",
+                "question": "The hexadecimal footer for a JPEG file is ___.",
+                "options": [
+                    "FF D8 FF",
+                    "FF D9",
+                    "89 50 4E 47",
+                    "25 25 45 4F 46"
+                ],
+                "correctAnswer": "FF D9",
+                "explanation": "JPEG files end with the marker FF D9 (End of Image).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Fragmented Files & Smart Carving 🧩",
+            "content": "## The Fragmentation Problem\n\nFiles on disk are not always stored contiguously. If a JPEG is split across non‑adjacent clusters, simple header‑footer carving fails.\n\n**Smart carving** uses validation techniques:\n- Check internal structures (e.g., JPEG restart markers).\n- Use a block‑by‑block validation (what if this cluster is part of the previous file?).\n- Graph‑based carving (assign probabilities of cluster belonging to a file).\n\nTools like **PhotoRec** perform some validation but may still struggle with heavy fragmentation. Manual reassembly is sometimes necessary."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Fragmentation Challenge 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_3",
+                "type": "true_false",
+                "question": "A simple header‑footer carver can perfectly recover fragmented files.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "If a file is fragmented, pieces may be separated by other data; a simple carver will miss or truncate it.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_8",
+            "type": "text",
+            "title": "PhotoRec – A Powerful Carver 🖼️",
+            "content": "PhotoRec (part of TestDisk) can carve over 480 file types. It scans sectors for signatures, and if a footer exists, tries to extract the full file. For file types without footers, it stops after a threshold.\n\nUsage: `photorec /image.dd` then select partition and output folder.\n\nIt's fast, reliable, and often recovers files even after formatting."
+        },
+        {
+            "id": "s_l5_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Combine Carving with String Search\n\nBefore carving, run `strings` or a keyword search on unallocated space to identify interesting content. Then target specific file types for carving."
+        }
+    ]
+}

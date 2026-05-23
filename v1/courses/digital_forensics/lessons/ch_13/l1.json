@@ -1,0 +1,170 @@
+{
+    "id": "l1",
+    "chapterId": "ch_13",
+    "title": "Cloud Forensics ☁️",
+    "description": "Tackle the challenges of investigating data stored across AWS, Azure, Google Cloud, and SaaS platforms.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Advanced Topics",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Cloud Revolution ☁️",
+            "content": "# Why Cloud Forensics?\n\nData is no longer just on hard drives – it lives in the cloud. Emails, documents, databases, and entire applications run on AWS, Azure, and Google Cloud. SaaS platforms like Office 365, Salesforce, and Dropbox hold critical evidence.\n\nCloud forensics is the application of digital forensics principles to cloud environments. It brings unique challenges:\n- **Multi‑tenancy**: your data is on shared hardware with other customers.\n- **Jurisdiction**: data may be stored in a different country.\n- **Limited access**: you can't physically seize servers; you must use APIs and legal requests.\n- **Dynamic environments**: VMs and containers can be created and destroyed rapidly.\n\nThe cloud is not a place – it's a model. We'll learn how to adapt."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Cloud Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is a major challenge unique to cloud forensics?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Hard drives are too small",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Investigators cannot physically seize the server",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Cloud data is never encrypted",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "There are no logs available",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "In cloud forensics, you rely on APIs and legal processes, not physical acquisition.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Cloud Service Models & Forensic Impact 🏗️",
+            "content": "## IaaS, PaaS, SaaS\n\n- **IaaS** (Infrastructure as a Service): You control virtual machines (AWS EC2, Azure VMs). You can image VM disks and capture memory – similar to traditional forensics.\n- **PaaS** (Platform as a Service): You deploy applications but don't manage the OS (Azure App Service, Heroku). Logs and application data are available; OS artifacts are limited.\n- **SaaS** (Software as a Service): You just use the application (Office 365, Gmail, Salesforce). Evidence is accessible via APIs, eDiscovery tools, or vendor cooperation.\n\nAs you move up the stack, you lose low‑level access but gain rich application‑layer logs."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "Service Models 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "In which cloud model can you still capture a forensic image of the virtual hard disk?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "SaaS",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "PaaS",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "IaaS",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "All of the above",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "IaaS gives you control over virtual machines, including their disks.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Gathering Cloud Evidence 🔎",
+            "content": "## APIs, Logs, and Legal Process\n\nYou can't show up with a warrant and seize a server. Instead:\n- **CSP APIs**: AWS CloudTrail, Azure Activity Log, Google Cloud Audit Logs provide detailed records of actions.\n- **eDiscovery**: Office 365, Google Vault allow searching and exporting mailbox and drive data.\n- **Legal requests**: Subpoena or warrant to the cloud provider for account data, IP logs, and content.\n- **Snapshots & backups**: In IaaS, you can take a snapshot of a VM disk, download it, and forensically image it.\n\nAlways check the provider's **data retention policies**. Some logs are only kept for 90 days."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "code",
+            "title": "AWS S3 Forensics with AWS CLI",
+            "content": "List S3 bucket logs and download objects for analysis:",
+            "codeSnippet": "# Enable S3 server access logging (if not already on)\naws s3api get-bucket-logging --bucket mybucket\n# List objects (requires permissions)\naws s3 ls s3://mybucket --recursive\n# Download an object\naws s3 cp s3://mybucket/sensitive.docx .",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "API Access 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_3",
+                "type": "true_false",
+                "question": "In a SaaS investigation, you can always perform a bit‑by‑bit image of the underlying server.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "SaaS providers abstract the infrastructure; you only have API and UI access, not physical or VM‑level access.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_8",
+            "type": "text",
+            "title": "Chain of Custody in the Cloud 🔗",
+            "content": "With no physical evidence, how do you prove integrity?\n\n- Document the API calls, timestamps, and the exact commands run.\n- Use CSP‑generated hashes (e.g., S3 object ETag, which is an MD5 hash for small objects).\n- Export data to a forensically sound storage and hash it immediately.\n- Keep logs of all interactions with the cloud environment.\n\nMany providers offer **immutable storage** (WORM) or legal holds that prevent data deletion."
+        },
+        {
+            "id": "s_l1_9",
+            "type": "quiz",
+            "title": "Cloud Chain of Custody 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_4",
+                "type": "fill_blank",
+                "question": "To prevent data deletion during a cloud investigation, you can apply a ___ hold.",
+                "options": [
+                    "legal",
+                    "legal",
+                    "temporary",
+                    "encryption"
+                ],
+                "correctAnswer": "legal",
+                "explanation": "A legal hold (or litigation hold) instructs the provider to preserve all data, preventing deletion."
+            }
+        },
+        {
+            "id": "s_l1_10",
+            "type": "text",
+            "title": "Multi‑Jurisdiction & Privacy Laws 🌍",
+            "content": "Data may reside in another country with different privacy laws (GDPR in Europe, CCPA in California).\n- **MLATs** (Mutual Legal Assistance Treaties) may be required to obtain data from foreign servers.\n- The **Cloud Act** (US) allows US law enforcement to request data regardless of location, but conflicts with GDPR.\n- Always consult legal counsel before accessing cloud data.\n\nThis is a complex area; your forensic plan must include jurisdictional analysis."
+        },
+        {
+            "id": "s_l1_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use the Provider's Native Tools First\n\nBefore using third‑party tools, explore what the cloud provider offers. AWS CloudTrail, Azure Sentinel, and GCP Logs are purpose‑built and often free."
+        }
+    ]
+}

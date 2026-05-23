@@ -1,0 +1,163 @@
+{
+    "id": "l2",
+    "chapterId": "ch_10",
+    "title": "Email Artifacts & Client Forensics 🗄️",
+    "description": "Extract evidence from PST, OST, MBOX files, server logs, and recover deleted emails.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Email & Browser Forensics",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "Email Storage Formats 📦",
+            "content": "# Where Emails Live on Disk\n\nDifferent email clients use different file formats:\n- **PST** (Personal Storage Table): Microsoft Outlook’s local archive. Can be password‑protected.\n- **OST** (Offline Storage Table): Offline cache of Exchange mailbox; can be converted to PST.\n- **MBOX**: Unix‑style, single file containing all messages (Thunderbird, Apple Mail).\n- **EDB** (Exchange Database): Server‑side database.\n- **EML**: Single email message file (plain text with headers and body).\n\nWe can extract messages, attachments, calendar, contacts, and even deleted items from these files."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Format Identification 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which file format is used by Microsoft Outlook for local storage?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "MBOX",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "OST",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "PST",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "EDB",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "PST is the primary personal folder file for Outlook.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "PST/OST Forensics 🧰",
+            "content": "Tools like **ReadPST**, **libpff**, or commercial tools (FTK, EnCase) can parse PST/OST files.\n\n**What you can recover:**\n- All emails (including deleted items still in the PST but marked as deleted – they are often recoverable until the PST is compacted).\n- Attachments, embedded images.\n- Calendar, contacts, notes, tasks.\n- Deleted items folder and even orphaned messages (records whose parent folder was deleted).\n\nPST files can be password‑protected; forensic tools can often remove or recover the password."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Parse PST with readpst (Linux)",
+            "content": "Convert PST to MBOX or separate EML files:",
+            "codeSnippet": "readpst -r -o /output/folder suspect.pst\n# -r : recursive structure\n# -o : output directory\n# Creates separate .eml files for each message.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "PST Recovery 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "Once an email is permanently deleted from the Deleted Items folder in Outlook, it is immediately erased from the PST file.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "PST files retain deleted space; the message data remains until the PST is compacted.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "MBOX & EML Analysis 📬",
+            "content": "MBOX files are plain text, making them easy to search with `grep` or `strings`. An EML file is a single email; you can open it with any text editor.\n\n**Forensic value:**\n- Full headers preserved.\n- Attachments are base64 encoded; can be extracted.\n- Deleted emails may exist in `Trash.mbox` or `.Trash` folder.\n\nFor Thunderbird, the profile folder contains `ImapMail` and `Mail` folders with MBOX files."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "code",
+            "title": "Extract Attachments from MBOX",
+            "content": "Use `munpack` from the mpack package:",
+            "codeSnippet": "munpack mailbox.mbox\n# Extracts all attachments and creates text files for each message.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_8",
+            "type": "quiz",
+            "title": "MBOX Recovery 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "fill_blank",
+                "question": "The `munpack` command is used to ___ from email files.",
+                "options": [
+                    "encrypt attachments",
+                    "extract attachments",
+                    "delete attachments",
+                    "compress attachments"
+                ],
+                "correctAnswer": "extract attachments",
+                "explanation": "munpack decodes MIME attachments from messages."
+            }
+        },
+        {
+            "id": "s_l2_9",
+            "type": "text",
+            "title": "Server‑Side Forensics: Exchange & Office 365 ☁️",
+            "content": "In corporate environments, emails reside on servers. Using **eDiscovery** tools (Microsoft Purview, Exchange Admin Center), you can:\n- Search mailboxes by keyword, date range.\n- Place legal holds to preserve data.\n- Export to PST.\n- Audit logs show mailbox access (who read what, when).\n\nAlso, **SMTP logs** on the server record each connection, revealing the IP of the sender's mail client.\n\nThis server data is often more complete than client‑side artifacts, as users may delete local copies."
+        },
+        {
+            "id": "s_l2_10",
+            "type": "quiz",
+            "title": "Server Audit 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_4",
+                "type": "true_false",
+                "question": "Microsoft 365 audit logs can show when a user accessed another user’s mailbox.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Mailbox audit logging can track administrator or delegate access to mailboxes.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Check the OST for Deleted Items\n\nEven if the user purged emails, an OST may still hold synchronized copies until reconciliation. Convert OST to PST and examine."
+        }
+    ]
+}

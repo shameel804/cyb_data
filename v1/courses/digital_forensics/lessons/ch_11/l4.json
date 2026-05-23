@@ -1,0 +1,120 @@
+{
+    "id": "l4",
+    "chapterId": "ch_11",
+    "title": "Artifact Wiping & Secure Deletion 🧹",
+    "description": "Explore how data is securely erased, free space wiped, and how SSDs complicate recovery.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Anti-Forensics & Countermeasures",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Secure Deletion – Not Your Average Trash Can 🗑️",
+            "content": "# Why Simple Deletion Isn't Enough\n\nRegular deletion only marks space as free. Secure deletion overwrites the data once or multiple times to prevent recovery.\n\n**Methods:**\n- **File shredding**: Overwriting file data before deletion (e.g., Eraser, `srm`).\n- **Free space wiping**: Overwriting all unallocated space to destroy deleted file remnants (e.g., `cipher /w:C:`).\n- **Whole‑disk wiping**: DBAN, `dd if=/dev/zero of=/dev/sda` – erases everything.\n\nStandards: DoD 5220.22‑M (3 passes), Gutmann (35 passes, now considered overkill).\n\nForensic recovery: If overwritten even once on magnetic media, recovery is extremely unlikely. However, SSDs behave differently."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Wiping Methods 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which Windows built‑in command can wipe free space?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "format C:",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "cipher /w:C:",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "del /f *.*",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "diskpart clean",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`cipher /w:C:` overwrites free space on drive C:. It's commonly used to wipe deleted data.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "SSD & Wear Leveling: A Double‑Edged Sword ⚔️",
+            "content": "## Why SSDs Make Wiping Unreliable (and Recovery Harder)\n\nSSDs use **wear leveling** and a Flash Translation Layer (FTL) that maps logical addresses to physical pages. When you overwrite a file, the SSD may write the new data to a different physical page, leaving the old data intact in a stale page until garbage collection eventually erases it.\n\nThis means:\n- **Secure deletion tools** may not reach the old data because they only overwrite the logical address.\n- Forensic imaging may still capture old data from the physical media (via chip‑off).\n- Conversely, the ATA **TRIM** command tells the SSD to erase those stale pages, making recovery impossible.\n\nSo SSDs are unpredictable: sometimes they preserve data better than HDDs; other times TRIM wipes it instantly."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "quiz",
+            "title": "SSD Wiping 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "Overwriting a file on an SSD with a wiping tool guarantees the old data is completely erased.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Due to wear leveling, the overwrite may go to a new physical page, leaving the old one intact until TRIM or garbage collection.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Tools of the Wiping Trade 🧰",
+            "content": "Common tools found on suspect systems:\n- **CCleaner**: Clears browser history, temp files, and can wipe free space.\n- **Eraser**: Schedules secure file deletion and free space wiping.\n- **BleachBit**: Similar to CCleaner, popular for privacy.\n- **DBAN / Darik's Boot and Nuke**: Bootable disk wiper.\n- **`srm` / `shred`** on Linux.\n\nForensic artifacts of their use:\n- Prefetch file for the tool executable.\n- Registry entries (CCleaner stores `(App)CCleaner` in Prefetch, and logs at `HKLM\\SOFTWARE\\Piriform\\CCleaner` showing last run).\n- USN Journal showing the tool’s executable and the files it deleted.\n- Windows event logs (if the tool logs events).\n\nFinding these traces proves intentional wiping, even if the wiped data is gone."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "quiz",
+            "title": "Tool Traces 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "fill_blank",
+                "question": "Prefetch files can be used to prove that a wiping tool like ___ was executed.",
+                "options": [
+                    "Notepad",
+                    "CCleaner",
+                    "Chrome",
+                    "Explorer"
+                ],
+                "correctAnswer": "CCleaner",
+                "explanation": "Prefetch records program execution; a CCleaner prefetch file indicates it was run."
+            }
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Free Space Wiping Analysis 🕵️‍♀️",
+            "content": "When free space is wiped, unallocated clusters will be filled with zeros or random data. You can detect this by examining the entropy of unallocated space.\n\nHigh entropy (random data) or all zeros indicates wiping. A normal system has a mixture of old file fragments and varied data.\n\nTools like **FTK Imager** or a hex editor can show clusters full of `00` or `FF` patterns.\n\nThis itself is evidence – the user intentionally destroyed data."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Look for Wipe Artifacts in $LogFile and $UsnJrnl\n\nEven if the file content is overwritten, the NTFS journals may still record the original file names, paths, and deletion events. These journals are often not wiped by standard tools."
+        }
+    ]
+}

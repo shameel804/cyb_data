@@ -1,0 +1,176 @@
+{
+    "id": "l2",
+    "chapterId": "ch_13",
+    "title": "IoT Forensics 🤖",
+    "description": "Extract evidence from smart devices, wearables, vehicles, and the Internet of Things.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Advanced Topics",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Internet of Evidence 🕸️",
+            "content": "# What is IoT Forensics?\n\nThe Internet of Things (IoT) refers to the billions of connected devices – smart speakers, fitness trackers, thermostats, cameras, cars, and industrial sensors.\n\nThese devices generate massive amounts of data about human behavior:\n- **Location** (GPS trackers, vehicle telematics)\n- **Health** (smartwatches)\n- **Home activity** (smart locks, motion sensors)\n- **Voice recordings** (Alexa, Google Home)\n\nIoT forensics extracts and analyzes data from these devices, which often lack traditional file systems."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "IoT Scope 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which of the following is an example of an IoT device that may hold forensic evidence?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "A USB flash drive",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A smart doorbell with video recording",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "A desktop computer",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A traditional external hard drive",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Smart doorbells are connected IoT devices that record video and can store evidence.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Challenges of IoT Forensics 🧩",
+            "content": "## Unique Hurdles\n\n- **Proprietary hardware & OS**: Many devices run custom real‑time operating systems (RTOS) or stripped‑down Linux with no standard tools.\n- **Limited storage**: Data may be transient or stored in the cloud.\n- **Diverse interfaces**: UART, JTAG, SPI flash, eMMC – physical extraction requires soldering skills.\n- **Encryption & pairing**: Data may be encrypted and paired to a specific user account.\n- **Legal issues**: Who owns the data? The device owner or the cloud provider?\n\nA combination of hardware skills, reverse engineering, and traditional forensics is needed."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "IoT Challenges 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "Most IoT devices use standard NTFS or ext4 file systems, making imaging straightforward.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Many use custom or lightweight file systems (SquashFS, JFFS2, YAFFS) and require specialized parsing.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Smart Speaker Forensics (Alexa, Google Home) 🎤",
+            "content": "These devices record interactions and store them in the cloud. Local data is minimal. Evidence is obtained through:\n- **Account data requests** to Amazon or Google (with legal process).\n- **Companion app data** on the user's phone (history, settings).\n- **Network captures** of the device's traffic (if it uses unencrypted protocols for discovery).\n\nThe voice recordings, timestamps, and recognized commands can be crucial in proving a suspect's presence or actions."
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "Smart Speaker Data 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "multiple_choice",
+                "question": "Where is the primary forensic evidence for an Amazon Echo device typically stored?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "On the device's internal flash memory",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "In Amazon's cloud servers, accessible via the user's account",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "On the paired smartphone only",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "On the Wi‑Fi router",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Alexa interactions are processed and stored in the cloud; the device itself holds minimal data.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Wearables & Health Data ⌚",
+            "content": "Smartwatches (Apple Watch, Fitbit) and fitness trackers collect:\n- Heart rate, steps, sleep patterns.\n- GPS tracks (if equipped).\n- Payment information (Apple Pay, Fitbit Pay).\n\nData is usually synced to a cloud account and the paired phone app. Forensic extraction can reveal:\n- The wearer's location and activity timeline.\n- Whether the device was being worn at a specific time (passive vs. active data).\n\nThis can corroborate or contradict alibis."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "quiz",
+            "title": "Wearable Evidence 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_4",
+                "type": "true_false",
+                "question": "Heart rate data from a smartwatch can prove the wearer was asleep at the time of a crime.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A low heart rate and lack of movement can indicate sleep, supporting an alibi or timeline.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_9",
+            "type": "text",
+            "title": "Vehicle Forensics 🚗",
+            "content": "Modern cars are rolling data centers. Infotainment systems store:\n- Call logs, contacts, SMS (synced from phone).\n- Navigation history and favorites.\n- Connected device logs (USB, Bluetooth).\n- Event data recorders (EDR / black box) capture speed, braking, airbag deployment moments before a crash.\n\nAcquisition may require specialized hardware (Berla iVe, Bosch CDR) and connector access (OBD‑II port). The data is invaluable in accident reconstruction and criminal investigations."
+        },
+        {
+            "id": "s_l2_10",
+            "type": "code",
+            "title": "Extract EDR Data (Conceptual)",
+            "content": "A simplified flow for vehicle forensics: connect to OBD‑II port, use Bosch CDR tool to read the ACM module.",
+            "codeSnippet": "# No direct code; tools are graphical.\n# Example: Bosch CDR reads event data and outputs a PDF report.",
+            "codeLanguage": "plaintext",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Don't Ignore the Router\n\nThe Wi‑Fi router connected to IoT devices often logs DHCP leases, DNS queries, and traffic statistics. It can show when a device was active on the network."
+        }
+    ]
+}

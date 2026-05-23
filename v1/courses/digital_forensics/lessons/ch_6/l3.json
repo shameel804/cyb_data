@@ -1,0 +1,171 @@
+{
+    "id": "l3",
+    "chapterId": "ch_6",
+    "title": "Windows Event Logs Deep Dive",
+    "description": "Parse security, system, and application logs to reconstruct login events, process creation, and attacks.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Windows Forensics",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Operating System's Journal 📓",
+            "content": "# Windows Event Logs\n\nEvent logs are the primary source for system, security, and application events. They record logons, process starts, service installs, RDP connections, and much more.\n\nLog formats:\n- **.evt**: Legacy (Windows XP/2003).\n- **.evtx**: Modern XML‑based (Vista+). Stored in `C:\\Windows\\System32\\winevt\\Logs`.\n\nKey log files:\n- `Security.evtx`: Logon/logoff, account management, audit policy changes.\n- `System.evtx`: Driver failures, service starts, system time changes.\n- `Application.evtx`: Application errors and events.\n- `Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx`: RDP connections."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Log Types 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which event log file contains logon and logoff events?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "System.evtx",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Application.evtx",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Security.evtx",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Setup.evtx",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Security.evtx records audit events such as successful/failed logons, account changes, and policy modifications.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Event IDs – The Decoder Ring 🔢",
+            "content": "Each event has an **Event ID** and a source. Crucial IDs for forensics:\n\n| Event ID | Description |\n|----------|-------------|\n| 4624 | Successful logon |\n| 4625 | Failed logon |\n| 4634 | Logoff |\n| 4648 | Explicit logon (runas, scheduled tasks) |\n| 4672 | Special privileges assigned (admin logon) |\n| 4688 | Process creation (if audit enabled) |\n| 7045 | Service installed |\n| 1102 | Audit log cleared |\n| 21 / 25 | RDP logon (TerminalServices) |\n\nLogon type codes in 4624: 2 (console), 10 (RDP), 5 (service), 7 (unlock)."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "Parse Evtx with EvtxECmd (Eric Zimmerman)",
+            "content": "Use EvtxECmd to dump all logs to CSV.",
+            "codeSnippet": "EvtxECmd.exe -d C:\\Windows\\System32\\winevt\\Logs --csv C:\\output",
+            "codeLanguage": "cmd",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "quiz",
+            "title": "Logon Types 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "fill_blank",
+                "question": "A logon type 10 in event 4624 indicates a logon via ___.",
+                "options": [
+                    "Console",
+                    "Remote Desktop (RDP)",
+                    "Service",
+                    "Network"
+                ],
+                "correctAnswer": "Remote Desktop (RDP)",
+                "explanation": "Type 10 is RemoteInteractive, used for RDP connections.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Process Creation & Command Line 🖥️",
+            "content": "If audit policy **Process Creation** is enabled (event 4688), you get the full command line of every process started. This is forensic gold – it shows what was executed, including malicious scripts.\n\nAlso, event 1 from `Microsoft-Windows-Sysmon/Operational` provides even richer process creation data if Sysmon is installed.\n\nCheck the `CommandLine` field in the event details."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Event 4688 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "true_false",
+                "question": "Event ID 4688 is logged by default on all Windows systems without any additional configuration.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Process creation auditing must be enabled via Group Policy or local security policy; it's not on by default in many versions.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_8",
+            "type": "text",
+            "title": "RDP Connection Forensics 💻",
+            "content": "The TerminalServices logs (Operational and Admin) hold RDP sessions. Event 21 and 25 show remote logon and reconnection, with source IP address.\n\n`Microsoft-Windows-TerminalServices-RemoteConnectionManager/Operational` event 1149 records user authentication details.\n\nThese logs are essential for investigating lateral movement or unauthorized remote access."
+        },
+        {
+            "id": "s_l3_9",
+            "type": "quiz",
+            "title": "RDP Logging 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_4",
+                "type": "multiple_choice",
+                "question": "Which event source is most useful for tracing RDP connections, including the client IP?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Security.evtx (event 4624)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Microsoft-Windows-TerminalServices-LocalSessionManager/Operational",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "System.evtx (event 7045)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Application.evtx (event 1000)",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "TerminalServices-LocalSessionManager records events 21,25 with source IP and username.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_10",
+            "type": "text",
+            "title": "Log Clearing & Tampering 🗑️",
+            "content": "Event ID 1102 (Security) and 104 (System) indicate that the event log was cleared – a strong sign of anti‑forensics.\n\nAlways check for gaps in timestamps and compare the size of logs to expected activity. Attackers may use `wevtutil cl` to wipe logs."
+        },
+        {
+            "id": "s_l3_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use Timeline Explorer\n\nTools like Timeline Explorer (Eric Zimmerman) can visualize event logs in a single, filterable timeline along with other artifacts. It's a game‑changer for correlation."
+        }
+    ]
+}

@@ -1,0 +1,148 @@
+{
+    "id": "l6",
+    "chapterId": "ch_5",
+    "title": "Practical Analysis with Autopsy & TSK",
+    "description": "Put it all together: use Autopsy and The Sleuth Kit to analyze images, recover deleted files, and examine metadata.",
+    "xpReward": 30,
+    "estimatedMinutes": 9,
+    "section": "File System Analysis",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "Your Forensic Workbench 🧑‍💻",
+            "content": "# Autopsy & The Sleuth Kit\n\n**The Sleuth Kit (TSK)** is a collection of command‑line tools (`mmls`, `fsstat`, `fls`, `icat`, `istat`, `blkls`, etc.). **Autopsy** is its graphical interface, adding case management, reporting, and timeline views.\n\nIn this lesson, we'll walk through a complete analysis of a disk image from mount to recovery."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "code",
+            "title": "TSK: Identify Partitions",
+            "content": "Use `mmls` to display the partition layout of a raw image.",
+            "codeSnippet": "mmls image.dd\n# Output:\n# DOS Partition Table\n# Slot  Start    End       Length    Description\n# 00:   0002048  10242047  10240000  NTFS (0x07)",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_3",
+            "type": "quiz",
+            "title": "mmls Purpose 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "What does the TSK command `mmls` do?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Lists file system metadata",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Displays the volume's partition table",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Recovers deleted files",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Mounts the image",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "`mmls` parses the MBR or GPT and lists the partition entries.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "File System Statistics 📊",
+            "content": "`fsstat` provides details about the file system: cluster size, sector size, total sectors, volume serial, and for NTFS the location of $MFT.\n\nExample: `fsstat -f ntfs -o 2048 image.dd` (where 2048 is the start sector).\n\nThis information is critical to understand the layout before diving in."
+        },
+        {
+            "id": "s_l6_5",
+            "type": "code",
+            "title": "List Files with fls",
+            "content": "`fls` lists files and directories, including deleted (`-d`) and recursively (`-r`).",
+            "codeSnippet": "fls -f ntfs -o 2048 -r -d image.dd\n# Deleted files are marked with * and show MFT entry in parentheses.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_6",
+            "type": "quiz",
+            "title": "fls Deleted Flag 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "fill_blank",
+                "question": "The `fls` option to display deleted files is ___.",
+                "options": [
+                    "-r",
+                    "-o",
+                    "-d",
+                    "-l"
+                ],
+                "correctAnswer": "-d",
+                "explanation": "`-d` shows entries from unallocated directory entries and MFT records.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_7",
+            "type": "text",
+            "title": "Extract File Content with icat 🐈",
+            "content": "Once you have an MFT entry number (e.g., 48) and perhaps an attribute type, `icat` retrieves the data.\n\n`icat -f ntfs -o 2048 -r image.dd 48 > recovered.txt`\n\nThe `-r` flag handles non‑resident data and resolves cluster runs. If the file is deleted but still has a valid runlist, `icat` will work."
+        },
+        {
+            "id": "s_l6_8",
+            "type": "code",
+            "title": "Autopsy: The GUI Way 🖱️",
+            "content": "Autopsy simplifies all this: create a case, add an image, and browse the file tree. Deleted files appear with a red X. You can tag files, generate a report, and run ingest modules (hash filtering, carving, exif extraction).",
+            "codeSnippet": "# No code; Autopsy is a graphical tool.\n# But its underlying engine uses TSK commands.",
+            "codeLanguage": "plaintext",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_9",
+            "type": "quiz",
+            "title": "Autopsy & TSK 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_3",
+                "type": "true_false",
+                "question": "Autopsy can perform file carving through a built‑in ingest module.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Autopsy includes the 'PhotoRec Carver' and 'Embedded File Extractor' modules for carving.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_10",
+            "type": "text",
+            "title": "Building a Timeline with Autopsy ⏳",
+            "content": "Autopsy's timeline feature integrates MAC times from file system, event logs, and web history. You can filter by date range and type.\n\nTo create one: Ingest modules → Recent Activity → pull USB events, registry, etc.\n\nThis gives you a powerful visual to narrate the user's actions."
+        },
+        {
+            "id": "s_l6_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Combine CLI and GUI\n\nUse TSK for scripting and batch processing, then Autopsy for detailed analysis and reporting. Both are free and court‑accepted."
+        }
+    ]
+}

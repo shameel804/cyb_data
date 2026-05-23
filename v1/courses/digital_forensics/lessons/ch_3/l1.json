@@ -1,0 +1,140 @@
+{
+    "id": "l1",
+    "chapterId": "ch_3",
+    "title": "Bits, Bytes & Hex 🧮",
+    "description": "Learn how computers represent data at the lowest level and why every forensic investigator must speak hex.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Computer Forensics Fundamentals",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Language of Machines ⚙️",
+            "content": "# Why Low‑Level Matters\n\nDigital evidence isn't stored as neat files – it's a sea of 1s and 0s. To find hidden or deleted data, you need to understand **binary** and **hexadecimal**.\n\n- **Bit**: The smallest unit. 0 or 1.\n- **Byte**: 8 bits, enough to store one character (like 'A').\n- **Nibble**: 4 bits (half a byte).\n\nComputers group bytes into larger units: kilobytes (1024 bytes), megabytes, gigabytes… but it all starts with bits."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Basic Units 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "How many bits are in a byte?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "4",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "8",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "16",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "32",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A byte consists of 8 bits and is the fundamental addressable unit in most computers.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Binary Counting 🔢",
+            "content": "## How Computers Count\n\nEach bit position represents a power of 2:\n\n| 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |\n|-----|----|----|----|----|----|----|----|\n| 1   | 0  | 0  | 1  | 1  | 0  | 1  | 0  |\n\nThe byte above (10011010) = 128 + 16 + 8 + 2 = 154 decimal.\n\nEvery file, every pixel, every password is just a number."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "Binary to Decimal 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "What is the decimal value of the binary number 00101101?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "45",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "37",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "28",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "54",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "00101101 = 0 + 0 + 32 + 0 + 8 + 4 + 0 + 1 = 45.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Hello, Hexadecimal! 👋",
+            "content": "# Why Hex?\n\nBinary is hard to read. `01001000 01100101 01101100 01101100 01101111` is 'Hello'. Hex compresses this: `48 65 6C 6C 6F`.\n\n- **Hex** uses base‑16: digits 0‑9 and A‑F (A=10, F=15).\n- One hex digit represents 4 bits (a nibble).\n- Two hex digits = one byte.\n\nIn forensics, you’ll see hex everywhere: file headers, memory dumps, registry hives."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "code",
+            "title": "Hex in a Hex Editor",
+            "content": "Opening a file in a hex editor shows raw bytes. For example, a PNG file starts with `89 50 4E 47`.",
+            "codeSnippet": "# Linux hexdump example\nhexdump -C image.png | head\n# Output shows offset, hex, and ASCII.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_7",
+            "type": "quiz",
+            "title": "Hex Power 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_3",
+                "type": "fill_blank",
+                "question": "The hex value 'FF' represents the decimal number ___.",
+                "options": [
+                    "255",
+                    "128",
+                    "256",
+                    "127"
+                ],
+                "correctAnswer": "255",
+                "explanation": "F = 15, so FF = (15 * 16) + 15 = 255.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_8",
+            "type": "text",
+            "title": "ASCII & Unicode 🅰️",
+            "content": "Characters are stored as numbers:\n- **ASCII**: 7‑bit (0‑127). 'A' = 65, 'a' = 97.\n- **Unicode**: UTF‑8, UTF‑16. Works with hex sequences.\n\nWhen you carve a file, you're looking for specific hex patterns."
+        },
+        {
+            "id": "s_l1_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Memorise Key Hex Values\n\n- `FF D8 FF` = JPEG start\n- `%PDF` = PDF (yes, ASCII, but you'll spot it in hex view)\n- `00 00 00 00` = lots of zeros – possible slack space"
+        }
+    ]
+}

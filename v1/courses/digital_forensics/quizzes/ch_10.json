@@ -1,0 +1,293 @@
+{
+    "id": "quiz_ch_10",
+    "chapterId": "ch_10",
+    "title": "Chapter 10 Quiz",
+    "description": "Test your knowledge of email and browser forensics: headers, client artifacts, browser databases, and advanced analysis.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which email header is typically the most reliable for tracing the original sender's IP?",
+            "options": [
+                "From",
+                "Return‑Path",
+                "Received (earliest/bottom)",
+                "Subject"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The earliest Received header (bottom) is the closest to the sender."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What does the DKIM-Signature header provide?",
+            "options": [
+                "Encryption of the email body",
+                "A digital signature to verify the email was sent by the claimed domain and not altered",
+                "The sender's IP address",
+                "A list of all servers that handled the email"
+            ],
+            "correctAnswer": 1,
+            "explanation": "DKIM signs selected headers and body to prove integrity and origin."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "A PST file can be opened with a simple text editor to view its contents.",
+            "correctAnswer": false,
+            "explanation": "PST is a binary format; it requires specialized tools or libraries."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "The `readpst` command can be used on Linux to convert a PST file to ___ format.",
+            "options": [
+                "EML",
+                "MBOX",
+                "DBX",
+                "MSG"
+            ],
+            "correctAnswer": "EML",
+            "explanation": "readpst can output separate .eml files or mbox (‑r creates individual eml)."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which browser stores history timestamps as microseconds since 1601?",
+            "options": [
+                "Firefox",
+                "Safari",
+                "Chrome",
+                "Opera"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Chromium‑based browsers use Windows FILETIME‑like epoch starting 1601‑01‑01."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the Chrome cache useful for in a forensic investigation?",
+            "options": [
+                "Showing the user's saved passwords",
+                "Providing copies of web pages and images the user accessed",
+                "Listing all bookmarks",
+                "Displaying the browser version"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Cache stores actual downloaded content, which can be crucial to prove what was viewed."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "Deleted items in an Outlook PST are permanently gone once the Deleted Items folder is emptied.",
+            "correctAnswer": false,
+            "explanation": "They remain in the PST until the file is compacted; forensic tools can often recover them."
+        },
+        {
+            "id": "q8",
+            "type": "fill_blank",
+            "question": "In Chrome, the database file that stores history is named ___.",
+            "options": [
+                "History",
+                "places.sqlite",
+                "cookies.sqlite",
+                "Bookmarks"
+            ],
+            "correctAnswer": "History",
+            "explanation": "The file is simply called `History` in the profile folder."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "Which of the following is NOT a typical email client storage format?",
+            "options": [
+                "PST",
+                "OST",
+                "MBOX",
+                "SQLite"
+            ],
+            "correctAnswer": 3,
+            "explanation": "PST, OST, MBOX are email storage formats; SQLite is a database engine used by browsers, not a mail format per se."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "What does the SPF record help determine about an email?",
+            "options": [
+                "If the email was encrypted",
+                "If the sending IP is authorized by the domain",
+                "The geographic location of the sender",
+                "The attachment size"
+            ],
+            "correctAnswer": 1,
+            "explanation": "SPF verifies that the SMTP client IP is allowed to send mail for the domain."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "Thunderbird stores emails in MBOX files.",
+            "correctAnswer": true,
+            "explanation": "Thunderbird uses MBOX format (each folder is an .mbox file)."
+        },
+        {
+            "id": "q12",
+            "type": "fill_blank",
+            "question": "The Firefox session restore file is a compressed JSON file named ___.",
+            "options": [
+                "sessionstore.jsonlz4",
+                "sessionstore.js",
+                "recovery.json",
+                "tabs.json"
+            ],
+            "correctAnswer": "sessionstore.jsonlz4",
+            "explanation": "Firefox uses `.jsonlz4` format for session store."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which of these can reveal traces of incognito browsing after the session?",
+            "options": [
+                "History database",
+                "Cookies database",
+                "DNS cache",
+                "Bookmarks"
+            ],
+            "correctAnswer": 2,
+            "explanation": "DNS cache records domain lookups even from incognito sessions."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is required to decrypt Chrome’s saved passwords offline?",
+            "options": [
+                "The browser must be open",
+                "The DPAPI master key derived from the user's Windows password",
+                "A Google account login",
+                "The website’s SSL certificate"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Chrome encrypts passwords with DPAPI, which is tied to the user’s password."
+        },
+        {
+            "id": "q15",
+            "type": "true_false",
+            "question": "Bookmarks in Chrome are stored in a SQLite database.",
+            "correctAnswer": false,
+            "explanation": "Bookmarks are stored in a JSON file (`Bookmarks`)."
+        },
+        {
+            "id": "q16",
+            "type": "fill_blank",
+            "question": "To query Firefox history, you open the ___ database.",
+            "options": [
+                "History",
+                "places.sqlite",
+                "cookies.sqlite",
+                "formhistory.sqlite"
+            ],
+            "correctAnswer": "places.sqlite",
+            "explanation": "`places.sqlite` contains bookmarks, history, and downloads in Firefox."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What is the purpose of Microsoft’s eDiscovery in Office 365?",
+            "options": [
+                "Encrypt emails",
+                "Search and export mailboxes for legal investigations",
+                "Delete spam",
+                "Backup emails to PST"
+            ],
+            "correctAnswer": 1,
+            "explanation": "eDiscovery allows authorized users to search, hold, and export mailbox data."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which browser uses Apple CFAbsoluteTime (seconds since 2001-01-01) for timestamps?",
+            "options": [
+                "Chrome",
+                "Firefox",
+                "Safari",
+                "Edge"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Safari’s History.db uses that epoch."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "The `Received` headers in an email are always genuine and cannot be spoofed.",
+            "correctAnswer": false,
+            "explanation": "An attacker can forge earlier Received headers; that's why you examine the chain from the last trustworthy server."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which NirSoft tool can display contents of Chrome's cache?",
+            "options": [
+                "ChromeHistoryView",
+                "ChromeCacheView",
+                "WebBrowserPassView",
+                "BrowsingHistoryView"
+            ],
+            "correctAnswer": 1,
+            "explanation": "ChromeCacheView is designed specifically for Chrome's cache folder."
+        },
+        {
+            "id": "q21",
+            "type": "fill_blank",
+            "question": "An email’s Message‑ID header is a ___ identifier.",
+            "options": [
+                "temporary",
+                "globally unique",
+                "encrypted",
+                "server‑specific"
+            ],
+            "correctAnswer": "globally unique",
+            "explanation": "Message‑ID is intended to be globally unique."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "Which of these is NOT a typical browser artifact for reconstructing a user’s web activity?",
+            "options": [
+                "Search terms",
+                "Download history",
+                "Email inbox",
+                "Bookmarks"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Email inbox is a mail client artifact, not directly a browser artifact."
+        },
+        {
+            "id": "q23",
+            "type": "true_false",
+            "question": "MIME is a standard that encodes email attachments, and `munpack` can decode them from an MBOX file.",
+            "correctAnswer": true,
+            "explanation": "munpack handles MIME encoding and extracts attachments."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "Which command would you use to view a Windows machine’s DNS cache?",
+            "options": [
+                "ipconfig /flushdns",
+                "nslookup",
+                "ipconfig /displaydns",
+                "ping"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`ipconfig /displaydns` shows the cached DNS entries."
+        },
+        {
+            "id": "q25",
+            "type": "true_false",
+            "question": "All web browsers store history in SQLite databases.",
+            "correctAnswer": false,
+            "explanation": "Some older browsers used custom formats; even modern ones may have some artifacts in JSON or binary files, but major browsers do use SQLite for history."
+        }
+    ]
+}

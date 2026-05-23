@@ -1,0 +1,24 @@
+{
+    "id": "project3",
+    "title": "Correlate Network Intrusion & Memory Analysis",
+    "description": "Analyze a PCAP and memory dump from a compromised server, identify the attack vector, and reconstruct the attacker's actions using Volatility and Wireshark.",
+    "difficulty": "Advanced",
+    "estimatedHours": "6-8",
+    "problemStatement": "**Scenario:** A web server hosting a customer database has been breached. You receive a packet capture (`breach.pcap`) from the network segment and a memory dump (`server.mem`) taken from the server while it was still running. The server was running Ubuntu Linux 20.04.\n\nYour goals:\n1. **Network Analysis (PCAP):**\n   - Identify any port scans or vulnerability scans preceding the compromise. Use Wireshark/tshark filters to find SYN scans, excessive ICMP, or unusual traffic.\n   - Find the exploitation: Look for HTTP requests that contain SQL injection or file inclusion patterns (e.g., suspicious GET parameters).\n   - Trace the resulting reverse shell: Identify the connection from the server to an external IP on a non‑standard port.\n   - Determine if any data exfiltration occurred via FTP, HTTP POST, or DNS. If you see DNS tunneling, note the volume.\n\n2. **Memory Analysis (Volatility):**\n   - Determine the Linux profile (use `imageinfo` or `linux_banner`).\n   - List processes and look for suspicious commands (e.g., `bash`, `nc`, `python`). Extract command lines.\n   - Check network connections with `linux_netscan` or `sockets` to find active backdoors.\n   - Examine loaded kernel modules for rootkits.\n   - Search for injected code (use `linux_malfind`).\n   - Recover any credentials or interesting strings from process memory (`strings` on process dumps).\n   - Extract any files the attacker may have created or downloaded (e.g., using `linux_find_file` and `linux_dump_file`).\n\n3. **Correlation:**\n   - Link the network evidence of the reverse shell to the process in memory.\n   - Confirm that the attacker escalated privileges (check for `sudo` commands, new users).\n   - Determine if any sensitive files were accessed or exfiltrated.\n\n4. **Report:**\n   - Write an incident report that includes: Attack Timeline, Indicators of Compromise (IOCs), Methodology, Findings, and Remediation Recommendations.\n   - Include screenshots (or placeholder) of key findings.\n\nBecause this is a course project, you can use publicly available PCAPs and memory dumps for practice (e.g., from Digital Corpora or CyberDefenders). However, your final submission should be a detailed written analysis describing the steps you would take and the evidence you would find, as if you had completed the investigation.",
+    "requirements": [
+        "The report must include at least three IOCs (e.g., malicious IP, unusual process, registry key).",
+        "Network analysis must identify the initial attack vector (e.g., SQL injection, RCE vulnerability).",
+        "Memory analysis must reveal the reverse shell process and its associated network connections.",
+        "A timeline correlating network events with process creation times must be presented.",
+        "The report should conclude with actionable remediation recommendations (e.g., patch, block IPs, reset credentials)."
+    ],
+    "hints": [
+        "For PCAP: Use `tshark -Y 'tcp.flags.syn==1 && tcp.flags.ack==0' -T fields -e ip.dst` to find scanned targets. Look for HTTP POST to weird URLs.",
+        "For SQLi detection: filter `http.request.uri contains \"union\" or http.request.uri contains \"select\"`.",
+        "Memory: Volatility 3 `linux.pslist`, `linux.pstree`, `linux.netstat`. For command lines, try `linux.psaux`.",
+        "Check `/var/log` if dumped, but memory also holds strings. Use `strings server.mem | grep -i password`.",
+        "Use `linux.malfind` to look for injected shellcode. Dump suspicious processes with `linux.procdump`.",
+        "Correlate timestamps: memory processes have start time; network PCAP has absolute timestamps. Align them using the timezone offset."
+    ],
+    "expectedOutput": "A detailed incident response report (PDF or DOCX) containing a timeline, identified IOCs, analysis steps, and remediation recommendations. The report should be suitable for a CISO audience."
+}

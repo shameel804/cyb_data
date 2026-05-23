@@ -1,0 +1,176 @@
+{
+    "id": "l5",
+    "chapterId": "ch_11",
+    "title": "Detection & Counter‑Countermeasures 🔍",
+    "description": "Become the hunter – learn to spot anti‑forensics, recover from wiping, and beat the adversary.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Anti-Forensics & Countermeasures",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Spotting the Signs 🚨",
+            "content": "# Indicators of Anti‑Forensic Activity\n\nYou can’t always recover what was erased, but you can prove erasure occurred. Look for:\n\n- **Wiping tool traces**: Prefetch, registry, event logs, USN journal entries.\n- **Mismatched timestamps**: Compare $SI vs $FN attributes; check USN journal timestamps.\n- **Log gaps**: Missing time ranges in event logs with a sudden jump.\n- **Encrypted volumes**: VeraCrypt driver traces, prefetch of VeraCrypt.exe, registry MountPoints.\n- **Steganography tools**: Presence of steghide, OpenStego, or anomalies in image files.\n- **Zero‑filled unallocated space**: Indicates free space wipe.\n- **Unusually low file counts**: Compared to similar systems; signs of bulk deletion.\n\nEach of these is a red flag. Combine them to paint a picture of intentional obfuscation."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "Indicators 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "What is a strong indicator that a suspect ran a wiping tool?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The tool's executable is missing from disk",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "A Prefetch file for the tool exists and shows recent execution",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The desktop wallpaper has changed",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "There are many JPEG files in the Pictures folder",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Prefetch files record the execution of programs, even if the executable is later deleted.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Defeating Encryption 🛡️",
+            "content": "## When the Suspect Won't Cooperate\n\n- **Memory capture**: If the system is live and the encrypted volume is mounted, grab a RAM dump. Volatility plugins (`bitlocker`, `hashdump`) or Elcomsoft tools can extract keys.\n- **Key escrow**: For corporate BitLocker, check Active Directory for stored recovery keys.\n- **Password recovery**: Extract DPAPI master key from memory or SAM hive, then decrypt browser passwords to find cloud storage credentials that might contain the encryption key.\n- **Legal compulsion**: In some jurisdictions, a court can order the suspect to provide the password (contempt of court).\n\nAlways attempt memory acquisition before pulling the plug on an encrypted machine."
+        },
+        {
+            "id": "s_l5_4",
+            "type": "quiz",
+            "title": "Key Recovery 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "If a BitLocker‑encrypted laptop is powered off, you can still extract the recovery key from RAM.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "RAM loses its contents when power is removed; the key is gone unless the system was live and you captured a memory dump.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Recovering from Wiped Free Space 🧙",
+            "content": "If free space is zeroed, you can't recover deleted files. But you can still:\n- Check Volume Shadow Copies (VSS) – they preserve previous versions of files, even if the current version and its deleted space are wiped.\n- Examine file system journals ($LogFile, $UsnJrnl) for historical metadata.\n- Look at external sources: email server, cloud sync, network shares, backups.\n- Registry artifacts (RecentDocs, Office MRU) still hold references to files that existed.\n\nA wiped free space is a wall, but you can often go around it via these remnants."
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "VSS to the Rescue 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_3",
+                "type": "multiple_choice",
+                "question": "Volume Shadow Copies can preserve older versions of files even if:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The disk is physically destroyed",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The files have been securely overwritten",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "The drive is formatted and re‑imaged",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "The computer is powered off",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "VSS captures point‑in‑time snapshots; even if the current file is securely deleted, a previous snapshot may still contain it.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Detecting Steganography Automatically 🔬",
+            "content": "For mass detection, you can:\n- Run **StegExpose** on all image files in a directory.\n- Use **StegDetect** for JPG‑specific analysis.\n- Perform entropy analysis (high entropy regions may indicate hidden data).\n- Compare file sizes and compression ratios of similar images – stego images often have a slightly larger size or less compression.\n- Look for duplicate images with different hashes – one may be the cover, the other the stego version.\n\nManual confirmation: extract suspected data with known passwords (if found) or try default tool passwords."
+        },
+        {
+            "id": "s_l5_8",
+            "type": "code",
+            "title": "Batch StegExpose",
+            "content": "Run StegExpose on a folder of images:",
+            "codeSnippet": "for img in /evidence/images/*.jpg; do\n  java -jar StegExpose.jar \"$img\" >> stego_report.txt\ndone",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_9",
+            "type": "quiz",
+            "title": "Detection Score 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_4",
+                "type": "true_false",
+                "question": "An image with high entropy always means it contains hidden data.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "High entropy can also result from the image content itself (e.g., a photo of a tree with lots of detail). It's an indicator, not proof.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_10",
+            "type": "text",
+            "title": "Building a Case from Anti‑Forensics 🧱",
+            "content": "Anti‑forensic attempts themselves can be the strongest evidence of guilt. For example:\n\n- A wiped free space combined with a found encrypted container strongly suggests the user hid and then destroyed data.\n- Timestomping that matches the time of the crime indicates deliberate falsification.\n- Log clearing moments after a suspicious logon is a clear indicator of cover‑up.\n\nDocument every indicator, correlate timelines, and present it as part of the overall narrative. Remember: **the absence of evidence is not evidence of absence**, but the **presence of anti‑forensics is evidence of intent**."
+        },
+        {
+            "id": "s_l5_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use Timeline Explorer to Spot Anomalies\n\nLoad all timestamps (MFT, event logs, USN, shellbags) into Timeline Explorer. Sort by time and look for gaps, jumps, or impossible sequences – they often point to anti‑forensics."
+        }
+    ]
+}

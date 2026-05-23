@@ -1,0 +1,170 @@
+{
+    "id": "l4",
+    "chapterId": "ch_10",
+    "title": "Advanced Browser Artifacts & Reconstruction 🧩",
+    "description": "Recover cached pages, analyze extensions, session data, and even incognito traces.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Email & Browser Forensics",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Cache: The Snapshot Archive 🖼️",
+            "content": "# What the Browser Keeps for Performance\n\nThe cache stores local copies of web resources (images, scripts, CSS, even whole pages) to speed up loading. For forensics, it’s a snapshot of what the user saw.\n\n- **Chrome**: `Cache/` folder with `data_0`, `data_1`, `f_xxxxxx` files and an `index` file. Tools like **ChromeCacheView** can parse it.\n- **Firefox**: `cache2/` directory with entries and a `cache2.sqlite` indexing database.\n- **Edge**: Similar to Chrome.\n\nCache can show:\n- Images from a website (even if deleted later)\n- Downloaded script files (malware)\n- Timestamps of when cached (often matching visit times)\n\nDeleted cache entries may be recovered via file carving on the disk image."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Cache Clues 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "What is the forensic value of browser cache?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "It contains the user's passwords in plaintext",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "It provides copies of web content the user accessed",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "It stores bookmarks",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It records IP addresses of visited sites",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Cache holds actual files like images and HTML, proving what the user saw.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Session Recovery & Open Tabs 🔄",
+            "content": "Browsers often save the state of open tabs to restore after a crash or update.\n\n- **Chrome**: `Current Tabs`, `Current Session`, `Tabs_*` files in `Sessions` folder. They are in SNSS format (binary). Tools like **SessionExtractor** parse them.\n- **Firefox**: `sessionstore.jsonlz4` (compressed JSON) in the profile. It contains current open tabs, closed tabs (recent), and even tab history.\n- **Edge**: Same as Chrome.\n\nThis can reveal what the user was viewing right before they closed the browser – including incognito windows if they crashed and were restored."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "Extract Firefox Session Tabs",
+            "content": "Use `lz4json` to decompress `sessionstore.jsonlz4`:",
+            "codeSnippet": "python3 lz4json.py sessionstore.jsonlz4 > session.json\n# Then grep for \"url\": to list all open and recently closed tabs.",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "quiz",
+            "title": "Session Artifacts 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "Incognito/Private browsing mode never leaves any trace on disk.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Incognito avoids writing to main history/cookies, but crash recovery files, DNS cache, or memory dumps may still contain traces.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Extensions & Plugins 🧩",
+            "content": "Browser extensions can store data locally. For example, a crypto wallet extension might store transaction history. Extensions live in:\n- Chrome: `Extensions/<id>/` with `local storage` (levelDB) and `IndexedDB`.\n- Firefox: `extensions/<id>.xpi` and storage in profile.\n\nCheck for:\n- Ad blockers (could indicate privacy‑conscious user)\n- VPN extensions (used to bypass restrictions)\n- Password manager extensions (may store master‑password hints)\n\nAnalyzing extension data can be crucial for understanding user intent."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "quiz",
+            "title": "Extension Forensics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "multiple_choice",
+                "question": "Which browser storage type is commonly used by extensions to save data locally?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "SQLite history database",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Local Storage / IndexedDB",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Cookies",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Bookmarks JSON",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Extensions use Web Storage APIs (localStorage, IndexedDB) or LevelDB to store data.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_8",
+            "type": "text",
+            "title": "DNS & Network Artifacts 🌐",
+            "content": "Even with private browsing, the OS’s **DNS cache** records domain lookups. On Windows, `ipconfig /displaydns` shows cached DNS entries. On Linux, `systemd-resolve --statistics` or `/var/cache/nscd/hosts`.\n\nAlso, the **hosts file** may show blocked sites. Proxy settings and VPN logs (if any) can reveal traffic.\n\nRouter netflow or firewall logs also capture DNS queries – a powerful supplement."
+        },
+        {
+            "id": "s_l4_9",
+            "type": "quiz",
+            "title": "DNS Artifacts 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_4",
+                "type": "fill_blank",
+                "question": "To view the DNS cache on a Windows machine, you use the command ___.",
+                "options": [
+                    "nslookup",
+                    "ipconfig /displaydns",
+                    "netstat -an",
+                    "ping"
+                ],
+                "correctAnswer": "ipconfig /displaydns",
+                "explanation": "`ipconfig /displaydns` lists all cached DNS records."
+            }
+        },
+        {
+            "id": "s_l4_10",
+            "type": "text",
+            "title": "Reconstructing the User’s Web Journey 🧭",
+            "content": "## Piecing Together the Timeline\n\nCombine:\n- Browser **history** (URL, timestamp)\n- **Cookies** (first‑party and third‑party)\n- **Cache** (actual content)\n- **Downloads** (files saved)\n- **Bookmarks** (intentional saves)\n- **Search terms** (from `History` `keyword_search_terms` table)\n\nExample: A user searched for “bomb making”, visited a site, cached the page, downloaded a PDF, and bookmarked another page. This sequence proves intent and knowledge.\n\nTools like **BrowsingHistoryView** or **Hindsight** can aggregate all these artifacts into a single report."
+        },
+        {
+            "id": "s_l4_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use Hindsight for Chrome\n\nHindsight is an open‑source tool that parses Chrome’s history, cookies, cache, downloads, and more into a single timeline. It can also decrypt cookies if you provide the DPAPI master key."
+        }
+    ]
+}

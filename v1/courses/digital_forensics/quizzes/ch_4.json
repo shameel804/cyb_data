@@ -1,0 +1,240 @@
+{
+    "id": "quiz_ch_4",
+    "chapterId": "ch_4",
+    "title": "Chapter 4 Quiz",
+    "description": "Test your knowledge of data acquisition, imaging tools, write blockers, hashing, and best practices.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "What is the primary purpose of creating a forensic image?",
+            "options": [
+                "To compress the original data",
+                "To create an exact, verifiable copy for analysis while preserving the original",
+                "To erase evidence",
+                "To encrypt the drive"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The forensic image is a bit‑for‑bit copy that protects the original from any alteration during examination."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "Which acquisition method captures unallocated space?",
+            "options": [
+                "Logical acquisition",
+                "Physical acquisition",
+                "Targeted acquisition",
+                "File copy"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Physical acquisition clones every sector, including unallocated and slack space, allowing recovery of deleted data."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "A live acquisition should always be the first choice, regardless of the system state.",
+            "correctAnswer": false,
+            "explanation": "Live acquisition risks altering evidence and should only be used when volatile data is critical and a trained examiner is available."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "The Linux command `dd` uses the parameter ___ to specify the output file.",
+            "options": [
+                "if",
+                "of",
+                "bs",
+                "out"
+            ],
+            "correctAnswer": "of",
+            "explanation": "`of` stands for output file, where the image is written."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which forensic image format supports built‑in compression and internal hash verification?",
+            "options": [
+                "Raw (dd)",
+                "E01 (EWF)",
+                "ISO",
+                "Zip"
+            ],
+            "correctAnswer": 1,
+            "explanation": "E01 is a proprietary format that embeds hashes and can compress data."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the function of a hardware write blocker?",
+            "options": [
+                "Encrypt data during transfer",
+                "Allow read‑only access to the evidence drive and block write commands",
+                "Speed up imaging",
+                "Recover deleted files"
+            ],
+            "correctAnswer": 1,
+            "explanation": "It physically prevents the host computer from issuing any write or modify commands to the evidence drive."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "A software write blocker can be more reliable than a hardware one because it is integrated with the OS.",
+            "correctAnswer": false,
+            "explanation": "Hardware write blockers are independent of the OS and thus less prone to misconfiguration or malware bypass."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which hashing algorithm is currently recommended for forensic verification?",
+            "options": [
+                "MD5",
+                "SHA‑1",
+                "SHA‑256",
+                "CRC32"
+            ],
+            "correctAnswer": 2,
+            "explanation": "SHA‑256 provides strong collision resistance and is widely accepted."
+        },
+        {
+            "id": "q9",
+            "type": "mcq",
+            "question": "When an examiner hashes the original drive and the forensic image, and the hashes match, this proves:",
+            "options": [
+                "The suspect is guilty",
+                "The image is an exact, unaltered copy",
+                "The drive is not encrypted",
+                "The tool is free of bugs"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Matching hashes confirm bit‑for‑bit integrity of the copy."
+        },
+        {
+            "id": "q10",
+            "type": "true_false",
+            "question": "It is acceptable to skip source hashing if you hash the image afterward.",
+            "correctAnswer": false,
+            "explanation": "You must hash both source and image to prove the copy is identical; without the source hash, there's no baseline."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "What is the main challenge when imaging an SSD compared to a traditional HDD?",
+            "options": [
+                "SSDs are too small",
+                "TRIM and garbage collection may erase data over time",
+                "SSDs cannot be physically imaged",
+                "SSDs do not support write blockers"
+            ],
+            "correctAnswer": 1,
+            "explanation": "SSDs actively wipe unused space, so timely acquisition is crucial to preserve deleted data."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is the recommended approach when you find a powered‑off laptop with full‑disk encryption?",
+            "options": [
+                "Power it on and try to guess the password",
+                "Image the drive as‑is with a write blocker",
+                "Remove the hard drive and throw it away",
+                "Install a keylogger"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Image the encrypted drive in its current state; decryption can be attempted later with proper authorization."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which command can be used to detect a Host Protected Area (HPA) on a Linux system?",
+            "options": [
+                "fdisk -l",
+                "lsblk",
+                "hdparm -N",
+                "mount"
+            ],
+            "correctAnswer": 2,
+            "explanation": "`hdparm -N` queries or sets the visible number of sectors, revealing if an HPA is present."
+        },
+        {
+            "id": "q14",
+            "type": "true_false",
+            "question": "A hardware write blocker can also stop an SSD's internal garbage collection process.",
+            "correctAnswer": false,
+            "explanation": "Garbage collection is an internal SSD controller function and cannot be controlled by an external write blocker."
+        },
+        {
+            "id": "q15",
+            "type": "fill_blank",
+            "question": "The forensic format that is an open standard, supports compression, and can embed metadata is called ___.",
+            "options": [
+                "E01",
+                "raw",
+                "AFF",
+                "ISO"
+            ],
+            "correctAnswer": "AFF",
+            "explanation": "The Advanced Forensic Format (AFF) is open and supports modern features like compression and metadata."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "Why should USB hubs be avoided during forensic acquisition?",
+            "options": [
+                "They are slower",
+                "They may not pass through write‑blocker commands properly",
+                "They consume too much power",
+                "They are illegal"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Some hubs can interfere with the low‑level ATA commands that write blockers rely on."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What information should be recorded in an acquisition log?",
+            "options": [
+                "Only the image file name",
+                "All device details, hashes, tool versions, timestamps, and anomalies",
+                "Just the investigator's name",
+                "The suspect's browsing history"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Comprehensive documentation is necessary for chain of custody and reproducibility."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "If an image verification hash matches, you can be sure no malware was on the original drive.",
+            "correctAnswer": false,
+            "explanation": "Hash matching only proves integrity of the copy, not the safety or content of the data."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is the first step before connecting an evidence drive for imaging?",
+            "options": [
+                "Format the destination drive",
+                "Test the write blocker on a non‑evidentiary drive",
+                "Delete all previous cases",
+                "Install a new OS"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Always validate the write blocker's functionality with a test drive to ensure it's working correctly."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which of the following is NOT a typical forensic imaging tool?",
+            "options": [
+                "FTK Imager",
+                "Guymager",
+                "Wireshark",
+                "dcfldd"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Wireshark is a network protocol analyzer, not a disk imaging tool."
+        }
+    ]
+}

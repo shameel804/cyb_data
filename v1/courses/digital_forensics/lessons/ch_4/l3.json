@@ -1,0 +1,116 @@
+{
+    "id": "l3",
+    "chapterId": "ch_4",
+    "title": "Write Blockers Unlocked 🔒",
+    "description": "Dive deep into hardware and software write blockers – how they work, how to test them.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Data Acquisition",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Guardian of Integrity 🛡️",
+            "content": "# Why Write Blockers?\n\nA write blocker is a device or software that allows **read‑only** access to evidence media. It intercepts commands that would modify data and blocks them.\n\n- **Hardware write blocker**: A physical bridge between the evidence drive and the examiner's computer.\n- **Software write blocker**: OS‑level settings (e.g., Windows registry tweak, Linux mount `ro,noexec`).\n\nHardware is more reliable because it operates at the firmware level, independent of the OS."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Write Blocker Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "true_false",
+                "question": "A software write blocker is always sufficient for forensic imaging.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Software write blockers depend on the OS, which can be misconfigured or bypassed. Hardware write blockers are preferred for physical drives.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "How a Hardware Write Blocker Works ⚙️",
+            "content": "It sits between the evidence drive (SATA/IDE/USB) and your forensic workstation. It inspects every ATA/SCSI command:\n\n- **Read commands** (READ SECTORS, READ DMA): Allowed.\n- **Write commands** (WRITE SECTORS, FORMAT): Blocked and returned as failed.\n\nSome models also prevent **IDENTIFY DEVICE** commands from being altered by the host. Brands: Tableau, WiebeTech, Logicube."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "Testing a Write Blocker (Linux)",
+            "content": "After connecting a drive through a write blocker, attempt a write – it should fail.",
+            "codeSnippet": "# Attempt to write to a blocked drive\nsudo dd if=/dev/zero of=/dev/sdb bs=512 count=1\n# Output: dd: error writing '/dev/sdb': Read-only file system",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "quiz",
+            "title": "Testing Knowledge 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "What should you do before using a hardware write blocker on actual evidence?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Just plug it in and start imaging",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Test it with a non‑evidentiary drive to verify it blocks writes",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Format the write blocker",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Update its firmware during the imaging",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Always validate the write blocker on a test drive to ensure it is functioning correctly before touching real evidence.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Software Write Blockers 💻",
+            "content": "On Windows, forensic tools often use a registry key to block writes to USB devices: `HKLM\\SYSTEM\\CurrentControlSet\\Control\\StorageDevicePolicies\\WriteProtect = 1`. But this only affects Windows, not boot‑level access.\n\nOn Linux, you can mount a device read‑only: `mount -o ro,noexec /dev/sdb1 /mnt`. However, the kernel may still write journal updates unless you also use the `noload` option for NTFS or mount block devices directly.\n\n**When to use**: Only when hardware write blockers are unavailable, and you fully understand the risks."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "warning",
+            "title": "⚠️ Never Trust Software Alone",
+            "content": "Malware or a buggy OS could ignore registry settings. A hardware write blocker is the gold standard. If you must use software, document the steps and expect scrutiny in court."
+        },
+        {
+            "id": "s_l3_8",
+            "type": "text",
+            "title": "Write Blocker Limitations 🧱",
+            "content": "Write blockers are not foolproof:\n- They do not prevent **reading** (obviously).\n- Some drives have hidden areas (HPA, DCO) that may be accessible despite the blocker.\n- Wear‑leveling on SSDs may still cause internal data movement (but this does not affect the data you read).\n\nAlways combine a write blocker with forensic imaging software that verifies hashes."
+        },
+        {
+            "id": "s_l3_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Maintain a Write‑Blocker Validation Log\n\nDocument the make, model, and serial number of your write blocker, along with dates of testing. This can be presented in court to demonstrate due diligence."
+        }
+    ]
+}

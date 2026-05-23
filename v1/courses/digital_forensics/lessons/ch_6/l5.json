@@ -1,0 +1,155 @@
+{
+    "id": "l5",
+    "chapterId": "ch_6",
+    "title": "Prefetch, Shellbags & Application Traces",
+    "description": "Discover program execution proof, folder access patterns, and artifacts left by browsers and apps.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Windows Forensics",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Prefetch: Program Execution Proof ⚡",
+            "content": "# What is Prefetch?\n\nWindows Prefetch files (`.pf`) are created to speed up application loading. They are stored in `C:\\Windows\\Prefetch`.\n\nEach time an executable runs, Windows creates or updates a .pf file (up to 1024 entries on Win10). The file name is `<EXENAME>-<HASH>.pf`.\n\nInside the .pf file:\n- **Run count** (how many times executed)\n- **Last run time** (embedded within the file, not the filesystem timestamp)\n- **List of loaded modules** (DLLs) for the first 10 seconds of execution\n\nPrefetch is a strong indicator that a program was executed, even if the executable is now deleted."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "Prefetch Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Where are Prefetch files stored on a Windows system?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "C:\\Windows\\System32\\config",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "C:\\Windows\\Prefetch",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "C:\\ProgramData",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "C:\\Users\\<user>\\AppData",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Prefetch files reside in `C:\\Windows\\Prefetch`.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Parsing Prefetch Files 🔧",
+            "content": "Tools like **PECmd.exe** (Eric Zimmerman) extract:\n- Executable name\n- Run count\n- Last run time(s)\n- Files and directories referenced by the program during startup\n\nThis can reveal not only that a malicious executable ran, but also what files it touched (e.g., `cmd.exe` accessing a batch script).\n\nExample: `PECmd.exe -f CMD.EXE-01234567.pf`"
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "PECmd usage",
+            "content": "Parse all Prefetch files in a folder.",
+            "codeSnippet": "PECmd.exe -d C:\\Windows\\Prefetch --csv C:\\output",
+            "codeLanguage": "cmd",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_5",
+            "type": "quiz",
+            "title": "Prefetch Content 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "true_false",
+                "question": "A Prefetch file for a deleted executable can still prove the executable was run.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Prefetch files persist after the executable is deleted, retaining run count and last execution time.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Shellbags: Folder Access Patterns 🗂️",
+            "content": "Shellbags are registry keys that remember folder view settings (size, position, icon size). They are stored under:\n- `HKCU\\Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\BagMRU`\n- `HKCU\\Software\\Classes\\Local Settings\\Software\\Microsoft\\Windows\\Shell\\Bags`\n\nEvery time a user opens a folder in Explorer, a Shellbag entry is created/updated. Even if the folder is deleted, the Shellbag entry remains, giving a permanent record of folder browsing.\n\nThey can show:\n- Access to encrypted containers (e.g., VeraCrypt volumes mounted as drives)\n- Traversal of directory structures during data theft\n\nParse with **ShellBags Explorer** or `sbag` (TZWorks)."
+        },
+        {
+            "id": "s_l5_7",
+            "type": "quiz",
+            "title": "Shellbags Purpose 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_3",
+                "type": "fill_blank",
+                "question": "Shellbags provide evidence of ___ accessed through Windows Explorer, even if those folders no longer exist.",
+                "options": [
+                    "files",
+                    "folders",
+                    "network packets",
+                    "registry keys"
+                ],
+                "correctAnswer": "folders",
+                "explanation": "Shellbags track folder browsing activity, recording each folder the user opened in Explorer.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_8",
+            "type": "text",
+            "title": "Browser & Application Artifacts 🌐",
+            "content": "While browsers store history in databases, Windows also records:\n- **SRUM (System Resource Usage Monitor)**: Tracks application resource usage, network data sent/received per process, and execution time (database in `C:\\Windows\\System32\\sru`).\n- **BAM (Background Activity Moderator)** / **DAM**: Registry keys (`HKLM\\SYSTEM\\CurrentControlSet\\Services\\bam\\State\\UserSettings\\...`) that record the last execution time of every executable.\n- **Amcache.hve**: Records installed applications and their execution timestamps (store in `C:\\Windows\\AppCompat\\Programs\\Amcache.hve`).\n\nThese additional sources provide secondary proof of program execution."
+        },
+        {
+            "id": "s_l5_9",
+            "type": "quiz",
+            "title": "BAM/DAM 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_4",
+                "type": "true_false",
+                "question": "The BAM key in the registry records every executable that has ever been run, along with its last execution time.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "BAM (Background Activity Moderator) tracks executable paths and the last execution timestamp for all users.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_10",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use KAPE for Efficient Collection\n\nKroll Artifact Parser and Extractor (KAPE) can target and collect Prefetch, Shellbags, Amcache, and many other artifacts from a live system or mounted image with a single command."
+        }
+    ]
+}

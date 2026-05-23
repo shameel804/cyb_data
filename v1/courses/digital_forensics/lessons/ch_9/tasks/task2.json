@@ -1,0 +1,16 @@
+{
+    "id": "task2",
+    "chapterId": "ch_9",
+    "title": "iTunes Backup Analysis – Extract Call History",
+    "description": "Parse an iTunes backup manifest and extract call history from call_history.db.",
+    "estimatedMinutes": 15,
+    "problemStatement": "**Scenario:** You have an encrypted iTunes backup folder located at `C:\\Users\\Examiner\\AppData\\Roaming\\Apple Computer\\MobileSync\\Backup\\00008020‑001234561234001E`. Inside, you find `Manifest.db` and many hashed filenames. Your task is to:\n\n1. Open `Manifest.db` with `sqlite3` and determine which file corresponds to the call history database. The call history database is typically `Library/CallHistoryDB/CallHistory.storedata` (for iOS 13+). Write a query to find its fileID.\n2. Once you have the fileID, locate the file in the backup folder (it's named with the fileID hash). Copy that file to your working directory.\n3. Open `CallHistory.storedata` (it's a CoreData SQLite) and determine the table schema. Query it to list the last 5 calls, showing `ZDATE`, `ZADDRESS`, and `ZDURATION`. (Assume tables are `ZCALLRECORD` with these columns.)\n4. Explain how you would verify the integrity of the extracted data and ensure it hasn't been tampered with.\n\nProvide the SQL queries and steps.",
+    "hints": [
+        "In `Manifest.db`, query `select fileID from Files where relativePath = 'Library/CallHistoryDB/CallHistory.storedata';`.",
+        "The backup folder files are named after the SHA1 hash of the domain‑relative path? Actually they are named with the first two hex chars as subfolder. But using Manifest.db, you can find the fileID and then locate it.",
+        "CoreData SQLite schema often has tables like `Z_METADATA`, `ZCALLRECORD`, `Z_<N>PRIMARYKEY`.",
+        "Verify integrity by comparing hashes of the backup files with the Manifest db's file checksums."
+    ],
+    "expectedOutput": "SQL queries and explanation.",
+    "solutionCode": "1. Open `Manifest.db`: `sqlite3 Manifest.db`. Query: `select fileID from Files where relativePath = 'Library/CallHistoryDB/CallHistory.storedata';` returns a fileID string (hex).\n2. The actual file is stored under the folder named after the first two characters of the fileID; e.g., if fileID is `ab/cdef123...`, the file is `ab/cdef123...`. Copy that file.\n3. Open the database: `sqlite3 CallHistory.storedata`. `.tables` shows `ZCALLRECORD`. Query: `SELECT ZDATE, ZADDRESS, ZDURATION FROM ZCALLRECORD ORDER BY ZDATE DESC LIMIT 5;`.\n4. Integrity verification: The Manifest.db includes a `Files` table with a `file` BLOB containing metadata and a `fileID` checksum? Actually the backup has a `Manifest.mbdb` in older backups, but in newer ones (iOS 10+), it's `Manifest.db`. The database contains a `Files` table with `fileID`, `relativePath`, `flags`, and `file` BLOB which stores the file's data? No, the file is separate. However, Apple doesn't provide a built‑in hash for each file in the backup. To verify, you could re‑compute hashes of the extracted file and compare with the backup's file hashes if stored elsewhere, but typically you rely on the chain of custody of the backup. You could also check the backup's `Info.plist` or `Status.plist`. In practice, you would compute SHA256 of the entire backup folder after acquisition and ensure it remains unchanged."
+}

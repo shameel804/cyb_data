@@ -1,0 +1,299 @@
+{
+    "id": "quiz_ch_8",
+    "chapterId": "ch_8",
+    "title": "Chapter 8 Quiz",
+    "description": "Test your knowledge of network forensics: capture, protocol analysis, intrusion detection, flow data, and session reconstruction.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which layer of the TCP/IP model is responsible for logical addressing (IP)?",
+            "options": [
+                "Link Layer",
+                "Internet Layer",
+                "Transport Layer",
+                "Application Layer"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The Internet layer handles IP addressing and routing."
+        },
+        {
+            "id": "q2",
+            "type": "mcq",
+            "question": "What is the primary advantage of a network TAP over a SPAN port?",
+            "options": [
+                "It is cheaper",
+                "It requires no configuration on the switch",
+                "It guarantees no packet loss due to oversubscription",
+                "It can filter traffic by protocol"
+            ],
+            "correctAnswer": 2,
+            "explanation": "A TAP provides a dedicated copy of all traffic without loss."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "tcpdump can both capture live traffic and read previously saved PCAP files.",
+            "correctAnswer": true,
+            "explanation": "tcpdump uses `-r` to read files and `-w` to write."
+        },
+        {
+            "id": "q4",
+            "type": "fill_blank",
+            "question": "The BPF filter to capture only UDP traffic on port 53 is 'udp port ___'.",
+            "options": [
+                "80",
+                "53",
+                "443",
+                "22"
+            ],
+            "correctAnswer": "53",
+            "explanation": "DNS uses UDP (and sometimes TCP) on port 53."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "In the TCP three-way handshake, what is the correct sequence?",
+            "options": [
+                "SYN, ACK, SYN-ACK",
+                "SYN, SYN-ACK, ACK",
+                "ACK, SYN, SYN-ACK",
+                "SYN-ACK, ACK, SYN"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The handshake: client sends SYN, server replies SYN-ACK, client sends ACK."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "Which Wireshark feature reconstructs a complete TCP conversation?",
+            "options": [
+                "Packet Details",
+                "Follow TCP Stream",
+                "IO Graph",
+                "Display Filter"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Follow TCP Stream reassembles the data in order."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "A port scan using SYN packets will always complete the three-way handshake.",
+            "correctAnswer": false,
+            "explanation": "A SYN scan (half‑open) does not complete the handshake."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "Which of the following is a sign of DNS tunneling?",
+            "options": [
+                "Large number of A records queries",
+                "DNS queries with unusually long subdomains and large responses",
+                "DNS over TCP",
+                "Frequent NXDOMAIN responses"
+            ],
+            "correctAnswer": 1,
+            "explanation": "DNS tunneling often uses long, encoded subdomains to exfiltrate data."
+        },
+        {
+            "id": "q9",
+            "type": "fill_blank",
+            "question": "In the IPv4 header, the Protocol field value for UDP is ___.",
+            "options": [
+                "6",
+                "17",
+                "1",
+                "0"
+            ],
+            "correctAnswer": "17",
+            "explanation": "IP protocol number 17 is UDP."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "NetFlow version 5 records include which of the following?",
+            "options": [
+                "Source IP, destination IP, source port, destination port, protocol, bytes",
+                "HTTP URL visited",
+                "Username",
+                "Email subject"
+            ],
+            "correctAnswer": 0,
+            "explanation": "NetFlow v5 includes the 5‑tuple and byte/packet counts."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which tool is a passive network forensic analyzer that can extract files, certificates, and credentials from a PCAP?",
+            "options": [
+                "tcpdump",
+                "Wireshark",
+                "NetworkMiner",
+                "Nmap"
+            ],
+            "correctAnswer": 2,
+            "explanation": "NetworkMiner is designed for passive analysis and file reconstruction."
+        },
+        {
+            "id": "q12",
+            "type": "true_false",
+            "question": "Wireshark's display filter `http.request.method == \"POST\"` will show packets containing POST requests even if the capture was not filtered during collection.",
+            "correctAnswer": true,
+            "explanation": "Display filters act on the already captured data, so all packets are available for filtering."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "What is beaconing traffic characterized by?",
+            "options": [
+                "Random intervals, varying destinations",
+                "Regular intervals to the same external IP",
+                "High-volume bulk transfers",
+                "Only ICMP traffic"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Beaconing is a periodic callback to a command and control server."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "Which Wireshark menu allows you to export objects transferred over HTTP?",
+            "options": [
+                "File > Export Packet Dissections",
+                "File > Export Objects > HTTP",
+                "Statistics > HTTP",
+                "Analyze > Follow > HTTP Stream"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Export Objects > HTTP lists and saves files found in HTTP responses."
+        },
+        {
+            "id": "q15",
+            "type": "true_false",
+            "question": "An NTP amplification attack exploits the fact that a small request can generate a much larger response.",
+            "correctAnswer": true,
+            "explanation": "Amplification attacks use protocols like NTP, DNS, or Memcached where response is larger than request."
+        },
+        {
+            "id": "q16",
+            "type": "fill_blank",
+            "question": "The Linux command‑line tool that can extract specific fields from a PCAP file is ___.",
+            "options": [
+                "tcpdump",
+                "tshark",
+                "nfdump",
+                "netstat"
+            ],
+            "correctAnswer": "tshark",
+            "explanation": "tshark is the command‑line version of Wireshark, useful for scripting."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What is the primary purpose of the I/O Graph in Wireshark?",
+            "options": [
+                "To view packet hex data",
+                "To visualize packet rates and traffic patterns over time",
+                "To filter packets",
+                "To manage capture interfaces"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The I/O Graph plots packet counts or bytes per second, helping to spot spikes or regular intervals."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which of the following is NOT a typical use of flow data (NetFlow)?",
+            "options": [
+                "Identifying top talkers on the network",
+                "Reconstructing the content of an email",
+                "Detecting a sudden spike in outbound data",
+                "Tracing which internal hosts communicated with a malicious IP"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Flow data does not contain payload; it can't reconstruct email content."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "In Wireshark, you can decrypt HTTPS traffic if you have the client's SSLKEYLOGFILE that contains the premaster secrets.",
+            "correctAnswer": true,
+            "explanation": "Modern TLS decryption using session keys from the browser's SSLKEYLOGFILE file is possible."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What does the TCP RST flag indicate?",
+            "options": [
+                "The connection should be established",
+                "The connection is being reset abnormally",
+                "Data is being pushed to the application",
+                "The sender has finished sending data"
+            ],
+            "correctAnswer": 1,
+            "explanation": "RST (Reset) is used to abruptly terminate a connection."
+        },
+        {
+            "id": "q21",
+            "type": "fill_blank",
+            "question": "The command `tcpdump -i eth0 -w capture.pcap` uses the flag ___ to specify the output file.",
+            "options": [
+                "-r",
+                "-w",
+                "-i",
+                "-o"
+            ],
+            "correctAnswer": "-w",
+            "explanation": "`-w` specifies the output file for packet capture."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "Which of these is an example of a network anomaly that suggests data exfiltration?",
+            "options": [
+                "Many DNS queries for legitimate websites",
+                "A single host sending 2 GB of data outbound overnight",
+                "ARP requests on the local subnet",
+                "Periodic NTP time synchronization"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A large, unusual outbound transfer is a classic exfiltration indicator."
+        },
+        {
+            "id": "q23",
+            "type": "true_false",
+            "question": "sFlow is a sampling-based flow technology, meaning it captures only a subset of packets, not every flow.",
+            "correctAnswer": true,
+            "explanation": "sFlow samples packets (1 in N), unlike NetFlow which tracks every flow."
+        },
+        {
+            "id": "q24",
+            "type": "mcq",
+            "question": "Which tool can be used to query NetFlow data stored by nfcapd?",
+            "options": [
+                "tcpdump",
+                "nfdump",
+                "Wireshark",
+                "NetworkMiner"
+            ],
+            "correctAnswer": 1,
+            "explanation": "nfdump is the command‑line tool for processing NetFlow files."
+        },
+        {
+            "id": "q25",
+            "type": "mcq",
+            "question": "In the context of network forensics, what is 'carving'?",
+            "options": [
+                "Analyzing packet headers only",
+                "Extracting files or data from a raw PCAP stream based on signatures",
+                "Removing duplicate packets",
+                "Filtering traffic by IP"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Carving involves searching for file headers and footers within the raw data stream to recover files."
+        }
+    ]
+}

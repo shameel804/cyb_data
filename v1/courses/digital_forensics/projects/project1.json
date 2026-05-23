@@ -1,0 +1,23 @@
+{
+    "id": "project1",
+    "title": "Build a Forensic Acquisition Workflow",
+    "description": "Design a complete, forensically sound acquisition plan for a seized laptop, including documentation, tool selection, write-blocker testing, and integrity verification.",
+    "difficulty": "Beginner",
+    "estimatedHours": "2-4",
+    "problemStatement": "**Scenario:** You are the digital forensic examiner for a small consulting firm. A client has terminated an employee suspected of misconduct and has handed you the employee's company-issued Windows 10 laptop. The laptop was powered off and is now in a secure evidence bag. Your task is to create a comprehensive **acquisition workflow document** that will guide a junior technician through the entire process of acquiring a forensic image from the laptop's internal SSD.\n\nYour workflow must cover:\n- **Preparation:** Environmental considerations, anti‑static precautions, photography.\n- **Write‑blocker testing:** How you would validate a hardware write‑blocker (Tableau T35u) before using it on the evidence.\n- **Imaging tool selection:** Choose between FTK Imager (GUI) or `dcfldd` (CLI). Justify your choice.\n- **Step‑by‑step imaging:** Detailed commands or GUI steps to create a physical image in E01 format, including hash verification (SHA‑256).\n- **Documentation:** What information must be recorded at each stage (chain of custody, hash values, tool versions, timestamps).\n- **Post‑imaging verification:** How to independently verify the image hash against the original drive's hash (if available) or at least verify that the image hash is consistent.\n- **Storage and handling:** Proper storage of the original evidence and the forensic image, including encryption and access control.\n\nYour deliverable should be a well‑structured document (a markdown template is acceptable) that could be used as a Standard Operating Procedure (SOP). Use clear language, bullet points, and include example commands where appropriate.",
+    "requirements": [
+        "The workflow must include a step for testing the write‑blocker before connecting the evidence drive.",
+        "You must specify the exact command(s) or GUI steps for creating a forensic image with hash calculation.",
+        "The workflow must describe how to capture and document the chain of custody at each transfer.",
+        "The document must explain how to verify integrity using SHA‑256 hashes after acquisition.",
+        "The workflow must mention storage best practices (encrypted container, write‑protected media) for both the original evidence and the image."
+    ],
+    "hints": [
+        "Consider using FTK Imager's 'Create Disk Image' wizard and selecting physical drive as source. It automatically computes MD5/SHA‑256 during acquisition.",
+        "For CLI, dcfldd is an enhanced dd that can hash on the fly: `dcfldd if=/dev/sdb of=/evidence/case.dd hash=sha256 hashlog=hash.txt bs=4M`.",
+        "Remember to photograph the laptop, remove the SSD carefully, and document its make/model/serial.",
+        "After imaging, compute an independent hash with `sha256sum` and compare with the one recorded during imaging. Store both in the case notes.",
+        "Use a Faraday bag if transporting, but since the laptop is powered off, focus on chain of custody paperwork."
+    ],
+    "expectedOutput": "A comprehensive acquisition workflow document (markdown or PDF) that includes all required sections, clear step‑by‑step instructions, example commands, and documentation templates. The document should be suitable for use as a training guide for new forensic technicians."
+}

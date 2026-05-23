@@ -1,0 +1,123 @@
+{
+    "id": "l3",
+    "chapterId": "ch_11",
+    "title": "Trail Obfuscation: Timestomping & Log Tampering 🕰️",
+    "description": "Learn how attackers manipulate timestamps, erase event logs, and wipe command histories to cover tracks.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Anti-Forensics & Countermeasures",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Manipulating Time ⏱️",
+            "content": "# Timestomping\n\n**Timestomping** is the deliberate alteration of file MACB timestamps to confuse investigators. Attackers change the creation/modification/access times to:\n- Make a malicious file appear to be a trusted system file (by matching the creation time of system32).\n- Destroy timeline evidence by randomizing timestamps.\n- Implant false timestamps to mislead.\n\nTools: `timestomp` (Metasploit), `attribute changer`, `SetMACE`.\n\nForensic defense: Compare timestamps from multiple sources. NTFS has two sets: `$STANDARD_INFORMATION` (can be modified) and `$FILE_NAME` (set by kernel, harder to fake). Also, USN Journal records changes with real timestamps."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Timestomp Detection 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which NTFS attribute is more resistant to timestomping?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "$STANDARD_INFORMATION",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "$FILE_NAME",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "$DATA",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "$INDEX_ROOT",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The $FILE_NAME attribute is updated by the kernel and is harder to manipulate than $SI, which can be changed via API.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Event Log Clearing 📋",
+            "content": "## Wiping the System's Memory\n\nWindows Event Logs are a prime target. Attackers may:\n- Use `wevtutil cl System` to clear logs.\n- Use tools like `Mimikatz` to patch the Event Log service in memory.\n- Delete individual log entries (very advanced).\n\nEvidence that logs were cleared:\n- Event ID 1102 (Security log cleared) – but this can also be cleared!\n- Event ID 104 (System log cleared).\n- A sudden gap in log timestamps (look for the first event after the gap – often a system restart event).\n- The log file itself may be very small, indicating it was recently wiped.\n\nEven if the logs are cleared, there might be backups, VSS copies, or the logs may have been forwarded to a SIEM."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "quiz",
+            "title": "Log Clearing 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "If Event ID 1102 is missing, it means the Security log was never cleared.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "The event itself could have been cleared or the attacker could have prevented its creation by manipulating the service.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Wiping Shell History & Command Line 🖥️",
+            "content": "Attackers often use command line to stage their attack. To hide this:\n- They delete PowerShell history (`ConsoleHost_history.txt`).\n- They clear `cmd.exe` history (`doskey /reinstall`).\n- They use `history -c` on Linux.\n\nForensic recovery: PowerShell logs may survive in Event ID 4104 (Script Block Logging) or 4103 (Module Logging). Also, memory forensics can recover command history from console buffers (Volatility `consoles`).\n\nAlways check the registry key `HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging` – if enabled, even cleared history is not enough."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "code",
+            "title": "Recover PowerShell Scripts from Event Logs",
+            "content": "Even if the attacker deleted the history, script block logging might have captured the command.",
+            "codeSnippet": "# Use wevtutil or Get-WinEvent to query event 4104:\nGet-WinEvent -LogName \"Microsoft-Windows-PowerShell/Operational\" | Where-Object Id -eq 4104 | Format-List Message",
+            "codeLanguage": "powershell",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "Shell History 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_3",
+                "type": "fill_blank",
+                "question": "Windows PowerShell script block logging records commands in Event ID ___.",
+                "options": [
+                    "4104",
+                    "4688",
+                    "4624",
+                    "1102"
+                ],
+                "correctAnswer": "4104",
+                "explanation": "Event ID 4104 captures executed PowerShell script blocks, often still present after history deletion."
+            }
+        },
+        {
+            "id": "s_l3_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Check USN Journal\n\nEven if file timestamps are stomped, the USN Journal records the real timestamps of file operations, including deletion. It's a forensic life‑saver."
+        }
+    ]
+}

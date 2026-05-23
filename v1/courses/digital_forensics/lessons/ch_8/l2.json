@@ -1,0 +1,143 @@
+{
+    "id": "l2",
+    "chapterId": "ch_8",
+    "title": "Packet Capture Tools & Techniques 🎣",
+    "description": "Master tcpdump, Wireshark, and best practices for capturing traffic without packet loss.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Network Forensics",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Sniffers' Arsenal 🛠️",
+            "content": "# tcpdump & Wireshark\n\nTwo tools dominate network forensics:\n- **tcpdump**: Command‑line, lightweight, perfect for servers and scripting.\n- **Wireshark**: Graphical, feature‑rich, deep protocol dissection.\n\nBoth use the same underlying capture library (libpcap / WinPcap). We'll master tcpdump first, then see how Wireshark adds visual power."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Tool Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which tool is best suited for capturing traffic on a remote Linux server with no GUI?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Wireshark",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "tcpdump",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Burp Suite",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Nmap",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "tcpdump is command‑line only, ideal for headless environments.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "tcpdump Essentials 📜",
+            "content": "## Syntax and Filters\n\nBasic capture: `tcpdump -i eth0 -w capture.pcap`\nRead a file: `tcpdump -r capture.pcap`\n\n**Berkeley Packet Filter (BPF)** syntax for filtering:\n- `host 192.168.1.1`\n- `net 10.0.0.0/8`\n- `port 80` or `portrange 8000-9000`\n- `tcp` or `udp`\n- Combine with `and`, `or`, `not`\n\nExample: `tcpdump -i eth0 'host 10.0.0.5 and (port 443 or port 22)' -w ssh_https.pcap`\n\nAlways use a filter to avoid flooding your storage."
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Capture with tcpdump",
+            "content": "Capture all traffic except SSH to avoid capturing your own session.",
+            "codeSnippet": "sudo tcpdump -i eth0 'not port 22' -w /evidence/net_$(date +%Y%m%d_%H%M%S).pcap",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "BPF Filter 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "fill_blank",
+                "question": "To capture only TCP traffic on port 80, the BPF expression is '___ port 80'.",
+                "options": [
+                    "tcp",
+                    "udp",
+                    "ip",
+                    "icmp"
+                ],
+                "correctAnswer": "tcp",
+                "explanation": "The filter `tcp port 80` selects TCP packets with source or destination port 80."
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Wireshark: The Visual Power 🔍",
+            "content": "Wireshark provides a three‑pane interface:\n- **Packet List**: overview with timestamp, source, destination, protocol, info.\n- **Packet Details**: hierarchical view of each protocol layer.\n- **Packet Bytes**: raw hex and ASCII.\n\nFeatures:\n- **Display Filters** (more powerful than capture filters, applied post‑capture): e.g., `ip.src==192.168.1.1 && http.request.method==\"GET\"`\n- **Follow TCP Stream** to reassemble conversations.\n- **Statistics** menu for protocol hierarchy, endpoints, conversations.\n- **Export Objects** (e.g., HTTP files)."
+        },
+        {
+            "id": "s_l2_7",
+            "type": "code",
+            "title": "Wireshark Display Filter Example",
+            "content": "Show only HTTP GET requests from a specific IP.",
+            "codeSnippet": "# In Wireshark's filter bar:\nip.src == 10.10.10.5 and http.request.method == \"GET\"",
+            "codeLanguage": "plaintext",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_8",
+            "type": "quiz",
+            "title": "Wireshark Filters 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_3",
+                "type": "true_false",
+                "question": "Display filters in Wireshark can be changed on the fly after the capture is loaded.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Display filters only affect which packets are shown, not what is captured; they can be adjusted at any time."
+            }
+        },
+        {
+            "id": "s_l2_9",
+            "type": "text",
+            "title": "Capture Best Practices 🏆",
+            "content": "1. **Size your storage**: Full packet capture can generate GBs per minute. Estimate and prepare.\n2. **Ring buffers**: Use `-W` and `-C` in tcpdump/tshark to limit file size and rotate.\n3. **Timestamp precision**: Use `--time-stamp-precision nano` in Wireshark for high‑accuracy.\n4. **Always hash**: After capture, `sha256sum` the pcap file.\n5. **Minimize your own traffic**: Filter out your management SSH/RDP session.\n6. **Capture on the right interface**: ensure promiscuous mode is enabled."
+        },
+        {
+            "id": "s_l2_10",
+            "type": "warning",
+            "title": "⚠️ Encryption Is the Enemy of Packet Analysis",
+            "content": "TLS 1.3, SSH, and VPNs obscure payloads. You may see the handshake, but not the content. That’s where flow data and endpoint logs become critical."
+        },
+        {
+            "id": "s_l2_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use tshark for Scripting\n\n`tshark` is the command‑line version of Wireshark. Use it to extract fields: `tshark -r capture.pcap -T fields -e ip.src -e ip.dst -e tcp.srcport -e tcp.dstport`"
+        }
+    ]
+}

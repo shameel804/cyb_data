@@ -1,0 +1,176 @@
+{
+    "id": "l1",
+    "chapterId": "ch_10",
+    "title": "Email Fundamentals & Headers 📧",
+    "description": "Understand how email works, dissect SMTP headers, and trace the true sender’s IP.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Email & Browser Forensics",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Why Email Forensics? 🕵️‍♂️",
+            "content": "# The Digital Postcard\n\nEmail is the #1 communication tool in business and personal life. It carries:\n- Threats, phishing, fraud\n- Intellectual property leaks\n- Insider communication\n\nEmail forensics uncovers **who sent what, when, and from where** – even if the sender tried to hide.\n\nWe’ll start by understanding how an email travels, then learn to read its hidden headers."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What is a primary goal of email forensics?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Encrypt all messages",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Trace the origin and authenticity of an email",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Delete spam automatically",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Backup emails to the cloud",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Email forensics aims to identify sender, path, and content integrity.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "How Email Travels 🚚",
+            "content": "## SMTP, MTA, and the Journey\n\nSimple Mail Transfer Protocol (SMTP) is used to send mail. The journey:\n\n1. Sender’s Mail Client (Outlook, Gmail app) → **SMTP server** (submission).\n2. SMTP server → **Recipient’s MX server** (Mail Exchanger) via DNS.\n3. Recipient’s server stores the mail in a mailbox (IMAP/POP3 for retrieval).\n\nAt each hop, the server adds a **Received** header. These headers form a chain – a forensic goldmine."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "Protocol Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "fill_blank",
+                "question": "The protocol used to send emails from a client to the mail server is ___.",
+                "options": [
+                    "IMAP",
+                    "POP3",
+                    "SMTP",
+                    "HTTP"
+                ],
+                "correctAnswer": "SMTP",
+                "explanation": "SMTP handles sending and relaying emails."
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Anatomy of an Email Header 📄",
+            "content": "## The Hidden Information\n\nA typical email header contains:\n- **From**: sender display name (easily forged)\n- **To**, **CC**, **BCC**\n- **Date**: creation time\n- **Message‑ID**: unique global identifier\n- **Received**: one per hop, in reverse chronological order (top = last server). Each contains `from`, `by`, `for`, timestamp, and the server’s IP.\n- **Return‑Path**: where bounces go\n- **DKIM‑Signature**, **SPF** results, **ARC**: authentication results\n\nWe’ll dissect a real header to find the **originating IP**."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "code",
+            "title": "Example Header Snippet",
+            "content": "Below are the Received headers of a phishing email (most recent first):",
+            "codeSnippet": "Received: from mail.example.com (mail.example.com [203.0.113.5])\n        by recipient.com (Postfix) with ESMTPS id 123456\n        for <victim@recipient.com>; Tue, 10 Mar 2026 14:00:00 +0000\nReceived: from dynamic-pool-192-168-1-100.isp.com ([192.168.1.100])\n        by mail.example.com (Postfix) with ESMTP id 654321\n        for <victim@recipient.com>; Tue, 10 Mar 2026 13:58:00 +0000\nReceived: from attacker.local (unknown [10.0.0.50])\n        by dynamic-pool-192-168-1-100.isp.com (Postfix) with ESMTP id 11111\n        for <victim@recipient.com>; Tue, 10 Mar 2026 13:55:00 +0000",
+            "codeLanguage": "plaintext",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "Tracing the Originating IP 🕵️‍♀️",
+            "content": "The **earliest** `Received` header (bottom) shows the first server that handled the email – often the attacker’s machine or their SMTP server.\n\nIn the example:\n- Top `Received` shows recipient.com’s server.\n- Middle shows the ISP’s relay.\n- Bottom shows `attacker.local` with IP `10.0.0.50` (private, but the public IP of the relay appears as `192.168.1.100`? Wait, that's also private. In a real case, the bottom would be a public IP of the attacker).\n\nWe look for the **earliest public IP** that injected the mail. Also check `X‑Originating‑IP` or `X‑Sender‑IP` (webmail providers like Gmail add this for web‑based sends)."
+        },
+        {
+            "id": "s_l1_8",
+            "type": "quiz",
+            "title": "Originating IP 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_3",
+                "type": "multiple_choice",
+                "question": "To find the original sender’s IP, you should look at the:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "First Received header (top)",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Last Received header (bottom)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "From field",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Subject line",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Received headers are added top‑down; the earliest (bottom) indicates the first server to handle the mail, often the sender’s server or client IP.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_9",
+            "type": "text",
+            "title": "Email Authentication: SPF, DKIM, DMARC 🔐",
+            "content": "These mechanisms fight spoofing – they also leave forensic traces.\n\n- **SPF (Sender Policy Framework)**: Checks if the sending IP is authorized by the domain’s DNS. The header includes `Received‑SPF: Pass/Fail` and the client IP.\n- **DKIM (DomainKeys Identified Mail)**: Digital signature by the sending domain. Validates that the email wasn’t altered. `DKIM‑Signature` header includes `d=` (domain) and `s=` (selector).\n- **DMARC**: Policy on what to do if SPF/DKIM fail. `Authentication‑Results` header shows DMARC result.\n\nThese headers can prove an email was forged or confirm it came from the claimed domain."
+        },
+        {
+            "id": "s_l1_10",
+            "type": "quiz",
+            "title": "Authentication Headers 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_4",
+                "type": "true_false",
+                "question": "A DKIM-Signature header proves the email content has not been altered since it left the signing domain.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "DKIM provides a cryptographic signature over the email body and selected headers; if unchanged, signature validates.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_11",
+            "type": "text",
+            "title": "Webmail Headers: Gmail, Outlook.com 🌐",
+            "content": "When a user sends via a web browser, the originating IP is often added by the provider:\n- **Gmail**: `X‑Originating‑IP` (though often now missing or showing Google’s internal IP). Instead, look at `Received: from [IPv6:...]` (the user’s IPv6) or the last Received header for the user’s IP.\n- **Outlook.com**: `X‑Originating‑IP` or `X‑EOP‑OriginatingIP`.\n- **Yahoo**: `X‑Originating‑IP`.\n\nIf the sender used a VPN or Tor, the IP traceability ends at that exit node."
+        },
+        {
+            "id": "s_l1_12",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use MXToolbox Header Analyzer\n\nIf you're unsure, paste the full headers into a tool like `mxtoolbox.com/EmailHeaders.aspx`. It will parse the chain and highlight the originating IP automatically."
+        }
+    ]
+}

@@ -1,0 +1,120 @@
+{
+    "id": "l1",
+    "chapterId": "ch_8",
+    "title": "Network Forensics Foundations 🌐",
+    "description": "Understand the role of network evidence and how the TCP/IP model underpins every packet.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Network Forensics",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Digital Highway 🛣️",
+            "content": "# What Is Network Forensics?\n\nNetwork forensics is the capture, recording, and analysis of network traffic to discover the source of security attacks or other problem incidents.\n\nThink of it as a **surveillance camera** on the digital highway. Every packet is a car, and by watching them you can trace where they came from, where they’re going, and what they’re carrying.\n\n- **Full‑packet capture** (PCAP) records every byte.\n- **Flow data** (NetFlow) records metadata – who talked to whom, for how long, how much data.\n- **Logs** from firewalls, IDS/IPS, proxies fill in the gaps."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Definition Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "What does network forensics primarily focus on?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Recovering deleted files from a hard drive",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Analyzing network traffic to investigate security incidents",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Encrypting network communications",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Configuring firewalls",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Network forensics is about capturing and analyzing network data to uncover what happened during an incident.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "The TCP/IP Model 🏗️",
+            "content": "## Layers of the Onion\n\nNetwork communication is layered. Each layer adds its own header (and sometimes footer). The TCP/IP model (simplified) has four layers:\n\n1. **Link Layer** (Ethernet, Wi‑Fi) – handles physical addressing (MAC).\n2. **Internet Layer** (IP) – logical addressing and routing.\n3. **Transport Layer** (TCP, UDP) – reliability, ports.\n4. **Application Layer** (HTTP, DNS, SMTP) – user data.\n\nAs data passes down, it gets encapsulated. Forensically, we peel back each layer to extract clues."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "Layer Order 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "fill_blank",
+                "question": "In the TCP/IP model, the layer responsible for routing packets between networks is the ___ layer.",
+                "options": [
+                    "Application",
+                    "Transport",
+                    "Internet",
+                    "Link"
+                ],
+                "correctAnswer": "Internet",
+                "explanation": "The Internet layer (IP) handles logical addressing and routing."
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Where to Capture Traffic 🎯",
+            "content": "## SPAN Ports vs. TAPs\n\n- **SPAN (Switched Port Analyzer)**: A switch copies traffic from one port/VLAN to a monitoring port. Easy, but can drop packets under heavy load.\n- **Network TAP (Test Access Point)**: A physical device that splits the signal, providing a dedicated copy. No packet loss, but requires physical access.\n- **Inline devices** (firewalls, IPS): Generate logs and may capture suspicious packets.\n\nFor forensic soundness, a TAP is ideal, but SPAN is more common in corporate environments."
+        },
+        {
+            "id": "s_l1_6",
+            "type": "quiz",
+            "title": "Capture Methods 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_3",
+                "type": "true_false",
+                "question": "A SPAN port always delivers every packet without loss, just like a TAP.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "SPAN ports can drop packets if the switch is oversubscribed; TAPs are non‑intrusive and guaranteed.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_7",
+            "type": "text",
+            "title": "Logs & Flow Data 📋",
+            "content": "Packet capture isn’t always feasible (encrypted, high volume). Supplementary sources:\n- **Firewall logs**: blocked/allowed connections.\n- **Proxy logs**: visited URLs.\n- **DHCP logs**: IP assignment history.\n- **DNS logs**: domain queries.\n- **NetFlow/IPFIX**: records of communication flows (source IP, destination IP, ports, bytes, timestamps).\n\nTogether, they help reconstruct events even without full PCAP."
+        },
+        {
+            "id": "s_l1_8",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Always Set the Capture Clock\n\nNetwork timestamps are crucial for correlation. Ensure your capturing device syncs via NTP, and note any time zone offsets."
+        }
+    ]
+}

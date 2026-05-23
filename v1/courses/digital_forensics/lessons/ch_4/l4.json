@@ -1,0 +1,145 @@
+{
+    "id": "l4",
+    "chapterId": "ch_4",
+    "title": "Hashing & Integrity Verification #️⃣",
+    "description": "Master cryptographic hashing to prove that your forensic image has not been altered.",
+    "xpReward": 25,
+    "estimatedMinutes": 7,
+    "section": "Data Acquisition",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Digital Fingerprints 🤲",
+            "content": "# What is a Hash?\n\nA cryptographic hash function takes an input (a file or an entire disk) and produces a fixed‑size string (the hash). Even changing one bit in the input completely changes the hash.\n\nCommon algorithms:\n- **MD5**: 128‑bit, fast but collisions exist (not recommended for court).\n- **SHA‑1**: 160‑bit, also deprecated.\n- **SHA‑256**: 256‑bit, part of SHA‑2, currently the standard.\n\nHash = digital fingerprint. If two inputs have the same hash, they are mathematically identical."
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Hash Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Which hash algorithm is currently recommended for forensic integrity verification?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "MD5",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "CRC32",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "SHA‑256",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "SHA‑1",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "SHA‑256 is collision‑resistant and widely accepted in forensic and legal communities.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "The Verification Process ✅",
+            "content": "## Step‑by‑Step\n\n1. **Before imaging**: Compute the hash of the original evidence drive (source hash).\n2. **After imaging**: Compute the hash of the forensic image file (image hash).\n3. **Compare**: If the two hashes match, the image is an exact copy.\n4. **Document**: Record both hashes in your case notes.\n\nIf the hashes **don't** match, the image is not valid. Check cables, write blocker, and re‑image."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "code",
+            "title": "Hashing with Linux Commands",
+            "content": "Use `sha256sum` to compute and compare hashes.",
+            "codeSnippet": "# Hash the original disk (must run as root to read /dev/sdb)\nsudo sha256sum /dev/sdb > source.hash\n\n# Hash the forensic image\nsha256sum image.001 > image.hash\n\n# Compare\ndiff source.hash image.hash\n# If no output, they match!",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l4_5",
+            "type": "quiz",
+            "title": "Verification Step 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "If the source hash matches the image hash, it proves the evidence has not been tampered with during acquisition.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Matching hashes confirm that the image is a bit‑for‑bit copy of the original at the time of acquisition, with no alteration.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Hash for File Integrity, Not Authentication 🔐",
+            "content": "Hashing only proves that the data has not changed. It does **not** prove who created the data or who possessed the drive. A hash is a silent witness to consistency.\n\nAlso, hashing the entire disk at the source can be time‑consuming. Some examiners hash the image only and compare subsequent hashes to detect tampering after acquisition."
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Hash Set Libraries 📚",
+            "content": "Known‑good hash sets (NIST NSRL) and known‑bad hash sets (malware hashes) rely on the same algorithms. During examination, you can automatically compare file hashes against these databases to flag anomalies."
+        },
+        {
+            "id": "s_l4_8",
+            "type": "quiz",
+            "title": "Hash Application 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_3",
+                "type": "multiple_choice",
+                "question": "What does a matching hash between two disk images prove?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "They contain the same files",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "They are exactly identical at the binary level",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "They were created by the same person",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "They are encrypted",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "A hash match indicates that every bit is the same, which is the definition of a forensically sound copy.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_9",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Hash in Segments\n\nFor very large drives, compute hashes of smaller segments (e.g., 1 GB chunks) to quickly isolate a problematic area if hashes don't match later."
+        }
+    ]
+}

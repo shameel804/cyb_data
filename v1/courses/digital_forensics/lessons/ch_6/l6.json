@@ -1,0 +1,164 @@
+{
+    "id": "l6",
+    "chapterId": "ch_6",
+    "title": "Recycle Bin, VSS & Other Critical Artifacts",
+    "description": "Recover deleted files, examine volume shadow copies, and analyze the Recycle Bin for evidence.",
+    "xpReward": 30,
+    "estimatedMinutes": 8,
+    "section": "Windows Forensics",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "The Recycle Bin ♻️",
+            "content": "# Deleted Files That Aren't Gone\n\nWhen a user deletes a file (without Shift+Del), Windows moves it to the Recycle Bin. Two formats exist:\n- **Windows XP**: `C:\\RECYCLER\\<SID>` contains `INFO2` file (metadata) and the original file renamed.\n- **Windows Vista+**: `C:\\$Recycle.Bin\\<SID>` contains `$I<rand>.<ext>` (metadata) and `$R<rand>.<ext>` (original file content).\n\nThe `$I` files store the original file name, path, and deletion timestamp (64‑bit FILETIME). Parsing these reveals:\n- What was deleted\n- When it was deleted\n- From where it was deleted\n\nTool: `RBCmd.exe` or `RecycleBinInfo`."
+        },
+        {
+            "id": "s_l6_2",
+            "type": "quiz",
+            "title": "Recycle Bin Format 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "On Windows 10, a file named `$I12345.pdf` in the Recycle Bin contains what?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The actual deleted PDF content",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Metadata about the deleted file (original name, path, deletion time)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Nothing; it's a placeholder",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "A hash of the file",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The `$I` file is the info file containing original name, path, and deletion timestamp. The `$R` file holds the actual content.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_3",
+            "type": "code",
+            "title": "Parse Recycle Bin with RBCmd",
+            "content": "Use Eric Zimmerman's RBCmd to extract entries.",
+            "codeSnippet": "RBCmd.exe -d C:\\$Recycle.Bin --csv C:\\output",
+            "codeLanguage": "cmd",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_4",
+            "type": "quiz",
+            "title": "Recycle Bin Timeline 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "true_false",
+                "question": "The deletion timestamp recorded in the $I file is always reliable and cannot be tampered with.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "While it's a valuable source, the timestamp could be manipulated by advanced anti‑forensic tools or if the system clock was changed.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_5",
+            "type": "text",
+            "title": "Volume Shadow Copies (VSS) 🌓",
+            "content": "## Windows' Built‑in Time Machine\n\nVolume Shadow Copy Service creates point‑in‑time snapshots of drives (usually enabled for System Restore). They can preserve deleted files, older versions of documents, and registry hives.\n\nThey reside in System Volume Information folder, accessible via `vssadmin` or forensic tools.\n\nUsing VSS, you can:\n- Recover a deleted file that was present at the time of a snapshot.\n- Compare registry hives from a previous date to see changes.\n- Extract historical MFT records.\n\nTool: `VSCMount` or `ShadowCopyView`, or `vss_carver`."
+        },
+        {
+            "id": "s_l6_6",
+            "type": "code",
+            "title": "List VSS Snapshots",
+            "content": "On a live system, use `vssadmin`.",
+            "codeSnippet": "vssadmin list shadows\n# Then you can map a shadow copy to a drive letter:\n# mklink /d C:\\shadowcopy \\\\?\\GLOBALROOT\\Device\\HarddiskVolumeShadowCopy1",
+            "codeLanguage": "cmd",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l6_7",
+            "type": "quiz",
+            "title": "VSS Forensics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_3",
+                "type": "fill_blank",
+                "question": "Volume Shadow Copies are primarily used for ___ and can be a source of historical data.",
+                "options": [
+                    "encryption",
+                    "backup",
+                    "malware execution",
+                    "network sharing"
+                ],
+                "correctAnswer": "backup",
+                "explanation": "VSS is a backup technology that creates snapshots for system restore and file recovery.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_8",
+            "type": "text",
+            "title": "Thumbcache & Thumbs.db 🖼️",
+            "content": "Windows creates thumbnail caches for folders containing images:\n- `Thumbs.db` (Windows XP/7): In the folder itself.\n- **Thumbcache** (Win8+): Centralized in `C:\\Users\\<user>\\AppData\\Local\\Microsoft\\Windows\\Explorer` (thumbcache_*.db).\n\nEven if the original images are deleted, thumbnails persist, providing visual proof of image content. Tools like **Thumbcache Viewer** can extract these.\n\nThis is extremely useful in child exploitation or intellectual property theft cases."
+        },
+        {
+            "id": "s_l6_9",
+            "type": "quiz",
+            "title": "Thumbnail Evidence 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_4",
+                "type": "true_false",
+                "question": "Thumbcache files only contain icons, not actual thumbnail images.",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Thumbcache stores scaled‑down versions of the actual images, which are very useful for determining content.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_10",
+            "type": "text",
+            "title": "Other Important Artifacts 🧩",
+            "content": "- **SRUM (ESENT DB)**: Tracks per‑application network bytes, process lifetime, and energy usage.\n- **Task Scheduler**: Scheduled tasks can reveal persistence mechanisms; log at `Microsoft-Windows-TaskScheduler/Operational`.\n- **Services**: Registry and event log evidence of installed services (especially malware).\n- **MUICache**: Records executable file names launched via Explorer.\n- **Compatibility Assistant**: Registry key `AppCompatFlags` shows programs that were run.\n\nA thorough Windows forensic exam must include all these sources to build a complete picture."
+        },
+        {
+            "id": "s_l6_11",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Use a Comprehensive Parser Like KAPE\n\nKAPE can collect Recycle Bin, VSS, Thumbcache, Amcache, Prefetch, and a hundred other artifacts in minutes. Then use Timeline Explorer to see everything on one screen."
+        }
+    ]
+}
