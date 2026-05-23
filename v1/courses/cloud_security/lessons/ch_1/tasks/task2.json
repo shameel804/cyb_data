@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_1",
+    "title": "Identify Real‑World Threats",
+    "description": "Analyse a short news snippet and map the breach to CIA pillars.",
+    "estimatedMinutes": 10,
+    "problemStatement": "## Scenario\nRead the following fictional news headline:\n\n> **\"E‑commerce site 'ShopFast' leaked 2 million customer email addresses after a misconfigured cloud database was left publicly accessible. Additionally, attackers defaced the product catalogue, replacing prices with $0.00. The site remained operational throughout.\"**\n\n### Your Task\nAnswer the following:\n1. Which CIA pillar(s) were violated? Explain why.\n2. Which specific cloud security threat category does this breach illustrate? (Refer to OWASP)\n3. What is the single simplest action that could have prevented the data leak?",
+    "hints": [
+        "Email addresses exposed = confidentiality issue. Prices altered = integrity issue.",
+        "The breach started with a misconfiguration.",
+        "Consider access control settings on the database."
+    ],
+    "expectedOutput": "1. Confidentiality (emails leaked) and Integrity (prices tampered). Availability was not affected.\n2. Misconfiguration – a publicly accessible database.\n3. Enabling appropriate access controls (e.g., making the database private) would have prevented the leak.",
+    "solutionCode": "1. Pillars violated: Confidentiality (unauthorised exposure of email addresses) and Integrity (unauthorised modification of product prices). Availability was not impacted as the site stayed up.\n2. Threat category: Misconfiguration and Inadequate Change Control (from OWASP Cloud Top 10).\n3. Simplest prevention: Set the database access policy to private, allowing only authorised applications/users. Regular configuration audits would also help."
+}

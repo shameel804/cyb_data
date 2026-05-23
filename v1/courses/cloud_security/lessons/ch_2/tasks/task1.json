@@ -1,0 +1,14 @@
+{
+    "id": "task1",
+    "chapterId": "ch_2",
+    "title": "Service Model Deep Dive",
+    "description": "Create a comparison table for IaaS, PaaS, and SaaS highlighting security responsibilities.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario\nYour manager wants a one‑page cheat sheet showing the differences between the three cloud service models, with a special focus on **who secures what**.\n\n### Your Task\nCreate a Markdown table with the following columns:\n- **Service Model** (IaaS, PaaS, SaaS)\n- **What You Control** (list 2‑3 examples)\n- **What Provider Controls** (list 2‑3 examples)\n- **Your Top Security Responsibility** (one key action)\n\nThen, write one sentence explaining why choosing the wrong model could lead to a security gap.\n\n*Use the concepts from this chapter to fill the table.*",
+    "hints": [
+        "Think OS, application, data, and physical infrastructure.",
+        "For IaaS, you control the OS; for PaaS, the provider controls the OS; for SaaS, the provider controls almost everything except data and access."
+    ],
+    "expectedOutput": "A markdown table with three rows (one per model), clear separation of control, and a concluding sentence about security gaps.",
+    "solutionCode": "| Service Model | What You Control | What Provider Controls | Your Top Security Responsibility |\n|---------------|------------------|------------------------|----------------------------------|\n| **IaaS** | Operating system, applications, data, network configurations | Physical hardware, hypervisor, global network | Patch the OS and harden security groups |\n| **PaaS** | Application code, data, access management | OS, runtime, middleware, infrastructure | Secure application dependencies and encrypt data |\n| **SaaS** | User access, data (sometimes sharing settings) | Entire application stack, infrastructure, platform | Enforce MFA and monitor user activities |\n\nChoosing the wrong model may leave you responsible for a layer you cannot control (e.g., expecting provider to patch your app on IaaS), creating a dangerous security gap."
+}

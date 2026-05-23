@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_4",
+    "title": "Audit IAM Users for MFA",
+    "description": "Identify users without MFA and propose remediation steps.",
+    "estimatedMinutes": 10,
+    "problemStatement": "## Scenario\nYou run a security review and find the following IAM users in your AWS account:\n- `root` (has MFA enabled, hardware key)\n- `alice` (admin, no MFA)\n- `bob` (developer, has MFA via virtual authenticator)\n- `ci-service` (used by Jenkins, no MFA, has access keys)\n- `charlie` (auditor, no MFA)\n\n### Your Task\n1. List which users require immediate MFA activation, explaining why.\n2. Suggest an alternative for `ci-service` that follows security best practices (it cannot use interactive MFA).\n3. Write a one‑sentence reminder about the root account's MFA status.",
+    "hints": [
+        "All human users should have MFA. Service accounts should use roles, not IAM users with static keys.",
+        "For CI service, consider using an IAM role with temporary credentials."
+    ],
+    "expectedOutput": "A clear identification: alice, charlie need MFA immediately because they are human users with console access. ci-service should be replaced by an IAM role for the CI system (e.g., EC2 instance role or OIDC federation). Root is already protected.",
+    "solutionCode": "1. Users `alice` and `charlie` must enable MFA immediately because they are human users with potential console access; privileged accounts like Alice's admin role without MFA pose a critical risk.\n2. The `ci-service` IAM user with static access keys is a poor practice. Instead, assign an IAM role to the CI server (EC2 instance) or use OIDC federation to assume a role, granting temporary credentials without long‑term keys.\n3. The root account already has MFA with a hardware key, which is excellent – ensure the key is stored securely and a backup key is available."
+}

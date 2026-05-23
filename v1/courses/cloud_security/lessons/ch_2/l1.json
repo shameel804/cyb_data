@@ -1,0 +1,105 @@
+{
+    "id": "l1",
+    "chapterId": "ch_2",
+    "title": "The Big Picture: Service Models Explained 🖼️",
+    "description": "Overview of IaaS, PaaS, SaaS and why they matter for security.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Pizza as a Service 🍕",
+            "content": "## The Universal Cloud Analogy\n\nUnderstanding IaaS, PaaS, and SaaS is easy with a pizza metaphor:\n\n- **On‑premises (homemade)** – You buy the flour, tomatoes, oven, and electricity. Total control, total responsibility.\n- **IaaS (take‑and‑bake)** – Provider gives you the dough, sauce, and oven. You add toppings and bake it.\n- **PaaS (delivery pizza)** – Provider makes the pizza, you just add drinks and set the table.\n- **SaaS (dine‑in restaurant)** – You sit down, eat, and pay. Everything else is handled.\n\n*The more the provider manages, the less you control – but the less you have to secure.*"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Analogy Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "In the pizza analogy, which service model is most like dining in a restaurant?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "IaaS",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "PaaS",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "SaaS",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "On‑premises",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "SaaS is a fully managed experience where you just consume the service, like eating at a restaurant.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "The Three Service Models at a Glance 📋",
+            "content": "## What the Provider Manages\n\n| Model | Provider Manages | You Manage |\n|-------|------------------|------------|\n| **IaaS** | Physical hardware, network cables, hypervisor | OS, middleware, runtime, data, apps |\n| **PaaS** | OS, runtime, middleware (platform) | Data, apps |\n| **SaaS** | Everything (infra, platform, app) | Data (sometimes), user access |\n\n*The shift in responsibility directly impacts your security posture – you secure what you control.*"
+        },
+        {
+            "id": "s_l1_4",
+            "type": "text",
+            "title": "Why Service Models Are a Security Topic 🔒",
+            "content": "## One Mistake, Big Consequences\n\n- With IaaS, you can misconfigure a security group and expose an entire VM.\n- With PaaS, a vulnerability in your application code can still leak data.\n- With SaaS, weak user passwords or a compromised account can expose corporate data.\n\n**Your security duties change with each model.** Knowing where the provider stops and you start is the first step to staying safe."
+        },
+        {
+            "id": "s_l1_5",
+            "type": "quiz",
+            "title": "Quick Responsibility Drill 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "multiple_choice",
+                "question": "Under which service model are you responsible for patching the operating system?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "SaaS only",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "PaaS only",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "IaaS only",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "All models",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "In IaaS, you control the VM and its OS, so you must apply OS patches. In PaaS and SaaS, the provider handles OS updates.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Remember the Stack\nVisualise a stack: Infra at bottom, then OS, Middleware, Runtime, App, Data. The higher the abstraction, the more the provider secures for you."
+        }
+    ]
+}

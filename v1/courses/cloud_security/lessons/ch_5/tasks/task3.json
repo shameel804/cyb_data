@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_5",
+    "title": "Write a DLP Detection Rule",
+    "description": "Describe a pattern to detect credit card numbers in a document store.",
+    "estimatedMinutes": 10,
+    "problemStatement": "## Scenario\nYou are configuring a DLP scanner (like Amazon Macie or GCP Cloud DLP) to find credit card numbers in a set of documents. The credit cards could be from Visa, MasterCard, or American Express, with or without spaces or dashes.\n\n### Your Task\nDescribe the detection rule in plain language, including:\n- The pattern(s) or regex you would use.\n- How you would reduce false positives (e.g., minimum context checks).\n- What action you would trigger upon detection (alert, quarantine, etc.).\n\nNo need to write actual code, but be specific enough that an engineer could implement it.",
+    "hints": [
+        "Visa starts with 4, MC with 51-55 or 2221-2720, AmEx with 34 or 37, followed by correct digit counts.",
+        "Use a Luhn checksum validation to reduce false positives.",
+        "Consider a match only if followed by a delimiter or end-of-string."
+    ],
+    "expectedOutput": "A description of a regex pattern covering major card types, Luhn check, and a clear action (e.g., create an alert and move file to quarantine).",
+    "solutionCode": "Pattern: Use a regular expression that matches numbers starting with 4 (Visa), 51-55 or 2221-2720 (MasterCard), 34 or 37 (AmEx), followed by the appropriate total digit lengths (13-19) with possible separators (spaces or hyphens).\n\nReducing false positives: Apply the Luhn algorithm to validate the number. Additionally, require word boundaries around the match (no adjacent alphanumeric characters) and exclude known test card numbers.\n\nAction: When a match is found, immediately create a high‑severity security alert. Automatically move the file to a quarantine bucket and revoke public access if any. Notify the data security team for investigation."
+}

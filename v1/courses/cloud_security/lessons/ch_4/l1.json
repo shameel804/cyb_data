@@ -1,0 +1,101 @@
+{
+    "id": "l1",
+    "chapterId": "ch_4",
+    "title": "What Is IAM? 🔐",
+    "description": "Authentication, authorization, and why IAM is the heart of cloud security.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "The Bouncer at the Cloud Club 🕺",
+            "content": "# Identity & Access Management\n\nImagine an exclusive nightclub:\n\n- **Authentication** – The bouncer checks your ID. \"Are you really who you say you are?\"\n- **Authorization** – Once inside, you get a wristband. VIP wristband lets you into the VIP area; a regular one doesn't.\n\nIAM does exactly this for your cloud resources. It answers two questions:\n1. Who are you? (Authentication)\n2. What are you allowed to do? (Authorization)\n\nNo IAM means no locked doors – anyone can do anything. That's a recipe for disaster."
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Verifying that a user is who they claim to be is called:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Authorization",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Authentication",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Encryption",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Auditing",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Authentication confirms identity (username + password, biometrics, etc.).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "Why IAM Is the #1 Priority 🎯",
+            "content": "## The Gateway to Everything\n\n- Every cloud action—creating a VM, reading a file, deleting a database—passes through IAM.\n- Misconfigured IAM is the **root cause** of many breaches (overly permissive accounts, missing MFA).\n- IAM is not a feature; it's the **foundation**. Before you launch your first server, you should design your IAM structure.\n\n*If an attacker gains access to your root account or an over‑privileged user, they can do more damage than any network vulnerability.*"
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "IAM Importance 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "true_false",
+                "question": "IAM is only important for large enterprises; small startups can ignore it.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Every cloud environment, regardless of size, needs proper IAM to protect resources and data.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "The IAM Vocabulary 📖",
+            "content": "## Key Terms You Must Know\n\n- **Principal** – The entity making a request (user, role, application).\n- **Request** – An action a principal tries to perform (e.g., `s3:GetObject`).\n- **Policy** – A document that defines permissions (who can do what to which resources).\n- **Authentication** – Proving identity (password, MFA, access keys).\n- **Authorization** – Checking if the authenticated principal is allowed to make the request.\n\n*In the cloud, every API call is a request, and IAM evaluates it against policies.*"
+        },
+        {
+            "id": "s_l1_6",
+            "type": "text",
+            "title": "IAM in AWS, Azure, GCP – Same Idea, Different Names 🔄",
+            "content": "| Concept | AWS IAM | Azure AD / RBAC | Google Cloud IAM |\n|---------|---------|-----------------|------------------|\n| User account | IAM User | Azure AD User | Google Account / Service Account |\n| Grouping | IAM Group | Azure AD Group | Google Group |\n| Temporary credentials | IAM Role | Managed Identity | Service Account with keyless access |\n| Permission document | IAM Policy (JSON) | Azure Role Definition (JSON) | IAM Policy (JSON / YAML) |\n\n*The core principles are universal; syntax varies.*"
+        },
+        {
+            "id": "s_l1_7",
+            "type": "tip",
+            "title": "Pro Tip 🚀",
+            "content": "## Start With the Root Account\nImmediately after creating a cloud account, secure the root user with a strong password and MFA, then create an admin IAM user for daily tasks. Never use root for routine operations."
+        }
+    ]
+}

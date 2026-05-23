@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_3",
+    "title": "Correct a Colleague's Misunderstanding",
+    "description": "Write a response to a developer who thinks serverless removes all security duties.",
+    "estimatedMinutes": 10,
+    "problemStatement": "## Scenario\nA developer in your Slack channel posted:\n\n> \"Just deployed our new API using AWS Lambda. So glad we don't have to worry about security anymore – AWS handles everything!\"\n\nAs the cloud security champion, you need to gently correct this dangerous misconception.\n\n### Your Task\nDraft a reply (3‑5 sentences) that:\n- Acknowledges what AWS does handle (runtime, scaling, OS).\n- Clearly lists at least three security responsibilities that still belong to the team.\n- Recommends one concrete action they can take today to improve the Lambda function's security.",
+    "hints": [
+        "Lambda manages the environment; you manage the code, dependencies, and permissions.",
+        "Think about hardcoded secrets, overly permissive IAM roles, and vulnerable libraries.",
+        "Suggest using AWS Secrets Manager for secrets, or reviewing the function's IAM role."
+    ],
+    "expectedOutput": "A polite message that highlights that Lambda is a shared responsibility: AWS secures the underlying infrastructure, but the team must secure the function code, handle secrets properly, and apply least privilege to the execution role. Suggestion to move API keys to a secret store.",
+    "solutionCode": "Hey! Lambda is awesome, but we're definitely not off the hook for security. AWS manages the runtime, OS, and scaling, but we still own:\n\n- **Our code** – any vulnerabilities like injection flaws are on us.\n- **Secrets handling** – never hardcode keys; use a secrets manager.\n- **IAM role permissions** – we must give the function only the minimum access it needs (least privilege).\n\nI'd suggest we immediately check the function's IAM role and move any hardcoded credentials into AWS Secrets Manager. That alone drastically reduces risk. Let's sync up if you want a quick review!"
+}

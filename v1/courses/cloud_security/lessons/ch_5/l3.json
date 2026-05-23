@@ -1,0 +1,110 @@
+{
+    "id": "l3",
+    "chapterId": "ch_5",
+    "title": "Encryption at Rest: Locking Data When It Sleeps 😴",
+    "description": "How cloud services encrypt data stored on disk.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Why Encrypt at Rest? 🛏️",
+            "content": "## When Disks Walk Away\n\nData at rest sits on physical media – hard drives in a data center. Threats include:\n- Physical theft of a drive from a rack (rare, but possible).\n- Improper disposal of old hardware (dumpster diving).\n- Accidental exposure through a misconfigured backup.\n\nEncryption ensures that if the physical medium is lost, the data is unreadable without the key. Cloud providers default to encrypting many services, but you often must verify and manage keys.\n\n*Encrypting at rest is like putting your diary in a safe – even if someone steals the safe, they can't read it without the combination.*"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "At Rest Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "true_false",
+                "question": "All cloud storage services automatically encrypt data at rest with no customer action required.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Some services (like S3) now enable default encryption, but many others (EBS, RDS) require explicit setup. You should always verify.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Server‑Side Encryption (SSE) 🔑",
+            "content": "## The Provider Holds the Key\n\nWith Server‑Side Encryption, the cloud service encrypts data as it writes to disk and decrypts when you read. You interact normally. Three common models:\n\n- **SSE‑S3** (AWS) – Amazon S3 manages the keys.\n- **SSE‑KMS** (AWS) – AWS Key Management Service manages keys; you get audit trail.\n- **SSE‑C** (AWS) – You provide and manage the keys; S3 uses them but doesn't store them.\n\n*Each gives you different levels of control and compliance flexibility.*"
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "Enforcing Encryption on S3",
+            "content": "A bucket policy that rejects uploads without encryption headers:",
+            "codeSnippet": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Deny\",\n      \"Principal\": \"*\",\n      \"Action\": \"s3:PutObject\",\n      \"Resource\": \"arn:aws:s3:::my-bucket/*\",\n      \"Condition\": {\n        \"StringNotEquals\": {\n          \"s3:x-amz-server-side-encryption\": \"AES256\"\n        }\n      }\n    }\n  ]\n}",
+            "codeLanguage": "json",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Client‑Side Encryption 🧑‍💻",
+            "content": "## Encrypt Before Upload\n\n- You encrypt data in your application before sending it to the cloud. The cloud service never sees the plaintext.\n- **Maximum control** – the provider cannot decrypt your data even if compelled (zero‑access architecture).\n- **Challenges**: You manage encryption keys and lose some cloud features (e.g., server‑side search/indexing).\n\n*Useful for highly sensitive data subject to strict regulations (e.g., certain healthcare records).*"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Encryption for Common Services ☁️",
+            "content": "| Service | Encryption at Rest | Managed By |\n|---------|-------------------|------------|\n| Amazon EBS | Optional, AES‑256 | Customer selects KMS key |\n| Amazon S3 | Default SSE‑S3 (can be changed) | AWS or customer via KMS |\n| Amazon RDS | Mandatory for new instances | AWS or customer via KMS |\n| Azure Blob Storage | Default SSE with service‑managed keys | Microsoft or customer via Key Vault |\n| GCP Persistent Disk | Encryption always on by default | Google or customer via Cloud KMS |\n\n*Always check the specific service documentation – defaults change!*"
+        },
+        {
+            "id": "s_l3_7",
+            "type": "quiz",
+            "title": "SSE Models 💡",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "multiple_choice",
+                "question": "Which AWS S3 encryption mode gives you the most control over key access and provides an audit trail?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "SSE‑S3",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "SSE‑KMS",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "SSE‑C",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Client‑side encryption with external keys",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "SSE‑KMS uses AWS KMS and logs key usage in CloudTrail, giving control and audit. SSE‑C gives control but no integrated audit; client‑side gives even more control but is a separate model.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_8",
+            "type": "tip",
+            "title": "Enable Default Encryption on All Buckets 🪣",
+            "content": "In AWS S3, go to bucket properties and set a default encryption rule. Any new object is automatically encrypted, even if the uploader forgets. Combine with a policy that denies unencrypted PUTs for defense in depth."
+        }
+    ]
+}

@@ -1,0 +1,110 @@
+{
+    "id": "l2",
+    "chapterId": "ch_3",
+    "title": "Shared Responsibility in AWS ☁️",
+    "description": "What AWS secures vs. what you must secure – with concrete examples.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "AWS's Official Model 📜",
+            "content": "## The Split in Black and White\n\nAWS is responsible for:\n- **Physical security** of data centres (cameras, guards, biometric locks)\n- **Hardware, software, networking, and facilities** that run AWS services\n- **Global infrastructure** – Regions, Availability Zones, Edge Locations\n\n**You are responsible for**:\n- **Customer data** – encryption, classification\n- **Platform, applications, identity & access management**\n- **Operating system, network, and firewall configuration** (for infrastructure services)\n- **Client‑side data encryption, server‑side encryption (optional, depending on service)**\n\n*Reference: AWS Shared Responsibility Model page.*"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Pop Quiz 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "true_false",
+                "question": "According to the AWS model, physical security of an S3 storage device is the customer's responsibility.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "AWS handles all physical security, including the disks that hold your S3 objects.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Example: Amazon EC2 (IaaS) 🖥️",
+            "content": "## Who Does What for a Virtual Server?\n\n| Responsibility | AWS | YOU |\n|----------------|-----|-----|\n| Physical host & network | ✅ | ❌ |\n| Hypervisor & isolation | ✅ | ❌ |\n| Guest OS patching | ❌ | ✅ |\n| Application security | ❌ | ✅ |\n| Security Groups (firewall rules) | ❌ | ✅ |\n| Data encryption at rest (EBS volumes) | ❌ | ✅ (you configure) |\n| IAM roles & instance profiles | ❌ | ✅ |\n\n*AWS gives you the keys to the virtual server; you must lock the doors.*"
+        },
+        {
+            "id": "s_l2_4",
+            "type": "code",
+            "title": "Your EC2 Responsibility in Action ⚡",
+            "content": "Launching an EC2 instance with a user‑data script that applies OS patches. This is *your* job, not AWS's:",
+            "codeSnippet": "resource \"aws_instance\" \"web\" {\n  ami           = \"ami-0abcdef12345\"\n  instance_type = \"t2.micro\"\n  key_name      = \"mykey\"\n  security_groups = [aws_security_group.web_sg.name]\n\n  user_data = <<-EOF\n              #!/bin/bash\n              sudo apt update -y && sudo apt upgrade -y\n              EOF\n}",
+            "codeLanguage": "hcl",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Example: Amazon RDS (PaaS) 🗄️",
+            "content": "## A More Managed Database\n\n- **AWS manages**: Database engine installation and patches, OS, underlying EC2 instance (yes, RDS runs on EC2 but AWS secures it).\n- **You manage**: Security groups (network access), database master user password, encryption at rest (you choose the KMS key), backup retention settings, and IAM database authentication.\n- **Shared?** AWS will automatically apply minor version upgrades (if you opt in), but you decide the maintenance window.\n\n*Even though AWS patches the DB engine, if you leave port 3306 open to the world, you've created a breach.*"
+        },
+        {
+            "id": "s_l2_6",
+            "type": "quiz",
+            "title": "RDS Responsibility 💡",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "For Amazon RDS, who is responsible for applying security patches to the underlying operating system?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "The customer",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "AWS",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Both the customer and AWS",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Neither – it's unpatched",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "RDS is a managed service; AWS patches the OS and database engine as part of its responsibility.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Example: Amazon S3 (Storage) 🪣",
+            "content": "## The Bucket Stops With You\n\n- **AWS manages**: Physical disks, global replication, durability, and the S3 service itself.\n- **You manage**: Bucket policies and ACLs (who can access objects), public access block settings, encryption at rest (you enable it, though default encryption now exists), and logging.\n- **Critical**: Making an S3 bucket public is **entirely** the customer's action. AWS will warn you but not prevent it unless you explicitly block public access at the account level."
+        },
+        {
+            "id": "s_l2_8",
+            "type": "warning",
+            "title": "⚠️ The S3 Trap",
+            "content": "## \"I thought AWS would keep my bucket private\"\nNo. AWS provides controls; you must configure them. Always enable **Block Public Access** at the account level to add a layer of defence."
+        }
+    ]
+}

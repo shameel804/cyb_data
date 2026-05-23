@@ -1,0 +1,101 @@
+{
+    "id": "l3",
+    "chapterId": "ch_1",
+    "title": "Top Threats in the Cloud 🦠",
+    "description": "Meet the common enemies: breaches, misconfigurations, and account hijacking.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The OWASP Cloud Top Threats ⚠️",
+            "content": "## Know Your Enemy\n\nThe Open Web Application Security Project (OWASP) lists the most dangerous cloud risks. Here are the heavy hitters:\n\n- **Inadequate Identity & Access Management** – Overly permissive accounts.\n- **Insecure Interfaces & APIs** – Unprotected management endpoints.\n- **Misconfigurations & Inadequate Change Control** – S3 buckets left wide open.\n- **Lack of Cloud Security Architecture** – No blueprint for defence.\n- **Insecure Software Development** – Vulnerabilities in your own code."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Threat Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which OWASP top risk is typically the customer’s own fault?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Abuse of cloud services",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Misconfigurations",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Hardware failure",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "DDoS attacks",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Misconfigurations, like leaving a storage bucket public, are almost always due to user error.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "The #1 Culprit: Misconfigurations 😱",
+            "content": "## Open Doors Everywhere\n\n- An **S3 bucket** set to \"public\" – millions of records exposed.\n- A **security group** allowing 0.0.0.0/0 – anyone can connect.\n- **Default credentials** left unchanged.\n\n### Real Example: Capital One (2019)\nA misconfigured web application firewall led to 100 million credit card applications being stolen. **Cost: $190 million** in fines."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "quiz",
+            "title": "Misconfiguration Impact 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "True or False: Cloud providers automatically secure all resources you create.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "Many services start with secure defaults, but you must configure them correctly for your use case.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Credential Theft & Account Hijacking 🔓",
+            "content": "## The Key to Your Kingdom\n\n- Attackers phish admin credentials or find keys accidentally committed to GitHub.\n- Once they have a set of IAM user keys, they can launch resources, exfiltrate data, or delete everything.\n- **Multi‑Factor Authentication (MFA)** is the single most effective countermeasure."
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Other Notorious Threats 🕵️",
+            "content": "- **Insecure APIs** – Publicly exposed management APIs without authentication.\n- **Insider Threats** – A disgruntled employee with too much access.\n- **Denial of Wallet** – A variant of DoS where attackers run up your bill by spinning up expensive resources.\n- **Shared Technology Vulnerabilities** – Bugs in the hypervisor that affect all tenants."
+        },
+        {
+            "id": "s_l3_7",
+            "type": "warning",
+            "title": "Heads Up! 🚨",
+            "content": "## A Threat Landscape That Evolves\nAttackers constantly find new ways to exploit the cloud. Your learning must never stop. The good news? You’re already building the foundation to stop them."
+        }
+    ]
+}

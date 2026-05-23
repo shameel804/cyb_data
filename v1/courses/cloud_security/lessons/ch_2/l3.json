@@ -1,0 +1,79 @@
+{
+    "id": "l3",
+    "chapterId": "ch_2",
+    "title": "Platform as a Service (PaaS) 🏗️",
+    "description": "Managed platforms for developers – less control, more speed.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "What Is PaaS? ⚡",
+            "content": "## The Developer’s Fast Lane\n\n**Platform as a Service** provides a managed environment where you can build, deploy, and run applications without worrying about the underlying servers.\n\n- **Examples**: AWS Elastic Beanstalk, Azure App Service, Google App Engine, Heroku.\n- **Provider manages** the OS, runtime, middleware, and sometimes scaling and load balancing.\n- **You bring** only your application code and data."
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "Which layer is typically managed by the provider in PaaS but by you in IaaS?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Application code",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Operating system patches",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Data encryption",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "User identity",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The OS and its updates are the provider's responsibility in PaaS, whereas you handle them in IaaS.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Security in PaaS: A Shared Slice 🍰",
+            "content": "## What You Still Control\n\n- **Application code & dependencies** – A vulnerable library can still break you.\n- **Data** – Encryption, access controls, and backups remain your job.\n- **Access management** – Who can deploy, who can view logs.\n- **Configuration** – PaaS services offer security settings; leaving them default is risky.\n\n*The provider secures the platform; you must secure what you build on top of it.*"
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "PaaS in Practice 🛠️",
+            "content": "Deploying a Node.js app to AWS Elastic Beanstalk. The platform handles the OS and web server, you just provide the code:",
+            "codeSnippet": "eb init my-app --platform node.js --region us-east-1\neb create my-app-env\neb deploy",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "PaaS Security Best Practices ✅",
+            "content": "- **Use managed databases** (e.g., AWS RDS) to offload patching.\n- **Restrict outbound traffic** from your app – no need to call arbitrary endpoints.\n- **Scan dependencies** for known vulnerabilities (OWASP Dependency‑Check).\n- **Enable logging** to monitor abnormal behaviour.\n\n*PaaS reduces your attack surface, but it doesn't eliminate your responsibility.*"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "tip",
+            "title": "Pro Tip 💡",
+            "content": "## Keep Secrets Out of Code\nNever hardcode API keys or database passwords in your app. Use environment variables or a managed secrets manager (AWS Secrets Manager, Azure Key Vault). PaaS platforms natively support them."
+        }
+    ]
+}

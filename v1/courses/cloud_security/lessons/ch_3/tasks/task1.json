@@ -1,0 +1,15 @@
+{
+    "id": "task1",
+    "chapterId": "ch_3",
+    "title": "Build a Responsibility Matrix",
+    "description": "Create a table mapping security tasks to provider vs. customer for IaaS, PaaS, and SaaS.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario\nYour team is preparing for a cloud audit and needs a clear, at‑a‑glance reference of who does what. They want you to prepare a matrix covering three representative services:\n- **AWS EC2** (IaaS)\n- **AWS RDS** (PaaS)\n- **Microsoft 365** (SaaS)\n\n### Your Task\nCreate a table with the following rows:\n- Physical security of hardware\n- Patching of the operating system\n- Application security (code and libraries)\n- Data encryption at rest\n- Network firewall configuration\n- IAM (user access management)\n\nFor each row, mark whether the **Provider** or the **Customer** is responsible for the given service. Add a short justification for any row where responsibility might be unclear.\n\n*Use the concepts learned in this chapter. You can use Markdown table syntax.*",
+    "hints": [
+        "Physical security is always the provider's job.",
+        "OS patching is only the customer's job in IaaS.",
+        "IAM is always the customer's responsibility, regardless of model."
+    ],
+    "expectedOutput": "A markdown table with columns for the task and each service, clearly indicating Provider/Customer. Explanations for tricky rows like data encryption in RDS (customer must enable) and in M365 (customer manages user access to data).",
+    "solutionCode": "| Task | AWS EC2 (IaaS) | AWS RDS (PaaS) | Microsoft 365 (SaaS) |\n|------|----------------|----------------|----------------------|\n| Physical security | Provider | Provider | Provider |\n| OS patching | Customer (guest OS) | Provider (managed OS) | Provider (fully managed) |\n| Application security | Customer (your apps) | Customer (your database schemas, queries) | Provider (app stack) – but Customer for data governance |\n| Data encryption at rest | Customer (EBS volume encryption config) | Customer (enable encryption, choose keys) | Customer (configure IRM policies, DLP) |\n| Network firewall config | Customer (security groups) | Customer (security groups for DB access) | Provider (network layer) |\n| IAM | Customer (IAM users, roles) | Customer (IAM database auth, master password) | Customer (Azure AD / M365 admin roles) |\n\n**Note**: While the provider manages the underlying infrastructure, the customer is always responsible for configuring security settings appropriately and managing user access to data."
+}

@@ -1,0 +1,110 @@
+{
+    "id": "l2",
+    "chapterId": "ch_4",
+    "title": "Users, Groups, and Roles 👥",
+    "description": "The three pillars of IAM – who can access your cloud?",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "IAM Users: The Individual Passports 🛂",
+            "content": "## One Person, One Account\n\n- An **IAM user** represents a single person or application that needs to interact with your cloud.\n- It has a **name** and **credentials** (password, access keys for CLI/API).\n- **Best practice**: Create an IAM user for every human who needs access. Do not share credentials.\n- Users are assigned **permissions** through policies (directly or via groups).\n\n*Think of an IAM user as an employee badge – unique, traceable, revocable.*"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Users Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Why should every person have their own IAM user account?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "To save costs",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "To enable individual accountability and least privilege",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Because the cloud provider mandates it",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It's only needed for the admin",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Individual accounts allow you to track actions and assign minimal permissions per person.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "IAM Groups: Permissions at Scale 📦",
+            "content": "## Manage Users in Batches\n\n- A **group** is a collection of IAM users.\n- You attach policies to the group, and all group members inherit those permissions.\n- Example: \"Developers\" group gets access to dev servers and code repos; \"Auditors\" group gets read‑only access to logs.\n- Groups make it easy to onboard new team members – just add them to the right groups.\n\n*Never attach policies directly to individuals if you can use a group. It's like giving everyone a key vs. giving the team a keychain they all share – but traceable per person.*"
+        },
+        {
+            "id": "s_l2_4",
+            "type": "quiz",
+            "title": "Groups Pop Quiz 📝",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "true_false",
+                "question": "An IAM user can belong to multiple groups, receiving permissions from all of them.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Yes, users can be in multiple groups, and permissions accumulate (union of all policies).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "IAM Roles: Temporary Badges for Services 🎭",
+            "content": "## Permissions Without Permanent Credentials\n\n- A **role** is an identity with specific permissions that can be assumed by anyone who needs it, for a short time.\n- **No long‑term password or access key** – roles provide temporary security credentials.\n- Used heavily by:\n  - AWS services (EC2 instance role, Lambda execution role)\n  - Cross‑account access\n  - Federation (users from external identity providers)\n\n*Role is like a costume: you put it on to do a job, then take it off. No one walks around permanently in a superhero suit.*"
+        },
+        {
+            "id": "s_l2_6",
+            "type": "code",
+            "title": "Assume Role in AWS CLI 🛠️",
+            "content": "Command to assume a role and get temporary credentials:",
+            "codeSnippet": "aws sts assume-role \\\n  --role-arn \"arn:aws:iam::123456789012:role/ReadOnlyRole\" \\\n  --role-session-name \"MySession\"",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_7",
+            "type": "text",
+            "title": "Users vs Roles: When to Use Which? ⚖️",
+            "content": "| Feature | IAM User | IAM Role |\n|---------|----------|----------|\n| Credentials | Long‑term (password, keys) | Temporary (via STS) |\n| Best for | Humans, long‑lived service accounts | EC2 instances, Lambda, cross‑account access |\n| Management | Passwords need rotation | No password to manage – credentials auto‑rotate |\n| External access | Not ideal (federation better) | Perfect for federation |\n\n*Today's best practice: prefer roles over users wherever possible, especially for machine‑to‑machine communication.*"
+        },
+        {
+            "id": "s_l2_8",
+            "type": "tip",
+            "title": "Role‑First Mindset 🧠",
+            "content": "## Shift Your Thinking\nWhenever you need to grant permissions to a service or an external entity, ask: \"Can I use a role?\" If the answer is yes, use it. It's more secure by default."
+        }
+    ]
+}

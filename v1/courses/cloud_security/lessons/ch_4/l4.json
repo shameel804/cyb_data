@@ -1,0 +1,107 @@
+{
+    "id": "l4",
+    "chapterId": "ch_4",
+    "title": "Least Privilege & Best Practices 🥇",
+    "description": "How to grant exactly the right amount of power, and nothing more.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Principle of Least Privilege 🚪",
+            "content": "# Give Only What's Needed\n\n**Least Privilege** means a user, group, or role gets the **minimum permissions** required to do its job – no more, no less.\n\n- If someone only needs to read reports, give them `s3:GetObject`, not `s3:*`.\n- If an application only writes logs to a bucket, grant `s3:PutObject` to that specific bucket, not all buckets.\n\n*It limits the blast radius: if a credential is compromised, the attacker can't do much.*"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Least Privilege Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "A developer needs to view EC2 instance metrics. What's the most appropriate permission?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "ec2:*",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "cloudwatch:GetMetricStatistics",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "ec2:StartInstances",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "AdministratorAccess",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "They only need to read metrics, not start/stop instances or access all services.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "IAM Best Practices 📋",
+            "content": "## The Golden Rules\n\n1. **Lock away the root user** – use it only for tasks that require it (e.g., account recovery).\n2. **Enforce MFA** – for all human users, especially privileged ones.\n3. **Use groups to assign permissions** – avoid inline policies directly on users.\n4. **Rotate credentials regularly** – access keys should be rotated every 90 days.\n5. **Use IAM roles for applications on EC2/Lambda** – never embed long‑term keys in code.\n6. **Enable IAM Access Analyzer** – to identify resources shared externally.\n7. **Set permissions boundaries** – to prevent privilege escalation.\n8. **Monitor with CloudTrail** – every IAM action is logged; review logs for anomalies.\n\n*These aren't suggestions; they're the minimum.*"
+        },
+        {
+            "id": "s_l4_4",
+            "type": "quiz",
+            "title": "Credential Hygiene 🧹",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "It's safe to embed long‑term access keys in a mobile app because the code is compiled.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "No. Compiled code can be decompiled. Use temporary credentials via roles or token vending machines.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "How to Implement Least Privilege in Practice 🛠️",
+            "content": "### Step‑by‑Step\n\n1. **Start with no permissions** – add only what breaks.\n2. **Use the IAM policy simulator** (AWS) or built‑in tester (Azure) to verify policies.\n3. **Review CloudTrail logs** to see what actions users are actually performing, then trim unused permissions.\n4. **Use access advisor** – AWS IAM shows when a service was last accessed; remove stale permissions.\n5. **Implement just‑in‑time access** for emergencies – grant temporary elevated permissions that expire automatically."
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "Tool Tip: Access Advisor 💡",
+            "content": "In the AWS IAM console, click on a user or role and view the \"Access Advisor\" tab. It shows you the services they accessed and when. If they haven't used a service in 90 days, revoke that permission!"
+        },
+        {
+            "id": "s_l4_7",
+            "type": "text",
+            "title": "Permissions Boundaries: A Safety Net 🛡️",
+            "content": "- A permissions boundary is an advanced IAM feature that defines the **maximum permissions** an identity can ever have, even if a more permissive policy is attached.\n- Example: You allow developers to create IAM roles, but set a permissions boundary so they can only create roles with read‑only access. They can't accidentally create an admin role.\n- *Use boundaries to delegate safely.*"
+        },
+        {
+            "id": "s_l4_8",
+            "type": "warning",
+            "title": "Common Mistake! 🚨",
+            "content": "## Granting `iam:PassRole` Too Broadly\nIf a user can pass any role to a service (e.g., EC2), they could pass an admin role and escalate privileges. Always restrict `iam:PassRole` to specific roles and resources."
+        }
+    ]
+}

@@ -1,0 +1,102 @@
+{
+    "id": "l5",
+    "chapterId": "ch_4",
+    "title": "MFA, Federation & Identity Providers 🌐",
+    "description": "Leverage external identities and add that crucial second factor.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Multi‑Factor Authentication (MFA) 🔐",
+            "content": "# Something You Know + Something You Have\n\nMFA adds an extra layer of protection beyond just a password:\n- **Knowledge factor**: Password, PIN.\n- **Possession factor**: Smartphone authenticator app, hardware security key (YubiKey), SMS (less secure).\n- **Inherence factor** (biometric): Fingerprint, face ID (usually combined with possession).\n\nEven if your password is stolen, the attacker can't log in without the second factor. **Enable MFA for every human IAM user.**"
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "MFA Smarts 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "multiple_choice",
+                "question": "Which is the most secure second factor for MFA?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "SMS text message",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Hardware security key (U2F/FIDO2)",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Email OTP",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Security question",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Hardware keys are phishing‑resistant and immune to SIM‑swap attacks.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Federation: One Login to Rule Them All 🔄",
+            "content": "## Your Corporate Credentials in the Cloud\n\n- **Federation** allows users from an external identity provider (IdP) to access cloud resources without creating separate IAM users.\n- **IdP**: Active Directory, Okta, Ping Identity, Google Workspace.\n- **SAML 2.0** and **OpenID Connect (OIDC)** are the common protocols.\n- **Benefits**: Centralised user management, single sign‑on (SSO), automatic provisioning/deprovisioning.\n\n*When someone leaves the company, disable their AD account, and they lose cloud access instantly.*"
+        },
+        {
+            "id": "s_l5_4",
+            "type": "text",
+            "title": "Federation in Practice: AWS IAM Identity Center (formerly SSO) 🏢",
+            "content": "1. You connect your corporate directory (Active Directory or external IdP).\n2. Assign users or groups to AWS accounts and permission sets.\n3. Users sign in once via the portal and get temporary credentials to all assigned accounts.\n\n*No more long‑lived IAM user keys scattered across laptops. Clean, temporary, audited access.*"
+        },
+        {
+            "id": "s_l5_5",
+            "type": "quiz",
+            "title": "Federation Fill‑in ✍️",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "fill_blank",
+                "question": "The process of using an external identity provider to access cloud resources is called ________.",
+                "options": [
+                    "encryption",
+                    "federation",
+                    "authorization",
+                    "provisioning"
+                ],
+                "correctAnswer": "federation",
+                "explanation": "Federation establishes trust between your identity system and the cloud provider.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_6",
+            "type": "text",
+            "title": "Identity Providers & Protocols 🔌",
+            "content": "| Protocol | Typical Use |\n|----------|-------------|\n| SAML 2.0 | Enterprise SSO, web browser access to AWS Console |\n| OpenID Connect | Mobile apps, API access, modern web apps |\n| OAuth 2.0 | Delegated authorization (\"Login with Google\") |\n\n- AWS supports both SAML and OIDC for federation.\n- Azure AD uses SAML/WS‑Fed/OIDC for Azure services.\n- GCP integrates with external IdPs via Workforce Identity Federation.\n\n*Know the protocol that fits your use case.*"
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Best Practices for Federation & MFA 🌟",
+            "content": "- **Enforce MFA at the IdP level** – this protects all connected cloud accounts at once.\n- **Use temporary credentials** – roles and federation eliminate static keys.\n- **Enable conditional access policies** – require MFA only when risk is elevated (e.g., unfamiliar location).\n- **Monitor federation logs** – track who assumed which role and when.\n\n*Centralized identity = centralized control. Make it your goal.*"
+        },
+        {
+            "id": "s_l5_8",
+            "type": "tip",
+            "title": "Final IAM Challenge 🏆",
+            "content": "## Aim for Passwordless\nModern cloud IAM is moving toward passwordless authentication (FIDO2 keys, biometrics). Start exploring these now – they're the most secure and user‑friendly option."
+        }
+    ]
+}

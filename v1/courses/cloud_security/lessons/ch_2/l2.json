@@ -1,0 +1,69 @@
+{
+    "id": "l2",
+    "chapterId": "ch_2",
+    "title": "Infrastructure as a Service (IaaS) ⚙️",
+    "description": "Virtual machines, storage, and networking – the building blocks.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "What Is IaaS? 🖥️",
+            "content": "## The Virtual Data Centre\n\n**Infrastructure as a Service** delivers fundamental computing resources over the internet:\n\n- **Virtual machines (VMs)** – AWS EC2, Azure Virtual Machines, Google Compute Engine.\n- **Storage** – Object (S3), block (EBS), file (EFS).\n- **Networking** – Virtual Private Clouds (VPCs), load balancers, VPNs.\n\nYou rent these pieces like Lego bricks and assemble them into your own custom environment. You have **almost full control** but also **almost full security responsibility**."
+        },
+        {
+            "id": "s_l2_2",
+            "type": "code",
+            "title": "IaaS in Action 🛠️",
+            "content": "Launching a simple EC2 instance via AWS CLI. Notice how *you* define the security group rules (firewall):",
+            "codeSnippet": "aws ec2 run-instances \\\n  --image-id ami-0abcdef12345 \\\n  --instance-type t2.micro \\\n  --security-group-ids sg-903004f8 \\\n  --key-name MyKeyPair",
+            "codeLanguage": "bash",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l2_3",
+            "type": "quiz",
+            "title": "Control & Responsibility 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "true_false",
+                "question": "With IaaS, the cloud provider is responsible for installing security patches on your virtual machines.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "In IaaS, the customer manages the OS and its updates. The provider secures only the physical infrastructure and hypervisor.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Your Security To‑Do List in IaaS 📝",
+            "content": "## What You Must Secure\n\n1. **Guest OS** – Patch regularly, harden configurations.\n2. **Applications** – Code securely, scan for vulnerabilities.\n3. **Data** – Encrypt at rest and in transit.\n4. **Network** – Configure security groups, NACLs, and routing tables correctly.\n5. **Access Management** – Enforce strong IAM policies, enable MFA.\n\n*If you can misconfigure it, attackers will find it.*"
+        },
+        {
+            "id": "s_l2_5",
+            "type": "text",
+            "title": "Common IaaS Security Pitfalls 🕳️",
+            "content": "- **Exposed SSH/RDP ports** – Opening port 22 or 3389 to 0.0.0.0/0 invites brute‑force attacks.\n- **Unencrypted snapshots** – Public EBS snapshots can leak entire disk images.\n- **Default credentials** – Leaving default admin passwords on pre‑built images.\n\n*Always follow the principle of least privilege and close unnecessary ports.*"
+        },
+        {
+            "id": "s_l2_6",
+            "type": "warning",
+            "title": "Warning! 🚨",
+            "content": "## The 'Admin Mistake' Magnet\nIaaS gives you the most flexibility, but also the largest attack surface. A single misconfigured security group can expose thousands of servers. **Automate audits and use Infrastructure as Code (IaC) to avoid drift.**"
+        }
+    ]
+}

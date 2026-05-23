@@ -1,0 +1,95 @@
+{
+    "id": "l4",
+    "chapterId": "ch_1",
+    "title": "Core Security Principles 🧱",
+    "description": "Defence in depth, least privilege, and the zero trust mindset.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "Defence in Depth 🧅",
+            "content": "## Layers Like an Onion\n\nRelying on one security control is risky. **Defence in depth** means stacking multiple layers so that if one fails, others still hold.\n\n- Layer 1: Network firewalls\n- Layer 2: Identity & access management\n- Layer 3: Encryption at rest and in transit\n- Layer 4: Logging and monitoring\n- Layer 5: Patching and vulnerability management\n\n*The goal: no single point of failure can compromise your entire system.*"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Layer Logic 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "Defence in depth is best described as...",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Using one very strong firewall",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Relying on the cloud provider's security",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Stacking multiple, independent security controls",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Encrypting data only",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "It’s the strategy of layering controls so a breach of one layer doesn’t expose everything.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Principle of Least Privilege 🚪",
+            "content": "## Only the Keys You Need\n\n- Give every user, application, and service **exactly** the permissions required to do its job – nothing more.\n- If an account is compromised, the damage is limited.\n- In AWS, this means using IAM policies that start with **deny** and explicitly allow only necessary actions.\n\n*Think of a hotel keycard that opens your room only, not the entire hotel.*"
+        },
+        {
+            "id": "s_l4_4",
+            "type": "quiz",
+            "title": "Least Privilege Pop Quiz 📝",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "True or False: A developer who only writes code should have full admin access to the production database.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "That’s excessive. They need read access to dev data maybe, but not admin over production – least privilege.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "Zero Trust: Never Trust, Always Verify 🔎",
+            "content": "## The Modern Security Mantra\n\n- **Assume breach** – treat every request as if it originates from an untrusted network.\n- **Verify explicitly** – authenticate and authorise based on all available data (user identity, device health, location).\n- **Least privilege access** – grant just‑in‑time, just‑enough access.\n\n*Zero trust is not a product; it’s a strategy that underpins every control you’ll learn in this course.*"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "tip",
+            "title": "Build Your Security Mindset 🧠",
+            "content": "## Start Applying These Today\n- When designing anything, ask: \"How would I defend this in depth?\"\n- When assigning permissions, ask: \"Is this the minimum they need?\"\n- When architecting, assume the network is already compromised."
+        }
+    ]
+}

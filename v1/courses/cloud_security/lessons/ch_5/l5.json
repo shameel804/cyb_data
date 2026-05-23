@@ -1,0 +1,116 @@
+{
+    "id": "l5",
+    "chapterId": "ch_5",
+    "title": "Key Management: Crown Jewels of Encryption 👑",
+    "description": "Master KMS, envelope encryption, and key rotation.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l5_1",
+            "type": "text",
+            "title": "Why Key Management Matters 🔐",
+            "content": "# Encryption is Only as Good as Key Control\n\nIf an attacker gets your encryption key, all the encrypted data becomes readable. Key management is about:\n- **Generating** cryptographically strong keys.\n- **Storing** them securely (never in source code!).\n- **Controlling access** – who can use the key.\n- **Rotating** keys regularly to limit exposure.\n- **Auditing** key usage.\n\nCloud providers offer managed Key Management Services (KMS) to handle this complexity."
+        },
+        {
+            "id": "s_l5_2",
+            "type": "quiz",
+            "title": "Key Importance 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_1",
+                "type": "true_false",
+                "question": "If you use AWS SSE‑S3 encryption, you have full control over the encryption keys and their access policies.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "SSE‑S3 is fully managed by AWS; you don't see or control the keys. For control, use SSE‑KMS or client‑side encryption.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_3",
+            "type": "text",
+            "title": "Envelope Encryption: The Industry Standard 📬",
+            "content": "## Two Layers of Keys\n\nEncrypting massive data directly with a key management service would be slow and expensive. Envelope encryption solves this:\n\n1. **Data key** – A symmetric key generated locally for each file or database cell.\n2. **Master key (CMK)** – A key stored in KMS that encrypts/decrypts the data keys.\n\nFlow:\n- To encrypt: generate a data key, encrypt the data with it, then encrypt the data key with the CMK, and store both together.\n- To decrypt: use CMK to decrypt the data key, then use data key to decrypt the data.\n\n*The CMK never leaves KMS. Data keys are ephemeral. This is how most cloud encryption works under the hood.*"
+        },
+        {
+            "id": "s_l5_4",
+            "type": "code",
+            "title": "Envelope Encryption with AWS KMS (Python) 🐍",
+            "content": "Encrypting a file using envelope encryption pattern:",
+            "codeSnippet": "import boto3\nfrom cryptography.fernet import Fernet\n\nkms = boto3.client('kms', region_name='us-east-1')\n\n# 1. Generate a data key\nresponse = kms.generate_data_key(KeyId='alias/my-key', KeySpec='AES_256')\nplaintext_data_key = response['Plaintext']\nencrypted_data_key = response['CiphertextBlob']\n\n# 2. Encrypt data with plaintext data key\ncipher = Fernet(plaintext_data_key)\nencrypted_file = cipher.encrypt(b'my secret data')\n\n# 3. Store encrypted_file and encrypted_data_key together",
+            "codeLanguage": "python",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l5_5",
+            "type": "text",
+            "title": "Key Hierarchy & Access Control 🏛️",
+            "content": "## Who Can Use the Key?\n\nEach KMS key has a **key policy** that defines which principals can administer the key and which can use it for encryption/decryption.\n\n- **Admin permissions**: Create, rotate, delete the key.\n- **Usage permissions**: Encrypt, Decrypt, GenerateDataKey.\n- **Separation of duties**: The person who manages the key is not the same person who encrypts data with it (in highly regulated environments).\n\n*Always grant least privilege on keys. A developer might need to encrypt data but should not be able to disable the key.*"
+        },
+        {
+            "id": "s_l5_6",
+            "type": "quiz",
+            "title": "Key Policy 📝",
+            "content": "",
+            "quizData": {
+                "id": "q_l5_2",
+                "type": "multiple_choice",
+                "question": "Which permission would you grant to an application that needs to read encrypted data, but never create new encrypted records?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "kms:Encrypt",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "kms:Decrypt",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "kms:CreateGrant",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "kms:GenerateDataKey",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Decrypt is needed to read. GenerateDataKey is for encryption (write) operations.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l5_7",
+            "type": "text",
+            "title": "Key Rotation 🔄",
+            "content": "## Why Rotate?\n\nKeys can be compromised over time (insider threat, leaked backup). Rotation limits the amount of data encrypted under a single key.\n\n- **Automatic rotation**: KMS can rotate the backing key annually (new key version). Old versions remain available for decryption, but new encryptions use the latest.\n- **Manual rotation**: You create a new key and re‑encrypt old data.\n\n*Enable automatic rotation on all CMKs unless you have a specific reason not to.*"
+        },
+        {
+            "id": "s_l5_8",
+            "type": "text",
+            "title": "Multi‑Cloud Key Management 🌐",
+            "content": "| Cloud | KMS Service | Key Types |\n|-------|-------------|-----------|\n| AWS | AWS KMS, CloudHSM | Customer managed, AWS managed |\n| Azure | Azure Key Vault, Dedicated HSM | Keys, secrets, certificates |\n| GCP | Cloud KMS, Cloud HSM | Symmetric, asymmetric keys |\n\n*Each supports envelope encryption, rotation policies, and integration with their storage services. The concepts translate seamlessly.*"
+        },
+        {
+            "id": "s_l5_9",
+            "type": "tip",
+            "title": "Never Share the CMK Private Key 🚫",
+            "content": "In KMS, the master key material never leaves the service. All cryptographic operations happen within KMS. This isolation is a fundamental security control."
+        }
+    ]
+}

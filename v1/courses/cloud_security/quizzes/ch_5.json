@@ -1,0 +1,260 @@
+{
+    "id": "quiz_ch_5",
+    "chapterId": "ch_5",
+    "title": "Chapter 5 Quiz: Data Protection",
+    "description": "Test your knowledge of encryption, key management, and DLP.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which state of data is protected by TLS?",
+            "options": [
+                "At rest",
+                "In transit",
+                "In use",
+                "All states equally"
+            ],
+            "correctAnswer": 1,
+            "explanation": "TLS encrypts data moving between two systems, i.e., data in transit."
+        },
+        {
+            "id": "q2",
+            "type": "fill_blank",
+            "question": "The encryption algorithm most commonly used for bulk data at rest in the cloud is ______.",
+            "options": [
+                "RSA",
+                "AES",
+                "SHA‑256",
+                "MD5"
+            ],
+            "correctAnswer": "AES",
+            "explanation": "AES (typically AES‑256) is the symmetric standard for encrypting large volumes of data."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "Hashing is a reversible process if you have the correct key.",
+            "correctAnswer": false,
+            "explanation": "Hashing is one‑way; it cannot be reversed to retrieve the original data."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What does SSE‑C stand for in AWS S3 encryption?",
+            "options": [
+                "Server‑Side Encryption with Customer‑provided keys",
+                "Secure Socket Encryption – Cloud",
+                "Standard Server Encryption – Certified",
+                "Simple Storage Encryption – Client"
+            ],
+            "correctAnswer": 0,
+            "explanation": "SSE‑C means the customer provides the encryption key; S3 uses it but doesn't store it."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "In envelope encryption, what encrypts the actual data?",
+            "options": [
+                "The master key (CMK)",
+                "A data key",
+                "The public key",
+                "A hash function"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A generated data key encrypts the bulk data; the master key encrypts the data key."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "AWS KMS can automatically rotate customer master keys, and old key versions remain available for decryption.",
+            "correctAnswer": true,
+            "explanation": "Automatic rotation creates a new backing key version; old versions are kept for decrypting previously encrypted data."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Which cloud service would you use to scan S3 buckets for credit card numbers?",
+            "options": [
+                "Amazon GuardDuty",
+                "AWS Shield",
+                "Amazon Macie",
+                "AWS WAF"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Macie is designed to discover and protect sensitive data in S3."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "A developer needs to encrypt data before sending it to S3 so that even AWS cannot decrypt it. Which approach should they use?",
+            "options": [
+                "SSE‑S3",
+                "SSE‑KMS",
+                "Client‑side encryption",
+                "Enable default bucket encryption"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Client‑side encryption means data is encrypted in the application before upload; AWS never sees the plaintext."
+        },
+        {
+            "id": "q9",
+            "type": "fill_blank",
+            "question": "The protocol used to secure web traffic (HTTPS) is ______.",
+            "options": [
+                "TLS",
+                "SSH",
+                "FTP",
+                "SMTP"
+            ],
+            "correctAnswer": "TLS",
+            "explanation": "TLS (Transport Layer Security) provides the encryption for HTTPS connections."
+        },
+        {
+            "id": "q10",
+            "type": "true_false",
+            "question": "A TLS certificate’s private key is meant to be shared with the client to prove the server’s identity.",
+            "correctAnswer": false,
+            "explanation": "The private key must remain secret on the server; only the public key is in the certificate and shared."
+        },
+        {
+            "id": "q11",
+            "type": "mcq",
+            "question": "Which AWS service can centrally manage and rotate SSL/TLS certificates for cloud resources?",
+            "options": [
+                "AWS KMS",
+                "AWS Certificate Manager (ACM)",
+                "AWS Secrets Manager",
+                "AWS IAM"
+            ],
+            "correctAnswer": 1,
+            "explanation": "ACM provisions, manages, and deploys public and private SSL/TLS certificates."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "A key policy in AWS KMS that allows `kms:Decrypt` but not `kms:Encrypt` follows which principle?",
+            "options": [
+                "Separation of duties",
+                "Least privilege",
+                "Defense in depth",
+                "Both B and C"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Granting only the necessary permissions is least privilege; separating encrypt from decrypt can also enforce separation of duties."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "Data Loss Prevention (DLP) tools can prevent sensitive data from being uploaded to unauthorized cloud storage.",
+            "correctAnswer": true,
+            "explanation": "DLP monitors and can block data transfers that violate policies."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "What is the primary purpose of rotating encryption keys?",
+            "options": [
+                "To reduce cloud costs",
+                "To limit the amount of data encrypted under a single key",
+                "To increase encryption speed",
+                "To comply with all regulations"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Key rotation reduces the impact if a key is compromised, as only a subset of data is affected."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "Which Azure service is used for key, secret, and certificate management?",
+            "options": [
+                "Azure AD",
+                "Azure Key Vault",
+                "Azure Policy",
+                "Azure Sentinel"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Azure Key Vault safeguards cryptographic keys and other secrets."
+        },
+        {
+            "id": "q16",
+            "type": "fill_blank",
+            "question": "In envelope encryption, the ______ key never leaves the KMS.",
+            "options": [
+                "data",
+                "master",
+                "session",
+                "public"
+            ],
+            "correctAnswer": "master",
+            "explanation": "The CMK (master key) stays inside KMS; only data keys are used outside."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "What is a common method for DLP to identify credit card numbers?",
+            "options": [
+                "Checking file extensions",
+                "Pattern matching with regular expressions and Luhn check",
+                "Monitoring CPU usage",
+                "Blocking port 443"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Credit card numbers follow a known format that can be matched with regex and validated via the Luhn algorithm."
+        },
+        {
+            "id": "q18",
+            "type": "true_false",
+            "question": "Google Cloud encrypts all data at rest by default, so no customer action is needed for compliance with any standard.",
+            "correctAnswer": false,
+            "explanation": "Default encryption exists, but customers still need to manage keys for specific compliance requirements (e.g., customer‑managed keys) and ensure access controls."
+        },
+        {
+            "id": "q19",
+            "type": "mcq",
+            "question": "What is a crucial element of a data classification strategy?",
+            "options": [
+                "Assigning sensitivity labels like Confidential or Public",
+                "Using only one cloud provider",
+                "Disabling encryption for performance",
+                "Allowing all employees full access"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Labels help automate security controls and DLP policies based on data sensitivity."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "Which of the following would be considered data at rest?",
+            "options": [
+                "An email traveling over the internet",
+                "A file stored on an encrypted EBS volume",
+                "A database query being processed in memory",
+                "A WebSocket message"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Data stored on a disk or SSD is data at rest, even if the disk is encrypted."
+        },
+        {
+            "id": "q21",
+            "type": "true_false",
+            "question": "You should embed KMS decryption permissions directly in your application code to simplify deployment.",
+            "correctAnswer": false,
+            "explanation": "Permissions should be managed via IAM roles and key policies, not hardcoded credentials in code."
+        },
+        {
+            "id": "q22",
+            "type": "mcq",
+            "question": "Which statement best describes envelope encryption’s advantage?",
+            "options": [
+                "It uses only asymmetric keys for speed.",
+                "It allows encrypting large data sets without sending all data to a central KMS.",
+                "It eliminates the need for key management.",
+                "It is only used for in‑transit data."
+            ],
+            "correctAnswer": 1,
+            "explanation": "Envelope encryption keeps the heavy lifting local while protecting the data key with a remote KMS."
+        }
+    ]
+}

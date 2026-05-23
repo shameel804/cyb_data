@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_4",
+    "title": "Design a Federation Architecture",
+    "description": "Sketch how your company could use SSO to manage cloud access.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario\nYour company, Acme Corp, uses Microsoft Active Directory on‑premises for employee accounts. They have recently adopted AWS and want to avoid creating separate IAM users. They need SSO so employees can use their existing AD credentials to access the AWS Console and CLI.\n\n### Your Task\nDescribe a high‑level architecture that includes:\n- The identity provider and protocol.\n- How AWS will trust the IdP.\n- How permissions will be assigned to different teams (developers vs. auditors).\n- How the solution ensures that when an employee leaves, AWS access is revoked.\n\n*You don’t need to write code; a text description of components and data flow is sufficient.*",
+    "hints": [
+        "AWS IAM Identity Center (formerly AWS SSO) can connect to Active Directory via SAML.",
+        "Use permission sets in Identity Center to map to IAM roles.",
+        "Disabling the AD account immediately prevents federation login."
+    ],
+    "expectedOutput": "A description using AWS IAM Identity Center with SAML federation from on‑prem AD. AD is the IdP. AWS Identity Center syncs users/groups. Developers get a permission set with developer rights; auditors get read‑only. Revocation happens at AD level.",
+    "solutionCode": "Architecture:\n- **Identity Provider (IdP)**: On‑premises Active Directory, exposed via AD FS or AWS Managed Microsoft AD, using SAML 2.0.\n- **AWS Service**: AWS IAM Identity Center (successor to AWS SSO), configured with SAML trust to the IdP.\n- **User Sync**: Identity Center syncs users and groups from AD (or uses SCIM for automatic provisioning).\n- **Permission Sets**: In Identity Center, create \"Developer\" permission set (grants access to dev AWS accounts with appropriate policies) and \"Auditor\" permission set (read‑only access to all accounts). Assign these to the corresponding AD groups.\n- **Access Flow**: Employee logs into the AWS access portal URL, is redirected to AD for authentication (with MFA), and after successful login, chooses an AWS account and permission set. Identity Center federates a temporary IAM role session.\n- **Revocation**: When an employee is terminated, disabling their AD account prevents future SAML authentication. Existing sessions expire after the configured duration (1 hour max).\n- **Benefits**: No separate IAM users, centralized deprovisioning, and temporary credentials only."
+}

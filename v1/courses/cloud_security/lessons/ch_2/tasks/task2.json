@@ -1,0 +1,15 @@
+{
+    "id": "task2",
+    "chapterId": "ch_2",
+    "title": "Choose the Right Deployment Model",
+    "description": "Analyse a business scenario and recommend a deployment strategy with justification.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario\n\"HealthVault\", a medium‑sized healthcare provider, must store patient medical records and run analytics. Regulations (HIPAA) demand that patient data never leaves the country and that the company maintains full audit control. They also need to host a public‑facing appointment booking website that must scale during flu season.\n\n### Your Task\n- Propose a **deployment model** (public, private, hybrid, etc.) that best fits HealthVault's requirements.\n- Explain **why** you chose that model, referencing specific requirements (data residency, scalability, audit).\n- Mention which **service model** (IaaS, PaaS, SaaS) you would use for the analytics system and for the booking website, and briefly explain your choices.",
+    "hints": [
+        "Data residency and full audit point toward a private environment for sensitive data.",
+        "Scalable public‑facing website fits public cloud perfectly.",
+        "Combining them = hybrid cloud."
+    ],
+    "expectedOutput": "A clear recommendation of a hybrid cloud. The sensitive analytics system runs on a private cloud (or dedicated IaaS in a private segment) for control; the booking website on public PaaS for scalability. Explanation ties back to HIPAA, data residency, and scaling requirements.",
+    "solutionCode": "I recommend a **hybrid cloud** deployment model.\n\n- **Sensitive patient records & analytics**: Hosted on a **private cloud** (or dedicated IaaS within a private VPC in a public cloud, with strict data residency controls). This meets HIPAA's data residency and full audit requirements because the company retains exclusive control over the infrastructure and can implement custom logging and monitoring.\n- **Public‑facing appointment booking website**: Deployed on a **public PaaS** (e.g., AWS Elastic Beanstalk or Azure App Service). This allows auto‑scaling to handle seasonal spikes, reduces server management, and keeps the sensitive data separate.\n\nBy linking the two with secure, encrypted connections and a unified identity provider, HealthVault gets both security and agility."
+}

@@ -1,0 +1,95 @@
+{
+    "id": "l4",
+    "chapterId": "ch_3",
+    "title": "Where the Line Blurs: Practical Pitfalls 🚧",
+    "description": "Real‑world misunderstandings and how to never get caught off guard.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Grey Areas 🌫️",
+            "content": "## Not Everything Is Black and White\n\nSome services sit between IaaS and PaaS, causing confusion:\n\n- **Containers (ECS, EKS, AKS, GKE)**: If you manage the worker nodes, you own OS patching. If the provider manages them (Fargate, Autopilot), they own OS patching – but you own container images and network policies.\n- **Serverless (Lambda, Functions)**: Provider patches the runtime and scales. You secure the function code, dependencies, and the IAM role that gives it permissions.\n- **Managed Databases**: Provider patches the engine, but you configure the security group and enable encryption.\n\n*When in doubt, read the service‑specific shared responsibility doc.*"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "Scenario: AWS Lambda ⚡",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "multiple_choice",
+                "question": "A developer stores database credentials directly in Lambda environment variables. Whose responsibility is it to secure those credentials?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "AWS, because Lambda is a managed service",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The developer/customer",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Both share equal responsibility",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "No one – environment variables are inherently secure",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Even on a fully managed service, you are responsible for secure coding practices and handling secrets properly.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "Common Misunderstandings That Lead to Breaches 💥",
+            "content": "1. **\"The provider backs up my data.\"** – Some provide backup services, but you must configure and pay for them. Backups are your responsibility.\n2. **\"Encryption is on by default, so I'm safe.\"** – Default encryption may use provider‑managed keys. If you need compliance, you may need to manage your own keys.\n3. **\"The provider will block malicious traffic.\"** – They may offer DDoS protection (AWS Shield), but you must configure WAF, security groups, and network ACLs.\n4. **\"My data is in the cloud, so it's their problem if it leaks.\"** – Data classification, access controls, and monitoring for unusual downloads are on you."
+        },
+        {
+            "id": "s_l4_4",
+            "type": "quiz",
+            "title": "True or False: Backups 🗄️",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "true_false",
+                "question": "If I store files in Amazon S3, AWS automatically backs them up to a different region for disaster recovery.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "S3 replicates within a region for durability, but cross‑region replication and backups must be explicitly configured by the customer.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_5",
+            "type": "text",
+            "title": "Building Your Responsibility Matrix 📝",
+            "content": "## Proactive Defence\n\nFor every service you use, document:\n- Who patches the OS / runtime?\n- Who configures network access?\n- Who manages encryption keys?\n- Who monitors for unusual activity?\n\nTools like **AWS Config**, **Azure Policy**, and **Google Security Command Center** can audit configurations and flag when responsibilities are slipping.\n\n*Turn the model from a theoretical concept into a living, auditable practice.*"
+        },
+        {
+            "id": "s_l4_6",
+            "type": "tip",
+            "title": "Final Word 🏁",
+            "content": "## The One Question to Always Ask\nBefore deploying any resource, ask: **\"If this gets breached, will I call AWS, or will I blame myself?\"** If the answer is the latter, you know it’s your responsibility. Secure it now."
+        }
+    ]
+}

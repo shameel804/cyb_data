@@ -1,0 +1,14 @@
+{
+    "id": "task2",
+    "chapterId": "ch_5",
+    "title": "Create a KMS Key for an Application",
+    "description": "Define a CMK with appropriate key policy and rotation.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario\nYour microservice `order-service` needs to encrypt customer data in a DynamoDB table. You must create a Customer Managed Key (CMK) in AWS KMS with the following requirements:\n- Key alias: `alias/order-service-key`\n- The IAM role `order-service-role` should be allowed to generate data keys and decrypt (but not administer the key).\n- The security team account `arn:aws:iam::123456789012:role/SecurityAdmin` should be allowed to manage the key (enable rotation, describe, etc.) but NOT use it for encryption.\n- Automatic key rotation must be enabled.\n\n### Your Task\nWrite a key policy JSON that fulfills these permissions. Also, explain in 1-2 sentences why you would separate key administration from key usage.",
+    "hints": [
+        "Use two statements: one for administrators with kms:DescribeKey, kms:EnableKeyRotation, etc., and one for usage with kms:Decrypt, kms:GenerateDataKey.",
+        "Separation of duties ensures no single actor can both decrypt data and disable the key."
+    ],
+    "expectedOutput": "A JSON key policy with appropriate actions and principals, plus a short rationale.",
+    "solutionCode": "{\n  \"Version\": \"2012-10-17\",\n  \"Id\": \"key-policy-order-service\",\n  \"Statement\": [\n    {\n      \"Sid\": \"Allow administration by SecurityAdmin\",\n      \"Effect\": \"Allow\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::123456789012:role/SecurityAdmin\"\n      },\n      \"Action\": [\n        \"kms:DescribeKey\",\n        \"kms:EnableKeyRotation\",\n        \"kms:ListKeys\",\n        \"kms:CreateAlias\"\n      ],\n      \"Resource\": \"*\"\n    },\n    {\n      \"Sid\": \"Allow usage by order-service-role\",\n      \"Effect\": \"Allow\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::123456789012:role/order-service-role\"\n      },\n      \"Action\": [\n        \"kms:Decrypt\",\n        \"kms:GenerateDataKey\"\n      ],\n      \"Resource\": \"*\"\n    }\n  ]\n}\n\nSeparation rationale: By separating admin (who can delete/disable keys) from usage (who encrypts/decrypts data), we reduce the risk that a compromised application role could permanently lock or destroy the key, and it ensures dual control for critical actions."
+}

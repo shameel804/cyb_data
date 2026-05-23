@@ -1,0 +1,90 @@
+{
+    "id": "l1",
+    "chapterId": "ch_5",
+    "title": "Why Data Protection Matters 🛡️",
+    "description": "The CIA triad and data-centric security.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l1_1",
+            "type": "text",
+            "title": "Data Is the New Oil 🛢️",
+            "content": "# Protect the Crown Jewels\n\nEverything in the cloud exists to process, store, or transmit **data**. If an attacker breaches your network but your data is properly protected, the breach may be meaningless.\n\n- **Data-centric security** means putting data protection at the center of your strategy, not just perimeter defense.\n- The CIA triad applies directly:\n  - **Confidentiality** – Encryption\n  - **Integrity** – Hashing, digital signatures\n  - **Availability** – Backups, redundancy\n\n*When in doubt, follow the data.*"
+        },
+        {
+            "id": "s_l1_2",
+            "type": "quiz",
+            "title": "Data Focus 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_1",
+                "type": "multiple_choice",
+                "question": "Which security pillar is directly enforced by strong encryption?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Availability",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Confidentiality",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Integrity",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "All three equally",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Encryption primarily ensures that data remains unreadable to unauthorized parties – confidentiality.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_3",
+            "type": "text",
+            "title": "The Lifecycle of Data 🔄",
+            "content": "## Three States, One Goal\n\nData exists in three states, each requiring different protection:\n- **At Rest** – Stored on disk (databases, S3 buckets, EBS volumes).\n- **In Transit** – Moving across the network (between servers, to the browser).\n- **In Use** – Actively processed in memory (the hardest to protect).\n\nA complete data protection strategy addresses all three. This chapter focuses on **at rest** and **in transit**; later we touch on confidential computing for data in use."
+        },
+        {
+            "id": "s_l1_4",
+            "type": "quiz",
+            "title": "Data States 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l1_2",
+                "type": "fill_blank",
+                "question": "Data stored in an S3 bucket is considered data at ________.",
+                "options": [
+                    "rest",
+                    "transit",
+                    "use",
+                    "motion"
+                ],
+                "correctAnswer": "rest",
+                "explanation": "Data on a storage medium is data at rest.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l1_5",
+            "type": "text",
+            "title": "Data Classification: Know What You Protect 🏷️",
+            "content": "Not all data is equal. Label it:\n- **Public** – Press releases, marketing material.\n- **Internal** – Employee handbooks, project plans.\n- **Confidential** – Customer PII, financial records.\n- **Restricted** – Trade secrets, highly sensitive IP.\n\nClassification drives the strength of encryption, access controls, and DLP rules. *You can't protect what you haven't identified.*"
+        },
+        {
+            "id": "s_l1_6",
+            "type": "tip",
+            "title": "Start With a Data Inventory 📋",
+            "content": "List all your data stores (S3 buckets, RDS databases, DynamoDB tables). For each, answer: What classification? Who should access it? Is encryption enabled? This simple exercise often reveals shocking gaps."
+        }
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "id": "task1",
+    "chapterId": "ch_4",
+    "title": "Write a Least‑Privilege IAM Policy",
+    "description": "Create an S3 policy that grants read‑only access to a specific bucket for a developer.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario\nYour team has a bucket named `company-logs-2024` in AWS. A developer, `alex`, needs to download and list objects from this bucket for analysis. Alex should not be able to upload, delete, or access any other bucket.\n\n### Your Task\nWrite a JSON IAM policy that can be attached to Alex's user (or a group) that:\n- Allows `s3:GetObject` and `s3:ListBucket` on the bucket `company-logs-2024` only.\n- Uses the least privilege principle.\n- Does NOT grant any other permissions.\n\n*Assume the bucket ARN is `arn:aws:s3:::company-logs-2024`.*",
+    "hints": [
+        "Remember that ListBucket requires permission on the bucket ARN itself, while GetObject requires permission on the objects (/*).",
+        "Use two statements if necessary, one for the bucket and one for objects."
+    ],
+    "expectedOutput": "A valid JSON policy with Effect: Allow, two Actions (s3:GetObject and s3:ListBucket), and Resources scoped to the specific bucket and its objects.",
+    "solutionCode": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"s3:GetObject\"\n      ],\n      \"Resource\": \"arn:aws:s3:::company-logs-2024/*\"\n    },\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\n        \"s3:ListBucket\"\n      ],\n      \"Resource\": \"arn:aws:s3:::company-logs-2024\"\n    }\n  ]\n}"
+}

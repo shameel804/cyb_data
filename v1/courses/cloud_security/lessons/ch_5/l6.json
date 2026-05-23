@@ -1,0 +1,117 @@
+{
+    "id": "l6",
+    "chapterId": "ch_5",
+    "title": "Data Loss Prevention (DLP) & Classification 🏷️",
+    "description": "Identify sensitive data and stop it from leaking.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l6_1",
+            "type": "text",
+            "title": "What Is DLP? 🔍",
+            "content": "# Stop Data Leaks Before They Happen\n\n**Data Loss Prevention** refers to tools and processes that detect and prevent the unauthorized transfer of sensitive data outside the organization.\n\n- **In Use**: Monitor endpoints (copying to USB).\n- **In Motion**: Inspect network traffic (email, uploads).\n- **At Rest**: Scan cloud storage for exposed sensitive data (PII, credentials).\n\n*DLP is your safety net for when IAM policies and encryption aren't enough – human error or malice.*"
+        },
+        {
+            "id": "s_l6_2",
+            "type": "quiz",
+            "title": "DLP Basics 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_1",
+                "type": "multiple_choice",
+                "question": "DLP solutions primarily help enforce which aspect of data security?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Availability",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Confidentiality",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Performance",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Backup integrity",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "DLP aims to prevent confidential data from being exposed, preserving confidentiality.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_3",
+            "type": "text",
+            "title": "How DLP Identifies Sensitive Data 🔎",
+            "content": "## Detection Methods\n\n1. **Pattern Matching** – Regular expressions for credit card numbers (16‑digit patterns with Luhn check), SSNs, email addresses.\n2. **Keywords & Dictionaries** – Lists of project code names, secret labels.\n3. **Data Fingerprinting** – Hash of sensitive source data, then look for matching hash (impossible to reverse).\n4. **Machine Learning** – Trained models recognize documents that resemble confidential templates.\n\n*Cloud DLP services combine these to scan storage, databases, and even streaming data.*"
+        },
+        {
+            "id": "s_l6_4",
+            "type": "text",
+            "title": "Cloud DLP Tools 🛠️",
+            "content": "| Cloud | DLP Service | Key Features |\n|-------|-------------|--------------|\n| AWS | Amazon Macie | Scans S3 for PII, uses ML, alerts to Security Hub |\n| Azure | Microsoft Purview Information Protection | Classification labels, DLP policies across M365 and Azure |\n| GCP | Cloud Data Loss Prevention | API to classify, redact, de‑identify data in storage and pipelines |\n\n*These services help answer: \"Do I have any S3 buckets with publicly accessible credit card data?\"*"
+        },
+        {
+            "id": "s_l6_5",
+            "type": "quiz",
+            "title": "DLP Tool Match 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l6_2",
+                "type": "multiple_choice",
+                "question": "Which AWS service can automatically scan S3 buckets for personally identifiable information (PII)?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "AWS GuardDuty",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Amazon Macie",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "AWS Config",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "AWS Inspector",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Amazon Macie uses machine learning to discover and classify sensitive data in S3.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l6_6",
+            "type": "text",
+            "title": "Building a DLP Strategy 📝",
+            "content": "1. **Discover & Classify** – Find your sensitive data (Macie, Cloud DLP).\n2. **Monitor** – Set alerts for policy violations (e.g., bucket made public).\n3. **Protect** – Apply automated remediation: block public access, encrypt, or delete exposed data.\n4. **Educate** – Train teams on data handling policies.\n\n*DLP is not a one‑time project; it's an ongoing cycle as new data is created.*"
+        },
+        {
+            "id": "s_l6_7",
+            "type": "text",
+            "title": "Data Classification Labels 🏷️",
+            "content": "Apply metadata tags to cloud resources to automate DLP. For example:\n- **AWS Resource Tags**: `DataClassification: Confidential`\n- **Azure Information Protection labels**: `Confidential – Finance`\n- **GCP Data Catalog tags**\n\nPolicies can then say: \"Any S3 bucket tagged Confidential must be encrypted with a specific KMS key and not be public.\"\n\n*Tags are lightweight but powerful for governance.*"
+        },
+        {
+            "id": "s_l6_8",
+            "type": "tip",
+            "title": "Start With a Single Bucket 🪣",
+            "content": "Enable Amazon Macie on one production S3 bucket. You'll be amazed at what it finds – old CSV files with customer emails, log files with IP addresses. Fix those, then expand."
+        }
+    ]
+}

@@ -1,0 +1,273 @@
+{
+    "id": "quiz_ch_4",
+    "chapterId": "ch_4",
+    "title": "Chapter 4 Quiz: IAM Essentials",
+    "description": "Test your knowledge of identity, policies, roles, and IAM best practices.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "Which IAM component checks if a user is allowed to perform a specific action?",
+            "options": [
+                "Authentication",
+                "Authorization",
+                "Auditing",
+                "Accounting"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Authorization determines what an authenticated identity can do."
+        },
+        {
+            "id": "q2",
+            "type": "fill_blank",
+            "question": "The default state of IAM permissions before any policy is applied is ________ deny.",
+            "options": [
+                "explicit",
+                "implicit",
+                "default",
+                "conditional"
+            ],
+            "correctAnswer": "implicit",
+            "explanation": "IAM starts with an implicit deny; you must explicitly allow actions."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "An explicit deny in an IAM policy can be overridden by a later allow statement.",
+            "correctAnswer": false,
+            "explanation": "Explicit deny always takes precedence over any allow."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "What is the primary purpose of an IAM role?",
+            "options": [
+                "To provide long‑term passwords for applications",
+                "To grant temporary permissions to users or services",
+                "To store user profile information",
+                "To enable billing alerts"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Roles issue temporary security credentials and are not associated with a specific person permanently."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Which AWS IAM feature helps you identify unused permissions by showing last‑accessed timestamps?",
+            "options": [
+                "IAM Policy Simulator",
+                "Access Advisor",
+                "CloudTrail",
+                "AWS Config"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Access Advisor shows service last‑accessed information, helping you reduce permissions."
+        },
+        {
+            "id": "q6",
+            "type": "mcq",
+            "question": "What is the best practice for granting permissions to a group of developers?",
+            "options": [
+                "Attach policies directly to each user",
+                "Create an IAM group, attach policies to the group, and add developers to the group",
+                "Give all developers the AdministratorAccess policy",
+                "Use only resource‑based policies"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Using groups simplifies management and ensures consistency."
+        },
+        {
+            "id": "q7",
+            "type": "true_false",
+            "question": "You should routinely use the cloud account root user for everyday operations.",
+            "correctAnswer": false,
+            "explanation": "Root should be locked down with MFA and used only for tasks that require root."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "In AWS IAM policy JSON, which element specifies the API calls that are allowed or denied?",
+            "options": [
+                "Effect",
+                "Action",
+                "Resource",
+                "Condition"
+            ],
+            "correctAnswer": 1,
+            "explanation": "The 'Action' element lists the specific API operations."
+        },
+        {
+            "id": "q9",
+            "type": "fill_blank",
+            "question": "A policy that restricts access based on the user's IP address would use the ________ element.",
+            "options": [
+                "Action",
+                "Resource",
+                "Condition",
+                "Principal"
+            ],
+            "correctAnswer": "Condition",
+            "explanation": "Conditions define when a policy takes effect, e.g., based on source IP."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "Which protocol is commonly used for federated SSO to the AWS Management Console?",
+            "options": [
+                "OpenID Connect",
+                "SAML 2.0",
+                "OAuth 2.0",
+                "Kerberos"
+            ],
+            "correctAnswer": 1,
+            "explanation": "SAML 2.0 is the standard for web browser‑based SSO federation to AWS."
+        },
+        {
+            "id": "q11",
+            "type": "true_false",
+            "question": "Multi‑Factor Authentication (MFA) only protects against password theft; it cannot prevent phishing attacks.",
+            "correctAnswer": false,
+            "explanation": "Hardware security keys (U2F/FIDO2) can prevent phishing by verifying the site's origin. SMS‑based MFA is weaker."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "What is the most secure way for an EC2 application to access an S3 bucket?",
+            "options": [
+                "Store an IAM user's access keys in a configuration file on the instance",
+                "Hardcode the keys in the application source code",
+                "Attach an IAM role to the EC2 instance with the necessary permissions",
+                "Make the S3 bucket publicly readable"
+            ],
+            "correctAnswer": 2,
+            "explanation": "EC2 instance roles provide temporary credentials automatically without managing keys."
+        },
+        {
+            "id": "q13",
+            "type": "mcq",
+            "question": "Which of the following is NOT a type of AWS IAM policy?",
+            "options": [
+                "Identity‑based policy",
+                "Resource‑based policy",
+                "Permissions boundary",
+                "Network ACL"
+            ],
+            "correctAnswer": 3,
+            "explanation": "Network ACLs are a VPC networking feature, not an IAM policy type."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "The principle of least privilege recommends that you:",
+            "options": [
+                "Give users full admin access so they never face blockers",
+                "Grant only the permissions necessary to perform a task",
+                "Rotate passwords daily",
+                "Use only resource‑based policies"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Least privilege minimizes the potential damage from compromised credentials."
+        },
+        {
+            "id": "q15",
+            "type": "true_false",
+            "question": "In a federation scenario, when an employee leaves the company, their cloud access is automatically revoked if their corporate directory account is disabled.",
+            "correctAnswer": true,
+            "explanation": "Because cloud access is tied to the external identity, deactivating the corporate account cuts off access immediately."
+        },
+        {
+            "id": "q16",
+            "type": "mcq",
+            "question": "What does 'iam:PassRole' allow?",
+            "options": [
+                "Assume any role in the account",
+                "Attach a role to an AWS service (e.g., EC2) when launching a resource",
+                "Delete IAM roles",
+                "List all roles"
+            ],
+            "correctAnswer": 1,
+            "explanation": "iam:PassRole is required to pass a role to a service; it must be tightly controlled to prevent privilege escalation."
+        },
+        {
+            "id": "q17",
+            "type": "fill_blank",
+            "question": "An IAM ________ is a collection of users that receive the same permissions.",
+            "options": [
+                "role",
+                "group",
+                "policy",
+                "boundary"
+            ],
+            "correctAnswer": "group",
+            "explanation": "Groups let you manage permissions for multiple users at once."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "Which AWS service records API calls, including IAM actions, for auditing?",
+            "options": [
+                "AWS Config",
+                "Amazon CloudWatch",
+                "AWS CloudTrail",
+                "AWS Inspector"
+            ],
+            "correctAnswer": 2,
+            "explanation": "CloudTrail logs every API call made in the account, essential for IAM auditing."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "A user's permissions are the union of all policies attached to the user and to the groups they belong to.",
+            "correctAnswer": true,
+            "explanation": "Permissions are additive; the effective permissions are the combined set of all allowed actions."
+        },
+        {
+            "id": "q20",
+            "type": "mcq",
+            "question": "What is a key benefit of using IAM roles for cross‑account access?",
+            "options": [
+                "No need for passwords or long‑term access keys in the trusting account",
+                "Roles are permanent and never need to be updated",
+                "Roles automatically encrypt all data transfers",
+                "Cross‑account roles work only within the same region"
+            ],
+            "correctAnswer": 0,
+            "explanation": "Roles provide temporary credentials, eliminating the risk of long‑lived credentials being exposed."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "Which authentication factor is a 'something you are' factor?",
+            "options": [
+                "Password",
+                "Fingerprint",
+                "Hardware token",
+                "SMS code"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Biometrics, like fingerprints, are inherence factors ('something you are')."
+        },
+        {
+            "id": "q22",
+            "type": "true_false",
+            "question": "It is safe to use `\"Resource\": \"*\"` in a policy as long as the Action is limited to a single read‑only operation.",
+            "correctAnswer": false,
+            "explanation": "It depends. Even read‑only access to all resources might expose sensitive data. Always scope to specific resources."
+        },
+        {
+            "id": "q23",
+            "type": "mcq",
+            "question": "What does 'just‑in‑time' access mean in the context of IAM?",
+            "options": [
+                "Users log in only at specific times of day",
+                "Temporary elevated permissions are granted when needed and expire automatically",
+                "Passwords expire every hour",
+                "Access is granted after a manual approval only"
+            ],
+            "correctAnswer": 1,
+            "explanation": "JIT access reduces standing privileges, granting temporary access only for the required period."
+        }
+    ]
+}

@@ -1,0 +1,111 @@
+{
+    "id": "l2",
+    "chapterId": "ch_5",
+    "title": "Encryption 101: The Magic Lockbox 🔐",
+    "description": "Symmetric, asymmetric, and hashing – the building blocks.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l2_1",
+            "type": "text",
+            "title": "The Magic Lockbox Analogy 📦",
+            "content": "# What Is Encryption?\n\nEncryption transforms readable data (plaintext) into unreadable gibberish (ciphertext) using a secret key. Only someone with the key can reverse it.\n\n- **Symmetric encryption**: Same key locks and unlocks (like a padlock with one key). Fast and used for bulk data.\n- **Asymmetric encryption**: Two mathematically related keys – a public key to encrypt, a private key to decrypt (like a mailbox: anyone can drop mail in, but only the mailman with the key can take it out).\n- **Hashing**: One-way transformation – no key. Used to verify integrity (like a fingerprint of data).\n\n*Encryption is the reason you can safely type your credit card number online.*"
+        },
+        {
+            "id": "s_l2_2",
+            "type": "quiz",
+            "title": "Symmetric vs Asymmetric 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_1",
+                "type": "multiple_choice",
+                "question": "Which type of encryption uses the same key for encryption and decryption?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Asymmetric",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Symmetric",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Hashing",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Envelope",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Symmetric encryption uses a single shared secret key for both operations.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_3",
+            "type": "text",
+            "title": "Symmetric Encryption in the Cloud ⚡",
+            "content": "## AES – The Workhorse\n\n- The Advanced Encryption Standard (AES) is the most common symmetric algorithm. Cloud providers use **AES‑256** (256-bit key).\n- It's fast and secure for massive volumes of data.\n- **Use case**: Encrypting entire hard drives, database files, S3 objects.\n- **Challenge**: Key distribution – how do you securely share the secret key between parties? (That's where asymmetric encryption helps.)\n\n*Almost all cloud data at rest is encrypted with AES‑256.*"
+        },
+        {
+            "id": "s_l2_4",
+            "type": "text",
+            "title": "Asymmetric Encryption & SSL/TLS 🔄",
+            "content": "## RSA, ECC, and the Internet Lock\n\n- Asymmetric algorithms (RSA, ECC) use a key pair: public + private.\n- **Use case**: Establishing secure TLS connections to websites. The server's public key encrypts the session key, and only the server's private key can decrypt it.\n- Slower than symmetric, so it's typically used only to exchange a temporary symmetric key.\n- **Digital signatures**: The reverse – sign with private key, verify with public key. Proves authenticity and integrity.\n\n*When you see the padlock in your browser, asymmetric cryptography just helped set up a secure tunnel.*"
+        },
+        {
+            "id": "s_l2_5",
+            "type": "quiz",
+            "title": "Asymmetric Application 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l2_2",
+                "type": "multiple_choice",
+                "question": "In a TLS handshake, what is the role of the server's private key?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Encrypt all data sent to the server",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Decrypt the pre‑master secret sent by the client",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Sign the server's public key",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It is never used; only the public key is used",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The client encrypts a secret with the server's public key; only the private key can decrypt it, establishing a shared session key.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l2_6",
+            "type": "text",
+            "title": "Hashing: Integrity's Guardian ✅",
+            "content": "## One‑Way Street\n\n- **Hash functions** (SHA‑256, SHA‑3) take input of any size and produce a fixed‑size digest. Even a tiny change in input yields a completely different hash.\n- **No key required** – a hash cannot be reversed to reveal the original data.\n- **Use cases**: Password storage (store hash, not password), file integrity checks, blockchain.\n\n*If you download a software file, the vendor provides a hash. You hash the file and compare – if they match, the file wasn't tampered with.*"
+        },
+        {
+            "id": "s_l2_7",
+            "type": "tip",
+            "title": "Remember This ✨",
+            "content": "Symmetric = fast, same key. Asymmetric = secure key exchange, two keys. Hashing = integrity, no keys. Cloud data protection combines all three in clever ways."
+        }
+    ]
+}

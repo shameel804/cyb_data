@@ -1,0 +1,101 @@
+{
+    "id": "l3",
+    "chapterId": "ch_3",
+    "title": "Shared Responsibility in Azure & GCP 🌐",
+    "description": "How Microsoft Azure and Google Cloud define their boundaries.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "Azure: \"Security of the Platform\" vs \"Security on the Platform\" 🛡️",
+            "content": "## Microsoft's Take\n\nAzure's model is identical in spirit:\n- **Microsoft responsibility (security OF the platform)**: Physical hosts, network, data centres, and the hypervisor.\n- **Customer responsibility (security ON the platform)**: Guest OS, applications, data, endpoints, accounts, and access management.\n- **Nuance**: For managed services like Azure SQL Database, the boundary shifts – Microsoft handles OS and engine patches.\n\n*Same song, different singer.*"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "For an Azure Virtual Machine, who is responsible for encrypting the OS disk at rest?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Microsoft automatically encrypts all disks",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "The customer must enable and manage encryption",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "No one – Azure VMs are unencrypted by design",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "It is a shared task",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "Azure may offer default encryption for managed disks, but the customer is responsible for key management and verifying encryption settings.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Azure Shared Responsibility by Service Type 📋",
+            "content": "| Scenario | Microsoft | Customer |\n|----------|-----------|----------|\n| On‑premises data centre | Nothing | Everything |\n| IaaS (Virtual Machines) | Physical infra, hypervisor | OS, apps, NSG, data |\n| PaaS (Azure App Service) | OS, runtime, platform | App code, data, identity |\n| SaaS (Microsoft 365) | Application stack | Data classification, access governance |\n\n*The pattern is clear: the higher you go, the less you touch.*"
+        },
+        {
+            "id": "s_l3_4",
+            "type": "text",
+            "title": "GCP: \"Security of the Cloud\" & Beyond 🌩️",
+            "content": "## Google's Approach\n\nGCP uses the exact same terminology as AWS: \"security of the cloud\" (Google) vs \"security in the cloud\" (you).\n\n- **Google manages**: Hardware, network, physical security, and the software stack for managed services.\n- **You manage**: Your data, access policies, encryption keys (if using customer‑managed keys), and any application‑level security.\n- **Differentiator**: GCP strongly promotes encryption by default – data at rest is encrypted automatically, but you control the keys if you wish. That doesn't absolve you from key management if you bring your own keys (CMEK)."
+        },
+        {
+            "id": "s_l3_5",
+            "type": "quiz",
+            "title": "GCP Check 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "In Google Cloud, all data at rest is automatically encrypted, so the customer has no responsibility for encryption.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "GCP encrypts data at rest by default, but the customer is still responsible for managing access to that data and for any customer‑supplied encryption keys (CMEK).",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_6",
+            "type": "text",
+            "title": "Compute Engine vs. Google Kubernetes Engine (GKE) ⚙️",
+            "content": "## Two Levels of Responsibility\n\n- **Compute Engine (IaaS)**: You manage the VM, OS patches, and network tags (firewall). Google manages the physical host.\n- **GKE Standard (shared)**: You manage worker nodes (if using standard cluster) and the container images. Google manages the control plane.\n- **GKE Autopilot (PaaS‑ish)**: Google manages the nodes, OS, and control plane; you bring containers, network policies, and IAM.\n\n*See how the responsibility shifts as the service becomes more managed?*"
+        },
+        {
+            "id": "s_l3_7",
+            "type": "tip",
+            "title": "Cross‑Provider Consistency 💡",
+            "content": "## One Rule to Rule Them All\nRegardless of provider, **identity and access management (IAM) is ALWAYS your responsibility**. No provider will configure who can access your resources – that's your job. Master IAM, and you master cloud security."
+        }
+    ]
+}

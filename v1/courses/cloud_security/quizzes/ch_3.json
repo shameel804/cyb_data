@@ -1,0 +1,247 @@
+{
+    "id": "quiz_ch_3",
+    "chapterId": "ch_3",
+    "title": "Chapter 3 Quiz: The Shared Responsibility Model",
+    "description": "Test your understanding of who secures what in the cloud.",
+    "passingScore": 70,
+    "xpReward": 50,
+    "questions": [
+        {
+            "id": "q1",
+            "type": "mcq",
+            "question": "The phrase 'security OF the cloud' refers to:",
+            "options": [
+                "The customer's data encryption",
+                "The provider's physical and infrastructure security",
+                "Network security groups",
+                "IAM user policies"
+            ],
+            "correctAnswer": 1,
+            "explanation": "'Of the cloud' is the provider's responsibility – physical hardware, network, and facilities."
+        },
+        {
+            "id": "q2",
+            "type": "fill_blank",
+            "question": "The customer is responsible for security _____ the cloud.",
+            "options": [
+                "of",
+                "in",
+                "around",
+                "beyond"
+            ],
+            "correctAnswer": "in",
+            "explanation": "You secure what you put 'in' the cloud – data, apps, access."
+        },
+        {
+            "id": "q3",
+            "type": "true_false",
+            "question": "In the shared responsibility model, the cloud provider is always responsible for patching the guest operating system.",
+            "correctAnswer": false,
+            "explanation": "Only in managed (PaaS) or serverless services does the provider patch the OS. In IaaS, it's the customer's job."
+        },
+        {
+            "id": "q4",
+            "type": "mcq",
+            "question": "For an Amazon EC2 instance, which of the following is the customer's responsibility?",
+            "options": [
+                "Physical security of the data centre",
+                "Hypervisor isolation",
+                "Applying security patches to the Windows OS",
+                "Network cable replacement"
+            ],
+            "correctAnswer": 2,
+            "explanation": "The customer manages the guest OS, including its patches."
+        },
+        {
+            "id": "q5",
+            "type": "mcq",
+            "question": "Who is responsible for configuring an S3 bucket policy that prevents public access?",
+            "options": [
+                "AWS",
+                "The customer",
+                "Both AWS and the customer",
+                "Neither – S3 buckets are always private"
+            ],
+            "correctAnswer": 1,
+            "explanation": "AWS provides the tools; the customer must configure them correctly."
+        },
+        {
+            "id": "q6",
+            "type": "true_false",
+            "question": "AWS is responsible for encrypting data at rest in S3 by default, with no action needed from the customer.",
+            "correctAnswer": false,
+            "explanation": "While AWS now encrypts new objects by default using SSE-S3, the customer must still ensure the setting is applied and, for compliance, may need to manage their own keys."
+        },
+        {
+            "id": "q7",
+            "type": "mcq",
+            "question": "Azure's shared responsibility model uses which terminology?",
+            "options": [
+                "Security of the cloud / Security in the cloud",
+                "Security of the platform / Security on the platform",
+                "Cloud safety / Customer safety",
+                "Provider side / Client side"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Azure calls it 'of the platform' (Microsoft) and 'on the platform' (customer)."
+        },
+        {
+            "id": "q8",
+            "type": "mcq",
+            "question": "In Google Cloud, who is responsible for patching the worker nodes in a GKE Standard cluster?",
+            "options": [
+                "Google always",
+                "The customer always",
+                "Google patches the control plane, customer patches worker nodes",
+                "No patching is needed"
+            ],
+            "correctAnswer": 2,
+            "explanation": "In Standard mode, you manage the worker nodes, including OS updates."
+        },
+        {
+            "id": "q9",
+            "type": "true_false",
+            "question": "With AWS Lambda, the customer is responsible for securing the underlying runtime environment.",
+            "correctAnswer": false,
+            "explanation": "AWS manages the runtime and execution environment. The customer is responsible for the function code and IAM role."
+        },
+        {
+            "id": "q10",
+            "type": "mcq",
+            "question": "A company uses Amazon RDS for a critical database. Who is responsible for taking regular backups and testing restore procedures?",
+            "options": [
+                "AWS automatically handles everything",
+                "The customer must configure and verify backups",
+                "Both share the task equally",
+                "Backups are not needed for RDS"
+            ],
+            "correctAnswer": 1,
+            "explanation": "RDS can perform automated backups, but you must enable them, set retention, and test restores."
+        },
+        {
+            "id": "q11",
+            "type": "fill_blank",
+            "question": "In the apartment analogy, the landlord maintaining the building's fire alarm is like the provider's responsibility for security ______ the cloud.",
+            "options": [
+                "in",
+                "of",
+                "around",
+                "for"
+            ],
+            "correctAnswer": "of",
+            "explanation": "The building's fire alarm is part of the infrastructure (of the cloud), like the provider's physical security."
+        },
+        {
+            "id": "q12",
+            "type": "mcq",
+            "question": "Which of the following is a common misunderstanding of the shared responsibility model?",
+            "options": [
+                "The customer is responsible for data encryption",
+                "The provider will back up all data automatically",
+                "IAM is a shared responsibility",
+                "Physical security is the provider's job"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Many customers wrongly assume backups are automatic and fully managed by the provider."
+        },
+        {
+            "id": "q13",
+            "type": "true_false",
+            "question": "On Google Cloud, using customer‑managed encryption keys (CMEK) transfers all encryption responsibility to Google.",
+            "correctAnswer": false,
+            "explanation": "You still manage key access and rotation; Google only performs the encryption operation using your keys."
+        },
+        {
+            "id": "q14",
+            "type": "mcq",
+            "question": "For an Azure App Service (PaaS) web application, the customer is responsible for:",
+            "options": [
+                "Patching the Windows Server OS",
+                "Securing the physical server",
+                "Application code and its dependencies",
+                "Installing .NET runtime updates"
+            ],
+            "correctAnswer": 2,
+            "explanation": "Azure manages the OS and runtime; the customer must secure the app code and any third‑party libraries."
+        },
+        {
+            "id": "q15",
+            "type": "mcq",
+            "question": "If a developer leaves an API key hardcoded in a Lambda function, whose responsibility is the resulting exposure?",
+            "options": [
+                "AWS",
+                "The customer",
+                "The API provider",
+                "The insurance company"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Secure coding practices are always the customer's domain, regardless of the service model."
+        },
+        {
+            "id": "q16",
+            "type": "true_false",
+            "question": "Using AWS Config rules can help monitor whether your resources comply with your shared responsibility obligations.",
+            "correctAnswer": true,
+            "explanation": "AWS Config can check for misconfigurations like open S3 buckets, helping you uphold your side of the model."
+        },
+        {
+            "id": "q17",
+            "type": "mcq",
+            "question": "Which term describes the practice of documenting responsibility per service?",
+            "options": [
+                "Cloud bill review",
+                "Responsibility matrix",
+                "SOC 2 report",
+                "Well‑Architected Framework"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A responsibility matrix explicitly maps each security task to the provider or customer."
+        },
+        {
+            "id": "q18",
+            "type": "mcq",
+            "question": "In the shared responsibility model, identity and access management (IAM) is:",
+            "options": [
+                "Always the provider's responsibility",
+                "Always the customer's responsibility",
+                "Shared equally",
+                "Only relevant for IaaS"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Controlling who can access your cloud resources is fundamentally your job."
+        },
+        {
+            "id": "q19",
+            "type": "true_false",
+            "question": "GCP's default encryption at rest means the customer has no responsibility regarding encryption.",
+            "correctAnswer": false,
+            "explanation": "You still need to manage access to the data and may need to manage keys or verify encryption settings for compliance."
+        },
+        {
+            "id": "q20",
+            "type": "fill_blank",
+            "question": "AWS secures the hypervisor; you secure the _______ operating system on your EC2 instance.",
+            "options": [
+                "host",
+                "guest",
+                "virtual",
+                "physical"
+            ],
+            "correctAnswer": "guest",
+            "explanation": "The guest OS is the operating system running inside your virtual machine – your responsibility."
+        },
+        {
+            "id": "q21",
+            "type": "mcq",
+            "question": "What is the most effective way to avoid gaps in the shared responsibility model?",
+            "options": [
+                "Assume the provider handles everything",
+                "Read the service‑specific shared responsibility documentation for every service used",
+                "Buy cyber insurance",
+                "Use only SaaS applications"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Each service has a different boundary; the official documentation is the only reliable source."
+        }
+    ]
+}

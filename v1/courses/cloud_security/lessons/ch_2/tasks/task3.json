@@ -1,0 +1,15 @@
+{
+    "id": "task3",
+    "chapterId": "ch_2",
+    "title": "Shared Responsibility for PaaS",
+    "description": "Explain who secures what in a PaaS‑based web application.",
+    "estimatedMinutes": 10,
+    "problemStatement": "## Scenario\nYour team has deployed a Node.js web app on a PaaS platform (similar to Heroku). A security audit flags a vulnerability in the underlying Node.js runtime version. The development lead says, \"The PaaS provider handles all security – we're fine.\"\n\n### Your Task\nWrite a short response (3‑4 sentences) clarifying:\n- Who is responsible for the runtime vulnerability?\n- Who is responsible for patching the application code if it has a SQL injection flaw?\n- What is the customer always responsible for, even in a fully managed PaaS?",
+    "hints": [
+        "In PaaS, the provider manages the runtime and OS – so they should patch runtime CVEs.",
+        "Application code security is always the customer's job.",
+        "Customer always owns data and access management."
+    ],
+    "expectedOutput": "A concise explanation that the provider handles the runtime (so they must patch it), but the customer is responsible for any vulnerabilities in their own code and for securing data and user access.",
+    "solutionCode": "While the PaaS provider manages the Node.js runtime and OS, they are responsible for patching runtime vulnerabilities (you should verify they have a timely patch policy). However, **our application code and its dependencies are still our responsibility** – if we have a SQL injection flaw, we must fix it. Additionally, we always own our data encryption, access controls, and user authentication. The provider secures the platform; we secure what we build on top of it."
+}

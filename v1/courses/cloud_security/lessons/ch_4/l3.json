@@ -1,0 +1,110 @@
+{
+    "id": "l3",
+    "chapterId": "ch_4",
+    "title": "Policies Deep Dive 📝",
+    "description": "JSON policy anatomy: Effect, Action, Resource, Condition.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l3_1",
+            "type": "text",
+            "title": "The Permission Document 📜",
+            "content": "# IAM Policies = The Rulebook\n\nAn IAM policy is a JSON document that explicitly lists what is allowed or denied. Every request is evaluated against all applicable policies.\n\n- **Default behaviour**: All actions are **implicitly denied** until a policy allows them.\n- An **explicit deny** always overrides an allow.\n- Policies can be attached to users, groups, or roles.\n\n*A policy is like a detailed instruction list: \"You can read files from bucket X, but only from IP 203.0.113.0/24.\"*"
+        },
+        {
+            "id": "s_l3_2",
+            "type": "quiz",
+            "title": "Default Deny 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_1",
+                "type": "multiple_choice",
+                "question": "If no policy grants you access to a resource, you are:",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "Automatically granted read access",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "Implicitly denied",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Asked to authenticate again",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "Given admin access by default",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "IAM starts with zero permissions; you must be explicitly allowed.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_3",
+            "type": "text",
+            "title": "Policy Structure 🔍",
+            "content": "## A Simple S3 Read Policy\n\n```json\n{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Action\": [\"s3:GetObject\", \"s3:ListBucket\"],\n      \"Resource\": [\"arn:aws:s3:::my-bucket\", \"arn:aws:s3:::my-bucket/*\"]\n    }\n  ]\n}\n```\n\n- **Effect**: `Allow` or `Deny`.\n- **Action**: What API calls you can make (e.g., `ec2:StartInstances`).\n- **Resource**: Which specific resources (ARNs) the action applies to.\n- **Condition** (optional): When the policy applies (e.g., based on IP address, MFA status)."
+        },
+        {
+            "id": "s_l3_4",
+            "type": "code",
+            "title": "Policy with Condition",
+            "content": "An S3 policy that requires MFA for deleting objects:",
+            "codeSnippet": "{\n  \"Effect\": \"Allow\",\n  \"Action\": \"s3:DeleteObject\",\n  \"Resource\": \"arn:aws:s3:::my-bucket/*\",\n  \"Condition\": {\n    \"Bool\": {\"aws:MultiFactorAuthPresent\": \"true\"}\n  }\n}",
+            "codeLanguage": "json",
+            "canRunCode": false
+        },
+        {
+            "id": "s_l3_5",
+            "type": "text",
+            "title": "Wildcards and the Resource Field 🎯",
+            "content": "- Use **ARNs** (Amazon Resource Names) to target specific resources: `arn:aws:s3:::my-bucket/*` means all objects inside `my-bucket`.\n- `*` in Action means all actions for a service: `s3:*`.\n- `*` in Resource means all resources – be careful!\n\n*Wildcards are powerful but dangerous. Never use `Resource: \"*\"` and `Action: \"*\"` together unless absolutely necessary (and only in test environments).*"
+        },
+        {
+            "id": "s_l3_6",
+            "type": "quiz",
+            "title": "Wildcard Wisdom 💡",
+            "content": "",
+            "quizData": {
+                "id": "q_l3_2",
+                "type": "true_false",
+                "question": "A policy with `\"Action\": \"*\"` and `\"Resource\": \"*\"` grants full administrative access to the account.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "That combination gives permission to perform any action on any resource, effectively admin access.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l3_7",
+            "type": "text",
+            "title": "Policy Types & Evaluation Logic 🧮",
+            "content": "### Types of Policies (AWS)\n- **Identity‑based policies** – Attached to users, groups, roles.\n- **Resource‑based policies** – Attached to resources (like S3 bucket policy).\n- **Permissions boundaries** – Limit maximum permissions an identity can have.\n- **Organizations SCPs** – Control permissions across all accounts in an AWS Organization.\n\n### Evaluation Flow\n1. Start with implicit deny.\n2. Evaluate all applicable policies.\n3. If an explicit deny exists, deny.\n4. If an allow exists and no deny, allow.\n5. Otherwise, implicit deny.\n\n*Deny always wins.*"
+        },
+        {
+            "id": "s_l3_8",
+            "type": "tip",
+            "title": "Pro Tip: Start with AWS Managed Policies 🚀",
+            "content": "AWS provides hundreds of pre‑built policies like `ReadOnlyAccess` or `AmazonS3FullAccess`. Use them to speed up learning, but always review what they actually grant. For production, create custom policies following least privilege."
+        }
+    ]
+}

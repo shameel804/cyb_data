@@ -1,0 +1,14 @@
+{
+    "id": "task1",
+    "chapterId": "ch_5",
+    "title": "Encrypt an S3 Bucket",
+    "description": "Enable default encryption and set a bucket policy to enforce HTTPS and encryption.",
+    "estimatedMinutes": 15,
+    "problemStatement": "## Scenario\nYou have a production S3 bucket named `acme-financial-reports`. You need to ensure:\n- All new objects are encrypted at rest using SSE‑KMS with a specific CMK.\n- Any upload attempt that does not specify server‑side encryption is denied.\n- Only HTTPS requests are allowed (deny requests that use HTTP).\n\n### Your Task\nWrite the bucket policy (JSON) that accomplishes all three requirements. You may assume the KMS key ARN is `arn:aws:kms:us-east-1:123456789012:key/1234abcd`.\n\nAlso, write a short description (2-3 sentences) explaining how default encryption and the policy work together.",
+    "hints": [
+        "Use a Deny effect with a condition checking s3:x-amz-server-side-encryption and aws:SecureTransport.",
+        "Default encryption handles objects uploaded without specifying encryption, but the policy is an extra enforcement layer."
+    ],
+    "expectedOutput": "A JSON bucket policy with two statements: one denying PutObject if encryption header is missing or not 'aws:kms', and another denying requests where aws:SecureTransport is false. Plus explanation.",
+    "solutionCode": "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Sid\": \"DenyUnencryptedUploads\",\n      \"Effect\": \"Deny\",\n      \"Principal\": \"*\",\n      \"Action\": \"s3:PutObject\",\n      \"Resource\": \"arn:aws:s3:::acme-financial-reports/*\",\n      \"Condition\": {\n        \"StringNotEquals\": {\n          \"s3:x-amz-server-side-encryption\": \"aws:kms\"\n        }\n      }\n    },\n    {\n      \"Sid\": \"DenyHTTP\",\n      \"Effect\": \"Deny\",\n      \"Principal\": \"*\",\n      \"Action\": \"s3:*\",\n      \"Resource\": \"arn:aws:s3:::acme-financial-reports/*\",\n      \"Condition\": {\n        \"Bool\": {\n          \"aws:SecureTransport\": \"false\"\n        }\n      }\n    }\n  ]\n}\n\nExplanation: Default encryption (set via bucket properties) ensures that objects uploaded without encryption headers get encrypted with the designated KMS key. The bucket policy acts as a guard: it explicitly denies any upload that doesn't request SSE‑KMS, and also blocks non‑HTTPS traffic. Together they provide defense in depth."
+}

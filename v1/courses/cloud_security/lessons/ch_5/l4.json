@@ -1,0 +1,101 @@
+{
+    "id": "l4",
+    "chapterId": "ch_5",
+    "title": "Encryption in Transit: Secure the Wire 🚚",
+    "description": "TLS, certificates, and VPNs protect data as it moves.",
+    "xpReward": 25,
+    "estimatedMinutes": 5,
+    "section": "Content",
+    "slides": [
+        {
+            "id": "s_l4_1",
+            "type": "text",
+            "title": "The Dangers of the Open Wire 🌐",
+            "content": "# Data in Motion Needs Armor\n\nWhen data travels over the network, it passes through routers and switches you don't control. Without protection, anyone along the path (an ISP, a hacker on the same Wi‑Fi) can read it.\n\nEncryption in transit ensures **confidentiality** and **integrity** between two endpoints.\n\nCommon protocols:\n- **TLS (Transport Layer Security)** – The successor to SSL. Used by HTTPS, FTPS, and many database protocols.\n- **IPsec** – Encrypts entire network packets, often used for VPNs.\n- **SSH** – Secure shell for remote admin and file transfers.\n\n*If your application speaks HTTP instead of HTTPS, treat it as a critical vulnerability.*"
+        },
+        {
+            "id": "s_l4_2",
+            "type": "quiz",
+            "title": "In Transit Quick Check 🧠",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_1",
+                "type": "true_false",
+                "question": "A website using HTTPS encrypts data only from the server to the browser, not from browser to server.",
+                "options": [
+                    {
+                        "id": "true",
+                        "text": "True",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "false",
+                        "text": "False",
+                        "isCorrect": true
+                    }
+                ],
+                "explanation": "HTTPS/TLS encrypts communication in both directions – browser to server and server to browser.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_3",
+            "type": "text",
+            "title": "How TLS Works (Simplified) 🤝",
+            "content": "## The Handshake\n\n1. **Client says hello** – offers supported cipher suites.\n2. **Server responds** – chooses cipher suite, sends certificate containing its public key.\n3. **Certificate validation** – client checks if certificate is signed by a trusted Certificate Authority (CA).\n4. **Key exchange** – client and server securely agree on a shared symmetric key for the session.\n5. **Secure tunnel established** – all subsequent data encrypted with that symmetric key.\n\n*The certificate’s private key never leaves the server; it's only used to prove identity and facilitate key exchange.*"
+        },
+        {
+            "id": "s_l4_4",
+            "type": "text",
+            "title": "TLS in Cloud Services 🌩️",
+            "content": "- **Load Balancers** (ALB, ELB, Azure LB) can terminate TLS – they handle the handshake and forward traffic to backends (often over HTTP internally, though internal encryption is also recommended).\n- **API Gateway** – enforces HTTPS endpoints.\n- **CloudFront / CDN** – serves content over TLS, with option to require HTTPS.\n- **Database connections** – RDS, Cloud SQL offer TLS connections; enforce them via parameter groups or connection strings.\n\n*Always use HTTPS for public endpoints. For internal traffic, also use TLS when crossing trust boundaries.*"
+        },
+        {
+            "id": "s_l4_5",
+            "type": "quiz",
+            "title": "TLS Termination 🎯",
+            "content": "",
+            "quizData": {
+                "id": "q_l4_2",
+                "type": "multiple_choice",
+                "question": "Where should you ideally terminate TLS for a web application behind an AWS Application Load Balancer?",
+                "options": [
+                    {
+                        "id": "opt1",
+                        "text": "On the EC2 instance only",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt2",
+                        "text": "On the load balancer, with optional re‑encryption to the backend",
+                        "isCorrect": true
+                    },
+                    {
+                        "id": "opt3",
+                        "text": "Nowhere – TLS is not needed internally",
+                        "isCorrect": false
+                    },
+                    {
+                        "id": "opt4",
+                        "text": "On the database",
+                        "isCorrect": false
+                    }
+                ],
+                "explanation": "The ALB can terminate TLS and then forward traffic to EC2; for maximum security, re‑encrypt (HTTPS) to the backend as well.",
+                "xpReward": 10
+            }
+        },
+        {
+            "id": "s_l4_6",
+            "type": "text",
+            "title": "Certificates & Certificate Management 📜",
+            "content": "A TLS certificate binds a public key to an identity (domain name). It must be:\n- Issued by a trusted **Certificate Authority** (CA).\n- Valid (not expired, correct domain).\n- Managed securely (private key protected).\n\n**AWS Certificate Manager (ACM)** and **Azure Key Vault** can provision and auto‑renew certificates for cloud services. You don't handle the private key directly.\n\n*Pro tip: Enable automatic certificate renewal to avoid expired certificate outages.*"
+        },
+        {
+            "id": "s_l4_7",
+            "type": "tip",
+            "title": "Enforce HTTPS Everywhere 🌍",
+            "content": "Use CloudFront’s 'Redirect HTTP to HTTPS' option, or configure an S3 static website with a CloudFront distribution that uses an SSL certificate. Never allow plain HTTP in production."
+        }
+    ]
+}
