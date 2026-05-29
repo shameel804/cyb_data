@@ -19,7 +19,7 @@
             "title": "Safer Alternative: Arrays",
             "content": "Instead of `eval \"$command $args\"`, use an array:",
             "codeSnippet": "cmd=(ls -l \"$@\")\n\"${cmd[@]}\"",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": true
         },
         {
@@ -48,7 +48,7 @@
             "title": "Unquoted in Test",
             "content": "Classic mistake:",
             "codeSnippet": "if [ $name = \"admin\" ]; then   # BAD if $name empty -> [ = admin ] -> syntax error\n# correct:\nif [ \"$name\" = \"admin\" ]; then",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": true
         },
         {
@@ -63,7 +63,7 @@
             "title": "Safe Temp File",
             "content": "Create and use:",
             "codeSnippet": "tmpfile=$(mktemp) || exit 1\ntrap 'rm -f \"$tmpfile\"' EXIT\n# work with $tmpfile",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": true
         },
         {

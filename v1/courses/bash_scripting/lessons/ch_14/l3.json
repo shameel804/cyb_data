@@ -19,7 +19,7 @@
             "title": "Environment Variable Approach",
             "content": "Export the secret in your shell, then reference it:",
             "codeSnippet": "export DB_PASS=\"supersecret\"\n# In script:\necho \"Connecting with $DB_PASS\"  # still prints it, better to not echo!",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": true
         },
         {
@@ -69,7 +69,7 @@
             "title": "Read Password Safely",
             "content": "Prompt, then clear:",
             "codeSnippet": "read -sp \"Database password: \" DB_PASS\necho\n# use DB_PASS\n# ...\nunset DB_PASS",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": true
         },
         {
@@ -98,7 +98,7 @@
             "title": "Load a Restricted Config",
             "content": "Check permissions before sourcing:",
             "codeSnippet": "config=\"$HOME/.myapprc\"\nif [ -f \"$config\" ]; then\n  perms=$(stat -c %a \"$config\")\n  if [ \"$perms\" = \"600\" ]; then\n    source \"$config\"\n  else\n    echo \"Config has insecure permissions!\" >&2\n    exit 1\n  fi\nfi",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": true
         },
         {

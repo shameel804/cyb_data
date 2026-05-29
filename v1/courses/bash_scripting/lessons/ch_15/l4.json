@@ -19,7 +19,7 @@
             "title": "Complete main Function",
             "content": "Orchestration:",
             "codeSnippet": "main() {\n  load_config\n  check_disk || exit 1\n  do_backup || exit 2\n  rotate_backups\n  log INFO \"Guardian run completed successfully\"\n}\nmain",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": false
         },
         {
@@ -69,7 +69,7 @@
             "title": "Dry‑Run Implementation",
             "content": "Modify backup function:",
             "codeSnippet": "if [ \"${DRY_RUN:-false}\" = true ]; then\n  log INFO \"[DRY] Would back up $dir to $BACKUP_DEST/$name\"\nelse\n  tar -czf \"$BACKUP_DEST/$name\" ...\nfi",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": false
         },
         {

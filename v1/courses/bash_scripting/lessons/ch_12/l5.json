@@ -19,7 +19,7 @@
             "title": "Clean CSV with sed, Summarise with awk",
             "content": "Remove empty lines and comments, then compute average of column 3:",
             "codeSnippet": "sed '/^#/d;/^$/d' data.csv | awk -F, '{ sum+=$3; count++ } END { print sum/count }'",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": true
         },
         {
@@ -69,7 +69,7 @@
             "title": "Top IPs Pipeline",
             "content": "Count IP addresses from an access log:",
             "codeSnippet": "awk '{ print $1 }' access.log | sort | uniq -c | sort -nr | head -10",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": true
         },
         {
@@ -98,7 +98,7 @@
             "title": "Formatted Disk Usage",
             "content": "Print filesystem and use% excluding header:",
             "codeSnippet": "df -h | awk 'NR>1 { printf \"%-25s %s\\n\", $6, $5 }'",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": true
         },
         {

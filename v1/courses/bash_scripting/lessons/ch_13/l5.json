@@ -19,7 +19,7 @@
             "title": "A Simple Logging Function",
             "content": "Create a reusable logger:",
             "codeSnippet": "log() {\n  local level=\"$1\"\n  shift\n  echo \"[$(date +'%Y-%m-%d %H:%M:%S')] [$level] $*\"\n}\nlog INFO \"Starting backup\"\nlog ERROR \"Disk full\"",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": true
         },
         {
@@ -69,7 +69,7 @@
             "title": "Validating a Script Argument",
             "content": "A robust script start:",
             "codeSnippet": "if [ $# -ne 1 ]; then\n  echo \"Usage: $0 <filename>\" >&2\n  exit 1\nfi\nif [ ! -f \"$1\" ]; then\n  echo \"Error: '$1' not found\" >&2\n  exit 2\nfi",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": true
         },
         {
@@ -99,7 +99,7 @@
             "title": "Assertion Example",
             "content": "Ensure root is running the script:",
             "codeSnippet": "[[ $EUID -eq 0 ]] || { echo \"Must be root\" >&2; exit 1; }",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": true
         },
         {

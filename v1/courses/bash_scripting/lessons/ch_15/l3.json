@@ -19,7 +19,7 @@
             "title": "Cron‑Detection Snippet",
             "content": "Set up logging based on whether the script runs interactively:",
             "codeSnippet": "if [ -t 0 ]; then\n  echo \"Running in terminal mode\"\nelse\n  LOGFILE=\"/var/log/cybron_guardian.log\"\n  exec > /dev/null 2>&1  # suppress stdout/stderr except log file\nfi",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": false
         },
         {
@@ -69,7 +69,7 @@
             "title": "send_alert Example",
             "content": "Trigger an email on critical failure:",
             "codeSnippet": "send_alert \"Guardian Alert\" \"Backup of /data failed due to insufficient space.\"",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": false
         },
         {
@@ -98,7 +98,7 @@
             "title": "Option Parsing with getopts",
             "content": "Simple skeleton:",
             "codeSnippet": "while getopts \":c:vd\" opt; do\n  case $opt in\n    c) CONFIG=\"$OPTARG\" ;;\n    v) VERBOSE=true ;;\n    d) DRY_RUN=true ;;\n    \\?) echo \"Usage: $0 [-c config] [-v] [-d]\" >&2; exit 1 ;;\n  esac\ndone",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": true
         },
         {

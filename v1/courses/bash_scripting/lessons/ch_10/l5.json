@@ -19,7 +19,7 @@
             "title": "Basic FIFO Demo",
             "content": "Terminal 1:\n```bash\nmkfifo chat\ntail -f chat\n```\nTerminal 2:\n```bash\necho \"Hello\" > chat\n```",
             "codeSnippet": "mkfifo myfifo\n# Terminal 1: cat < myfifo\n# Terminal 2: echo 'data' > myfifo",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": false
         },
         {
@@ -69,7 +69,7 @@
             "title": "Script‑Friendly FIFO",
             "content": "Background a writer so the reader can start:",
             "codeSnippet": "mkfifo data_pipe\n(cat /etc/passwd > data_pipe) &\nhead -n 3 < data_pipe\nrm data_pipe",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": true
         },
         {
@@ -98,7 +98,7 @@
             "title": "Live Pipeline with Process Substitution",
             "content": "Feed the live count to a dashboard:",
             "codeSnippet": "mkfifo error_pipe\ntail -f /var/log/api.log | grep ERROR > error_pipe &\nwhile read line; do\n  echo \"$(date): $line\"\ndone < error_pipe",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": false
         },
         {

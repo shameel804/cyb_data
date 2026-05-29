@@ -19,7 +19,7 @@
             "title": "Read Files into Array",
             "content": "Store all .txt filenames safely:",
             "codeSnippet": "mapfile -t txt_files < <(find . -name \"*.txt\")\nfor f in \"${txt_files[@]}\"; do echo \"$f\"; done",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": true
         },
         {
@@ -69,7 +69,7 @@
             "title": "Select Menu",
             "content": "Create a simple interactive menu using an array:",
             "codeSnippet": "actions=(\"Show date\" \"Show uptime\" \"Quit\")\nselect choice in \"${actions[@]}\"; do\n  case $choice in\n    \"Show date\") date ;;\n    \"Show uptime\") uptime ;;\n    \"Quit\") break ;;\n    *) echo \"Invalid\" ;;\n  esac\ndone",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": true
         },
         {
@@ -98,7 +98,7 @@
             "title": "Config Loader",
             "content": "Read key=value from a here‑doc:",
             "codeSnippet": "declare -A settings\nwhile IFS='=' read -r key value; do\n  settings[$key]=$value\ndone <<< \"user=admin\nport=8080\"\necho \"User: ${settings[user]}, Port: ${settings[port]}\"",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": true
         },
         {

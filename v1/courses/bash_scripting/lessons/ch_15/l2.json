@@ -19,7 +19,7 @@
             "title": "Config Loader Function",
             "content": "Implement `load_config`:",
             "codeSnippet": "load_config() {\n  while IFS='=' read -r key value; do\n    [[ -z \"$key\" || \"$key\" =~ ^[[:space:]]*# ]] && continue\n    key=$(echo \"$key\" | xargs)\n    value=$(echo \"$value\" | xargs)\n    declare -g \"$key=$value\"\n  done < \"$CONFIG\"\n}",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": false
         },
         {
@@ -69,7 +69,7 @@
             "title": "Disk Space Check",
             "content": "Prevent backup if disk is too full:\n```bash\ncheck_disk() {\n  local pct_used=$(df \"$BACKUP_DEST\" | awk 'NR==2 {print $5}' | tr -d '%')\n  local free=$((100 - pct_used))\n  if [ \"$free\" -lt \"$THRESHOLD_PCT\" ]; then\n    log ERROR \"Low disk space: ${free}% free, threshold ${THRESHOLD_PCT}%\"\n    send_alert \"Backup aborted – low disk\"\n    exit 1\n  fi\n  log INFO \"Disk space OK (${free}% free)\"\n}\n```",
             "codeSnippet": "check_disk() {\n  local pct_used=$(df \"$1\" | awk 'NR==2 {print $5}' | tr -d '%')\n  local free=$((100 - pct_used))\n  if [ \"$free\" -lt \"${2:-10}\" ]; then\n    log ERROR \"Low disk space: ${free}% free\"\n    return 1\n  fi\n  log INFO \"Disk space OK: ${free}% free\"\n  return 0\n}",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": true
         },
         {
@@ -98,7 +98,7 @@
             "title": "do_backup Implementation",
             "content": "Example:",
             "codeSnippet": "do_backup() {\n  for dir in $BACKUP_SRC; do\n    local name=\"backup-$(hostname)-$(date +%Y%m%d-%H%M%S).tar.gz\"\n    if tar -czf \"$BACKUP_DEST/$name\" -C \"$(dirname \"$dir\")\" \"$(basename \"$dir\")\"; then\n      log INFO \"Backed up $dir to $name\"\n    else\n      log ERROR \"Failed to backup $dir\"\n      send_alert \"Backup failed for $dir\"\n      return 1\n    fi\n  done\n}",
-            "codeLanguage": "bash_scripting",
+            "codeLanguage": "bash",
             "canRunCode": false
         },
         {
